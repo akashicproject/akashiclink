@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { AddressScreeningHistoryList } from '../../../src/pages/address-screening/AddressScreeningHistoryList';
+import { AddressScreeningHistory } from '../../../src/pages/address-screening/address-screening-history';
 
-const meta: Meta<typeof AddressScreeningHistoryList> = {
+const meta: Meta<typeof AddressScreeningHistory> = {
   title: 'Pages/Address Screening',
-  component: AddressScreeningHistoryList,
+  component: AddressScreeningHistory,
 };
 
 export default meta;
-type Story = StoryObj<typeof AddressScreeningHistoryList>;
+type Story = StoryObj<typeof AddressScreeningHistory>;
 
 export const AddressScreeningPage: Story = {
   name: 'Address Screening Page',

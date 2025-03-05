@@ -1,25 +1,19 @@
 import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
 import type { LocationState } from '../../routing/history';
 import { AddressScreeningConfirmationDetailList } from './address-screening-confirmation-detail-list';
 import { AddressScreeningConfirmationFormActionButtons } from './address-screening-confirmation-form-action-buttons';
-import { type AddressScanConfirmationTxnsDetail } from './types';
 
 export const AddressScreeningConfirmationForm = () => {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
 
-  // TODO: 1293 - remove setter after whole integration flow is confirmed
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [txnDetail, setTxnDetail] = useState<
-    AddressScanConfirmationTxnsDetail | undefined
-  >(history.location.state?.addressScanConfirm ?? undefined);
+  const txnDetail = history.location.state?.addressScanConfirm ?? undefined;
 
   // check if coming back from send page, and make ts happy
-  if (!history.location.state?.addressScanConfirm) {
+  if (!txnDetail) {
     return null;
   }
 

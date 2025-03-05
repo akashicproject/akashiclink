@@ -217,12 +217,12 @@ export const ALLOWED_ADDRESS_SCAN_CURRENCY: {
 }[] =
   process.env.REACT_APP_ENABLE_TESTNET_CURRENCIES === 'true'
     ? [
-        { chain: CoinSymbol.Ethereum_Sepolia, token: CurrencySymbol.USDT },
         { chain: CoinSymbol.Tron_Shasta, token: CurrencySymbol.TETHER },
+        { chain: CoinSymbol.Ethereum_Sepolia, token: CurrencySymbol.USDT },
       ]
     : [
-        { chain: CoinSymbol.Ethereum_Mainnet, token: CurrencySymbol.USDT },
         { chain: CoinSymbol.Tron, token: CurrencySymbol.USDT },
+        { chain: CoinSymbol.Ethereum_Mainnet, token: CurrencySymbol.USDT },
       ];
 
 export const ALLOWED_NETWORK_FOR_ADDRESS_SCREENING: CoinSymbol[] = [

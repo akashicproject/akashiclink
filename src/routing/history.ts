@@ -35,6 +35,9 @@ export interface LocationState {
   changePassword?: {
     isChanged?: boolean;
   };
+  addressScreeningSearch?: {
+    id?: string;
+  };
 }
 
 export const historyResetStackAndRedirect = async (

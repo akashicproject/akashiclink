@@ -19,6 +19,7 @@ import {
   useSendL1Transaction,
   useSendL2Transaction,
 } from '../utils/hooks/nitr0gen';
+import { useBecomeFxBp } from '../utils/hooks/useBecomeFxBp';
 import { useGenerateSecondaryOtk } from '../utils/hooks/useGenerateSecondaryOtk';
 import { useSignAuthorizeActionMessage } from '../utils/hooks/useSignAuthorizeActionMessage';
 import { useVerifyTxnAndSign } from '../utils/hooks/useVerifyTxnAndSign';
@@ -47,6 +48,7 @@ export function SignTypedData() {
 
   const signAuthorizeActionMessage = useSignAuthorizeActionMessage();
   const generateSecondaryOtk = useGenerateSecondaryOtk();
+  const becomeFxBp = useBecomeFxBp();
 
   const verifyTxnAndSign = useVerifyTxnAndSign();
   const { trigger: triggerSendL2Transaction } = useSendL2Transaction();
@@ -98,6 +100,9 @@ export function SignTypedData() {
             identity: toSign.identity,
             expires: Number(toSign.expires),
           });
+          break;
+        case TYPED_DATA_PRIMARY_TYPE.BECOME_FX_BP:
+          signedMsg = await becomeFxBp();
           break;
         case TYPED_DATA_PRIMARY_TYPE.GENERATE_SECONDARY_OTK:
           signedMsg = await generateSecondaryOtk(secondaryOtk);

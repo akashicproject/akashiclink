@@ -1,5 +1,5 @@
 {
-  "Locale": "en-US",
+  "Locale": "pt-PT",
   "AkashicChain": "AkashicChain",
   "CreateWallet": "Create Account",
   "LoginWithExistingCredential": "Login with existing credential",
@@ -36,7 +36,7 @@
   "WalletCreated": "Account Created!",
   "WalletAddress": "Account Address",
   "OptionBackup": "Option Backup",
-  "DepositAddress": "Deposit Address",
+  "PublicAddress": "Public Address",
   "Activity": "Activity",
   "PleaseEnterYourEmail": "Please enter your email",
   "SetYourLockPassword": "Set your Lock Password",
@@ -317,8 +317,7 @@
     "chain": "Network",
     "toAddress": "Send to",
     "ip": "IP",
-    "remark": "Remark",
-    "canIpsBypassSigning": "Allow Callback Retry"
+    "remark": "Remark"
   },
   "SendBpByAlias": "Cannot send to business account by Akashic Alias",
   "SelectYourPreferredNode": "Please select your preferred node.",
@@ -344,9 +343,6 @@
   "Severe": "Severe",
   "RiskScore": "Risk Score",
   "RiskLevel": "Risk Level",
-  "RiskEntity": "Risk entity",
-  "HackingEvent": "Hacking event",
-  "SuspiciousTxn": "Suspicious txn",
   "Overview": "Overview",
   "TotalReceived": "Total received",
   "TotalSpent": "Total spent",

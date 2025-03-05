@@ -36,7 +36,7 @@
   "WalletCreated": "帐号已创建！",
   "WalletAddress": "帐号地址",
   "OptionBackup": "可选备用",
-  "PublicAddress": "公共地址",
+  "DepositAddress": "存款地址",
   "Activity": "活动",
   "PleaseEnterYourEmail": "请输入您的电子邮箱",
   "SetYourLockPassword": "设置锁定密码",
@@ -317,7 +317,8 @@
     "chain": "链",
     "toAddress": "发送至",
     "ip": "IP",
-    "remark": "备注"
+    "remark": "备注",
+    "canIpsBypassSigning": "允许回调重试"
   },
   "SendBpByAlias": "无法透过 Akashic 地址发送商业帐户",
   "SelectYourPreferredNode": "请选择您喜欢的节点。",
@@ -340,5 +341,18 @@
   "Moderate": "中等",
   "High": "高",
   "Low": "低",
-  "Severe": "严重"
+  "Severe": "严重",
+  "RiskScore": "风险评分",
+  "RiskLevel": "风险程度",
+  "RiskEntity": "风险实体",
+  "HackingEvent": "黑客事件",
+  "SuspiciousTxn": "可疑交易",
+  "Overview": "概览",
+  "TotalReceived": "收款总额",
+  "TotalSpent": "出款总额",
+  "FirstSeen": "首次见到 (UTC)",
+  "LastSeen": "最后见到 (UTC)",
+  "IncomingCount": "传入计数",
+  "OutgoingCount": "传出计数",
+  "ReceivingCryptoWarning": "我们不建议从该账号接收任何加密货币"
 }

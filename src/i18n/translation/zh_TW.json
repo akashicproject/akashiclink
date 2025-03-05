@@ -36,7 +36,7 @@
   "WalletCreated": "帳號已創建！",
   "WalletAddress": "帳號地址",
   "OptionBackup": "可選備用",
-  "PublicAddress": "公共地址",
+  "DepositAddress": "存款地址",
   "Activity": "活動",
   "PleaseEnterYourEmail": "請輸入您的電子郵箱",
   "SetYourLockPassword": "設置鎖定密碼",
@@ -317,7 +317,8 @@
     "chain": "鏈",
     "toAddress": "發送至",
     "ip": "IP",
-    "remark": "備注"
+    "remark": "備注",
+    "canIpsBypassSigning": "允許回調重試"
   },
   "SendBpByAlias": "無法透過 Akashic 地址發送商業帳戶",
   "SelectYourPreferredNode": "請選擇您偏好的節點。",
@@ -340,5 +341,18 @@
   "Moderate": "中等",
   "High": "高",
   "Low": "低",
-  "Severe": "嚴重"
+  "Severe": "嚴重",
+  "RiskScore": "風險評分",
+  "RiskLevel": "風險程度",
+  "RiskEntity": "風險實體",
+  "HackingEvent": "黑客事件",
+  "SuspiciousTxn": "可疑交易",
+  "Overview": "概覽",
+  "TotalReceived": "收款總額",
+  "TotalSpent": "出款總額",
+  "FirstSeen": "首次見到 (UTC)",
+  "LastSeen": "最後見到 (UTC)",
+  "IncomingCount": "傳入計數",
+  "OutgoingCount": "傳出計數",
+  "ReceivingCryptoWarning": "我們不建議從此帳號接收任何加密貨幣"
 }

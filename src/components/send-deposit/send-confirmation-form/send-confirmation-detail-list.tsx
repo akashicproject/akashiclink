@@ -69,9 +69,7 @@ export const SendConfirmationDetailList = ({
         : `${NetworkDictionary[chain].addressUrl}/${value}`;
     }
     // Or if transaction
-    return isL2
-      ? `${process.env.REACT_APP_SCAN_BASE_URL}/transactions/${value}`
-      : `${NetworkDictionary[chain].txnUrl}/${value}`;
+    return `${process.env.REACT_APP_SCAN_BASE_URL}/transactions/${value}`;
   };
 
   // If token, displayed as "USDT" for L1 and "USDT (ETH)" for L2 (since

@@ -10,13 +10,19 @@ export function LayoutWithActivityTab({
   children,
   loading = false,
   showRefresh = true,
+  showAddress = true,
 }: {
   children: ReactNode;
   loading?: boolean;
   showRefresh?: boolean;
+  showAddress?: boolean;
 }) {
   return (
-    <DashboardLayout showRefresh={showRefresh} showAddress showSwitchAccountBar>
+    <DashboardLayout
+      showRefresh={showRefresh}
+      showAddress={showAddress}
+      showSwitchAccountBar
+    >
       {loading && (
         <IonGrid>
           <IonRow class="ion-justify-content-center ion-margin-vertical">

@@ -86,7 +86,6 @@ export const AddressScreeningFormVerifyTxnButton: FC<{
       history.push({
         pathname: akashicPayPath(urls.addressScreeningNewScanConfirm),
         state: {
-          //TODO: 1293 - add in fields returned from endpoint
           addressScanConfirm: {
             txn: res.txn,
             signedTxn: res.signedTxn,
