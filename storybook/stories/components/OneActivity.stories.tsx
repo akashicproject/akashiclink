@@ -1,6 +1,6 @@
 import {
   CoinSymbol,
-  CurrencySymbol,
+  CryptoCurrencySymbol,
   TransactionLayer,
   TransactionStatus,
 } from '@helium-pay/backend';
@@ -69,7 +69,7 @@ export const USDTTransaction: Story = {
     transfer: formatTransfers([
       {
         ...baseTransaction,
-        tokenSymbol: CurrencySymbol.USDT,
+        tokenSymbol: CryptoCurrencySymbol.USDT,
         coinSymbol: CoinSymbol.Ethereum_Mainnet,
       },
     ])[0],

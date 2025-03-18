@@ -1,6 +1,6 @@
 import {
   type CoinSymbol,
-  type CurrencySymbol,
+  type CryptoCurrencySymbol,
   L2Regex,
 } from '@helium-pay/backend';
 import { getSdkError } from '@walletconnect/utils';
@@ -117,7 +117,7 @@ export function SignTypedData() {
             },
             toSign.amount as string,
             toSign.chain as CoinSymbol,
-            toSign.token as CurrencySymbol | undefined
+            toSign.token as CryptoCurrencySymbol | undefined
           );
 
           if (typeof res === 'string') {

@@ -1,6 +1,6 @@
 import {
   type CoinSymbol,
-  type CurrencySymbol,
+  type CryptoCurrencySymbol,
   type IExchangeRate,
   TEST_TO_MAIN,
 } from '@helium-pay/backend';
@@ -38,7 +38,7 @@ export const useValueOfAmountInUSDT = () => {
   return (
     amount: string,
     coinSymbol: CoinSymbol,
-    tokenSymbol?: CurrencySymbol
+    tokenSymbol?: CryptoCurrencySymbol
   ) => {
     const exchangeRate = Big(
       exchangeRates.find(

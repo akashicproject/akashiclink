@@ -5,7 +5,7 @@ import { Capacitor } from '@capacitor/core';
 import { datadogRum } from '@datadog/browser-rum';
 import type {
   CoinSymbol,
-  CurrencySymbol,
+  CryptoCurrencySymbol,
   IBaseAcTransaction,
   ITerriAcTransaction,
 } from '@helium-pay/backend';
@@ -443,7 +443,7 @@ export class Nitr0genApi {
     amount: string,
     toAddress: string,
     feesEstimate: string,
-    token?: CurrencySymbol,
+    token?: CryptoCurrencySymbol,
     ethGasPrice?: string
   ): Promise<IBaseAcTransaction> {
     const contractAddress = NetworkDictionary[network].tokens.find(
