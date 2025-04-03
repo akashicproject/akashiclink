@@ -12,7 +12,9 @@ export const useTransfersMe = (params?: IClientTransactionRecord) => {
   const { data, error } = useSWR(
     buildURL(`/key/transfers/me`, params),
     fetcher,
-    {}
+    {
+      refreshInterval: 1000 * 60, // refresh interval every 60secs
+    }
   );
   // Dates come from backend as string so need to transform them here
   // also, remove trailing zeros from amounts

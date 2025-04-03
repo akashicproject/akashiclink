@@ -163,6 +163,10 @@ export function SendResult() {
             expand="block"
             onClick={() => {
               mutate('/owner/agg-balances');
+              mutate(
+                (key) =>
+                  typeof key === 'string' && key.startsWith('/key/transfers/me')
+              );
               history.push(akashicPayPath(urls.loggedFunction));
             }}
           >

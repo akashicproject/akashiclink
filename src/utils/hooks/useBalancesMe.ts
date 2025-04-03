@@ -4,7 +4,9 @@ import useSWR from 'swr';
 import fetcher from '../ownerFetcher';
 
 export const useBalancesMe = () => {
-  const { data, error } = useSWR(`/owner/agg-balances`, fetcher, {});
+  const { data, error } = useSWR(`/owner/agg-balances`, fetcher, {
+    refreshInterval: 1000 * 60, // refreshing every 1 min
+  });
   return {
     keys: (data || []) as IOwnerBalancesResponse[],
     isLoading: !error && !data,
