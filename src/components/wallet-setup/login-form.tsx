@@ -9,7 +9,6 @@ import { OwnersAPI } from '../../utils/api';
 import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
 import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemapAASToAddress';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
-import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useOwner } from '../../utils/hooks/useOwner';
@@ -43,9 +42,8 @@ export function LoginForm() {
     activeAccount,
     setActiveAccount,
   } = useAccountStorage();
-  const [selectedAccount, setSelectedAccount] = useState<LocalAccount>();
-  const [password, setPassword] = useState<string>();
-  const { owner, mutateOwner } = useOwner();
+  const [password, setPassword] = useState<string>('');
+  const { mutateOwner } = useOwner();
   const { mutateTransfersMe } = useTransfersMe();
   const { mutateNftTransfersMe } = useNftTransfersMe();
   const { mutateBalancesMe } = useBalancesMe();
@@ -54,30 +52,25 @@ export function LoginForm() {
   addPrefixToAccounts();
   useIosScrollPasswordKeyboardIntoView();
 
-  /** Selection is populated on load to match the account save in session */
+  // fallback to the first wallet available if user delete logged in wallet
   useEffect(() => {
-    if (activeAccount) {
-      const matchingAccount = localAccounts?.find(
-        (a) => a.identity === activeAccount.identity
-      );
-      setSelectedAccount(matchingAccount ?? localAccounts?.[0]);
-    } else {
-      setSelectedAccount(localAccounts?.[0]);
+    if (!activeAccount && localAccounts?.[0]) {
+      setActiveAccount(localAccounts?.[0]);
     }
-  }, [activeAccount, localAccounts.length, owner]);
+  }, [activeAccount?.identity, localAccounts?.length]);
 
-  const login = async () => {
+  const onClickLogin = async () => {
     try {
       setAlert(formAlertResetState);
       setIsLoading(true);
 
-      if (!selectedAccount || !password) {
+      if (!activeAccount || !password) {
         setAlert(errorAlertShell('ValidationError'));
         return;
       }
 
       const localSelectedOtk = await getLocalOtkAndCache(
-        selectedAccount.identity,
+        activeAccount.identity,
         password
       );
       if (localSelectedOtk) {
@@ -91,14 +84,14 @@ export function LoginForm() {
       } else {
         // Check if supplied password is correct
         await OwnersAPI.validatePassword({
-          username: selectedAccount.username ?? '',
+          username: activeAccount.username ?? '',
           password,
         });
         // @TODO remove once old accounts no longer supported
         // Redirect to Migration-Flow
         historyResetStackAndRedirect(urls.migrateWalletNotice, {
           migrateWallet: {
-            username: selectedAccount.username,
+            username: activeAccount.username,
             oldPassword: password,
           },
         });
@@ -106,17 +99,15 @@ export function LoginForm() {
       }
 
       datadogRum.setUser({
-        id: selectedAccount.username,
+        id: activeAccount.username,
       });
       // Set the login account
-      setActiveAccount(selectedAccount);
       await mutateOwner();
       await mutateTransfersMe();
       await mutateNftTransfersMe();
       await mutateBalancesMe();
-      await fetchAndRemapAASToAddress(selectedAccount.identity);
+      await fetchAndRemapAASToAddress(activeAccount.identity);
 
-      setSelectedAccount(undefined);
       setPassword('');
       historyResetStackAndRedirect();
     } catch (error) {
@@ -141,8 +132,8 @@ export function LoginForm() {
       <IonRow className={'ion-grid-gap-xs'}>
         <IonCol size="12">
           <AccountSelection
-            onNewAccountClick={(a) => setSelectedAccount(a)}
-            currentSelectedAccount={selectedAccount}
+            onSelectAccount={(a) => setActiveAccount(a)}
+            currentSelectedAccount={activeAccount ?? localAccounts?.[0]}
           />
         </IonCol>
         <IonCol size="12">
@@ -151,13 +142,13 @@ export function LoginForm() {
             type={'password'}
             placeholder={t('Password')}
             onIonInput={({ target: { value } }) => setPassword(value as string)}
-            submitOnEnter={login}
+            submitOnEnter={onClickLogin}
             enterkeyhint="go"
           />
         </IonCol>
         <IonCol size="12">
           <PurpleButton
-            onClick={login}
+            onClick={onClickLogin}
             style={{ width: '100%' }}
             expand="block"
             disabled={!password}

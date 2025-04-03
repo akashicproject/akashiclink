@@ -42,7 +42,6 @@ import { Settings } from '../pages/settings/settings';
 import { SettingsAboutUs } from '../pages/settings/settings-about-us';
 import { SettingsBackup } from '../pages/settings/settings-backup';
 import { SettingsGeneral } from '../pages/settings/settings-general';
-import { SettingsNaming } from '../pages/settings/settings-naming';
 import { SettingsSecurity } from '../pages/settings/settings-security';
 import { SettingsVersion } from '../pages/settings/settings-version';
 import { useAppDispatch, useAppSelector } from '../redux/app/hooks';
@@ -126,7 +125,6 @@ export function NavigationTree() {
       {AkashicTab.registerPage(SettingsGeneral, urls.settingsGeneral)}
       {AkashicTab.registerPage(SettingsSecurity, urls.settingsSecurity)}
       {AkashicTab.registerPage(SettingsBackup, urls.settingsBackup)}
-      {AkashicTab.registerPage(SettingsNaming, urls.settingsNaming)}
       {AkashicTab.registerPage(SettingsVersion, urls.settingsVersion)}
       {AkashicTab.registerPage(SettingsAboutUs, urls.settingsAboutUs)}
       {AkashicTab.registerPage(ChangePassword, urls.changePassword)}

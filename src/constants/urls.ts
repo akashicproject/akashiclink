@@ -42,6 +42,5 @@ export const urls = {
   settingsSecurity: 'settings-security',
   settingsAboutUs: 'settings-about-us',
   settingsBackup: 'settings-backup',
-  settingsNaming: 'settings-naming',
   settingsVersion: 'settings-version',
 } as const;

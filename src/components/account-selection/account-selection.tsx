@@ -4,7 +4,6 @@ import '../page-layout/layout-with-activity-tab.scss';
 import type { IonSelectCustomEvent } from '@ionic/core/dist/types/components';
 import type { SelectChangeEventDetail } from '@ionic/react';
 import { IonSelect, IonSelectOption } from '@ionic/react';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -30,45 +29,24 @@ const ACCOUNT_OPERATION_OPTIONS = [
 ];
 
 export function AccountSelection({
-  onNewAccountClick,
-  hideCreateImport,
-  size = 'lg',
   currentSelectedAccount,
+  onSelectAccount,
+  size = 'lg',
 }: {
-  onNewAccountClick?: (selectedAccount: LocalAccount) => void;
-  hideCreateImport?: boolean;
-  size?: 'md' | 'lg';
   currentSelectedAccount?: LocalAccount;
+  onSelectAccount?: (selectedAccount: LocalAccount) => void;
+  size?: 'md' | 'lg';
 }) {
   const history = useHistory();
   const { t } = useTranslation();
 
-  const { localAccounts, activeAccount } = useAccountStorage();
-  const [selectedAccount, setSelectedAccount] = useState<LocalAccount>();
-
-  // preselect active account in this browsing session in the dropdown menu
-  useEffect(() => {
-    if (currentSelectedAccount) {
-      setSelectedAccount(currentSelectedAccount);
-    } else if (activeAccount) {
-      const matchingAccount = localAccounts?.find(
-        (a) => a.identity === activeAccount.identity
-      );
-      setSelectedAccount(matchingAccount ?? localAccounts?.[0]);
-    } else {
-      setSelectedAccount(localAccounts?.[0]);
-    }
-  }, [activeAccount, localAccounts.length]);
+  const { localAccounts } = useAccountStorage();
 
   const onSelect = ({
     detail: { value },
   }: IonSelectCustomEvent<SelectChangeEventDetail>) => {
     if (ACCOUNT_OPERATION_OPTIONS.map((option) => option.url).includes(value)) {
-      history.push(
-        akashicPayPath(value),
-        // Pass in a state, to differentiate from the case when extension is closed and reopened
-        activeAccount
-      );
+      history.push(akashicPayPath(value));
       return;
     }
 
@@ -76,19 +54,9 @@ export function AccountSelection({
       (account) => account.identity === value
     );
 
-    if (!selectedAccount && accountSelectedByUser) {
-      setSelectedAccount(accountSelectedByUser);
-      return;
-    }
-
     // When new account is selected trigger callback
-    if (
-      selectedAccount &&
-      accountSelectedByUser &&
-      value !== selectedAccount.identity
-    ) {
-      setSelectedAccount(accountSelectedByUser);
-      onNewAccountClick && onNewAccountClick(accountSelectedByUser);
+    if (accountSelectedByUser && value !== currentSelectedAccount?.identity) {
+      onSelectAccount && onSelectAccount(accountSelectedByUser);
     }
   };
 
@@ -111,7 +79,7 @@ export function AccountSelection({
           minHeight: size === 'lg' ? 40 : 32,
           minWidth: '0',
         }}
-        value={selectedAccount?.identity}
+        value={currentSelectedAccount?.identity ?? localAccounts?.[0].identity}
         onIonChange={onSelect}
         interface="popover"
         interfaceOptions={{
@@ -121,27 +89,22 @@ export function AccountSelection({
         }}
       >
         {[
-          ...localAccounts.map((account) => {
-            const accountPrefix =
-              account.aasName ?? account?.accountName ?? `Account`;
-
-            return (
-              <IonSelectOption key={account.identity} value={account.identity}>
-                {`${accountPrefix} - ${displayLongText(account.identity, 20)}`}
-              </IonSelectOption>
-            );
-          }),
-          ...(hideCreateImport
-            ? []
-            : ACCOUNT_OPERATION_OPTIONS.map((option, i) => (
-                <IonSelectOption
-                  className={i === 0 || i === 2 ? 'option-divider-top' : ''}
-                  key={option.tKey}
-                  value={option.url}
-                >
-                  {t(option.tKey)}
-                </IonSelectOption>
-              ))),
+          ...localAccounts.map((account) => (
+            <IonSelectOption key={account.identity} value={account.identity}>
+              {`${
+                account.aasName ?? account?.accountName ?? `Wallet`
+              } - ${displayLongText(account.identity, 20)}`}
+            </IonSelectOption>
+          )),
+          ...ACCOUNT_OPERATION_OPTIONS.map((option, i) => (
+            <IonSelectOption
+              className={i === 0 || i === 2 ? 'option-divider-top' : ''}
+              key={option.tKey}
+              value={option.url}
+            >
+              {t(option.tKey)}
+            </IonSelectOption>
+          )),
         ]}
       </IonSelect>
     </div>
