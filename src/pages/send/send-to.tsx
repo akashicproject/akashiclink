@@ -264,10 +264,19 @@ export function SendTo() {
           recipientAddress.match(NetworkDictionary[chain].regex.address) &&
             setL1AddressWhenL2(recipientAddress);
           setGasFree(true);
+          setInternalFee(
+            calculateInternalWithdrawalFee(
+              amount ?? '0',
+              exchangeRates,
+              chain,
+              token
+            )
+          );
         } else {
           setL1AddressWhenL2(undefined);
           setToAddress(recipientAddress);
           setGasFree(false);
+          setInternalFee('0.0');
           debouncedHandleGasFee(amount ?? '1', recipientAddress);
         }
       }, validateAddressWithBackendTimeout)
@@ -470,12 +479,14 @@ export function SendTo() {
                 onIonInput={({ target: { value } }) => {
                   setAmount(value as string);
                   setInternalFee(
-                    calculateInternalWithdrawalFee(
-                      value as string,
-                      exchangeRates,
-                      chain,
-                      token
-                    )
+                    gasFree
+                      ? calculateInternalWithdrawalFee(
+                          value as string,
+                          exchangeRates,
+                          chain,
+                          token
+                        )
+                      : '0.0'
                   );
                   debouncedHandleGasFee(value as string, toAddress as string);
                 }}
