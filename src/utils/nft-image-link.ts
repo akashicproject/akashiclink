@@ -13,5 +13,5 @@ export async function getNftImage(
   quality = '100'
 ): Promise<string> {
   const NITR0_URL = await chooseBestNodes(PortType.NFT);
-  return `${NITR0_URL}/cdn-cgi/image/width=${width},quality=${quality}/nft/image/${identity}`;
+  return `${NITR0_URL}cdn-cgi/image/width=${width},quality=${quality}/nft/image/${identity}`;
 }
