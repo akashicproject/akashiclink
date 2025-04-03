@@ -29,9 +29,10 @@ yarn start:all
 
 ## Running locally as Chrome extension
 
-1. Build the extension with
+1. Build the extension by first building the full app (it moves the `manifest.json` file to the correct location), and then run the dev build
 
 ```sh
+yarn build
 yarn build:dev
 ```
 

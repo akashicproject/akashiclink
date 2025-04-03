@@ -9,6 +9,7 @@ import {
   IonImg,
   IonPage,
   IonRow,
+  isPlatform,
 } from '@ionic/react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -33,6 +34,7 @@ const ContentText = styled.span({
 export function HeliumPayMain() {
   const { t } = useTranslation();
   const availableAccounts = getLocalAccounts();
+  const isMobile = isPlatform('mobile');
   const history = useHistory();
   const loginCheck = useOwner(true);
 
@@ -52,30 +54,36 @@ export function HeliumPayMain() {
     <IonPage>
       <IonContent>
         <IonGrid class="main-wrapper">
-          <IonRow style={{ marginTop: '40px' }}>
+          <IonRow>
             <IonCol class="ion-center">
               <IonImg
-                class="logo"
+                class={isMobile ? 'logo' : 'logo-web'}
                 alt={''}
                 src="/shared-assets/images/main/main-icon.png"
               />
             </IonCol>
           </IonRow>
-          <IonRow style={{ marginTop: '10px' }}>
+          <IonRow>
             <IonCol class="ion-center">
               <IonImg
-                class="main-img"
+                class={isMobile ? 'main-img' : 'main-img-web'}
                 alt={''}
                 src="/shared-assets/images/main/main-img.png"
               />
             </IonCol>
           </IonRow>
-          <IonRow style={{ marginTop: '40px' }}>
+          <IonRow
+            style={
+              availableAccounts.length
+                ? { marginTop: '5px' }
+                : { marginTop: '20px' }
+            }
+          >
             <IonCol class="ion-center">
               <ContentText>Best way to invest Your Money!</ContentText>
             </IonCol>
           </IonRow>
-          <IonRow style={{ marginTop: '8px' }}>
+          <IonRow style={{ marginTop: '5px' }}>
             <IonCol>
               <PurpleButton
                 routerLink={heliumPayPath(urls.createWalletUrl)}

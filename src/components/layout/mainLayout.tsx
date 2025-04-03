@@ -10,7 +10,7 @@ export const MainLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <IonPage>
       <MainHeader />
-      <IonContent>{children}</IonContent>
+      <IonContent class="no-scroll">{children}</IonContent>
       <Footer />
     </IonPage>
   );

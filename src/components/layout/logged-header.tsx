@@ -2,7 +2,13 @@ import type {
   IonToggleCustomEvent,
   ToggleChangeEventDetail,
 } from '@ionic/core';
-import { IonHeader, IonImg, IonRouterLink, IonToggle } from '@ionic/react';
+import {
+  IonHeader,
+  IonImg,
+  IonRouterLink,
+  IonToggle,
+  isPlatform,
+} from '@ionic/react';
 import { useEffect, useState } from 'react';
 
 import { urls } from '../../constants/urls';
@@ -16,6 +22,7 @@ export function LoggedHeader() {
     'theme',
     themeType.SYSTEM as ThemeType
   );
+  const isMobile = isPlatform('mobile');
 
   const [isDarkMode, setIsDarkMode] = useState(storedTheme === themeType.DARK);
 
@@ -58,7 +65,7 @@ export function LoggedHeader() {
         justifyContent: 'center',
         background: '#5B299C',
         gap: '160px',
-        height: '72px',
+        height: isMobile ? '72px' : '40px',
       }}
     >
       <IonRouterLink routerLink={heliumPayPath(urls.loggedFunction)}>
@@ -79,7 +86,11 @@ export function LoggedHeader() {
         <IonImg
           alt={''}
           src="/shared-assets/images/layout/avatar.png"
-          style={{ width: '40px', height: '40px' }}
+          style={
+            isMobile
+              ? { width: '40px', height: '40px' }
+              : { width: '30px', height: '30px' }
+          }
         />
         <IonToggle checked={isDarkMode} onIonChange={handleToggleTheme} />
       </div>

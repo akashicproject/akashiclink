@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { isPlatform } from '@ionic/react';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -46,6 +47,7 @@ const SeeMore = styled(Link)({
 export const ActivityAndNFTTab = () => {
   const [tab, setTab] = useState('activity');
   const { t } = useTranslation();
+  const isMobile = isPlatform('mobile');
   const [transferParams, _] = useState({
     startDate: dayjs().subtract(1, 'month').toDate(),
     endDate: dayjs().toDate(),
@@ -72,7 +74,7 @@ export const ActivityAndNFTTab = () => {
         </TabButton>
       </Tabs>
       {tab === 'activity' ? (
-        <ActivityDiv>
+        <ActivityDiv style={{ height: isMobile ? '200px' : '180px' }}>
           {walletFormatTransfers.slice(0, 2).map((transfer, index) => {
             return (
               <OneActivity
@@ -93,7 +95,7 @@ export const ActivityAndNFTTab = () => {
           ) : null}
         </ActivityDiv>
       ) : (
-        <NFTDiv> nft</NFTDiv>
+        <NFTDiv style={{ height: isMobile ? '200px' : '180px' }}> nft</NFTDiv>
       )}
     </div>
   );

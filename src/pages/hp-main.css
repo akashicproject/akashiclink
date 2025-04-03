@@ -7,14 +7,25 @@
 }
 
 .logo {
-  width: 120px;
-  height: 33px;
+  width: 102px;
+  height: 50px;
+}
+
+.logo-web {
+  margin-top: 10px;
+  width: 78px;
+  height: 38px;
 }
 
 .main-img {
   width: 231px;
   height: 288px;
-  margin-top: 50px;
+  margin-top: 30px;
+}
+
+.main-img-web {
+  width: 140px;
+  height: 209px;
 }
 
 .main-wrapper {
