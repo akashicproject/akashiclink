@@ -54,6 +54,11 @@ export function Nfts() {
     storedTheme === themeType.DARK || storedTheme === themeType.SYSTEM;
   const history = useHistory();
   const { nfts, isLoading } = useNftMe();
+  const sortedNfts = nfts.sort((a, b) => {
+    if (a.acns?.value && !b.acns?.value) return -1;
+    if (!a.acns?.value && b.acns?.value) return 1;
+    return 0;
+  });
   const selectNft = (nft: INftResponse) => {
     history.push({
       pathname: akashicPayPath(urls.nft),
@@ -91,7 +96,7 @@ export function Nfts() {
             }}
             overscan={900}
             totalCount={nfts.length}
-            data={nfts}
+            data={sortedNfts}
             components={{
               Item: StyledNftWrapper,
               List: ListContainer,
