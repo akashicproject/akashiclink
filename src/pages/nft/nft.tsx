@@ -8,12 +8,9 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import { CustomAlert } from '../../components/alert/alert';
-import {
-  PurpleButton,
-  SquareWhiteButton,
-  WhiteButton,
-} from '../../components/buttons';
+import { PurpleButton, SquareWhiteButton } from '../../components/buttons';
 import { NftLayout } from '../../components/layout/nft-layout';
+import { AasListingSwitch } from '../../components/nft/aas-listing-switch';
 import { OneNft } from '../../components/nft/one-nft';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
@@ -50,12 +47,6 @@ export function Nft() {
       state: history.location.state,
     });
   };
-
-  const goNSSetting = () => {
-    setIsOpen(false);
-    history.push(akashicPayPath(urls.settingsNaming));
-  };
-
   return (
     <NftLayout>
       <SquareWhiteButton
@@ -73,10 +64,11 @@ export function Nft() {
       <CustomAlert
         state={{
           visible: isOpen,
-          onConfirm: goNSSetting,
           message: t('NSRecordWarning', { nftName: currentNft?.name || '' }),
           success: false,
-          confirmButtonMessage: t('GoNSSettings') ?? undefined,
+          onConfirm: () => {
+            setIsOpen(false);
+          },
         }}
       />
       <NftWrapper>
@@ -91,15 +83,15 @@ export function Nft() {
               {t('Transfer')}
             </PurpleButton>
           </IonCol>
-          <IonCol>
-            <WhiteButton
-              expand="block"
-              routerLink={akashicPayPath(urls.settingsNaming)}
-            >
-              {t('NS Settings')}
-            </WhiteButton>
-          </IonCol>
         </IonRow>
+        {currentNft && currentNft.acns ? (
+          <AasListingSwitch
+            name={currentNft.acns!.name}
+            aasValue={currentNft.acns?.value ?? ''}
+          />
+        ) : (
+          <></>
+        )}
       </NftWrapper>
     </NftLayout>
   );

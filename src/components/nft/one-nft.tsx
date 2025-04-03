@@ -1,14 +1,15 @@
-import './one-nft.css';
+import './one-nft.scss';
 
 import styled from '@emotion/styled';
 import type { INft, INftResponse } from '@helium-pay/backend';
-import { IonImg } from '@ionic/react';
+import { IonImg, IonRow } from '@ionic/react';
 
 import { displayLongText } from '../../utils/long-text';
 interface Props {
   nft: INft | INftResponse;
   isBig?: boolean;
   select?: () => void;
+  isNameHidden?: boolean;
 }
 
 const NtfWrapper = styled.div({
@@ -38,35 +39,42 @@ export function OneNft(props: Props) {
     <NtfWrapper
       style={
         props.isBig
-          ? { width: '168px', height: '234px', padding: '12px' }
-          : { width: '112px', height: '156px', padding: '8px' }
+          ? { width: '215px', height: '260px', padding: '16px', gap: '16px' }
+          : { width: '138px', height: '190px', padding: '8px', gap: '10px' }
       }
       onClick={props.select}
     >
-      <IonImg
-        alt={props.nft?.description}
-        src={props.nft?.image}
-        class={props.isBig ? 'nft-image-big' : 'nft-image-small'}
-      />
-      <NftName
-        style={
-          props.isBig
-            ? {
-                width: '144px',
-                padding: '12px 15px 0px 15px',
-                fontSize: '21px',
-                lineHeight: '30px',
-              }
-            : {
-                width: '96px',
-                padding: '8px 10px 0px 10px',
-                fontSize: '14px',
-                lineHeight: '20px',
-              }
-        }
+      <div
+        hidden={props.isNameHidden}
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
       >
-        {displayLongText(props.nft?.acns?.name)}
-      </NftName>
+        <NftName
+          style={{
+            fontSize: props.isBig ? '21px' : '14px',
+          }}
+        >
+          {displayLongText(props.nft?.account)}
+        </NftName>
+        <div hidden={!props?.nft?.acns?.value}>
+          <div className="chip">AAS</div>
+        </div>
+      </div>
+      <div>
+        <IonImg
+          alt={props.nft?.description}
+          src={props.nft?.image}
+          class={props.isBig ? 'nft-image-big' : 'nft-image-small'}
+        />
+      </div>
+      <IonRow>
+        <NftName style={{ color: '#7B757F', fontWeight: '700' }}>
+          {displayLongText(props.nft?.name)}
+        </NftName>
+      </IonRow>
     </NtfWrapper>
   );
 }

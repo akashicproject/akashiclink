@@ -176,5 +176,6 @@
   "DeleteAccount": "刪除帳戶",
   "AreYouSureDelete": "你確定要您刪除帳戶嗎？",
   "FundsLeftNotRecoverable": "刪除後，帳戶中的任何資金都無法恢復！",
-  "DoNotClose": "創立時請不要關閉應用程式"
+  "DoNotClose": "創立時請不要關閉應用程式",
+  "linkAlias": "连接你的 Akashic 链地址"
 }

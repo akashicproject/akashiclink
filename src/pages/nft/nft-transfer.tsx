@@ -190,7 +190,7 @@ export function NftTransfer() {
           <>
             <IonRow style={{ marginTop: isMobile ? '50px' : '40px' }}>
               <IonCol class="ion-center">
-                <OneNft nft={currentNft} />
+                <OneNft nft={currentNft} isNameHidden={true} />
               </IonCol>
             </IonRow>
             <IonRow>
