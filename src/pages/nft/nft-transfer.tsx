@@ -133,7 +133,7 @@ export function NftTransfer() {
       setSearchedResultType(SearchResult.IsSelfAddress);
       return;
     }
-    const { l2Address } = await OwnersAPI.checkL2Address({
+    const { l2Address } = await OwnersAPI.lookForL2Address({
       to: value,
     });
     if (l2Address && value.match(L2Regex)) {

@@ -1,12 +1,9 @@
 import type {
-  IAcnsSearch,
   IActivateWalletAccount,
   IActivateWalletAccountClientOtk,
   IActivateWalletAccountClientOtkResponse,
   IActivateWalletAccountResponse,
   IChangePassword,
-  ICheckL2Address,
-  ICheckL2AddressResponse,
   IConfirmPassword,
   ICreateKeysDto,
   ICreateKeysResponse,
@@ -19,10 +16,11 @@ import type {
   IL1ClientSideOtkTransactionBase,
   ILoginUser,
   ILoginUserWithOtk,
+  ILookForL2Address,
+  ILookForL2AddressResponse,
   IMinimalUserResponse,
   IRequestActivationCode,
   IRequestActivationCodeResponse,
-  ISearchAcnsResponse,
   ISwapEotkDto,
   ISwapEotkResponse,
   ITempShowOtkPrv,
@@ -212,10 +210,10 @@ export const OwnersAPI = {
     }
     return response.data;
   },
-  checkL2Address: async (
-    l2Check: ICheckL2Address
-  ): Promise<ICheckL2AddressResponse> => {
-    let requestUrl = `/owner/check-l2-address?to=${l2Check.to}`;
+  lookForL2Address: async (
+    l2Check: ILookForL2Address
+  ): Promise<ILookForL2AddressResponse> => {
+    let requestUrl = `/nft/look-for-l2-address?to=${l2Check.to}`;
     if (l2Check.coinSymbol) requestUrl += `&coinSymbol=${l2Check.coinSymbol}`;
     const response = await axiosBase.get(requestUrl);
     const { data, status } = response;
@@ -307,18 +305,6 @@ export const OwnersAPI = {
       throw new Error(data.message);
     }
     return data as IDiffconKeysResponse;
-  },
-
-  searchAcnsByName: async (
-    iAcnsSearch: IAcnsSearch
-  ): Promise<ISearchAcnsResponse> => {
-    const requestUrl = `/nft/acns/search?name=${iAcnsSearch.name}`;
-    const response = await axiosBase.get(requestUrl);
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-    return response.data;
   },
 
   nftTransfer: async (payload: ITransferNft): Promise<ITransferNftResponse> => {
