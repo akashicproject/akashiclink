@@ -115,6 +115,7 @@
   "PasswordHelpText": "Password must be 10 characters long, contain 1 capital letter and 1 number",
   "ConfirmPasswordHelpText": "Passwords must match",
   "AddressHelpText": "Address format does not match chain",
+  "NoSelfSend": "You can not send to yourself",
   "AmountHelpText": "Must be positive",
   "ActivationCodeText": "Activation code format is wrong",
   "InvalidInput": "Invalid Input",

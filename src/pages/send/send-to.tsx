@@ -233,11 +233,15 @@ export function SendTo() {
     setAlertRequest(formAlertResetState);
     setGasFree(false);
     if (!recipientAddress) return;
-    // 1. Regex validation
+
+    if (recipientAddress === activeAccount?.identity) {
+      setAlertRequest(errorAlertShell(t('NoSelfSend')));
+    }
     if (
       !recipientAddress.match(NetworkDictionary[chain].regex.address) &&
       !recipientAddress.match(L2Regex)
     ) {
+      // 1. Regex validation
       // 2a. If input address does not match standard form, lookup value in the ACNS
       setTimeoutHandle(
         setTimeout(async () => {

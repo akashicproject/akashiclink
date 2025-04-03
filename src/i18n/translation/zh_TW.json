@@ -115,6 +115,7 @@
   "PasswordHelpText": "密碼必須是10個字符，包含一個大寫字母和一個數字",
   "ConfirmPasswordHelpText": "密碼必須吻合",
   "AddressHelpText": "地址格式與鏈不一致",
+  "NoSelfSend": "您不能發送給自己",
   "ActivationCodeText": "激活碼格式錯誤",
   "AmountHelpText": "必須是正數",
   "InvalidInput": "輸入無效",

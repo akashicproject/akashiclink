@@ -116,6 +116,7 @@
   "ConfirmPasswordHelpText": "密码必须吻合",
   "ActivationCodeText": "激活码格式错误",
   "AddressHelpText": "地址格式与链不一致",
+  "NoSelfSend": "您不能发送给自己",
   "AmountHelpText": "必须是正数",
   "InvalidInput": "输入无效",
   "Complete2FA": "请完成双重认证",
