@@ -73,8 +73,6 @@ export function Activity() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentTransfer, setCurrentTransfer] =
     useState<WalletTransactionRecord>();
-
-  // store current page to activity page if reopen
   useEffect(() => {
     lastPageStorage.store(urls.activity);
   }, []);

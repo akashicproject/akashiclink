@@ -81,7 +81,6 @@ const Chain = styled.div({
   gap: '12px',
   width: '120px',
   height: '40px',
-  background: '#7444B6',
   borderRadius: '8px',
   fontSize: '14px',
   fontWeight: 700,
@@ -112,14 +111,42 @@ const Icon = styled(IonIcon)({
   margin: '0',
 });
 
-export const OneActivity: React.FC<{
+/**
+ * Display of a single transfer
+ * @param transfer
+ * @param onClick callback
+ * @param style addition to apply to the bounding vox
+ * @param showDetail arrow, inviting user to click and see full transfer information
+ */
+export function OneActivity({
+  transfer,
+  children,
+  onClick,
+  style,
+  showDetail,
+}: {
   transfer: WalletTransactionRecord;
   children?: ReactNode;
   onClick?: () => void;
   style?: CSSProperties;
   showDetail?: boolean;
-}> = ({ transfer, children, onClick, style, showDetail }) => {
+}) {
   const amount = Big(transfer.amount);
+
+  /**
+   * Style the icon displaying the chain information:
+   * - L2 transactions need to display the full AkashicChain text and so need less padding
+   * - If the more-info-chevron is displayed, reduce the spacing
+   */
+  const iconStyle = {
+    gap:
+      transfer.layer === TransactionLayer.L2
+        ? '0px'
+        : showDetail
+        ? '8px'
+        : '12px',
+    background: transfer.layer === TransactionLayer.L2 ? '#290056' : '#7444B6',
+  };
   return (
     <OneTransfer key={transfer.id} onClick={onClick} style={style}>
       <ActivityWrapper>
@@ -127,15 +154,17 @@ export const OneActivity: React.FC<{
           <Type>{transfer.transferType}</Type>
           <Time>{formatDate(new Date(transfer.date))}</Time>
         </TimeWrapper>
-        <Chain style={showDetail ? { gap: '8px' } : { gap: '12px' }}>
+        <Chain style={iconStyle}>
           <IonImg
-            alt={''}
+            alt=""
             src={
               transfer.layer === TransactionLayer.L2 ? L2Icon : transfer.icon
             }
             style={{ height: '12px' }}
           />
-          {transfer.currency.displayName}
+          {transfer.layer === TransactionLayer.L2
+            ? 'AkashicChain'
+            : transfer.currency.displayName}
         </Chain>
         <Amount>{`${amount} ${transfer.currency.displayName}`}</Amount>
         {showDetail ? <Icon icon={chevronForwardOutline} /> : null}
@@ -143,4 +172,4 @@ export const OneActivity: React.FC<{
       {children}
     </OneTransfer>
   );
-};
+}
