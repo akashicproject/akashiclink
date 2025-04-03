@@ -40,6 +40,7 @@ export const Spinner = ({
     justifyContent: 'center',
   });
   const StyledIonIcon = styled(IonIcon)`
+    color: var(--ion-color-primary-70);
     font-size: 24px;
   `;
 

@@ -76,7 +76,7 @@ export function StyledInput({
     >
       {label ? (
         <IonLabel
-          style={{ color: 'var(--ion-color-on-primary)' }}
+          style={{ color: 'var(--ion-color-primary-10)' }}
           position={isHorizontal ? undefined : 'stacked'}
         >
           {label}

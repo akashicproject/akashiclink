@@ -73,7 +73,11 @@ export const AccountManagementList = ({
         >
           {t('CreateWallet')}
         </IonText>
-        <IonIcon style={{ fontSize: 18 }} color={'primary'} icon={addOutline} />
+        <IonIcon
+          style={{ paddingInlineStart: 2, fontSize: 18 }}
+          color={'primary'}
+          icon={addOutline}
+        />
       </StyledIonItem>
     </List>
   );
