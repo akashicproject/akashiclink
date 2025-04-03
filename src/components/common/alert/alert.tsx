@@ -59,6 +59,7 @@ export interface CustomAlertState {
   visible: boolean;
   success: boolean;
   message: string;
+  messageProps?: Record<string, unknown>;
   onConfirm?: () => void;
   confirmButtonMessage?: string;
 }
@@ -140,7 +141,7 @@ export function CustomAlert({ state }: { state: CustomAlertState }) {
         />
         <IonText className="warning-text">
           <h2>{state.success ? `${t('Success')}` : `${t('Failure')}`}</h2>
-          {t(state.message)}
+          {t(state.message, state.messageProps)}
         </IonText>
         {state.onConfirm && (
           <PurpleButton onClick={state.onConfirm} style={{ width: '160px' }}>

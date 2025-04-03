@@ -87,6 +87,7 @@ export const AasListingSwitch = ({
       } else {
         setAlert(
           errorAlertShell('AASLinkingFailed', {
+            name,
             timeRemaining: errorMsg.split(' ')[0],
             timeUnit: t(errorMsg.split(' ')[1]),
           })

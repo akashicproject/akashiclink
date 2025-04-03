@@ -241,7 +241,7 @@
   "EmpoweringYourWealth": "Empowering Your Wealth",
   "IAgreeToTermsOfUse": "I agree to Akashic Wallet",
   "TermsOfUse": "Terms Of Use",
-  "AASLinkingFailed": "Linking your AAS is currently not available. You will need to wait for period of {{timeRemaining}} {{timeUnit}} before initiating the linking process.",
+  "AASLinkingFailed": "AAS-Link for {{name}} will be available in {{timeRemaining}} {{timeUnit}}.",
   "hours": "hours",
   "minutes": "minutes",
   "seconds": "seconds",
