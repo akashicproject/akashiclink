@@ -61,15 +61,11 @@ export function Activity() {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
   const [storedTheme] = useTheme();
-  const [transferParams, _] = useState({
-    startDate: dayjs().subtract(1, 'month').toDate(),
-  });
   const { transfers, isLoading } = useTransfersMe({
-    ...transferParams,
     hideSmallTransactions: true,
   });
   const { transfers: nftTransfers, isLoading: isLoadingNft } =
-    useNftTransfersMe(transferParams);
+    useNftTransfersMe();
   const walletFormatTransfers = formatMergeAndSortNftAndCryptoTransfers(
     transfers,
     nftTransfers

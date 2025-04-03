@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { IonBackdrop } from '@ionic/react';
 import dayjs from 'dayjs';
 import { t } from 'i18next';
 import type { Dispatch, SetStateAction } from 'react';
@@ -10,7 +9,6 @@ import { Link, useHistory } from 'react-router-dom';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { formatMergeAndSortNftAndCryptoTransfers } from '../../utils/formatTransfers';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
@@ -94,17 +92,13 @@ export const ActivityAndNftTabComponent = ({
 };
 
 export function ActivityAndNftTab() {
-  const [transferParams] = useState({
-    startDate: dayjs().subtract(1, 'month').toDate(),
-  });
   const itemDisplayIndex = 3;
   const history = useHistory<LocationState>();
   const [nftTab, setNftTab] = useState(false);
   const { transfers } = useTransfersMe({
-    ...transferParams,
     hideSmallTransactions: true,
   });
-  const { transfers: nftTransfers } = useNftTransfersMe(transferParams);
+  const { transfers: nftTransfers } = useNftTransfersMe();
   const walletFormatTransfers = formatMergeAndSortNftAndCryptoTransfers(
     transfers,
     nftTransfers
