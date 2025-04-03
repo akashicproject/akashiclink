@@ -14,6 +14,7 @@ enum Nitr0gen {
   Namespace = 'notabox.keys',
   NFTNamespace = 'candypig',
   NFTTransfer = '52e8ec2faef459da41fc4ed669644b4f07639bfdd871081763517e92973d3623@1.0.5',
+  NFTAcnsRecord = '29a20530ecc5f835ceb55bb1f27a329f5ac8126f53630ce79535675af0f2f184@1.0.0',
   CryptoTransfer = 'a48df2fd31400a9b69d9b8bdb699618faed2999ca08c559695a4b74597d3e895@2.0.2',
 }
 
@@ -84,6 +85,36 @@ export const Nitr0genApi = {
     // Sign Transaction & Send
     const txHandler = new TransactionHandler();
     return makeTxSafe(await txHandler.signTransaction(txBody, signerOtk));
+  },
+
+  acnsRecord: async (
+    otk: IKey,
+    acnsStreamId: string,
+    recordType: string,
+    recordKey: string,
+    value: string | null
+  ): Promise<string> => {
+    const txBody: IBaseTransaction = {
+      $sigs: {},
+      $tx: {
+        $namespace: Nitr0gen.NFTNamespace,
+        $contract: Nitr0gen.NFTAcnsRecord,
+        $i: {
+          nft: {
+            $stream: acnsStreamId,
+            recordType: recordType,
+            recordName: recordKey,
+            recordValue: value,
+          },
+        },
+      },
+    };
+
+    otk.identity = acnsStreamId;
+
+    // Sign Transaction & Send
+    const txHandler = new TransactionHandler();
+    return makeTxSafe(await txHandler.signTransaction(txBody, otk));
   },
 
   L2Transaction: async (

@@ -27,7 +27,10 @@ import type {
   ITransferNftResponse,
   ITransferNftUsingClientSideOtk,
   IUpdateAcns,
+  IUpdateAcnsResponse,
+  IUpdateAcnsUsingClientSideOtk,
   IVerifyNftResponse,
+  IVerifyUpdateAcnsResponse,
 } from '@helium-pay/backend';
 
 import { axiosBase, axiosBaseV1 } from './axios-helper';
@@ -300,6 +303,34 @@ export const OwnersAPI = {
     if (status >= 400) {
       throw new Error(data.message);
     }
+  },
+
+  verifyUpdateAcns: async (
+    payload: IUpdateAcns
+  ): Promise<IVerifyUpdateAcnsResponse> => {
+    const response = await axiosBaseV1.post(
+      `/nft/acns/verify`,
+      JSON.stringify(payload)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+    return response.data;
+  },
+
+  updateAcnsUsingClientSideOtk: async (
+    payload: IUpdateAcnsUsingClientSideOtk
+  ): Promise<IUpdateAcnsResponse> => {
+    const response = await axiosBaseV1.post(
+      `/nft/acns`,
+      JSON.stringify(payload)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+    return response.data;
   },
 
   deleteAccount: async () => {
