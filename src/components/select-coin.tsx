@@ -53,6 +53,9 @@ const BalanceText = styled.div({
 });
 
 export function SelectCoin() {
+  // TODO: change to 0 once swiper is upgraded to v10.x
+  // set the default currency the 2nd one because otherwise the swiper doesn't look good
+  const defaultCurrencyIdx = 1;
   const aggregatedBalances = useAggregatedBalances();
   const { keys: exchangeRates, length: exchangeRateLength } =
     useExchangeRates();
@@ -62,7 +65,7 @@ export function SelectCoin() {
    */
   const [currency, setCurrency, _] = useLocalStorage(
     'currency',
-    WALLET_CURRENCIES[0].symbol
+    WALLET_CURRENCIES[defaultCurrencyIdx].symbol
   );
 
   const [__, ___, storedTheme] = useLocalStorage(
@@ -87,7 +90,8 @@ export function SelectCoin() {
    * Track currency under focus in the slider
    */
   const [focusCurrency, setFocusCurrency] = useState(
-    WALLET_CURRENCIES.find(findCurrency(currency)) || WALLET_CURRENCIES[0]
+    WALLET_CURRENCIES.find(findCurrency(currency)) ||
+      WALLET_CURRENCIES[defaultCurrencyIdx]
   );
   const [focusCurrencyUSDT, setFocusCurrencyUSDT] = useState<Big>();
 
@@ -111,7 +115,8 @@ export function SelectCoin() {
    */
   const [swiperRef, setSwiperRef] = useState<SwiperCore>();
   const [swiperIdx, setSwiperIdx] = useState(
-    WALLET_CURRENCIES.findIndex((c) => c.symbol === currency) || 0
+    WALLET_CURRENCIES.findIndex((c) => c.symbol === currency) ||
+      defaultCurrencyIdx
   );
   /**
    * Slide to last index
@@ -119,7 +124,6 @@ export function SelectCoin() {
   useEffect(
     () => {
       if (!swiperRef || swiperRef.destroyed) return;
-      swiperRef.slidePrev();
       swiperRef.slideToLoop(swiperIdx);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -132,9 +136,9 @@ export function SelectCoin() {
    * - Update global state
    */
   const handleSlideChange = () => {
-    setSwiperIdx(swiperRef?.realIndex ?? 0);
+    setSwiperIdx(swiperRef?.realIndex ?? defaultCurrencyIdx);
 
-    const wc = WALLET_CURRENCIES[swiperRef?.realIndex ?? 0];
+    const wc = WALLET_CURRENCIES[swiperRef?.realIndex ?? defaultCurrencyIdx];
     setFocusCurrency(wc);
 
     const conversionRate = findExchangeRate(wc);
@@ -182,11 +186,11 @@ export function SelectCoin() {
             onSwiper={setSwiperRef}
             onSlideChange={handleSlideChange}
             slidesPerView={3}
+            spaceBetween={-30}
             centeredSlides={true}
             navigation={{
               enabled: true,
             }}
-            style={{ position: 'relative' }}
             loop={true}
           >
             {WALLET_CURRENCIES.map(
@@ -221,14 +225,14 @@ export function SelectCoin() {
                                 height: '30px',
                                 position: 'absolute',
                                 top: 0,
-                                left: '56px',
+                                left: '66px',
                               }
                             : {
                                 width: '16px',
                                 height: '16px',
                                 position: 'absolute',
                                 top: 0,
-                                left: '49px',
+                                left: '59px',
                               }
                         }
                       />

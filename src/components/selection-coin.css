@@ -31,14 +31,6 @@
   justify-content: center;
 }
 
-.swiper-slide-active {
-  margin: auto -20px;
-}
-
-.swiper-slide-prev {
-  margin-left: 20px;
-}
-
 .swiper-wrapper {
   display: flex;
   align-items: center;
