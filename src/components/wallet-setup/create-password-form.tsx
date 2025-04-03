@@ -49,7 +49,7 @@ export function CreatePasswordForm({
 
   // Validate password format
   const validatePassword = (value: string) =>
-    !!value.match(userConst.passwordRegex);
+    !!RegExp(userConst.passwordRegex).exec(value);
 
   // Check if passwords match
   const validatePasswordsMatch = (

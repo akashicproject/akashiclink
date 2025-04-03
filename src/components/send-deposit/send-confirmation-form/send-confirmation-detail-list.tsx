@@ -53,8 +53,8 @@ export const SendConfirmationDetailList = ({
     totalFee > Big(0)
       ? totalFee.toString()
       : internalFee > Big(0)
-      ? internalFee.toString()
-      : '0';
+        ? internalFee.toString()
+        : '0';
 
   const precision = getPrecision(txn.amount, feeForPrecision);
 

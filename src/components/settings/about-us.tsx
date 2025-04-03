@@ -30,7 +30,7 @@ function UpdateModal({
   const [updateUrl] = useLocalStorage('update-url', '');
   const [highlights] = useLocalStorage('highlights', ['']);
   const { t } = useTranslation();
-  const [isMoreInfo, setMoreInfo] = useState(false);
+  const [isMoreInfo, setIsMoreInfo] = useState(false);
   return (
     <IonModal
       id="update-modal"
@@ -65,9 +65,9 @@ function UpdateModal({
               })}
             </h4>
             <ul>
-              {highlights.map((highlight, i) => {
+              {highlights.map((highlight) => {
                 return (
-                  <li className="ion-text-size-xs" key={i}>
+                  <li className="ion-text-size-xs" key={highlight}>
                     {highlight}
                   </li>
                 );
@@ -80,7 +80,7 @@ function UpdateModal({
           fill="clear"
           className="ion-text-size-xxs p-0 m-0 more-info-btn no-ripple"
           onClick={() => {
-            setMoreInfo(!isMoreInfo);
+            setIsMoreInfo(!isMoreInfo);
           }}
         >
           {!isMoreInfo ? t('MoreInfo') : t('LessInfo')}
@@ -219,6 +219,7 @@ export function AboutUs({
         {aboutUsMenu.map((abm, index) => {
           return (
             <SettingItem
+              /* eslint-disable-next-line sonarjs/no-array-index-key */
               key={index}
               iconUrl={abm.iconUrl}
               header={abm.header}

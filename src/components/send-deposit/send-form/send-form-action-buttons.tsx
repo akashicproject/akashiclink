@@ -73,7 +73,7 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
           },
         },
       });
-    } catch (e) {
+    } catch {
       setAlert(errorAlertShell('GenericFailureMsg'));
     } finally {
       setIsLoading(false);

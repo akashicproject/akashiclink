@@ -1,10 +1,9 @@
-import type { IInternalFee } from '@helium-pay/backend';
-import {
-  type CoinSymbol,
-  type CurrencySymbol,
-  NetworkDictionary,
-  otherError,
+import type {
+  CoinSymbol,
+  CurrencySymbol,
+  IInternalFee,
 } from '@helium-pay/backend';
+import { NetworkDictionary, otherError } from '@helium-pay/backend';
 import Big from 'big.js';
 
 /**

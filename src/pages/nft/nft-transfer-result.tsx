@@ -11,9 +11,9 @@ import { NftLayout } from '../../components/page-layout/nft-layout';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
 import {
-  type LocationState,
   historyGo,
   historyResetStackAndRedirect,
+  type LocationState,
 } from '../../routing/history';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { displayLongText } from '../../utils/long-text';

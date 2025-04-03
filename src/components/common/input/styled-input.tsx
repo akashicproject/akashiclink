@@ -30,7 +30,7 @@ type StyledInputProps = ComponentProps<typeof IonInput> & {
   /** Method returning true/false checking user input */
   validate?: (value: string) => boolean;
   /** Text to display to user is validation fails */
-  errorPrompt?: typeof StyledInputErrorPrompt[keyof typeof StyledInputErrorPrompt];
+  errorPrompt?: (typeof StyledInputErrorPrompt)[keyof typeof StyledInputErrorPrompt];
   // Required to allow translations to be passed in e.g. t('ConfirmPassword')
   placeholder: string;
   /** Callback to trigger when return key is hit */

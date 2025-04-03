@@ -91,24 +91,21 @@ const AutoLockAccordion = ({
     >
       {autoLockTimeMap.map((item, i) => {
         return (
-          <>
-            <SettingsRadio
-              key={i}
-              labelPlacement="end"
-              justify="start"
-              value={item.value}
-              onClick={() => {
-                setAutoLock(item);
-                dispatch(setAutoLockTime(item.value));
-              }}
-              width={'33.33%'}
-              mode="md"
-            >
-              <h5 className="ion-no-margin">{`${item.label} ${t(
-                item.unit
-              )}`}</h5>
-            </SettingsRadio>
-          </>
+          <SettingsRadio
+            /* eslint-disable-next-line sonarjs/no-array-index-key */
+            key={i}
+            labelPlacement="end"
+            justify="start"
+            value={item.value}
+            onClick={() => {
+              setAutoLock(item);
+              dispatch(setAutoLockTime(item.value));
+            }}
+            width={'33.33%'}
+            mode="md"
+          >
+            <h5 className="ion-no-margin">{`${item.label} ${t(item.unit)}`}</h5>
+          </SettingsRadio>
         );
       })}
     </IonRadioGroup>
@@ -204,6 +201,7 @@ export function Settings() {
           {menuItems.map((menuItem, index) => {
             return (
               <SettingItem
+                /* eslint-disable-next-line sonarjs/no-array-index-key */
                 key={index}
                 iconUrl={menuItem.iconUrl}
                 backgroundColor={'var(--ion-background)'}

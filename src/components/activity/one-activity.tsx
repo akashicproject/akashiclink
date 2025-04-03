@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import styled from '@emotion/styled';
 import {
   TransactionLayer,
@@ -156,8 +157,8 @@ export function OneActivity({
         ? `/shared-assets/images/akashic-activity-dark.svg`
         : `/shared-assets/images/akashic-activity-light.svg`
       : isTxnConfirmed
-      ? currencyObj?.currencyIcon
-      : currencyObj?.greyCurrencyIcon;
+        ? currencyObj?.currencyIcon
+        : currencyObj?.greyCurrencyIcon;
 
   const gasFee = transfer.feesPaid ?? transfer.feesEstimate;
 
@@ -247,10 +248,10 @@ export function OneActivity({
                 transfer.status === TransactionStatus.PENDING
                   ? ` - ${t('Pending')}`
                   : transfer.status === TransactionStatus.FAILED
-                  ? ` - ${t('Failed')}`
-                  : transfer.status === TransactionStatus.QUEUED
-                  ? ` - ${t('Queued')}`
-                  : ''
+                    ? ` - ${t('Failed')}`
+                    : transfer.status === TransactionStatus.QUEUED
+                      ? ` - ${t('Queued')}`
+                      : ''
               }`}
             </div>
             <Time
@@ -288,8 +289,8 @@ export function OneActivity({
                 color: !isTxnConfirmed
                   ? 'var(--activity-dim-text)'
                   : isTxnDeposit
-                  ? 'var(--ion-color-success)'
-                  : 'var(--ion-color-failed)',
+                    ? 'var(--ion-color-success)'
+                    : 'var(--ion-color-failed)',
               }}
             >
               {displayLongText(
@@ -306,8 +307,8 @@ export function OneActivity({
                   color: !isTxnConfirmed
                     ? 'var(--activity-dim-text)'
                     : storedTheme === themeType.DARK
-                    ? 'var(--ion-color-primary-10)'
-                    : 'var(--ion-light-text)',
+                      ? 'var(--ion-color-primary-10)'
+                      : 'var(--ion-light-text)',
                 }}
               >
                 {feeText}

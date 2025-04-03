@@ -45,8 +45,8 @@ const NtfWrapper = styled.div<{
   borderTopRightRadius: props.isAASLinked
     ? '0px'
     : props.isBig
-    ? '24px'
-    : '8px',
+      ? '24px'
+      : '8px',
   marginTop: props.isAASLinked ? '0px' : '20px',
   background: 'var(--nft-background)',
   boxShadow: '6px 6px 20px rgba(0,0,0,0.10000000149011612)',

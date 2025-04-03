@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import styled from '@emotion/styled';
 import { IonImg } from '@ionic/react';
 import { t } from 'i18next';

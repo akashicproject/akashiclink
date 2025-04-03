@@ -146,14 +146,15 @@ export function ActivityAndNftTab() {
                 />
               );
             })}
-        {isActivityTabReady && formattedTransfers.length >= itemDisplayLimit && (
-          <SeeMore
-            className="ion-margin-top-xs"
-            to={akashicPayPath(urls.activity)}
-          >
-            {t('SeeMore')}
-          </SeeMore>
-        )}
+        {isActivityTabReady &&
+          formattedTransfers.length >= itemDisplayLimit && (
+            <SeeMore
+              className="ion-margin-top-xs"
+              to={akashicPayPath(urls.activity)}
+            >
+              {t('SeeMore')}
+            </SeeMore>
+          )}
         {isActivityTabReady && formattedTransfers.length === 0 && (
           <NoDataWrapper>
             <NoDataDiv>{t('NoActivity')}</NoDataDiv>

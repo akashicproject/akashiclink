@@ -40,6 +40,7 @@ export function SettingSelect({ loggedIn }: { loggedIn: boolean }) {
             : getImageIconUrl('setting-menu-primary.svg')
         }
         onClick={(e) => {
+          // eslint-disable-next-line sonarjs/no-selector-parameter
           if (loggedIn && settingPopoverRef.current) {
             settingPopoverRef.current.event = e;
             setPopoverOpen(!popoverOpen);

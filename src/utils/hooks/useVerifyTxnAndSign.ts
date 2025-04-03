@@ -1,10 +1,8 @@
 import { datadogRum } from '@datadog/browser-rum';
-import type {
-  CoinSymbol,
-  CurrencySymbol,
-  IBaseAcTransaction,
-} from '@helium-pay/backend';
 import {
+  type CoinSymbol,
+  type CurrencySymbol,
+  type IBaseAcTransaction,
   type IWithdrawalProposal,
   keyError,
   L2Regex,

@@ -18,9 +18,9 @@ import { MainGrid } from '../../../components/layout/main-grid';
 import { DashboardLayout } from '../../../components/page-layout/dashboard-layout';
 import { urls } from '../../../constants/urls';
 import {
-  type LocationState,
   historyGoBackOrReplace,
   historyReplace,
+  type LocationState,
 } from '../../../routing/history';
 import { useAccountStorage } from '../../../utils/hooks/useLocalAccounts';
 import { useLogout } from '../../../utils/hooks/useLogout';
@@ -39,7 +39,7 @@ export function ChangePassword() {
   const [allowedToChange, setAllowedToChange] = useState<boolean>(false);
 
   const validatePassword = (value: string) =>
-    !!value.match(userConst.passwordRegex);
+    !!RegExp(userConst.passwordRegex).exec(value);
 
   const [alertRequest, setAlertRequest] = useState(formAlertResetState);
   const { changeOtkPassword } = useAccountStorage();

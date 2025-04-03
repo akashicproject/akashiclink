@@ -1,7 +1,7 @@
 import {
-  type ICurrency,
   CoinSymbol,
   CurrencySymbol,
+  type ICurrency,
   NetworkDictionary,
 } from '@helium-pay/backend';
 

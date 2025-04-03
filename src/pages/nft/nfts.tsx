@@ -53,7 +53,7 @@ export function Nfts() {
   const isDarkMode = storedTheme === themeType.DARK;
   const history = useHistory();
   const { nfts, isLoading } = useNftMe();
-  const sortedNfts = nfts.sort(
+  const sortedNfts = [...nfts].sort(
     (a, b) => (b.aas?.linked ? 1 : 0) - (a.aas?.linked ? 1 : 0)
   );
 

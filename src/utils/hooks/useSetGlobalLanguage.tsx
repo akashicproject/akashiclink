@@ -17,7 +17,7 @@ const getLocalisationLanguage = (): Language => {
 
 export const useSetGlobalLanguage = (): [
   Language,
-  (newValue: Language) => Promise<void>
+  (newValue: Language) => Promise<void>,
 ] => {
   const { i18n } = useTranslation();
   const localLanguage = getLocalisationLanguage();

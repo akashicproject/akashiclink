@@ -98,12 +98,8 @@ export function getRetryDelayInMS(error: string, attempts = 1) {
   }
 }
 
-export async function getChainNode(
-  isProd: boolean,
-  port: PortType,
-  node: string
-) {
-  if (isProd) {
+export async function getChainNode(port: PortType, node: string) {
+  if (process.env.REACT_APP_ENV === 'prod') {
     return port === PortType.CHAIN
       ? ProductionChainNodes[node as ProductionNodeKey]
       : ProductionNFTNodes[node as ProductionNodeKey];
@@ -115,16 +111,16 @@ export async function getChainNode(
 }
 
 export async function chooseBestNodes(port: PortType) {
-  const isProd = process.env.REACT_APP_ENV === 'prod';
   const cookieMap = await CapacitorCookies.getCookies();
   if (cookieMap['preferred-node-key']) {
-    return getChainNode(isProd, port, cookieMap['preferred-node-key']);
+    return getChainNode(port, cookieMap['preferred-node-key']);
   }
 
   if (cookieMap[`node-${port}`]) {
     return cookieMap[`node-${port}`];
   }
 
+  const isProd = process.env.REACT_APP_ENV === 'prod';
   const nodeKey = await Promise.any(
     Object.entries(isProd ? ProductionNFTNodes : TestNFTNodes).map(
       async ([key, endpoint]) => {
@@ -133,7 +129,7 @@ export async function chooseBestNodes(port: PortType) {
       }
     )
   );
-  const node = await getChainNode(isProd, port, nodeKey);
+  const node = await getChainNode(port, nodeKey);
 
   await CapacitorCookies.setCookie({
     key: `node-${port}`,

@@ -122,9 +122,8 @@ export class Nitr0genApi {
       NetworkDictionary[coinSymbol].nitr0genSymbol,
       NetworkDictionary[coinSymbol].nitr0genNetwork
     );
-    const response = await this.post<
-      ActiveLedgerResponse<IKeyCreationResponse>
-    >(tx);
+    const response =
+      await this.post<ActiveLedgerResponse<IKeyCreationResponse>>(tx);
 
     const newKey = response.$responses?.[0];
     if (!newKey) {
@@ -154,10 +153,9 @@ export class Nitr0genApi {
     path?: string,
     node?: string
   ): Promise<string> {
-    const isProd = process.env.REACT_APP_ENV === 'prod';
-    let NITR0_URL = node
-      ? getChainNode(isProd, port, node)
-      : await chooseBestNodes(port);
+    let NITR0_URL = await (node
+      ? getChainNode(port, node)
+      : chooseBestNodes(port));
 
     if (path) {
       NITR0_URL += `${path}`;
@@ -188,9 +186,9 @@ export class Nitr0genApi {
         e
       );
 
-      const nodesWithPing = await fetchNodesPing(false);
-
-      const sortedNodes = nodesWithPing.sort((a, b) => a.ping - b.ping);
+      const sortedNodes = (await fetchNodesPing(false)).sort(
+        (a, b) => a.ping - b.ping
+      );
 
       const nodesWithUrl = await Promise.all(
         sortedNodes.map(async (node) => ({
@@ -232,11 +230,10 @@ export class Nitr0genApi {
     try {
       const appInfo = await App.getInfo();
       version = appInfo.version;
-    } catch (e) {
+    } catch {
       const manifestData = await getManifestJson();
       version = manifestData.version;
     }
-
     const headers = {
       'Ap-Version': version,
       'Ap-Client': Capacitor.getPlatform(),

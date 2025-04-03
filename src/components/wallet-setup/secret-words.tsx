@@ -138,7 +138,7 @@ export function SecretWords({
   const { t } = useTranslation();
   const [words, setWords] = useState(initialWords);
   const [isHidden, setIsHidden] = useState(withAction ? true : false);
-  const [visibilityArray, setVisibility] = useState<boolean[]>(
+  const [visibilityArray, setVisibilityArray] = useState<boolean[]>(
     new Array(initialWords.length).fill(!inputVisibility) as boolean[]
   );
 
@@ -218,6 +218,8 @@ export function SecretWords({
             <IonRow>
               {visibilityArray.map((visibility, i) => {
                 return (
+                  // ok because the array has 12 ordered elements, mapping to the 12 words
+                  // eslint-disable-next-line sonarjs/no-array-index-key
                   <WordCol size="4" key={i} class="ion-padding-horizontal">
                     <WordItem>
                       <WordNumber>{i + 1}.</WordNumber>
@@ -239,7 +241,7 @@ export function SecretWords({
                           }.svg`}
                           onClick={() => {
                             visibilityArray[i] = !visibility;
-                            setVisibility([...visibilityArray]);
+                            setVisibilityArray([...visibilityArray]);
                           }}
                           style={{
                             cursor: 'pointer',

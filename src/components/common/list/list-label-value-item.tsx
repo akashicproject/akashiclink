@@ -1,6 +1,5 @@
 import { IonItem, IonLabel, IonNote } from '@ionic/react';
-import type { FC } from 'react';
-import { type ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 
 type ListLabelValueRowProps = {
   label: string | number | ReactNode;

@@ -36,6 +36,7 @@ const LanguageRadio = ({
       {LANGUAGE_LIST.map((item, i) => {
         return (
           <SettingsRadio
+            /* eslint-disable-next-line sonarjs/no-array-index-key */
             key={i}
             labelPlacement="end"
             justify="start"
@@ -123,6 +124,7 @@ export function SettingsGeneral() {
           {generalMenuItems.map((gMenuItems, index) => {
             return (
               <SettingItem
+                /* eslint-disable-next-line sonarjs/no-array-index-key */
                 key={index}
                 backgroundColor="var(--ion-background)"
                 header={gMenuItems.header}

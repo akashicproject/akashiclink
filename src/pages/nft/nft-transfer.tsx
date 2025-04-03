@@ -1,7 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
-import type { IBaseAcTransaction } from '@helium-pay/backend';
-import { type INft, L2Regex, nftErrors } from '@helium-pay/backend';
+import type { IBaseAcTransaction, INft } from '@helium-pay/backend';
+import { L2Regex, nftErrors } from '@helium-pay/backend';
 import { IonCol, IonImg, IonRow, IonSpinner } from '@ionic/react';
 import { debounce } from 'lodash';
 import { useState } from 'react';
@@ -26,8 +26,8 @@ import { urls } from '../../constants/urls';
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectTheme } from '../../redux/slices/preferenceSlice';
 import {
-  type LocationState,
   historyGoBackOrReplace,
+  type LocationState,
 } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
@@ -132,7 +132,6 @@ const verifyNftTransaction = async (
   };
 };
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export function NftTransfer() {
   const { t } = useTranslation();
   const { nfts, isLoading, mutateNftMe } = useNftMe();
@@ -181,7 +180,7 @@ export function NftTransfer() {
       return;
     }
 
-    if (l2Address && value.match(L2Regex)) {
+    if (l2Address && RegExp(L2Regex).exec(value)) {
       setToAddress(l2Address);
       setSearchedResultType(SearchResult.Layer2);
       setSearched(true);
@@ -191,6 +190,7 @@ export function NftTransfer() {
     }
   }, 500);
 
+  // TODO this async fn is used in the onClick event, we should move it to a hook
   const transferNft = async () => {
     setLoading(true);
     try {
@@ -303,30 +303,31 @@ export function NftTransfer() {
                     }}
                     value={inputValue}
                   />
-                  {inputValue && searchedResultType !== SearchResult.NoInput && (
-                    <AddressWrapper>
-                      <AddressBox>
-                        {searchedResultType === SearchResult.Alias &&
-                          `${inputValue} = ${displayLongText(toAddress)}`}
-                        {searchedResultType === SearchResult.Layer2 &&
-                          `${displayLongText(toAddress)}`}
-                        {searchedResultType === SearchResult.NoResult &&
-                          t('NoSearchResult')}
-                        {searchedResultType === SearchResult.IsSelfAddress &&
-                          t('NoSelfSend')}
-                      </AddressBox>
+                  {inputValue &&
+                    searchedResultType !== SearchResult.NoInput && (
+                      <AddressWrapper>
+                        <AddressBox>
+                          {searchedResultType === SearchResult.Alias &&
+                            `${inputValue} = ${displayLongText(toAddress)}`}
+                          {searchedResultType === SearchResult.Layer2 &&
+                            `${displayLongText(toAddress)}`}
+                          {searchedResultType === SearchResult.NoResult &&
+                            t('NoSearchResult')}
+                          {searchedResultType === SearchResult.IsSelfAddress &&
+                            t('NoSelfSend')}
+                        </AddressBox>
 
-                      <IonImg
-                        alt={''}
-                        src={
-                          searched
-                            ? '/shared-assets/images/right.png'
-                            : '/shared-assets/images/wrong.png'
-                        }
-                        style={{ width: '40px', height: '40px' }}
-                      />
-                    </AddressWrapper>
-                  )}
+                        <IonImg
+                          alt={''}
+                          src={
+                            searched
+                              ? '/shared-assets/images/right.png'
+                              : '/shared-assets/images/wrong.png'
+                          }
+                          style={{ width: '40px', height: '40px' }}
+                        />
+                      </AddressWrapper>
+                    )}
                 </SendWrapper>
               </IonCol>
             </IonRow>
@@ -341,6 +342,7 @@ export function NftTransfer() {
                   expand="block"
                   disabled={!inputValue || !searched}
                   isLoading={loading}
+                  /* eslint-disable-next-line sonarjs/no-misused-promises */
                   onClick={transferNft}
                 >
                   {t('Send')}
@@ -350,7 +352,9 @@ export function NftTransfer() {
                 <WhiteButton
                   expand="block"
                   disabled={loading}
+                  /* eslint-disable-next-line sonarjs/no-misused-promises */
                   onClick={() =>
+                    // TODO move to a hook!
                     historyGoBackOrReplace(urls.nft, { nft: state })
                   }
                 >

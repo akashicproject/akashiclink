@@ -68,8 +68,8 @@ export const AccountList: React.FC<AccountListProps> = ({ height, style }) => {
               isDeleting
                 ? onDeleteAccountClick(account)
                 : account.identity !== activeAccount?.identity
-                ? onSelectAccountClick(account)
-                : undefined
+                  ? onSelectAccountClick(account)
+                  : undefined
             }
             showDeleteIcon={isDeleting}
             account={account}

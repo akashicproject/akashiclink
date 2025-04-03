@@ -13,6 +13,9 @@ import {
 import type { FullOtk } from '../otk-generation';
 import { useSecureStorage } from './useSecureStorage';
 
+// TODO this is vulnerable to padding oracle attacks. CBC should be replaced
+//  with GCM (or similar), but we'll need to be careful about backwards
+//  compatibility. https://sonarsource.atlassian.net/browse/RSPEC-5542
 const algorithm = 'aes-256-cbc';
 const secretIv = '6RxIESTJ1eJLpjpe';
 
@@ -34,7 +37,6 @@ export interface LocalAccount {
  * - activeAccount: session account set when user is logged in
  * - localAccounts: available accounts that user has imported
  */
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export const useAccountStorage = () => {
   // Because of migrating from local storages to redux and wanting to keep the
   // data, we fetch localStorage accounts and tack them on what is stored in
@@ -48,10 +50,13 @@ export const useAccountStorage = () => {
   const storedLocalAccounts = useAppSelector(selectLocalAccounts);
 
   const localAccounts = Object.values(
-    [...storedLocalAccounts].reduce((acc, next) => {
-      next.identity && (acc[next.identity] = next);
-      return acc;
-    }, {} as Record<string, LocalAccount>)
+    [...storedLocalAccounts].reduce(
+      (acc, next) => {
+        next.identity && (acc[next.identity] = next);
+        return acc;
+      },
+      {} as Record<string, LocalAccount>
+    )
   );
 
   const cacheOtk = useAppSelector(selectCacheOtk);
@@ -166,6 +171,7 @@ export const useAccountStorage = () => {
 
   const addLocalOtk = async (otk: FullOtk, password: string) => {
     const key = genKeyFromPassword(password);
+    // eslint-disable-next-line sonarjs/encryption-secure-mode
     const cipher = crypto.createCipheriv(algorithm, key, secretIv);
     const encryptedOtk = Buffer.from(
       cipher.update(JSON.stringify(otk), 'utf8', 'hex') + cipher.final('hex')

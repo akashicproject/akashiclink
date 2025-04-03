@@ -44,8 +44,8 @@ const validateLinkRestriction = (nftDocument: INft) => {
         hoursDifference
           ? hoursDifference + ' hours'
           : minutesDifference
-          ? minutesDifference + ' minutes'
-          : secondsDifference + ' seconds'
+            ? minutesDifference + ' minutes'
+            : secondsDifference + ' seconds'
       );
     }
   }
@@ -147,8 +147,8 @@ export const AasListingSwitch = ({
       const errorMsg = axios.isAxiosError(error)
         ? error?.response?.data?.message
         : error instanceof Error // From time-link-restriction
-        ? error.message
-        : '';
+          ? error.message
+          : '';
       const timeUnits = ['hours', 'minutes', 'seconds'];
       if (errorMsg === nftErrors.onlyOneAASLinkingAllowed) {
         setAlert(errorAlertShell('OnlyOneAAS'));

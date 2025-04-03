@@ -7,8 +7,8 @@ const REQUEST_TYPE = {
 
 const WALLET_METHOD = {
   UNLOCK_WALLET: 'UNLOCK_WALLET',
-  LOCK_WALLET: 'LOCK_WALLET'
-}
+  LOCK_WALLET: 'LOCK_WALLET',
+};
 
 const ETH_METHOD = {
   PERSONAL_SIGN: 'personal_sign',
@@ -51,25 +51,25 @@ chrome.runtime.onMessage.addListener(function (request, sender, _sendResponse) {
 });
 
 // ---- Upon receive single message outside extension
-chrome.runtime.onMessageExternal.addListener(async function (
-  request,
-  _sender,
-  _sendResponse
-) {
-  if (request.type === REQUEST_TYPE.WEB_REQUEST && request.method === WALLET_METHOD.LOCK_WALLET) {
-    const query = new URLSearchParams();
-    appendQuery(query, request, SHARED_PARAMS);
+chrome.runtime.onMessageExternal.addListener(
+  async function (request, _sender, _sendResponse) {
+    if (
+      request.type === REQUEST_TYPE.WEB_REQUEST &&
+      request.method === WALLET_METHOD.LOCK_WALLET
+    ) {
+      const query = new URLSearchParams();
+      appendQuery(query, request, SHARED_PARAMS);
 
-    await chrome.windows.create({
-      state: 'minimized',
-      type: 'popup',
-      url: `chrome-extension://${
-        chrome.runtime.id
-      }/index.html?${query.toString()}`,
-    });
+      await chrome.windows.create({
+        state: 'minimized',
+        type: 'popup',
+        url: `chrome-extension://${
+          chrome.runtime.id
+        }/index.html?${query.toString()}`,
+      });
+    }
   }
-
-});
+);
 
 // ---- Upon receive external connection request
 chrome.runtime.onConnectExternal.addListener(function (port) {
@@ -82,7 +82,7 @@ chrome.runtime.onConnectExternal.addListener(function (port) {
     }
 
     if (request.type !== REQUEST_TYPE.WEB_REQUEST) {
-      port.postMessage({received: request});
+      port.postMessage({ received: request });
       return;
     }
 
@@ -109,7 +109,7 @@ chrome.runtime.onConnectExternal.addListener(function (port) {
       await chrome.windows.update(activeWindow?.[0].windowId, {
         drawAttention: true,
       });
-      return
+      return;
     }
 
     await chrome.windows.create({
@@ -121,7 +121,6 @@ chrome.runtime.onConnectExternal.addListener(function (port) {
         chrome.runtime.id
       }/index.html?${query.toString()}`,
     });
-
   });
 
   port.onDisconnect.addListener(async (_request, _sender, _sendResponse) => {
@@ -155,7 +154,7 @@ const checkAlarmState = async (_alarm) => {
     if (alarm) {
       await chrome.alarms.clear(ALARM_NAME);
     }
-    await chrome.alarms.create(ALARM_NAME, {when: autoLockBy});
+    await chrome.alarms.create(ALARM_NAME, { when: autoLockBy });
   }
 
   chrome.alarms.onAlarm.addListener(informSiteAutoLock);

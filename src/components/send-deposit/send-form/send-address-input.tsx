@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { L2Regex, NetworkDictionary } from '@helium-pay/backend';
-import type { InputChangeEventDetail, InputCustomEvent } from '@ionic/react';
+import type { InputCustomEvent } from '@ionic/react';
 import {
   IonButton,
   IonCol,
@@ -61,7 +61,6 @@ export const SendAddressInput = ({
 
   const walletAddress = addresses.find((k) => k.coinSymbol === chain)?.address;
 
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   const validateAddress = debounce(async (input: string) => {
     setAlert(formAlertResetState);
 
@@ -92,7 +91,7 @@ export const SendAddressInput = ({
         return;
       }
 
-      if (userInput.match(NetworkDictionary[chain].regex.address)) {
+      if (RegExp(NetworkDictionary[chain].regex.address).exec(userInput)) {
         // Sending by L1 address
         onAddressValidated({
           alias,
@@ -106,7 +105,7 @@ export const SendAddressInput = ({
           initiatedToL1LedgerId: ledgerId,
         });
         return;
-      } else if (userInput.match(L2Regex)) {
+      } else if (RegExp(L2Regex).exec(userInput)) {
         // Sending L2 by L2 address
         if (!l2Address) {
           setAlert(errorAlertShell('invalidL2Address'));
@@ -120,21 +119,19 @@ export const SendAddressInput = ({
           });
         }
         return;
-      } else {
+      } else if (!l2Address) {
         // Sending by alias
-        if (!l2Address) {
-          setAlert(errorAlertShell('AddressHelpText'));
-          return;
-        } else {
-          onAddressValidated({
-            alias,
-            convertedToAddress: l2Address,
-            userInputToAddress: userInput,
-            userInputToAddressType: 'alias',
-            isL2: true,
-            initiatedToNonL2: userInput,
-          });
-        }
+        setAlert(errorAlertShell('AddressHelpText'));
+        return;
+      } else {
+        onAddressValidated({
+          alias,
+          convertedToAddress: l2Address,
+          userInputToAddress: userInput,
+          userInputToAddressType: 'alias',
+          isL2: true,
+          initiatedToNonL2: userInput,
+        });
       }
     } catch (error) {
       setAlert(
@@ -147,7 +144,7 @@ export const SendAddressInput = ({
     }
   }, 500);
 
-  const onAddressChange = (e: InputCustomEvent<InputChangeEventDetail>) => {
+  const onAddressChange = (e: InputCustomEvent) => {
     if (typeof e.target?.value === 'string') {
       validateAddress(e.target.value);
     }

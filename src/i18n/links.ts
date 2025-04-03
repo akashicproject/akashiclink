@@ -40,7 +40,7 @@ export const LINK_TYPE = {
 };
 
 export const useI18nInfoUrls = (): Record<
-  typeof LINK_TYPE[keyof typeof LINK_TYPE],
+  (typeof LINK_TYPE)[keyof typeof LINK_TYPE],
   string
 > => {
   const [globalLanguage] = useSetGlobalLanguage();

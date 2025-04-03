@@ -80,7 +80,7 @@ export function ImportWalletKeypair() {
               dispatch(onClear());
               dispatch(
                 onInputChange({
-                  privateKey: String(value).replace(/[^a-zA-Z\d]+/g, ''), // Filter out non-alphanumeric
+                  privateKey: String(value).replace(/[^a-z\d]+/gi, ''), // Filter out non-alphanumeric
                 })
               );
               setAlert(formAlertResetState);

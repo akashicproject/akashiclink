@@ -1,11 +1,11 @@
 import { Preferences } from '@capacitor/preferences';
 import { datadogRum } from '@datadog/browser-rum';
-import type { IBaseAcTransaction } from '@helium-pay/backend';
 import {
+  EthereumSymbol,
+  type IBaseAcTransaction,
+  isCoinSymbol,
   type ITransactionProposalClientSideOtk,
   type ITransferNftResponse,
-  EthereumSymbol,
-  isCoinSymbol,
   nftErrors,
   TransactionLayer,
   TransactionStatus,

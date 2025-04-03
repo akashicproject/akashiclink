@@ -13,25 +13,25 @@ export const useConfig = () => {
     config: !data
       ? undefined
       : isPlatform('ios')
-      ? {
-          awMinVersion: data.awMinVersionIos,
-          awLatestVersion: data.awLatestVersionIos,
-          awUrl: data.awUrlIos,
-          highlights: data.highlights?.ios,
-        }
-      : isPlatform('android')
-      ? {
-          awMinVersion: data.awMinVersionAndroid,
-          awLatestVersion: data.awLatestVersionAndroid,
-          awUrl: data.awUrlAndroid,
-          highlights: data.highlights?.android,
-        }
-      : {
-          awMinVersion: data.awMinVersionExtension,
-          awLatestVersion: data.awLatestVersionExtension,
-          awUrl: data.awUrlExtension,
-          highlights: data.highlights?.extension,
-        },
+        ? {
+            awMinVersion: data.awMinVersionIos,
+            awLatestVersion: data.awLatestVersionIos,
+            awUrl: data.awUrlIos,
+            highlights: data.highlights?.ios,
+          }
+        : isPlatform('android')
+          ? {
+              awMinVersion: data.awMinVersionAndroid,
+              awLatestVersion: data.awLatestVersionAndroid,
+              awUrl: data.awUrlAndroid,
+              highlights: data.highlights?.android,
+            }
+          : {
+              awMinVersion: data.awMinVersionExtension,
+              awLatestVersion: data.awLatestVersionExtension,
+              awUrl: data.awUrlExtension,
+              highlights: data.highlights?.extension,
+            },
     isLoading,
   };
 };
