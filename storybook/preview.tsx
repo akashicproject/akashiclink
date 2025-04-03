@@ -16,6 +16,7 @@ import '../src/theme/variables.css';
 import '../src/theme/font.css';
 import '../src/theme/common.scss';
 
+import { mockGetExchangeRates, mockGetManifest } from '@helium-pay/api-mocks';
 import { setupIonicReact } from '@ionic/react';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import type { Preview } from '@storybook/react';
@@ -32,7 +33,8 @@ setupIonicReact();
 /** Setup mock service worker */
 initialize({
   onUnhandledRequest: ({ method, url }) => {
-    if (url.pathname.startsWith('/api')) {
+    const pathname = new URL(url).pathname;
+    if (pathname.startsWith('/api')) {
       console.error(`Unhandled ${method} request to ${url}.
 
         This exception has been only logged in the console, however, it's strongly recommended to resolve this error as you don't want unmocked data in Storybook stories.
@@ -45,6 +47,12 @@ initialize({
 
 const preview: Preview = {
   parameters: {
+    msw: {
+      handlers: {
+        exchangeRate: mockGetExchangeRates,
+        manifest: mockGetManifest,
+      },
+    },
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
@@ -110,4 +118,5 @@ const preview: Preview = {
   loaders: [mswLoader],
 };
 
+// eslint-disable-next-line import/no-default-export
 export default preview;

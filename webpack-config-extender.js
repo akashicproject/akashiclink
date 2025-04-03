@@ -41,6 +41,7 @@ module.exports = {
         resolvePackagePath('../backend/src'),
         resolvePackagePath('../../packages/common-i18n/src'),
         resolvePackagePath('../../packages/ui-lib/src'),
+        resolvePackagePath('../../packages/api-mocks/src'),
       ]);
     }
 

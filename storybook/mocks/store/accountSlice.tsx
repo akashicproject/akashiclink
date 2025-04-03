@@ -1,27 +1,24 @@
+import {
+  PRESET_L2_ADDRESS,
+  PRESET_L2_ADDRESS_2,
+  PRESET_NFT_ALIAS,
+  PRESET_NFT_LEDGER_ID,
+} from '@helium-pay/api-mocks';
+
 import { makeStore } from '../../../src/redux/app/store';
 
+export const mockActiveAccount = {
+  identity: PRESET_L2_ADDRESS,
+  alias: PRESET_NFT_ALIAS,
+  ledgerId: PRESET_NFT_LEDGER_ID,
+};
+
 export const mockLocalAccounts = [
+  mockActiveAccount,
   {
-    identity:
-      'AS584b1cdf4e6ed75d6e4102b743b5c5996e139490c7163521b108537c5ee32682',
-    alias: 'Volkswagen-TEST1',
-    ledgerId:
-      'AS017e4bfeb9c3931d32d3980961ece280171296048e18e9b62083fa0ee89c2d51',
-  },
-  {
-    identity:
-      'ASae6432b74f3f4ecee653537e08de6afe257e88985243bfedb5d8baa4a530d528',
+    identity: PRESET_L2_ADDRESS_2,
   },
 ];
-
-export const mockActiveAccount = {
-  identity:
-    'AS584b1cdf4e6ed75d6e4102b743b5c5996e139490c7163521b108537c5ee32682',
-  alias: 'Volkswagen-TEST1',
-  ledgerId:
-    'AS017e4bfeb9c3931d32d3980961ece280171296048e18e9b62083fa0ee89c2d51',
-  accountName: 'Account 5ee32682',
-};
 
 export const mockCacheOtk = {
   key: {
@@ -34,8 +31,7 @@ export const mockCacheOtk = {
   },
   type: 'secp256k1',
   name: 'otk',
-  identity:
-    'AS584b1cdf4e6ed75d6e4102b743b5c5996e139490c7163521b108537c5ee32682',
+  identity: PRESET_L2_ADDRESS,
 };
 
 export const getMockStore = ({

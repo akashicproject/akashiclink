@@ -43,10 +43,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: [
-        '**/*.stories.@(js|ts|jsx|tsx)',
-        'storybook/**/*.@(js|ts|tsx|jsx)',
-      ],
+      files: ['**/*.stories.@(js|ts|jsx|tsx)'],
       rules: {
         'import/no-default-export': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
