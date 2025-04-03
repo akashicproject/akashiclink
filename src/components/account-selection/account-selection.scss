@@ -1,7 +1,8 @@
 .account-selection {
   /* Shift popovers to have vertical padding relative to trigger element */
   top: 8px;
-
+  --width: 75% !important;
+  --offset-x: -16px;
   /**
    * Add a frame to the selection menu and round the corners
    */

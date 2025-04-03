@@ -97,7 +97,7 @@ export function SettingsPopover() {
   }) {
     return (
       <IonItem
-        className="settings-item"
+        className="settings-item ion-no-padding"
         button={true}
         detail={false}
         routerLink={routerLink}

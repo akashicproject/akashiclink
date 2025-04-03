@@ -41,7 +41,7 @@ export function NftLayout({
             </ChainDiv>
           </IonCol>
         </IonRow>
-        <BackgroundDiv hidden={!background} />
+        {background && <BackgroundDiv />}
         {children}
       </IonContent>
     </IonPage>

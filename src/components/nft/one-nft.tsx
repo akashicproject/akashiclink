@@ -65,46 +65,49 @@ export function OneNft(props: Props) {
       }
       onClick={props.select}
     >
-      <div
-        hidden={props.isNameHidden}
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        <NftName
+      {!props.isNameHidden && (
+        <div
           style={{
-            fontSize: '14px',
-          }}
-          title={`Copy ${props.nft?.account}`}
-          onClick={async (e) => {
-            await Clipboard.write({
-              string: props.nft?.account,
-            });
-            if (popover.current) popover.current.event = e;
-            setPopoverOpen(true);
-            setTimeout(() => {
-              setPopoverOpen(false);
-            }, 1000);
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
           }}
         >
-          {displayLongText(props.nft?.account, 9, true)}
-        </NftName>
-        <IonPopover
-          side="top"
-          alignment="center"
-          ref={popover}
-          isOpen={popoverOpen}
-          className={'copied-popover'}
-          onDidDismiss={() => setPopoverOpen(false)}
-        >
-          <IonContent class="ion-padding">{t('Copied')}</IonContent>
-        </IonPopover>
-        <div hidden={!props?.nft?.acns?.value}>
-          <div className={`chip-${props.isBig ? 'big' : 'small'}`}>AAS</div>
+          <NftName
+            style={{
+              fontSize: '0.875rem',
+            }}
+            title={`Copy ${props.nft?.account}`}
+            onClick={async (e) => {
+              await Clipboard.write({
+                string: props.nft?.account,
+              });
+              if (popover.current) popover.current.event = e;
+              setPopoverOpen(true);
+              setTimeout(() => {
+                setPopoverOpen(false);
+              }, 1000);
+            }}
+          >
+            {displayLongText(props.nft?.account, 9, true)}
+          </NftName>
+          <IonPopover
+            side="top"
+            alignment="center"
+            ref={popover}
+            isOpen={popoverOpen}
+            className={'copied-popover'}
+            onDidDismiss={() => setPopoverOpen(false)}
+          >
+            <IonContent class="ion-padding">{t('Copied')}</IonContent>
+          </IonPopover>
+          {props?.nft?.acns?.value && (
+            <div>
+              <div className={`chip-${props.isBig ? 'big' : 'small'}`}>AAS</div>
+            </div>
+          )}
         </div>
-      </div>
+      )}
       <div>
         <IonImg
           alt={props.nft?.description}
@@ -124,18 +127,20 @@ export function OneNft(props: Props) {
           {props.nft?.name}
         </NftName>
       </IonRow>
-      <div hidden={props.isAccountNameHidden}>
-        <NftName
-          style={{
-            textAlign: 'center',
-            width: '100%',
-            fontSize: '14px',
-            color: '#7B757F',
-          }}
-        >
-          {displayLongText(props.nft?.account)}
-        </NftName>
-      </div>
+      {!props.isAccountNameHidden && (
+        <div>
+          <NftName
+            style={{
+              textAlign: 'center',
+              width: '100%',
+              fontSize: '14px',
+              color: '#7B757F',
+            }}
+          >
+            {displayLongText(props.nft?.account)}
+          </NftName>
+        </div>
+      )}
     </NtfWrapper>
   );
 }

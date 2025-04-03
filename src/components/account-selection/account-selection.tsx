@@ -18,6 +18,7 @@ import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { displayLongText } from '../../utils/long-text';
 import { SquareWhiteButton } from '../buttons';
 import { useTheme } from '../PreferenceProvider';
 
@@ -144,7 +145,9 @@ export function AccountSelection({
         {[
           ...localAccounts.map((account) => (
             <IonSelectOption key={account.username} value={account}>
-              {account.identity}
+              {!showCopyButton
+                ? displayLongText(account.identity, 26)
+                : displayLongText(account.identity)}
             </IonSelectOption>
           )),
           ...(hideCreateImport
@@ -169,7 +172,7 @@ export function AccountSelection({
                   value={DropdownOptions.ManageAccount}
                   className="settings-icon"
                 >
-                  {t('ManageAccountOnThisDevice')}
+                  {t('ManageAccounts')}
                 </IonSelectOption>,
               ]),
         ]}
