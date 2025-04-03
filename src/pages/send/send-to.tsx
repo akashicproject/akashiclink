@@ -185,7 +185,7 @@ export function SendTo() {
     currentWalletMetadata.walletCurrency
   );
 
-  const [internalFee, setInternalFee] = useState('0');
+  const [internalFee, setInternalFee] = useState('0.0');
 
   // Keeps track of which page the user is at
   const [pageView, setPageView] = useState(SendView.Send);
@@ -347,7 +347,12 @@ export function SendTo() {
       }
       setVerifiedTransaction(response);
       const feesEstimate = Number(response[0].feesEstimate || '0');
-      const balance = Number(currentWallet.balance);
+      const balance = Number(
+        aggregatedBalances.get({
+          displayName: NetworkDictionary[chain].nativeCoin.displayName,
+          chain,
+        }) ?? '0'
+      );
       // if user does not have enough balance to pay the estimated gas, can not go to next step
       if (balance < feesEstimate) {
         setAlertRequest(
