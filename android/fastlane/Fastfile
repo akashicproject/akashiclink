@@ -1,0 +1,148 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https: //docs.fastlane.tools
+# For a list of all available actions, check out
+#
+# https: //docs.fastlane.tools/actions
+# For a list of all available plugins, check out
+#
+# https: //docs.fastlane.tools/plugins/available-plugins
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+slack_url = ENV['SLACK_URL']
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  lane :buildApk do
+    gradle(
+      task: "clean assemble",
+      flavor: ENV["FLAVORS"],
+      build_type: "release",
+      print_command: false,
+      print_command_output: true,
+    )
+  end
+
+  lane :buildAab do
+    gradle(
+      task: "clean bundle",
+      flavor: ENV["FLAVORS"],
+      build_type: "release",
+      print_command: false,
+      print_command_output: true,
+    )
+  end
+
+  lane :internal do
+    begin
+      previous_version_code = google_play_track_version_codes(
+        package_name: ENV['PACKAGE_NAME'],
+        track: "internal",
+      )[0]
+      previous_release_name = google_play_track_release_names(
+        package_name: ENV['PACKAGE_NAME'],
+        track: "internal",
+      )[0]
+
+      next_version_code = previous_version_code + 1
+      next_release_name = "#{ENV['MAJOR_VERSION']}.#{ENV['MINOR_VERSION']}.#{ENV['PATCH_VERSION']}-(#{next_version_code})"
+
+      slack(
+        slack_url: slack_url,
+        pretext: ":large_yellow_circle: :android_builder2: *[#{ENV['PACKAGE_NAME']}]* *[Internal]* New build deployment in progress. Attempting to deploy version #{next_release_name}",
+        default_payloads: []
+      )
+
+      android_set_version_code(
+        version_code: next_version_code,
+      )
+      android_set_version_name(
+        version_name: next_release_name,
+      )
+
+      gradle(
+        task: "clean bundle",
+        flavor: ENV["FLAVORS"],
+        build_type: "release",
+        print_command: false,
+        print_command_output: true,
+      )
+      upload_to_play_store(
+        package_name: ENV['PACKAGE_NAME'],
+        track: "internal",
+        aab: "app/build/outputs/bundle/#{ENV["FLAVORS"]}Release/app-#{ENV["FLAVORS"]}-release.aab"
+      )
+      slack(
+        slack_url: slack_url,
+        message: ":large_green_circle: :android-eyes: New build deployed successfully!",
+        success: true,
+        default_payloads: [:git_branch, :last_git_commit, :git_author],
+        attachment_properties: {
+          fields: [
+            {
+              title: "Package Name",
+              value: ENV['PACKAGE_NAME'],
+              short: false
+            },
+            {
+              title: "Version Code",
+              value: next_version_code,
+              short: true
+            },
+            {
+              title: "Release Name",
+              value: next_release_name,
+              short: true
+            },
+            {
+              title: "Build Date",
+              value: Time.new.to_s,
+              short: false
+            }
+          ]
+        }
+      )
+    rescue => exception
+      slack(
+        slack_url: slack_url,
+        message: ":red_circle: :android-fire: Failed to deploy the build!",
+        success: false,
+        default_payloads: [:git_branch, :last_git_commit, :git_author],
+        attachment_properties: {
+          fields: [{
+              title: "Build Date",
+              value: "#{Time.new.to_s}",
+              short: true
+            },
+            {
+              title: "Error message",
+              value: "```#{exception.message}```",
+              short: false
+            }
+          ]
+        }
+      )
+    end
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    slack(
+      slack_url: slack_url,
+      message: 'Failed to distributed a new beta build',
+      success: false,
+    )
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store()
+  end
+end

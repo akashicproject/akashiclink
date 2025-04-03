@@ -1,14 +1,21 @@
 apply plugin: 'com.android.application'
 
+def keystoreProductionPropertiesFile = rootProject.file("keystore-production.properties")
+def keystoreStagingPropertiesFile = rootProject.file("keystore-staging.properties")
+def keystoreProductionProperties = new Properties()
+def keystoreStagingProperties = new Properties()
+
+keystoreProductionProperties.load(new FileInputStream(keystoreProductionPropertiesFile))
+keystoreStagingProperties.load(new FileInputStream(keystoreStagingPropertiesFile))
+
 android {
-    namespace "akashic.wallet"
+    namespace "com.akashicwallet.app"
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "akashic.wallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 6
+        versionName "0.0.3-(6)"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,10 +23,43 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        production {
+            storeFile file(keystoreProductionProperties['STORE_FILE_PATH'])
+            storePassword keystoreProductionProperties['STORE_FILE_PASSWORD']
+            keyAlias keystoreProductionProperties['KEY_ALIAS']
+            keyPassword keystoreProductionProperties['KEY_PASSWORD']
+        }
+        staging {
+            storeFile file(keystoreStagingProperties['STORE_FILE_PATH'])
+            storePassword keystoreStagingProperties['STORE_FILE_PASSWORD']
+            keyAlias keystoreStagingProperties['KEY_ALIAS']
+            keyPassword keystoreStagingProperties['KEY_PASSWORD']
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions "version"
+    productFlavors {
+        production {
+            applicationId "com.akashicwallet.app"
+            resValue "string", "app_name", "Akashic Wallet"
+            resValue "string", "title_activity_main", "Akashic Wallet"
+            resValue "string", "package_name", "com.akashicwallet.app"
+            resValue "string", "custom_url_scheme", "com.akashicwallet.app"
+            signingConfig signingConfigs.production
+        }
+        staging {
+            applicationId "com.staging.akashicwallet.app"
+            resValue "string", "app_name", "Akashic Wallet Staging"
+            resValue "string", "title_activity_main", "Akashic Wallet Staging"
+            resValue "string", "package_name", "com.staging.akashicwallet.app"
+            resValue "string", "custom_url_scheme", "com.staging.akashicwallet.app"
+            signingConfig signingConfigs.staging
         }
     }
 }
