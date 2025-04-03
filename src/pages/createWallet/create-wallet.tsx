@@ -93,7 +93,7 @@ export function CreateWallet() {
       async () => {
         const data = await lastPageStorage.getVars();
         if (data.email) {
-          setEmail(email);
+          setEmail(data.email);
           setView(CreateWalletView.ActivateAccount);
         }
         if (data.view === CreateWalletView.ActivateAccount && data.email) {
