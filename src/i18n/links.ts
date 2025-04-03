@@ -10,26 +10,26 @@ const INFO_SITE_LINKS = {
 
 const TERMS_OF_USE_LINKS = {
   [Language.enUS]:
-    'https://docs.akashicpay.com/akashiclink/terms-of-use-and-privacy-policy',
+    'https://docs.akashiclink.com/terms-of-use-and-privacy-policy',
   [Language.zhCN]:
-    'https://docs.akashicpay.com/akashiclink/fan-ti-zhong-wen/shi-yong-tiao-kuan-yu-yin-si-quan-zheng-ce',
+    'https://docs.akashiclink.com/traditionalchinese/shi-yong-tiao-kuan-yu-yin-si-quan-zheng-ce',
   [Language.zhTW]:
-    'https://docs.akashicpay.com/akashiclink/fan-ti-zhong-wen/shi-yong-tiao-kuan-yu-yin-si-quan-zheng-ce',
+    'https://docs.akashiclink.com/traditionalchinese/shi-yong-tiao-kuan-yu-yin-si-quan-zheng-ce',
 };
 
 const PRIVACY_POLICY_LINKS = {
   [Language.enUS]:
-    'https://docs.akashicpay.com/akashiclink/terms-of-use-and-privacy-policy',
+    'https://docs.akashiclink.com/terms-of-use-and-privacy-policy',
   [Language.zhCN]:
-    'https://docs.akashicpay.com/akashiclink/fan-ti-zhong-wen/shi-yong-tiao-kuan-yu-yin-si-quan-zheng-ce',
+    'https://docs.akashiclink.com/traditionalchinese/shi-yong-tiao-kuan-yu-yin-si-quan-zheng-ce',
   [Language.zhTW]:
-    'https://docs.akashicpay.com/akashiclink/fan-ti-zhong-wen/shi-yong-tiao-kuan-yu-yin-si-quan-zheng-ce',
+    'https://docs.akashiclink.com/traditionalchinese/shi-yong-tiao-kuan-yu-yin-si-quan-zheng-ce',
 };
 
 const QUICK_GUIDE_LINKS = {
-  [Language.enUS]: 'https://docs.akashicpay.com/akashiclink',
-  [Language.zhCN]: 'https://docs.akashicpay.com/akashiclink/fan-ti-zhong-wen',
-  [Language.zhTW]: 'https://docs.akashicpay.com/akashiclink/fan-ti-zhong-wen',
+  [Language.enUS]: 'https://docs.akashiclink.com/',
+  [Language.zhCN]: 'https://docs.akashiclink.com/traditionalchinese',
+  [Language.zhTW]: 'https://docs.akashiclink.com/traditionalchinese',
 };
 
 export const LINK_TYPE = {
