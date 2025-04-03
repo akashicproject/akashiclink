@@ -54,20 +54,6 @@ export function CreateWallet() {
   const logout = useLogout();
   const loginCheck = useOwner(true);
 
-  useEffect(() => {
-    cacheCurrentPage(
-      createWalletUrl,
-      NavigationPriority.IMMEDIATE,
-      async () => {
-        const { email } = await lastPageStorage.getVars();
-        if (email) {
-          setEmail(email);
-          setView(CreateWalletView.ActivateAccount);
-        }
-      }
-    );
-  }, []);
-
   const [view, setView] = useState(CreateWalletView.RequestAccount);
   /** Tracking user input */
   const [email, setEmail] = useState<string>();
@@ -100,6 +86,51 @@ export function CreateWallet() {
    */
   const [timerReset, setTimerReset] = useState(0);
 
+  useEffect(() => {
+    cacheCurrentPage(
+      createWalletUrl,
+      NavigationPriority.IMMEDIATE,
+      async () => {
+        const data = await lastPageStorage.getVars();
+        if (data.email) {
+          setEmail(email);
+          setView(CreateWalletView.ActivateAccount);
+        }
+        if (data.view === CreateWalletView.ActivateAccount && data.email) {
+          setEmail(data.email);
+          setPassword(data.password);
+          setConfirmPassword(data.confirmPassword);
+          setTimerReset(data.timer);
+          setView(data.view);
+          setActivationCode(data.activationCode);
+        }
+        if (data.identity && data.privateKey) {
+          // Set new account details and display summary screen
+          const newAccount = {
+            identity: data.identity || data.username,
+            username: data.username,
+          };
+          setNewAccount(data);
+          addLocalAccount(newAccount);
+          setActiveAccount(newAccount);
+          setView(CreateWalletView.AccountCreated);
+        }
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    if (password || confirmPassword || activationCode) {
+      lastPageStorage.store(createWalletUrl, NavigationPriority.IMMEDIATE, {
+        password: password,
+        confirmPassword: confirmPassword,
+        activationCode: activationCode,
+        view: CreateWalletView.ActivateAccount,
+        timer: timerReset,
+        email: email,
+      });
+    }
+  }, [password, confirmPassword, activationCode]);
   /**
    * Activation request is sent -> email with activation code is sent to user
    * Page is saved - this way user can resume activation after switching
@@ -126,6 +157,7 @@ export function CreateWallet() {
         // over the activation code
         lastPageStorage.store(createWalletUrl, NavigationPriority.IMMEDIATE, {
           email,
+          view: CreateWalletView.ActivateAccount,
         });
         setView(CreateWalletView.ActivateAccount);
 
@@ -177,6 +209,12 @@ export function CreateWallet() {
         setView(CreateWalletView.AccountCreated);
         setAlertRequest(formAlertResetState);
         setAlertActivate(formAlertResetState);
+        await lastPageStorage.clear();
+        lastPageStorage.store(
+          createWalletUrl,
+          NavigationPriority.IMMEDIATE,
+          createAccountResponse
+        );
       } catch (e) {
         let message = t('GenericFailureMsg');
         if (axios.isAxiosError(e))
@@ -210,7 +248,9 @@ export function CreateWallet() {
   );
   return (
     <PublicLayout className="vertical-center">
-      {creatingAccount && <Spinner header={'CreatingYourWallet'} />}
+      {creatingAccount && (
+        <Spinner header={'CreatingYourWallet'} warning={'DoNotClose'} />
+      )}
       <MainGrid>
         {view === CreateWalletView.AccountCreated && (
           <>
@@ -285,6 +325,7 @@ export function CreateWallet() {
                 validate={validateEmail}
                 disabled={view === CreateWalletView.ActivateAccount}
                 submitOnEnter={requestWalletAccount}
+                value={email}
               />
             </IonCol>
           </IonRow>
@@ -336,6 +377,7 @@ export function CreateWallet() {
                   onIonInput={({ target: { value } }) =>
                     setActivationCode(value as string)
                   }
+                  value={activationCode}
                   errorPrompt={StyledInputErrorPrompt.ActivationCode}
                   validate={validateActivationCode}
                 />
@@ -350,6 +392,7 @@ export function CreateWallet() {
                   onIonInput={({ target: { value } }) =>
                     setPassword(value as string)
                   }
+                  value={password}
                   errorPrompt={StyledInputErrorPrompt.Password}
                   validate={validatePassword}
                 />
@@ -364,6 +407,7 @@ export function CreateWallet() {
                   onIonInput={({ target: { value } }) =>
                     setConfirmPassword(value as string)
                   }
+                  value={confirmPassword}
                   errorPrompt={StyledInputErrorPrompt.ConfirmPassword}
                   validate={validateConfirmPassword}
                   submitOnEnter={activateWalletAccount}

@@ -32,7 +32,7 @@ export function PublicLayout({
 
   return (
     <IonPage>
-      {spin && <Spinner />}
+      {spin && <Spinner header={'ImportingYourWallet'} />}
       <div className="vertical public-layout">
         <LoggedHeader />
         <div className={`content ${className}`}>{children}</div>

@@ -30,6 +30,7 @@
   "VerificationCode": "驗證碼",
   "EnterTheCodeSent": "輸入驗證碼",
   "CreatingYourWallet": "正在創建您的錢包",
+  "ImportingYourWallet": "導入你自己的錢包",
   "WalletCreated": "錢包已創建!",
   "WalletAddress": "錢包地址",
   "OptionBackup": "可選備用",
@@ -170,5 +171,6 @@
   "Information": "資訊",
   "NamingService": "Akashic 域名服務",
   "Lock": "鎖",
-  "Remark": "備注"
+  "Remark": "備注",
+  "DoNotClose": "創立時請不要關閉應用程式"
 }

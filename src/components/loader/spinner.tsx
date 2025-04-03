@@ -20,7 +20,13 @@ const LoaderDiv = styled.div({
   left: 0,
   zIndex: 99,
 });
-export const Spinner = ({ header }: { header?: string }) => {
+export const Spinner = ({
+  header,
+  warning,
+}: {
+  header?: string;
+  warning?: string;
+}) => {
   const [storedTheme] = useTheme();
   const { t } = useTranslation();
   return (
@@ -46,6 +52,11 @@ export const Spinner = ({ header }: { header?: string }) => {
         />
         {header && (
           <ContentText className="blink">{t(header) + '...'}</ContentText>
+        )}
+        {warning && (
+          <ContentText style={{ color: 'var(--ion-color-danger)' }}>
+            {t(warning)}
+          </ContentText>
         )}
       </div>
     </LoaderDiv>
