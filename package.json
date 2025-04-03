@@ -4,17 +4,22 @@
   "private": true,
   "scripts": {
     "build": "yarn lint:fix && craco build",
+    "build:android": "env-cmd -f .env.staging.local craco build && npx cap sync",
+    "serve": "serve -d build",
+    "serve:android": "env-cmd -f .env.staging.local npx cap open android",
+    "start": "craco start",
     "start:dev": "DISABLE_ESLINT_PLUGIN=true PORT=3001 craco start",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx,.cjs,.mjs,.mdx,.graphql --cache --cache-location ../../.cache/eslint/nextjs-app.eslintcache",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx,.cjs,.mjs,.mdx,.graphql --fix",
     "typecheck": "tsc --project ./tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@capacitor/app": "4.1.1",
-    "@capacitor/core": "4.7.1",
-    "@capacitor/haptics": "4.1.0",
-    "@capacitor/keyboard": "4.1.1",
-    "@capacitor/status-bar": "4.1.1",
+    "@capacitor/android": "^5.0.0",
+    "@capacitor/app": "^5.0.0",
+    "@capacitor/core": "^5.0.0",
+    "@capacitor/haptics": "^5.0.0",
+    "@capacitor/keyboard": "^5.0.0",
+    "@capacitor/status-bar": "^5.0.0",
     "@emotion/react": "11.10.6",
     "@emotion/styled": "11.10.6",
     "@ionic/react": "6.6.2",
@@ -45,7 +50,7 @@
     "workbox-streams": "5.1.4"
   },
   "devDependencies": {
-    "@capacitor/cli": "4.7.1",
+    "@capacitor/cli": "^5.0.0",
     "@craco/craco": "7.1.0",
     "@craco/types": "7.1.0",
     "@helium-pay/eslint-config-bases": "workspace:",
@@ -54,7 +59,9 @@
     "@types/react-dom": "18.0.11",
     "@types/react-router": "5.1.20",
     "@types/react-router-dom": "5.3.3",
-    "eslint": "8.25.0"
+    "env-cmd": "10.1.0",
+    "eslint": "8.25.0",
+    "serve": "14.2.0"
   },
   "browserslist": {
     "production": [

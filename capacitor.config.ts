@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'hellium.wallet',
-  appName: 'HeliumWallet',
+  appId: 'akashic.wallet',
+  appName: 'Akashic Wallet',
   webDir: 'build',
   bundledWebRuntime: false,
 };

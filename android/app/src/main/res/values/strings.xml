@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Akashic Wallet</string>
+    <string name="title_activity_main">Akashic Wallet</string>
+    <string name="package_name">akashic.wallet</string>
+    <string name="custom_url_scheme">akashic.wallet</string>
+</resources>
