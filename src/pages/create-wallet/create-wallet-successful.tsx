@@ -41,7 +41,7 @@ export const CreateWalletSuccessful = () => {
     await mutateBalancesMe();
     await mutateNftMe();
     // creation flow is finished, completely reset router history
-    historyResetStackAndRedirect();
+    await historyResetStackAndRedirect();
   };
 
   return (

@@ -14,7 +14,7 @@ const StyledList = styled(IonList)<{ bordered: boolean; compact: boolean }>(
   ({ bordered, compact }) => ({
     margin: 0,
     padding: 0,
-    borderRadius: 8,
+    borderRadius: bordered ? 8 : 0,
     border: bordered ? `1px solid var(--ion-color-grey)` : 'none',
     ['ion-item']: {
       '--min-height': '28px',
@@ -30,6 +30,9 @@ const StyledList = styled(IonList)<{ bordered: boolean; compact: boolean }>(
     ['ion-note']: {
       paddingTop: compact ? 2 : 4,
       paddingBottom: compact ? 2 : 4,
+    },
+    ['ion-icon']: {
+      marginRight: 8,
     },
   })
 );

@@ -1,65 +1,40 @@
 import styled from '@emotion/styled';
-import { IonItem, IonLabel, IonList } from '@ionic/react';
+import { IonList, isPlatform } from '@ionic/react';
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useLogout } from '../../utils/hooks/useLogout';
-import { SquareWhiteButton } from '../common/buttons';
+import { AccountListItem } from './account-list-item';
+import { AccountManagementList } from './account-management-list';
 import { DeleteAccountModal } from './delete-account-modal';
 
-const InitialIcon = styled.div({
-  width: '32px',
-  height: '32px',
-  flex: '0 0 32px',
-  borderRadius: '32px',
-  background: '#7444B6',
-  margin: '0px',
-  alignItems: 'center',
-  justifyContent: 'center',
-  display: 'inline-flex',
-  color: '#FFFFFF',
-  fontSize: '12px',
-  fontWeight: '700',
-});
-
 const StyledList = styled(IonList)({
+  marginBottom: 16,
+  overflow: 'scroll',
   ['ion-item::part(native)']: {
     '--padding-start': 0,
     '--inner-padding-end': 0,
   },
 });
-
-const IconAndLabel = styled(IonItem)({
-  ['ion-label']: {
-    ['h3']: {
-      marginBottom: 0,
-    },
-    ['p']: {
-      fontSize: '0.625rem',
-      overflowWrap: 'anywhere',
-    },
-  },
-});
-
 export const AccountList = () => {
-  const { t } = useTranslation();
   const { localAccounts, activeAccount, setActiveAccount } =
     useAccountStorage();
-  const [alertOpen, setAlertOpen] = useState(false);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [accountToDelete, setAccountToDelete] = useState<LocalAccount | null>(
     null
   );
+  const isMobile = isPlatform('mobile');
   const logout = useLogout();
 
   const onDeleteAccountClick = (account: LocalAccount) => () => {
     setAccountToDelete(account);
-    setAlertOpen(true);
+    setIsAlertOpen(true);
   };
 
   const onCancelModal = () => {
-    setAlertOpen(false);
+    setIsAlertOpen(false);
   };
 
   const onSelectAccountClick = (account: LocalAccount) => async () => {
@@ -68,59 +43,44 @@ export const AccountList = () => {
   };
 
   return (
-    <StyledList lines={'full'}>
-      {localAccounts.map((account) => (
-        <IconAndLabel key={account.identity}>
-          <div
-            className={'w-100 ion-margin-top ion-margin-bottom'}
-            style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
-          >
-            <div
-              className={'w-100'}
-              style={{ display: 'flex', flexDirection: 'row', gap: 8 }}
-            >
-              <InitialIcon>AS</InitialIcon>
-              <IonLabel>
-                <h3 className={'ion-text-align-left ion-margin-bottom-0'}>
-                  {account.aasName ?? account.accountName}
-                </h3>
-                <p className={'ion-text-align-left ion-text-size-xxs'}>
-                  {account.identity}
-                </p>
-              </IonLabel>
-            </div>
-            <div
-              className={
-                'ion-display-flex ion-justify-content-evenly ion-gap-xs'
-              }
-            >
-              {account.identity !== activeAccount?.identity && (
-                <SquareWhiteButton
-                  className={'ion-flex-1'}
-                  size="small"
-                  onClick={onSelectAccountClick(account)}
-                >
-                  {t('SelectAccount')}
-                </SquareWhiteButton>
-              )}
-              <SquareWhiteButton
-                className={'ion-flex-1'}
-                size="small"
-                onClick={onDeleteAccountClick(account)}
-              >
-                {t('RemoveAccount')}
-              </SquareWhiteButton>
-            </div>
-          </div>
-        </IconAndLabel>
-      ))}
+    <>
+      <StyledList
+        style={{
+          height: `calc(100vh - ${
+            isMobile ? '368' : '320'
+          }px - var(--ion-safe-area-bottom))`,
+        }}
+        lines={'full'}
+      >
+        {localAccounts.map((account, i) => (
+          <AccountListItem
+            lines={i === localAccounts.length - 1 ? 'none' : 'full'}
+            isActive={account.identity === activeAccount?.identity}
+            button
+            key={account.identity}
+            onClick={
+              isDeleting
+                ? onDeleteAccountClick(account)
+                : account.identity !== activeAccount?.identity
+                ? onSelectAccountClick(account)
+                : undefined
+            }
+            showDeleteIcon={isDeleting}
+            account={account}
+          />
+        ))}
+      </StyledList>
+      <AccountManagementList
+        isDeleting={isDeleting}
+        onClickRemove={() => setIsDeleting(!isDeleting)}
+      />
       {accountToDelete && (
         <DeleteAccountModal
-          isOpen={alertOpen}
+          isOpen={isAlertOpen}
           account={accountToDelete}
           onCancel={onCancelModal}
         />
       )}
-    </StyledList>
+    </>
   );
 };

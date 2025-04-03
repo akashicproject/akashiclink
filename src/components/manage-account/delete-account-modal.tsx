@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import {
   IonButton,
   IonButtons,
@@ -15,14 +14,8 @@ import { useTranslation } from 'react-i18next';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useLogout } from '../../utils/hooks/useLogout';
-import { displayLongText } from '../../utils/long-text';
-import { PurpleButton, WhiteButton } from '../common/buttons';
-
-const FlexDiv = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '16px',
-});
+import { OutlineButton, PurpleButton } from '../common/buttons';
+import { AccountListItem } from './account-list-item';
 
 export const DeleteAccountModal = ({
   isOpen,
@@ -74,31 +67,47 @@ export const DeleteAccountModal = ({
           </IonButton>
         </IonButtons>
       </IonToolbar>
-      <FlexDiv className="warning">
+      <div
+        className={
+          'warning ion-display-flex ion-flex-direction-column ion-gap-lg'
+        }
+      >
         <IonImg
           alt={''}
           src={'/shared-assets/images/error-outline.png'}
           style={{ width: '48px', height: '48px' }}
         />
-        <div style={{ textAlign: 'center' }}>
-          <h3 className={'ion-margin-0'}>{t('RemoveTheAccount')}</h3>
-          <h3 className={'ion-margin-0'}>
-            {displayLongText(account ? account.identity : '')}
+        <div
+          className={'ion-gap-md ion-display-flex ion-flex-direction-column'}
+        >
+          <h3 className={'ion-text-align-center ion-margin-0'}>
+            {t('RemoveTheAccount')}
           </h3>
+          <div>
+            <AccountListItem lines={'none'} account={account} isShortAddress />
+          </div>
           <IonText
             className={'ion-text-align-center ion-text-size-xs'}
             color={'dark'}
           >
-            <p>{t('UnsavedDataWillBeRemoved')}</p>
+            <p className={'ion-text-align-center'}>
+              {t('UnsavedDataWillBeRemoved')}
+            </p>
           </IonText>
         </div>
-        <PurpleButton className={'w-100'} onClick={onConfirm} expand="block">
-          {t('RemoveAccount')}
-        </PurpleButton>
-        <WhiteButton className={'w-100'} expand="block" onClick={onCancel}>
-          {t('Cancel')}
-        </WhiteButton>
-      </FlexDiv>
+        <div
+          className={
+            'w-100 ion-display-flex ion-flex-direction-column ion-gap-sm'
+          }
+        >
+          <PurpleButton className={'w-100'} onClick={onConfirm} expand="block">
+            {t('RemoveAccount')}
+          </PurpleButton>
+          <OutlineButton className={'w-100'} expand="block" onClick={onCancel}>
+            {t('Cancel')}
+          </OutlineButton>
+        </div>
+      </div>
     </IonModal>
   );
 };

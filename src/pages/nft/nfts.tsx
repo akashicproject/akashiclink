@@ -2,7 +2,7 @@ import './ntf.scss';
 
 import styled from '@emotion/styled';
 import type { INftResponse } from '@helium-pay/backend';
-import { IonCol, IonIcon, IonRow, IonSpinner } from '@ionic/react';
+import { IonCol, IonGrid, IonIcon, IonRow, IonSpinner } from '@ionic/react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -74,14 +74,16 @@ export function Nfts() {
     <NftLayout>
       {isLoading && <IonSpinner name="circular"></IonSpinner>}
       {!isLoading && nfts.length === 0 && (
-        <NoNtfWrapper className="ion-center">
-          <div>
-            <IonRow className="ion-justify-content-center">
-              <IonIcon icon={alertCircleOutline} className="alert-icon" />
-            </IonRow>
-            <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
-          </div>
-        </NoNtfWrapper>
+        <IonGrid>
+          <IonRow className="ion-justify-content-center">
+            <IonCol className="ion-center">
+              <div>
+                <IonIcon icon={alertCircleOutline} className="alert-icon" />
+                <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
+              </div>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       )}
       {!isLoading && nfts.length > 0 && (
         <Virtuoso

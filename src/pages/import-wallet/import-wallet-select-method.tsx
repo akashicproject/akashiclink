@@ -56,14 +56,22 @@ export const ImportWalletSelectMethod = () => {
             </IonText>
           </IonCol>
           <IonCol size="12" style={{ textAlign: 'center' }}>
-            <PurpleButton expand="block" onClick={onSelect12Words}>
-              {t('12Words')}
-            </PurpleButton>
-          </IonCol>
-          <IonCol size="12" style={{ textAlign: 'center' }}>
-            <WhiteButton expand="block" fill="clear" onClick={onSelectKeyPair}>
-              {t('KeyPair')}
-            </WhiteButton>
+            <IonRow className={'ion-grid-row-gap-xs'}>
+              <IonCol size="12" style={{ textAlign: 'center' }}>
+                <PurpleButton expand="block" onClick={onSelect12Words}>
+                  {t('12Words')}
+                </PurpleButton>
+              </IonCol>
+              <IonCol size="12" style={{ textAlign: 'center' }}>
+                <WhiteButton
+                  expand="block"
+                  fill="clear"
+                  onClick={onSelectKeyPair}
+                >
+                  {t('KeyPair')}
+                </WhiteButton>
+              </IonCol>
+            </IonRow>
           </IonCol>
         </IonRow>
       </MainGrid>

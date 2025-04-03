@@ -2,12 +2,17 @@
   /* Shift popovers to have vertical padding relative to trigger element */
   top: 8px;
   //--width: 75% !important;
-  --width: calc(100vw - 88px) !important;
+  --width: calc(100vw - 64px) !important;
   --offset-x: -16px;
+  --offset-y: 1px;
+
+  &::part(content) {
+    border-radius: 8px;
+  }
 
   ion-select-popover {
     border: 1px solid var(--ion-select-border) !important;
-    border-radius: 12px;
+    border-radius: 8px;
     padding-right: 1px;
   }
 
@@ -16,7 +21,6 @@
    * under the selection button
    */
   ion-list {
-    border-radius: 12px;
     max-height: 160px;
     overflow: scroll;
   }

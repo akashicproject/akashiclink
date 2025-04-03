@@ -10,7 +10,7 @@ type IonButtonProps = React.ComponentProps<typeof IonButton>;
 
 const squareButtonBaseCss: CSSInterpolation = {
   border: '1px solid transparent',
-  borderRadius: '6px !important',
+  borderRadius: '4px !important',
   textAlign: 'center',
   height: '32px',
 };
@@ -82,38 +82,6 @@ const tabButtonCss: CSSInterpolation = {
   },
 };
 
-const bottomTabButton: CSSInterpolation = {
-  ['&::part(native)']: {
-    color: 'var(--ion-color-primary-10)',
-    background: 'transparent',
-    borderRadius: 0,
-    ...buttonTextBaseCss,
-    ...tabButtonEffectsCss,
-  },
-};
-
-const topTabButton: CSSInterpolation = {
-  ['&::part(native)']: {
-    color: 'var(--ion-color-primary-10)',
-    background: 'transparent',
-    borderRadius: 0,
-    borderBottom: '2px solid #CCC4CF',
-    ...buttonTextBaseCss,
-    ...tabButtonEffectsCss,
-  },
-};
-
-const topTabButtonActive: CSSInterpolation = {
-  ['&::part(native)']: {
-    color: 'var(--ion-color-primary-10)',
-    background: 'transparent',
-    borderRadius: 0,
-    borderBottom: '2px solid #C297FF',
-    ...buttonTextBaseCss,
-    ...tabButtonEffectsCss,
-  },
-};
-
 const PurpleButtonCSS = styled(IonButton)({
   ...purpleButtonCss,
 });
@@ -130,6 +98,15 @@ export const PurpleButton = (
 
 export const WhiteButton = styled(IonButton)({
   ...whiteButtonCss,
+});
+
+export const OutlineButton = styled(IonButton)({
+  ['&::part(native)']: {
+    ...buttonBaseCss,
+    ...whiteButtonBase,
+    ...buttonTextBaseCss,
+    background: 'transparent',
+  },
 });
 
 export const SquareWhiteButton = styled(IonButton, {
@@ -155,16 +132,4 @@ export const TextButton = styled(IonButton)({
   ['&::part(native)']: {
     padding: 4,
   },
-});
-
-export const BottomTabButton = styled(IonButton)({
-  ...bottomTabButton,
-});
-
-export const TopTabButtonActive = styled(IonButton)({
-  ...topTabButtonActive,
-});
-
-export const TopTabButton = styled(IonButton)({
-  ...topTabButton,
 });
