@@ -41,4 +41,18 @@ module.exports = {
       },
     ],
   },
+  overrides: [
+    {
+      files: [
+        '**/*.stories.@(js|ts|jsx|tsx)',
+        'storybook/**/*.@(js|ts|tsx|jsx)',
+      ],
+      rules: {
+        'import/no-default-export': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
+        'react/display-name': 'off',
+        'react-hooks/rules-of-hooks': 'off',
+      },
+    },
+  ],
 };

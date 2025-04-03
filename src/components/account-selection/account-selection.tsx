@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';

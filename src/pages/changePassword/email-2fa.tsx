@@ -29,7 +29,7 @@ import {
 } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import { OwnersAPI } from '../../utils/api';
 import { useOwner } from '../../utils/hooks/useOwner';
 import {

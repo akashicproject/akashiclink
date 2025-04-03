@@ -9,7 +9,7 @@ import { DividerDivWithoutMargin } from '../../components/layout/divider';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import { displayLongText } from '../../utils/long-text';
 import { SendMain } from './send-main';
 

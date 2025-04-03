@@ -8,7 +8,18 @@ import { themeType } from '../theme/const';
 import type { LocalAccount } from '../utils/hooks/useLocalAccounts';
 import { useLocalStorage } from '../utils/hooks/useLocalStorage';
 
-export const ThemeContext = createContext<{
+/**
+ * Contexts that are passed down to all children components to avoid props drilling.
+ *
+ * At any location in the App, you can:
+ * ```
+ * {prop, setProp} = useContext(XXXContext)
+ * ```
+ *
+ * to access the prop and the prop updater function.
+ */
+
+const ThemeContext = createContext<{
   theme: ThemeType;
   setTheme: Dispatch<ThemeType>;
 }>({
@@ -18,7 +29,7 @@ export const ThemeContext = createContext<{
   },
 });
 
-export const CurrencyContext = createContext<{
+const CurrencyContext = createContext<{
   focusCurrency: IWalletCurrency;
   setFocusCurrency: Dispatch<IWalletCurrency>;
 }>({
@@ -97,6 +108,9 @@ export const PreferenceProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+/**
+ * Read and update the theme context across the whole application
+ */
 export const useTheme: () => [
   ThemeType,
   Dispatch<ThemeType> | undefined
@@ -104,7 +118,7 @@ export const useTheme: () => [
   const { theme: storedTheme, setTheme: setStoredTheme } =
     useContext(ThemeContext);
 
-  // If system, set light or dark otherwise checks for light/dark return wrong answer in rest of the app
+  // Match the theme set by system
   if (storedTheme === themeType.SYSTEM) {
     return [
       window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -117,6 +131,9 @@ export const useTheme: () => [
   return [storedTheme, setStoredTheme];
 };
 
+/**
+ * Read and update the currency context across the whole application
+ */
 export const useFocusCurrency: () => [
   IWalletCurrency,
   Dispatch<IWalletCurrency> | undefined

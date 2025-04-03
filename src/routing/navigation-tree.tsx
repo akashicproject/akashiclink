@@ -1,5 +1,5 @@
-import { IonLabel, IonRouterOutlet, IonTabButton } from '@ionic/react';
-import { Redirect, Route } from 'react-router';
+import { IonRouterOutlet } from '@ionic/react';
+import { Redirect } from 'react-router';
 
 import { urls } from '../constants/urls';
 import { Activity } from '../pages/activity';
@@ -38,55 +38,7 @@ import { SettingsDelete } from '../pages/settings-delete';
 import { SettingsNaming } from '../pages/settings-naming';
 import { SettingsVersion } from '../pages/settings-version';
 import { Us2Main } from '../pages/us2-main';
-
-/**
- * Tabs will be used to split the wallet up in 2+ parallel and non-interacting trees:
- * - Each tree belong will be associated with a single tab.
- * - Each tree will have it's own navigation stack - switching trees preserves the navigation state
- * - Pages (aka views) are registered under a tree through a urls of the form /:tab(subtreeName)/path-to-page
- * - Using this factory function should prevent cross-tab navigation which is not allowed e.g. from /us2/xxx page to /hp/yyy page.
- *
- * @returns root path
- * @returns registerPage function that links a page to a this tabs navigation tree
- * @returns createPath function that creates a valid path in this subtree
- * @returns tab JSX.Element that should be placed inside a <IonTabBar>
- */
-export function createNavigationSubtree(
-  subtreeName: string,
-  subtreeLabel: string
-) {
-  const root = `/${subtreeName}`;
-  return {
-    root,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    registerPage: (page: (...args: any[]) => JSX.Element, url?: string) => (
-      <Route
-        exact
-        path={url ? `/:tab(${subtreeName})/${url}` : `/:tab(${subtreeName})`}
-        component={page}
-      />
-    ),
-    createPath: (url: string, params?: Record<string, string>) => {
-      let base = `${root}/${url}`;
-      params &&
-        Object.entries(params).forEach((value) => {
-          base = base.replace(`:${value[0]}`, value[1]);
-        });
-      return base;
-    },
-    tab: (
-      <IonTabButton tab={subtreeName} href={root}>
-        <IonLabel>{subtreeLabel}</IonLabel>
-      </IonTabButton>
-    ),
-  };
-}
-
-const hpSubtree = createNavigationSubtree(urls.akashicPay, 'AkashicPay Chain');
-export const { createPath: akashicPayPath, root: akashicPayRoot } = hpSubtree;
-
-const us2Subtree = createNavigationSubtree(urls.us2, 'Square (US²)');
-export const { createPath: us2Path } = us2Subtree;
+import { AkashicTab, Us2Tab } from './navigation-tabs';
 
 /**
  * Definition of all the routing in the app
@@ -95,55 +47,55 @@ export function NavigationTree() {
   return (
     <IonRouterOutlet animated={false}>
       {/* AkashicPay tree - default so redirect at bottom */}
-      {hpSubtree.registerPage(AkashicPayMain)}
-      {hpSubtree.registerPage(AkashicPayMain, urls.akashicPay)}
-      {hpSubtree.registerPage(CreateWallet, urls.createWalletUrl)}
-      {hpSubtree.registerPage(Recovery, urls.recoveryUrl)}
-      {hpSubtree.registerPage(ResetPassword, urls.resetPassword)}
-      {hpSubtree.registerPage(Verification, urls.verification)}
-      {hpSubtree.registerPage(ImportWallet, urls.importAccountUrl)}
-      {hpSubtree.registerPage(Dashboard, urls.loggedFunction)}
-      {hpSubtree.registerPage(LoggedCreate, urls.loggedCreate)}
-      {hpSubtree.registerPage(DepositPage, urls.loggedDeposit)}
-      {hpSubtree.registerPage(SendConfirm, urls.sendConfirm)}
-      {hpSubtree.registerPage(SendTo, urls.sendTo)}
-      {hpSubtree.registerPage(SendResult, urls.sendResult)}
-      {hpSubtree.registerPage(Nfts, urls.nfts)}
-      {hpSubtree.registerPage(Nft, urls.nft)}
-      {hpSubtree.registerPage(NftTransfer, urls.nftTransfer)}
-      {hpSubtree.registerPage(NftTransferResult, urls.nftTransferResult)}
-      {hpSubtree.registerPage(Activity, urls.activity)}
-      {hpSubtree.registerPage(Recover, urls.recover)}
-      {hpSubtree.registerPage(Settings, urls.settings)}
-      {hpSubtree.registerPage(RecoverCode, urls.recoverCode)}
-      {hpSubtree.registerPage(SettingsBackup, urls.settingsBackup)}
-      {hpSubtree.registerPage(SettingsDelete, urls.settingsDelete)}
-      {hpSubtree.registerPage(SettingsNaming, urls.settingsNaming)}
-      {hpSubtree.registerPage(SettingsVersion, urls.settingsVersion)}
-      {hpSubtree.registerPage(ChangePassword, urls.changePassword)}
-      {hpSubtree.registerPage(ChangePasswordTwoFa, urls.changePassword2FA)}
-      {hpSubtree.registerPage(
+      {AkashicTab.registerPage(AkashicPayMain)}
+      {AkashicTab.registerPage(AkashicPayMain, urls.akashicPay)}
+      {AkashicTab.registerPage(CreateWallet, urls.createWalletUrl)}
+      {AkashicTab.registerPage(Recovery, urls.recoveryUrl)}
+      {AkashicTab.registerPage(ResetPassword, urls.resetPassword)}
+      {AkashicTab.registerPage(Verification, urls.verification)}
+      {AkashicTab.registerPage(ImportWallet, urls.importAccountUrl)}
+      {AkashicTab.registerPage(Dashboard, urls.loggedFunction)}
+      {AkashicTab.registerPage(LoggedCreate, urls.loggedCreate)}
+      {AkashicTab.registerPage(DepositPage, urls.loggedDeposit)}
+      {AkashicTab.registerPage(SendConfirm, urls.sendConfirm)}
+      {AkashicTab.registerPage(SendTo, urls.sendTo)}
+      {AkashicTab.registerPage(SendResult, urls.sendResult)}
+      {AkashicTab.registerPage(Nfts, urls.nfts)}
+      {AkashicTab.registerPage(Nft, urls.nft)}
+      {AkashicTab.registerPage(NftTransfer, urls.nftTransfer)}
+      {AkashicTab.registerPage(NftTransferResult, urls.nftTransferResult)}
+      {AkashicTab.registerPage(Activity, urls.activity)}
+      {AkashicTab.registerPage(Recover, urls.recover)}
+      {AkashicTab.registerPage(Settings, urls.settings)}
+      {AkashicTab.registerPage(RecoverCode, urls.recoverCode)}
+      {AkashicTab.registerPage(SettingsBackup, urls.settingsBackup)}
+      {AkashicTab.registerPage(SettingsDelete, urls.settingsDelete)}
+      {AkashicTab.registerPage(SettingsNaming, urls.settingsNaming)}
+      {AkashicTab.registerPage(SettingsVersion, urls.settingsVersion)}
+      {AkashicTab.registerPage(ChangePassword, urls.changePassword)}
+      {AkashicTab.registerPage(ChangePasswordTwoFa, urls.changePassword2FA)}
+      {AkashicTab.registerPage(
         ChangePasswordConfirm,
         urls.changePasswordConfirm
       )}
-      {hpSubtree.registerPage(ErrorPage, urls.error)}
-      {hpSubtree.registerPage(CreateWalletSecret, urls.secret)}
-      {hpSubtree.registerPage(WalletCreated, urls.walletCreated)}
-      {hpSubtree.registerPage(CreateWalletSecretConfirm, urls.secretConfirm)}
-      {hpSubtree.registerPage(SecretPhraseImport, urls.secretPhraseImport)}
-      {hpSubtree.registerPage(SelectImportMethod, urls.selectImportMethod)}
-      {hpSubtree.registerPage(ImportSuccess, urls.importSuccess)}
-      {hpSubtree.registerPage(
+      {AkashicTab.registerPage(ErrorPage, urls.error)}
+      {AkashicTab.registerPage(CreateWalletSecret, urls.secret)}
+      {AkashicTab.registerPage(WalletCreated, urls.walletCreated)}
+      {AkashicTab.registerPage(CreateWalletSecretConfirm, urls.secretConfirm)}
+      {AkashicTab.registerPage(SecretPhraseImport, urls.secretPhraseImport)}
+      {AkashicTab.registerPage(SelectImportMethod, urls.selectImportMethod)}
+      {AkashicTab.registerPage(ImportSuccess, urls.importSuccess)}
+      {AkashicTab.registerPage(
         ChangePasswordAfterImport,
         urls.changePasswordAfterImport
       )}
       {/* US² tree */}
-      {us2Subtree.registerPage(Us2Main)}
+      {Us2Tab.registerPage(Us2Main)}
 
       {/* Default redirect */}
       {/* https://github.com/ionic-team/ionic-framework/issues/24855 */}
-      <Redirect to={hpSubtree.root} />
-      <Redirect exact from="/" to={hpSubtree.root} />
+      <Redirect to={AkashicTab.root} />
+      <Redirect exact from="/" to={AkashicTab.root} />
     </IonRouterOutlet>
   );
 }

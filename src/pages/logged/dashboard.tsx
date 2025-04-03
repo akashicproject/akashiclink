@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { SelectCoin } from '../../components/select-coin';
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import {
   cacheCurrentPage,
   NavigationPriority,

@@ -9,7 +9,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
 import { ActivityDetailComponent } from '../../pages/activity';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { formatMergeAndSortNftAndCryptoTransfers } from '../../utils/formatTransfers';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';

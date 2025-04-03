@@ -11,7 +11,7 @@ import { type ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useOwner } from '../../utils/hooks/useOwner';
 import { lastPageStorage } from '../../utils/last-page-storage';
 import { delay } from '../../utils/timer-function';

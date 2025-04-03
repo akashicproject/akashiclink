@@ -9,7 +9,7 @@ import { PublicLayout } from '../../components/layout/public-layout';
 import { useTheme } from '../../components/PreferenceProvider';
 import { StyledInput } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 
 const StyledSpan = styled.span({

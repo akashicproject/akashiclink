@@ -22,21 +22,18 @@ export const StyledInputErrorPrompt: {
   ActivationCode: 'ActivationCodeText',
 } as const;
 
-/**
- * @param label to show next to the input box
- * @param isHorizontal applies the "horizontal" style to input, with label on the left
- * @param validate method to trigger on user input
- * @param errorPrompt to display to user is validation fails
- * @param submitOnEnter will trigger the supplied callback when enter is hit
- * @param ...props any other parameters native to IonInput
- */
 type StyledInputProps = ComponentProps<typeof IonInput> & {
+  /** label to show next to the input box */
   label?: string | null;
+  /** Relative position of input box and label */
   isHorizontal?: boolean;
+  /** Method returning true/false checking user input */
   validate?: (value: string) => boolean;
+  /** Text to display to user is validation fails */
   errorPrompt?: typeof StyledInputErrorPrompt[keyof typeof StyledInputErrorPrompt];
   // Required to allow translations to be passed in e.g. t('ConfirmPassword')
   placeholder: string;
+  /** Callback to trigger when return key is hit */
   submitOnEnter?: () => void;
 };
 

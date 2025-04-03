@@ -13,7 +13,7 @@ import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
 import { historyGoBack } from '../../routing/history-stack';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useOwner } from '../../utils/hooks/useOwner';
 import { importAccountUrl, View } from '../import-wallet';
 

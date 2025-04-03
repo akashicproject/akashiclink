@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import { LoggedHeader } from './logged-header';
 import { ChainDiv } from './logged-layout';
 

@@ -13,12 +13,23 @@ import { Toggle } from '../toggle/toggle';
 export function ThemeSelect() {
   const [storedTheme, setStoredTheme] = useTheme();
 
-  // Update theme across the app when it is changed
+  /**
+   * Add 'dark' to all elements on the page
+   */
+  const toggleDarkTheme = (setDark: boolean) => {
+    document.body.classList.toggle('dark', setDark);
+    document.body.classList.toggle('light', !setDark);
+  };
+
+  /**
+   * Respond to a new theme being set
+   */
   useEffect(() => {
     if (storedTheme !== themeType.SYSTEM) {
+      // Theme is explicitly light or dark
       toggleDarkTheme(storedTheme === themeType.DARK);
     } else {
-      // Infer theme to set
+      // Infer theme to set based on users OS
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
       toggleDarkTheme(prefersDark.matches);
       prefersDark.addEventListener('change', (mediaQuery) => {
@@ -27,12 +38,9 @@ export function ThemeSelect() {
     }
   }, [storedTheme]);
 
-  // Add 'dark' to all elements on the page
-  const toggleDarkTheme = (setDark: boolean) => {
-    document.body.classList.toggle('dark', setDark);
-    document.body.classList.toggle('light', !setDark);
-  };
-
+  /**
+   * Callback to call when slider is switched
+   */
   const handleThemeUpdate = async () => {
     const newTheme =
       storedTheme === themeType.LIGHT ? themeType.DARK : themeType.LIGHT;

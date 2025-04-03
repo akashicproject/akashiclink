@@ -136,12 +136,21 @@ const NftImage = styled.div({
 
 /**
  * Display of a single transfer
- * @param transfer
+ * @param transfer for the backend
  * @param onClick callback
  * @param style addition to apply to the bounding vox
  * @param showDetail arrow, inviting user to click and see full transfer information
  * @param divider separator after
  */
+interface OneActivityProps {
+  transfer: ITransactionRecordForExtension;
+  onClick?: () => void;
+  style?: CSSProperties;
+  showDetail?: boolean;
+  hasHoverEffect?: boolean;
+  divider?: boolean;
+}
+
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function OneActivity({
   transfer,
@@ -150,14 +159,7 @@ export function OneActivity({
   showDetail,
   hasHoverEffect,
   divider,
-}: {
-  transfer: ITransactionRecordForExtension;
-  onClick?: () => void;
-  style?: CSSProperties;
-  showDetail?: boolean;
-  hasHoverEffect?: boolean;
-  divider?: boolean;
-}) {
+}: OneActivityProps) {
   const { t } = useTranslation();
   const isL2 = transfer.layer === TransactionLayer.L2;
   const isNft = !!transfer?.nft;

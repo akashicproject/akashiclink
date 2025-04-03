@@ -13,7 +13,7 @@ import { SquareWhiteButton } from '../../components/buttons';
 import { NftLayout } from '../../components/layout/nft-layout';
 import { OneNft } from '../../components/nft/one-nft';
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 
 export const NoNtfWrapper = styled.div({

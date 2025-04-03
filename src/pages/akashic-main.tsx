@@ -10,7 +10,7 @@ import { PurpleButton, WhiteButton } from '../components/buttons';
 import { PublicLayout } from '../components/layout/public-layout';
 import { LoginForm } from '../components/public/login-form';
 import { urls } from '../constants/urls';
-import { akashicPayPath } from '../routing/navigation-tree';
+import { akashicPayPath } from '../routing/navigation-tabs';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useOwner } from '../utils/hooks/useOwner';
 import {

@@ -20,7 +20,7 @@ import { useHistory } from 'react-router-dom';
 
 import { BackButton } from '../components/back-button';
 import { urls } from '../constants/urls';
-import { akashicPayPath } from '../routing/navigation-tree';
+import { akashicPayPath } from '../routing/navigation-tabs';
 
 export function RecoverCode() {
   const history = useHistory();

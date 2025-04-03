@@ -23,10 +23,11 @@ const resources: { [key in Language]: { translation: Translation } } = {
   },
 };
 
-export async function initialiseTranslationLibrary() {
-  await i18n.use(initReactI18next).init({
-    resources,
-    lng: DEFAULT_LANGUAGE,
-    keySeparator: '.',
-  });
-}
+i18n.use(initReactI18next).init({
+  resources,
+  lng: DEFAULT_LANGUAGE,
+  keySeparator: '.',
+});
+
+// eslint-disable-next-line import/no-default-export
+export default i18n;

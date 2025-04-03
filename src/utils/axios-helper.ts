@@ -2,39 +2,26 @@ import axios from 'axios';
 
 import { urls } from '../constants/urls';
 import { history } from '../history';
-import { akashicPayPath } from '../routing/navigation-tree';
+import { akashicPayPath } from '../routing/navigation-tabs';
 import { lastPageStorage, NavigationPriority } from './last-page-storage';
 
-const AppConfig = {
-  apiBaseUrl: process.env.REACT_APP_API_BASE_URL,
-};
-
-/** For requests that don't need cookies */
-export const axiosBasePublic = axios.create({
-  baseURL: AppConfig.apiBaseUrl,
+export const axiosBase = axios.create({
+  baseURL: process.env.REACT_APP_API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
-});
-
-/** For requests that need cookies */
-export const axiosOwnerBase = axios.create({
-  withCredentials: true,
-  baseURL: AppConfig.apiBaseUrl,
-  headers: { 'Content-Type': 'application/json' },
 });
 
 /**
  * Any request that 401s (auth cookie expired or not set) should chuck user
  * out to the landing page screen, unless the current page has an IMMEDIATE navigation priority
  */
-axiosOwnerBase.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+axiosBase.interceptors.response.use(
+  // Pass through valid responses
+  (response) => response,
   async (error) => {
     if (401 === error.response.status) {
-      // Skip if already on landing page
-      if (history.location.pathname === '/akashic') return;
+      // Skip if already on root page
+      if (history.location.pathname.match(/^\/$|\/akashic/)) return;
 
       // Get the current page user in on from memory
       const currentPage = await lastPageStorage.get();

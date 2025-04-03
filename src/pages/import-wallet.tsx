@@ -24,7 +24,7 @@ import {
 import { urls } from '../constants/urls';
 import type { LocationState } from '../history';
 import { historyGoBack } from '../routing/history-stack';
-import { akashicPayPath } from '../routing/navigation-tree';
+import { akashicPayPath } from '../routing/navigation-tabs';
 import { OwnersAPI } from '../utils/api';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useOwner } from '../utils/hooks/useOwner';
@@ -80,7 +80,7 @@ export function ImportWallet() {
 
   useEffect(() => {
     cacheCurrentPage(
-      importAccountUrl,
+      urls.importAccountUrl,
       NavigationPriority.IMMEDIATE,
       async () => {
         const { privateKey, email, view, passPhrase } =

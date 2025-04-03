@@ -7,7 +7,7 @@ import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { lastPageStorage } from '../../utils/last-page-storage';

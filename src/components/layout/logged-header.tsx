@@ -1,7 +1,7 @@
 import { IonHeader, IonImg, IonRouterLink, isPlatform } from '@ionic/react';
 
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import type { ThemeType } from '../../theme/const';
 import { themeType } from '../../theme/const';
 import { useTheme } from '../PreferenceProvider';

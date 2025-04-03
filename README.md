@@ -172,3 +172,85 @@ Example below will apply the styles to any `<IonSelect>` and `<IonList>` that ar
 All UI images should be put in the global [shared assets folder](../../static/assets/).
 They will be automatically synced into the local [shared assets folders](./public//shared-assets/)
 making them available throughout the monorepo.
+
+## Craco
+
+We are using create-react-app to manage all of the transpiling needed for the different `.css`, `.html`, `.tsx` files (under the hood it uses `webpack`). While it generally does a good job, we sometimes need to fine tune by overriding the config with `craco` to:
+
+- Process files outside the root directory. Specifically, instruct how to transpile `.ts` files in the sister packages inside the monorepo
+- Turn off optimisation when developing locally
+- Fix conflicts in the react version
+
+## Storybook
+
+<details>
+<summary>Open for instructions</summary>
+ 
+1. Create your stories in the `./storybook/stories/` folder using the following template:
+
+```tsx
+import type { Meta, StoryObj } from "@storybook/react";
+
+import { YOURCOMPONENT } from "../../src/YOUR-FOLDER";
+
+const meta: Meta<typeof BackButton> = {
+  title: "SUBTREENAME",
+  component: YOURCOMPONENT,
+};
+export default meta;
+type Story = StoryObj<typeof YOURCOMPONENT>;
+
+export const Story1: Story = {};
+export const Story2: Story = {};
+export const Story3: Story = {};
+```
+
+2. To customise the mock requests for each story, add a mock service worker (to either the meta or the individual stories)
+
+```ts
+export const Story1: Story = {
+  parameters: {
+    msw: {
+      handlers: {
+        GROUPNAME: [MOCK_REST_IMPLEMENTATIONg],
+      },
+    },
+  },
+};
+```
+
+3. To customise the context that a component receives, specify the context e.g.
+
+```ts
+import { LocalAccountContext } from '../../src/components/PreferenceProvider';
+
+export const Story1: Story = {
+  decorators: [
+    withReactContext({
+      Context: IMPORT_CONTEXT_FROM ../../src/components/PreferenceProvide,r
+      initialState: {
+        localAccounts: [{
+          identity: "mock-identity",
+          username: "mock-username"
+        }]
+      },
+    })
+  ],
+};
+```
+
+4. To customise the path that the component is placed on, use the `withMockPath` decorator. Normally you would apply this to the `meta` object
+
+```ts
+import { akashicPayPath } from "../../src/routing/navigation-tabs";
+import { urls } from "../../src/constants/urls";
+import { withMockPath } from "../utils/mock-path";
+
+const meta: Meta<typeof DashboardComponent> = {
+  title: "Pages",
+  component: DashboardComponent,
+  decorators: [withMockPath(akashicPayPath(urls.loggedFunction))],
+};
+```
+
+</details>

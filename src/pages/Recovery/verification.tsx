@@ -7,7 +7,7 @@ import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { StyledInput } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 
 export function Verification() {
   const { t } = useTranslation();

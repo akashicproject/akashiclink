@@ -10,7 +10,7 @@ import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { SecretWords } from '../../components/secret-words/secret-words';
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import {
   cacheCurrentPage,

@@ -1,7 +1,7 @@
 import type { History } from 'history';
 
 import { urls } from '../constants/urls';
-import { akashicPayPath, akashicPayRoot } from './navigation-tree';
+import { akashicPayPath, akashicPayRoot } from './navigation-tabs';
 
 /**
  * Attempt to back to the previous page, with custom logic to

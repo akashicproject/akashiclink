@@ -7,37 +7,15 @@
  * https://github.com/pmmmwh/react-refresh-webpack-plugin/issues/540#issuecomment-1185241955
  */
 
-const path = require('path');
-const { getLoader, loaderByName, addPlugins } = require('@craco/craco');
+const { addPlugins } = require('@craco/craco');
 const webpack = require('webpack');
+
+const webpackConfigExtender = require('./webpack-config-extender');
+
 module.exports = {
   productionSourceMap: false,
   webpack: {
     configure: (webpackConfig) => {
-      // Grab the babel-loader
-      const { isFound, match } = getLoader(
-        webpackConfig,
-        loaderByName('babel-loader')
-      );
-
-      if (isFound) {
-        // Add additional folders that are not processed by babel by default
-        const include = Array.isArray(match.loader.include)
-          ? match.loader.include
-          : [match.loader.include];
-        match.loader.include = include.concat([
-          path.join(__dirname, '../backend/src'),
-          path.join(__dirname, '../../packages/common-i18n/src'),
-          path.join(__dirname, '../../packages/ui-lib/src'),
-        ]);
-      }
-
-      // Inject loader for processing ts
-      match.loader.options.presets = [
-        ...match.loader.options.presets,
-        '@babel/preset-typescript',
-      ];
-
       // webpack >= 5 does not auto-polyfill core node.js modules. Have to add them like this
       // All used by AL modules (for otk generation, etc.)
       webpackConfig.resolve['fallback'] = {
@@ -61,7 +39,7 @@ module.exports = {
       ]);
 
       return {
-        ...webpackConfig,
+        ...webpackConfigExtender.run(webpackConfig, __dirname),
         ...(process.env.REACT_APP_OPTIMISE === 'false'
           ? {
               optimization: {

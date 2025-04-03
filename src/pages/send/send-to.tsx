@@ -27,7 +27,7 @@ import {
 } from '../../components/styled-input';
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 import { OwnersAPI } from '../../utils/api';
 import { useAggregatedBalances } from '../../utils/hooks/useAggregatedBalances';

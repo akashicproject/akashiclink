@@ -1,4 +1,4 @@
-import { axiosOwnerBase } from '../utils/axios-helper';
+import { axiosBase } from '../utils/axios-helper';
 import { useOwner } from '../utils/hooks/useOwner';
 import { lastPageStorage } from '../utils/last-page-storage';
 
@@ -12,7 +12,7 @@ export function useLogout(callLogout = true) {
     // callLogout will be false if getting 401 errors, prevents recursive calls
     if (callLogout) {
       try {
-        await axiosOwnerBase.post(`/auth/logout`);
+        await axiosBase.post(`/auth/logout`);
       } catch {
         console.log('Account already logged out');
       }

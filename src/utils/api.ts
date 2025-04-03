@@ -27,13 +27,13 @@ import type {
   IUpdateAcns,
 } from '@helium-pay/backend';
 
-import { axiosBasePublic, axiosOwnerBase } from './axios-helper';
+import { axiosBase } from './axios-helper';
 
 export const OwnersAPI = {
   importAccount: async (
     importData: IImportWallet
   ): Promise<IImportWalletResponse> => {
-    const response = await axiosBasePublic.post(
+    const response = await axiosBase.post(
       `/auth/import-wallet-account`,
       JSON.stringify(importData)
     );
@@ -48,7 +48,7 @@ export const OwnersAPI = {
   fetchKeyPair: async (
     importData: ITempShowOtkPrv
   ): Promise<ITempShowOtkPrvResponse> => {
-    const response = await axiosBasePublic.post(
+    const response = await axiosBase.post(
       `/auth/temp/show-otk-prv`,
       JSON.stringify(importData)
     );
@@ -60,7 +60,7 @@ export const OwnersAPI = {
   },
 
   login: async (loginData: ILoginUser): Promise<IMinimalUserResponse> => {
-    const response = await axiosBasePublic.post(
+    const response = await axiosBase.post(
       `/auth/login`,
       JSON.stringify(loginData)
     );
@@ -74,7 +74,7 @@ export const OwnersAPI = {
   confirmPassword: async (
     loginData: IConfirmPassword
   ): Promise<IMinimalUserResponse> => {
-    const response = await axiosBasePublic.post(
+    const response = await axiosBase.post(
       `/auth/confirm-password`,
       JSON.stringify(loginData)
     );
@@ -88,7 +88,7 @@ export const OwnersAPI = {
   registerApiPassphrase: async (
     registerData: IRegisterApiPassphrase
   ): Promise<void> => {
-    const response = await axiosOwnerBase.post(
+    const response = await axiosBase.post(
       `/auth/register-api`,
       JSON.stringify(registerData)
     );
@@ -100,7 +100,7 @@ export const OwnersAPI = {
   generateKey: async (
     keyGenerationData: IKeyGeneration
   ): Promise<IKeyGenerationResponse> => {
-    const response = await axiosOwnerBase.post(
+    const response = await axiosBase.post(
       `/key`,
       JSON.stringify(keyGenerationData)
     );
@@ -114,7 +114,7 @@ export const OwnersAPI = {
   verifyTransaction: async (
     transactionData: ITransactionProposal
   ): Promise<ITransactionVerifyResponse[]> => {
-    const response = await axiosOwnerBase.post(
+    const response = await axiosBase.post(
       `/key/verify-txns`,
       JSON.stringify(transactionData)
     );
@@ -128,7 +128,7 @@ export const OwnersAPI = {
   sendL1Transaction: async (
     transactionToSendData: ITransactionBase[]
   ): Promise<ITransactionSettledResponse[]> => {
-    const response = await axiosOwnerBase.post(
+    const response = await axiosBase.post(
       `/key/send/l1`,
       JSON.stringify(transactionToSendData)
     );
@@ -142,7 +142,7 @@ export const OwnersAPI = {
   sendL2Transaction: async (
     signedTransactionData: ITransactionProposal
   ): Promise<ITransactionSettledResponse> => {
-    const response = await axiosOwnerBase.post(
+    const response = await axiosBase.post(
       `/key/send/l2`,
       JSON.stringify(signedTransactionData)
     );
@@ -158,7 +158,7 @@ export const OwnersAPI = {
   ): Promise<ICheckL2AddressResponse> => {
     let requestUrl = `/owner/check-l2-address?to=${l2Check.to}`;
     if (l2Check.coinSymbol) requestUrl += `&coinSymbol=${l2Check.coinSymbol}`;
-    const response = await axiosOwnerBase.get(requestUrl);
+    const response = await axiosBase.get(requestUrl);
     console.log(response);
     const { data, status } = response;
     if (status >= 400) {
@@ -170,7 +170,7 @@ export const OwnersAPI = {
   checkL2AddressByAlias: async (
     l2Check: ICheckL2Address
   ): Promise<ICheckL2AddressResponse> => {
-    const response = await axiosOwnerBase.get(
+    const response = await axiosBase.get(
       `/nft/acns/check-l2-address?to=${l2Check.to}`
     );
     console.log(response);
@@ -184,7 +184,7 @@ export const OwnersAPI = {
   changePassword: async (
     changePasswordData: IChangePassword
   ): Promise<void> => {
-    const response = await axiosOwnerBase.post(
+    const response = await axiosBase.post(
       `/auth/change-password`,
       JSON.stringify(changePasswordData)
     );
@@ -197,7 +197,7 @@ export const OwnersAPI = {
   requestActivationCode: async function (
     payload: IRequestActivationCode
   ): Promise<IRequestActivationCodeResponse> {
-    const response = await axiosOwnerBase.post(
+    const response = await axiosBase.post(
       `/auth/request-2fa-activation`,
       JSON.stringify(payload)
     );
@@ -212,7 +212,7 @@ export const OwnersAPI = {
   activateNewAccount: async (
     payload: IActivateWalletAccount
   ): Promise<IActivateWalletAccountResponse> => {
-    const response = await axiosOwnerBase.post(
+    const response = await axiosBase.post(
       `/auth/activate-wallet-account`,
       JSON.stringify(payload)
     );
@@ -225,7 +225,7 @@ export const OwnersAPI = {
 
   nftSearch: async (iAcnsSearch: IAcnsSearch): Promise<ISearchAcnsResponse> => {
     const requestUrl = `/nft/acns/search?searchValue=${iAcnsSearch.searchValue}`;
-    const response = await axiosOwnerBase.get(requestUrl);
+    const response = await axiosBase.get(requestUrl);
     const { data, status } = response;
     if (status >= 400) {
       throw new Error(data.message);
@@ -234,7 +234,7 @@ export const OwnersAPI = {
   },
 
   nftTransfer: async (payload: ITransferNft): Promise<ITransferNftResponse> => {
-    const response = await axiosOwnerBase.post(
+    const response = await axiosBase.post(
       `/nft/transfer`,
       JSON.stringify(payload)
     );
@@ -246,7 +246,7 @@ export const OwnersAPI = {
   },
 
   updateAcns: async (updateAcns: IUpdateAcns) => {
-    const response = await axiosOwnerBase.post(
+    const response = await axiosBase.post(
       `/nft/acns`,
       JSON.stringify(updateAcns)
     );
@@ -257,7 +257,7 @@ export const OwnersAPI = {
   },
 
   deleteAccount: async () => {
-    const response = await axiosOwnerBase.post(`/owner/me/delete`);
+    const response = await axiosBase.post(`/owner/me/delete`);
     const { data, status } = response;
     if (status >= 400) {
       throw new Error(data.message);

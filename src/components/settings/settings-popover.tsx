@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { SquareWhiteButton } from '../buttons';

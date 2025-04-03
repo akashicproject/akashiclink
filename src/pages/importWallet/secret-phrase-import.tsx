@@ -11,7 +11,7 @@ import { PublicLayout } from '../../components/layout/public-layout';
 import { SecretWords } from '../../components/secret-words/secret-words';
 import { urls } from '../../constants/urls';
 import { historyGoBack } from '../../routing/history-stack';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useOwner } from '../../utils/hooks/useOwner';
 import {
   cacheCurrentPage,

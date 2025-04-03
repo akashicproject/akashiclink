@@ -13,7 +13,7 @@ import {
 import { PurpleButton } from '../buttons';
 import { StyledInput } from '../styled-input';
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import { OwnersAPI } from '../../utils/api';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';

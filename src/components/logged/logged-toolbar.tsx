@@ -22,6 +22,7 @@ export function LoggedToolbar({
   backButtonUrl?: string;
   isRefresh?: boolean;
 }) {
+  // Mutate is ued to to trigger a revalidation
   const { mutate } = useSWRConfig();
   const logout = useLogout();
   const history = useHistory();

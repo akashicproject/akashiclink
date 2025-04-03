@@ -14,7 +14,7 @@ import { AasListingSwitch } from '../../components/nft/aas-listing-switch';
 import { OneNft } from '../../components/nft/one-nft';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 
 const NftWrapper = styled.div({

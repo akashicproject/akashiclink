@@ -27,7 +27,7 @@ import {
 } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
 import { historyGoBack } from '../../routing/history-stack';
-import { akashicPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useOwner } from '../../utils/hooks/useOwner';
@@ -45,8 +45,6 @@ enum CreateWalletView {
   ActivateAccount = 'ActivateAccount',
   AccountCreated = 'AccountCreated',
 }
-
-export const createWalletUrl = 'create-wallet';
 
 export function CreateWallet() {
   const { i18n, t } = useTranslation();
@@ -89,7 +87,7 @@ export function CreateWallet() {
 
   useEffect(() => {
     cacheCurrentPage(
-      createWalletUrl,
+      urls.createWalletUrl,
       NavigationPriority.IMMEDIATE,
       async () => {
         const data = await lastPageStorage.getVars();
@@ -121,14 +119,18 @@ export function CreateWallet() {
 
   useEffect(() => {
     if (password || confirmPassword || activationCode) {
-      lastPageStorage.store(createWalletUrl, NavigationPriority.IMMEDIATE, {
-        password: password,
-        confirmPassword: confirmPassword,
-        activationCode: activationCode,
-        view: CreateWalletView.ActivateAccount,
-        timer: timerReset,
-        email: email,
-      });
+      lastPageStorage.store(
+        urls.createWalletUrl,
+        NavigationPriority.IMMEDIATE,
+        {
+          password: password,
+          confirmPassword: confirmPassword,
+          activationCode: activationCode,
+          view: CreateWalletView.ActivateAccount,
+          timer: timerReset,
+          email: email,
+        }
+      );
     }
   }, [password, confirmPassword, activationCode]);
   /**
@@ -155,10 +157,13 @@ export function CreateWallet() {
 
         // Store the state - user will likely click away at this point to copy
         // over the activation code
-        lastPageStorage.store(createWalletUrl, NavigationPriority.IMMEDIATE, {
-          email,
-          view: CreateWalletView.ActivateAccount,
-        });
+        lastPageStorage.store(
+          urls.createWalletUrl,
+          NavigationPriority.IMMEDIATE,
+          {
+            email,
+          }
+        );
         setView(CreateWalletView.ActivateAccount);
 
         // Launch countdown while code is valid

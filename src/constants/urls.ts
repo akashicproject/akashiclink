@@ -1,16 +1,12 @@
-import { createWalletUrl } from '../pages/createWallet/create-wallet';
-import { importAccountUrl } from '../pages/import-wallet';
-import { recoveryUrl } from '../pages/Recovery/recovery';
-
 export type Url = typeof urls[keyof typeof urls];
 export const urls = {
   akashicPay: 'akashic',
   beforeCreateWallet: 'before-create-wallet',
-  createWalletUrl,
-  recoveryUrl,
+  createWalletUrl: 'create-wallet',
+  recoveryUrl: 'recovery',
   resetPassword: 'reset-password',
   verification: 'verification',
-  importAccountUrl,
+  importAccountUrl: 'import',
   welcome: 'welcome',
   loggedFunction: 'logged-function',
   loggedCreate: 'logged-create',

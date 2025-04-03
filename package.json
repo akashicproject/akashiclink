@@ -29,7 +29,8 @@
     "start:dev": "DISABLE_ESLINT_PLUGIN=true PORT=3001 craco start",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx,.cjs,.mjs,.mdx,.graphql --cache --cache-location ../../.cache/eslint/nextjs-app.eslintcache",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx,.cjs,.mjs,.mdx,.graphql --fix",
-    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+    "typecheck": "tsc --project ./tsconfig.json --noEmit",
+    "storybook": "REACT_APP_API_BASE_URL=http://localhost:6006/api/v0 DISABLE_ESLINT_PLUGIN=true storybook dev -p 6006 -c ./storybook"
   },
   "dependencies": {
     "@activeledger/activecrypto": "2.11.6",
@@ -96,6 +97,13 @@
     "@craco/craco": "7.1.0",
     "@craco/types": "7.1.0",
     "@types/compare-versions": "3.3.0",
+    "@storybook/addon-docs": "7.4.5",
+    "@storybook/addon-essentials": "^7.3.0",
+    "@storybook/addon-interactions": "^7.3.0",
+    "@storybook/preset-create-react-app": "7.6.3",
+    "@storybook/react": "^7.3.0",
+    "@storybook/react-webpack5": "^7.4.2",
+    "@storybook/testing-library": "^0.2.0",
     "@types/lodash": "4.14.195",
     "@types/node": "12.20.55",
     "@types/react": "18.0.28",
@@ -105,7 +113,11 @@
     "chrome-webstore-upload": "1.0.0",
     "env-cmd": "10.1.0",
     "eslint": "8.25.0",
+    "msw": "1.3.1",
+    "msw-storybook-addon": "1.8.0",
     "serve": "14.2.0",
+    "storybook": "^7.3.0",
+    "storybook-react-context": "0.6.0",
     "watch": "1.0.2",
     "zip-folder": "1.0.0"
   },
@@ -123,5 +135,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
