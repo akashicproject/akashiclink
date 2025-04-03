@@ -31,6 +31,7 @@ import {
   historyReplace,
   historyResetStackAndRedirect,
 } from '../../routing/history';
+import { EXTENSION_EVENT, responseToSite } from '../../utils/chrome';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { createAccountWithKeys } from './akashic-chain-interaction';
 
@@ -109,6 +110,10 @@ export function CreateWalletSecretConfirm({ isPopup = false }) {
 
       if (isPopup) {
         dispatch(onClear());
+      } else {
+        await responseToSite({
+          event: EXTENSION_EVENT.USER_LOCKED_WALLET,
+        });
       }
 
       historyResetStackAndRedirect(urls.createWalletSuccessful);

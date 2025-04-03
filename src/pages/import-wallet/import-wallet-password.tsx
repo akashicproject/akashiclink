@@ -5,7 +5,7 @@ import { CreatePasswordForm } from '../../components/wallet-setup/create-passwor
 import { urls } from '../../constants/urls';
 import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
 import {
-  onClear,
+  onClear as onClearImportWalletSlice,
   onInputChange,
   selectImportWalletForm,
   selectOtk,
@@ -14,15 +14,20 @@ import {
   historyGoBackOrReplace,
   historyResetStackAndRedirect,
 } from '../../routing/history';
+import { EXTENSION_EVENT, responseToSite } from '../../utils/chrome';
 import { useAccountMe } from '../../utils/hooks/useAccountMe';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { useLogout } from '../../utils/hooks/useLogout';
 import { useMyTransfers } from '../../utils/hooks/useMyTransfers';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 
 export function ImportWalletPassword({ isPopup = false }) {
   useIosScrollPasswordKeyboardIntoView();
+
+  const logout = useLogout();
+
   const [isLoading, setIsLoading] = useState(false);
   /** Tracking user input */
   const validatePassword = (value: string) =>
@@ -41,7 +46,7 @@ export function ImportWalletPassword({ isPopup = false }) {
 
   /**
    * Validates Password, creates OTK and sends on to OTK-confirmation (Create)
-   * OR, for import validates password, stores OTK and send sto Success-screen
+   * OR, for import validates password, stores OTK and send to Success-screen
    */
   async function confirmPasswordAndCreateOtk() {
     if (
@@ -77,9 +82,13 @@ export function ImportWalletPassword({ isPopup = false }) {
       });
 
       if (isPopup) {
-        dispatch(onClear());
+        dispatch(onClearImportWalletSlice());
         historyResetStackAndRedirect(urls.importWalletSuccessful);
         return;
+      } else {
+        await responseToSite({
+          event: EXTENSION_EVENT.USER_LOCKED_WALLET,
+        });
       }
 
       await mutateMyTransfers();
@@ -91,9 +100,13 @@ export function ImportWalletPassword({ isPopup = false }) {
     }
   }
 
-  const onClickCancel = () => {
-    dispatch(onClear());
-    historyGoBackOrReplace(urls.akashicPay);
+  const onClickCancel = async () => {
+    dispatch(onClearImportWalletSlice());
+    if (isPopup) {
+      historyGoBackOrReplace(urls.root);
+    } else {
+      await logout();
+    }
   };
 
   return (

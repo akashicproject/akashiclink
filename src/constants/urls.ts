@@ -1,5 +1,6 @@
 export type Url = typeof urls[keyof typeof urls];
 export const urls = {
+  root: '/',
   akashicPay: 'akashic',
   importAccountUrl: 'import',
   welcome: 'welcome',
