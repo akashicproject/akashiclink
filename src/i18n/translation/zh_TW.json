@@ -165,6 +165,9 @@
   "NoActivity": "沒有活動",
   "Wallet": "錢包",
   "Address": "地址",
+  "State": "State",
+  "TransactionType": "Transaction Type",
+  "Amount/NFT": "Amount / NFT",
   "Chain": {
     "Title": "鏈",
     "AkashicChain": "Akashic 鏈",

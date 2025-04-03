@@ -165,6 +165,9 @@
   "NoActivity": "No Activity yet",
   "Wallet": "Wallet",
   "Address": "Address",
+  "State": "State",
+  "TransactionType": "Transaction Type",
+  "Amount/NFT": "Amount / NFT",
   "Chain": {
     "Title": "Chain",
     "AkashicChain": "Akashic Chain",

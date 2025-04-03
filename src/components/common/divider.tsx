@@ -10,7 +10,6 @@ export const Divider = styled.div<{
   borderTop: `${props.borderWidth || '1px'} solid ${
     props.borderColor || '#D9D9D9'
   }`,
-  width: '100%',
   marginTop: '8px',
   marginBottom: '8px',
 }));

@@ -1,33 +1,23 @@
 import './activity.scss';
 
 import styled from '@emotion/styled';
-import { TransactionLayer } from '@helium-pay/backend';
-import {
-  IonBackdrop,
-  IonButton,
-  IonCard,
-  IonIcon,
-  IonImg,
-  IonSpinner,
-} from '@ionic/react';
+import { IonIcon, IonSpinner } from '@ionic/react';
 import dayjs from 'dayjs';
-import { t } from 'i18next';
 import { alertCircleOutline, closeOutline } from 'ionicons/icons';
-import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import type { GridComponents } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
-import { NftDetail } from '../../components/activity/nft-details';
 import { OneActivity } from '../../components/activity/one-activity';
-import { TransactionDetails } from '../../components/activity/transactions-details';
+import { Divider } from '../../components/common/divider';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
+import { useTheme } from '../../components/providers/PreferenceProvider';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
+import { themeType } from '../../theme/const';
 import { formatMergeAndSortNftAndCryptoTransfers } from '../../utils/formatTransfers';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
@@ -53,15 +43,33 @@ export const NoActivityText = styled.div({
   lineHeight: '24px',
   color: 'var(--ion-color-primary-10)',
 });
+export const TableWrapper = styled.div({
+  fontSize: '10px',
+  padding: '0px 10px',
+  marginBottom: '-12px',
+  marginTop: '32px',
+  color: '#B0A9B3',
+});
+export const ColumnWrapper = styled.div({
+  fontWeight: '700',
+});
+
+export const TableHeads = styled.div({
+  display: 'flex',
+  justifyContent: 'space-between',
+});
 
 export function Activity() {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
+  const [storedTheme] = useTheme();
   const [transferParams, _] = useState({
     startDate: dayjs().subtract(1, 'month').toDate(),
+  });
+  const { transfers, isLoading } = useTransfersMe({
+    ...transferParams,
     hideSmallTransactions: true,
   });
-  const { transfers, isLoading } = useTransfersMe(transferParams);
   const { transfers: nftTransfers, isLoading: isLoadingNft } =
     useNftTransfersMe(transferParams);
   const walletFormatTransfers = formatMergeAndSortNftAndCryptoTransfers(
@@ -70,6 +78,34 @@ export function Activity() {
   );
   return (
     <DashboardLayout showSetting={false}>
+      <TableWrapper>
+        <TableHeads>
+          <div
+            style={{
+              display: 'flex',
+              gap: '16px',
+              marginLeft: '8px',
+            }}
+          >
+            <ColumnWrapper>{t('State')}</ColumnWrapper>
+            <ColumnWrapper>{t('TransactionType')}</ColumnWrapper>
+          </div>
+          <ColumnWrapper style={{ marginRight: '8px' }}>
+            {t('Amount/NFT')}
+          </ColumnWrapper>
+        </TableHeads>
+        <Divider
+          borderColor={storedTheme === themeType.DARK ? '#2F2F2F' : '#D9D9D9'}
+          height={'1px'}
+          borderWidth={'0.5px'}
+          style={{
+            marginTop: '8px',
+            marginLeft: '8px',
+            marginRight: '8px',
+          }}
+        />
+      </TableWrapper>
+
       {!isLoading && !isLoadingNft ? (
         walletFormatTransfers.length ? (
           <Virtuoso

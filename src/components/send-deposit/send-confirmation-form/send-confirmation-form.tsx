@@ -153,7 +153,10 @@ export const SendConfirmationForm = () => {
               </IonItem>
             )}
             <IonItem>
-              <Divider className={'ion-margin-vertical'} />
+              <Divider
+                style={{ width: '100%' }}
+                className={'ion-margin-vertical'}
+              />
             </IonItem>
             <ListLabelValueItem
               label={t('Amount')}
@@ -188,7 +191,10 @@ export const SendConfirmationForm = () => {
               validatedAddressPair?.userInputToAddress && (
               <>
                 <IonItem>
-                  <Divider className={'ion-margin-vertical'} />
+                  <Divider
+                    style={{ width: '100%' }}
+                    className={'ion-margin-vertical'}
+                  />
                 </IonItem>
                 <ListLabelValueItem
                   label={t('Remark')}

@@ -5,13 +5,12 @@ import {
   TransactionType,
 } from '@helium-pay/backend';
 import { IonImg } from '@ionic/react';
+import Big from 'big.js';
 // TODO: Replace these by non-mui things
-import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import RotateRightOutlinedIcon from '@mui/icons-material/RotateRightOutlined';
 import type { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { themeType } from '../../theme/const';
 import { formatAmount } from '../../utils/formatAmount';
 import { formatDate } from '../../utils/formatDate';
@@ -19,129 +18,86 @@ import type { ITransactionRecordForExtension } from '../../utils/formatTransfers
 import { Divider } from '../common/divider';
 import { useTheme } from '../providers/PreferenceProvider';
 
-const L2Icon = '/shared-assets/images/PayLogo-all-white.svg';
-
 const ActivityWrapper = styled.div<{ hover: boolean }>((props) => ({
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'space-around',
+  justifyContent: 'space-between',
   alignItems: 'center',
   // Gap between the elements
-  gap: '8px',
+  // gap: '8px',
   '&:hover': {
     background: props.hover ? 'rgba(103, 80, 164, 0.14)' : 'transparent',
   },
+  padding: '4px 10px',
 }));
 
-const TimeWrapper = styled.div({
+const TransactionStatusWrapper = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'flex-start',
-  padding: 0,
-  width: 'calc(308px/3)',
-  height: '40px',
-  fontSize: '10px',
-  lineHeight: '16px',
-  fontWeight: 400,
-  color: 'var(--ion-color-primary-10)',
+  justifyContent: 'space-between',
 });
 
 const Type = styled.div({
-  fontSize: '10px',
-  fontWeight: '700',
-  boxSizing: 'border-box',
+  fontWeight: 'bold',
+  fontSize: '0.625rem',
+});
+
+const IconWrapper = styled.div({
   display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: '3px 8px',
-  gap: '45px',
-  width: '98px',
-  height: '23px',
-  border: '1px solid #958E99',
-  borderRadius: '8px 0px 0px 0px',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
+  gap: '8px',
 });
 
 const TypeIcon = styled.div({
-  boxSizing: 'border-box',
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: '3px 8px',
-  gap: '45px',
-  width: '22px',
-  height: '23px',
-  border: '1px solid #958E99',
-  borderRadius: '0px 8px 0px 0px',
-  whiteSpace: 'nowrap',
+  position: 'relative',
+  display: 'inline-block',
 });
 
 const Time = styled.div({
-  boxSizing: 'border-box',
-  width: '100%',
   textAlign: 'center',
-  height: '18px',
-  border: '1px solid #958E99',
-  borderTop: '0px',
-  borderRadius: '0px 0px 8px 8px',
-  fontSize: '8px',
-});
-
-const Chain = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'center',
-  alignItems: 'center',
-  padding: '0px',
-  gap: '12px',
-  width: 'calc(308px/3)',
-  height: '40px',
-  borderRadius: '8px',
-  fontSize: '14px',
-  fontWeight: 700,
-  color: '#FFFFFF',
+  fontSize: '0.5rem',
+  fontWeight: 400,
 });
 
 const Amount = styled.div({
-  boxSizing: 'border-box',
-  border: '1px solid #958E99',
-  borderRadius: '8px',
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  overflow: 'hidden',
-  padding: '4px 12px',
-  width: 'calc(308px/3)',
-  height: '40px',
-  fontSize: '10px',
+  fontSize: '0.625rem',
   fontWeight: 700,
   color: 'var(--ion-color-primary-10)',
 });
+const AmountWrapper = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-end',
+  justifyContent: 'space-between',
+  gap: '4px',
+});
+const GasFee = styled.div({
+  overflow: 'hidden',
+  fontSize: '0.5rem',
+  fontWeight: 400,
+  color: 'var(--ion-light-text)',
+});
+
+const Nft = styled.div({
+  display: 'flex',
+  gap: '8px',
+});
+
+const NftName = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+});
 
 const NftItem = styled.div({
-  boxSizing: 'border-box',
-  border: '1px solid #958E99',
-  borderRadius: '8px',
+  fontWeight: 'bold',
+  fontSize: '0.625rem',
   display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  overflow: 'hidden',
-  padding: '4px 12px',
-  width: '50%',
-  height: '40px',
-  fontSize: '10px',
-  fontWeight: 700,
-  color: 'var(--ion-color-primary-10)',
+  justifyContent: 'flex-end',
 });
 
 const NftImage = styled.div({
   boxSizing: 'border-box',
-  border: '1px solid #958E99',
+  border: '1px solid var(--ion-color-dark-ontline)',
   borderRadius: '20px',
   display: 'flex',
   flexDirection: 'row',
@@ -150,10 +106,12 @@ const NftImage = styled.div({
   overflow: 'hidden',
   width: '50%',
   height: '40px',
-  fontSize: '10px',
+  fontSize: '0.625rem',
   fontWeight: 700,
   color: 'var(--ion-color-primary-10)',
 });
+
+const currenciesIcon = [...SUPPORTED_CURRENCIES_FOR_EXTENSION.list];
 
 /**
  * Display of a single transfer
@@ -199,21 +157,25 @@ export function OneActivity({
       label = label.split(' ')[1];
       break;
   }
-
+  const L2Icon = `/shared-assets/images/${
+    transfer.status === TransactionStatus.CONFIRMED
+      ? 'akashic-pay-logo'
+      : 'akashic-grey-logo'
+  }.svg`;
+  const currencyObj = currenciesIcon.find(
+    (c) => c.walletCurrency.chain === transfer.currency?.chain
+  );
+  const iconImg =
+    isL2 || isNft
+      ? L2Icon
+      : transfer.status === TransactionStatus.CONFIRMED
+      ? currencyObj?.currencyIcon
+      : currencyObj?.greyCurrencyIcon;
   /**
    * Style the icon displaying the chain information:
    * - L2 transactions need to display the full AkashicChain text and so need less padding
    * - If the more-info-chevron is displayed, reduce the spacing
    */
-  const iconStyle = {
-    gap: isL2 ? '0px' : showDetail ? '8px' : '12px',
-    backgroundColor:
-      isL2 || isNft
-        ? storedTheme === themeType.DARK
-          ? '#C297FF'
-          : '#290056'
-        : '#7444B6',
-  };
 
   return (
     <>
@@ -223,127 +185,138 @@ export function OneActivity({
         style={style}
         hover={hasHoverEffect || false}
       >
-        <TimeWrapper>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: '100%',
-            }}
-          >
-            <Type>
-              {transfer.status === TransactionStatus.FAILED ? (
-                <span
-                  style={{
-                    color: '#DE3730',
-                  }}
-                >
-                  {`${transferType} - ${t('Failed')}`}
-                </span>
-              ) : transfer.status === TransactionStatus.PENDING ? (
-                <span
-                  style={{
-                    color: '#DE3730',
-                    fontSize: '9px',
-                  }}
-                >
-                  {`${transferType} - ${t('Pending')}`}
-                </span>
-              ) : (
-                transferType
-              )}
-            </Type>
-            <TypeIcon>
-              {transfer.status === TransactionStatus.FAILED ? (
-                <ErrorOutlineIcon
-                  sx={{
-                    fontSize: 'medium',
-                    color: 'error.main',
-                  }}
-                />
-              ) : transfer.status === TransactionStatus.PENDING ? (
-                <RotateRightOutlinedIcon
-                  sx={{
-                    fontSize: 'medium',
-                    color: 'error.main',
-                  }}
-                />
-              ) : (
-                <CheckOutlinedIcon
-                  sx={{
-                    fontSize: 'medium',
-                    color: '#41CC9A',
-                  }}
-                />
-              )}
-            </TypeIcon>
-          </div>
-          <Time>{formatDate(new Date(transfer.date))}</Time>
-        </TimeWrapper>
-        <Chain
-          style={
-            transfer.status !== TransactionStatus.CONFIRMED
-              ? {
-                  ...iconStyle,
-                  filter: 'brightness(100%)',
-                  backgroundColor:
-                    storedTheme === themeType.LIGHT ? '#B0A9B3' : '#4A454E',
-                }
-              : {
-                  ...iconStyle,
-                }
-          }
-        >
-          <IonImg
-            alt=""
-            src={isL2 || isNft ? L2Icon : transfer.networkIcon}
-            style={{ height: isL2 || isNft ? '20px' : '12px' }}
-          />
-          {isL2 || isNft ? null : label}
-        </Chain>
-
+        <IconWrapper>
+          <TypeIcon>
+            <IonImg
+              alt=""
+              src={iconImg}
+              style={{
+                height: '32px',
+                width: '32px',
+              }}
+            />
+            <IonImg
+              alt=""
+              src={`/shared-assets/images/${
+                storedTheme === themeType.DARK
+                  ? `${transfer.status}-dark`
+                  : `${transfer.status}-white`
+              }.svg`}
+              style={{
+                position: 'absolute',
+                bottom: '-2px',
+                right: '-2px',
+                height: '16px',
+                width: '16px',
+              }}
+            />
+          </TypeIcon>
+          <TransactionStatusWrapper>
+            {transfer.status !== TransactionStatus.CONFIRMED ? (
+              <Type
+                style={{
+                  color:
+                    storedTheme === themeType.DARK
+                      ? 'var(--ion-dark-text)'
+                      : 'var(--ion-light-text)',
+                }}
+              >
+                {transfer.status === TransactionStatus.PENDING
+                  ? `${transferType} - ${t('Pending')}`
+                  : `${transferType} - ${t('Failed')}`}
+              </Type>
+            ) : (
+              <Type>{transferType}</Type>
+            )}
+            {transfer.status !== TransactionStatus.CONFIRMED ? (
+              <Time
+                style={{
+                  color:
+                    storedTheme === themeType.DARK
+                      ? 'var(--ion-dark-text)'
+                      : 'var(--ion-light-text)',
+                }}
+              >
+                {formatDate(new Date(transfer.date))}
+              </Time>
+            ) : (
+              <Time>{formatDate(new Date(transfer.date))}</Time>
+            )}
+          </TransactionStatusWrapper>
+        </IconWrapper>
         {isNft ? (
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              width: 'calc(308px/3)',
-              gap: '8px',
-              justifyContent: 'space-between',
-            }}
-          >
-            <NftItem>NFT</NftItem>
+          <Nft>
+            <NftName>
+              <NftItem className="ion-margin-top-xxs">{t('NFT')}</NftItem>
+              <NftItem
+                style={{
+                  color:
+                    storedTheme === themeType.DARK
+                      ? 'var(--ion-dark-text)'
+                      : 'var(--ion-light-text)',
+                  fontSize: '0.5rem',
+                  fontWeight: 400,
+                  marginBottom: '4px',
+                }}
+              >
+                {transfer?.nft?.name}
+              </NftItem>
+            </NftName>
             <NftImage
               style={{
-                height: '40px',
-                width: '40px',
+                height: '32px',
+                width: '32px',
               }}
             >
               <IonImg src={transfer?.nft?.image}></IonImg>
             </NftImage>
-          </div>
+          </Nft>
         ) : (
-          <Amount
-            style={{
-              color:
-                transfer.status !== TransactionStatus.CONFIRMED
-                  ? '#B0A9B3'
-                  : storedTheme === themeType.LIGHT
-                  ? '#290056'
-                  : 'inherit',
-            }}
-          >
-            {/* HACK: Reduce currency symbols to a single word to fit small screen */}
-            {`${formatAmount(transfer.amount)} ${
-              transfer?.currency?.displayName?.split('-')[0] || ''
-            }`}
-          </Amount>
+          <AmountWrapper>
+            <Amount
+              style={{
+                color:
+                  transfer.status !== TransactionStatus.CONFIRMED
+                    ? storedTheme === themeType.DARK
+                      ? 'var(--ion-dark-text)'
+                      : 'var(--ion-light-text)'
+                    : transfer.type === TransactionType.DEPOSIT
+                    ? 'var(--ion-color-success)'
+                    : '#ff5449',
+              }}
+            >
+              {`${
+                transfer.type === TransactionType.DEPOSIT ? '+' : '-'
+              }${formatAmount(transfer.amount)} ${
+                transfer.tokenSymbol
+                  ? `${transfer?.currency?.token ?? ''} (${
+                      transfer?.currency?.chain?.split('-')[0]
+                    })`
+                  : transfer?.currency?.displayName?.split('-')[0] || ''
+              }`}
+            </Amount>
+            {transfer.feesPaid && (
+              <GasFee
+                style={{
+                  color:
+                    storedTheme === themeType.DARK
+                      ? 'var(--ion-dark-text)'
+                      : 'var(--ion-light-text)',
+                }}
+              >{`${t('GasFee')}: ${Big(transfer.feesPaid).toFixed(2)}`}</GasFee>
+            )}
+          </AmountWrapper>
         )}
       </ActivityWrapper>
       {divider && (
         <Divider
+          style={{
+            marginLeft: '8px',
+            marginRight: '8px',
+          }}
           borderColor={storedTheme === themeType.DARK ? '#2F2F2F' : '#D9D9D9'}
+          height={'1px'}
+          borderWidth={'0.5px'}
         />
       )}
     </>

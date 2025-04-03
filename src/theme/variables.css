@@ -197,6 +197,8 @@ body.dark {
 
   --ion-background-color: #1f1f1f;
   --ion-background-color-rgb: 31, 31, 31;
+  --ion-color-fail: #ff5449;
+  --ion-color-success: #41cc9a;
 
   /** buttons **/
   --ion-white-button-text: #eddcff;
@@ -212,6 +214,7 @@ body.dark {
   --ion-current-selection-opacity: 100%;
   --ion-select-border: #958e99;
   --ion-light-text: #b0a9b3;
+  --ion-dark-text: #4a454e;
 
   /** settings popup background color **/
   --settings-popup-background-color: #2c2c2c;
