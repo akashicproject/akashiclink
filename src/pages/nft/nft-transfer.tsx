@@ -12,6 +12,7 @@ import { alertCircleOutline } from 'ionicons/icons';
 import { debounce } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 
 import {
   CustomAlert,
@@ -27,15 +28,13 @@ import {
 } from '../../components/styled-input';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
+import type { LocationState } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { OwnersAPI } from '../../utils/api';
-import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { useOwner } from '../../utils/hooks/useOwner';
 import { displayLongText } from '../../utils/long-text';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
-import type { TransferResultType } from './nft-transfer-result';
-import { NftTransferResult } from './nft-transfer-result';
 import { NoNtfText, NoNtfWrapper } from './nfts';
 
 const SendWrapper = styled.div({
@@ -74,12 +73,6 @@ const AddressBox = styled.div({
   border: '1px solid #958e99',
 });
 
-/** Corresponds to steps taken by user as they make a nft transfer */
-enum TransferView {
-  Transfer = 'Transfer',
-  Result = 'Result',
-}
-
 enum SearchResult {
   Layer2 = 'Layer2',
   AcnsName = 'AcnsName',
@@ -92,8 +85,10 @@ export function NftTransfer() {
   const isMobile = isPlatform('mobile');
   const { nfts, isLoading, mutate } = useNftMe();
   const { owner } = useOwner();
-  const [nftName, _] = useLocalStorage('nft', '');
-  const currentNft = nfts.find((nft) => nft.name === nftName) || nfts[0];
+  const history = useHistory<LocationState>();
+  const currentNft = nfts.find(
+    (nft) => nft.name === history.location.state?.nftName
+  )!;
   const [inputValue, setInputValue] = useState<string>('');
   const [toAddress, setToAddress] = useState<string>('');
   const [searched, setSearched] = useState(false);
@@ -101,10 +96,7 @@ export function NftTransfer() {
     SearchResult.NoResult
   );
 
-  // Keeps track of which page the user is at
-  const [pageView, setPageView] = useState(TransferView.Transfer);
   const [alert, setAlert] = useState(formAlertResetState);
-  const [transferResult, setTransferResult] = useState<TransferResultType>();
   const [loading, setLoading] = useState(false);
 
   // input username to address
@@ -149,11 +141,17 @@ export function NftTransfer() {
         acnsAlias: response.acnsAlias,
         txHash: response.txHash,
       };
-      setTransferResult(result);
-      setPageView(TransferView.Result);
+      history.push({
+        pathname: akashicPayPath(urls.nftTransferResult),
+        state: {
+          transaction: result,
+          errorMsg: errorMsgs.NoError,
+        },
+      });
     } catch (error) {
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
     } finally {
+      setInputValue('');
       await mutate();
       setLoading(false);
     }
@@ -169,6 +167,7 @@ export function NftTransfer() {
       debouncedSearchHandler.cancel();
     };
   }, []);
+
   return (
     <>
       <CustomAlert state={alert} />
@@ -177,101 +176,90 @@ export function NftTransfer() {
           <IonSpinner name="circular"></IonSpinner>
         </NoNtfWrapper>
       )}
-      {pageView === TransferView.Transfer && (
-        <NftLayout>
-          {isLoading ? (
-            <NoNtfWrapper>
-              <IonSpinner name="circular"></IonSpinner>
-            </NoNtfWrapper>
-          ) : nfts.length === 0 ? (
-            <NoNtfWrapper>
-              <IonIcon icon={alertCircleOutline} class="alert-icon" />
-              <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
-            </NoNtfWrapper>
-          ) : (
-            <>
-              <IonRow style={{ marginTop: isMobile ? '50px' : '40px' }}>
-                <IonCol class="ion-center">
-                  <OneNft nft={currentNft} />
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol class="ion-center">
-                  <SendWrapper style={{ gap: isMobile ? '24px' : '16px' }}>
-                    <StyledInput
-                      isHorizontal={true}
-                      label={t('SendTo')}
-                      placeholder={t('EnterAddress')}
-                      type={'text'}
-                      errorPrompt={StyledInputErrorPrompt.Address}
-                      onIonInput={({ target: { value } }) => {
-                        debouncedSearchHandler(value as string);
-                        setInputValue(value as string);
-                      }}
-                    />
-                    {inputValue && (
-                      <AddressWrapper>
-                        <AddressBox>
-                          {searchedResultType === SearchResult.AcnsName &&
-                            `${inputValue} = ${displayLongText(toAddress)}`}
-                          {searchedResultType === SearchResult.Layer2 &&
-                            `${displayLongText(toAddress)}`}
-                          {searchedResultType === SearchResult.NoResult &&
-                            t('NoSearchResult')}
-                        </AddressBox>
+      <NftLayout>
+        {isLoading ? (
+          <NoNtfWrapper>
+            <IonSpinner name="circular"></IonSpinner>
+          </NoNtfWrapper>
+        ) : nfts.length === 0 ? (
+          <NoNtfWrapper>
+            <IonIcon icon={alertCircleOutline} class="alert-icon" />
+            <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
+          </NoNtfWrapper>
+        ) : (
+          <>
+            <IonRow style={{ marginTop: isMobile ? '50px' : '40px' }}>
+              <IonCol class="ion-center">
+                <OneNft nft={currentNft} />
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol class="ion-center">
+                <SendWrapper style={{ gap: isMobile ? '24px' : '16px' }}>
+                  <StyledInput
+                    isHorizontal={true}
+                    label={t('SendTo')}
+                    placeholder={t('EnterAddress')}
+                    type={'text'}
+                    errorPrompt={StyledInputErrorPrompt.Address}
+                    onIonInput={({ target: { value } }) => {
+                      debouncedSearchHandler(value as string);
+                      setInputValue(value as string);
+                    }}
+                    value={inputValue}
+                  />
+                  {inputValue && (
+                    <AddressWrapper>
+                      <AddressBox>
+                        {searchedResultType === SearchResult.AcnsName &&
+                          `${inputValue} = ${displayLongText(toAddress)}`}
+                        {searchedResultType === SearchResult.Layer2 &&
+                          `${displayLongText(toAddress)}`}
+                        {searchedResultType === SearchResult.NoResult &&
+                          t('NoSearchResult')}
+                      </AddressBox>
 
-                        <IonImg
-                          alt={''}
-                          src={
-                            searched
-                              ? '/shared-assets/images/right.png'
-                              : '/shared-assets/images/wrong.png'
-                          }
-                          style={{ width: '40px', height: '40px' }}
-                        />
-                      </AddressWrapper>
-                    )}
-                  </SendWrapper>
-                </IonCol>
-              </IonRow>
-              <IonRow
-                class="ion-justify-content-between"
-                style={{
-                  width: '280px',
-                }}
-              >
-                <IonCol>
-                  <PurpleButton
-                    expand="block"
-                    disabled={!inputValue || !searched}
-                    onClick={transferNft}
-                  >
-                    {t('Send')}
-                    {loading ? (
-                      <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
-                    ) : null}
-                  </PurpleButton>
-                </IonCol>
-                <IonCol>
-                  <WhiteButton
-                    expand="block"
-                    routerLink={akashicPayPath(urls.nft)}
-                  >
-                    {t('Cancel')}
-                  </WhiteButton>
-                </IonCol>
-              </IonRow>
-            </>
-          )}
-        </NftLayout>
-      )}
-      {pageView === TransferView.Result && (
-        <NftTransferResult
-          transaction={transferResult}
-          errorMsg={errorMsgs.NoError}
-          isMobile={isMobile}
-        />
-      )}
+                      <IonImg
+                        alt={''}
+                        src={
+                          searched
+                            ? '/shared-assets/images/right.png'
+                            : '/shared-assets/images/wrong.png'
+                        }
+                        style={{ width: '40px', height: '40px' }}
+                      />
+                    </AddressWrapper>
+                  )}
+                </SendWrapper>
+              </IonCol>
+            </IonRow>
+            <IonRow
+              class="ion-justify-content-between"
+              style={{
+                width: '280px',
+              }}
+            >
+              <IonCol>
+                <PurpleButton
+                  expand="block"
+                  disabled={!inputValue || !searched}
+                  onClick={transferNft}
+                >
+                  {t('Send')}
+                  {loading ? (
+                    <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
+                  ) : null}
+                </PurpleButton>
+              </IonCol>
+              <IonCol>
+                <WhiteButton expand="block" onClick={() => history.goBack()}>
+                  {t('Cancel')}
+                </WhiteButton>
+              </IonCol>
+            </IonRow>
+          </>
+        )}
+      </NftLayout>
     </>
   );
 }

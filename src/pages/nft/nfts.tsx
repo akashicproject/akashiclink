@@ -16,7 +16,6 @@ import { NftLayout } from '../../components/layout/nft-layout';
 import { OneNft } from '../../components/nft/one-nft';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
-import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 
 export const NoNtfWrapper = styled.div({
@@ -65,10 +64,8 @@ export function Nfts() {
   const { t } = useTranslation();
   const history = useHistory();
   const { nfts, isLoading } = useNftMe();
-  const [_, setNft] = useLocalStorage('nft', '');
   const [nftTab, setNftTab] = useState(true);
   const selectNft = (nft: INftResponse) => {
-    setNft(nft.name);
     history.push({
       pathname: akashicPayPath(urls.nft),
       state: {
@@ -93,7 +90,7 @@ export function Nfts() {
             left: '5%',
             top: '6.5rem',
           }}
-          onClick={() => history.goBack()}
+          onClick={() => history.push(akashicPayPath(urls.loggedFunction))}
         >
           <IonIcon class="icon-button-icon" slot="icon-only" icon={arrowBack} />
         </SquareWhiteButton>

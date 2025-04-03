@@ -16,8 +16,8 @@ import {
 import { NftLayout } from '../../components/layout/nft-layout';
 import { OneNft } from '../../components/nft/one-nft';
 import { urls } from '../../constants/urls';
+import type { LocationState } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tree';
-import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 
 const NftWrapper = styled.div({
@@ -32,11 +32,12 @@ const NftWrapper = styled.div({
 
 export function Nft() {
   const { t } = useTranslation();
-  const history = useHistory();
+  const history = useHistory<LocationState>();
 
   const { nfts } = useNftMe();
-  const [nftName, _] = useLocalStorage('nft', '');
-  const currentNft = nfts.find((nft) => nft.name === nftName) || nfts[0];
+  const currentNft = nfts.find(
+    (nft) => nft.name === history.location.state?.nftName
+  )!;
   const [isOpen, setIsOpen] = useState(false);
 
   const transferNft = () => {
@@ -44,7 +45,10 @@ export function Nft() {
       setIsOpen(true);
       return;
     }
-    history.push(akashicPayPath(urls.nftTransfer));
+    history.push({
+      pathname: akashicPayPath(urls.nftTransfer),
+      state: history.location.state,
+    });
   };
 
   const goNSSetting = () => {

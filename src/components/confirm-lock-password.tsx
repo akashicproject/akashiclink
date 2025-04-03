@@ -1,9 +1,8 @@
 import { IonCol, IonRow } from '@ionic/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 
-import { urls } from '../constants/urls';
-import { akashicPayPath } from '../routing/navigation-tree';
 import { PurpleButton, WhiteButton } from './buttons';
 import { MainGrid } from './layout/main-grid';
 import { StyledInput } from './styled-input';
@@ -20,6 +19,7 @@ export function ConfirmLockPassword({
 }) {
   const { t } = useTranslation();
   const [password, setPassword] = useState<string>();
+  const history = useHistory();
 
   return (
     <MainGrid className="force-center">
@@ -45,10 +45,7 @@ export function ConfirmLockPassword({
       </IonRow>
       <IonRow>
         <IonCol>
-          <WhiteButton
-            routerLink={akashicPayPath(urls.loggedFunction)}
-            expand="block"
-          >
+          <WhiteButton expand="block" onClick={() => history.goBack()}>
             {t('Cancel')}
           </WhiteButton>
         </IonCol>

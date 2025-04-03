@@ -22,6 +22,7 @@ export const urls = {
   nfts: 'nfts',
   nft: 'nft',
   nftTransfer: 'nft-transfer',
+  nftTransferResult: 'nft-transfer-result',
   activity: 'activity',
   recover: 'recover',
   recoverCode: 'recover-code',

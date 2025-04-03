@@ -12,6 +12,7 @@ import { DepositPage } from '../pages/logged/deposit-page';
 import { LoggedCreate } from '../pages/logged/logged-create';
 import { Nft } from '../pages/nft/nft';
 import { NftTransfer } from '../pages/nft/nft-transfer';
+import { NftTransferResult } from '../pages/nft/nft-transfer-result';
 import { Nfts } from '../pages/nft/nfts';
 import { Recover } from '../pages/recover';
 import { RecoverCode } from '../pages/recover-code';
@@ -100,6 +101,7 @@ export function NavigationTree() {
       {hpSubtree.registerPage(Nfts, urls.nfts)}
       {hpSubtree.registerPage(Nft, urls.nft)}
       {hpSubtree.registerPage(NftTransfer, urls.nftTransfer)}
+      {hpSubtree.registerPage(NftTransferResult, urls.nftTransferResult)}
       {hpSubtree.registerPage(Activity, urls.activity)}
       {hpSubtree.registerPage(Recover, urls.recover)}
       {hpSubtree.registerPage(Settings, urls.settings)}

@@ -1,11 +1,13 @@
-import { IonCol, IonImg, IonRow } from '@ionic/react';
+import { IonCol, IonImg, IonRow, isPlatform } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 
 import { PurpleButton } from '../../components/buttons';
 import { DividerDiv } from '../../components/layout/divider';
 import { NftLayout } from '../../components/layout/nft-layout';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
+import type { LocationState } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { displayLongText } from '../../utils/long-text';
 import {
@@ -26,18 +28,14 @@ export interface TransferResultType {
   txHash?: string;
 }
 
-interface Props {
-  transaction: TransferResultType | undefined;
-  errorMsg: string;
-  isMobile: boolean;
-}
-
-export function NftTransferResult(props: Props) {
+export function NftTransferResult() {
   const { t } = useTranslation();
-  const wrongResult = props.errorMsg !== errorMsgs.NoError;
+  const history = useHistory<LocationState>();
+  const wrongResult = history.location.state?.errorMsg !== errorMsgs.NoError;
+  const isMobile = isPlatform('mobile');
   return (
     <NftLayout noFooter={true}>
-      <IonRow style={{ marginTop: props.isMobile ? '6rem' : '0' }}>
+      <IonRow style={{ marginTop: isMobile ? '6rem' : '0' }}>
         <IonCol class="ion-center">
           <HeaderWrapper>
             <IonImg
@@ -50,7 +48,9 @@ export function NftTransferResult(props: Props) {
               style={{ width: '40px', height: '40px' }}
             />
             <HeaderTitle style={{ width: '213px' }}>
-              {wrongResult ? props.errorMsg : t('TransactionSuccessful')}
+              {wrongResult
+                ? history.location.state?.errorMsg
+                : t('TransactionSuccessful')}
             </HeaderTitle>
           </HeaderWrapper>
         </IonCol>
@@ -63,24 +63,32 @@ export function NftTransferResult(props: Props) {
               <TextWrapper>
                 <TextTitle>{t('txHash')}</TextTitle>
                 <TextContent>
-                  {displayLongText(props.transaction?.txHash || '')}
+                  {displayLongText(
+                    history.location.state?.transaction?.txHash || ''
+                  )}
                 </TextContent>
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('Sender')}</TextTitle>
                 <TextContent>
-                  {displayLongText(props.transaction?.sender || '')}
+                  {displayLongText(
+                    history.location.state?.transaction?.sender || ''
+                  )}
                 </TextContent>
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('Receiver')}</TextTitle>
                 <TextContent>
-                  {displayLongText(props.transaction?.receiver)}
+                  {displayLongText(
+                    history.location.state?.transaction?.receiver
+                  )}
                 </TextContent>
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{'NFT'}</TextTitle>
-                <TextContent>{props.transaction?.acnsAlias}</TextContent>
+                <TextContent>
+                  {history.location.state?.transaction?.acnsAlias}
+                </TextContent>
               </TextWrapper>
             </ResultContent>
           </IonCol>
@@ -89,7 +97,7 @@ export function NftTransferResult(props: Props) {
       <IonRow
         style={{
           width: '270px',
-          marginTop: props.isMobile ? '2.5rem' : '0.5rem',
+          marginTop: isMobile ? '2.5rem' : '0.5rem',
         }}
       >
         <IonCol>

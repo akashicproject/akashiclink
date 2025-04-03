@@ -254,7 +254,7 @@ export function ImportWallet() {
                   setActivationCode(undefined);
                   await lastPageStorage.clear();
                   setView(View.Submit);
-                  history.push(akashicPayPath(urls.loggedFunction));
+                  history.goBack();
                 }}
               >
                 {t('Cancel')}

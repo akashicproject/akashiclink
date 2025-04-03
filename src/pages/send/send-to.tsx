@@ -12,6 +12,7 @@ import { IonCol, IonImg, IonRow, IonSpinner, useIonRouter } from '@ionic/react';
 import Big from 'big.js';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import { SwiperSlide } from 'swiper/react';
 
 import {
@@ -162,6 +163,7 @@ export function SendTo() {
   const { keys: exchangeRates } = useExchangeRates();
   const [currency] = useFocusCurrency();
   const [storedTheme] = useTheme();
+  const history = useHistory();
 
   useEffect(() => {
     cacheCurrentPage(urls.sendTo);
@@ -525,6 +527,7 @@ export function SendTo() {
                       style={{ width: '100%', marginRight: '0' }}
                       expand="block"
                       routerLink={akashicPayPath(urls.loggedFunction)}
+                      onClick={() => history.goBack()}
                     >
                       {t('Cancel')}
                     </WhiteButton>
