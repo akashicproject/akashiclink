@@ -14,11 +14,13 @@ import {
 } from '@ionic/react';
 import { helpCircleOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from 'src/redux/app/hooks';
-import { selectTheme } from 'src/redux/slices/preferenceSlice';
-import { themeType } from 'src/theme/const';
+import { useHistory } from 'react-router';
 
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectTheme } from '../../redux/slices/preferenceSlice';
+import type { LocationState } from '../../routing/history';
+import { themeType } from '../../theme/const';
 import useAddressScreeningDetail from '../../utils/hooks/useAddressScreeningDetail';
 import { Divider } from '../common/divider';
 
@@ -168,11 +170,22 @@ const SectionHeader: React.FC<{ title: string }> = ({ title }) => (
 
 export const AddressScreeningDetail = () => {
   const { t } = useTranslation();
+  const history = useHistory<LocationState>();
+
   const data = useAddressScreeningDetail();
   const storedTheme = useAppSelector(selectTheme);
   const currencyObj = currenciesIcon.find(
     (c) => c.walletCurrency.chain === data.network
   );
+
+  //TODO: 1299 - handle data fetching here using the id
+  const addressScreeningId =
+    history.location.state?.addressScreeningSearch?.id ?? undefined;
+
+  if (!addressScreeningId) {
+    return null;
+  }
+
   return (
     <IonGrid
       className={
