@@ -16,7 +16,7 @@ const DEFAULT_STORE_PARAMS: {
     hasActiveAccount: true,
     isLoggedIn: true,
   },
-  createWallet: { hasInputtedPassword: false },
+  createWallet: { hasPassword: false },
 };
 
 export const withReduxProvider = (

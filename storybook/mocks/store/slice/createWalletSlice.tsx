@@ -4,6 +4,20 @@ import type {
 } from '../../../../src/redux/slices/createWalletSlice';
 import { mockCacheOtk } from '../preset';
 
+const maskedPassPhrase = [
+  'throw',
+  '',
+  'rabbit',
+  'alcohol',
+  '',
+  'memory',
+  'resemble',
+  '',
+  'fancy',
+  'clap',
+  'witness',
+  '',
+];
 const mockCreateWalletForm: CreateWalletForm = {
   password: '',
   confirmPassPhrase: [],
@@ -12,25 +26,26 @@ const mockCreateWalletForm: CreateWalletForm = {
 };
 
 export const mockCreateWalletState: CreateWalletState = {
-  maskedPassPhrase: [],
+  maskedPassPhrase: maskedPassPhrase,
   otk: mockCacheOtk,
   error: null,
   createWalletForm: mockCreateWalletForm,
 };
 
 export type mockCreateWalletStoreParams = {
-  hasInputtedPassword: boolean;
+  hasPassword: boolean;
 };
 
 export const getCreateWalletSlice = ({
-  hasInputtedPassword = false,
+  hasPassword = false,
 }: mockCreateWalletStoreParams) => {
   return {
     createWalletSlice: {
       ...mockCreateWalletState,
       createWalletForm: {
         ...mockCreateWalletForm,
-        password: hasInputtedPassword ? 'Test1234' : '',
+        password: hasPassword ? 'Test1234' : '',
+        confirmPassword: hasPassword ? 'Test1234' : '',
       },
     },
   };
