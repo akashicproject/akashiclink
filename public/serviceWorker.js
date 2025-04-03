@@ -43,7 +43,7 @@ const closeAllPopup = async () => {
 };
 
 // ---- Upon receive single message within extension
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, _sendResponse) {
   // forward message to AP
   if (webPort && sender.id === chrome.runtime.id) {
     webPort.postMessage(request);
@@ -53,8 +53,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 // ---- Upon receive single message outside extension
 chrome.runtime.onMessageExternal.addListener(async function (
   request,
-  sender,
-  sendResponse
+  _sender,
+  _sendResponse
 ) {
   if (request.type === REQUEST_TYPE.WEB_REQUEST && request.method === WALLET_METHOD.LOCK_WALLET) {
     const query = new URLSearchParams();
@@ -67,7 +67,6 @@ chrome.runtime.onMessageExternal.addListener(async function (
         chrome.runtime.id
       }/index.html?${query.toString()}`,
     });
-    return;
   }
 
 });
@@ -76,7 +75,7 @@ chrome.runtime.onMessageExternal.addListener(async function (
 chrome.runtime.onConnectExternal.addListener(function (port) {
   webPort = port;
 
-  port.onMessage.addListener(async (request, sender, sendResponse) => {
+  port.onMessage.addListener(async (request, _sender, _sendResponse) => {
     if (request.type === REQUEST_TYPE.CLOSE_POPUP) {
       await closeAllPopup();
       return;
@@ -125,7 +124,7 @@ chrome.runtime.onConnectExternal.addListener(function (port) {
 
   });
 
-  port.onDisconnect.addListener(async (request, sender, sendResponse) => {
+  port.onDisconnect.addListener(async (_request, _sender, _sendResponse) => {
     try {
       await closeAllPopup();
     } catch (e) {
@@ -138,7 +137,7 @@ chrome.runtime.onConnectExternal.addListener(function (port) {
 const ALARM_NAME = 'autoLockAlarm';
 const AUTOLOCKBY_KEY = 'autoLockBy';
 
-const informSiteAutoLock = async (alarm) => {
+const informSiteAutoLock = async (_alarm) => {
   const { autoLockBy } = await chrome.storage.session.get(AUTOLOCKBY_KEY);
 
   if (webPort && Date.now() >= autoLockBy) {
@@ -148,7 +147,7 @@ const informSiteAutoLock = async (alarm) => {
   }
 };
 
-const checkAlarmState = async (alarm) => {
+const checkAlarmState = async (_alarm) => {
   const { autoLockBy } = await chrome.storage.session.get(AUTOLOCKBY_KEY);
 
   if (autoLockBy) {
