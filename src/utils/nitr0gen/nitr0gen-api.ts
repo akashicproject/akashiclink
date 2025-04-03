@@ -1,10 +1,17 @@
 import { TransactionHandler } from '@activeledger/sdk';
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
+import { datadogRum } from '@datadog/browser-rum';
 import type {
   CurrencySymbol,
   IBaseTransactionWithDbIndex,
+  ITerriTransaction,
 } from '@helium-pay/backend';
-import { CoinSymbol, NetworkDictionary, otherError } from '@helium-pay/backend';
+import {
+  CoinSymbol,
+  keyError,
+  NetworkDictionary,
+  otherError,
+} from '@helium-pay/backend';
 import axios from 'axios';
 
 import { convertToFromASPrefix } from '../convert-as-prefix';
@@ -19,6 +26,12 @@ import type {
   Nitr0TronTrxSignature,
   TransactionSignature,
 } from './nitr0gen.interface';
+import {
+  BadGatewayException,
+  ForbiddenException,
+  getRetryDelayInMS,
+  NotFoundException,
+} from './nitr0gen.utils';
 import { TronHelper } from './tron.service';
 
 const nitr0Config = {
@@ -416,6 +429,13 @@ export class Nitr0genApi {
     });
   }
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  public async sendSignedTx<ResponseT = any>(
+    signedTx: IBaseTransactionWithDbIndex | ITerriTransaction
+  ): Promise<ActiveLedgerResponse<ResponseT>> {
+    return await this.post<ActiveLedgerResponse<ResponseT>>(signedTx);
+  }
+
   /**
    * NFT transaction between two users
    */
@@ -498,5 +518,110 @@ export class Nitr0genApi {
       default:
         throw new Error(otherError.unsupportedCoinError);
     }
+  }
+
+  /**
+   * Helper to check responses from nitr0gen for errors and determine whether
+   * they are transient or permanent.
+   * ActiveLedger is set up to proceed even if a minority of nodes error.
+   * This method logs non-fatal errors.
+   *
+   * @throws BadGatewayException if the result returned an error judged to be
+   * transient
+   * @throws Error if the result returned an error judged to be permanent
+   */
+  public checkForNitr0genError(response: ActiveLedgerResponse): void {
+    if (response.$summary.commit) {
+      if (response.$summary.errors?.length)
+        this.logErroredNitr0genResponse(response, 'log');
+      return;
+    }
+
+    // Sort error by associated delay in retrying, high to low.
+    // i.e. from "most permanent" to "most transient"
+    const errors = (response.$summary.errors ?? [])
+      .map((e) => [e, getRetryDelayInMS(e)] as const)
+      .sort(([_a, a], [_b, b]) => (b ?? Infinity) - (a ?? Infinity));
+
+    // if we got a permanent error and no yes-votes, retrying is pointless
+    const permanentError = errors.find(([_e, retry]) => retry == null);
+    if (permanentError && errors.length >= response.$summary.vote) {
+      this.logErroredNitr0genResponse(response, 'error');
+      this.convertChainErrorToAPIError(permanentError[0]);
+    }
+
+    // special case: this error can be transient, but if there's unanimity then it's permanent
+    if (
+      errors.every(([e]) => e.includes('Stream(s) not found')) &&
+      errors.length >= response.$summary.vote
+    ) {
+      this.logErroredNitr0genResponse(response, 'error');
+      throw new NotFoundException(keyError.invalidL2Address);
+    }
+
+    const worstTransientError = errors.find(([_e, delay]) => delay != null);
+    this.logErroredNitr0genResponse(response, 'warn');
+    throw new BadGatewayException(
+      worstTransientError?.[0] ?? otherError.orderFailed
+    );
+  }
+
+  /**
+   * Interprets Nitr0gen's cryptic errors and throws the most appropriate coded
+   * error for which we have i18n.
+   * @param error the error-string returned from Nitr0gen
+   * @throws
+   */
+  private convertChainErrorToAPIError(error: string): never {
+    switch (true) {
+      case this.isChainErrorSavingsExceeded(error):
+        throw new ForbiddenException(keyError.savingsExceeded);
+      case String(error).includes('Stream(s) not found'):
+        throw new NotFoundException(keyError.invalidL2Address);
+      case this.isChainErrorTransient(error):
+        throw new BadGatewayException(otherError.orderFailed);
+      default:
+        throw new Error(otherError.orderFailed, { cause: error });
+    }
+  }
+
+  private isChainErrorTransient(error: string) {
+    return !!getRetryDelayInMS(error);
+  }
+
+  private isChainErrorSavingsExceeded(error: string) {
+    return [
+      'balance is not sufficient',
+      "Couldn't parse integer",
+      'Part-Balance to low',
+    ].some((msg) => String(error).includes(msg));
+  }
+
+  private logErroredNitr0genResponse(
+    response: ActiveLedgerResponse,
+    logLevel: 'log' | 'warn' | 'error' = 'error'
+  ): void {
+    const errorMessage = `[${logLevel}] Nitr0gen error: ${JSON.stringify(
+      response.$summary.errors
+    )}`;
+    // addError without initiating Error
+    // such that it just log and not triggering error on Datadog
+    datadogRum.addError(
+      logLevel === 'error' ? new Error(errorMessage) : errorMessage
+    );
+  }
+
+  /**
+   * TODO: Handle insistent calling to nitr0gen if transilient error
+   */
+  public async sendTransaction<ReturnT>(
+    nitr0ApiFn: () => Promise<ActiveLedgerResponse<ReturnT>>
+  ) {
+    const nitr0genApi = new Nitr0genApi();
+    const alResponse = await nitr0ApiFn();
+
+    nitr0genApi.checkForNitr0genError(alResponse);
+
+    return alResponse;
   }
 }

@@ -8,7 +8,6 @@ import {
 import { useAppDispatch } from '../../redux/app/hooks';
 import { addLocalTransaction } from '../../redux/slices/localTransactionSlice';
 import { Nitr0genApi } from '../../utils/nitr0gen/nitr0gen-api';
-import type { ActiveLedgerResponse } from '../nitr0gen/nitr0gen.interface';
 
 export const useSendL2Transaction = () => {
   const nitr0genApi = new Nitr0genApi();
@@ -19,8 +18,8 @@ export const useSendL2Transaction = () => {
   ): Promise<ITransactionSettledResponse> => {
     try {
       const txHash = (
-        await nitr0genApi.post<ActiveLedgerResponse>(
-          signedTransactionData.signedTx
+        await nitr0genApi.sendTransaction(() =>
+          nitr0genApi.sendSignedTx(signedTransactionData.signedTx)
         )
       ).$umid;
 
