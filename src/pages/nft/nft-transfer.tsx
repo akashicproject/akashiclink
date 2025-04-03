@@ -1,6 +1,11 @@
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
-import { L2Regex } from '@helium-pay/backend';
+import {
+  type INft,
+  type IVerifyNftResponse,
+  L2Regex,
+  nftErrors,
+} from '@helium-pay/backend';
 import { IonCol, IonImg, IonRow, IonSpinner, isPlatform } from '@ionic/react';
 import { debounce } from 'lodash';
 import { useState } from 'react';
@@ -36,7 +41,8 @@ import { useNftTransfer } from '../../utils/hooks/nitr0gen';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { displayLongText } from '../../utils/long-text';
-import { signTxBody } from '../../utils/nitr0gen/nitr0gen-api';
+import { Nitr0genApi, signTxBody } from '../../utils/nitr0gen/nitr0gen-api';
+import type { FullOtk } from '../../utils/otk-generation';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { NftWrapper } from './nft';
 import { NoNtfText, NoNtfWrapper } from './nfts';
@@ -88,6 +94,36 @@ enum SearchResult {
   NoInput = 'NoInput',
   IsSelfAddress = 'isSelfAddress',
 }
+
+const verifyNftTransaction = async (
+  nft: INft,
+  cacheOtk: FullOtk | null,
+  toAddress: string
+): Promise<IVerifyNftResponse> => {
+  if (!cacheOtk || !nft.acns?.ledgerId) {
+    throw new Error('GenericFailureMsg');
+  }
+
+  const nitr0genApi = new Nitr0genApi();
+  if (nft.acns?.value) {
+    throw new Error(nftErrors.acnsValueShouldBeDeleted);
+  }
+  if (nft.ownerIdentity === toAddress) {
+    throw new Error(nftErrors.toAddressIsAlreadyOwner);
+  }
+
+  const txToSign = await nitr0genApi.transferNftTransaction(
+    cacheOtk,
+    nft.acns?.ledgerId,
+    toAddress
+  );
+
+  return {
+    nftOwnerIdentity: nft.ownerIdentity,
+    nftAcnsStreamId: nft.acns.ledgerId,
+    txToSign,
+  };
+};
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function NftTransfer() {
@@ -142,16 +178,18 @@ export function NftTransfer() {
   }, 500);
 
   const transferNft = async () => {
-    const payload = {
-      nftName: currentNft.name,
-      toAddress: toAddress,
-    };
     setLoading(true);
     try {
       if (!cacheOtk) {
         throw new Error('GenericFailureMsg');
       }
-      const verifiedNft = await OwnersAPI.verifyNftTransaction(payload);
+
+      const verifiedNft = await verifyNftTransaction(
+        currentNft,
+        cacheOtk,
+        toAddress
+      );
+
       // "Hack" used when signing nft transactions, identity must be something else than the otk identity
       const signerOtk = {
         ...cacheOtk,

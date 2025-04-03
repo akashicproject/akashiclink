@@ -11,11 +11,9 @@ import type {
   ITransactionProposal,
   ITransactionSettledResponse,
   ITransactionVerifyResponse,
-  ITransferNft,
   IUpdateAcns,
   IUpdateAcnsResponse,
   IUpdateAcnsUsingClientSideOtk,
-  IVerifyNftResponse,
   IVerifyUpdateAcnsResponse,
 } from '@helium-pay/backend';
 
@@ -85,20 +83,6 @@ export const OwnersAPI = {
     let requestUrl = `/nft/look-for-l2-address?to=${l2Check.to}`;
     if (l2Check.coinSymbol) requestUrl += `&coinSymbol=${l2Check.coinSymbol}`;
     const response = await axiosBase.get(requestUrl);
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-    return response.data;
-  },
-
-  verifyNftTransaction: async (
-    payload: ITransferNft
-  ): Promise<IVerifyNftResponse> => {
-    const response = await axiosBaseV1.post(
-      `/nft/verify`,
-      JSON.stringify(payload)
-    );
     const { data, status } = response;
     if (status >= 400) {
       throw new Error(data.message);
