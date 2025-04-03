@@ -17,7 +17,7 @@ import {
   lastPageStorage,
   NavigationPriority,
 } from '../../utils/last-page-storage';
-import { restoreOtk } from '../../utils/otk-generation';
+import { restoreOtk, validateSecretPhrase } from '../../utils/otk-generation';
 import { View } from '../import-wallet';
 
 const StyledSpan = styled.span({
@@ -78,7 +78,7 @@ export const SecretPhraseImport = () => {
       // Remove phrase state before leaving page
       setPhrase([]);
       setInitialWords([]);
-
+      setError(false);
       history.push({
         pathname: akashicPayPath(urls.importAccountUrl),
         state: {
@@ -124,6 +124,11 @@ export const SecretPhraseImport = () => {
             initialWords={initialWords}
             disableInput={false}
             onChange={async (value) => {
+              if (validateSecretPhrase(value)) {
+                setError(false);
+              } else {
+                setError(true);
+              }
               setPhrase(value);
               await lastPageStorage.store(
                 urls.secretPhraseImport,
@@ -159,7 +164,7 @@ export const SecretPhraseImport = () => {
           >
             <PurpleButton
               style={{ width: '100%' }}
-              disabled={phrase.includes('')}
+              disabled={error}
               onClick={handleConfirmRecoveryPhrase}
             >
               {t('Confirm')}
@@ -169,6 +174,7 @@ export const SecretPhraseImport = () => {
               onClick={async () => {
                 setPhrase([]);
                 setInitialWords([]);
+                setError(false);
                 await lastPageStorage.clear();
                 historyGoBack(
                   history,
