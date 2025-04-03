@@ -18,7 +18,7 @@ import {
 } from '@helium-pay/backend';
 import axios from 'axios';
 
-import { convertToFromASPrefix } from '../convert-as-prefix';
+import { prefixWithAS } from '../convert-as-prefix';
 import { getManifestJson } from '../hooks/useCurrentAppInfo';
 import type {
   ActiveLedgerResponse,
@@ -108,7 +108,7 @@ export class Nitr0genApi {
       throw new Error('Failed to generate identity for OTK');
     }
     // Convert ledgerId to include AS-prefix used in Akashic
-    return { ledgerId: convertToFromASPrefix(ledgerId, 'to') };
+    return { ledgerId: prefixWithAS(ledgerId) };
   }
 
   public async createKey(otk: IKeyExtended, coinSymbol: CoinSymbol) {
@@ -138,7 +138,7 @@ export class Nitr0genApi {
     }
 
     return {
-      ledgerId: convertToFromASPrefix(newKey.id, 'to'),
+      ledgerId: prefixWithAS(newKey.id),
       address: newKey.address,
       hashes: newKey.hashes,
     };
