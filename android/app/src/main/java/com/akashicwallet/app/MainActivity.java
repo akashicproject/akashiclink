@@ -1,4 +1,4 @@
-package com.akashicwallet.app;
+package com.akashicpay.wallet;
 
 import com.getcapacitor.BridgeActivity;
 

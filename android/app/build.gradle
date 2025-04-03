@@ -9,13 +9,13 @@ keystoreProductionProperties.load(new FileInputStream(keystoreProductionProperti
 keystoreStagingProperties.load(new FileInputStream(keystoreStagingPropertiesFile))
 
 android {
-    namespace "com.akashicwallet.app"
+    namespace "com.akashicpay.wallet"
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 28
-        versionName "0.0.5-(28)"
+        versionCode 4
+        versionName "0.0.1-(4)"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -46,19 +46,19 @@ android {
     flavorDimensions "version"
     productFlavors {
         production {
-            applicationId "com.akashicwallet.app"
+            applicationId "com.akashicpay.wallet"
             resValue "string", "app_name", "Akashic Wallet"
             resValue "string", "title_activity_main", "Akashic Wallet"
-            resValue "string", "package_name", "com.akashicwallet.app"
-            resValue "string", "custom_url_scheme", "com.akashicwallet.app"
+            resValue "string", "package_name", "com.akashicpay.wallet"
+            resValue "string", "custom_url_scheme", "com.akashicpay.wallet"
             signingConfig signingConfigs.production
         }
         staging {
-            applicationId "com.staging.akashicwallet.app"
+            applicationId "com.staging.akashicpay.wallet"
             resValue "string", "app_name", "Akashic Wallet Staging"
             resValue "string", "title_activity_main", "Akashic Wallet Staging"
-            resValue "string", "package_name", "com.staging.akashicwallet.app"
-            resValue "string", "custom_url_scheme", "com.staging.akashicwallet.app"
+            resValue "string", "package_name", "com.staging.akashicpay.wallet"
+            resValue "string", "custom_url_scheme", "com.staging.akashicpay.wallet"
             signingConfig signingConfigs.staging
         }
     }
