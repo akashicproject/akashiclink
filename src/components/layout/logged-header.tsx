@@ -34,7 +34,11 @@ export function LoggedHeader(props: { loggedIn?: boolean }) {
       }}
     >
       <LanguageDropdown />
-      <IonRouterLink routerLink={akashicPayPath(urls.loggedFunction)}>
+      <IonRouterLink
+        routerLink={
+          props.loggedIn ? akashicPayPath(urls.loggedFunction) : undefined
+        }
+      >
         <IonImg
           alt={''}
           src={
