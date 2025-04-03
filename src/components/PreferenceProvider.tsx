@@ -1,5 +1,5 @@
 import type { Dispatch, ReactNode } from 'react';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext } from 'react';
 
 import type { IWalletCurrency } from '../constants/currencies';
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../constants/currencies';
@@ -101,7 +101,10 @@ export const PreferenceProvider = ({ children }: { children: ReactNode }) => {
   const [activeAccount, setActiveAccount] =
     useLocalStorage<LocalAccount | null>('session-account', null);
 
-  const [cacheOtk, setCacheOtk] = useState<FullOtk | null>(null);
+  const [cacheOtk, setCacheOtk] = useLocalStorage<FullOtk | null>(
+    'cache-otk',
+    null
+  );
 
   return (
     <ThemeContext.Provider
