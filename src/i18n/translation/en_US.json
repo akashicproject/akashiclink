@@ -124,5 +124,7 @@
   "Layer1Transaction": "Layer 1 Transaction",
   "MaxFeePerGas": "Max fee per Gas",
   "Layer1": "Layer 1",
-  "TransactionFee": "Transaction Fee"
+  "TransactionFee": "Transaction Fee",
+  "showNativeCoinNeededMsg": "Please make sure you have enough {{coinSymbol}} to pay the gas.",
+  "insufficientBalance": "Sorry, your {{coinSymbol}} is not enough to pay the gas."
 }

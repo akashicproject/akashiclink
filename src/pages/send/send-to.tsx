@@ -75,6 +75,18 @@ const BalanceText = styled.div({
   textAlign: 'center',
 });
 
+const NativeCoinNeededText = styled.div({
+  fontFamily: 'Nunito Sans',
+  fontStyle: 'normal',
+  fontWeight: 700,
+  fontSize: '14px',
+  lineHeight: '20px',
+  color: 'var(--ion-color-primary-10)',
+  textAlign: 'center',
+  border: '1px solid red',
+  width: '270px',
+});
+
 const Error = styled.div({
   fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
@@ -185,6 +197,12 @@ export function SendTo() {
   const coinSymbol = currentWalletCurrency.currency[0];
   const tokenSymbol = currentWalletCurrency.currency[1];
 
+  // Communicate to users that native coin is needed for token transfers whenever they try to send a token
+  const [showNativeCoinNeeded, setShowNativeCoinNeeded] = useState(false);
+  const showNativeCoinNeededMsg = t('showNativeCoinNeededMsg', {
+    coinSymbol,
+  });
+
   const internalFee = Big(0.1).div(
     Big(
       exchangeRates.find(
@@ -215,6 +233,7 @@ export function SendTo() {
       setToAddress(l2address);
       setGasFree(true);
     } else {
+      setShowNativeCoinNeeded(tokenSymbol !== undefined);
       setToAddress(value);
       setGasFree(false);
     }
@@ -265,16 +284,27 @@ export function SendTo() {
 
     const originalTxn = {
       fromAddress: currentWallet.address,
-      toAddress: toAddress,
-      amount: amount,
-      coinSymbol: coinSymbol,
+      toAddress,
+      amount,
+      coinSymbol,
       tokenSymbol: tokenSymbol ? tokenSymbol : undefined,
       forceL1: !gasFree,
     };
     try {
       const response = await OwnersAPI.verifyTransaction(originalTxn);
       setVerifiedTransaction(response[0]);
-      setPageView(SendView.Confirm);
+      const feesEstimate = BigInt(response[0].feesEstimate || '0');
+      const balance = BigInt(currentWallet.balance);
+      // if do not have enough balance to pay the estimated gas, can not to next step
+      if (balance < feesEstimate) {
+        setVerifyError(
+          t('insufficientBalance', {
+            coinSymbol,
+          }) as string
+        );
+      } else {
+        setPageView(SendView.Confirm);
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setVerifyError(error?.response?.data?.message);
@@ -301,6 +331,11 @@ export function SendTo() {
                   {aggregatedBalances.get(currentWalletCurrency.currency)}{' '}
                   {currentWalletCurrency.symbol}
                 </BalanceText>
+                {showNativeCoinNeeded && (
+                  <NativeCoinNeededText>
+                    {showNativeCoinNeededMsg}
+                  </NativeCoinNeededText>
+                )}
               </CurrencyWrapper>
             </IonCol>
           </IonRow>
