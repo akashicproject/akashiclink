@@ -2,12 +2,18 @@ import './send.css';
 
 import styled from '@emotion/styled';
 import type { ITransactionVerifyResponse as VerifiedTransaction } from '@helium-pay/backend';
+import { NetworkDictionary } from '@helium-pay/backend';
 import { IonCol, IonImg, IonRow, IonSpinner, useIonRouter } from '@ionic/react';
 import axios from 'axios';
 import Big from 'big.js';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import {
+  Alert,
+  errorAlertShell,
+  formAlertResetState,
+} from '../../components/alert/alert';
 import { PurpleButton, WhiteButton } from '../../components/buttons';
 import {
   StyledInput,
@@ -32,8 +38,8 @@ const SendWrapper = styled.div({
   flexDirection: 'column',
   alignItems: 'center',
   padding: 0,
-  gap: '40px',
-  height: '180px',
+  gap: '5px',
+  minHeight: '180px',
   width: '270px',
 });
 
@@ -55,15 +61,6 @@ const BalanceText = styled.div({
   lineHeight: '28px',
   color: '#290056',
   textAlign: 'center',
-});
-
-const InputWrapper = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-start',
-  padding: 0,
-  gap: '24px',
-  width: '270px',
 });
 
 const Error = styled.div({
@@ -88,6 +85,7 @@ export function SendTo() {
   const router = useIonRouter();
   const aggregatedBalances = useAggregatedBalances();
   const { keys: userWallets } = useKeyMe();
+  const [alert, setAlert] = useState(formAlertResetState);
 
   const [currency, _] = useLocalStorage(
     'currency',
@@ -111,16 +109,30 @@ export function SendTo() {
     useState<VerifiedTransaction>();
 
   const [toAddress, setToAddress] = useState<string>('');
+  const validateAddress = (value: string) =>
+    !!value.match(
+      NetworkDictionary[currentWalletCurrency.currency[0]].regex.address
+    );
+
   const [amount, setAmount] = useState<string>('');
+  const validateAmount = (value: string) =>
+    !(value.charAt(0) === '-' || Big(value).lte(0));
+
   const [signError, setSignError] = useState(errorMsgs.NoError);
   const [verifyError, setVerifyError] = useState(errorMsgs.NoError);
   const [loading, setLoading] = useState(false);
 
-  const validateAmount = (value: string) =>
-    !(value.charAt(0) === '-' || Big(value).lte(0));
-
   // Send transaction to the backend for verification
   const verifyTransaction = async () => {
+    if (!validateAddress(toAddress)) {
+      setAlert(errorAlertShell(t('AddressHelpText')));
+      return;
+    }
+    if (!validateAmount(amount)) {
+      setAlert(errorAlertShell(t('AmountHelpText')));
+      return;
+    }
+
     setLoading(true);
     const currentWallet = userWallets.filter((wallet) => {
       return wallet.coinSymbol === currentWalletCurrency.currency[0];
@@ -149,6 +161,7 @@ export function SendTo() {
 
   return (
     <>
+      <Alert state={alert} />
       {pageView === SendView.Send && (
         <SendMain>
           <IonRow style={{ marginTop: '50px' }}>
@@ -169,30 +182,28 @@ export function SendTo() {
           <IonRow style={{ marginTop: '40px' }}>
             <IonCol class="ion-center">
               <SendWrapper>
-                <InputWrapper>
-                  <StyledInput
-                    isHorizontal={true}
-                    label={t('SendTo')}
-                    placeholder={t('EnterAddress')}
-                    type={'text'}
-                    onIonInput={({ target: { value } }) =>
-                      setToAddress(value as string)
-                    }
-                  />
-                </InputWrapper>
-                <InputWrapper>
-                  <StyledInput
-                    isHorizontal={true}
-                    label={t('Amount')}
-                    placeholder={t('EnterAmount')}
-                    type="number"
-                    errorPrompt={StyledInputErrorPrompt.Amount}
-                    onIonInput={({ target: { value } }) => {
-                      setAmount(value as string);
-                    }}
-                    validate={validateAmount}
-                  />
-                </InputWrapper>
+                <StyledInput
+                  isHorizontal={true}
+                  label={t('SendTo')}
+                  placeholder={t('EnterAddress')}
+                  type={'text'}
+                  errorPrompt={StyledInputErrorPrompt.Address}
+                  onIonInput={({ target: { value } }) =>
+                    setToAddress(value as string)
+                  }
+                  validate={validateAddress}
+                />
+                <StyledInput
+                  isHorizontal={true}
+                  label={t('Amount')}
+                  placeholder={t('EnterAmount')}
+                  type="number"
+                  errorPrompt={StyledInputErrorPrompt.Amount}
+                  onIonInput={({ target: { value } }) => {
+                    setAmount(value as string);
+                  }}
+                  validate={validateAmount}
+                />
               </SendWrapper>
             </IonCol>
           </IonRow>

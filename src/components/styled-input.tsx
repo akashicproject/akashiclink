@@ -50,7 +50,7 @@ export function StyledInput({
   errorPrompt,
   ...props
 }: StyledInputProps) {
-  const [inputValid, setInputValid] = useState<boolean>();
+  const [inputValid, setInputValid] = useState(true);
   const { t } = useTranslation();
   const helpText = errorPrompt ? t(errorPrompt) : t('InvalidInput');
 
@@ -62,38 +62,51 @@ export function StyledInput({
     if (!validate) return;
 
     const value = (ev.target as HTMLInputElement).value;
-    setInputValid(undefined);
-    if (value === '') return;
+    if (value === '') {
+      setInputValid(true);
+      return;
+    }
     validate(value) ? setInputValid(true) : setInputValid(false);
   }
 
   return (
-    <IonItem
-      class={isHorizontal ? 'styled-item-horizontal' : 'styled-item'}
-      lines="none"
-    >
-      {label ? (
-        <IonLabel
-          class={isHorizontal ? 'styled-label-horizontal' : 'styled-label'}
-          position={isHorizontal ? undefined : 'stacked'}
+    <>
+      <IonItem
+        class={isHorizontal ? 'styled-item-horizontal' : 'styled-item'}
+        lines="none"
+      >
+        {label ? (
+          <IonLabel
+            class={isHorizontal ? 'styled-label-horizontal' : 'styled-label'}
+            position={isHorizontal ? undefined : 'stacked'}
+          >
+            {label}
+          </IonLabel>
+        ) : null}
+        <IonInput
+          class={isHorizontal ? 'styled-input-horizontal' : 'styled-input'}
+          className={!inputValid && !isHorizontal ? 'fail' : 'null'}
+          onIonInput={(event) => {
+            onIonInput && onIonInput(event);
+            validateInput(event);
+          }}
+          {...props}
+        ></IonInput>
+        {!inputValid && !isHorizontal ? (
+          <IonNote class="help-text">{helpText}</IonNote>
+        ) : null}
+      </IonItem>
+      {isHorizontal && (
+        <IonNote
+          class={
+            inputValid
+              ? 'help-text-horizontal-placeholder'
+              : 'help-text-horizontal'
+          }
         >
-          {label}
-        </IonLabel>
-      ) : null}
-      <IonInput
-        class={isHorizontal ? 'styled-input-horizontal' : 'styled-input'}
-        className={inputValid === false && !isHorizontal ? 'fail' : 'null'}
-        onIonInput={(event) => {
-          onIonInput && onIonInput(event);
-          validateInput(event);
-        }}
-        {...props}
-      ></IonInput>
-      {inputValid === false ? (
-        <IonNote class={isHorizontal ? 'help-text-horizontal' : 'help-text'}>
-          {helpText}
+          {inputValid ? ' ' : helpText}
         </IonNote>
-      ) : null}
-    </IonItem>
+      )}
+    </>
   );
 }
