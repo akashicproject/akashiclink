@@ -114,6 +114,7 @@
     "@capacitor/cli": "5.7.0",
     "@craco/craco": "7.1.0",
     "@craco/types": "7.1.0",
+    "@datadog/datadog-ci": "2.43.0",
     "@storybook/addon-docs": "7.4.5",
     "@storybook/addon-essentials": "^7.3.0",
     "@storybook/addon-interactions": "^7.3.0",
