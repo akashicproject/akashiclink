@@ -1,5 +1,7 @@
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
+import { themeType } from '../../theme/const';
+import { useTheme } from '../PreferenceProvider';
 // TODO: Link this with the backend value
 const ACTIVATION_CODE_EXPIRY_IN_MINUTES = 6;
 
@@ -17,6 +19,7 @@ export function ActivationTimer({
   onComplete?: () => void;
   resetTrigger?: number;
 }) {
+  const [storedTheme] = useTheme();
   return (
     <CountdownCircleTimer
       isPlaying
@@ -26,7 +29,7 @@ export function ActivationTimer({
       }
       size={50}
       strokeWidth={6}
-      colors="#7444b6"
+      colors={storedTheme === themeType.DARK ? '#C297ff' : '#7444b6'}
       key={resetTrigger}
       {...props}
     >
@@ -35,7 +38,7 @@ export function ActivationTimer({
         const seconds = String(remainingTime % 60).padStart(2, '0');
 
         return (
-          <h5>
+          <h5 style={{ color: 'var(--ion-text-header)' }}>
             {minutes}:{seconds}
           </h5>
         );

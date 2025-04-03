@@ -1,16 +1,20 @@
 import styled from '@emotion/styled';
-import { IonCol, IonRow } from '@ionic/react';
+import { IonCol, IonIcon, IonRow } from '@ionic/react';
+import { arrowBack } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
-import { PurpleButton, WhiteButton } from '../../components/buttons';
+import {
+  PurpleButton,
+  SquareWhiteButton,
+  WhiteButton,
+} from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
 import { historyGoBack } from '../../routing/history-stack';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { useOwner } from '../../utils/hooks/useOwner';
-import { ResetPageButton } from '../../utils/last-page-storage';
 import { importAccountUrl, View } from '../import-wallet';
 
 export const StyledSpan = styled.span({
@@ -19,6 +23,7 @@ export const StyledSpan = styled.span({
   color: 'var(--ion-color-primary-10)',
   marginTop: '4px',
   lineHeight: '16px',
+  letterSpacing: '0.4px',
 });
 
 export const SelectImportMethod = () => {
@@ -28,7 +33,18 @@ export const SelectImportMethod = () => {
 
   return (
     <PublicLayout contentStyle={{ padding: '0 30px' }}>
-      <MainGrid style={{ gap: '16px', padding: '142px 15px' }}>
+      <SquareWhiteButton
+        class="icon-button"
+        onClick={() => {
+          historyGoBack(
+            history,
+            !loginCheck.isLoading && !loginCheck.authenticated
+          );
+        }}
+      >
+        <IonIcon class="icon-button-icon" slot="icon-only" icon={arrowBack} />
+      </SquareWhiteButton>
+      <MainGrid style={{ gap: '16px', padding: '102px 15px' }}>
         <IonRow>
           <IonCol style={{ textAlign: 'center' }}>
             <h2 style={{ marginBottom: '8px' }}>{t('ImportWallet')}</h2>
@@ -60,18 +76,6 @@ export const SelectImportMethod = () => {
           >
             {t('12Words')}
           </WhiteButton>
-        </IonRow>
-        <IonRow>
-          <ResetPageButton
-            expand="block"
-            style={{ width: '100%' }}
-            callback={() =>
-              historyGoBack(
-                history,
-                !loginCheck.isLoading && !loginCheck.authenticated
-              )
-            }
-          />
         </IonRow>
       </MainGrid>
     </PublicLayout>

@@ -99,7 +99,7 @@
   "Coin": "Coin",
   "EsTGasFee": "Est. Gas Fee",
   "PrivateKey": "Private key",
-  "ConfirmEmailSent": "An activation link has been sent. Please check {{email}} to complete the update.",
+  "ConfirmEmailSent": "An activation code has been sent. Please check {{email}} to complete the update.",
   "GenericFailureMsg": "Your operation failed, please try again later.",
   "InvalidEmail": "Please enter a valid email address",
   "PasswordHelperText": "Password must be at least 10 characters long, contain 1 capital letter and 1 number",

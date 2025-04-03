@@ -327,14 +327,14 @@ export function ImportWallet() {
           <IonRow>
             <IonCol class="ion-center">
               <TextButton disabled={!privateKey} onClick={submitRequest}>
-                <h4>
+                <h4 style={{ color: 'var(--ion-text-header)' }}>
                   <u>{t('SendNewCode')}</u>
                 </h4>
               </TextButton>
             </IonCol>
           </IonRow>
           <IonRow>
-            <AlertBox state={alertPage2} />
+            <AlertBox style={{ color: '#41CC9A' }} state={alertPage2} />
           </IonRow>
           <IonRow>
             <IonCol>

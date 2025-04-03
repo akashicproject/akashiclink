@@ -314,7 +314,7 @@ export function CreateWallet() {
             <IonRow>
               <IonCol class="ion-center">
                 <TextButton onClick={requestWalletAccount}>
-                  <h4>
+                  <h4 style={{ color: 'var(--ion-text-header)' }}>
                     <u>{t('SendNewCode')}</u>
                   </h4>
                 </TextButton>

@@ -147,7 +147,13 @@ export function CustomAlert({ state }: { state: CustomAlertState }) {
  * - message
  * - visibility state
  */
-export function AlertBox({ state }: { state: FormAlertState }) {
+export function AlertBox({
+  state,
+  style,
+}: {
+  state: FormAlertState;
+  style?: React.CSSProperties;
+}) {
   const color = state.success
     ? 'var(--ion-color-success)'
     : 'var(--ion-color-danger)';
@@ -156,7 +162,7 @@ export function AlertBox({ state }: { state: FormAlertState }) {
     <IonNote
       style={{
         ...(state.visible && {
-          border: `1px solid ${color}`,
+          border: `1px solid ${style?.color || color}`,
         }),
       }}
     >
@@ -165,6 +171,7 @@ export function AlertBox({ state }: { state: FormAlertState }) {
           marginTop: '5px',
           marginBottom: '5px',
           color,
+          ...style,
         }}
       >
         {state.message}
