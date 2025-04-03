@@ -16,11 +16,12 @@ import { Divider } from '../../common/divider';
 import { List } from '../../common/list/list';
 import { ListLabelValueAmountItem } from '../../common/list/list-label-value-amount-item';
 import { ListLabelValueItem } from '../../common/list/list-label-value-item';
+import { Tooltip } from '../../common/tooltip';
 import type { ValidatedAddressPair } from './types';
 
 const StyledWhiteButton = styled(WhiteButton)<{ backgroundColor?: string }>`
   ::part(native) {
-    font-size: 10px;
+    font-size: 8px;
   }
 `;
 
@@ -49,8 +50,9 @@ export const SendL1TxnDetailBox = ({
     delegatedFee,
   } = useFocusCurrencySymbolsAndBalances();
 
+  const canDelegate = isCurrencyTypeToken;
   // TODO: perform a more accurate checking to see if nativeCoinBalance is enough to pay gas fee
-  const isMustDelegate = isCurrencyTypeToken && Big(nativeCoinBalance).eq(0);
+  const canNonDelegate = Big(nativeCoinBalance).gt(0);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -106,7 +108,7 @@ export const SendL1TxnDetailBox = ({
     <IonRow className={'ion-grid-row-gap-sm'}>
       <IonCol size={'12'}>
         <List lines="none" bordered compact>
-          <IonRow className={'ion-grid-gap-xxxs'}>
+          <IonRow className={'ion-grid-gap-xxs'}>
             <IonCol size={'8'}>
               {validatedAddressPair.alias && (
                 <ListLabelValueItem
@@ -116,7 +118,15 @@ export const SendL1TxnDetailBox = ({
                 />
               )}
               <ListLabelValueAmountItem
-                label={t('DelegatedGasFee')}
+                label={
+                  <div
+                    className={'ion-align-items-center'}
+                    style={{ display: 'inline-flex' }}
+                  >
+                    <span>{t('DelegatedGasFee')}</span>
+                    <Tooltip content={t('DelegatedFeeDetail')} />
+                  </div>
+                }
                 value={Big(delegatedFee ?? '0').toString()}
                 amount={amount}
                 fee={fee}
@@ -133,17 +143,17 @@ export const SendL1TxnDetailBox = ({
             <IonCol size={'4'} className={'ion-center'}>
               <StyledWhiteButton
                 expand="block"
-                className={'w-100'}
+                className={'w-100 ion-margin-right-xxs'}
                 onClick={onConfirm(true)}
-                disabled={isLoading || disabled}
+                disabled={isLoading || disabled || !canDelegate}
                 isLoading={isLoading}
               >
-                {t('Delegated')}
+                {!isLoading ? t('Delegated') : ''}
               </StyledWhiteButton>
             </IonCol>
           </IonRow>
-          <Divider />
-          <IonRow className={'ion-grid-gap-xxxs'}>
+          <Divider className={'ion-margin-left-xxs ion-margin-right-xxs'} />
+          <IonRow className={'ion-grid-gap-xxs'}>
             <IonCol size={'8'}>
               {validatedAddressPair.alias && (
                 <ListLabelValueItem
@@ -168,12 +178,12 @@ export const SendL1TxnDetailBox = ({
             <IonCol size={'4'} className={'ion-center'}>
               <StyledWhiteButton
                 expand="block"
-                className={'w-100'}
+                className={'w-100 ion-margin-right-xxs'}
                 onClick={onConfirm(false)}
-                disabled={isLoading || disabled || isMustDelegate}
+                disabled={isLoading || disabled || !canNonDelegate}
                 isLoading={isLoading}
               >
-                {t('NonDelegated')}
+                {!isLoading ? t('NonDelegated') : ''}
               </StyledWhiteButton>
             </IonCol>
           </IonRow>
