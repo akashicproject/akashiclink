@@ -32,7 +32,7 @@ import {
   historyResetStackAndRedirect,
 } from '../../routing/history';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
-import { createAccountWithKeys } from './backend-interaction';
+import { createAccountWithKeys } from './akashic-chain-interaction';
 
 export const StyledSpan = styled.span({
   fontSize: '12px',

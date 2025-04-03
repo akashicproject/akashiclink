@@ -1,6 +1,4 @@
 import type {
-  IActivateWalletAccountClientOtk,
-  IActivateWalletAccountClientOtkResponse,
   ICreateKeysDto,
   ICreateKeysResponse,
   IDiffconKeysDto,
@@ -98,20 +96,6 @@ export const OwnersAPI = {
       throw new Error(data.message);
     }
     return response.data;
-  },
-
-  activateNewAccountWithClientSideOtk: async (
-    payload: IActivateWalletAccountClientOtk
-  ): Promise<IActivateWalletAccountClientOtkResponse> => {
-    const response = await axiosBaseV1.post(
-      `/auth/activate-wallet-account`,
-      JSON.stringify(payload)
-    );
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-    return data as IActivateWalletAccountClientOtkResponse;
   },
 
   claimOrCreateKeys: async (
