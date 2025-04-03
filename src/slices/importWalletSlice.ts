@@ -1,6 +1,7 @@
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
+import { datadogRum } from '@datadog/browser-rum';
 import { IMPORT_CONST, userError } from '@helium-pay/backend';
-import type { PayloadAction } from '@reduxjs/toolkit';
+import type { PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { isAxiosError } from 'axios';
 
 import { createAppSlice } from '../app/createAppSlice';
@@ -25,11 +26,13 @@ export interface ImportWalletForm {
 
 export interface ImportWalletState {
   otk: FullOtk | null;
+  error: SerializedError | null;
   importWalletForm: ImportWalletForm;
 }
 
 const initialState: ImportWalletState = {
   otk: null,
+  error: null,
   importWalletForm: {
     password: '',
     confirmPassword: '',
@@ -99,9 +102,11 @@ export const importWalletSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           state.otk = action.payload;
+          state.error = initialState.error;
         },
-        rejected: () => {
-          throw new Error('GenericFailureMsg');
+        rejected: (state, action) => {
+          datadogRum.addError(action.error);
+          state.error = action.error;
         },
       }
     ),
@@ -157,9 +162,11 @@ export const importWalletSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           state.otk = action.payload;
+          state.error = initialState.error;
         },
-        rejected: () => {
-          throw new Error('GenericFailureMsg');
+        rejected: (state, action) => {
+          datadogRum.addError(action.error);
+          state.error = action.error;
         },
       }
     ),
@@ -169,6 +176,7 @@ export const importWalletSlice = createAppSlice({
   selectors: {
     selectImportWalletForm: (importWallet) => importWallet.importWalletForm,
     selectOtk: (importWallet) => importWallet.otk,
+    selectError: (importWallet) => importWallet.error,
   },
 });
 
@@ -181,5 +189,5 @@ export const {
 } = importWalletSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectImportWalletForm, selectOtk } =
+export const { selectImportWalletForm, selectOtk, selectError } =
   importWalletSlice.selectors;

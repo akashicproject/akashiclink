@@ -49,6 +49,6 @@ export function useLogout(callLogout = true) {
     await mutateTransfersMe([], {
       revalidate: false,
     });
-    history.push(akashicPayPath(urls.akashicPay));
+    history.replace(akashicPayPath(urls.akashicPay));
   };
 }

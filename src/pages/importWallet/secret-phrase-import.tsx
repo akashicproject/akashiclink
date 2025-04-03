@@ -10,12 +10,11 @@ import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { SecretWords } from '../../components/secret-words/secret-words';
-import { urls } from '../../constants/urls';
 import { historyGoBack } from '../../routing/history-stack';
-import { akashicPayPath } from '../../routing/navigation-tabs';
 import {
   onInputChange,
   reconstructOtkAsync,
+  selectError,
   selectImportWalletForm,
 } from '../../slices/importWalletSlice';
 import { validateSecretPhrase } from '../../utils/otk-generation';
@@ -45,21 +44,22 @@ export const SecretPhraseImport = () => {
   const { t } = useTranslation();
   const importWalletForm = useAppSelector(selectImportWalletForm);
   const dispatch = useAppDispatch();
+  const importWalletError = useAppSelector(selectError);
 
   /** Scrolling on IOS */
   const { isOpen } = useKeyboardState();
   useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
-  const handleConfirmRecoveryPhrase = async () => {
-    try {
-      dispatch(reconstructOtkAsync(importWalletForm.passPhrase!));
-      setError(false);
-      history.push({
-        pathname: akashicPayPath(urls.importWalletPassword),
-      });
-    } catch (err) {
+  useEffect(() => {
+    if (importWalletError) {
       setError(true);
+    } else {
+      setError(false);
     }
+  }, [importWalletError]);
+
+  const handleConfirmRecoveryPhrase = async () => {
+    dispatch(reconstructOtkAsync(importWalletForm.passPhrase!));
   };
 
   return (

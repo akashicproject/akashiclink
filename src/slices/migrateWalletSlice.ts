@@ -1,4 +1,5 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
+import { datadogRum } from '@datadog/browser-rum';
+import type { PayloadAction, SerializedError } from '@reduxjs/toolkit';
 
 import { createAppSlice } from '../app/createAppSlice';
 import type { FullOtk } from '../utils/otk-generation';
@@ -18,6 +19,7 @@ export interface MigrateWalletState {
   maskedPassPhrase: string[];
   otk: FullOtk | null;
   username?: string;
+  error: SerializedError | null;
   migrateWalletForm: MigrateWalletForm;
 }
 
@@ -25,6 +27,7 @@ const initialState: MigrateWalletState = {
   maskedPassPhrase: new Array(12).fill(''),
   otk: null,
   username: '',
+  error: null,
   migrateWalletForm: {
     oldPassword: '',
     password: '',
@@ -85,9 +88,11 @@ export const migrateWalletSlice = createAppSlice({
           // state.otkStatus = "idle"
           state.otk = action.payload.otk;
           state.maskedPassPhrase = action.payload.maskedPassPhrase;
+          state.error = initialState.error;
         },
-        rejected: () => {
-          throw new Error('GenericFailureMsg');
+        rejected: (state, action) => {
+          datadogRum.addError(action.error);
+          state.error = action.error;
         },
       }
     ),
@@ -95,10 +100,11 @@ export const migrateWalletSlice = createAppSlice({
   // You can define your selectors here. These selectors receive the slice
   // state as their first argument.
   selectors: {
-    selectMigrateWalletForm: (importWallet) => importWallet.migrateWalletForm,
-    selectMaskedPassPhrase: (createWallet) => createWallet.maskedPassPhrase,
-    selectOtk: (importWallet) => importWallet.otk,
-    selectUsername: (importWallet) => importWallet.username,
+    selectMigrateWalletForm: (migrateWallet) => migrateWallet.migrateWalletForm,
+    selectMaskedPassPhrase: (migrateWallet) => migrateWallet.maskedPassPhrase,
+    selectOtk: (migrateWallet) => migrateWallet.otk,
+    selectUsername: (migrateWallet) => migrateWallet.username,
+    selectError: (migrateWallet) => migrateWallet.error,
   },
 });
 
@@ -112,4 +118,5 @@ export const {
   selectMaskedPassPhrase,
   selectOtk,
   selectUsername,
+  selectError,
 } = migrateWalletSlice.selectors;

@@ -1,6 +1,5 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { IonCol, IonRow } from '@ionic/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -18,6 +17,7 @@ import { historyGoBack } from '../../routing/history-stack';
 import {
   onInputChange,
   restoreOtkFromKeypairAsync,
+  selectError,
   selectImportWalletForm,
 } from '../../slices/importWalletSlice';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
@@ -27,6 +27,7 @@ export function KeyPairImport() {
   const { t } = useTranslation();
   const importWalletForm = useAppSelector(selectImportWalletForm);
   const dispatch = useAppDispatch();
+  const importWalletError = useAppSelector(selectError);
 
   /**
    * Track state of page
@@ -34,14 +35,19 @@ export function KeyPairImport() {
 
   const [alert, setAlert] = useState(formAlertResetState);
 
+  useEffect(() => {
+    if (importWalletError) {
+      setAlert(
+        errorAlertShell(t(unpackRequestErrorMessage(importWalletError)))
+      );
+    } else {
+      setAlert(formAlertResetState);
+    }
+  }, [importWalletError]);
+
   async function requestImport() {
-    try {
-      if (importWalletForm.privateKey) {
-        dispatch(restoreOtkFromKeypairAsync(importWalletForm.privateKey));
-      }
-    } catch (error) {
-      datadogRum.addError(error);
-      setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+    if (importWalletForm.privateKey) {
+      dispatch(restoreOtkFromKeypairAsync(importWalletForm.privateKey));
     }
   }
 

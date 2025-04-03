@@ -1,4 +1,5 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
+import { datadogRum } from '@datadog/browser-rum';
+import type { PayloadAction, SerializedError } from '@reduxjs/toolkit';
 
 import { createAppSlice } from '../app/createAppSlice';
 import type { FullOtk } from '../utils/otk-generation';
@@ -15,12 +16,14 @@ export interface CreateWalletForm {
 export interface CreateWalletState {
   maskedPassPhrase: string[];
   otk: FullOtk | null;
+  error: SerializedError | null;
   createWalletForm: CreateWalletForm;
 }
 
 const initialState: CreateWalletState = {
   maskedPassPhrase: new Array(12).fill(''),
   otk: null,
+  error: null,
   createWalletForm: {
     password: '',
     confirmPassword: '',
@@ -75,9 +78,11 @@ export const createWalletSlice = createAppSlice({
         fulfilled: (state, action) => {
           state.otk = action.payload.otk;
           state.maskedPassPhrase = action.payload.maskedPassPhrase;
+          state.error = initialState.error;
         },
-        rejected: () => {
-          throw new Error('GenericFailureMsg');
+        rejected: (state, action) => {
+          datadogRum.addError(action.error);
+          state.error = action.error;
         },
       }
     ),
@@ -88,6 +93,7 @@ export const createWalletSlice = createAppSlice({
     selectCreateWalletForm: (createWallet) => createWallet.createWalletForm,
     selectMaskedPassPhrase: (createWallet) => createWallet.maskedPassPhrase,
     selectOtk: (createWallet) => createWallet.otk,
+    selectError: (createWallet) => createWallet.error,
   },
 });
 
@@ -96,5 +102,9 @@ export const { onInputChange, onClear, generateOtkAsync } =
   createWalletSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectCreateWalletForm, selectMaskedPassPhrase, selectOtk } =
-  createWalletSlice.selectors;
+export const {
+  selectCreateWalletForm,
+  selectMaskedPassPhrase,
+  selectOtk,
+  selectError,
+} = createWalletSlice.selectors;

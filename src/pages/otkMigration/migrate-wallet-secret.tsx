@@ -1,18 +1,27 @@
 import styled from '@emotion/styled';
 import { IonCol, IonRow } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import {
+  AlertBox,
+  errorAlertShell,
+  formAlertResetState,
+} from '../../components/alert/alert';
 import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { SecretWords } from '../../components/secret-words/secret-words';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import { generateOtkAsync, selectOtk } from '../../slices/migrateWalletSlice';
+import {
+  generateOtkAsync,
+  selectError,
+  selectOtk,
+} from '../../slices/migrateWalletSlice';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 
 export const StyledSpan = styled.span({
@@ -28,6 +37,9 @@ export function MigrateWalletSecret() {
   const otk = useAppSelector(selectOtk);
   const dispatch = useAppDispatch();
 
+  const [alert, setAlert] = useState(formAlertResetState);
+  const migrateWalletError = useAppSelector(selectError);
+
   /** Scrolling on IOS */
   const { isOpen } = useKeyboardState();
   useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
@@ -37,6 +49,14 @@ export function MigrateWalletSecret() {
       dispatch(generateOtkAsync(0));
     }
   }, [otk]);
+
+  useEffect(() => {
+    if (migrateWalletError) {
+      setAlert(errorAlertShell(t('GenericFailureMsg')));
+    } else {
+      setAlert(formAlertResetState);
+    }
+  }, [migrateWalletError]);
 
   const confirmSecret = async () => {
     history.push({
@@ -94,6 +114,11 @@ export function MigrateWalletSecret() {
               </PurpleButton>
             </IonRow>
           </IonCol>
+          {alert?.visible && (
+            <IonCol size="12">
+              <AlertBox state={alert} />
+            </IonCol>
+          )}
         </IonRow>
       </MainGrid>
     </PublicLayout>
