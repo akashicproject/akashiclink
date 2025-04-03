@@ -50,10 +50,13 @@ export function LoggedLayout({
   /** If user auth has expired, redirect to login page */
   useEffect(
     () => {
-      if (!loginCheck.isLoading && !loginCheck.authenticated) {
-        lastPageStorage.clear();
-        history.push(akashicPayPath(''));
-      }
+      const callLogout = async () => {
+        if (!loginCheck.isLoading && !loginCheck.authenticated) {
+          await lastPageStorage.clear();
+          history.push(akashicPayPath(''));
+        }
+      };
+      callLogout();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [loginCheck.isLoading]

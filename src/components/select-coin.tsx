@@ -12,17 +12,15 @@ import { useEffect, useState } from 'react';
 import SwiperCore, { Navigation, Virtual } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import type { ThemeType } from '../theme/const';
-import { themeType } from '../theme/const';
 import { limitDecimalPlaces } from '../utils/conversions';
 import { useAggregatedBalances } from '../utils/hooks/useAggregatedBalances';
 import { useExchangeRates } from '../utils/hooks/useExchangeRates';
-import { useLocalStorage } from '../utils/hooks/useLocalStorage';
 import type { WalletCurrency } from '../utils/supported-currencies';
 import {
   compareWalletCurrency,
   WALLET_CURRENCIES,
 } from '../utils/supported-currencies';
+import { useFocusCurrency, useTheme } from './PreferenceProvider';
 
 // install Virtual module
 SwiperCore.use([Virtual, Navigation]);
@@ -41,32 +39,19 @@ const BalanceText = styled.h4({
   margin: '4px',
 });
 
+/**
+ * Swiper requires that the total number of slides
+ * is at least 2 x `slidesPerView` in order for the looping to occur properly,
+ * hence we just duplicate the size to ensure this is always the case
+ */
+const WALLET_CURRENCIES_FOR_SWIPER = [
+  ...WALLET_CURRENCIES,
+  ...WALLET_CURRENCIES,
+];
+
 export function SelectCoin() {
-  const [__, ___, storedTheme] = useLocalStorage(
-    'theme',
-    themeType.SYSTEM as ThemeType
-  );
-
-  /**
-   * Swiper requires that the total number of slides
-   * is at least 2 x `slidesPerView` in order for the looping to occur properly,
-   * hence we just duplicate the size to ensure this is always the case
-   */
-  const WALLET_CURRENCIES_FOR_SWIPER = [
-    ...WALLET_CURRENCIES,
-    ...WALLET_CURRENCIES,
-  ];
-
-  // TODO: change to 0 once swiper is upgraded to v10.x
-  // set the default currency the 2nd one because otherwise the swiper doesn't look good
-  const defaultCurrencyIdx = 1;
-  /**
-   * Track cross-page currency selection by user
-   */
-  const [focusCurrency, setFocusCurrency, _] = useLocalStorage(
-    'focusCurrency',
-    WALLET_CURRENCIES_FOR_SWIPER[defaultCurrencyIdx].currency
-  );
+  const [storedTheme] = useTheme();
+  const [focusCurrency, setFocusCurrency] = useFocusCurrency();
 
   /**
    * Balance information
@@ -101,23 +86,19 @@ export function SelectCoin() {
    * Tracking of swiper and currency under focus
    */
   const [swiperRef, setSwiperRef] = useState<SwiperCore>();
-  const [swiperIdx, setSwiperIdx] = useState(
+  const [swiperIdx, setSwiperIdx] = useState<number>(
     WALLET_CURRENCIES_FOR_SWIPER.findIndex(({ currency }) =>
       compareWalletCurrency(currency, focusCurrency)
-    ) || defaultCurrencyIdx
+    )
   );
 
   /**
    * Slide to last index
    */
-  useEffect(
-    () => {
-      if (!swiperRef || swiperRef.destroyed) return;
-      swiperRef.slideToLoop(swiperIdx);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [swiperRef]
-  );
+  useEffect(() => {
+    if (!swiperRef || swiperRef.destroyed) return;
+    swiperRef.slideToLoop(swiperIdx);
+  }, [swiperRef, swiperIdx]);
   /**
    * Handle user selecting different currency:
    * - Update slider focus
@@ -134,7 +115,7 @@ export function SelectCoin() {
     const newIndex = swiperRef.realIndex;
     setSwiperIdx(newIndex);
     const wc = WALLET_CURRENCIES_FOR_SWIPER[newIndex].currency;
-    setFocusCurrency(wc);
+    setFocusCurrency && setFocusCurrency(wc);
 
     const conversionRate = findExchangeRate(wc);
     const bigCurrency = Big(aggregatedBalances.get(wc) || 0);
@@ -185,6 +166,15 @@ export function SelectCoin() {
               enabled: true,
             }}
             loop={true}
+            onInit={(swiper) => {
+              setTimeout(() => {
+                try {
+                  swiper.loopCreate();
+                } catch (e) {
+                  console.warn('swiper not ready');
+                }
+              }, 1000);
+            }}
           >
             {WALLET_CURRENCIES_FOR_SWIPER.map(
               ({ logo, darkLogo, greyLogo, currency }, idx) => {

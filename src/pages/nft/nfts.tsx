@@ -56,7 +56,7 @@ export function Nfts() {
   const isMobile = isPlatform('mobile');
 
   const { nfts, isLoading } = useNftMe();
-  const [_, setNft, __] = useLocalStorage('nft', '');
+  const [_, setNft] = useLocalStorage('nft', '');
   const selectNft = (nft: INftResponse) => {
     setNft(nft.name);
     history.push({

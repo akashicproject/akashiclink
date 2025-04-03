@@ -111,6 +111,7 @@ export function NavigationTree() {
       {us2Subtree.registerPage(Us2Main)}
 
       {/* Default redirect */}
+      {/* https://github.com/ionic-team/ionic-framework/issues/24855 */}
       <Redirect to={hpSubtree.root} />
     </IonRouterOutlet>
   );

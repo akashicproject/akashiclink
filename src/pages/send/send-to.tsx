@@ -19,6 +19,7 @@ import {
   formAlertResetState,
 } from '../../components/alert/alert';
 import { PurpleButton, WhiteButton } from '../../components/buttons';
+import { useFocusCurrency } from '../../components/PreferenceProvider';
 import {
   StyledInput,
   StyledInputErrorPrompt,
@@ -30,14 +31,10 @@ import { OwnersAPI } from '../../utils/api';
 import { useAggregatedBalances } from '../../utils/hooks/useAggregatedBalances';
 import { useExchangeRates } from '../../utils/hooks/useExchangeRates';
 import { useKeyMe } from '../../utils/hooks/useKeyMe';
-import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { calculateInternalWithdrawalFee } from '../../utils/internal-fee';
 import { lastPageStorage } from '../../utils/last-page-storage';
 import { displayLongText } from '../../utils/long-text';
-import {
-  lookupWalletCurrency,
-  WALLET_CURRENCIES,
-} from '../../utils/supported-currencies';
+import { lookupWalletCurrency } from '../../utils/supported-currencies';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { SendConfirm } from './send-confirm';
 import { SendMain } from './send-main';
@@ -157,11 +154,7 @@ export function SendTo() {
   const [alert, setAlert] = useState(formAlertResetState);
   const [alertRequest, setAlertRequest] = useState(formAlertResetState);
   const { keys: exchangeRates } = useExchangeRates();
-
-  const [_, __, currency] = useLocalStorage(
-    'focusCurrency',
-    WALLET_CURRENCIES[0].currency
-  );
+  const [currency] = useFocusCurrency();
 
   // store current page to main logged page if reopen
   useEffect(() => {

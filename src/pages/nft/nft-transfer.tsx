@@ -110,7 +110,7 @@ export function NftTransfer() {
   const isMobile = isPlatform('mobile');
   const { nfts, isLoading, mutate } = useNftMe();
   const { owner } = useOwner();
-  const [_, __, nftName] = useLocalStorage('nft', '');
+  const [nftName, _] = useLocalStorage('nft', '');
   const currentNft = nfts.find((nft) => nft.name === nftName) || nfts[0];
   const [inputValue, setInputValue] = useState<string>('');
   const [toAddress, setToAddress] = useState<string>('');

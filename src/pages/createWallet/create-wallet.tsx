@@ -51,11 +51,16 @@ export function CreateWallet() {
    * Resume a creating wallet session
    */
   useEffect(() => {
-    if (lastPageStorage.get() === createWalletUrl) {
-      const { email } = lastPageStorage.getVars();
-      setEmail(email);
-      setView(CreateWalletView.ActivateAccount);
-    }
+    const loadPage = async () => {
+      const lastPage = await lastPageStorage.get();
+
+      if (lastPage === createWalletUrl) {
+        const { email } = await lastPageStorage.getVars();
+        setEmail(email);
+        setView(CreateWalletView.ActivateAccount);
+      }
+    };
+    loadPage();
   }, []);
 
   const [view, setView] = useState(CreateWalletView.RequestAccount);
@@ -155,7 +160,7 @@ export function CreateWallet() {
         });
 
         // Complete the create-wallet flow
-        lastPageStorage.clear();
+        await lastPageStorage.clear();
 
         // Set new account details and display summary screen
         const newAccount = {

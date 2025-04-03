@@ -1,4 +1,9 @@
-import { useLocalStorage } from './useLocalStorage';
+import { useContext } from 'react';
+
+import {
+  ActiveAccountContext,
+  LocalAccountContext,
+} from '../../components/PreferenceProvider';
 
 /**
  * When logging in, a user will select a wallet `identity`
@@ -16,25 +21,20 @@ export interface LocalAccount {
  * - localAccounts: available accounts that user has imported
  */
 export const useAccountStorage = () => {
-  const LocalAccountStorage = 'cached-accounts';
-  const [localAccounts, setLocalAccounts, _] = useLocalStorage<LocalAccount[]>(
-    LocalAccountStorage,
-    []
-  );
-  const addLocalAccount = (account: LocalAccount) => {
+  const { localAccounts, setLocalAccounts } = useContext(LocalAccountContext);
+  const { activeAccount, setActiveAccount } = useContext(ActiveAccountContext);
+
+  const addLocalAccount = async (account: LocalAccount) => {
     // Skip duplicate accounts
-    for (const { identity, username } of localAccounts)
+    for (const { identity, username } of localAccounts ?? [])
       if (identity === account.identity && username === account.username)
         return;
 
-    setLocalAccounts([...localAccounts, account]);
+    await setLocalAccounts([...(localAccounts ?? []), account]);
   };
 
-  const SessionAccount = 'session-account';
-  const [activeAccount, setActiveAccount] =
-    useLocalStorage<LocalAccount | null>(SessionAccount, null);
-  const clearActiveAccount = (): void => {
-    setActiveAccount(null);
+  const clearActiveAccount = async () => {
+    await setActiveAccount(null);
   };
 
   return {

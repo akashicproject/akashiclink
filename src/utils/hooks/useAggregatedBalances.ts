@@ -6,6 +6,7 @@ import { useBalancesMe } from './useBalancesMe';
 /** Map balances from backend onto the currencies supported nby the wallet */
 export function useAggregatedBalances() {
   const { keys: userBalances } = useBalancesMe();
+  const userBalancesStringify = JSON.stringify(userBalances);
 
   const [aggregatedBalances, setAggregatedBalances] = useState(
     new CurrencyMap<string>()
@@ -19,7 +20,7 @@ export function useAggregatedBalances() {
         balance
       );
     setAggregatedBalances(updatedAggregatedBalances);
-  }, [userBalances]);
+  }, [userBalancesStringify]);
 
   return aggregatedBalances;
 }

@@ -1,3 +1,4 @@
+import { Preferences } from '@capacitor/preferences';
 import type { IonButton } from '@ionic/react';
 import type { ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,41 +18,48 @@ const expiredTime = 3 * 60 * 1000;
  * @param lastPageVars to load in the context of the redirected page
  */
 export const lastPageStorage = {
-  store: (
+  store: async (
     lastPage: typeof urls[keyof typeof urls],
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     lastPageVars: any = {}
-  ): void => {
+  ): Promise<void> => {
     const expiry = new Date(Date.now() + expiredTime);
     const lastPageObj = {
       url: lastPage,
       expiredTime: expiry,
     };
-    localStorage.setItem(LastPageStorage, JSON.stringify(lastPageObj));
-    localStorage.setItem(LastPageVarsStorage, JSON.stringify(lastPageVars));
+    await Preferences.set({
+      key: LastPageStorage,
+      value: JSON.stringify(lastPageObj),
+    });
+    await Preferences.set({
+      key: LastPageVarsStorage,
+      value: JSON.stringify(lastPageVars),
+    });
   },
-  clear: (): void => {
-    localStorage.removeItem(LastPageStorage);
-    localStorage.removeItem(LastPageVarsStorage);
+  clear: async (): Promise<void> => {
+    await Preferences.remove({ key: LastPageStorage });
+    await Preferences.remove({ key: LastPageVarsStorage });
   },
-  get: (): string | null => {
-    const lastPageObj = JSON.parse(
-      localStorage.getItem(LastPageStorage) || '{}'
-    );
+  get: async (): Promise<string | null> => {
+    const { value } = await Preferences.get({ key: LastPageStorage });
+    const lastPageObj = JSON.parse(value || '{}');
     if (Object.keys(lastPageObj).length === 0) {
       return null;
     }
     const now = new Date();
     const expiry = new Date(lastPageObj.expiredTime);
     if (now > expiry) {
-      localStorage.removeItem(LastPageStorage);
+      await Preferences.remove({ key: LastPageStorage });
       return urls.akashicPay;
     }
     return lastPageObj.url;
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getVars: (): any =>
-    JSON.parse(localStorage.getItem(LastPageVarsStorage) || '{}'),
+  getVars: async (): Promise<any> => {
+    const { value } = await Preferences.get({ key: LastPageVarsStorage });
+    return JSON.parse(value || '{}');
+  },
 };
 
 /**
@@ -70,8 +78,8 @@ export function ResetPageButton({
     <WhiteButton
       {...props}
       fill="clear"
-      onClick={() => {
-        lastPageStorage.clear();
+      onClick={async () => {
+        await lastPageStorage.clear();
         if (callback) callback();
       }}
     >

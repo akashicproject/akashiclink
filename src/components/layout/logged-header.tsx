@@ -1,22 +1,15 @@
 import { IonHeader, IonImg, IonRouterLink, isPlatform } from '@ionic/react';
-import { useState } from 'react';
 
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
-import type { ThemeType } from '../../theme/const';
 import { themeType } from '../../theme/const';
-import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
+import { useTheme } from '../PreferenceProvider';
 import { LanguageDropdown } from './language-select';
 import { ThemeSelect } from './theme-select';
 
 export function LoggedHeader({ loggedIn }: { loggedIn?: boolean }) {
   const isMobile = isPlatform('mobile');
-
-  const [_, __, storedTheme] = useLocalStorage(
-    'theme',
-    themeType.SYSTEM as ThemeType
-  );
-  const [currentTheme, setCurrentTheme] = useState(storedTheme);
+  const [storedTheme] = useTheme();
 
   return (
     <IonHeader
@@ -41,10 +34,10 @@ export function LoggedHeader({ loggedIn }: { loggedIn?: boolean }) {
         <IonImg
           alt={''}
           src={
-            (!loggedIn && currentTheme === themeType.DARK) ||
-            (loggedIn && currentTheme === themeType.LIGHT)
+            (!loggedIn && storedTheme === themeType.DARK) ||
+            (loggedIn && storedTheme === themeType.LIGHT)
               ? '/shared-assets/images/wallet-logo-white.svg'
-              : loggedIn && currentTheme === themeType.DARK
+              : loggedIn && storedTheme === themeType.DARK
               ? '/shared-assets/images/wallet-logo-dark.svg'
               : '/shared-assets/images/wallet-logo-black.svg'
           }
@@ -59,7 +52,7 @@ export function LoggedHeader({ loggedIn }: { loggedIn?: boolean }) {
           gap: '16px',
         }}
       >
-        <ThemeSelect updateTheme={setCurrentTheme} />
+        <ThemeSelect />
       </div>
     </IonHeader>
   );

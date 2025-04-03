@@ -31,8 +31,11 @@ export function AkashicPayMain() {
   /** Redirect to last page user was on */
   useEffect(
     () => {
-      const lastPage = lastPageStorage.get();
-      if (lastPage) history.push(akashicPayPath(lastPage));
+      const loadPage = async () => {
+        const lastPage = await lastPageStorage.get();
+        if (lastPage) history.push(akashicPayPath(lastPage));
+      };
+      loadPage();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

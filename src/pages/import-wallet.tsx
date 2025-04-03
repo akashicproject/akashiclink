@@ -60,12 +60,17 @@ export function ImportWallet() {
     !!value.match(activationCodeRegex);
 
   useEffect(() => {
-    if (lastPageStorage.get() === importAccountUrl) {
-      const { privateKey, email } = lastPageStorage.getVars();
-      setPrivateKey(privateKey);
-      setEmail(email);
-      setView(View.TwoFa);
-    }
+    const loadPage = async () => {
+      const lastPage = await lastPageStorage.get();
+
+      if (lastPage === importAccountUrl) {
+        const { privateKey, email } = await lastPageStorage.getVars();
+        setPrivateKey(privateKey);
+        setEmail(email);
+        setView(View.TwoFa);
+      }
+    };
+    loadPage();
   }, []);
 
   /**
@@ -110,7 +115,7 @@ export function ImportWallet() {
           email,
           privateKey,
         });
-        lastPageStorage.clear();
+        await lastPageStorage.clear();
 
         // Add accounts, and redirect to login page
         const importedAccount = {
@@ -240,9 +245,9 @@ export function ImportWallet() {
             <IonCol>
               <WhiteButton
                 expand="block"
-                onClick={() => {
+                onClick={async () => {
                   setActivationCode(undefined);
-                  lastPageStorage.clear();
+                  await lastPageStorage.clear();
                   setView(View.Submit);
                   history.push('/');
                 }}

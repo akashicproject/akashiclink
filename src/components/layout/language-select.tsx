@@ -21,7 +21,7 @@ export const LanguageDropdown = () => {
     // Default to english
     return LANGUAGE_LIST[0].locale;
   };
-  const [selectedLanguage, setSelectedLanguage, _] = useLocalStorage(
+  const [selectedLanguage, setSelectedLanguage] = useLocalStorage(
     'language',
     getLocalisationLanguage()
   );

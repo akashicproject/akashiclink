@@ -81,12 +81,12 @@ export function AccountSelection({
    */
   useEffect(() => {
     if (activeAccount) {
-      const matchingAccount = localAccounts.find(
+      const matchingAccount = localAccounts?.find(
         (a) => a.identity === activeAccount.identity
       );
       setSelectedAccount(matchingAccount);
     } else {
-      setSelectedAccount(localAccounts[0]);
+      setSelectedAccount(localAccounts?.[0]);
     }
   }, [activeAccount, localAccounts]);
 

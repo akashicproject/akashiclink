@@ -20,6 +20,7 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Route } from 'react-router';
 
+import { PreferenceProvider } from './components/PreferenceProvider';
 import { NavigationTree } from './routing/navigation-tree';
 
 setupIonicReact();
@@ -28,11 +29,13 @@ setupIonicReact();
 export default function App() {
   return (
     <IonApp>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route path="/" component={NavigationTree} />
-        </IonRouterOutlet>
-      </IonReactRouter>
+      <PreferenceProvider>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <Route path="/" component={NavigationTree} />
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </PreferenceProvider>
     </IonApp>
   );
 }

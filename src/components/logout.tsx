@@ -25,9 +25,9 @@ export function useLogout(callLogout = true) {
     await mutate();
 
     // Clear session variables
-    lastPageStorage.clear();
+    await lastPageStorage.clear();
 
-    console.log('going to login');
+    console.log('going to logout');
     // Redirect to landing page
     history.push('/');
   };

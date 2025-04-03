@@ -7,18 +7,13 @@ import { IonCol, IonGrid, IonImg, IonRow, IonText } from '@ionic/react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Redirect } from 'react-router-dom';
 
 import { OtkBox } from '../../components/otk-box/otk-box';
+import { useFocusCurrency } from '../../components/PreferenceProvider';
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tree';
 import { useLargestBalanceKeys } from '../../utils/hooks/useLargestBalanceKeys';
-import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { lastPageStorage } from '../../utils/last-page-storage';
-import {
-  lookupWalletCurrency,
-  WALLET_CURRENCIES,
-} from '../../utils/supported-currencies';
+import { lookupWalletCurrency } from '../../utils/supported-currencies';
 import { LoggedMain } from './logged-main';
 
 const CoinWrapper = styled.div({
@@ -31,11 +26,7 @@ const CoinWrapper = styled.div({
 
 export function DepositPage() {
   const { t } = useTranslation();
-
-  const [currency, ..._] = useLocalStorage(
-    'focusCurrency',
-    WALLET_CURRENCIES[0].currency
-  );
+  const [currency] = useFocusCurrency();
 
   // store current page to main logged page if reopen
   useEffect(() => {
@@ -58,9 +49,10 @@ export function DepositPage() {
 
   const walletAddress = walletAddressDetail?.address ?? '-';
 
-  if (!isAddressesLoading && walletAddressDetail === undefined) {
-    return <Redirect to={akashicPayPath(urls.error)} />;
-  }
+  // TODO: this redirection is still buggy (very strange) need to take good look at how routing works
+  // if (!isAddressesLoading && walletAddressDetail === undefined) {
+  //   return <Redirect to={akashicPayPath(urls.error)} />;
+  // }
 
   return (
     <LoggedMain loading={isAddressesLoading}>
