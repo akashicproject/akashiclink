@@ -104,8 +104,8 @@ export const ImportWalletSecret = () => {
   };
 
   return (
-    <PublicLayout className="vertical-center">
-      <MainGrid className={'ion-grid-row-gap-md'}>
+    <PublicLayout>
+      <MainGrid className={'ion-grid-row-gap-lg ion-no-padding'}>
         <IonRow>
           <IonCol size="12">
             <IonText>
@@ -128,7 +128,10 @@ export const ImportWalletSecret = () => {
             </IonText>
           </IonCol>
         </IonRow>
-        <IonRow style={{ justifyContent: 'center' }}>
+        <IonRow
+          className="ion-padding-bottom"
+          style={{ justifyContent: 'center' }}
+        >
           <StyledSpan style={{ fontWeight: '700' }}>
             {t('TypeSecretPhrase')}
           </StyledSpan>
@@ -172,7 +175,7 @@ export const ImportWalletSecret = () => {
             </IonCol>
           </IonRow>
         )}
-        <IonRow>
+        <IonRow className="ion-grid-column-gap-lg">
           <IonCol size="6">
             <PurpleButton
               expand="block"

@@ -1,7 +1,6 @@
 import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import {
-  IonButton,
   IonCol,
   IonContent,
   IonGrid,
@@ -26,7 +25,8 @@ const WordItem = styled.div`
 `;
 
 const WordNumber = styled(IonLabel)`
-  font-size: 8px !important;
+  text-align: right;
+  font-size: 0.5rem !important;
   width: 12px;
   margin: 0;
   opacity: 1 !important;
@@ -41,11 +41,11 @@ const WordInput = styled(IonInput)<WordInputProps>`
   border-radius: 8px;
   border: ${(props) =>
     props.fillable ? '2px solid #c297ff' : '1px solid #7B757F'};
-  font-size: 10px;
+  font-size: 0.625rem;
   text-align: center;
   color: var(--ion-color-primary-10);
   width: 64px;
-  margin-left: 8px;
+  margin-left: 4px;
   min-height: 24px !important;
   opacity: unset !important;
   --highlight-color-focused: none;
@@ -56,14 +56,6 @@ const WordInput = styled(IonInput)<WordInputProps>`
       opacity: 1 !important;
     }
   }
-`;
-
-const ActionButton = styled(IonButton)`
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: none;
-  color: var(--ion-color-primary-shade);
-  --padding-start: 2px;
 `;
 
 type MaskContainerProps = {
@@ -99,7 +91,7 @@ const MaskLabelContainer = styled.div`
 `;
 
 const StyledIonIcon = styled(IonIcon)`
-  font-size: 12px;
+  font-size: 0.75rem;
   height: 20px;
   width: 20px;
 `;
@@ -107,7 +99,7 @@ const StyledIonIcon = styled(IonIcon)`
 const CopyClipBoardLabel = styled(IonLabel)`
   color: var(--ion-color-primary);
   font-weight: 700;
-  font-size: 10px;
+  font-size: 0.625rem;
   align-items: center;
   display: flex;
   cursor: pointer;
@@ -218,7 +210,7 @@ export function SecretWords({
           </MaskLabelContainer>
         )}
         <MaskBlurContainer isHidden={isHidden}>
-          <IonGrid>
+          <IonGrid className="ion-grid-gap-xxxs ion-no-padding">
             <IonRow>
               {visibilityArray.map((visibility, i) => {
                 return (
