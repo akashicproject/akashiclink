@@ -151,5 +151,18 @@
   "Languages": "Languages",
   "NoActivity": "No Activity yet",
   "Wallet": "Wallet",
-  "Address": "Address"
+  "Address": "Address",
+  "Chain": {
+    "Title": "Chain",
+    "AkashicChain": "Akashic Chain",
+    "ETH": "Ethereum Mainnet",
+    "GOR": "Ethereum GOERLI Testnet",
+    "BNB": "Binance Chain",
+    "TBNB": "Binance Testnet",
+    "TRX": "Tron Chain",
+    "TRX-NILE": "Tron NILE Testnet",
+    "TRX-SHASTA": "Tron SHASTA Testnet",
+    "BTC": "Bitcoin Chain",
+    "TBTC": "Bitcoin Testnet"
+  }
 }

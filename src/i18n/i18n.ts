@@ -27,6 +27,6 @@ export async function initialiseTranslationLibrary() {
   await i18n.use(initReactI18next).init({
     resources,
     lng: DEFAULT_LANGUAGE,
-    keySeparator: false,
+    keySeparator: '.',
   });
 }

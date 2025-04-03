@@ -2,7 +2,11 @@ import './activity.scss';
 
 import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
-import { TransactionStatus, TransactionType } from '@helium-pay/backend';
+import {
+  TransactionLayer,
+  TransactionStatus,
+  TransactionType,
+} from '@helium-pay/backend';
 import { IonButton, IonContent, IonIcon, IonPopover } from '@ionic/react';
 import Big from 'big.js';
 import { arrowForwardCircleOutline, copyOutline } from 'ionicons/icons';
@@ -42,6 +46,7 @@ export function ActivityDetail({
   currentTransfer: WalletTransactionRecord;
 }) {
   const { t } = useTranslation();
+  const isLayer2 = currentTransfer.layer === TransactionLayer.L2;
 
   const statusString = (status: string | undefined) => {
     switch (status) {
@@ -56,6 +61,13 @@ export function ActivityDetail({
       default:
         return t('MissingTranslationError');
     }
+  };
+
+  const displayChainName = (currentTransfer: WalletTransactionRecord) => {
+    if (!currentTransfer.currency.network) return;
+    if (currentTransfer.layer === TransactionLayer.L2)
+      return t('Chain.AkashicChain');
+    return t(`Chain.${currentTransfer.currency.network.toUpperCase()}`);
   };
 
   // TODO: once backend transaction are fetching:
@@ -92,27 +104,43 @@ export function ActivityDetail({
         <TextContent>{statusString(currentTransfer.status)}</TextContent>
       </DetailColumn>
       <DetailColumn>
+        <h4>{t('Chain.Title')}</h4>
+        <TextContent>{displayChainName(currentTransfer)}</TextContent>
+      </DetailColumn>
+      <DetailColumn>
         <h4>{t('txHash')}</h4>
         <TextContent>
-          <Link href={currentTransfer.txHashUrl}>
-            {displayLongText(currentTransfer.txHash)}
-          </Link>
-          <IonButton
-            class="copy-button"
-            onClick={async (e: never) => copyData(currentTransfer.txHashUrl, e)}
-          >
-            <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />
-            <IonPopover
-              side="top"
-              alignment="center"
-              ref={popover}
-              isOpen={popoverOpen}
-              class={'copied-popover'}
-              onDidDismiss={() => setPopoverOpen(false)}
-            >
-              <IonContent class="ion-padding">{t('Copied')}</IonContent>
-            </IonPopover>
-          </IonButton>
+          {isLayer2 ? (
+            displayLongText(currentTransfer.txHash)
+          ) : (
+            <>
+              <Link href={currentTransfer.txHashUrl}>
+                {displayLongText(currentTransfer.txHash)}
+              </Link>
+              <IonButton
+                class="copy-button"
+                onClick={async (e: never) =>
+                  copyData(currentTransfer.txHashUrl, e)
+                }
+              >
+                <IonIcon
+                  slot="icon-only"
+                  class="copy-icon"
+                  icon={copyOutline}
+                />
+                <IonPopover
+                  side="top"
+                  alignment="center"
+                  ref={popover}
+                  isOpen={popoverOpen}
+                  class={'copied-popover'}
+                  onDidDismiss={() => setPopoverOpen(false)}
+                >
+                  <IonContent class="ion-padding">{t('Copied')}</IonContent>
+                </IonPopover>
+              </IonButton>
+            </>
+          )}
         </TextContent>
       </DetailColumn>
       <DetailColumn>
@@ -120,35 +148,47 @@ export function ActivityDetail({
         <h4>{t('To')}</h4>
       </DetailColumn>
       <DetailColumn>
-        <TextContent>
-          <Link href={currentTransfer.senderAddressUrl}>
-            {displayLongText(currentTransfer.senderAddressUrl)}
-          </Link>
-          <IonButton
-            class="copy-button"
-            onClick={async (e: never) =>
-              copyData(currentTransfer.senderAddressUrl, e)
-            }
-          >
-            <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />
-          </IonButton>
-        </TextContent>
+        {isLayer2 ? (
+          <TextContent>
+            {displayLongText(currentTransfer.fromAddress)}
+          </TextContent>
+        ) : (
+          <TextContent>
+            <Link href={currentTransfer.senderAddressUrl}>
+              {displayLongText(currentTransfer.senderAddressUrl)}
+            </Link>
+            <IonButton
+              class="copy-button"
+              onClick={async (e: never) =>
+                copyData(currentTransfer.senderAddressUrl, e)
+              }
+            >
+              <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />
+            </IonButton>
+          </TextContent>
+        )}
         <TextContent>
           <IonIcon icon={arrowForwardCircleOutline} />
         </TextContent>
-        <TextContent>
-          <Link href={currentTransfer.recipientAddressUrl}>
-            {displayLongText(currentTransfer.recipientAddressUrl)}
-          </Link>
-          <IonButton
-            class="copy-button"
-            onClick={async (e: never) =>
-              copyData(currentTransfer.recipientAddressUrl, e)
-            }
-          >
-            <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />
-          </IonButton>
-        </TextContent>
+        {isLayer2 ? (
+          <TextContent>
+            {displayLongText(currentTransfer.toAddress)}
+          </TextContent>
+        ) : (
+          <TextContent>
+            <Link href={currentTransfer.recipientAddressUrl}>
+              {displayLongText(currentTransfer.recipientAddressUrl)}
+            </Link>
+            <IonButton
+              class="copy-button"
+              onClick={async (e: never) =>
+                copyData(currentTransfer.recipientAddressUrl, e)
+              }
+            >
+              <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />
+            </IonButton>
+          </TextContent>
+        )}
       </DetailColumn>
       <Divider style={{ margin: '8px' }} />
       <DetailColumn>

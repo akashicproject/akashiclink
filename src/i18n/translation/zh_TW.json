@@ -151,5 +151,18 @@
   "Languages": "語言",
   "NoActivity": "未被激活",
   "Wallet": "錢包",
-  "Address": "地址"
+  "Address": "地址",
+  "Chain": {
+    "Title": "鏈",
+    "AkashicChain": "Akashic 鏈",
+    "ETH": "以太坊主網",
+    "GOR": "Ethereum GOERLI Testnet",
+    "BNB": "幣安鏈",
+    "TBNB": "Binance Testnet",
+    "TRX": "創鏈",
+    "TRX-NILE": "Tron NILE Testnet",
+    "TRX-SHASTA": "Tron SHASTA Testnet",
+    "BTC": "比特幣鏈",
+    "TBTC": "Bitcoin Testnet"
+  }
 }
