@@ -44,8 +44,8 @@ export function OneNft(props: Props) {
       onClick={props.select}
     >
       <IonImg
-        alt={props.nft.description}
-        src={props.nft.image}
+        alt={props.nft?.description}
+        src={props.nft?.image}
         class={props.isBig ? 'nft-image-big' : 'nft-image-small'}
       />
       <NftName
@@ -65,7 +65,7 @@ export function OneNft(props: Props) {
               }
         }
       >
-        {displayLongText(props.nft.acns?.name)}
+        {displayLongText(props.nft?.acns?.name)}
       </NftName>
     </NtfWrapper>
   );
