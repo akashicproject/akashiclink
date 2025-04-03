@@ -7,11 +7,14 @@ import type {
 export type ValidatedAddressPair = {
   convertedToAddress: string;
   userInputToAddress: string;
+  isL2?: boolean;
+  initiatedToNonL2?: string;
   acnsAlias?: string;
   userInputToAddressType?: 'l2' | 'l1' | 'alias';
 };
 
 export const validatedAddressPairInitialState = {
+  isL2: false,
   convertedToAddress: '',
   userInputToAddress: '',
 };

@@ -2,7 +2,7 @@ import type {
   IBaseTransactionWithDbIndex,
   ITerriTransaction,
 } from '@helium-pay/backend';
-import { L2Regex, otherError } from '@helium-pay/backend';
+import { otherError } from '@helium-pay/backend';
 import { IonAlert, IonCol, IonRow } from '@ionic/react';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
@@ -57,9 +57,7 @@ export const SendConfirmationFormActionButtons = ({
 
   const verifyTxnAndSign = useVerifyTxnAndSign();
 
-  const isL2 = L2Regex.exec(
-    txnsDetail?.validatedAddressPair?.convertedToAddress
-  );
+  const isL2 = txnsDetail?.validatedAddressPair.isL2;
 
   // Re-verify txn every 1 mins if L1
   useInterval(
@@ -123,9 +121,7 @@ export const SendConfirmationFormActionButtons = ({
             ...txn,
             signedTx: signedTxn as IBaseTransactionWithDbIndex,
             initiatedToNonL2:
-              txnsDetail.validatedAddressPair.userInputToAddressType !== 'l2'
-                ? txnsDetail.validatedAddressPair.userInputToAddress
-                : '',
+              txnsDetail.validatedAddressPair.initiatedToNonL2 ?? '',
           })
         : await OwnersAPI.sendL1TransactionUsingClientSideOtk([
             {

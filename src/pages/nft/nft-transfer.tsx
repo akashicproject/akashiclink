@@ -93,6 +93,7 @@ enum SearchResult {
   NoResult = 'NoResult',
   NoInput = 'NoInput',
   IsSelfAddress = 'isSelfAddress',
+  SendBpByAlias = 'SendBpByAlias',
 }
 
 const verifyNftTransaction = async (
@@ -164,9 +165,18 @@ export function NftTransfer() {
       setSearchedResultType(SearchResult.IsSelfAddress);
       return;
     }
-    const { l2Address } = await OwnersAPI.lookForL2Address({
+    const { l2Address, acnsAlias, isBp } = await OwnersAPI.lookForL2Address({
       to: value,
     });
+
+    // Not allow sending BP by alias
+    if (acnsAlias === value && isBp) {
+      setToAddress('');
+      setSearched(false);
+      setSearchedResultType(SearchResult.SendBpByAlias);
+      return;
+    }
+
     if (l2Address && value.match(L2Regex)) {
       setToAddress(l2Address);
       setSearchedResultType(SearchResult.Layer2);

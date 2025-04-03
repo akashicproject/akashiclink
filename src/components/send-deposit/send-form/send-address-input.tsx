@@ -61,6 +61,7 @@ export const SendAddressInput = ({
 
   const walletAddress = addresses.find((k) => k.coinSymbol === chain)?.address;
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   const validateAddress = debounce(async (input: string) => {
     setAlert(formAlertResetState);
 
@@ -79,14 +80,33 @@ export const SendAddressInput = ({
     }
 
     try {
-      // -- Internal address (matches L2Regex), check if it exists
-      if (userInput.match(L2Regex)) {
-        const { l2Address, acnsAlias } = await OwnersAPI.lookForL2Address({
-          to: userInput,
-          coinSymbol: chain,
-        });
+      const { l2Address, acnsAlias, isBp } = await OwnersAPI.lookForL2Address({
+        to: userInput,
+        coinSymbol: chain,
+      });
 
-        if (typeof l2Address === 'undefined') {
+      // Not allow sending BP by alias
+      if (userInput === acnsAlias && isBp) {
+        setAlert(errorAlertShell('SendBpByAlias'));
+        return;
+      }
+
+      if (userInput.match(NetworkDictionary[chain].regex.address)) {
+        // Sending by L1 address
+        onAddressValidated({
+          acnsAlias,
+          convertedToAddress: l2Address ?? userInput,
+          userInputToAddress: userInput,
+          userInputToAddressType: 'l1',
+          ...(l2Address && {
+            initiatedToNonL2: userInput,
+            isL2: true,
+          }),
+        });
+        return;
+      } else if (userInput.match(L2Regex)) {
+        // Sending L2 by L2 address
+        if (!l2Address) {
           setAlert(errorAlertShell('invalidL2Address'));
         } else {
           onAddressValidated({
@@ -94,44 +114,25 @@ export const SendAddressInput = ({
             convertedToAddress: l2Address,
             userInputToAddress: userInput,
             userInputToAddressType: 'l2',
+            isL2: true,
           });
         }
-
         return;
-      }
-
-      // -- External address, use paired L2 or original L1
-      if (userInput.match(NetworkDictionary[chain].regex.address)) {
-        const { l2Address: pairedL2Address, acnsAlias } =
-          await OwnersAPI.lookForL2Address({
-            to: userInput,
-            coinSymbol: chain,
+      } else {
+        // Sending by alias
+        if (!l2Address) {
+          setAlert(errorAlertShell('AddressHelpText'));
+          return;
+        } else {
+          onAddressValidated({
+            convertedToAddress: l2Address,
+            userInputToAddress: userInput,
+            userInputToAddressType: 'alias',
+            isL2: true,
+            initiatedToNonL2: userInput,
           });
-
-        onAddressValidated({
-          acnsAlias,
-          convertedToAddress: pairedL2Address ?? userInput,
-          userInputToAddress: userInput,
-          userInputToAddressType: 'l1',
-        });
-
-        return;
+        }
       }
-
-      // -- Alias
-      const result = await OwnersAPI.lookForL2Address({
-        to: userInput,
-      });
-      if (!result.l2Address) {
-        setAlert(errorAlertShell('AddressHelpText'));
-        return;
-      }
-
-      onAddressValidated({
-        convertedToAddress: result.l2Address,
-        userInputToAddress: userInput,
-        userInputToAddressType: 'alias',
-      });
     } catch (error) {
       setAlert(
         errorAlertShell(

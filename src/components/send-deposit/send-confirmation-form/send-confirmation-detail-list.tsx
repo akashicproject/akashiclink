@@ -1,6 +1,5 @@
 import {
   type ITransactionVerifyResponse,
-  L2Regex,
   NetworkDictionary,
 } from '@helium-pay/backend';
 import { IonItem, IonText } from '@ionic/react';
@@ -40,7 +39,7 @@ export const SendConfirmationDetailList = ({
   const { isCurrencyTypeToken, currencySymbol, nativeCoinSymbol } =
     useFocusCurrencySymbolsAndBalances();
 
-  const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
+  const isL2 = validatedAddressPair.isL2;
 
   // Calculate total Amount
   const totalAmount =
@@ -92,10 +91,7 @@ export const SendConfirmationDetailList = ({
     ? currencySymbol + (isL2 ? ` (${nativeCoinSymbol})` : '')
     : nativeCoinSymbol;
 
-  const alias =
-    validatedAddressPair?.userInputToAddressType === 'alias'
-      ? validatedAddressPair?.userInputToAddress
-      : validatedAddressPair?.acnsAlias ?? '-';
+  const alias = validatedAddressPair?.acnsAlias ?? '-';
 
   const feeCurrencyDisplayName =
     isCurrencyTypeToken && isL2

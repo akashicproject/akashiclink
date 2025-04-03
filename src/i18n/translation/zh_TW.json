@@ -299,5 +299,6 @@
     "depositCallbackUrl": "Deposit Callback Url",
     "withdrawalCallbackUrl": "Withdrawal Callback Url",
     "callbackId": "Callback Id"
-  }
+  },
+  "SendBpByAlias": "無法透過 Akashic 地址發送商業帳戶"
 }
