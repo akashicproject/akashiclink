@@ -33,6 +33,25 @@ export const Divider = styled.div({
 });
 
 // @TODO can be used when we add text.
+// export const NoActivityWrapper = styled.div({
+//   width: '100%',
+//   display: 'inline-flex',
+//   flexDirection: 'column',
+//   alignItems: 'center',
+//   gap: '8px',
+//   marginTop: '200px',
+// });
+// export const NoActivityText = styled.div({
+//   fontFamily: 'Nunito Sans',
+//   fontStyle: 'normal',
+//   fontWeight: 700,
+//   fontSize: '16px',
+//   lineHeight: '24px',
+//   color: 'var(--ion-color-primary-10)',
+// });
+const Header = styled.h2({
+  color: 'var(--ion-color-primary-dark)',
+});
 export const NoActivityWrapper = styled.div({
   width: '100%',
   display: 'inline-flex',
@@ -71,11 +90,11 @@ export function Activity() {
         <IonCard class="activity-card unselectable">
           <IonCardTitle>
             <div className="spread">
-              <h2>{t('ContractInteraction')}</h2>
+              <Header>{t('ContractInteraction')}</Header>
               <IonButtons slot="end">
                 <IonButton onClick={() => setIsOpen(false)}>
                   <IonIcon
-                    class="icon-button-icon"
+                    class="icon-button-icon icon-dark"
                     slot="icon-only"
                     icon={closeOutline}
                   />

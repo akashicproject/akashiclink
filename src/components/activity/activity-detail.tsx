@@ -17,6 +17,10 @@ import { Divider } from '../../pages/activity';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { displayLongText } from '../../utils/long-text';
 
+const darkColor = {
+  color: 'var(--ion-color-primary-dark)',
+};
+
 const DetailColumn = styled.div({
   display: 'flex',
   flexDirection: 'row',
@@ -33,12 +37,11 @@ const TextContent = styled.div({
   fontWeight: 400,
   fontSize: '16px',
   lineHeight: '20px',
-  color: 'var(--ion-color-primary-10)',
+  ...darkColor,
 });
-
-const Link = styled.a({
-  color: 'var(--ion-color-primary-10)',
-});
+const Header = styled.h4(darkColor);
+const Header3 = styled.h3(darkColor);
+const Link = styled.a(darkColor);
 
 export function ActivityDetail({
   currentTransfer,
@@ -102,15 +105,15 @@ export function ActivityDetail({
   return (
     <IonContent className="transfer-detail">
       <DetailColumn>
-        <h4>{t('Status')}</h4>
+        <Header>{t('Status')}</Header>
         <TextContent>{statusString(currentTransfer.status)}</TextContent>
       </DetailColumn>
       <DetailColumn>
-        <h4>{t('Chain.Title')}</h4>
+        <Header>{t('Chain.Title')}</Header>
         <TextContent>{displayChainName(currentTransfer)}</TextContent>
       </DetailColumn>
       <DetailColumn>
-        <h4>{t('txHash')}</h4>
+        <Header>{t('txHash')}</Header>
         <TextContent>
           {isLayer2 ? (
             displayLongText(currentTransfer.txHash)
@@ -146,8 +149,8 @@ export function ActivityDetail({
         </TextContent>
       </DetailColumn>
       <DetailColumn>
-        <h4>{t('From')}</h4>
-        <h4>{t('To')}</h4>
+        <Header>{t('From')}</Header>
+        <Header>{t('To')}</Header>
       </DetailColumn>
       <DetailColumn>
         {isLayer2 ? (
@@ -194,7 +197,7 @@ export function ActivityDetail({
       </DetailColumn>
       <Divider style={{ margin: '8px' }} />
       <DetailColumn>
-        <h3>{t('Transaction')}</h3>
+        <Header3>{t('Transaction')}</Header3>
       </DetailColumn>
       {backendUpdated && (
         <DetailColumn>
@@ -203,9 +206,9 @@ export function ActivityDetail({
       )}
       <DetailColumn>
         <TextContent>{t('Amount')}</TextContent>
-        <h3>
+        <Header3>
           {currentTransfer.amount + ' ' + currentTransfer.currency.displayName}
-        </h3>
+        </Header3>
       </DetailColumn>
       {backendUpdated && (
         <DetailColumn>
@@ -240,7 +243,7 @@ export function ActivityDetail({
       )}
       <DetailColumn style={{ marginTop: '20px' }}>
         <TextContent>{'Total'}</TextContent>
-        <h3>
+        <Header3>
           {currentTransfer.transferType === TransactionType.DEPOSIT
             ? currentTransfer.amount +
               ' ' +
@@ -248,7 +251,7 @@ export function ActivityDetail({
             : `${Big(currentTransfer.amount).add(
                 currentTransfer.feesPaid ?? 0
               )} ${currentTransfer.currency.displayName}`}
-        </h3>
+        </Header3>
       </DetailColumn>
     </IonContent>
   );

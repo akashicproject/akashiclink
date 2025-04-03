@@ -19,7 +19,11 @@
     --padding-end: 0;
 
     --background: transparent;
-    color: var(--ion-color-primary-10);
+    color: var(--ion-color-primary-dark);
     font-size: 20px;
   }
+}
+
+.icon-dark {
+  color: var(--ion-color-primary-dark) !important;
 }
