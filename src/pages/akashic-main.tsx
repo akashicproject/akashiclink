@@ -75,7 +75,7 @@ export function AkashicPayMain() {
 
   return (
     <PublicLayout>
-      <IonRow>
+      <IonRow style={{ padding: '20px' }}>
         <IonCol class="ion-center">
           <IonImg
             className={
