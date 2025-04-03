@@ -1,5 +1,7 @@
 import { TransactionHandler } from '@activeledger/sdk';
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
+import { App } from '@capacitor/app';
+import { Capacitor } from '@capacitor/core';
 import { datadogRum } from '@datadog/browser-rum';
 import type {
   CoinSymbol,
@@ -163,8 +165,14 @@ export class Nitr0genApi {
     try {
       const requestFunction = method === 'post' ? axios.post : axios.get;
 
+      const appInfo = await App.getInfo();
+      const headers = {
+        'Ap-Version': appInfo.version,
+        'Ap-Client': Capacitor.getPlatform(),
+      };
+
       const response = await requestFunction(NITR0_URL, tx, {
-        ...(method === 'get' ? { timeout } : {}),
+        ...(method === 'get' ? { timeout, headers } : { headers }),
       });
 
       // Prefix "AS" to umids so that "L2-hashes" have the prefix
