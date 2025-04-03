@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { IonCol, IonRow } from '@ionic/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -37,6 +38,7 @@ export function SettingsBackup() {
         setView(BackupKeyPairState.ViewKeyPair);
       }
     } catch (e) {
+      datadogRum.addError(e);
       setAlert(errorAlertShell(t('InvalidPassword')));
     }
   };

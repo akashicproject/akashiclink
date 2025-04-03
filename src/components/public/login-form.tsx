@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
+import { datadogRum } from '@datadog/browser-rum';
 
 import { AccountSelection } from '../account-selection/account-selection';
 import {
@@ -87,6 +88,10 @@ export function LoginForm() {
           username: selectedAccount.username,
           password,
         });
+
+        datadogRum.setUser({
+          id: selectedAccount.username,
+        });
         // Set the login account
         setIsLoading(false);
         setActiveAccount(selectedAccount);
@@ -95,6 +100,7 @@ export function LoginForm() {
         history.push(akashicPayPath(urls.loggedFunction));
       }
     } catch (error) {
+      datadogRum.addError(error);
       setIsLoading(false);
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
     }

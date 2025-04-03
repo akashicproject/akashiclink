@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { IonRow } from '@ionic/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -34,6 +35,7 @@ export function SettingsDelete() {
       activeAccount && removeLocalAccount(activeAccount);
       await logout();
     } catch (e) {
+      datadogRum.addError(e);
       setAlert(errorAlertShell('GenericFailureMsg'));
     }
   };

@@ -1,5 +1,6 @@
 import './send.css';
 
+import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
 import type { ITransactionProposal } from '@helium-pay/backend';
 import { L2Regex, NetworkDictionary, TEST_TO_MAIN } from '@helium-pay/backend';
@@ -399,6 +400,7 @@ export function SendTo() {
         });
       }
     } catch (error) {
+      datadogRum.addError(error);
       setAlertRequest(errorAlertShell(t(unpackRequestErrorMessage(error))));
     } finally {
       setLoading(false);

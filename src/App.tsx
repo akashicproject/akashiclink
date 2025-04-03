@@ -17,6 +17,7 @@ import './theme/font.css';
 import './theme/common.scss';
 
 import { Browser } from '@capacitor/browser';
+import { datadogRum } from '@datadog/browser-rum';
 import { IonAlert, IonApp, setupIonicReact } from '@ionic/react';
 import { IonReactMemoryRouter } from '@ionic/react-router';
 import { compareVersions } from 'compare-versions';
@@ -49,16 +50,20 @@ export default function App() {
       xhr.open('GET', 'manifest.json', true);
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4 && xhr.status === 200) {
-          const manifestData = JSON.parse(xhr.responseText);
-          const appVersion = manifestData.version.split('-')[0];
-          if (compareVersions(appVersion, config.awMinVersion) === -1) {
-            setUpdateType('hard');
-          } else if (
-            // check if skip before
-            skipVersion !== config.awLatestVersion &&
-            compareVersions(appVersion, config.awLatestVersion) === -1
-          ) {
-            setUpdateType('soft');
+          try {
+            const manifestData = JSON.parse(xhr.responseText);
+            const appVersion = manifestData.version.split('-')[0];
+            if (compareVersions(appVersion, config.awMinVersion) === -1) {
+              setUpdateType('hard');
+            } else if (
+              // check if skip before
+              skipVersion !== config.awLatestVersion &&
+              compareVersions(appVersion, config.awLatestVersion) === -1
+            ) {
+              setUpdateType('soft');
+            }
+          } catch (error) {
+            datadogRum.addError(error);
           }
         }
       };
