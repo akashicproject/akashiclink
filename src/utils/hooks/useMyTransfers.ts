@@ -55,7 +55,30 @@ export const useMyTransfers = (params?: IClientTransactionRecord) => {
     }
   );
 
-  const transformedTransfers = (data?.transactions ?? []).map((d) => ({
+  // Remove duplicate local transactions
+  const transactionL2Hashes = (data?.transactions ?? []).map(
+    (t) => t.l2TxnHash
+  );
+  const duplicatedLocalTransactionHashes = localTransactions
+    .filter((t) => transactionL2Hashes.includes(t.l2TxnHash))
+    .map((t) => t.l2TxnHash);
+  for (const duplicatedLocalTransactionHash of duplicatedLocalTransactionHashes) {
+    if (duplicatedLocalTransactionHash) {
+      dispatch(
+        removeLocalTransactionByL2TxnHash(duplicatedLocalTransactionHash)
+      );
+    }
+  }
+
+  // Add local transactions
+  const withLocalTransactions = [
+    ...localTransactions.filter(
+      (t) => !duplicatedLocalTransactionHashes.includes(t.l2TxnHash)
+    ),
+    ...(data?.transactions ?? []),
+  ];
+
+  const transformedTransfers = withLocalTransactions.map((d) => ({
     ...d,
     // remove trailing zeros from amounts
     amount: d.amount.replace(/\.*0+$/, ''),
@@ -80,29 +103,8 @@ export const useMyTransfers = (params?: IClientTransactionRecord) => {
       }),
   }));
 
-  // Remove duplicate local transactions
-  const transactionL2Hashes = transformedTransfers.map((t) => t.l2TxnHash);
-  const duplicatedLocalTransactionHashes = localTransactions
-    .filter((t) => transactionL2Hashes.includes(t.l2TxnHash))
-    .map((t) => t.l2TxnHash);
-  for (const duplicatedLocalTransactionHash of duplicatedLocalTransactionHashes) {
-    if (duplicatedLocalTransactionHash) {
-      dispatch(
-        removeLocalTransactionByL2TxnHash(duplicatedLocalTransactionHash)
-      );
-    }
-  }
-
-  // Add local transactions
-  const withLocalTransactions = [
-    ...localTransactions.filter(
-      (t) => !duplicatedLocalTransactionHashes.includes(t.l2TxnHash)
-    ),
-    ...transformedTransfers,
-  ];
-
   return {
-    transfers: withLocalTransactions,
+    transfers: transformedTransfers,
     mutateMyTransfers,
     ...response,
   };
