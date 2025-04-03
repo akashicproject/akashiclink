@@ -96,8 +96,14 @@ export const AddressScreeningAddressInput = ({
   };
 
   return (
-    <IonRow className={'ion-center ion-grid-row-gap-xxs'}>
-      <IonCol className={'ion-text-align-center'} size={'12'}>
+    <IonRow
+      className={'ion-center ion-grid-row-gap-xxs'}
+      style={{ gap: '24px' }}
+    >
+      <IonCol
+        className={'ion-text-align-center ion-padding-top-sm'}
+        size={'12'}
+      >
         <IonText>
           <p className="ion-text-align-center ion-margin-horizontal">
             {t('AddressScanDesc')}
@@ -107,7 +113,7 @@ export const AddressScreeningAddressInput = ({
       <IonCol size={'12'}>
         {validatedScanAddress.scanAddress === '' && (
           <>
-            <div className="ion-text-center">
+            <div className="ion-text-center ion-padding-bottom-sm">
               <IonLabel className="ion-text-bold ion-text-center ion-text-size-xxs">
                 {t('AddressScanHint')}
               </IonLabel>
