@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { displayLongText } from '../../utils/long-text';
-import { SquareWhiteButton } from '../buttons';
+import { SquareWhiteButton } from '../common/buttons';
 import { DeleteAccountModal } from './delete-account-modal';
 
 const InitialDiv = styled.div({

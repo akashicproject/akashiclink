@@ -2,12 +2,12 @@ import { IonCol, IonImg, IonRow, isPlatform } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
-import { PurpleButton } from '../../components/buttons';
-import { DividerDiv } from '../../components/layout/divider';
-import { NftLayout } from '../../components/layout/nft-layout';
+import { PurpleButton } from '../../components/common/buttons';
+import { DividerDiv } from '../../components/common/divider';
+import { NftLayout } from '../../components/page-layout/nft-layout';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
-import type { LocationState } from '../../history';
+import type { LocationState } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { displayLongText } from '../../utils/long-text';

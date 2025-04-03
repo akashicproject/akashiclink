@@ -1,15 +1,15 @@
 import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
-import { PurpleButton } from '../components/buttons';
-import { LoggedLayout } from '../components/layout/logged-layout';
+import { PurpleButton } from '../components/common/buttons';
+import { DashboardLayout } from '../components/page-layout/dashboard-layout';
 import { urls } from '../constants/urls';
 
 export const ErrorPage = () => {
   const { t } = useTranslation();
 
   return (
-    <LoggedLayout>
+    <DashboardLayout>
       <IonGrid>
         <IonRow>
           <IonCol size="12" className="ion-text-center">
@@ -23,12 +23,12 @@ export const ErrorPage = () => {
             </IonText>
           </IonCol>
           <IonCol size="12" className="ion-text-center">
-            <PurpleButton routerLink={urls.loggedFunction}>
+            <PurpleButton routerLink={urls.dashboard}>
               {t('ErrorPageBackButton')}
             </PurpleButton>
           </IonCol>
         </IonRow>
       </IonGrid>
-    </LoggedLayout>
+    </DashboardLayout>
   );
 };

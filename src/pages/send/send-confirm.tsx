@@ -1,4 +1,4 @@
-import './send.css';
+import './send.scss';
 
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
@@ -19,15 +19,15 @@ import {
   CustomAlert,
   errorAlertShell,
   formAlertResetState,
-} from '../../components/alert/alert';
-import { PurpleButton, WhiteButton } from '../../components/buttons';
+} from '../../components/common/alert/alert';
+import { PurpleButton, WhiteButton } from '../../components/common/buttons';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
-import type { LocationState } from '../../history';
+import type { LocationState } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { OwnersAPI } from '../../utils/api';
+import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import { displayLongText } from '../../utils/long-text';
-import { useIosScrollPasswordKeyboardIntoView } from '../../utils/scroll-when-password-keyboard';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { SendMain } from './send-main';
 
@@ -241,7 +241,7 @@ export function SendConfirm() {
         >
           <WhiteButton
             onClick={() => {
-              history.push(akashicPayPath(urls.loggedFunction));
+              history.push(akashicPayPath(urls.dashboard));
             }}
           >
             {t('GoBack')}

@@ -4,9 +4,9 @@ import { withReactContext } from 'storybook-react-context';
 import {
   ActiveAccountContext,
   LocalAccountContext,
-} from '../../../src/components/PreferenceProvider';
+} from '../../../src/components/providers/PreferenceProvider';
 import { urls } from '../../../src/constants/urls';
-import { Dashboard as DashboardComponent } from '../../../src/pages/logged/dashboard';
+import { Dashboard as DashboardComponent } from '../../../src/pages/dashboard/dashboard';
 import { akashicPayPath } from '../../../src/routing/navigation-tabs';
 import type { LocalAccount } from '../../../src/utils/hooks/useLocalAccounts';
 import { withMockPath } from '../../utils/mock-path';
@@ -14,7 +14,7 @@ import { withMockPath } from '../../utils/mock-path';
 const meta: Meta<typeof DashboardComponent> = {
   title: 'Pages',
   component: DashboardComponent,
-  decorators: [withMockPath(akashicPayPath(urls.loggedFunction))],
+  decorators: [withMockPath(akashicPayPath(urls.dashboard))],
 };
 
 export default meta;

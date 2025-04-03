@@ -1,4 +1,4 @@
-import './send.css';
+import './send.scss';
 
 import type { IBaseTransaction } from '@activeledger/sdk-bip39';
 import { datadogRum } from '@datadog/browser-rum';
@@ -29,17 +29,17 @@ import {
   CustomAlert,
   errorAlertShell,
   formAlertResetState,
-} from '../../components/alert/alert';
-import { PurpleButton, WhiteButton } from '../../components/buttons';
+} from '../../components/common/alert/alert';
+import { PurpleButton, WhiteButton } from '../../components/common/buttons';
+import {
+  StyledInput,
+  StyledInputErrorPrompt,
+} from '../../components/common/input/styled-input';
 import {
   CacheOtkContext,
   useFocusCurrency,
   useTheme,
-} from '../../components/PreferenceProvider';
-import {
-  StyledInput,
-  StyledInputErrorPrompt,
-} from '../../components/styled-input';
+} from '../../components/providers/PreferenceProvider';
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
@@ -648,7 +648,7 @@ export function SendTo() {
                   <WhiteButton
                     style={{ width: '100%', marginRight: '0' }}
                     expand="block"
-                    routerLink={akashicPayPath(urls.loggedFunction)}
+                    routerLink={akashicPayPath(urls.dashboard)}
                     onClick={() => history.goBack()}
                   >
                     {t('Cancel')}

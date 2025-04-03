@@ -12,7 +12,7 @@ import { arrowForwardCircleOutline } from 'ionicons/icons';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Divider } from '../../pages/activity';
+import { Divider } from '../../pages/activity/activity';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { displayLongText } from '../../utils/long-text';
 

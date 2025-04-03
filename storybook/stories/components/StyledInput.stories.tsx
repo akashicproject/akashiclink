@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { StyledInput as SI } from '../../../src/components/styled-input';
+import { StyledInput as SI } from '../../../src/components/common/input/styled-input';
 
 const meta: Meta<typeof SI> = {
   title: 'Components/Input',

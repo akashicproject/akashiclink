@@ -5,8 +5,8 @@ import { IonCol, IonImg, IonRow } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { LoggedLayout } from '../../components/layout/logged-layout';
 import { MainGrid } from '../../components/layout/main-grid';
+import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 
 export function SettingsVersion() {
   const { t } = useTranslation();
@@ -41,7 +41,7 @@ export function SettingsVersion() {
   }, []);
 
   return (
-    <LoggedLayout>
+    <DashboardLayout>
       <MainGrid style={{ padding: '32px 32px' }}>
         <IonRow>
           <IonCol size={'12'}>
@@ -67,6 +67,6 @@ export function SettingsVersion() {
           </IonCol>
         </IonRow>
       </MainGrid>
-    </LoggedLayout>
+    </DashboardLayout>
   );
 }

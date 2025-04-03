@@ -14,9 +14,9 @@ import { useTranslation } from 'react-i18next';
 
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { useLogout } from '../../utils/hooks/useLogout';
 import { displayLongText } from '../../utils/long-text';
-import { PurpleButton, WhiteButton } from '../buttons';
-import { useLogout } from '../logout';
+import { PurpleButton, WhiteButton } from '../common/buttons';
 
 const FlexDiv = styled.div({
   display: 'flex',

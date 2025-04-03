@@ -12,12 +12,12 @@ import RotateRightOutlinedIcon from '@mui/icons-material/RotateRightOutlined';
 import type { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Divider } from '../../pages/activity';
+import { Divider } from '../../pages/activity/activity';
 import { themeType } from '../../theme/const';
 import { formatAmount } from '../../utils/formatAmount';
 import { formatDate } from '../../utils/formatDate';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
-import { useTheme } from '../PreferenceProvider';
+import { useTheme } from '../providers/PreferenceProvider';
 
 const L2Icon = '/shared-assets/images/PayLogo-all-white.svg';
 

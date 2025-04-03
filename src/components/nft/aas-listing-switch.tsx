@@ -1,4 +1,4 @@
-import './switch.css';
+import './aas-listing-switch.scss';
 
 import styled from '@emotion/styled';
 import type {
@@ -14,8 +14,8 @@ import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { signTxBody } from '../../utils/nitr0gen-api';
-import { CacheOtkContext } from '../PreferenceProvider';
-import { Toggle } from '../toggle/toggle';
+import { Toggle } from '../common/toggle/toggle';
+import { CacheOtkContext } from '../providers/PreferenceProvider';
 
 const StyledIonRow = styled(IonRow)`
   width: 100%;

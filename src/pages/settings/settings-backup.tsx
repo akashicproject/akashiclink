@@ -2,11 +2,11 @@ import { IonCol, IonRow } from '@ionic/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { AlertBox } from '../../components/alert/alert';
-import { ConfirmLockPassword } from '../../components/confirm-lock-password';
-import { LoggedLayout } from '../../components/layout/logged-layout';
+import { AlertBox } from '../../components/common/alert/alert';
 import { MainGrid } from '../../components/layout/main-grid';
 import { OtkBox } from '../../components/otk-box/otk-box';
+import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
+import { ConfirmLockPassword } from '../../components/settings/confirm-lock-password';
 import type { FullOtk } from '../../utils/otk-generation';
 
 export enum BackupKeyPairState {
@@ -26,7 +26,7 @@ export function SettingsBackup() {
   };
 
   return (
-    <LoggedLayout>
+    <DashboardLayout>
       {view === BackupKeyPairState.ConfirmPassword && (
         <ConfirmLockPassword onPasswordCheckSuccess={onPasswordCheckSuccess} />
       )}
@@ -55,6 +55,6 @@ export function SettingsBackup() {
           </IonRow>
         </MainGrid>
       )}
-    </LoggedLayout>
+    </DashboardLayout>
   );
 }

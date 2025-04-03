@@ -10,9 +10,9 @@ import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import App from './App';
-import { store } from './app/store';
-import { history } from './history';
+import { store } from './redux/app/store';
 import { reportWebVitals } from './reportWebVitals';
+import { history } from './routing/history';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 const container = document.getElementById('root');

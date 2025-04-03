@@ -5,17 +5,17 @@ import { IonCol, IonImg, IonRow, isPlatform } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { useAppDispatch } from '../app/hooks';
-import { PublicLayout } from '../components/layout/public-layout';
-import { Spinner } from '../components/loader/spinner';
-import { useLogout } from '../components/logout';
-import CreateOrImportForm from '../components/public/create-or-import-form';
-import { LoginForm } from '../components/public/login-form';
+import { Spinner } from '../components/common/loader/spinner';
+import { PublicLayout } from '../components/page-layout/public-layout';
+import { CreateOrImportForm } from '../components/wallet-setup/create-or-import-form';
+import { LoginForm } from '../components/wallet-setup/login-form';
 import { LAST_PAGE_LOCATION } from '../constants';
-import { onClear as onClearCreate } from '../slices/createWalletSlice';
-import { onClear as onClearImport } from '../slices/importWalletSlice';
-import { onClear as onClearMigrate } from '../slices/migrateWalletSlice';
+import { useAppDispatch } from '../redux/app/hooks';
+import { onClear as onClearCreate } from '../redux/slices/createWalletSlice';
+import { onClear as onClearImport } from '../redux/slices/importWalletSlice';
+import { onClear as onClearMigrate } from '../redux/slices/migrateWalletSlice';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
+import { useLogout } from '../utils/hooks/useLogout';
 
 /**
  * First page seen by user when navigating to app

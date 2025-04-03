@@ -2,38 +2,37 @@ import { IonRouterOutlet } from '@ionic/react';
 import { Redirect } from 'react-router';
 
 import { urls } from '../constants/urls';
-import { Activity } from '../pages/activity';
+import { Activity } from '../pages/activity/activity';
 import { AkashicPayMain } from '../pages/akashic-main';
-import { ChangePasswordConfirm } from '../pages/changePassword/confirm';
-import { ChangePassword } from '../pages/changePassword/enter-passwords';
-import { CreateWalletPassword } from '../pages/createWallet/create-wallet-create-password';
-import { CreateWalletSecret } from '../pages/createWallet/create-wallet-secret';
-import { CreateWalletSecretConfirm } from '../pages/createWallet/create-wallet-secret-confirm';
-import { CreateWalletSuccessful } from '../pages/createWallet/create-wallet-successful';
+import { CreateWalletPassword } from '../pages/create-wallet/create-wallet-create-password';
+import { CreateWalletSecret } from '../pages/create-wallet/create-wallet-secret';
+import { CreateWalletSecretConfirm } from '../pages/create-wallet/create-wallet-secret-confirm';
+import { CreateWalletSuccessful } from '../pages/create-wallet/create-wallet-successful';
+import { Dashboard } from '../pages/dashboard/dashboard';
+import { DepositPage } from '../pages/deposit/deposit-page';
 import { ErrorPage } from '../pages/error';
-import { ImportWalletKeypair } from '../pages/importWallet/import-wallet-keypair';
-import { ImportWalletPassword } from '../pages/importWallet/import-wallet-password';
-import { ImportWalletSecret } from '../pages/importWallet/import-wallet-secret';
-import { ImportWalletSelectMethod } from '../pages/importWallet/import-wallet-select-method';
-import { ImportWalletSuccessful } from '../pages/importWallet/import-wallet-successful';
-import { Dashboard } from '../pages/logged/dashboard';
-import { DepositPage } from '../pages/logged/deposit-page';
-import { ManageAccounts } from '../pages/manage-accounts';
+import { ImportWalletKeypair } from '../pages/import-wallet/import-wallet-keypair';
+import { ImportWalletPassword } from '../pages/import-wallet/import-wallet-password';
+import { ImportWalletSecret } from '../pages/import-wallet/import-wallet-secret';
+import { ImportWalletSelectMethod } from '../pages/import-wallet/import-wallet-select-method';
+import { ImportWalletSuccessful } from '../pages/import-wallet/import-wallet-successful';
+import { ChangePasswordAfterImport } from '../pages/import-wallet/recovery/change-password-after-import';
+import { ManageAccounts } from '../pages/manage-accounts/manage-accounts';
+import { MigrateWalletCreatePassword } from '../pages/migrate-wallet-otk/migrate-wallet-create-password';
+import { MigrateWalletOldPassword } from '../pages/migrate-wallet-otk/migrate-wallet-enter-old-password';
+import { MigrateWalletNotice } from '../pages/migrate-wallet-otk/migrate-wallet-notice';
+import { MigrateWalletSecret } from '../pages/migrate-wallet-otk/migrate-wallet-secret';
+import { MigrateWalletSecretConfirm } from '../pages/migrate-wallet-otk/migrate-wallet-secret-confirm';
+import { MigrateWalletSuccessful } from '../pages/migrate-wallet-otk/migrate-wallet-successful';
 import { Nft } from '../pages/nft/nft';
 import { NftTransfer } from '../pages/nft/nft-transfer';
 import { NftTransferResult } from '../pages/nft/nft-transfer-result';
 import { Nfts } from '../pages/nft/nfts';
-import { MigrateWalletCreatePassword } from '../pages/otkMigration/migrate-wallet-create-password';
-import { MigrateWalletOldPassword } from '../pages/otkMigration/migrate-wallet-enter-old-password';
-import { MigrateWalletNotice } from '../pages/otkMigration/migrate-wallet-notice';
-import { MigrateWalletSecret } from '../pages/otkMigration/migrate-wallet-secret';
-import { MigrateWalletSecretConfirm } from '../pages/otkMigration/migrate-wallet-secret-confirm';
-import { MigrateWalletSuccessful } from '../pages/otkMigration/migrate-wallet-successful';
-import { RecoverCode } from '../pages/recover-code';
-import { ChangePasswordAfterImport } from '../pages/recovery/change-password-after-import';
 import { SendConfirm } from '../pages/send/send-confirm';
 import { SendResult } from '../pages/send/send-result';
 import { SendTo } from '../pages/send/send-to';
+import { ChangePasswordConfirm } from '../pages/settings/change-password/confirm';
+import { ChangePassword } from '../pages/settings/change-password/enter-passwords';
 import { Settings } from '../pages/settings/settings';
 import { SettingsBackup } from '../pages/settings/settings-backup';
 import { SettingsNaming } from '../pages/settings/settings-naming';
@@ -51,8 +50,8 @@ export function NavigationTree() {
       {AkashicTab.registerPage(AkashicPayMain)}
       {AkashicTab.registerPage(AkashicPayMain, urls.akashicPay)}
       {AkashicTab.registerPage(ManageAccounts, urls.manageAccounts)}
-      {AkashicTab.registerPage(Dashboard, urls.loggedFunction)}
-      {AkashicTab.registerPage(DepositPage, urls.loggedDeposit)}
+      {AkashicTab.registerPage(Dashboard, urls.dashboard)}
+      {AkashicTab.registerPage(DepositPage, urls.deposit)}
       {AkashicTab.registerPage(SendConfirm, urls.sendConfirm)}
       {AkashicTab.registerPage(SendTo, urls.sendTo)}
       {AkashicTab.registerPage(SendResult, urls.sendResult)}
@@ -62,7 +61,6 @@ export function NavigationTree() {
       {AkashicTab.registerPage(NftTransferResult, urls.nftTransferResult)}
       {AkashicTab.registerPage(Activity, urls.activity)}
       {AkashicTab.registerPage(Settings, urls.settings)}
-      {AkashicTab.registerPage(RecoverCode, urls.recoverCode)}
       {AkashicTab.registerPage(SettingsBackup, urls.settingsBackup)}
       {AkashicTab.registerPage(SettingsNaming, urls.settingsNaming)}
       {AkashicTab.registerPage(SettingsVersion, urls.settingsVersion)}

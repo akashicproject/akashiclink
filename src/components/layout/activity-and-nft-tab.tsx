@@ -8,14 +8,14 @@ import { useTranslation } from 'react-i18next';
 import { Link, useHistory } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
-import { ActivityDetailComponent } from '../../pages/activity';
+import { ActivityDetailComponent } from '../../pages/activity/activity';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { formatMergeAndSortNftAndCryptoTransfers } from '../../utils/formatTransfers';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { OneActivity } from '../activity/one-activity';
-import { TabButton } from '../buttons';
+import { TabButton } from '../common/buttons';
 import { Tabs } from './tabs';
 
 const SeeMore = styled(Link)({

@@ -7,7 +7,7 @@ import {
   ActiveAccountContext,
   CacheOtkContext,
   LocalAccountContext,
-} from '../../components/PreferenceProvider';
+} from '../../components/providers/PreferenceProvider';
 import type { FullOtk } from '../otk-generation';
 
 const algorithm = 'aes-256-cbc';

@@ -5,8 +5,9 @@ import { moon, sunny } from 'ionicons/icons';
 import { useEffect } from 'react';
 
 import { themeType } from '../../theme/const';
-import { useTheme } from '../PreferenceProvider';
-import { Toggle } from '../toggle/toggle';
+import { Toggle } from '../common/toggle/toggle';
+import { useTheme } from '../providers/PreferenceProvider';
+
 /**
  * Slider prototyped of stack overflow answer, for toggling theme
  */

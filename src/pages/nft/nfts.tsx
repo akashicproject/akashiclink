@@ -1,4 +1,4 @@
-import './ntf.css';
+import './ntf.scss';
 
 import styled from '@emotion/styled';
 import type { INftResponse } from '@helium-pay/backend';
@@ -9,9 +9,9 @@ import { useHistory } from 'react-router-dom';
 import type { GridComponents } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
-import { SquareWhiteButton } from '../../components/buttons';
-import { NftLayout } from '../../components/layout/nft-layout';
+import { SquareWhiteButton } from '../../components/common/buttons';
 import { OneNft } from '../../components/nft/one-nft';
+import { NftLayout } from '../../components/page-layout/nft-layout';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useNftMe } from '../../utils/hooks/useNftMe';
@@ -85,7 +85,7 @@ export function Nfts() {
                 height: '40px',
                 width: '40px',
               }}
-              onClick={() => history.push(akashicPayPath(urls.loggedFunction))}
+              onClick={() => history.push(akashicPayPath(urls.dashboard))}
             >
               <IonIcon
                 className="icon-button-icon"

@@ -19,18 +19,18 @@ import {
   CustomAlert,
   errorAlertShell,
   formAlertResetState,
-} from '../../components/alert/alert';
-import { PurpleButton, WhiteButton } from '../../components/buttons';
-import { NftLayout } from '../../components/layout/nft-layout';
-import { OneNft } from '../../components/nft/one-nft';
-import { CacheOtkContext } from '../../components/PreferenceProvider';
+} from '../../components/common/alert/alert';
+import { PurpleButton, WhiteButton } from '../../components/common/buttons';
 import {
   StyledInput,
   StyledInputErrorPrompt,
-} from '../../components/styled-input';
+} from '../../components/common/input/styled-input';
+import { OneNft } from '../../components/nft/one-nft';
+import { NftLayout } from '../../components/page-layout/nft-layout';
+import { CacheOtkContext } from '../../components/providers/PreferenceProvider';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
-import type { LocationState } from '../../history';
+import type { LocationState } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';

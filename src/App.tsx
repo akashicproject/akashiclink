@@ -22,14 +22,14 @@ import { IonReactMemoryRouter } from '@ionic/react-router';
 import { useEffect } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
 
-import { useAppSelector } from './app/hooks';
-import type { RootState } from './app/store';
 import VersionUpdateAlert from './components/layout/version-update-alert';
-import { useLogout } from './components/logout';
-import { PreferenceProvider } from './components/PreferenceProvider';
+import { PreferenceProvider } from './components/providers/PreferenceProvider';
 import { LAST_PAGE_LOCATION } from './constants';
-import { history } from './history';
+import { useAppSelector } from './redux/app/hooks';
+import type { RootState } from './redux/app/store';
+import { history } from './routing/history';
 import { NavigationTree } from './routing/navigation-tree';
+import { useLogout } from './utils/hooks/useLogout';
 
 setupIonicReact();
 

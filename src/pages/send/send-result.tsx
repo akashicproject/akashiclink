@@ -5,11 +5,11 @@ import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
-import { PurpleButton } from '../../components/buttons';
-import { DividerDivWithoutMargin } from '../../components/layout/divider';
+import { PurpleButton } from '../../components/common/buttons';
+import { DividerDivWithoutMargin } from '../../components/common/divider';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
-import type { LocationState } from '../../history';
+import type { LocationState } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
@@ -172,7 +172,7 @@ export function SendResult() {
             onClick={async () => {
               await mutateBalancesMe();
               await mutateTransfersMe();
-              history.push(akashicPayPath(urls.loggedFunction));
+              history.push(akashicPayPath(urls.dashboard));
             }}
           >
             {t('Confirm')}

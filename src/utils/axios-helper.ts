@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { LAST_PAGE_LOCATION } from '../constants';
 import { urls } from '../constants/urls';
-import { history } from '../history';
+import { history } from '../routing/history';
 import { akashicPayPath } from '../routing/navigation-tabs';
 
 const createAxiosInstance = (baseURL: string | undefined) => {

@@ -18,6 +18,6 @@ export function historyGoBack(history: History, loggedOut?: boolean) {
   else {
     // Otherwise redirect to dashboard to login page, depending on logged in state
     if (loggedOut) history.push(akashicPayPath(urls.akashicPay));
-    else history.push(akashicPayPath(urls.loggedFunction));
+    else history.push(akashicPayPath(urls.dashboard));
   }
 }

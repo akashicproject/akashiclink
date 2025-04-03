@@ -8,8 +8,6 @@ import {
   IonToolbar,
 } from '@ionic/react';
 
-import { ExploreContainer } from '../components/explore-container';
-
 export function Us2Main() {
   return (
     <IonPage>
@@ -24,7 +22,6 @@ export function Us2Main() {
             <IonTitle size="large">US²</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Main" />
       </IonContent>
     </IonPage>
   );

@@ -1,5 +1,5 @@
 import './account-selection.scss';
-import '../../pages/logged/logged.css';
+import '../page-layout/layout-with-activity-tab.scss';
 
 import { Clipboard } from '@capacitor/clipboard';
 import {
@@ -19,8 +19,8 @@ import { themeType } from '../../theme/const';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { displayLongText } from '../../utils/long-text';
-import { SquareWhiteButton } from '../buttons';
-import { useTheme } from '../PreferenceProvider';
+import { SquareWhiteButton } from '../common/buttons';
+import { useTheme } from '../providers/PreferenceProvider';
 
 enum DropdownOptions {
   CreateAccount,

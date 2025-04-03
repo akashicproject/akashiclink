@@ -12,8 +12,8 @@ import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { themeType } from '../../theme/const';
-import { SquareWhiteButton } from '../buttons';
-import { useTheme } from '../PreferenceProvider';
+import { SquareWhiteButton } from '../common/buttons';
+import { useTheme } from '../providers/PreferenceProvider';
 
 /**
  * Simple box storing wrapped text with optional copy button on the side

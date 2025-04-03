@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { withReactContext } from 'storybook-react-context';
 
-import { LocalAccountContext } from '../../../src/components/PreferenceProvider';
+import { LocalAccountContext } from '../../../src/components/providers/PreferenceProvider';
 import { AkashicPayMain } from '../../../src/pages/akashic-main';
 import { akashicPayRoot } from '../../../src/routing/navigation-tabs';
 import { ownerUnauthorised } from '../../mocks/owner';

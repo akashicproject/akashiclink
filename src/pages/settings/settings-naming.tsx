@@ -1,4 +1,4 @@
-import './settings.css';
+import './settings-naming.scss';
 
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
@@ -28,17 +28,20 @@ import {
   CustomAlert,
   errorAlertShell,
   formAlertResetState,
-} from '../../components/alert/alert';
+} from '../../components/common/alert/alert';
 import {
   PurpleButton,
   SquareWhiteButton,
   TabButton,
   WhiteButton,
-} from '../../components/buttons';
-import { LoggedLayout } from '../../components/layout/logged-layout';
+} from '../../components/common/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { Tabs } from '../../components/layout/tabs';
-import { CacheOtkContext, useTheme } from '../../components/PreferenceProvider';
+import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
+import {
+  CacheOtkContext,
+  useTheme,
+} from '../../components/providers/PreferenceProvider';
 import { themeType } from '../../theme/const';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
@@ -258,7 +261,7 @@ export function SettingsNaming() {
   };
 
   return (
-    <LoggedLayout>
+    <DashboardLayout>
       <CustomAlert state={alert} />
       <Tabs>
         <TabButton
@@ -492,6 +495,6 @@ export function SettingsNaming() {
         duration={1500}
         icon={checkmarkCircleOutline}
       />
-    </LoggedLayout>
+    </DashboardLayout>
   );
 }

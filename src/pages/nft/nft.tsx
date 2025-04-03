@@ -1,4 +1,4 @@
-import './ntf.css';
+import './ntf.scss';
 
 import styled from '@emotion/styled';
 import { IonCol, IonIcon, IonRow, isPlatform } from '@ionic/react';
@@ -7,14 +7,17 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
-import { CustomAlert } from '../../components/alert/alert';
-import { PurpleButton, SquareWhiteButton } from '../../components/buttons';
-import { NftLayout } from '../../components/layout/nft-layout';
+import { CustomAlert } from '../../components/common/alert/alert';
+import {
+  PurpleButton,
+  SquareWhiteButton,
+} from '../../components/common/buttons';
 import { AasListingSwitch } from '../../components/nft/aas-listing-switch';
 import { OneNft } from '../../components/nft/one-nft';
+import { NftLayout } from '../../components/page-layout/nft-layout';
 import { urls } from '../../constants/urls';
-import type { LocationState } from '../../history';
-import { historyGoBackOrReplace } from '../../history';
+import type { LocationState } from '../../routing/history';
+import { historyGoBackOrReplace } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 
@@ -34,7 +37,7 @@ export function Nft() {
   const state = history.location.state?.nft;
 
   const { nfts } = useNftMe();
-  const currentNft = nfts.find((nft) => nft.name === state?.nftName)!;
+  const currentNft = nfts.find((nft) => nft.name === state?.nftName);
   const [message, setCustomAlertMessage] = useState(
     t('NSRecordWarning', { nftName: currentNft?.name || '' })
   );
@@ -42,7 +45,7 @@ export function Nft() {
   const isMobile = isPlatform('mobile');
 
   const transferNft = () => {
-    if (currentNft.acns?.value !== null) {
+    if (currentNft?.acns?.value !== null) {
       setIsOpen(true);
       return;
     }
@@ -92,7 +95,13 @@ export function Nft() {
       <NftWrapper style={{ top: isMobile ? '-10vh' : '-15vh' }}>
         <IonRow style={{ width: '215px' }}>
           <IonCol class="ion-center">
-            <OneNft nft={currentNft} isBig={true} isAccountNameHidden={true} />
+            {currentNft && (
+              <OneNft
+                nft={currentNft}
+                isBig={true}
+                isAccountNameHidden={true}
+              />
+            )}
           </IonCol>
         </IonRow>
         <IonRow style={{ width: '215px' }}>

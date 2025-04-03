@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { LoggedLayout } from '../../components/layout/logged-layout';
+import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 
 export const SendMain: React.FC<{ children: ReactNode }> = ({ children }) => {
-  return <LoggedLayout showAddress>{children}</LoggedLayout>;
+  return <DashboardLayout showAddress>{children}</DashboardLayout>;
 };
