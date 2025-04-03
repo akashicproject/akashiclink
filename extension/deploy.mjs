@@ -123,7 +123,7 @@ const zipExtension = async () => {
           ],
         });
       } else {
-        upload();
+       // upload();
       }
     });
   });
