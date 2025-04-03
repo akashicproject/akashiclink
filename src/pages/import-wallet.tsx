@@ -1,4 +1,3 @@
-import { datadogRum } from '@datadog/browser-rum';
 import {
   activationCodeRegex,
   ActivationRequestType,
@@ -117,7 +116,6 @@ export function ImportWallet() {
         });
       }
     } catch (e) {
-      datadogRum.addError(e);
       let message = t('GenericFailureMsg');
       if (axios.isAxiosError(e)) message = e.response?.data?.message || message;
       setAlert(errorAlertShell(message));
@@ -154,7 +152,6 @@ export function ImportWallet() {
         localStorage.setItem('spinner', 'true');
       }
     } catch (error) {
-      datadogRum.addError(error);
       setAlertPage2(errorAlertShell(t(unpackRequestErrorMessage(error))));
     }
   }

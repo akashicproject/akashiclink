@@ -1,6 +1,5 @@
 import './settings.css';
 
-import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
 import type { IAcnsResponse } from '@helium-pay/backend';
 import {
@@ -178,7 +177,6 @@ export function SettingsNaming() {
       setIsConfirmModel(false);
       setIsResultModel(true);
     } catch (error) {
-      datadogRum.addError(error);
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
     } finally {
       await mutate();
@@ -196,7 +194,6 @@ export function SettingsNaming() {
       setView(View.list);
       setShowEditToast(true);
     } catch (error) {
-      datadogRum.addError(error);
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
     } finally {
       await mutate();

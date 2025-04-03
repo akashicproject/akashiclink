@@ -1,4 +1,3 @@
-import { datadogRum } from '@datadog/browser-rum';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -13,27 +12,6 @@ const root = createRoot(container!);
 async function startUpTasks() {
   await initialiseTranslationLibrary();
 }
-
-datadogRum.init({
-  applicationId: process.env.REACT_APP_DATADOG_APPLICATION_ID || '',
-  clientToken: process.env.REACT_APP_DATADOG_CLIENT_TOKEN || '',
-  site: 'datadoghq.com',
-  service: 'akashic-wallet',
-  env: process.env.REACT_APP_ENV || '',
-  allowedTracingUrls: [`${process.env.REACT_APP_API_BASE_URL}/api`],
-
-  // Specify a version number to identify the deployed version of your application in Datadog
-  version: '0.0.1',
-  sessionSampleRate: 100,
-  sessionReplaySampleRate: 20,
-  trackUserInteractions: true,
-  trackResources: true,
-  trackLongTasks: true,
-  defaultPrivacyLevel: 'mask-user-input',
-});
-
-datadogRum.startSessionReplayRecording();
-
 void startUpTasks().then(() => {
   root.render(
     <React.StrictMode>

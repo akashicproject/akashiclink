@@ -1,4 +1,3 @@
-import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
 import { L2Regex } from '@helium-pay/backend';
 import {
@@ -159,7 +158,6 @@ export function NftTransfer() {
         },
       });
     } catch (error) {
-      datadogRum.addError(error);
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
     } finally {
       setInputValue('');

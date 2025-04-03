@@ -1,6 +1,5 @@
 import './send.css';
 
-import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
 import type { ITransactionSettledResponse } from '@helium-pay/backend';
 import { userConst } from '@helium-pay/backend';
@@ -158,7 +157,6 @@ export function SendConfirm() {
           goToResult(errorMsgs.NoError);
         }
       } catch (error) {
-        datadogRum.addError(error);
         // TODO: For this error msg translation: extract it into its own function you are are re-using this code
         if (
           axios.isAxiosError(error) &&

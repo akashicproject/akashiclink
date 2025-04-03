@@ -1,5 +1,4 @@
 import { Preferences } from '@capacitor/preferences';
-import { datadogRum } from '@datadog/browser-rum';
 import { useEffect, useState } from 'react';
 
 /**
@@ -36,7 +35,6 @@ export const useLocalStorage = <T>(
           }
         }
       } catch (e) {
-        datadogRum.addError(e);
         return initialValue;
       }
     }
@@ -51,7 +49,6 @@ export const useLocalStorage = <T>(
         value: JSON.stringify(value),
       });
     } catch (e) {
-      datadogRum.addError(e);
       console.error(e);
     }
   };
