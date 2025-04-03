@@ -62,6 +62,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-danger-contrast-rgb: 255, 255, 255;
   --ion-color-danger-shade: #cf3c4f;
   --ion-color-danger-tint: #ed576b;
+  --ion-color-danger-dark: #de3730;
 
   --ion-color-failed: #ff5449;
   --ion-color-white: #ffffff;
@@ -147,6 +148,7 @@ http://ionicframework.com/docs/theming/ */
   --chain-icon-background: #0b006b;
   --activity-dim-text: #b0a9b3;
   --activity-list-divider: #d9d9d9;
+  --activity-list-divider-light: #d9d9d9;
   --toggle-theme-background: #a2a2ff;
   --toggle-theme-text: #0b006b;
   --ion-initial-icon-color: #1b00b3;
@@ -156,11 +158,15 @@ http://ionicframework.com/docs/theming/ */
   /* neutral */
   --ion-neutral-70: #ababad;
 
-  /* Address Screening risk levelss */
+  /* Address Screening risk levels */
   --risk-level-severe-text: #ff5449;
   --risk-level-high-text: #db7c22;
   --risk-level-moderate-text: #0d97eb;
   --risk-level-low-text: #0c7368;
+  --risk-level-background-moderate: #e8f1ff;
+  --risk-level-background-low: #ebfffc;
+  --risk-level-background-high: #fff1db;
+  --risk-level-background-severe: #ffe9ec;
 }
 
 /** Dark Colors **/
@@ -295,6 +301,7 @@ body.dark {
   --chain-icon-background: #a2a2ff;
   --activity-dim-text: #958e99;
   --activity-list-divider: #2f2f2f;
+  --activity-list-divider-light: #d9d9d9;
   --toggle-theme-background: #1b00b3;
   --toggle-theme-text: #0b006b;
   --ion-initial-icon-color: #a2a2ff;
@@ -303,6 +310,16 @@ body.dark {
 
   /* neutral */
   --ion-neutral-70: #ababad;
+
+  /* Address Screening risk levels */
+  --risk-level-severe-text: #ffe9ec;
+  --risk-level-high-text: #fff1db;
+  --risk-level-moderate-text: #e8f1ff;
+  --risk-level-low-text: #ebfffc;
+  --risk-level-background-moderate: #0d97eb;
+  --risk-level-background-low: #0c7368;
+  --risk-level-background-high: #db7c22;
+  --risk-level-background-severe: #ff5449;
 }
 
 /** iOS Dark Theme */

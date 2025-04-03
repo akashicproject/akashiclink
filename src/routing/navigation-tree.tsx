@@ -3,6 +3,7 @@ import { IonRouterOutlet, isPlatform } from '@ionic/react';
 import type { Location } from 'history';
 import { useEffect, useState } from 'react';
 import { Redirect } from 'react-router';
+import { AddressScreeningDetails } from 'src/pages/address-screening/address-screening-detail';
 
 import { Spinner } from '../components/common/loader/spinner';
 import { LAST_HISTORY_ENTRIES } from '../constants';
@@ -169,6 +170,10 @@ export function NavigationTree() {
       {AkashicTab.registerPage(
         AddressScreeningNewScanConfirmation,
         urls.addressScreeningNewScanConfirm
+      )}
+      {AkashicTab.registerPage(
+        AddressScreeningDetails,
+        urls.addressScreeningDetails
       )}
       {/* US² tree */}
       {/* {Us2Tab.registerPage(Us2Main)} */}

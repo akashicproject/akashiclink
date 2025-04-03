@@ -340,5 +340,15 @@
   "Moderate": "中等",
   "High": "高",
   "Low": "低",
-  "Severe": "严重"
+  "Severe": "严重",
+  "RiskScore": "风险评分",
+  "RiskLevel": "风险程度",
+  "Overview": "概览",
+  "TotalReceived": "收款总额",
+  "TotalSpent": "出款总额",
+  "FirstSeen": "首次见到 (UTC)",
+  "LastSeen": "最后见到 (UTC)",
+  "IncomingCount": "传入计数",
+  "OutgoingCount": "传出计数",
+  "ReceivingCryptoWarning": "我们不建议从该账号接收任何加密货币"
 }

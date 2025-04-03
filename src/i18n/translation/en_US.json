@@ -340,5 +340,15 @@
   "Moderate": "Moderate",
   "High": "High",
   "Low": "Low",
-  "Severe": "Severe"
+  "Severe": "Severe",
+  "RiskScore": "Risk Score",
+  "RiskLevel": "Risk Level",
+  "Overview": "Overview",
+  "TotalReceived": "Total received",
+  "TotalSpent": "Total spent",
+  "FirstSeen": "First seen (UTC)",
+  "LastSeen": "Last seen (UTC)",
+  "IncomingCount": "Incoming count",
+  "OutgoingCount": "Outgoing count",
+  "ReceivingCryptoWarning": "We do not recommend receiving any cryptocurrency from this account"
 }

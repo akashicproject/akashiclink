@@ -41,6 +41,7 @@ export const urls = {
   settingsVersion: 'settings-version',
   addressScreeningNewScan: 'address-screening-new-scan',
   addressScreeningNewScanConfirm: 'address-screening-new-scan-confirm',
+  addressScreeningDetails: 'address-screening-details',
 } as const;
 
 export const SUPPORT_MAIL = 'support@akashiclink.com';
