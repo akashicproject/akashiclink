@@ -100,7 +100,7 @@ export function ChangePassword() {
       } catch (error) {
         if (
           axios.isAxiosError(error) &&
-          error?.response?.data?.message === userConst.invalidUserErrorMsg
+          error?.response?.data?.message === userConst.invalidPassErrorMsg
         ) {
           setAlertRequest(errorAlertShell(t('OldPasswordIncorrect')));
         } else if (axios.isAxiosError(error)) {

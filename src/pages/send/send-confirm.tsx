@@ -168,7 +168,7 @@ export function SendConfirm() {
         // TODO: For this error msg translation: extract it into its own function you are are re-using this code
         if (
           axios.isAxiosError(error) &&
-          error?.response?.data?.message === userConst.invalidUserErrorMsg
+          error?.response?.data?.message === userConst.invalidPassErrorMsg
         ) {
           setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
         } else if (axios.isAxiosError(error)) {
