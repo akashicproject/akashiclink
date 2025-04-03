@@ -25,10 +25,12 @@ export const SendConfirmationDetailList = ({
   txn,
   txnFinal,
   validatedAddressPair,
+  delegatedFee,
 }: {
   txn: ITransactionForSigning;
   txnFinal?: SendConfirmationTxnFinal;
   validatedAddressPair: ValidatedAddressPair;
+  delegatedFee?: string;
   // eslint-disable-next-line sonarjs/cognitive-complexity
 }) => {
   const { t } = useTranslation();
@@ -81,8 +83,8 @@ export const SendConfirmationDetailList = ({
   const alias = validatedAddressPair.acnsAlias ?? '-';
 
   const feeCurrencyDisplayName =
-    isCurrencyTypeToken && isL2
-      ? currencySymbol + ` (${nativeCoinSymbol})`
+    isCurrencyTypeToken && (isL2 || !!delegatedFee)
+      ? currencySymbol + (isL2 ? ` (${nativeCoinSymbol})` : '')
       : nativeCoinSymbol;
 
   return (
@@ -138,21 +140,33 @@ export const SendConfirmationDetailList = ({
         valueSize={'md'}
         valueBold
       />
-      <ListLabelValueItem
-        label={t(isL2 ? 'L2Fee' : 'GasFee')}
-        value={`${
-          isL2 ? internalFee.toFixed(precision) : totalFee.toFixed(precision)
-        } ${feeCurrencyDisplayName}`}
-        valueSize={'md'}
-        valueBold
-      />
+      {isL2 && (
+        <ListLabelValueItem
+          label={t('L2Fee')}
+          value={`${internalFee.toFixed(precision)} ${feeCurrencyDisplayName}`}
+          valueSize={'md'}
+          valueBold
+        />
+      )}
+      {!isL2 && (
+        <ListLabelValueItem
+          label={t(delegatedFee ? 'DelegatedGasFee' : 'GasFee')}
+          value={`${
+            delegatedFee
+              ? Big(delegatedFee).toFixed(precision)
+              : totalFee.toFixed(precision)
+          } ${feeCurrencyDisplayName}`}
+          valueSize={'md'}
+          valueBold
+        />
+      )}
       <ListLabelValueItem
         label={t('Total')}
         value={`${totalAmountWithFee.toFixed(
           precision
         )} ${currencyDisplayName}`}
         remark={
-          isL2 || !isCurrencyTypeToken
+          isL2 || !isCurrencyTypeToken || delegatedFee
             ? undefined
             : `+${totalFee.toFixed(precision)} ${nativeCoinSymbol}`
         }

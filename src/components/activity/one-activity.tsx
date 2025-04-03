@@ -161,6 +161,8 @@ export function OneActivity({
 
   const gasFee = transfer.feesPaid ?? transfer.feesEstimate;
 
+  const isDelegated = !!transfer.feeIsDelegated;
+
   // Use separate precision for gas and amount so they both show with the
   // minimum necessary (or 2)
   const gasPrecision = getPrecision('0', gasFee ?? '0');
@@ -173,6 +175,18 @@ export function OneActivity({
   const currencyDisplayName = transfer?.currency?.token
     ? transfer?.currency?.token + (isL2 ? ` (${transfer.currency.chain})` : '')
     : transfer?.currency?.chain;
+
+  let feeText = `${t('GasFee')}: ${!gasFeeIsAccurate ? '≈' : ''}${Big(
+    Big(gasFee ?? '0').toFixed(gasPrecision)
+  )} ${transfer?.currency?.chain}`;
+
+  if (isDelegated) {
+    feeText = `${t('DelegatedGasFee')}: ${Big(
+      transfer.internalFee?.withdraw ?? '0'
+    ).toFixed(
+      getPrecision(transfer.amount, transfer.internalFee?.withdraw ?? '0')
+    )} ${currencyDisplayName}`;
+  }
 
   const [nftUrl, setNftUrl] = useState('');
 
@@ -293,9 +307,9 @@ export function OneActivity({
                     ? 'var(--ion-color-primary-10)'
                     : 'var(--ion-light-text)',
                 }}
-              >{`${t('GasFee')}: ${!gasFeeIsAccurate ? '≈' : ''}${Big(
-                Big(gasFee ?? '0').toFixed(gasPrecision)
-              )} ${transfer?.currency?.chain}`}</GasFee>
+              >
+                {feeText}
+              </GasFee>
             )}
           </AmountWrapper>
         )}

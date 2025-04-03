@@ -71,6 +71,7 @@ export const SendConfirmationForm = () => {
               txn={txnsDetail.txn}
               txnFinal={txnFinal}
               validatedAddressPair={txnsDetail.validatedAddressPair}
+              delegatedFee={txnsDetail.delegatedFee}
             />
           )}
         </IonCol>

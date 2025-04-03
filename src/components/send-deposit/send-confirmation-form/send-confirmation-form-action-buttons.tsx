@@ -92,6 +92,7 @@ export const SendConfirmationFormActionButtons = ({
           ...txnsDetail,
           txn: res.txn,
           signedTxn: res.signedTxn,
+          delegatedFee: res.delegatedFee,
         });
       } catch (e) {
         setFormAlert(errorAlertShell(unpackRequestErrorMessage(e)));
@@ -134,6 +135,7 @@ export const SendConfirmationFormActionButtons = ({
       setTxnFinal({
         txHash: response.txHash,
         feesEstimate: response.feesEstimate,
+        delegatedFee: txnsDetail.delegatedFee,
       });
       if (history.location.state.sendConfirm) {
         historyReplace(urls.sendConfirm, {

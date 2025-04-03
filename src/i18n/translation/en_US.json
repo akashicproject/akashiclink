@@ -135,6 +135,7 @@
   "AvailableGas": "Available Gas",
   "EsTGasFee": "Est. Gas Fee",
   "GasFee": "Gas fee",
+  "DelegatedGasFee": "Gas fee (Delegated)",
   "L2Fee": "L2 fee",
   "GasLimit": "Gas limit",
   "GasUsed": "Gas used",

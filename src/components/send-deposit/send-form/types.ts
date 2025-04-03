@@ -28,6 +28,7 @@ export interface SendConfirmationTxnsDetail {
   signedTxn: IBaseTransactionWithDbIndex | ITerriTransaction;
   validatedAddressPair: ValidatedAddressPair;
   amount: string;
+  delegatedFee?: string;
   txnFinal?: SendConfirmationTxnFinal;
 }
 
@@ -35,4 +36,5 @@ export interface SendConfirmationTxnFinal {
   error?: string;
   txHash?: string;
   feesEstimate?: string;
+  delegatedFee?: string;
 }

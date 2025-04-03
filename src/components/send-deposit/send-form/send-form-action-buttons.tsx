@@ -59,6 +59,7 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
           sendConfirm: {
             txn: res.txn,
             signedTxn: res.signedTxn,
+            delegatedFee: res.delegatedFee,
             validatedAddressPair,
             amount,
           },
