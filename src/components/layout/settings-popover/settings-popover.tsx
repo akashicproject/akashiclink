@@ -9,7 +9,7 @@ import type {
   ReactNode,
   SetStateAction,
 } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../../constants/urls';
@@ -112,7 +112,7 @@ function SettingSubmenu({
  * Popover exposing settings that user can toggle
  */
 export function SettingsPopover() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [storedTheme] = useTheme();
   const logout = useLogout();
 
