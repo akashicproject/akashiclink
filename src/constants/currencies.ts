@@ -1,9 +1,21 @@
 import {
+  type ICurrency,
   CoinSymbol,
   CurrencySymbol,
   NetworkDictionary,
 } from '@helium-pay/backend';
-import type { ICurrencyForFrontend } from '@helium-pay/ui-lib';
+
+/**
+ * Currencies filled out with metadata for use on the frontend.
+ *
+ * This generic type should be extended for the specific frontend in question e.g. tsx icons, colouring etc
+ *
+ * @param network that the currency is on
+ * @param networkMetadata that the currency is on
+ */
+export type ICurrencyForFrontend = Omit<ICurrency, 'network'> & {
+  network: CoinSymbol;
+};
 
 /**
  * Unlike in the rest of the app, there is no longer

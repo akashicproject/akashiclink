@@ -8,7 +8,6 @@
     "baseUrl": "./",
     "paths": {
       "@helium-pay/backend": ["../../../apps/backend/src/index"],
-      "@helium-pay/ui-lib": ["../../packages/ui-lib/src/index"],
       "@helium-pay/common-i18n": ["../../packages/common-i18n/src/index"]
     }
   },
