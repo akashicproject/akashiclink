@@ -93,7 +93,6 @@ export function ChangePassword() {
     if (oldPassword) {
       try {
         await OwnersAPI.confirmPassword({
-          username: owner.username,
           password: oldPassword,
         });
         // Call for verification email to be sent (if login doesn't error)

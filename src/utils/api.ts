@@ -5,6 +5,7 @@ import type {
   IChangePassword,
   ICheckL2Address,
   ICheckL2AddressResponse,
+  IConfirmPassword,
   IImportWallet,
   IImportWalletResponse,
   IKeyGeneration,
@@ -71,7 +72,7 @@ export const OwnersAPI = {
     return response.data;
   },
   confirmPassword: async (
-    loginData: ILoginUser
+    loginData: IConfirmPassword
   ): Promise<IMinimalUserResponse> => {
     const response = await axiosBasePublic.post(
       `/auth/confirm-password`,

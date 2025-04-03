@@ -27,7 +27,6 @@ import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { OwnersAPI } from '../../utils/api';
-import { useOwner } from '../../utils/hooks/useOwner';
 import { displayLongText } from '../../utils/long-text';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { SendMain } from './send-main';
@@ -92,7 +91,6 @@ const InputPasswordText = styled.div({
 
 export function SendConfirm() {
   const { t } = useTranslation();
-  const { owner } = useOwner();
   const [password, setPassword] = useState<string>('');
   const [alert, setAlert] = useState(formAlertResetState);
   const [loading, setLoading] = useState(false);
@@ -136,7 +134,6 @@ export function SendConfirm() {
       try {
         setLoading(true);
         await OwnersAPI.confirmPassword({
-          username: owner.username,
           password,
         });
         let response: ITransactionSettledResponse[];

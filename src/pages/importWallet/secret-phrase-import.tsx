@@ -41,6 +41,7 @@ export const SecretPhraseImport = () => {
   const [phrase, setPhrase] = useState<string[]>([]);
   const [error, setError] = useState(false);
   const { t } = useTranslation();
+
   useEffect(() => {
     cacheCurrentPage(
       urls.secretPhraseImport,
@@ -154,7 +155,10 @@ export const SecretPhraseImport = () => {
             </PurpleButton>
             <WhiteButton
               style={{ width: '100%' }}
-              onClick={() => {
+              onClick={async () => {
+                setPhrase([]);
+                setInitialWords([]);
+                await lastPageStorage.clear();
                 history.push(akashicPayPath(urls.selectImportMethod));
               }}
             >
