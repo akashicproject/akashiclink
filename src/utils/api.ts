@@ -7,9 +7,9 @@ import type {
   IChangePassword,
   ICheckL2Address,
   ICheckL2AddressResponse,
-  IClaimOrCreateKeysDto,
-  IClaimOrCreateKeysResponse,
   IConfirmPassword,
+  ICreateKeysDto,
+  ICreateKeysResponse,
   IDiffconKeysDto,
   IDiffconKeysResponse,
   IEstimateGasFee,
@@ -282,8 +282,8 @@ export const OwnersAPI = {
   },
 
   claimOrCreateKeys: async (
-    payload: IClaimOrCreateKeysDto
-  ): Promise<IClaimOrCreateKeysResponse> => {
+    payload: ICreateKeysDto
+  ): Promise<ICreateKeysResponse> => {
     const response = await axiosBase.post(
       `/auth/claim-keys`,
       JSON.stringify(payload)
@@ -292,7 +292,7 @@ export const OwnersAPI = {
     if (status >= 400) {
       throw new Error(data.message);
     }
-    return data as IClaimOrCreateKeysResponse;
+    return data as ICreateKeysResponse;
   },
 
   diffconKeys: async (

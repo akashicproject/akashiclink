@@ -1,7 +1,6 @@
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import type {
   IDiffconTx,
-  IKeyClaimTx,
   IKeyCreateTx,
   IKeysToCreate,
 } from '@helium-pay/backend';
@@ -27,17 +26,10 @@ export async function createAccountWithKeys(
 
   const fullOtk = { ...otk, identity: createAccountResponse.identity };
 
-  const keyClaimTxs: IKeyClaimTx[] = [];
   const keyCreationTxs: IKeyCreateTx[] = [];
 
-  // 2. Claim any claimable-keys, or request to create new ones where not claimable
-  for (const key of createAccountResponse.assignedKeys) {
-    keyClaimTxs.push({
-      ledgerId: key.ledgerId,
-      coinSymbol: key.coinSymbol,
-      signedTx: await signTxBody(key.txToSign, fullOtk),
-    });
-  }
+  // 2. Request to create new keys/wallets
+
   for (const key of createAccountResponse.keysToCreate) {
     keyCreationTxs.push({
       coinSymbol: key.coinSymbol,
@@ -46,29 +38,10 @@ export async function createAccountWithKeys(
   }
 
   const claimKeyResponse = await OwnersAPI.claimOrCreateKeys({
-    keyClaimTxs,
     keyCreationTxs,
   });
 
   const createdKeys = claimKeyResponse.createdKeysToDiffcon;
-
-  // 2.5 If any keys failed to be claimed, create them instead
-  if (claimKeyResponse.failedClaimToCreate.length > 0) {
-    const keyCreationOfFailedTxs: IKeyCreateTx[] = [];
-    for (const key of claimKeyResponse.failedClaimToCreate) {
-      keyCreationOfFailedTxs.push({
-        coinSymbol: key.coinSymbol,
-        signedTx: await signTxBody(key.txToSign, fullOtk),
-      });
-    }
-
-    const claimKeyResponseAgain = await OwnersAPI.claimOrCreateKeys({
-      keyClaimTxs: [],
-      keyCreationTxs: keyCreationOfFailedTxs,
-    });
-
-    createdKeys.push(...claimKeyResponseAgain.createdKeysToDiffcon);
-  }
 
   // 3. Diffcon-check any created keys for safety
   const keyDiffconTxs: IDiffconTx[] = [];
@@ -111,7 +84,6 @@ async function createAndDiffconKeys(
   }
 
   const claimKeyResponse = await OwnersAPI.claimOrCreateKeys({
-    keyClaimTxs: [],
     keyCreationTxs,
   });
 
