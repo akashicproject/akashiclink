@@ -86,14 +86,16 @@ export function OneNft(props: Props) {
   return (
     <OneNFTContainer>
       {props.nft?.acns?.value && (
-        <AASListTag isAASDarkStyle={props.isAASDarkStyle} isBig={props.isBig}>
-          <h5
-            className="ion-no-margin ion-text-size-xxs"
-            style={props.isAASDarkStyle ? { color: '#FFFFFF' } : {}}
-          >
-            {t('AALinked')}
-          </h5>
-        </AASListTag>
+        <div style={{ width: '100%' }}>
+          <AASListTag isAASDarkStyle={props.isAASDarkStyle} isBig={props.isBig}>
+            <h5
+              className="ion-no-margin ion-text-size-xxs"
+              style={props.isAASDarkStyle ? { color: '#FFFFFF' } : {}}
+            >
+              {t('AALinked')}
+            </h5>
+          </AASListTag>
+        </div>
       )}
       <NtfWrapper
         isAASLinked={!!props.nft?.acns?.value}
