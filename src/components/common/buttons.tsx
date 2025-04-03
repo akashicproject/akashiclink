@@ -71,12 +71,15 @@ const PrimaryButtonCSS = styled(IonButton)<{ disabled?: boolean }>`
   }
 `;
 
-export const PrimaryButton = (
-  props: IonButtonProps & { isLoading?: boolean; disabled?: boolean }
-) => (
-  <PrimaryButtonCSS disabled={props.isLoading ?? props.disabled} {...props}>
-    {props.children}
-    {props.isLoading && (
+export const PrimaryButton = ({
+  isLoading,
+  disabled,
+  children,
+  ...props
+}: IonButtonProps & { isLoading?: boolean; disabled?: boolean }) => (
+  <PrimaryButtonCSS disabled={isLoading ?? disabled} {...props}>
+    {children}
+    {isLoading && (
       <IonSpinner className={'ion-margin-start'} slot="end" name="circular" />
     )}
   </PrimaryButtonCSS>
