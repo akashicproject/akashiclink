@@ -3,6 +3,10 @@
  */
 .language-popover {
   --max-width: fit-content;
+
+  ion-list {
+    background-color: var(--ion-color-dark-contrast);
+  }
 }
 
 .language-button {

@@ -3,14 +3,14 @@ import './language-select.scss';
 import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
 import { IonButton, IonIcon, IonItem, IonList, IonPopover } from '@ionic/react';
 import { caretDownOutline, globeOutline } from 'ionicons/icons';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 
 export const LanguageDropdown = () => {
   const { i18n } = useTranslation();
-
+  const [isOpen, setIsOpen] = useState(false);
   /**
    * Get language of the user's browser
    */
@@ -25,23 +25,38 @@ export const LanguageDropdown = () => {
     'language',
     getLocalisationLanguage()
   );
-
+  const popover = useRef<HTMLIonPopoverElement>(null);
   useEffect(() => {
     i18n.changeLanguage(selectedLanguage);
   }, [selectedLanguage, i18n]);
 
-  const triggerId = 'popover-trigger';
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const openPopover = (e: any) => {
+    popover.current!.event = e;
+    setIsOpen(!isOpen);
+  };
   return (
     <div>
-      <IonButton class="language-button" fill="clear" id={triggerId}>
+      <IonButton
+        class="language-button"
+        fill="clear"
+        onClick={(e) => {
+          openPopover(e);
+        }}
+      >
         <IonIcon slot="icon-only" icon={globeOutline} />
         <IonIcon slot="end" icon={caretDownOutline} />
       </IonButton>
       <IonPopover
+        side="bottom"
+        alignment="end"
         class="language-popover"
         dismissOnSelect={true}
-        trigger={triggerId}
+        onDidDismiss={() => {
+          setIsOpen(false);
+        }}
+        ref={popover}
+        isOpen={isOpen}
       >
         <IonList
           lines="none"
