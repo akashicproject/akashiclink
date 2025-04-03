@@ -194,17 +194,12 @@ export function SendTo() {
       chain: currency.chain,
     });
   const { chain, token } = currentWalletMetadata.walletCurrency;
-  const currentWallet =
-    userWallets.filter((wallet) => {
-      return wallet.coinSymbol === chain;
-    })[0] ?? {};
 
   const availableBalance = aggregatedBalances.get(
     currentWalletMetadata.walletCurrency
   );
 
   const [internalFee, setInternalFee] = useState('0.0');
-  const [gasFee, setGasFee] = useState('0.0');
 
   /**
    * Handling of direct l1 transfers or gas-free l2 transfers via nitr0gen
@@ -289,36 +284,10 @@ export function SendTo() {
           setL1AddressWhenL2(undefined);
           setToAddress(recipientAddress);
           setGasFree(false);
-          debouncedHandleGasFee(amount ?? '1', recipientAddress);
         }
       }, validateAddressWithBackendTimeout)
     );
   };
-
-  // Debounced function to handle gas fee calculation. I counts when user stops typing for a spified delay(1000)
-  const debouncedHandleGasFee = useCallback(
-    // Call the API to estimate gas fee when the user stops typing
-    debounce(async (amountValue: string, toAddress: string) => {
-      if (
-        amountValue &&
-        Big(amountValue).gt(0) &&
-        toAddress &&
-        NetworkDictionary[chain].regex.address.exec(toAddress)
-      ) {
-        const gas = await OwnersAPI.estimateGasFee({
-          fromAddress: currentWallet.address,
-          toAddress,
-          amount: amountValue,
-          coinSymbol: chain,
-          tokenSymbol: token,
-        });
-        setGasFee(parseFloat(gas.feesEstimate).toFixed(8));
-      } else {
-        setGasFee('0.0');
-      }
-    }, 1000),
-    [currentWallet.address]
-  );
 
   const [amount, setAmount] = useState<string>('');
   const validateAmount = (value: string) => {
@@ -339,7 +308,7 @@ export function SendTo() {
           displayName: NetworkDictionary[chain].nativeCoin.displayName,
           chain,
         }) ?? '0'
-      ).lte(gasFee)
+      ).lte('0')
     ) {
       setAmountAlertRequest({
         success: false,
@@ -552,7 +521,6 @@ export function SendTo() {
                 errorPrompt={StyledInputErrorPrompt.Amount}
                 onIonInput={({ target: { value } }) => {
                   setAmount(value as string);
-                  debouncedHandleGasFee(value as string, toAddress as string);
                 }}
                 validate={validateAmount}
                 submitOnEnter={verifyTransaction}
@@ -643,7 +611,7 @@ export function SendTo() {
                   </GasFreeMarker>
                 )}
                 {gasFree || !toAddress ? null : (
-                  <FeeMarker>{`${t('GasFee')} : ${gasFee} ${
+                  <FeeMarker>{`${t('GasFee')} : - ${
                     TEST_TO_MAIN.get(chain) || chain
                   }`}</FeeMarker>
                 )}
