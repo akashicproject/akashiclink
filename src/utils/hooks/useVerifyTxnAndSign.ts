@@ -12,11 +12,7 @@ import { useAppSelector } from '../../redux/app/hooks';
 import { selectCacheOtk } from '../../redux/slices/accountSlice';
 import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
 import { OwnersAPI } from '../api';
-import {
-  convertFromDecimals,
-  convertObjectCurrencies,
-  convertToFromDecimals,
-} from '../currency';
+import { convertObjectCurrencies, convertToDecimals } from '../currency';
 import { calculateInternalWithdrawalFee } from '../internal-fee';
 import { Nitr0genApi, signTxBody } from '../nitr0gen/nitr0gen-api';
 import { unpackRequestErrorMessage } from '../unpack-request-error-message';
@@ -43,29 +39,30 @@ export const useVerifyTxnAndSign = () => {
       let txns: ITransactionVerifyResponse[];
 
       if (isL2) {
-        // AC needs smallest units, so we convert
-        const transactionData: ITransactionProposal = {
+        const l2TransactionData: ITransactionProposal = {
           initiatedToNonL2: !L2Regex.exec(
             validatedAddressPair.userInputToAddress
           )
             ? validatedAddressPair.userInputToAddress
             : undefined,
           toAddress: validatedAddressPair.convertedToAddress,
-          amount: convertToFromDecimals(amount, chain, 'to', token),
+          // Backend accepts "normal" units, so we don't convert
+          amount,
           coinSymbol: chain,
           tokenSymbol: token,
         };
-        if (activeAccount.identity === transactionData.toAddress)
+        if (activeAccount.identity === l2TransactionData.toAddress)
           throw new Error(keyError.noSelfSend);
 
         const txBody = await nitr0genApi.L2Transaction(
           cacheOtk,
-          transactionData
+          // AC needs smallest units, so we convert
+          convertObjectCurrencies(l2TransactionData, convertToDecimals)
         );
-        // Convert back to "normal" units for displaying to user
-        txns = [
+
+        const txns: ITransactionVerifyResponse[] = [
           {
-            ...convertObjectCurrencies(transactionData, convertFromDecimals),
+            ...l2TransactionData,
             internalFee: {
               withdraw: calculateInternalWithdrawalFee(
                 exchangeRates,
