@@ -31,6 +31,7 @@ import { useAggregatedBalances } from '../../utils/hooks/useAggregatedBalances';
 import { useExchangeRates } from '../../utils/hooks/useExchangeRates';
 import { useKeyMe } from '../../utils/hooks/useKeyMe';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
+import { calculateInternalFee } from '../../utils/internal-fee';
 import { lastPageStorage } from '../../utils/last-page-storage';
 import { displayLongText } from '../../utils/long-text';
 import { WALLET_CURRENCIES } from '../../utils/supported-currencies';
@@ -175,14 +176,8 @@ export function SendTo() {
   const coinSymbol = currentWalletCurrency.currency[0];
   const tokenSymbol = currentWalletCurrency.currency[1];
 
-  const internalFee = Big(0.1).div(
-    Big(
-      exchangeRates.find(
-        (ex) =>
-          !tokenSymbol &&
-          ex.coinSymbol === (TEST_TO_MAIN.get(coinSymbol) || coinSymbol)
-      )?.price || 1
-    )
+  const [internalFee, setInternalFee] = useState(
+    calculateInternalFee('1', exchangeRates, coinSymbol, tokenSymbol)
   );
 
   // Keeps track of which page the user is at
@@ -391,6 +386,14 @@ export function SendTo() {
                   errorPrompt={StyledInputErrorPrompt.Amount}
                   onIonInput={({ target: { value } }) => {
                     setAmount(value as string);
+                    setInternalFee(
+                      calculateInternalFee(
+                        value as string,
+                        exchangeRates,
+                        coinSymbol,
+                        tokenSymbol
+                      )
+                    );
                   }}
                   validate={validateAmount}
                   submitOnEnter={verifyTransaction}

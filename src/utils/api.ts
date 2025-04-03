@@ -10,6 +10,7 @@ import type {
   IKeyGenerationResponse,
   ILoginUser,
   IMinimalUserResponse,
+  IOrderDetails,
   IRegisterApiPassphrase,
   IRequestActivationCode,
   IRequestActivationCodeResponse,
@@ -130,7 +131,7 @@ export const OwnersAPI = {
     return response.data;
   },
   sendL2Transaction: async (
-    signedTransactionData: ITransactionVerifyResponse[]
+    signedTransactionData: IOrderDetails
   ): Promise<ITransactionSettledResponse> => {
     const response = await axiosOwnerBase.post(
       `/key/send/l2`,

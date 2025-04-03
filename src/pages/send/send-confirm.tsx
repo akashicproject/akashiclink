@@ -105,9 +105,18 @@ export function SendConfirm(props: Props) {
 
   const validatePassword = (value: string) =>
     !!value.match(userConst.passwordRegex);
-  const totalAmount = props.transaction
+
+  let totalAmount = Big(0);
+
+  const totalAmountWithFees = props.transaction
     ? props.transaction
-        .reduce((sum, { amount }) => Big(amount).add(sum), Big(0))
+        .reduce((sum, { amount, feesEstimate, internalFee }) => {
+          totalAmount = totalAmount.add(amount);
+          return Big(amount)
+            .add(feesEstimate ?? '0')
+            .add(internalFee?.withdraw ?? '0')
+            .add(sum);
+        }, Big(0))
         .toString()
     : '0';
 
@@ -123,7 +132,12 @@ export function SendConfirm(props: Props) {
         if (!props.gasFree) {
           response = await OwnersAPI.sendL1Transaction(props.transaction);
         } else {
-          response = [await OwnersAPI.sendL2Transaction(props.transaction)];
+          response = [
+            await OwnersAPI.sendL2Transaction({
+              ...props.transaction[0],
+              forceL1: undefined,
+            }),
+          ];
         }
         if (!response[0].isSuccess) {
           setAlert(
@@ -131,6 +145,7 @@ export function SendConfirm(props: Props) {
               t(unpackRequestErrorMessage(response[0].reason) || '')
             )
           );
+          props.getErrorMsg(unpackRequestErrorMessage(response[0].reason));
         }
         props.isResult();
       } catch (error) {
@@ -174,7 +189,7 @@ export function SendConfirm(props: Props) {
             <TextWrapper>
               <TextTitle>{t('Amount')}</TextTitle>
               <TextTitle>
-                {totalAmount} {props.coinSymbol}
+                {totalAmount.toString()} {props.coinSymbol}
               </TextTitle>
             </TextWrapper>
             <Divider />
@@ -195,8 +210,14 @@ export function SendConfirm(props: Props) {
               </TextContent>
             </TextWrapper>
             <TextWrapper>
+              <TextTitle>{t('Fee')}</TextTitle>
+              <TextContent>
+                {props.transaction?.[0]?.internalFee?.withdraw ?? '-'}
+              </TextContent>
+            </TextWrapper>
+            <TextWrapper>
               <TextTitle>{t('Total')}</TextTitle>
-              <TextContent>{totalAmount}</TextContent>
+              <TextContent>{totalAmountWithFees.toString()}</TextContent>
             </TextWrapper>
             <Divider />
           </ContentWrapper>

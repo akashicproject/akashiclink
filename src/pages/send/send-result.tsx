@@ -145,6 +145,12 @@ export function SendResult(props: Props) {
                   )}
                 </TextContent>
               </TextWrapper>
+              <TextWrapper>
+                <TextTitle>{t('Fee')}</TextTitle>
+                <TextContent>
+                  {props.transaction?.[0]?.internalFee?.withdraw ?? '-'}
+                </TextContent>
+              </TextWrapper>
             </ResultContent>
           </IonCol>
         </IonRow>
