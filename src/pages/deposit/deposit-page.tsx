@@ -42,8 +42,8 @@ const QRCodeWrapper = styled.div({
   backgroundColor: 'var(--ion-color-white)',
   borderRadius: 8,
   margin: 4,
-  width: 96,
-  height: 96,
+  width: 128,
+  height: 128,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -107,8 +107,19 @@ export function DepositPage() {
   };
 
   return (
-    <LayoutWithActivityTab showRefresh={false} loading={isAddressesLoading}>
-      <IonGrid className="ion-padding-top-xs ion-padding-bottom-xs ion-padding-left-md ion-padding-right-md">
+    <LayoutWithActivityTab
+      showRefresh={false}
+      showAddress={false}
+      loading={isAddressesLoading}
+    >
+      <IonGrid
+        className="ion-padding-top-md ion-padding-bottom-xl ion-padding-left-md ion-padding-right-md"
+        style={{
+          width: '100%',
+          height: '45vh',
+          margin: 0,
+        }}
+      >
         <IonRow class="ion-justify-content-center ion-grid-row-gap-xxs">
           <IonCol class="ion-center" size="12">
             <CoinWrapper>
@@ -146,7 +157,7 @@ export function DepositPage() {
               {!isGeneratingAddress && hasAddress && (
                 <QRCodeSVG
                   value={generatedAddress ?? existingAddress ?? ''}
-                  size={80}
+                  size={100}
                 />
               )}
             </QRCodeWrapper>
@@ -154,7 +165,7 @@ export function DepositPage() {
           <IonCol size="10">
             {hasAddress && (
               <CopyBox
-                label={t('PublicAddress')}
+                label={t('DepositAddress')}
                 text={generatedAddress ?? existingAddress ?? '-'}
               />
             )}

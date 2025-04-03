@@ -36,7 +36,7 @@
   "WalletCreated": "帐号已创建！",
   "WalletAddress": "帐号地址",
   "OptionBackup": "可选备用",
-  "PublicAddress": "公共地址",
+  "DepositAddress": "存款地址",
   "Activity": "活动",
   "PleaseEnterYourEmail": "请输入您的电子邮箱",
   "SetYourLockPassword": "设置锁定密码",
