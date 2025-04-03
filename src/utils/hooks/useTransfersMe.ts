@@ -17,7 +17,9 @@ const transferMeFetcher = async (path: string, config?: AxiosRequestConfig) => {
     key: 'hide-small-balances',
   });
   const url = path
-    ? buildURL(path, { hideSmallTransactions: hideSmallTransactions.value })
+    ? buildURL(path, {
+        hideSmallTransactions: hideSmallTransactions.value ?? true,
+      })
     : '';
   return await fetcher(url, config);
 };
