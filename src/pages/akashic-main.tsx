@@ -47,7 +47,7 @@ export function AkashicPayMain() {
           dispatch(onImportWalletClear());
           dispatch(onMigrateWalletClear());
         } else {
-          history.push(lastLocation.pathname, lastLocation.state);
+          history.replace(lastLocation.pathname, lastLocation.state);
         }
       }
       setIsLoading(false);

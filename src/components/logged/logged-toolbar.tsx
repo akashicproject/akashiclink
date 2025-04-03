@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
@@ -15,12 +16,10 @@ import { useTheme } from '../PreferenceProvider';
 import { SettingsPopover } from '../settings/settings-popover';
 
 export function LoggedToolbar({
-  backButtonUrl = urls.loggedFunction,
   showRefresh = false,
   showAddress = false,
   showBackButton = true,
 }: {
-  backButtonUrl?: string;
   showRefresh?: boolean;
   showAddress?: boolean;
   showBackButton?: boolean;
@@ -53,7 +52,11 @@ export function LoggedToolbar({
             >
               <SquareWhiteButton
                 className="icon-button"
-                onClick={() => history.push(backButtonUrl)}
+                onClick={() =>
+                  history.length > 1
+                    ? history.goBack()
+                    : history.replace(akashicPayPath(urls.loggedFunction))
+                }
               >
                 <IonIcon
                   className="icon-button-icon"

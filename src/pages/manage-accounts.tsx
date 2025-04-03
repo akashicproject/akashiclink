@@ -30,7 +30,7 @@ export function ManageAccounts() {
               width: '40px',
             }}
             onClick={() =>
-              history.push(
+              history.replace(
                 authenticated
                   ? akashicPayPath(urls.loggedFunction)
                   : akashicPayPath(urls.akashicPay)

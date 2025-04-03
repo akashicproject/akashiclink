@@ -6,11 +6,7 @@ import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import { datadogRum } from '@datadog/browser-rum';
 
 import { AccountSelection } from '../account-selection/account-selection';
-import {
-  CustomAlert,
-  errorAlertShell,
-  formAlertResetState,
-} from '../alert/alert';
+import { CustomAlert, errorAlertShell, formAlertResetState, } from '../alert/alert';
 import { PurpleButton } from '../buttons';
 import { StyledInput } from '../styled-input';
 import { urls } from '../../constants/urls';
@@ -96,13 +92,10 @@ export function LoginForm() {
       } else {
         // @TODO remove once old accounts no longer supported
         // Redirect to Migration-Flow
-        history.push({
-          pathname: akashicPayPath(urls.migrateWalletNotice),
-          state: {
-            migrateWallet: {
-              username: selectedAccount.username,
-              oldPassword: password,
-            },
+        history.replace(akashicPayPath(urls.migrateWalletNotice), {
+          migrateWallet: {
+            username: selectedAccount.username,
+            oldPassword: password,
           },
         });
         return;
@@ -114,7 +107,7 @@ export function LoginForm() {
       // Set the login account
       setActiveAccount(selectedAccount);
       await mutateOwner();
-      history.push(akashicPayPath(urls.loggedFunction));
+      history.replace(akashicPayPath(urls.loggedFunction));
       setSelectedAccount(undefined);
       setPassword('');
     } catch (error) {

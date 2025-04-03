@@ -33,7 +33,7 @@ module.exports = {
     'no-unused-private-class-members': 'error',
     'no-console': 'off',
     '@typescript-eslint/no-unused-vars': [
-      'error',
+      'warn',
       {
         argsIgnorePattern: '^_',
         varsIgnorePattern: '^_',

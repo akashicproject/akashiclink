@@ -49,6 +49,11 @@ export function useLogout(callLogout = true) {
     await mutateTransfersMe([], {
       revalidate: false,
     });
+
+    // completely reset router history
+    history.entries = [history.entries[0]];
+    history.length = 1;
+    history.index = 0;
     history.replace(akashicPayPath(urls.akashicPay));
   };
 }

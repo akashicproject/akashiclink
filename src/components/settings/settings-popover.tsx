@@ -145,8 +145,8 @@ export function SettingsPopover() {
       <SquareWhiteButton
         className="icon-button"
         onClick={(e) => {
-          handleButtonClick(),
-            setShowPopover({ open: true, event: e.nativeEvent });
+          handleButtonClick();
+          setShowPopover({ open: true, event: e.nativeEvent });
         }}
         forceStyle={
           buttonBackground ? { background: '#EDDCFF', transition: 'none' } : {}
@@ -168,8 +168,8 @@ export function SettingsPopover() {
         isOpen={showPopover.open}
         event={showPopover.event}
         onDidDismiss={() => {
-          setButtonBackground(false),
-            setShowPopover({ open: false, event: undefined });
+          setButtonBackground(false);
+          setShowPopover({ open: false, event: undefined });
         }}
         side="bottom"
         alignment="end"
