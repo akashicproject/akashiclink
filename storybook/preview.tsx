@@ -132,5 +132,4 @@ const preview: Preview = {
   loaders: [mswLoader],
 };
 
-// eslint-disable-next-line import/no-default-export
 export default preview;
