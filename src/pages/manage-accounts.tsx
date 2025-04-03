@@ -11,9 +11,11 @@ import { PublicLayout } from '../components/layout/public-layout';
 import { AccountList } from '../components/manage-account/account-list';
 import { urls } from '../constants/urls';
 import { akashicPayPath } from '../routing/navigation-tabs';
+import { useOwner } from '../utils/hooks/useOwner';
 
 export function ManageAccounts() {
   const history = useHistory();
+  const { authenticated } = useOwner(true);
 
   const { t } = useTranslation();
 
@@ -27,7 +29,13 @@ export function ManageAccounts() {
               height: '40px',
               width: '40px',
             }}
-            onClick={() => history.push(akashicPayPath(urls.akashicPay))}
+            onClick={() =>
+              history.push(
+                authenticated
+                  ? akashicPayPath(urls.loggedFunction)
+                  : akashicPayPath(urls.akashicPay)
+              )
+            }
           >
             <IonIcon
               className="icon-button-icon"

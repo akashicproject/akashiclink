@@ -20,7 +20,11 @@ ion-button {
 
   /** Square icons */
   .icon-button-icon {
-    font-size: 24px;
+    font-size: 1.5rem;
     color: var(--ion-settings-color);
   }
+}
+
+ion-icon[slot='icon-only'] {
+  font-size: 1.5rem;
 }

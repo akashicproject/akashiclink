@@ -34,11 +34,11 @@ import { ChangePasswordAfterImport } from '../pages/Recovery/change-password-aft
 import { SendConfirm } from '../pages/send/send-confirm';
 import { SendResult } from '../pages/send/send-result';
 import { SendTo } from '../pages/send/send-to';
-import { Settings } from '../pages/settings';
-import { SettingsBackup } from '../pages/settings-backup';
-import { SettingsDelete } from '../pages/settings-delete';
-import { SettingsNaming } from '../pages/settings-naming';
-import { SettingsVersion } from '../pages/settings-version';
+import { Settings } from '../pages/settings/settings';
+import { SettingsBackup } from '../pages/settings/settings-backup';
+import { SettingsDelete } from '../pages/settings/settings-delete';
+import { SettingsNaming } from '../pages/settings/settings-naming';
+import { SettingsVersion } from '../pages/settings/settings-version';
 import { Us2Main } from '../pages/us2-main';
 import { AkashicTab, Us2Tab } from './navigation-tabs';
 

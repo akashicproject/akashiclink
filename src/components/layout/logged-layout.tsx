@@ -29,7 +29,7 @@ export const ChainDiv = styled(IonRouterLink)({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  padding: '10px 12px',
+  padding: '8px 12px',
   borderBottom: '2px solid #C297FF',
 });
 
@@ -46,7 +46,6 @@ export function LoggedLayout({
 }) {
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
-  const ChainDivMarginBottom = isMobile ? '5px' : '0px';
 
   const { isLoading, authenticated } = useOwner(true);
 
@@ -64,7 +63,7 @@ export function LoggedLayout({
       <LoggedHeader loggedIn={true} />
       <IonContent>
         <ChainDiv
-          style={{ marginBottom: ChainDivMarginBottom }}
+          style={{ marginBottom: isMobile ? '8px' : '0px' }}
           routerLink={akashicPayPath(urls.loggedFunction)}
         >
           {t('AkashicChain')}
