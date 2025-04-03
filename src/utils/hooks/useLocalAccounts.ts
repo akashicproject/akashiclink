@@ -33,6 +33,17 @@ export const useAccountStorage = () => {
     await setLocalAccounts([...(localAccounts ?? []), account]);
   };
 
+  const removeLocalAccount = async (account: LocalAccount) => {
+    const accsToKeep = localAccounts.reduce((p, c) => {
+      if (c.identity !== account.identity) {
+        p.push(c);
+      }
+      return p;
+    }, [] as LocalAccount[]);
+
+    await setLocalAccounts(accsToKeep);
+  };
+
   const clearActiveAccount = async () => {
     await setActiveAccount(null);
   };
@@ -40,6 +51,7 @@ export const useAccountStorage = () => {
   return {
     localAccounts,
     addLocalAccount,
+    removeLocalAccount,
     activeAccount,
     setActiveAccount,
     clearActiveAccount,

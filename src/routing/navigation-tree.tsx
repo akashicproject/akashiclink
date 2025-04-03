@@ -23,6 +23,7 @@ import { SendResult } from '../pages/send/send-result';
 import { SendTo } from '../pages/send/send-to';
 import { Settings } from '../pages/settings';
 import { SettingsBackup } from '../pages/settings-backup';
+import { SettingsDelete } from '../pages/settings-delete';
 import { SettingsNaming } from '../pages/settings-naming';
 import { SettingsVersion } from '../pages/settings-version';
 import { Us2Main } from '../pages/us2-main';
@@ -103,6 +104,7 @@ export function NavigationTree() {
       {hpSubtree.registerPage(Settings, urls.settings)}
       {hpSubtree.registerPage(RecoverCode, urls.recoverCode)}
       {hpSubtree.registerPage(SettingsBackup, urls.settingsBackup)}
+      {hpSubtree.registerPage(SettingsDelete, urls.settingsDelete)}
       {hpSubtree.registerPage(SettingsNaming, urls.settingsNaming)}
       {hpSubtree.registerPage(SettingsVersion, urls.settingsVersion)}
       {hpSubtree.registerPage(ErrorPage, urls.error)}

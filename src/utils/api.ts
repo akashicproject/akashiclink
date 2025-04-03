@@ -247,4 +247,12 @@ export const OwnersAPI = {
       throw new Error(data.message);
     }
   },
+
+  deleteAccount: async () => {
+    const response = await axiosOwnerBase.post(`/owner/me/delete`);
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+  },
 };

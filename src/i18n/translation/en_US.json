@@ -172,5 +172,9 @@
   "NamingService": "Akashic Alias Service (AAS)",
   "Lock": "Lock",
   "Remark": "Remark",
+  "Delete": "Delete",
+  "DeleteAccount": "Delete Account",
+  "AreYouSureDelete": "Are you sure you want to delete your account?",
+  "FundsLeftNotRecoverable": "Any funds left in your account upon deletion can not be recovered!",
   "DoNotClose": "Please do not close the app while creating!"
 }

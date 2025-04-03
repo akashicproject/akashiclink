@@ -206,6 +206,10 @@ export function SettingsPopover() {
                 displayText={t('KeyPairBackup')}
                 routerLink={akashicPayPath(urls.settingsBackup)}
               />
+              <SettingsItem
+                displayText={t('DeleteAccount')}
+                routerLink={akashicPayPath(urls.settingsDelete)}
+              />
               {/**
                * <SettingsItem
                * displayText="Recovery"
