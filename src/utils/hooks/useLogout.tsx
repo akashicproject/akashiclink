@@ -1,9 +1,9 @@
 import { Preferences } from '@capacitor/preferences';
-import { useContext } from 'react';
 
-import { CacheOtkContext } from '../../components/providers/PreferenceProvider';
 import { LAST_HISTORY_ENTRIES } from '../../constants';
 import { urls } from '../../constants/urls';
+import { useAppDispatch } from '../../redux/app/hooks';
+import { setCacheOtk } from '../../redux/slices/accountSlice';
 import { historyResetStackAndRedirect } from '../../routing/history';
 import { axiosBase } from '../axios-helper';
 import { useBalancesMe } from './useBalancesMe';
@@ -14,7 +14,7 @@ export function useLogout(callLogout = true) {
   const { mutateOwner } = useOwner();
   const { mutateBalancesMe } = useBalancesMe();
   const { mutateTransfersMe } = useTransfersMe();
-  const { setCacheOtk } = useContext(CacheOtkContext);
+  const dispatch = useAppDispatch();
 
   return async () => {
     // callLogout will be false if getting 401 errors, prevents recursive calls
@@ -27,7 +27,7 @@ export function useLogout(callLogout = true) {
     }
 
     // Clear session variables
-    setCacheOtk(null);
+    dispatch(setCacheOtk(null));
     await Preferences.remove({
       key: LAST_HISTORY_ENTRIES,
     });

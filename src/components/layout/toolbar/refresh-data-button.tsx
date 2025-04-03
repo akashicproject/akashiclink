@@ -2,13 +2,14 @@ import { IonIcon } from '@ionic/react';
 import React, { useState } from 'react';
 
 import { REFRESH_BUTTON_DISABLED_TIME } from '../../../constants';
+import { useAppSelector } from '../../../redux/app/hooks';
+import { selectTheme } from '../../../redux/slices/preferenceSlice';
 import { themeType } from '../../../theme/const';
 import { useBalancesMe } from '../../../utils/hooks/useBalancesMe';
 import { useNftMe } from '../../../utils/hooks/useNftMe';
 import { useNftTransfersMe } from '../../../utils/hooks/useNftTransfersMe';
 import { useTransfersMe } from '../../../utils/hooks/useTransfersMe';
 import { SquareWhiteButton } from '../../common/buttons';
-import { useTheme } from '../../providers/PreferenceProvider';
 
 export const RefreshDataButton = () => {
   const { mutateTransfersMe } = useTransfersMe();
@@ -16,7 +17,7 @@ export const RefreshDataButton = () => {
   const { mutateBalancesMe } = useBalancesMe();
   const { mutateNftMe } = useNftMe();
 
-  const [storedTheme] = useTheme();
+  const storedTheme = useAppSelector(selectTheme);
   const [refreshDisabled, setRefreshDisabled] = useState(false);
 
   return (

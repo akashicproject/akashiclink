@@ -7,6 +7,8 @@ import { IonItem, IonText } from '@ionic/react';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
 
+import { useAppSelector } from '../../../redux/app/hooks';
+import { selectFocusCurrencyDetail } from '../../../redux/slices/preferenceSlice';
 import { getPrecision } from '../../../utils/formatAmount';
 import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
 import { displayLongText } from '../../../utils/long-text';
@@ -16,7 +18,6 @@ import { Divider } from '../../common/divider';
 import { List } from '../../common/list/list';
 import { ListLabelValueItem } from '../../common/list/list-label-value-item';
 import { ListVerticalLabelValueItem } from '../../common/list/list-vertical-label-value-item';
-import { useFocusCurrencyDetail } from '../../providers/PreferenceProvider';
 import { ListCopyTxHashItem } from '../copy-tx-hash';
 import { FromToAddressBlock } from '../from-to-address-block';
 import type {
@@ -36,7 +37,7 @@ export const SendConfirmationDetailList = ({
 }) => {
   const { t } = useTranslation();
 
-  const { chain } = useFocusCurrencyDetail();
+  const { chain } = useAppSelector(selectFocusCurrencyDetail);
   const { isCurrencyTypeToken, currencySymbol, nativeCoinSymbol } =
     useFocusCurrencySymbolsAndBalances();
 

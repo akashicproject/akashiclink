@@ -4,10 +4,11 @@ import { IonContent, IonIcon, IonPopover } from '@ionic/react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAppSelector } from '../../../redux/app/hooks';
+import { selectTheme } from '../../../redux/slices/preferenceSlice';
 import { themeType } from '../../../theme/const';
 import { displayLongText } from '../../../utils/long-text';
 import { SquareWhiteButton } from '../../common/buttons';
-import { useTheme } from '../../providers/PreferenceProvider';
 
 const AddressWrapper = styled.div({
   display: 'flex',
@@ -23,7 +24,7 @@ interface Props {
 export function AddressCopyBlock(props: Props) {
   const copyAddressPopover = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const [storedTheme] = useTheme();
+  const storedTheme = useAppSelector(selectTheme);
   const { t } = useTranslation();
 
   const copyAddress = async (e: never) => {

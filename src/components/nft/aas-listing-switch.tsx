@@ -10,6 +10,8 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectCacheOtk } from '../../redux/slices/accountSlice';
 import { OwnersAPI } from '../../utils/api';
 import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemapAASToAddress';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
@@ -18,7 +20,6 @@ import { signTxBody } from '../../utils/nitr0gen-api';
 import type { FormAlertState } from '../common/alert/alert';
 import { errorAlertShell } from '../common/alert/alert';
 import { Toggle } from '../common/toggle/toggle';
-import { useCacheOtk } from '../providers/PreferenceProvider';
 
 const AASListSwitchContainer = styled.div`
   display: flex;
@@ -38,7 +39,7 @@ export const AasListingSwitch = ({
   aasValue?: string;
   setAlert: React.Dispatch<React.SetStateAction<FormAlertState>>;
 }) => {
-  const [cacheOtk, _] = useCacheOtk();
+  const cacheOtk = useAppSelector(selectCacheOtk);
   const { activeAccount } = useAccountStorage();
   const { mutateNftMe } = useNftMe();
   const { t } = useTranslation();
@@ -48,6 +49,9 @@ export const AasListingSwitch = ({
 
   const updateAASList = async () => {
     try {
+      if (!cacheOtk) {
+        throw new Error('GenericFailureMsg');
+      }
       setIsLoading(true);
       if (name && activeAccount?.identity && cacheOtk) {
         const newValue = !isListed ? activeAccount.identity : null;

@@ -1,27 +1,24 @@
 import { IonIcon } from '@ionic/react';
 import { moon, sunny } from 'ionicons/icons';
 
+import { useAppDispatch, useAppSelector } from '../../../redux/app/hooks';
+import { selectTheme, setTheme } from '../../../redux/slices/preferenceSlice';
 import { themeType } from '../../../theme/const';
 import { Toggle } from '../../common/toggle/toggle';
-import { useTheme } from '../../providers/PreferenceProvider';
 
 export function ThemeSelect() {
-  const [storedTheme, setStoredTheme] = useTheme();
+  const dispatch = useAppDispatch();
+  const storedTheme = useAppSelector(selectTheme);
 
   const handleThemeUpdate = async () => {
     const newTheme =
       storedTheme === themeType.LIGHT ? themeType.DARK : themeType.LIGHT;
 
-    if (setStoredTheme) {
-      setStoredTheme(newTheme);
-    }
+    dispatch(setTheme(newTheme));
   };
 
   // Shorthand for setting css props of the slider
-  const isDarkMode =
-    storedTheme === themeType.DARK ||
-    (storedTheme === themeType.SYSTEM &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const isDarkMode = storedTheme === themeType.DARK;
 
   return (
     <Toggle

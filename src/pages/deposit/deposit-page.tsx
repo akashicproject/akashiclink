@@ -9,11 +9,12 @@ import { useTranslation } from 'react-i18next';
 
 import { CopyBox } from '../../components/common/copy-box';
 import { LayoutWithActivityTab } from '../../components/page-layout/layout-with-activity-tab';
-import {
-  useFocusCurrency,
-  useTheme,
-} from '../../components/providers/PreferenceProvider';
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
+import { useAppSelector } from '../../redux/app/hooks';
+import {
+  selectFocusCurrency,
+  selectTheme,
+} from '../../redux/slices/preferenceSlice';
 import { themeType } from '../../theme/const';
 import { useLargestBalanceKeys } from '../../utils/hooks/useLargestBalanceKeys';
 
@@ -36,8 +37,8 @@ const QRCodeWrapper = styled.div({
 
 export function DepositPage() {
   const { t } = useTranslation();
-  const [currency] = useFocusCurrency();
-  const [storedTheme] = useTheme();
+  const storedTheme = useAppSelector(selectTheme);
+  const currency = useAppSelector(selectFocusCurrency);
 
   // Find specified currency or default to the first one
   const currentWalletMetadata =

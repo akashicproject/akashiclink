@@ -5,8 +5,9 @@ import { IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import Lottie from 'react-lottie';
 
+import { useAppSelector } from '../../../redux/app/hooks';
+import { selectTheme } from '../../../redux/slices/preferenceSlice';
 import { themeType } from '../../../theme/const';
-import { useTheme } from '../../providers/PreferenceProvider';
 import { ContentText } from '../text/context-text';
 import * as darkLoader from './loader-dark.json';
 import * as lightLoader from './loader-light.json';
@@ -47,7 +48,7 @@ export const Spinner = ({
   const StyledIonIcon = styled(IonIcon)`
     font-size: 24px;
   `;
-  const [storedTheme] = useTheme();
+  const storedTheme = useAppSelector(selectTheme);
   const { t } = useTranslation();
   return (
     <LoaderDiv

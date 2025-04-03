@@ -13,12 +13,13 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../../constants/urls';
+import { useAppSelector } from '../../../redux/app/hooks';
+import { selectTheme } from '../../../redux/slices/preferenceSlice';
 import { akashicPayPath } from '../../../routing/navigation-tabs';
 import { themeType } from '../../../theme/const';
 import { useLogout } from '../../../utils/hooks/useLogout';
 import { useSetGlobalLanguage } from '../../../utils/hooks/useSetGlobalLanguage';
 import { SquareWhiteButton } from '../../common/buttons';
-import { useTheme } from '../../providers/PreferenceProvider';
 
 /** Styling the display text */
 function SettingsText({ text, id }: { text: string; id?: string }) {
@@ -113,7 +114,7 @@ function SettingSubmenu({
  */
 export function SettingsPopover() {
   const { t } = useTranslation();
-  const [storedTheme] = useTheme();
+  const storedTheme = useAppSelector(selectTheme);
   const logout = useLogout();
 
   /** Grouping of the settings in the popover menu

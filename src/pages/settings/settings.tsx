@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
-import { useLockTime } from '../../components/providers/PreferenceProvider';
 import { AboutUsCaret } from '../../components/settings/about-us';
 import {
   PageHeader,
@@ -16,6 +15,11 @@ import type { SettingItemProps } from '../../components/settings/setting-item';
 import { SettingItem } from '../../components/settings/setting-item';
 import { SettingsRadio } from '../../components/settings/setting-radio';
 import { urls } from '../../constants/urls';
+import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
+import {
+  selectAutoLockTime,
+  setAutoLockTime,
+} from '../../redux/slices/preferenceSlice';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useCurrentAppInfo } from '../../utils/hooks/useCurrentAppInfo';
 import { getImageIconUrl } from '../../utils/url-utils';
@@ -71,7 +75,7 @@ const AutoLockAccordion = ({
   autoLock: AutoLockProp;
   setAutoLock: Dispatch<SetStateAction<AutoLockProp>>;
 }) => {
-  const [_, setAutoLockTime] = useLockTime();
+  const dispatch = useAppDispatch();
   return (
     <IonRadioGroup value={autoLock.value} style={{ padding: '0px 8px' }}>
       {autoLockTimeMap.map((item, i) => {
@@ -84,7 +88,7 @@ const AutoLockAccordion = ({
               value={item.value}
               onClick={() => {
                 setAutoLock(item);
-                setAutoLockTime(item.value);
+                dispatch(setAutoLockTime(item.value));
               }}
               width={'33.33%'}
               mode="md"
@@ -101,7 +105,7 @@ const AutoLockAccordion = ({
 export function Settings() {
   const history = useHistory();
   const { t } = useTranslation();
-  const [autoLockTime] = useLockTime();
+  const autoLockTime = useAppSelector(selectAutoLockTime);
   const info = useCurrentAppInfo();
   const [autoLock, setAutoLock] = useState<AutoLockProp>(
     autoLockTimeMap.find((e) => {

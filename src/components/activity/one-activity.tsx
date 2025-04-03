@@ -10,13 +10,14 @@ import type { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectTheme } from '../../redux/slices/preferenceSlice';
 import { themeType } from '../../theme/const';
 import { getPrecision } from '../../utils/formatAmount';
 import { formatDate } from '../../utils/formatDate';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { displayLongText } from '../../utils/long-text';
 import { Divider } from '../common/divider';
-import { useTheme } from '../providers/PreferenceProvider';
 
 const ActivityWrapper = styled.div<{ hover: boolean }>((props) => ({
   display: 'flex',
@@ -135,7 +136,7 @@ export function OneActivity({
   const { t } = useTranslation();
   const isL2 = transfer.layer === TransactionLayer.L2;
   const isNft = !!transfer?.nft;
-  const [storedTheme] = useTheme();
+  const storedTheme = useAppSelector(selectTheme);
 
   const isTxnDeposit = transfer.transferType === TransactionType.DEPOSIT;
   const isTxnConfirmed = transfer.status === TransactionStatus.CONFIRMED;

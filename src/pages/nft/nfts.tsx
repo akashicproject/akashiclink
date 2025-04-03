@@ -11,8 +11,9 @@ import { Virtuoso } from 'react-virtuoso';
 
 import { OneNft } from '../../components/nft/one-nft';
 import { NftLayout } from '../../components/page-layout/nft-layout';
-import { useTheme } from '../../components/providers/PreferenceProvider';
 import { urls } from '../../constants/urls';
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectTheme } from '../../redux/slices/preferenceSlice';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 import { useNftMe } from '../../utils/hooks/useNftMe';
@@ -48,9 +49,8 @@ const ListContainer = styled.div({
 
 export function Nfts() {
   const { t } = useTranslation();
-  const [storedTheme] = useTheme();
-  const isDarkMode =
-    storedTheme === themeType.DARK || storedTheme === themeType.SYSTEM;
+  const storedTheme = useAppSelector(selectTheme);
+  const isDarkMode = storedTheme === themeType.DARK;
   const history = useHistory();
   const { nfts, isLoading } = useNftMe();
   const sortedNfts = nfts.sort((a, b) => {

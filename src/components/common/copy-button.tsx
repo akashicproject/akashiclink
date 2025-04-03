@@ -3,13 +3,14 @@ import { IonContent, IonIcon, IonPopover } from '@ionic/react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectTheme } from '../../redux/slices/preferenceSlice';
 import { themeType } from '../../theme/const';
-import { useTheme } from '../providers/PreferenceProvider';
 import { SquareWhiteButton } from './buttons';
 
 export function CopyButton({ value }: { value: string }) {
   const { t } = useTranslation();
-  const [storedTheme] = useTheme();
+  const storedTheme = useAppSelector(selectTheme);
 
   const copyPopoverRef = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);

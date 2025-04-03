@@ -10,8 +10,9 @@ import {
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectTheme } from '../../redux/slices/preferenceSlice';
 import { themeType } from '../../theme/const';
-import { useTheme } from '../providers/PreferenceProvider';
 
 const BorderedBox = styled(IonItem)<{ compact: boolean }>(({ compact }) => ({
   '--min-height': 'auto',
@@ -44,7 +45,7 @@ export function CopyBox({
   copyText?: string;
 }) {
   const { t } = useTranslation();
-  const [storedTheme] = useTheme();
+  const storedTheme = useAppSelector(selectTheme);
   const handleCopy = async (e: never) => {
     await Clipboard.write({
       string: copyText || text || '',

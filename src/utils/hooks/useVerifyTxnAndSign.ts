@@ -1,18 +1,17 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { L2Regex } from '@helium-pay/backend';
 
-import {
-  useCacheOtk,
-  useFocusCurrencyDetail,
-} from '../../components/providers/PreferenceProvider';
 import type { ValidatedAddressPair } from '../../components/send-deposit/send-form/types';
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectCacheOtk } from '../../redux/slices/accountSlice';
+import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
 import { OwnersAPI } from '../api';
 import { signTxBody } from '../nitr0gen-api';
 import { unpackRequestErrorMessage } from '../unpack-request-error-message';
 
 export const useVerifyTxnAndSign = () => {
-  const { chain, token } = useFocusCurrencyDetail();
-  const [cacheOtk, _] = useCacheOtk();
+  const { chain, token } = useAppSelector(selectFocusCurrencyDetail);
+  const cacheOtk = useAppSelector(selectCacheOtk);
 
   return async (validatedAddressPair: ValidatedAddressPair, amount: string) => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);

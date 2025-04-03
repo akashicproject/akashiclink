@@ -1,15 +1,18 @@
 import { useEffect } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
 
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectAutoLockTime } from '../../redux/slices/preferenceSlice';
 import { useLogout } from './useLogout';
 
-export function useIdleTime(lockTime: number) {
+export function useIdleTime() {
+  const autoLockTime = useAppSelector(selectAutoLockTime);
   const logout = useLogout();
   const { reset } = useIdleTimer({
-    timeout: lockTime * 60000,
+    timeout: autoLockTime * 60000,
     onIdle: logout,
   });
   useEffect(() => {
     reset();
-  }, [lockTime]);
+  }, [autoLockTime]);
 }

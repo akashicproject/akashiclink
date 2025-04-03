@@ -1,8 +1,9 @@
 import { NetworkDictionary } from '@helium-pay/backend';
 import { useEffect, useState } from 'react';
 
-import { useFocusCurrencyDetail } from '../../components/providers/PreferenceProvider';
 import { makeWalletCurrency } from '../../constants/currencies';
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
 import { CurrencyMap } from '../currencyMap';
 import { useBalancesMe } from './useBalancesMe';
 
@@ -30,7 +31,7 @@ export function useAggregatedBalances() {
 
 export function useFocusCurrencySymbolsAndBalances() {
   const aggregatedBalances = useAggregatedBalances();
-  const walletCurrency = useFocusCurrencyDetail();
+  const walletCurrency = useAppSelector(selectFocusCurrencyDetail);
 
   const isCurrencyTypeToken = typeof walletCurrency.token !== 'undefined';
   const nativeCoin = NetworkDictionary[walletCurrency.chain].nativeCoin;

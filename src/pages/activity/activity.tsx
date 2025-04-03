@@ -13,8 +13,9 @@ import { Virtuoso } from 'react-virtuoso';
 import { OneActivity } from '../../components/activity/one-activity';
 import { Divider } from '../../components/common/divider';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
-import { useTheme } from '../../components/providers/PreferenceProvider';
 import { urls } from '../../constants/urls';
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectTheme } from '../../redux/slices/preferenceSlice';
 import type { LocationState } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
@@ -60,7 +61,7 @@ export const TableHeads = styled.div({
 export function Activity() {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
-  const [storedTheme] = useTheme();
+  const storedTheme = useAppSelector(selectTheme);
   const [transferParams] = useState({
     startDate: dayjs().subtract(1, 'month').toDate(),
   });

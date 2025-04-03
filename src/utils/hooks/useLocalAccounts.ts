@@ -1,13 +1,15 @@
 import { SecureStorage } from '@aparajita/capacitor-secure-storage';
 import { L2Regex } from '@helium-pay/backend';
 import crypto from 'crypto';
-import { useContext } from 'react';
 
+import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
 import {
-  ActiveAccountContext,
-  CacheOtkContext,
-  LocalAccountContext,
-} from '../../components/providers/PreferenceProvider';
+  selectActiveAccount,
+  selectLocalAccounts,
+  setActiveAccount as setActiveAccountState,
+  setCacheOtk,
+  setLocalAccounts,
+} from '../../redux/slices/accountSlice';
 import type { FullOtk } from '../otk-generation';
 
 const algorithm = 'aes-256-cbc';
@@ -31,9 +33,9 @@ export interface LocalAccount {
  * - localAccounts: available accounts that user has imported
  */
 export const useAccountStorage = () => {
-  const { localAccounts, setLocalAccounts } = useContext(LocalAccountContext);
-  const { activeAccount, setActiveAccount } = useContext(ActiveAccountContext);
-  const { setCacheOtk } = useContext(CacheOtkContext);
+  const localAccounts = useAppSelector(selectLocalAccounts);
+  const activeAccount = useAppSelector(selectActiveAccount);
+  const dispatch = useAppDispatch();
 
   const addPrefixToAccounts = async () => {
     if (localAccounts.some((acc) => !L2Regex.exec(acc.identity))) {
@@ -43,7 +45,7 @@ export const useAccountStorage = () => {
           ? acc.identity
           : 'AS' + acc.identity,
       }));
-      setLocalAccounts(accountsWithPrefix);
+      dispatch(setLocalAccounts(accountsWithPrefix));
     }
   };
   const addAasToAccountByIdentity = async (
@@ -57,9 +59,9 @@ export const useAccountStorage = () => {
       return l;
     });
     if (activeAccount && activeAccount.identity === identity) {
-      setActiveAccount({ ...activeAccount, aasName });
+      dispatch(setActiveAccountState({ ...activeAccount, aasName }));
     }
-    setLocalAccounts(updatedAccounts);
+    dispatch(setLocalAccounts(updatedAccounts));
   };
 
   const removeAasFromAccountByIdentity = async (identity: string) => {
@@ -71,9 +73,9 @@ export const useAccountStorage = () => {
       return l;
     });
     if (activeAccount && activeAccount.identity === identity) {
-      setActiveAccount({ ...activeAccount, aasName: undefined });
+      dispatch(setActiveAccountState({ ...activeAccount, aasName: undefined }));
     }
-    setLocalAccounts(updatedAccounts);
+    dispatch(setLocalAccounts(updatedAccounts));
   };
 
   const addLocalAccount = async (account: LocalAccount) => {
@@ -82,7 +84,7 @@ export const useAccountStorage = () => {
       if (identity === account.identity) return;
     }
 
-    setLocalAccounts([...(localAccounts ?? []), account]);
+    dispatch(setLocalAccounts([...(localAccounts ?? []), account]));
   };
 
   const removeLocalAccount = async (account: LocalAccount) => {
@@ -93,12 +95,12 @@ export const useAccountStorage = () => {
       return p;
     }, [] as LocalAccount[]);
 
-    setLocalAccounts(accsToKeep);
+    dispatch(setLocalAccounts(accsToKeep));
     await removeLocalOtk(account.identity);
   };
 
   const clearActiveAccount = async () => {
-    setActiveAccount(null);
+    dispatch(setActiveAccountState(null));
   };
 
   const getLocalOtk = async (
@@ -126,7 +128,7 @@ export const useAccountStorage = () => {
   ): Promise<FullOtk | undefined> => {
     const otk = await getLocalOtk(identity, password);
     if (otk) {
-      setCacheOtk(otk);
+      dispatch(setCacheOtk(otk));
       return otk;
     } else {
       return undefined;
@@ -144,7 +146,7 @@ export const useAccountStorage = () => {
 
   const addLocalOtkAndCache = async (otk: FullOtk, password: string) => {
     await addLocalOtk(otk, password);
-    setCacheOtk(otk);
+    dispatch(setCacheOtk(otk));
   };
 
   const changeOtkPassword = async (
@@ -161,7 +163,7 @@ export const useAccountStorage = () => {
   const removeLocalOtk = async (identity: string) => {
     await SecureStorage.removeItem(identity);
 
-    setCacheOtk(null);
+    dispatch(setCacheOtk(null));
   };
 
   // key min length is 32 byte
@@ -179,6 +181,10 @@ export const useAccountStorage = () => {
       accountName: `Wallet ${account.identity.slice(-8)}`,
     })
   );
+
+  const setActiveAccount = (account: LocalAccount) => {
+    dispatch(setActiveAccountState(account));
+  };
 
   return {
     localAccounts: localAccountsWithName,

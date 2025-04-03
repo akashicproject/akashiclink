@@ -1,7 +1,8 @@
 import type { IExchangeRate } from '@helium-pay/backend';
 import useSWR from 'swr';
 
-import { useFocusCurrencyDetail } from '../../components/providers/PreferenceProvider';
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
 import { calculateInternalWithdrawalFee } from '../internal-fee';
 import fetcher from '../ownerFetcher';
 
@@ -21,7 +22,7 @@ export const useExchangeRates = () => {
 
 export const useCalculateFocusCurrencyL2WithdrawalFee = () => {
   const { keys: exchangeRates } = useExchangeRates();
-  const { chain, token } = useFocusCurrencyDetail();
+  const { chain, token } = useAppSelector(selectFocusCurrencyDetail);
 
   return (amount: string) => {
     return calculateInternalWithdrawalFee(

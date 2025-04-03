@@ -17,10 +17,15 @@ import {
   compareWalletCurrencies,
   SUPPORTED_CURRENCIES_FOR_EXTENSION,
 } from '../../constants/currencies';
+import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
+import {
+  selectFocusCurrency,
+  selectTheme,
+  setFocusCurrency,
+} from '../../redux/slices/preferenceSlice';
 import { formatAmount } from '../../utils/formatAmount';
 import { useAggregatedBalances } from '../../utils/hooks/useAggregatedBalances';
 import { useExchangeRates } from '../../utils/hooks/useExchangeRates';
-import { useFocusCurrency, useTheme } from '../providers/PreferenceProvider';
 
 // install Virtual module
 SwiperCore.use([Virtual, Navigation]);
@@ -50,8 +55,9 @@ const CURRENCIES_FOR_SWIPER = [
 ];
 
 export function SelectCoin() {
-  const [storedTheme] = useTheme();
-  const [focusCurrency, setFocusCurrency] = useFocusCurrency();
+  const dispatch = useAppDispatch();
+  const storedTheme = useAppSelector(selectTheme);
+  const focusCurrency = useAppSelector(selectFocusCurrency);
 
   const [focusCurrencyUSDTBalance, setFocusCurrencyUSDTBalance] =
     useState<Big>();
@@ -106,7 +112,7 @@ export function SelectCoin() {
     const newIndex = swiperRef.realIndex;
     setSwiperIdx(newIndex);
     const wc = CURRENCIES_FOR_SWIPER[newIndex].walletCurrency;
-    setFocusCurrency && setFocusCurrency(wc);
+    dispatch(setFocusCurrency(wc));
 
     const conversionRate = findExchangeRate(wc);
     const bigCurrency = Big(aggregatedBalances.get(wc) || 0);

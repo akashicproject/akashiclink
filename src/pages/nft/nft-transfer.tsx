@@ -27,9 +27,10 @@ import {
 } from '../../components/common/input/styled-input';
 import { OneNft } from '../../components/nft/one-nft';
 import { NftLayout } from '../../components/page-layout/nft-layout';
-import { useCacheOtk } from '../../components/providers/PreferenceProvider';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectCacheOtk } from '../../redux/slices/accountSlice';
 import {
   type LocationState,
   historyGoBackOrReplace,
@@ -106,7 +107,8 @@ export function NftTransfer() {
 
   const [alert, setAlert] = useState(formAlertResetState);
   const [loading, setLoading] = useState(false);
-  const [cacheOtk, _] = useCacheOtk();
+  const cacheOtk = useAppSelector(selectCacheOtk);
+
   // input username to address
   // TODO: we need to add more check constraint in the future, like l2 address start with "AS"
   const inputToAddress = debounce(async (value: string) => {

@@ -18,26 +18,54 @@ import './theme/common.scss';
 
 import { IonApp, setupIonicReact } from '@ionic/react';
 import { IonReactMemoryRouter } from '@ionic/react-router';
+import { useEffect } from 'react';
 
 import { VersionUpdateAlert } from './components/layout/version-update-alert';
-import { PreferenceProvider } from './components/providers/PreferenceProvider';
+import { useAppSelector } from './redux/app/hooks';
+import { selectTheme } from './redux/slices/preferenceSlice';
 import { history } from './routing/history';
 import { NavigationTree } from './routing/navigation-tree';
+import { themeType } from './theme/const';
+import { useIdleTime } from './utils/hooks/useIdleTime';
 import { useSetGlobalLanguage } from './utils/hooks/useSetGlobalLanguage';
 
 setupIonicReact();
 
+const InitializeApp = () => {
+  // Initialize language
+  useSetGlobalLanguage();
+
+  // Initialize theme
+  const storedTheme = useAppSelector(selectTheme);
+  /**
+   * Add 'dark' to all elements on the page
+   */
+  const toggleDarkTheme = (setDark: boolean) => {
+    document.body.classList.toggle('dark', setDark);
+    document.body.classList.toggle('light', !setDark);
+  };
+
+  /**
+   * Respond to a new theme being set
+   */
+  useEffect(() => {
+    // Theme is explicitly light or dark
+    toggleDarkTheme(storedTheme === themeType.DARK);
+  }, [storedTheme]);
+
+  // Intialize idle timer
+  useIdleTime();
+};
+
 // eslint-disable-next-line import/no-default-export
 export default function App() {
-  useSetGlobalLanguage();
+  InitializeApp();
 
   return (
     <IonApp>
-      <PreferenceProvider>
-        <IonReactMemoryRouter history={history}>
-          <NavigationTree />
-        </IonReactMemoryRouter>
-      </PreferenceProvider>
+      <IonReactMemoryRouter history={history}>
+        <NavigationTree />
+      </IonReactMemoryRouter>
       {process.env.REACT_APP_SKIP_UPDATE_CHECK !== 'true' && (
         <VersionUpdateAlert />
       )}

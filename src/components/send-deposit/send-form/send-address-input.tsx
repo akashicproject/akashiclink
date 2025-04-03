@@ -16,6 +16,11 @@ import { debounce } from 'lodash';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAppSelector } from '../../../redux/app/hooks';
+import {
+  selectFocusCurrency,
+  selectFocusCurrencyDetail,
+} from '../../../redux/slices/preferenceSlice';
 import { OwnersAPI } from '../../../utils/api';
 import { useLargestBalanceKeys } from '../../../utils/hooks/useLargestBalanceKeys';
 import { useAccountStorage } from '../../../utils/hooks/useLocalAccounts';
@@ -26,10 +31,6 @@ import {
   formAlertResetState,
 } from '../../common/alert/alert';
 import { StyledInput } from '../../common/input/styled-input';
-import {
-  useFocusCurrency,
-  useFocusCurrencyDetail,
-} from '../../providers/PreferenceProvider';
 import type { ValidatedAddressPair } from './types';
 
 const LockedAddress = styled(IonItem)({
@@ -58,8 +59,8 @@ export const SendAddressInput = ({
 
   const [alert, setAlert] = useState(formAlertResetState);
   const { activeAccount } = useAccountStorage();
-  const { chain } = useFocusCurrencyDetail();
-  const [currency] = useFocusCurrency();
+  const { chain } = useAppSelector(selectFocusCurrencyDetail);
+  const currency = useAppSelector(selectFocusCurrency);
   const { keys: addresses } = useLargestBalanceKeys({
     coinSymbols: [currency.chain],
   });
