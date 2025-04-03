@@ -4,7 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import { AccountSelection } from '../account-selection/account-selection';
-import { Alert, errorAlertShell, formAlertResetState } from '../alert/alert';
+import {
+  CustomAlert,
+  errorAlertShell,
+  formAlertResetState,
+} from '../alert/alert';
 import { PurpleButton } from '../buttons';
 import { StyledInput } from '../styled-input';
 import { urls } from '../../constants/urls';
@@ -74,7 +78,7 @@ export function LoginForm() {
 
   return (
     <>
-      <Alert state={alert} />
+      <CustomAlert state={alert} />
       <h1 className="ion-justify-content-center">{t('WelcomeBack')}</h1>
       <h3 className="ion-justify-content-center">
         {t('YourMostReliableWallet')}

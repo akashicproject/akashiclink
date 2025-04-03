@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
-  Alert,
   AlertBox,
+  CustomAlert,
   errorAlertShell,
   formAlertResetState,
 } from '../components/alert/alert';
@@ -43,7 +43,7 @@ export function SettingsBackup() {
 
   return (
     <LoggedLayout>
-      <Alert state={alert} />
+      <CustomAlert state={alert} />
       {view === BackupKeyPairState.ConfirmPassword && (
         <ConfirmLockPassword setVal={fetchKeyPair} />
       )}

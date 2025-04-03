@@ -14,8 +14,8 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
-  Alert,
   AlertBox,
+  CustomAlert,
   errorAlertShell,
   formAlertResetState,
 } from '../../components/alert/alert';
@@ -331,7 +331,7 @@ export function SendTo() {
 
   return (
     <>
-      <Alert state={alert} />
+      <CustomAlert state={alert} />
       {pageView === SendView.Send && (
         <SendMain>
           <IonRow style={{ marginTop: '36px' }}>

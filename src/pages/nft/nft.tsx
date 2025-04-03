@@ -1,11 +1,12 @@
 import './ntf.css';
 
 import styled from '@emotion/styled';
-import { IonCol, IonImg, IonModal, IonRow } from '@ionic/react';
+import { IonCol, IonRow } from '@ionic/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
+import { CustomAlert } from '../../components/alert/alert';
 import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { NftLayout } from '../../components/layout/nft-layout';
 import { OneNft } from '../../components/nft/one-nft';
@@ -22,28 +23,6 @@ const NftWrapper = styled.div({
   marginTop: '80px',
   gap: '56px',
   width: '100%',
-});
-
-export const WarningDiv = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '24px',
-  marginTop: '64px',
-  padding: '0 40px',
-});
-
-const WarningText = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  textAlign: 'center',
-  width: '253px',
-  height: '69px',
-  fontFamily: 'Nunito Sans',
-  fontWeight: '700',
-  fontSize: '16px',
-  lineHeight: '24px',
-  color: '#000',
 });
 
 export function Nft() {
@@ -70,6 +49,15 @@ export function Nft() {
 
   return (
     <NftLayout>
+      <CustomAlert
+        state={{
+          visible: isOpen,
+          onConfirm: goNSSetting,
+          message: t('NSRecordWarning', { nftName: currentNft?.name || '' }),
+          success: false,
+          confirmButtonMessage: t('GoNSSettings') ?? undefined,
+        }}
+      />
       <NftWrapper>
         <IonRow>
           <IonCol class="ion-center">
@@ -92,25 +80,6 @@ export function Nft() {
           </IonCol>
         </IonRow>
       </NftWrapper>
-      <IonModal
-        id="nft-model"
-        isOpen={isOpen}
-        onDidDismiss={() => setIsOpen(false)}
-      >
-        <WarningDiv>
-          <IonImg
-            alt={''}
-            src={'/shared-assets/images/error-outline.png'}
-            style={{ width: '48px', height: '48px' }}
-          />
-          <WarningText>
-            {t('NSRecordWarning', { nftName: currentNft?.name || '' })}
-          </WarningText>
-          <PurpleButton onClick={goNSSetting} style={{ width: '160px' }}>
-            {t('GoNSSettings')}
-          </PurpleButton>
-        </WarningDiv>
-      </IonModal>
     </NftLayout>
   );
 }

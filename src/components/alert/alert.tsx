@@ -1,8 +1,20 @@
-import './alert.css';
+import './alert.scss';
 
-import { IonAlert, IonNote } from '@ionic/react';
+import {
+  IonAlert,
+  IonButton,
+  IonButtons,
+  IonIcon,
+  IonImg,
+  IonModal,
+  IonNote,
+  IonToolbar,
+} from '@ionic/react';
+import { closeOutline } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { PurpleButton } from '../buttons';
 
 /**
  * @param success for green, red otherwise
@@ -32,6 +44,14 @@ export const formAlertResetState: FormAlertState = {
   visible: false,
   message: '',
 };
+
+export interface CustomAlertState {
+  visible: boolean;
+  success: boolean;
+  message: string;
+  onConfirm?: () => void;
+  confirmButtonMessage?: string;
+}
 
 /**
  * Popup alert featuring
@@ -66,6 +86,59 @@ export function Alert({ state: externalState }: { state: FormAlertState }) {
         setState(formAlertResetState);
       }}
     />
+  );
+}
+
+/**
+ * Popup alert with custom design featuring
+ * - title
+ * - message
+ * - visibility state
+ * - Optional button (e.g. to redirect somewhere)
+ */
+export function CustomAlert({ state }: { state: CustomAlertState }) {
+  const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(state.visible);
+
+  /**
+   * Respond to changes in the externally supplied state
+   */
+  useEffect(() => setIsOpen(state.visible), [state]);
+
+  return (
+    <IonModal
+      isOpen={isOpen}
+      onDidDismiss={() => setIsOpen(false)}
+      className="custom-alert"
+    >
+      <IonToolbar color="#ffffff">
+        <IonButtons slot="end">
+          <IonButton onClick={() => setIsOpen(false)}>
+            <IonIcon
+              class="icon-button-icon"
+              slot="icon-only"
+              icon={closeOutline}
+            />
+          </IonButton>
+        </IonButtons>
+      </IonToolbar>
+      <div className="warning">
+        <IonImg
+          alt={''}
+          src={'/shared-assets/images/error-outline.png'}
+          style={{ width: '48px', height: '48px' }}
+        />
+        <div className="warning-text">
+          <h2>{state.success ? `${t('Success')}` : `${t('Failure')}`}</h2>
+          {state.message}
+        </div>
+        {state.onConfirm && (
+          <PurpleButton onClick={state.onConfirm} style={{ width: '160px' }}>
+            {state.confirmButtonMessage ?? t('Confirm')}
+          </PurpleButton>
+        )}
+      </div>
+    </IonModal>
   );
 }
 

@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
-  Alert,
+  CustomAlert,
   errorAlertShell,
   formAlertResetState,
 } from '../../components/alert/alert';
@@ -169,7 +169,7 @@ export function SendConfirm(props: Props) {
   }
   return (
     <SendMain>
-      <Alert state={alert} />
+      <CustomAlert state={alert} />
       <IonRow style={{ marginTop: '40px' }}>
         <IonCol class="ion-center">
           <ContentWrapper>

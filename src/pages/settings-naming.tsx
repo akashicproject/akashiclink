@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 
 import { AccountSelection } from '../components/account-selection/account-selection';
 import {
-  Alert,
+  CustomAlert,
   errorAlertShell,
   formAlertResetState,
 } from '../components/alert/alert';
@@ -207,7 +207,7 @@ export function SettingsNaming() {
 
   return (
     <LoggedLayout>
-      <Alert state={alert} />
+      <CustomAlert state={alert} />
       <Tabs>
         <TabButton
           style={{ width: '50%', marginInline: '0' }}

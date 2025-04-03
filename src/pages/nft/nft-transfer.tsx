@@ -14,7 +14,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
-  Alert,
+  CustomAlert,
   errorAlertShell,
   formAlertResetState,
 } from '../../components/alert/alert';
@@ -188,7 +188,7 @@ export function NftTransfer() {
   }, []);
   return (
     <>
-      <Alert state={alert} />
+      <CustomAlert state={alert} />
       {isLoading && (
         <NoNtfWrapper>
           <IonSpinner name="circular"></IonSpinner>
