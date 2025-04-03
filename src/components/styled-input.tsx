@@ -71,7 +71,7 @@ export function StyledInput({
 
   return (
     <IonItem
-      class={isHorizontal ? 'styled-input-horizontal' : 'styled-input'}
+      className={isHorizontal ? 'styled-input-horizontal' : 'styled-input'}
       lines="none"
     >
       {label ? (

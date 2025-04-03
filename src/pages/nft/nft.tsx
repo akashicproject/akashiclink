@@ -53,7 +53,7 @@ export function Nft() {
   return (
     <NftLayout>
       <SquareWhiteButton
-        class="icon-button"
+        className="icon-button"
         style={{
           position: 'absolute',
           float: 'left',
@@ -68,7 +68,7 @@ export function Nft() {
       >
         <IonIcon
           style={{ color: 'white' }}
-          class="icon-button-icon"
+          className="icon-button-icon"
           slot="icon-only"
           icon={arrowBack}
         />

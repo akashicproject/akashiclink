@@ -50,7 +50,7 @@ export function OtkBox({
     <>
       <IonLabel class="otk-box-label">{label}</IonLabel>
       <IonItem
-        class="ion-no-padding otk-box"
+        className="ion-no-padding otk-box"
         lines="none"
         style={{
           paddingBottom: padding ? '20px' : '0px',
@@ -66,7 +66,7 @@ export function OtkBox({
         </h4>
         {withCopy && (
           <SquareWhiteButton
-            class="icon-button"
+            className="icon-button"
             slot="end"
             onClick={handleCopy}
             style={{
@@ -77,7 +77,7 @@ export function OtkBox({
           >
             <IonIcon
               slot="icon-only"
-              class="icon-button-icon"
+              className="icon-button-icon"
               src={`/shared-assets/images/${
                 storedTheme === themeType.DARK
                   ? 'copy-icon-white.svg'
@@ -89,7 +89,7 @@ export function OtkBox({
               alignment="center"
               ref={popover}
               isOpen={popoverOpen}
-              class={'copied-popover'}
+              className={'copied-popover'}
               onDidDismiss={() => setPopoverOpen(false)}
             >
               <IonContent class="ion-padding">{t('Copied')}</IonContent>

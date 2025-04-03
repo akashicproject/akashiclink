@@ -97,8 +97,8 @@ export default function App() {
         isOpen={updateType === 'soft' || updateType === 'hard'}
         onDidDismiss={() => updateType === 'soft' && setUpdateType(null)}
         backdropDismiss={false}
-        header={t('NewVersionAvailable')!}
-        message={t('NewVersionAvailableMessage')!}
+        header={t('NewVersionAvailable')}
+        message={t('NewVersionAvailableMessage')}
         buttons={[
           ...(updateType === 'soft'
             ? [

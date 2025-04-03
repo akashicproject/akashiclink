@@ -1,22 +1,22 @@
 PODS:
   - AparajitaCapacitorSecureStorage (5.0.0):
     - Capacitor
-  - Capacitor (5.0.5):
+  - Capacitor (5.7.0):
     - CapacitorCordova
-  - CapacitorApp (5.0.2):
+  - CapacitorApp (5.0.7):
     - Capacitor
-  - CapacitorBrowser (5.1.0):
+  - CapacitorBrowser (5.2.0):
     - Capacitor
-  - CapacitorClipboard (5.0.4):
+  - CapacitorClipboard (5.0.7):
     - Capacitor
-  - CapacitorCordova (5.0.5)
-  - CapacitorHaptics (5.0.2):
+  - CapacitorCordova (5.7.0)
+  - CapacitorHaptics (5.0.7):
     - Capacitor
-  - CapacitorKeyboard (5.0.6):
+  - CapacitorKeyboard (5.0.8):
     - Capacitor
-  - CapacitorPreferences (5.0.6):
+  - CapacitorPreferences (5.0.7):
     - Capacitor
-  - CapacitorStatusBar (5.0.2):
+  - CapacitorStatusBar (5.0.7):
     - Capacitor
 
 DEPENDENCIES:
@@ -55,15 +55,15 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AparajitaCapacitorSecureStorage: 4e40b517555ee2a0e6e034d4bd744b413b98483c
-  Capacitor: b1248915663add1bd6567e2b67c1c1fa3abcf5e8
-  CapacitorApp: 28fef1fd75b2b3686e875216806fb8416d421097
-  CapacitorBrowser: 7a0fb6a1011abfaaf2dfedfd8248f942a8eda3d6
-  CapacitorClipboard: 46f3959735fa0d96b9989dafcc4aed52e624d163
-  CapacitorCordova: f8c06b897c74ee8f7701fe10e6443b40822bc83a
-  CapacitorHaptics: 864585542a435bd41eaabf7f30d9ff5ec03024d3
-  CapacitorKeyboard: b978154b024a5f65e044908e37d15b7de58b9d12
-  CapacitorPreferences: f03954bcb0ff09c792909e46bff88e3183c16b10
-  CapacitorStatusBar: 48f2899f6846cc7d8431b251ebfc58e1c10e3d58
+  Capacitor: fc155ee2ee45a2093d716f13cf5aa5a865e2d85a
+  CapacitorApp: 17fecd0e6cb23feafac7eb0939417389038b0979
+  CapacitorBrowser: a6deae9e5bf87f62b62a753cff7992c5def9e771
+  CapacitorClipboard: 45e5e25f2271f98712985d422776cdc5a779cca1
+  CapacitorCordova: e825fce1a2e14e4b5730641c7e098dccf74397b7
+  CapacitorHaptics: 7c7c206f0c96a628fed073830c96d28c4b2e772e
+  CapacitorKeyboard: aec619a578235c6ce279075009a2689c2cf5c42c
+  CapacitorPreferences: 77ac427e98db83bace772455f8ba447430382c4c
+  CapacitorStatusBar: f390fbb49b82ffb754ea4b3cf71dc8b048baf3e7
 
 PODFILE CHECKSUM: 4ae2778483f5b99c0a5ad9c73a7f8ad3311de9f2
 

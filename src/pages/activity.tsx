@@ -93,14 +93,14 @@ export const ActivityDetailComponent = ({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (
-    <IonCard class="activity-card unselectable">
+    <IonCard className="activity-card unselectable">
       {transfer.nft ? (
         <div>
           <div style={{ position: 'absolute', top: 0, right: 0 }}>
             <IonButtons slot="end">
               <IonButton onClick={() => setIsOpen(false)}>
                 <IonIcon
-                  class="icon-button-icon icon-dark"
+                  className="icon-button-icon icon-dark"
                   slot="icon-only"
                   icon={closeOutline}
                 />
@@ -136,7 +136,7 @@ export const ActivityDetailComponent = ({
             <IonButtons slot="end">
               <IonButton onClick={() => setIsOpen(false)}>
                 <IonIcon
-                  class="icon-button-icon icon-dark"
+                  className="icon-button-icon icon-dark"
                   slot="icon-only"
                   icon={closeOutline}
                 />
@@ -202,7 +202,7 @@ export function Activity() {
           />
         ) : (
           <NoActivityWrapper>
-            <IonIcon icon={alertCircleOutline} class="alert-icon" />
+            <IonIcon icon={alertCircleOutline} className="alert-icon" />
             <NoActivityText>{t('NoActivity')}</NoActivityText>
           </NoActivityWrapper>
         )

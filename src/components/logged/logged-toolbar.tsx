@@ -45,11 +45,11 @@ export function LoggedToolbar({
               }}
             >
               <SquareWhiteButton
-                class="icon-button"
+                className="icon-button"
                 onClick={() => history.push(backButtonUrl)}
               >
                 <IonIcon
-                  class="icon-button-icon"
+                  className="icon-button-icon"
                   slot="icon-only"
                   src={`/shared-assets/images/${
                     storedTheme === themeType.DARK
@@ -78,7 +78,7 @@ export function LoggedToolbar({
         </IonCol>
         <IonCol className="ion-no-padding" hidden={!isRefresh} size="auto">
           <SquareWhiteButton
-            class="icon-button"
+            className="icon-button"
             id="refresh-button"
             onClick={() => {
               mutate(
@@ -90,7 +90,7 @@ export function LoggedToolbar({
           >
             <IonIcon
               slot="icon-only"
-              class="icon-button-icons"
+              className="icon-button-icons"
               src={`/shared-assets/images/${
                 storedTheme === themeType.DARK
                   ? 'refresh-dark.svg'

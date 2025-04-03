@@ -115,7 +115,7 @@ export function CustomAlert({ state }: { state: CustomAlertState }) {
         <IonButtons slot="end">
           <IonButton onClick={() => setIsOpen(false)}>
             <IonIcon
-              class="icon-button-icon"
+              className="icon-button-icon"
               slot="icon-only"
               icon={closeOutline}
             />

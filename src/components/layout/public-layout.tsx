@@ -3,7 +3,6 @@ import './public-layout.scss';
 import { IonPage, useIonViewWillEnter } from '@ionic/react';
 import { type ReactNode, useState } from 'react';
 
-import { delay } from '../../utils/timer-function';
 import { Spinner } from '../loader/spinner';
 import { Footer } from './footer';
 import { LoggedHeader } from './logged-header';
@@ -22,13 +21,14 @@ export function PublicLayout({
   contentStyle?: React.CSSProperties;
 }) {
   const [spin, setSpin] = useState(false);
-  useIonViewWillEnter(async () => {
+  useIonViewWillEnter(() => {
     const isSpinner = localStorage.getItem('spinner');
     if (isSpinner === 'true') {
       setSpin(true);
-      await delay(4500);
-      setSpin(false);
-      localStorage.removeItem('spinner');
+      setTimeout(() => {
+        setSpin(false);
+        localStorage.removeItem('spinner');
+      }, 4500)
     }
   });
 

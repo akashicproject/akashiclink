@@ -81,7 +81,7 @@ export function Nfts() {
         <StyledDiv>
           <IonRow style={{ justifyContent: 'start' }}>
             <SquareWhiteButton
-              class="icon-button"
+              className="icon-button"
               style={{
                 height: '40px',
                 width: '40px',
@@ -89,7 +89,7 @@ export function Nfts() {
               onClick={() => history.push(akashicPayPath(urls.loggedFunction))}
             >
               <IonIcon
-                class="icon-button-icon"
+                className="icon-button-icon"
                 slot="icon-only"
                 icon={arrowBack}
               />
@@ -103,7 +103,7 @@ export function Nfts() {
             <>
               <NoNtfWrapper>
                 <CenteredTextAndIcon>
-                  <IonIcon icon={alertCircleOutline} class="alert-icon" />
+                  <IonIcon icon={alertCircleOutline} className="alert-icon" />
                   <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
                 </CenteredTextAndIcon>
               </NoNtfWrapper>

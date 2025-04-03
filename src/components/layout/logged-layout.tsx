@@ -14,7 +14,6 @@ import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useOwner } from '../../utils/hooks/useOwner';
 import { lastPageStorage } from '../../utils/last-page-storage';
-import { delay } from '../../utils/timer-function';
 import { Spinner } from '../loader/spinner';
 import { LoggedToolbar } from '../logged/logged-toolbar';
 import { LoggedHeader } from './logged-header';
@@ -68,13 +67,14 @@ export function LoggedLayout({
 
   const [spin, setSpin] = useState(false);
 
-  useIonViewWillEnter(async () => {
+  useIonViewWillEnter(() => {
     const isSpinner = localStorage.getItem('spinner');
     if (isSpinner === 'true') {
       setSpin(true);
-      await delay(4500);
-      setSpin(false);
-      localStorage.removeItem('spinner');
+      setTimeout(() => {
+        setSpin(false);
+        localStorage.removeItem('spinner');
+      }, 4500)
     }
   });
 

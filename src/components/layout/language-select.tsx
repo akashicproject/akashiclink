@@ -38,7 +38,7 @@ export const LanguageDropdown = () => {
   return (
     <div>
       <IonButton
-        class="language-button"
+        className="language-button"
         fill="clear"
         onClick={(e) => {
           openPopover(e);
@@ -50,7 +50,7 @@ export const LanguageDropdown = () => {
       <IonPopover
         side="bottom"
         alignment="end"
-        class="language-popover"
+        className="language-popover"
         dismissOnSelect={true}
         onDidDismiss={() => {
           setIsOpen(false);

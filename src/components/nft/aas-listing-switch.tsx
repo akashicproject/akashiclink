@@ -37,7 +37,7 @@ export const AasListingSwitch = ({
   name?: string;
   aasValue?: string;
   customAlertHandle: React.Dispatch<React.SetStateAction<boolean>>;
-  customAlertMessage: React.Dispatch<React.SetStateAction<string | null>>;
+  customAlertMessage: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const { activeAccount } = useAccountStorage();
   const { mutate } = useNftMe();

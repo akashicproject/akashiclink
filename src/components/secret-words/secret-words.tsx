@@ -254,7 +254,7 @@ export function SecretWords({
                   alignment="center"
                   ref={popover}
                   isOpen={popoverOpen}
-                  class={'copied-popover'}
+                  className={'copied-popover'}
                   onDidDismiss={() => setPopoverOpen(false)}
                 >
                   <IonContent class="ion-padding">{t('Copied')}</IonContent>

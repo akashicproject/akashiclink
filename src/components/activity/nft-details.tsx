@@ -78,14 +78,14 @@ export function NftDetail({
           {displayLongText(currentTransfer.l2TxnHash)}
           <IonButton
             style={{ height: '22px', width: '19px' }}
-            class="copy-button"
+            className="copy-button"
             onClick={async (e: never) =>
               copyData(currentTransfer.l2TxnHashUrl, e)
             }
           >
             <IonIcon
               slot="icon-only"
-              class="copy-icon"
+              className="copy-icon"
               src={`/shared-assets/images/copy-icon-dark.svg`}
             />
             <IonPopover
@@ -93,7 +93,7 @@ export function NftDetail({
               alignment="center"
               ref={popover}
               isOpen={popoverOpen}
-              class={'copied-popover'}
+              className={'copied-popover'}
               onDidDismiss={() => setPopoverOpen(false)}
             >
               <IonContent class="ion-padding">{t('Copied')}</IonContent>

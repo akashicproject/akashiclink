@@ -209,7 +209,7 @@ export function NftTransfer() {
           </NoNtfWrapper>
         ) : nfts.length === 0 ? (
           <NoNtfWrapper>
-            <IonIcon icon={alertCircleOutline} class="alert-icon" />
+            <IonIcon icon={alertCircleOutline} className="alert-icon" />
             <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
           </NoNtfWrapper>
         ) : (

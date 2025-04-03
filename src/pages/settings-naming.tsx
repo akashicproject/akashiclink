@@ -291,7 +291,7 @@ export function SettingsNaming() {
         <TabButton
           style={{ width: '50%', marginInline: '0' }}
           id="edit"
-          class="open"
+          className="open"
           onClick={() => setView(View.list)}
         >
           {t('List')}
@@ -330,7 +330,7 @@ export function SettingsNaming() {
                         />
                         <div>
                           <SquareWhiteButton
-                            class="icon-button"
+                            className="icon-button"
                             onClick={() => updateAcns(oneAcns)}
                             forceStyle={{
                               height: '24px',
@@ -354,7 +354,7 @@ export function SettingsNaming() {
                             />
                           </SquareWhiteButton>
                           <SquareWhiteButton
-                            class="icon-button"
+                            className="icon-button"
                             onClick={() => {
                               setEditAcns(oneAcns);
                               setIsConfirmModel(true);

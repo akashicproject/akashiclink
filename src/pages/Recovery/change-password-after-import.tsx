@@ -34,7 +34,7 @@ export function ChangePasswordAfterImport() {
         }}
       >
         <IonIcon
-          class="icon-button-icon"
+          className="icon-button-icon"
           slot="icon-only"
           src={`/shared-assets/images/${
             storedTheme === themeType.DARK

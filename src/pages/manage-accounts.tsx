@@ -79,7 +79,7 @@ export function ManageAccounts() {
               }}
             >
               <IonIcon
-                class="icon-button-icon"
+                className="icon-button-icon"
                 slot="icon-only"
                 icon={closeOutline}
               />
@@ -137,7 +137,7 @@ export function ManageAccounts() {
       <MainGrid style={{ padding: '0px' }}>
         <IonRow style={{ justifyContent: 'start' }}>
           <SquareWhiteButton
-            class="icon-button"
+            className="icon-button"
             style={{
               height: '40px',
               width: '40px',
@@ -145,7 +145,7 @@ export function ManageAccounts() {
             onClick={() => history.push(akashicPayPath(urls.akashicPay))}
           >
             <IonIcon
-              class="icon-button-icon"
+              className="icon-button-icon"
               slot="icon-only"
               icon={arrowBack}
             />

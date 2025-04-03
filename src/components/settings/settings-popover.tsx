@@ -63,8 +63,8 @@ export function SettingsPopover() {
   }) {
     return (
       <>
-        <IonItem class="settings-item" button={true} detail={false} id={id}>
-          <IonIcon class="settings-icon" icon={caretBackOutline} />
+        <IonItem className="settings-item" button={true} detail={false} id={id}>
+          <IonIcon className="settings-icon" icon={caretBackOutline} />
           <SettingsText text={displayText} />
         </IonItem>
         <IonPopover
@@ -97,7 +97,7 @@ export function SettingsPopover() {
   }) {
     return (
       <IonItem
-        class="settings-item"
+        className="settings-item"
         button={true}
         detail={false}
         routerLink={routerLink}
@@ -143,7 +143,7 @@ export function SettingsPopover() {
   return (
     <>
       <SquareWhiteButton
-        class="icon-button"
+        className="icon-button"
         onClick={(e) => {
           handleButtonClick(),
             setShowPopover({ open: true, event: e.nativeEvent });
@@ -154,7 +154,7 @@ export function SettingsPopover() {
       >
         <IonIcon
           slot="icon-only"
-          class="icon-button-icons"
+          className="icon-button-icons"
           src={`/shared-assets/images/${
             storedTheme === themeType.DARK && !buttonBackground
               ? 'setting-icon-white.svg'

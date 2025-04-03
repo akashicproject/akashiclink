@@ -104,7 +104,13 @@ export function AccountSelection({
     >
       <IonSelect
         className="account-selections-options"
-        style={{ flexGrow: 1, padding: '8px 8px 8px 16px' }}
+        style={{
+          flexGrow: 1,
+          padding: '0px 8px 0px 16px',
+          height: '40px',
+          minHeight: '40px',
+          minWidth: '0',
+        }}
         value={selectedAccount}
         onIonChange={({ detail: { value } }) => {
           if (value === DropdownOptions.CreateAccount) {
@@ -178,9 +184,9 @@ export function AccountSelection({
         ]}
       </IonSelect>
       {showCopyButton ? (
-        <SquareWhiteButton class="icon-button" onClick={copyAddress}>
+        <SquareWhiteButton className="icon-button" onClick={copyAddress}>
           <IonIcon
-            class="icon-button-icon"
+            className="icon-button-icon"
             slot="icon-only"
             src={`/shared-assets/images/${
               storedTheme === themeType.DARK
@@ -193,7 +199,7 @@ export function AccountSelection({
             alignment="center"
             ref={copyAddressPopover}
             isOpen={popoverOpen}
-            class={'copied-popover'}
+            className={'copied-popover'}
             onDidDismiss={() => setPopoverOpen(false)}
           >
             <IonContent class="ion-padding">{t('Copied')}</IonContent>
