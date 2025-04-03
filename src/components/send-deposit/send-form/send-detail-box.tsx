@@ -49,15 +49,15 @@ export const SendDetailBox = ({
             label={t('Chain.Title')}
             value={
               isL2 ? (
-                <span className={'ion-display-flex ion-gap-xxs'}>
-                  <L2Icon />
+                <div className={'ion-center ion-gap-xxs'}>
+                  <L2Icon size={16} />
                   {t('Chain.AkashicChain')}
-                </span>
+                </div>
               ) : (
-                <span className={'ion-display-flex ion-gap-xxs'}>
-                  <NetworkIcon chain={chain} />
+                <div className={'ion-center ion-gap-xxs'}>
+                  <NetworkIcon chain={chain} size={16} />
                   {NetworkDictionary[chain].displayName.replace(/Chain/g, '')}
-                </span>
+                </div>
               )
             }
             labelBold

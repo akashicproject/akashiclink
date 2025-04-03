@@ -74,7 +74,7 @@ export function AboutUsCaret({ appVersion }: { appVersion: string }) {
   return (
     <>
       <h5
-        className="ion-no-margin ion-text-size-xxs"
+        className="ion-no-margin ion-text-size-xs"
         style={{ marginRight: '8px' }}
       >
         {appVersion}

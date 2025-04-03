@@ -65,7 +65,7 @@ export function CopyBox({
     <>
       {label && <IonLabel class="ion-text-size-xs">{label}</IonLabel>}
       <BorderedBox compact={compact} lines="full" onClick={handleCopy}>
-        <p>{text}</p>
+        <p className="ion-text-size-sm ion-text-bold">{text}</p>
         <IonIcon
           size={'small'}
           slot="end"

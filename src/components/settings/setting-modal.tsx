@@ -67,7 +67,7 @@ export function SettingsModal({
               alignItems: 'flex-start',
             }}
           >
-            <h4 className="ion-text-size-xxs ion-no-margin ion-text-start ion-margin-bottom">
+            <h4 className="ion-text-size-xs ion-no-margin ion-text-start ion-margin-bottom">
               {t('Settings')}
             </h4>
             <IonIcon

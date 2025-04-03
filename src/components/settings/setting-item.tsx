@@ -7,13 +7,13 @@ import { Divider } from '../common/divider';
 import { ForwardArrow } from './forward-arrow';
 
 const Header = styled(IonText)`
-  font-size: 14px;
+  font-size: 1rem;
   color: var(--ion-color-primary-10);
   line-height: 20px;
   font-weight: 700;
 `;
 const SubHeader = styled(IonText)`
-  font-size: 10px;
+  font-size: 0.75rem;
   color: #b0a9b3;
   line-height: 20px;
   font-weight: 700;
@@ -77,7 +77,7 @@ export function SettingItem({
             style={{ marginLeft: '8px' }}
             className="ion-no-margin"
             slot="start"
-            size="small"
+            size="24px"
             src={iconUrl}
           />
         )}

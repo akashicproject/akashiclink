@@ -56,7 +56,7 @@ const LanguageTextCaret = ({
   return (
     <>
       <h5
-        className="ion-no-margin ion-text-size-xxs"
+        className="ion-no-margin ion-text-size-xs"
         style={{ marginRight: '8px' }}
       >
         {getLanguageTitle(selectedLanguage)}

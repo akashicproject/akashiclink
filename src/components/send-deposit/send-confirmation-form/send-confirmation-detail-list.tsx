@@ -117,10 +117,12 @@ export const SendConfirmationDetailList = ({
         </IonText>
       </IonItem>
       {isL2 && isUserInputAddressL1 && (
-        <ListVerticalLabelValueItem
-          label={t('InputAddress')}
-          value={validatedAddressPair?.userInputToAddress}
-        />
+        <div className="ion-margin-bottom-sm">
+          <ListVerticalLabelValueItem
+            label={t('InputAddress')}
+            value={validatedAddressPair?.userInputToAddress}
+          />
+        </div>
       )}
       {!txnFinal && (
         <ListVerticalLabelValueItem

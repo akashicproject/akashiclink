@@ -173,7 +173,9 @@ export const SendAddressInput = ({
         )}
         {validatedAddressPair.userInputToAddress !== '' && (
           <LockedAddress lines="full">
-            <IonLabel>{validatedAddressPair.userInputToAddress}</IonLabel>
+            <IonLabel className="ion-text-bold">
+              {validatedAddressPair.userInputToAddress}
+            </IonLabel>
             <IonButton onClick={onAddressClear} fill="clear" slot="end">
               <IonIcon slot="icon-only" icon={closeOutline}></IonIcon>
             </IonButton>

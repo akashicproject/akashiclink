@@ -1,5 +1,4 @@
 import { IonImg } from '@ionic/react';
-import React from 'react';
 
 export const L2Icon = ({ size = 24 }: { size?: number }) => {
   return (
