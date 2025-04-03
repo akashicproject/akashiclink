@@ -1,5 +1,4 @@
 import type { Url } from '../../constants/urls';
-import { urls } from '../../constants/urls';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useLogout } from '../../utils/hooks/useLogout';
 import { AccountSelection } from '../account-selection/account-selection';
