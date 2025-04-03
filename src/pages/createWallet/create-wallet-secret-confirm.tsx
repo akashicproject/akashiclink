@@ -38,7 +38,7 @@ export function CreateWalletSecretConfirm() {
         const data = await lastPageStorage.getVars();
         if (data.passPhrase && !data.passPhraseWithEmptyWords) {
           setPassPhrase(data.passPhrase);
-          const randomNumberArray = getRandomNumbers(1, 12, 4);
+          const randomNumberArray = getRandomNumbers(0, 11, 4);
           const sWords = data.passPhrase.split(' ');
           randomNumberArray.forEach((e) => {
             sWords[e] = '';
@@ -59,16 +59,11 @@ export function CreateWalletSecretConfirm() {
             <IonRow>
               <h2
                 style={{
-                  margin: '0 auto',
+                  margin: '0 56px',
                 }}
               >
                 {t('ConfirmSecretRecovery')}
               </h2>
-            </IonRow>
-            <IonRow>
-              <StyledSpan style={{ textAlign: 'center' }}>
-                {t('ConfirmSecretRecovery')}
-              </StyledSpan>
             </IonRow>
           </IonCol>
         </IonRow>

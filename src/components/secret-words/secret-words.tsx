@@ -12,12 +12,8 @@ import {
   IonPopover,
   IonRow,
 } from '@ionic/react';
-import { eyeOffOutline, eyeOutline } from 'ionicons/icons';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { themeType } from '../../theme/const';
-import { useTheme } from '../PreferenceProvider';
 
 const WordItem = styled(IonItem)`
   height: 40px;
@@ -43,9 +39,10 @@ type WordInputProps = {
 const WordInput = styled(IonInput)<WordInputProps>`
   border-radius: 8px;
   border: ${(props) =>
-    props.fillable ? '2px solid var(--ion-color-light)' : '1px solid #7B757F'};
+    props.fillable ? '2px solid #c297ff' : '1px solid #7B757F'};
   font-size: 10px;
   text-align: center;
+  color: var(--ion-color-primary-10);
   input {
     height: 24px;
     width: 64px;
@@ -100,8 +97,10 @@ const StyledIonRow = styled(IonRow)`
 `;
 
 const StyledIonIcon = styled(IonIcon)`
-  font-size: '12px';
-  color: 'var(--ion-color-primary-shade)!important';
+  font-size: 12px;
+  height: 20px;
+  width: 20px;
+  margin-right: 4px;
 `;
 /**
  * 12 words inputs
@@ -121,7 +120,6 @@ export function SecretWords({
   const { t } = useTranslation();
   const [words, setWords] = useState(initialWords);
   const [isHidden, setIsHidden] = useState(withAction ? true : false);
-  const [storedTheme] = useTheme();
   const handleCopy = async (e: never) => {
     await Clipboard.write({
       string: words.join(' ') || '',
@@ -159,7 +157,10 @@ export function SecretWords({
       <MaskContainer isHidden={isHidden}>
         {isHidden && (
           <MaskLabelContainer>
-            <IonIcon icon={eyeOutline}></IonIcon>
+            <IonIcon
+              src={`/shared-assets/images/visibility.svg`}
+              style={{ height: '20px', width: '20px' }}
+            ></IonIcon>
             <IonLabel>{t('MakeSureNoBodyIsLooking')}</IonLabel>
           </MaskLabelContainer>
         )}
@@ -191,10 +192,17 @@ export function SecretWords({
         <StyledIonRow>
           <IonCol size={'5'}>
             <ActionButton fill="clear" onClick={onHiddenBtnClick}>
-              <IonIcon
-                slot="start"
-                icon={isHidden ? eyeOutline : eyeOffOutline}
-              ></IonIcon>
+              <StyledIonIcon
+                src={`/shared-assets/images/visibility-${
+                  isHidden ? 'off-color' : 'on'
+                }.svg`}
+                style={{
+                  height: '20px',
+                  width: '20px',
+                  marginRight: '4px',
+                }}
+              />
+
               {isHidden ? t('RevealRecoveryPhase') : t('HideRecoveryPhase')}
             </ActionButton>
           </IonCol>
@@ -202,11 +210,7 @@ export function SecretWords({
             <ActionButton fill="clear" onClick={handleCopy}>
               <StyledIonIcon
                 slot="icon-only"
-                src={`/shared-assets/images/${
-                  storedTheme === themeType.DARK
-                    ? 'copy-icon-secret-dark.svg'
-                    : 'copy-icon-secret-white.svg'
-                }`}
+                src={`/shared-assets/images/copy-icon-secret-white.svg`}
               />
               {t('CopyToClipboard')}
             </ActionButton>

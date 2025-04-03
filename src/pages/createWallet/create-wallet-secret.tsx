@@ -50,13 +50,14 @@ export function CreateWalletSecret() {
     });
   };
   return (
-    <PublicLayout contentStyle={{ padding: '0 30px' }}>
+    <PublicLayout contentStyle={{ padding: '24px 30px' }}>
       <MainGrid style={{ gap: '24px', padding: '0' }}>
         <IonRow>
           <IonCol size="12" style={{ textAlign: 'center' }}>
             <IonRow>
               <h2
                 style={{
+                  fontSize: '20pt',
                   margin: '0 auto',
                 }}
               >
