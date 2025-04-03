@@ -40,10 +40,22 @@ export function LoginForm() {
   const [selectedAccount, setSelectedAccount] = useState<LocalAccount>();
   const [password, setPassword] = useState<string>();
 
+  /**
+   * Selection is populated on load to match the account save in session
+   * TODO: still cannot figure out why the session is being read but can't be set
+   */
   useEffect(() => {
-    if (!selectedAccount && localAccounts.length)
-      setSelectedAccount(localAccounts[0]);
-  });
+    if (!selectedAccount) {
+      if (activeAccount) {
+        const matchingAccount = localAccounts?.find(
+          (a) => a.identity === activeAccount.identity
+        );
+        setSelectedAccount(matchingAccount);
+      } else {
+        setSelectedAccount(localAccounts?.[0]);
+      }
+    }
+  }, [activeAccount, localAccounts]);
 
   /**
    * Ensures that selectedAccount in the dropdown menu matches the activeAccount
