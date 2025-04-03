@@ -1,8 +1,8 @@
 import './ntf.scss';
 
 import styled from '@emotion/styled';
-import { IonCol, IonGrid, IonRow, isPlatform } from '@ionic/react';
-import React, { useState } from 'react';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -68,7 +68,7 @@ export function Nft() {
           backgroundColor: 'var(--nft-background)',
         }}
       >
-        <Toolbar showSetting={false} />
+        <Toolbar showSetting={false} backButtonReplaceTarget={urls.nfts} />
       </div>
 
       <CustomAlert

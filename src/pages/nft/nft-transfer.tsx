@@ -270,7 +270,9 @@ export function NftTransfer() {
               <IonCol>
                 <WhiteButton
                   expand="block"
-                  onClick={() => historyGoBackOrReplace()}
+                  onClick={() =>
+                    historyGoBackOrReplace(urls.nft, { nft: state })
+                  }
                 >
                   {t('Cancel')}
                 </WhiteButton>

@@ -2,6 +2,7 @@ import { IonIcon } from '@ionic/react';
 import { useState } from 'react';
 
 import { REFRESH_BUTTON_DISABLED_TIME } from '../../constants';
+import type { Url } from '../../constants/urls';
 import { urls } from '../../constants/urls';
 import { historyGoBackOrReplace } from '../../routing/history';
 import { themeType } from '../../theme/const';
@@ -21,11 +22,13 @@ export function Toolbar({
   showAddress = false,
   showBackButton = true,
   showSetting = true,
+  backButtonReplaceTarget = urls.dashboard,
 }: {
   showRefresh?: boolean;
   showAddress?: boolean;
   showBackButton?: boolean;
   showSetting?: boolean;
+  backButtonReplaceTarget?: Url;
 }) {
   const { mutateTransfersMe } = useTransfersMe();
   const { mutateNftTransfersMe } = useNftTransfersMe();
@@ -38,7 +41,7 @@ export function Toolbar({
   const { setActiveAccount } = useAccountStorage();
 
   const onClickBackButton = () => {
-    historyGoBackOrReplace(urls.dashboard);
+    historyGoBackOrReplace(backButtonReplaceTarget);
   };
 
   return (
