@@ -15,6 +15,8 @@ import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemap
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { signTxBody } from '../../utils/nitr0gen-api';
+import type { FormAlertState } from '../common/alert/alert';
+import { errorAlertShell } from '../common/alert/alert';
 import { Toggle } from '../common/toggle/toggle';
 import { useCacheOtk } from '../providers/PreferenceProvider';
 
@@ -30,13 +32,11 @@ const AASListSwitchContainer = styled.div`
 export const AasListingSwitch = ({
   name,
   aasValue,
-  customAlertHandle,
-  customAlertMessage,
+  setAlert,
 }: {
   name?: string;
   aasValue?: string;
-  customAlertHandle: React.Dispatch<React.SetStateAction<boolean>>;
-  customAlertMessage: React.Dispatch<React.SetStateAction<string>>;
+  setAlert: React.Dispatch<React.SetStateAction<FormAlertState>>;
 }) => {
   const [cacheOtk, _] = useCacheOtk();
   const { activeAccount } = useAccountStorage();
@@ -83,16 +83,15 @@ export const AasListingSwitch = ({
         : '';
 
       if (errorMsg === nftErrors.onlyOneAASLinkingAllowed) {
-        customAlertMessage(t('OnlyOneAAS'));
+        setAlert(errorAlertShell('OnlyOneAAS'));
       } else {
-        customAlertMessage(
-          t('AASLinkingFailed', {
+        setAlert(
+          errorAlertShell('AASLinkingFailed', {
             timeRemaining: errorMsg.split(' ')[0],
             timeUnit: t(errorMsg.split(' ')[1]),
           })
         );
       }
-      customAlertHandle(true);
     } finally {
       setIsLoading(false);
     }

@@ -6,7 +6,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
-import { CustomAlert } from '../../components/common/alert/alert';
+import {
+  CustomAlert,
+  errorAlertShell,
+  formAlertResetState,
+} from '../../components/common/alert/alert';
 import { PurpleButton } from '../../components/common/buttons';
 import { Toolbar } from '../../components/layout/toolbar';
 import { AasListingSwitch } from '../../components/nft/aas-listing-switch';
@@ -42,17 +46,15 @@ export function Nft() {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
   const state = history.location.state?.nft;
-
+  const [alert, setAlert] = useState(formAlertResetState);
   const { nfts } = useNftMe();
   const currentNft = nfts.find((nft) => nft.name === state?.nftName) ?? nfts[0];
-  const [message, setCustomAlertMessage] = useState(
-    t('NSRecordWarning', { nftName: currentNft?.name || '' })
-  );
-  const [isOpen, setIsOpen] = useState(false);
 
   const transferNft = () => {
     if (currentNft?.acns?.value !== null) {
-      setIsOpen(true);
+      setAlert(
+        errorAlertShell('NSRecordWarning', { nftName: currentNft?.name || '' })
+      );
       return;
     }
     history.push({
@@ -71,16 +73,7 @@ export function Nft() {
         <Toolbar backButtonReplaceTarget={urls.nfts} />
       </div>
 
-      <CustomAlert
-        state={{
-          visible: isOpen,
-          message: message,
-          success: false,
-          onConfirm: () => {
-            setIsOpen(false);
-          },
-        }}
-      />
+      <CustomAlert state={alert} />
       <NftWrapper>
         <IonGrid fixed={true}>
           <IonRow>
@@ -100,8 +93,7 @@ export function Nft() {
             <AasListingSwitch
               name={currentNft.acns.name}
               aasValue={currentNft.acns?.value ?? ''}
-              customAlertHandle={setIsOpen}
-              customAlertMessage={setCustomAlertMessage}
+              setAlert={setAlert}
             />
           )}
         </IonGrid>
