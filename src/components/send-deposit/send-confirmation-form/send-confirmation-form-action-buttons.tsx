@@ -52,7 +52,7 @@ export const SendConfirmationFormActionButtons = ({
     try {
       setIsLoading(true);
 
-      if (forceAlert.visible || formAlert.visible) {
+      if (forceAlert.visible || formAlert.visible || txnFinal) {
         return;
       }
 
