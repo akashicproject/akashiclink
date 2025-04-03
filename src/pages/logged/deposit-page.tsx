@@ -9,12 +9,16 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { OtkBox } from '../../components/otk-box/otk-box';
-import { useFocusCurrency } from '../../components/PreferenceProvider';
+import {
+  useFocusCurrency,
+  useTheme,
+} from '../../components/PreferenceProvider';
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { urls } from '../../constants/urls';
 import { useLargestBalanceKeys } from '../../utils/hooks/useLargestBalanceKeys';
 import { cacheCurrentPage } from '../../utils/last-page-storage';
 import { LoggedMain } from './logged-main';
+import { themeType } from '../../theme/const';
 
 const CoinWrapper = styled.div({
   display: 'flex',
@@ -27,6 +31,7 @@ const CoinWrapper = styled.div({
 export function DepositPage() {
   const { t } = useTranslation();
   const [currency] = useFocusCurrency();
+  const [storedTheme] = useTheme();
 
   useEffect(() => {
     cacheCurrentPage(urls.loggedDeposit);
@@ -46,7 +51,6 @@ export function DepositPage() {
       address.coinSymbol.toLowerCase() ===
       currentWalletMetadata.walletCurrency.chain.toLowerCase()
   );
-
   const walletAddress = walletAddressDetail?.address ?? '-';
 
   // TODO: this redirection is still buggy (very strange) need to take good look at how routing works
@@ -63,7 +67,11 @@ export function DepositPage() {
               {walletAddressDetail?.coinSymbol && (
                 <IonImg
                   alt={''}
-                  src={currentWalletMetadata.currencyIcon}
+                  src={
+                    storedTheme === themeType.DARK
+                      ? currentWalletMetadata.darkCurrencyIcon
+                      : currentWalletMetadata.currencyIcon
+                  }
                   style={{ height: '30px' }}
                 />
               )}

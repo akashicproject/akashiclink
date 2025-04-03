@@ -20,7 +20,10 @@ import {
   formAlertResetState,
 } from '../../components/alert/alert';
 import { PurpleButton, WhiteButton } from '../../components/buttons';
-import { useFocusCurrency } from '../../components/PreferenceProvider';
+import {
+  useFocusCurrency,
+  useTheme,
+} from '../../components/PreferenceProvider';
 import {
   StyledInput,
   StyledInputErrorPrompt,
@@ -40,6 +43,8 @@ import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-mess
 import { SendConfirm } from './send-confirm';
 import { SendMain } from './send-main';
 import { SendResult } from './send-result';
+import { themeType } from '../../theme/const';
+import { SwiperSlide } from 'swiper/react';
 
 /** Styled components */
 const SendWrapper = styled.div({
@@ -156,6 +161,7 @@ export function SendTo() {
   const [alertRequest, setAlertRequest] = useState(formAlertResetState);
   const { keys: exchangeRates } = useExchangeRates();
   const [currency] = useFocusCurrency();
+  const [storedTheme] = useTheme();
 
   useEffect(() => {
     cacheCurrentPage(urls.sendTo);
@@ -164,6 +170,12 @@ export function SendTo() {
   // Find specified currency or default to the first one
   const currentWalletMetadata =
     SUPPORTED_CURRENCIES_FOR_EXTENSION.lookup(currency);
+  let tokenTypeMetadata;
+  if (currency?.token)
+    tokenTypeMetadata = SUPPORTED_CURRENCIES_FOR_EXTENSION.lookup({
+      displayName: currency.displayName,
+      chain: currency.chain,
+    });
   const { chain, token } = currentWalletMetadata.walletCurrency;
   const currentWallet = userWallets.filter((wallet) => {
     return wallet.coinSymbol === chain;
@@ -337,11 +349,43 @@ export function SendTo() {
           <IonRow style={{ marginTop: '36px' }}>
             <IonCol class="ion-center">
               <CurrencyWrapper>
-                <IonImg
-                  alt={''}
-                  src={currentWalletMetadata.currencyIcon}
-                  style={{ width: '40px', height: '40px' }}
-                />
+                <SwiperSlide
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    height: '80%',
+                  }}
+                >
+                  <IonImg
+                    src={
+                      storedTheme === themeType.DARK
+                        ? currentWalletMetadata.darkCurrencyIcon
+                        : currentWalletMetadata.currencyIcon
+                    }
+                    style={
+                      tokenTypeMetadata
+                        ? { height: '56px', width: '56px' }
+                        : { width: '40px', height: '40px' }
+                    }
+                  />
+                  {tokenTypeMetadata && (
+                    <IonImg
+                      src={
+                        storedTheme === themeType.DARK
+                          ? tokenTypeMetadata.darkCurrencyIcon
+                          : tokenTypeMetadata.currencyIcon
+                      }
+                      style={{
+                        height: '30px',
+                        position: 'absolute',
+                        top: 0,
+                        left: 'calc(50% + 16px)',
+                      }}
+                    />
+                  )}
+                </SwiperSlide>
                 <BalanceText>
                   {aggregatedBalances.get(currentWalletMetadata.walletCurrency)}{' '}
                   {currentWalletMetadata.walletCurrency.displayName}
@@ -403,12 +447,19 @@ export function SendTo() {
                 <GasWrapper>
                   <GasFreeMarker
                     style={{
-                      background: !toAddress
-                        ? 'rgba(103, 80, 164, 0.12)'
-                        : gasFree
-                        ? '#41CC9A'
-                        : '#DE3730',
-                      color: !toAddress ? '#2B0053' : '#FFFFFF',
+                      background:
+                        !toAddress && storedTheme === themeType.LIGHT
+                          ? '#6750A41F'
+                          : !toAddress && storedTheme === themeType.DARK
+                          ? '#625B71'
+                          : gasFree
+                          ? '#41CC9A'
+                          : '#DE3730',
+
+                      color:
+                        toAddress && storedTheme === themeType.LIGHT
+                          ? '#FFFFFF'
+                          : '',
                     }}
                   >
                     {t('GasFree')}

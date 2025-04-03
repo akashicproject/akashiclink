@@ -147,12 +147,14 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
       chain: CoinSymbol.Ethereum_Mainnet,
       token: CurrencySymbol.USDT,
       currencyIcon: '/shared-assets/images/usdt.png',
+      darkCurrencyIcon: '/shared-assets/images/usdt.png',
       greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
     },
     {
       chain: CoinSymbol.Tron,
       token: CurrencySymbol.USDT,
       currencyIcon: '/shared-assets/images/usdt.png',
+      darkCurrencyIcon: '/shared-assets/images/usdt.png',
       greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
     },
   ],
@@ -167,23 +169,27 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
         {
           chain: CoinSymbol.Tron_Nile,
           currencyIcon: '/shared-assets/images/trx.png',
+          darkCurrencyIcon: '/shared-assets/images/trx.png',
           greyCurrencyIcon: '/shared-assets/images/trx-grey.png',
         },
         {
           chain: CoinSymbol.Tron_Shasta,
           currencyIcon: '/shared-assets/images/trx.png',
+          darkCurrencyIcon: '/shared-assets/images/trx.png',
           greyCurrencyIcon: '/shared-assets/images/trx-grey.png',
         },
         {
           chain: CoinSymbol.Görli,
           token: CurrencySymbol.USDT,
           currencyIcon: '/shared-assets/images/usdt.png',
+          darkCurrencyIcon: '/shared-assets/images/usdt.png',
           greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
         },
         {
           chain: CoinSymbol.Tron_Nile,
           token: CurrencySymbol.USDT,
           currencyIcon: '/shared-assets/images/usdt.png',
+          darkCurrencyIcon: '/shared-assets/images/usdt.png',
           greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
         },
       ]
