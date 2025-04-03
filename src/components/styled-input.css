@@ -1,0 +1,45 @@
+.styled-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --min-height: 64px;
+  height: 64px;
+  width: 270px;
+  --background: transparent;
+  --box-shadow: none;
+}
+
+.styled-label {
+  font-family: 'Nunito Sans', serif;
+  font-size: 10px !important;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px !important;
+  width: 270px;
+  height: 16px !important;
+  min-height: 16px;
+  margin-bottom: 8px !important;
+  padding: 0;
+  --color: #290056 !important;
+}
+
+.styled-input {
+  min-height: 40px;
+  max-height: 40px;
+  height: 40px;
+  width: 270px;
+  font-family: 'Nunito Sans', serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 40px;
+  --padding-start: 16px !important;
+  --padding-top: 6px;
+  --padding-bottom: 6px;
+  --min-height: none;
+  --color: #290056;
+  --placeholder-color: #ccc4cf;
+  --placeholder-font-style: normal;
+  --placeholder-font-weight: 400;
+  border: 1px solid #958e99;
+  border-radius: 8px;
+}

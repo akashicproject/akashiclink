@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   viewBox="0 0 16.933333 16.933333"
+   version="1.1"
+   id="svg384"
+   inkscape:version="1.2.2 (b0a8486, 2022-12-01)"
+   sodipodi:docname="favHPicon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview386"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="4.4263921"
+     inkscape:cx="17.282698"
+     inkscape:cy="53.203601"
+     inkscape:window-width="1390"
+     inkscape:window-height="1027"
+     inkscape:window-x="1920"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs381">
+    <clipPath
+       id="clip0_1_67">
+      <rect
+         width="178"
+         height="70"
+         fill="#ffffff"
+         id="rect138"
+         x="0"
+         y="0" />
+    </clipPath>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-203.5077,-59.278045)">
+    <g
+       clip-path="url(#clip0_1_67)"
+       id="g136"
+       transform="matrix(0.1144322,0,0,0.1144322,201.89957,63.284881)">
+      <path
+         d="m 138.75011,24.127226 3.96,6.2876 c -6.522,3.3915 -14.748,6.9111 -24.4,9.5081 v -31.9758 h -20.4644 v 35.5809 c -3.1803,0.2734 -6.4455,0.4186 -9.8125,0.4186 h -0.0255 c -3.3584,0 -6.6152,-0.1538 -9.7871,-0.4186 v -35.5809 h -20.4647 v 31.9758 c -9.6514,-2.597 -17.878,-6.1081 -24.4,-9.5081 l 3.9607,-6.2876 -23.2635,-0.9824 10.7879,20.8018 4.037,-6.4071 c 7.5396,3.9809 17.3013,8.1669 28.8864,11.063 v 29.344601 h 20.4647 V 51.959826 c 3.1719,0.2563 6.4371,0.393 9.7871,0.393 h 0.0255 c 3.3585,0 6.6321,-0.1367 9.8125,-0.393 v 25.987301 h 20.4649 V 48.611026 c 11.585,-2.9046 21.347,-7.082 28.886,-11.063 l 4.037,6.4072 5.394,-10.40095 5.394,-10.40095 -23.28,0.9825 z"
+         fill="#8a5bcd"
+         id="path134"
+         sodipodi:nodetypes="ccccccsscccccccccccccsscccccccccc" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,10 @@
+framework module AparajitaCapacitorSecureStorage {
+  umbrella header "AparajitaCapacitorSecureStorage-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module AparajitaCapacitorSecureStorage.__Swift {
+  exclude header "AparajitaCapacitorSecureStorage-Swift.h"
+}

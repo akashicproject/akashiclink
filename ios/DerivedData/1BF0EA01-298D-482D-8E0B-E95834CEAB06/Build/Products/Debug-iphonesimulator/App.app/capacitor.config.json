@@ -1,0 +1,24 @@
+{
+	"appId": "com.staging.akashicpay.wallet",
+	"appName": "Akashic Wallet Staging",
+	"webDir": "build",
+	"plugins": {
+		"CapacitorCookies": {
+			"enabled": true
+		},
+		"CapacitorHttp": {
+			"enabled": true
+		},
+		"Keyboard": {
+			"resize": "native",
+			"style": "DARK"
+		}
+	},
+	"server": {
+		"allowNavigation": [
+			"api.akashicpay.com",
+			"api.staging-akashicpay.com"
+		],
+		"url": "http://192.168.0.24:8100"
+	}
+}

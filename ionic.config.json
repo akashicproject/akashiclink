@@ -1,0 +1,7 @@
+{
+  "name": "HeliumWallet",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

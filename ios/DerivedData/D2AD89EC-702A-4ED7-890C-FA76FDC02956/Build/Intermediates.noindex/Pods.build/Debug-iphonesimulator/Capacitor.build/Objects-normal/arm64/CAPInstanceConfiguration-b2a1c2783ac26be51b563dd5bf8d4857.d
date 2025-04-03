@@ -1,0 +1,30 @@
+dependencies: \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/D2AD89EC-702A-4ED7-890C-FA76FDC02956/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/Capacitor.build/module.modulemap \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/Capacitor/Capacitor/CAPInstanceConfiguration.m \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/App/Pods/Target\ Support\ Files/Capacitor/Capacitor-prefix.pch \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/Capacitor/Capacitor/CAPInstanceConfiguration.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/D2AD89EC-702A-4ED7-890C-FA76FDC02956/Build/Products/Debug-iphonesimulator/Capacitor/Capacitor.framework/Headers/Capacitor-Swift.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/Capacitor/Capacitor/Capacitor.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/Capacitor/Capacitor/CAPPlugin.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/Capacitor/Capacitor/CAPPluginCall.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/Capacitor/Capacitor/CAPBridgedPlugin.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/Capacitor/Capacitor/CAPPluginMethod.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/Capacitor/Capacitor/CAPInstanceDescriptor.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/D2AD89EC-702A-4ED7-890C-FA76FDC02956/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/CapacitorCordova.build/module.modulemap \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/CapacitorCordova.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/AppDelegate.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDVViewController.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDV.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDVAvailability.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDVPlugin.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDVPluginResult.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDVCommandDelegate.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDVInvokedUrlCommand.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDVURLProtocol.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDVScreenOrientationDelegate.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDVCommandDelegateImpl.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDVPluginManager.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDVConfigParser.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDVPlugin+Resources.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/NSDictionary+CordovaPreferences.h \
+  /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/ios/Capacitor/Capacitor/WKWebView+Capacitor.h

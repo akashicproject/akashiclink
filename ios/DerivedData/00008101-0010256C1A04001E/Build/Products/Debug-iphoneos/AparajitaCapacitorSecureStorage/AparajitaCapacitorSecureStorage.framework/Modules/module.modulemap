@@ -1,0 +1,11 @@
+framework module AparajitaCapacitorSecureStorage {
+  umbrella header "AparajitaCapacitorSecureStorage-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module AparajitaCapacitorSecureStorage.Swift {
+  header "AparajitaCapacitorSecureStorage-Swift.h"
+  requires objc
+}

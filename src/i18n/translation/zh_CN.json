@@ -1,0 +1,14 @@
+{
+  "CreateWallet": "建立钱包",
+  "LoginWithExistingCredential": "使用现有认证登录",
+  "General": "基本",
+  "Advanced": "高级",
+  "ImportWallet": "导入钱包",
+  "Recovery": "恢复",
+  "Login": "登入",
+  "KeyPair": "KeyPair",
+  "EnterKeyPair": "输入KeyPair",
+  "Password": "密码",
+  "EnterPassword": "输入密码",
+  "Confirm": "确认"
+}

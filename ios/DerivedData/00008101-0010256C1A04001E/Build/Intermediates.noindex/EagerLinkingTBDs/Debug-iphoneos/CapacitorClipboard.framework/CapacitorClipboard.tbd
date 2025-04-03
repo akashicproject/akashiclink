@@ -1,0 +1,91 @@
+{
+  "main_library": {
+    "exported_symbols": [
+      {
+        "data": {
+          "global": [
+            "_$s18CapacitorClipboard0B6PluginCfD",
+            "_$s18CapacitorClipboard0B0C4readSDySSypGyF",
+            "_$s18CapacitorClipboard0B6PluginC4readyySo13CAPPluginCallCF",
+            "_$s18CapacitorClipboard0B0C5write7content6ofTypes6ResultOyyts5Error_pGSS_AC07ContentF0OtFTq",
+            "_$s18CapacitorClipboard0B0C0B5ErrorON",
+            "_$s18CapacitorClipboard0B0C5write7content6ofTypes6ResultOyyts5Error_pGSS_AC07ContentF0OtF",
+            "_$s18CapacitorClipboard0B0C4readSDySSypGyFTq",
+            "_$s18CapacitorClipboard0B0C0B5ErrorO9hashValueSivpMV",
+            "_$s18CapacitorClipboard0B0CfD",
+            "_$s18CapacitorClipboard0B0CMa",
+            "_$s18CapacitorClipboard0B0C0B5ErrorOs0C0AAMc",
+            "_$s18CapacitorClipboard0B0C11ContentTypeOMa",
+            "_$s18CapacitorClipboard0B0CACycfc",
+            "_$s18CapacitorClipboard0B0CN",
+            "_$s18CapacitorClipboard0B0C11ContentTypeO8rawValueSivg",
+            "_$s18CapacitorClipboard0B0C0B5ErrorOMa",
+            "_$s18CapacitorClipboard0B6PluginCACycfC",
+            "_$s18CapacitorClipboard0B0C0B5ErrorOMn",
+            "_$s18CapacitorClipboard0B0C0B5ErrorOSQAAMc",
+            "_$s18CapacitorClipboard0B0C11ContentTypeO8rawValueSivpMV",
+            "_$s18CapacitorClipboard0B6PluginC6bridge8pluginId0E4NameAC0A017CAPBridgeProtocol_p_S2Stcfc",
+            "_$s18CapacitorClipboard0B6PluginC14implementation33_4A926C7A98E1E52DC145E9D487B89866LLAA0B0Cvpfi",
+            "_$s18CapacitorClipboard0B6PluginCMn",
+            "_Swift51Overrides",
+            "_$s18CapacitorClipboard0B0C11ContentTypeOSQAAMc",
+            "_$s18CapacitorClipboard0B6PluginC5writeyySo13CAPPluginCallCFTq",
+            "_$s18CapacitorClipboard0B6PluginC5writeyySo13CAPPluginCallCF",
+            "_$s18CapacitorClipboard0B0CACycfCTq",
+            "_$s18CapacitorClipboard0B6PluginCACycfc",
+            "_$s18CapacitorClipboard0B0C11ContentTypeOSHAAMc",
+            "_$s18CapacitorClipboard0B0C0B5ErrorO16errorDescriptionSSSgvpMV",
+            "_$s18CapacitorClipboard0B0CMm",
+            "_$s18CapacitorClipboard0B0C0B5ErrorO4hash4intoys6HasherVz_tF",
+            "_$s18CapacitorClipboard0B0C11ContentTypeOMn",
+            "_$s18CapacitorClipboard0B0C0B5ErrorO21__derived_enum_equalsySbAE_AEtFZ",
+            "_$s18CapacitorClipboard0B0C11ContentTypeON",
+            "_$s18CapacitorClipboard0B0C0B5ErrorO16errorDescriptionSSSgvg",
+            "_$s18CapacitorClipboard0B0CACycfC",
+            "_CapacitorClipboardVersionString",
+            "_$s18CapacitorClipboard0B6PluginCMa",
+            "_$s18CapacitorClipboard0B0C11ContentTypeOSYAAMc",
+            "_$s18CapacitorClipboard0B6PluginC4readyySo13CAPPluginCallCFTq",
+            "_$s18CapacitorClipboard0B6PluginCN",
+            "_$s18CapacitorClipboard0B0C0B5ErrorO10Foundation09LocalizedC0AAMc",
+            "_$s18CapacitorClipboard0B0Cfd",
+            "_$s18CapacitorClipboard0B0C0B5ErrorO9hashValueSivg",
+            "_$s18CapacitorClipboard0B0C0B5ErrorOSHAAMc",
+            "_$s18CapacitorClipboard0B0C11ContentTypeO8rawValueAESgSi_tcfC",
+            "_$s18CapacitorClipboard0B6PluginC6bridge8pluginId0E4NameAC0A017CAPBridgeProtocol_p_S2StcfC",
+            "_CapacitorClipboardVersionNumber",
+            "_$s18CapacitorClipboard0B0CMn"
+          ],
+          "objc_class": [
+            "PodsDummy_CapacitorClipboard",
+            "ClipboardPlugin"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/CapacitorClipboard.framework/CapacitorClipboard"
+      }
+    ],
+    "swift_abi": [
+      {
+        "abi": 7
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "13",
+        "target": "arm64-ios"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}

@@ -1,0 +1,28 @@
+.parent {
+  vertical-align: bottom;
+}
+
+.main {
+  background: #f3f5f6;
+}
+
+.logo {
+  width: 120px;
+  height: 33px;
+}
+
+.main-img {
+  width: 231px;
+  height: 288px;
+  margin-top: 50px;
+}
+
+.main-wrapper {
+  width: 304px;
+}
+
+.ion-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

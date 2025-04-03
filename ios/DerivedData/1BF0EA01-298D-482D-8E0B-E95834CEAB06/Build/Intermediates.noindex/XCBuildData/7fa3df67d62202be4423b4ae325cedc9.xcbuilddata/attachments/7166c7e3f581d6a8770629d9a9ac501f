@@ -1,0 +1,10 @@
+framework module CapacitorPreferences {
+  umbrella header "CapacitorPreferences-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module CapacitorPreferences.__Swift {
+  exclude header "CapacitorPreferences-Swift.h"
+}

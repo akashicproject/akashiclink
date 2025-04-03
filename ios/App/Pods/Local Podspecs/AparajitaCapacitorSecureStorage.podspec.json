@@ -1,0 +1,23 @@
+{
+  "name": "AparajitaCapacitorSecureStorage",
+  "version": "5.0.0",
+  "summary": "Capacitor 5+ plugin that provides secure storage for the iOS and Android",
+  "license": "MIT",
+  "homepage": "https://github.com/aparajita/capacitor-secure-storage.git",
+  "authors": "Aparajita Fishman",
+  "source": {
+    "git": "https://github.com/aparajita/capacitor-secure-storage.git",
+    "tag": "5.0.0"
+  },
+  "source_files": "ios/Plugin/**/*.{swift,h,m,c,cc,mm,cpp}",
+  "platforms": {
+    "ios": "13.0"
+  },
+  "dependencies": {
+    "Capacitor": [
+
+    ]
+  },
+  "swift_versions": "5.1",
+  "swift_version": "5.1"
+}

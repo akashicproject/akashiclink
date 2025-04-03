@@ -1,0 +1,11 @@
+framework module CapacitorPreferences {
+  umbrella header "CapacitorPreferences-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module CapacitorPreferences.Swift {
+  header "CapacitorPreferences-Swift.h"
+  requires objc
+}

@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.akashicpay.akashicwallet.app-mergeProductionReleaseResources-44:/values-ldltr-v21/values-ldltr-v21.xml",
+            "map": [
+                {
+                    "source": "/Users/patrickng/.gradle/caches/transforms-3/d96150d68bf9dade15b339c84e0d0751/transformed/appcompat-1.6.1/res/values-ldltr-v21/values-ldltr-v21.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "112",
+                        "endOffsets": "163"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+framework module CapacitorClipboard {
+  umbrella header "CapacitorClipboard-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module CapacitorClipboard.Swift {
+  header "CapacitorClipboard-Swift.h"
+  requires objc
+}

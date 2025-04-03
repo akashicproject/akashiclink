@@ -1,0 +1,18 @@
+{
+  "" : {
+    "diagnostics" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorStatusBar.build/Objects-normal/arm64/CapacitorStatusBar-master.dia",
+    "emit-module-dependencies" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorStatusBar.build/Objects-normal/arm64/CapacitorStatusBar-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorStatusBar.build/Objects-normal/arm64/CapacitorStatusBar-master-emit-module.dia",
+    "swift-dependencies" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorStatusBar.build/Objects-normal/arm64/CapacitorStatusBar-master.swiftdeps"
+  },
+  "/Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/status-bar/ios/Plugin/StatusBarPlugin.swift" : {
+    "const-values" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorStatusBar.build/Objects-normal/arm64/StatusBarPlugin-04e1e3dd90513bd270c0cef0efb2e40e.swiftconstvalues",
+    "dependencies" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorStatusBar.build/Objects-normal/arm64/StatusBarPlugin-04e1e3dd90513bd270c0cef0efb2e40e.d",
+    "diagnostics" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorStatusBar.build/Objects-normal/arm64/StatusBarPlugin-04e1e3dd90513bd270c0cef0efb2e40e.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphoneos/CapacitorStatusBar.build/Objects-normal/arm64/StatusBarPlugin-04e1e3dd90513bd270c0cef0efb2e40e.o",
+    "llvm-bc" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorStatusBar.build/Objects-normal/arm64/StatusBarPlugin-04e1e3dd90513bd270c0cef0efb2e40e.bc",
+    "object" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorStatusBar.build/Objects-normal/arm64/StatusBarPlugin-04e1e3dd90513bd270c0cef0efb2e40e.o",
+    "swift-dependencies" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorStatusBar.build/Objects-normal/arm64/StatusBarPlugin-04e1e3dd90513bd270c0cef0efb2e40e.swiftdeps",
+    "swiftmodule" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorStatusBar.build/Objects-normal/arm64/StatusBarPlugin-04e1e3dd90513bd270c0cef0efb2e40e~partial.swiftmodule"
+  }
+}

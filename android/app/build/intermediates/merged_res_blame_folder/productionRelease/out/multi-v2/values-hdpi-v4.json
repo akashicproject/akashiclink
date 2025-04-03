@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.akashicpay.akashicwallet.app-mergeProductionReleaseResources-44:/values-hdpi-v4/values-hdpi-v4.xml",
+            "map": [
+                {
+                    "source": "/Users/patrickng/.gradle/caches/transforms-3/d96150d68bf9dade15b339c84e0d0751/transformed/appcompat-1.6.1/res/values-hdpi-v4/values-hdpi-v4.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "6",
+                        "endColumns": "13",
+                        "endOffsets": "327"
+                    }
+                }
+            ]
+        }
+    ]
+}

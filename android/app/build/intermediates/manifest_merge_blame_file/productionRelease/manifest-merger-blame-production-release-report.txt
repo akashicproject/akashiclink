@@ -1,0 +1,195 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.akashiclink.app"
+4    android:versionCode="2"
+5    android:versionName="0.0.0-(2)" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+8-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+9        android:targetSdkVersion="33" />
+9-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+10
+11    <!-- Permissions -->
+12
+13    <uses-permission android:name="android.permission.INTERNET" />
+13-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:34:5-67
+13-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:34:22-64
+14
+15    <queries>
+15-->[:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:7:5-11:15
+16        <intent>
+16-->[:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:8:9-10:18
+17            <action android:name="android.support.customtabs.action.CustomTabsService" />
+17-->[:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:9:13-90
+17-->[:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:9:21-87
+18        </intent>
+19    </queries>
+20
+21    <uses-permission android:name="android.permission.VIBRATE" />
+21-->[:capacitor-haptics] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/haptics/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:7:5-66
+21-->[:capacitor-haptics] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/haptics/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:7:22-63
+22
+23    <permission
+23-->[androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:22:5-24:47
+24        android:name="com.akashiclink.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+24-->[androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:23:9-81
+25        android:protectionLevel="signature" />
+25-->[androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:24:9-44
+26
+27    <uses-permission android:name="com.akashiclink.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+27-->[androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:26:5-97
+27-->[androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:26:22-94
+28
+29    <application
+29-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:3:5-30:19
+30        android:allowBackup="true"
+30-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:4:9-35
+31        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+31-->[androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:28:18-86
+32        android:extractNativeLibs="false"
+33        android:icon="@mipmap/ic_launcher"
+33-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:5:9-43
+34        android:label="@string/app_name"
+34-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:6:9-41
+35        android:roundIcon="@mipmap/ic_launcher_round"
+35-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:7:9-54
+36        android:supportsRtl="true"
+36-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:8:9-35
+37        android:theme="@style/AppTheme" >
+37-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:9:9-40
+38        <activity
+38-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:10:9-21:20
+39            android:name="com.akashicpay.akashicwallet.MainActivity"
+39-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:12:13-41
+40            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
+40-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:11:13-129
+41            android:exported="true"
+41-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:16:13-36
+42            android:label="@string/title_activity_main"
+42-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:13:13-56
+43            android:launchMode="singleTask"
+43-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:15:13-44
+44            android:theme="@style/AppTheme.NoActionBarLaunch" >
+44-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:14:13-62
+45            <intent-filter>
+45-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:17:13-20:29
+46                <action android:name="android.intent.action.MAIN" />
+46-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:18:17-69
+46-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:18:25-66
+47
+48                <category android:name="android.intent.category.LAUNCHER" />
+48-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:19:17-77
+48-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:19:27-74
+49            </intent-filter>
+50        </activity>
+51
+52        <provider
+53            android:name="androidx.core.content.FileProvider"
+53-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:24:13-62
+54            android:authorities="com.akashiclink.app.fileprovider"
+54-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:25:13-64
+55            android:exported="false"
+55-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:26:13-37
+56            android:grantUriPermissions="true" >
+56-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:27:13-47
+57            <meta-data
+57-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:28:13-112
+58                android:name="android.support.FILE_PROVIDER_PATHS"
+58-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:28:24-74
+59                android:resource="@xml/file_paths" />
+59-->/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:28:75-109
+60        </provider>
+61
+62        <activity
+62-->[:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:14:9-18:75
+63            android:name="com.capacitorjs.plugins.browser.BrowserControllerActivity"
+63-->[:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:15:13-85
+64            android:exported="false"
+64-->[:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:16:13-37
+65            android:launchMode="singleTask"
+65-->[:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:17:13-44
+66            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+66-->[:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:18:13-72
+67
+68        <provider
+68-->[androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
+69            android:name="androidx.startup.InitializationProvider"
+69-->[androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:25:13-67
+70            android:authorities="com.akashiclink.app.androidx-startup"
+70-->[androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:26:13-68
+71            android:exported="false" >
+71-->[androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:27:13-37
+72            <meta-data
+72-->[androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
+73                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+73-->[androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:30:17-75
+74                android:value="androidx.startup" />
+74-->[androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:31:17-49
+75            <meta-data
+75-->[androidx.lifecycle:lifecycle-process:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/b4c50acde961a9942cff9f98a90281a9/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:29:13-31:52
+76                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+76-->[androidx.lifecycle:lifecycle-process:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/b4c50acde961a9942cff9f98a90281a9/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:30:17-78
+77                android:value="androidx.startup" />
+77-->[androidx.lifecycle:lifecycle-process:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/b4c50acde961a9942cff9f98a90281a9/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:31:17-49
+78            <meta-data
+78-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:29:13-31:52
+79                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+79-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:30:17-85
+80                android:value="androidx.startup" />
+80-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:31:17-49
+81        </provider>
+82
+83        <uses-library
+83-->[androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:25:9-27:40
+84            android:name="androidx.window.extensions"
+84-->[androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:26:13-54
+85            android:required="false" />
+85-->[androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:27:13-37
+86        <uses-library
+86-->[androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:28:9-30:40
+87            android:name="androidx.window.sidecar"
+87-->[androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:29:13-51
+88            android:required="false" />
+88-->[androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:30:13-37
+89
+90        <receiver
+90-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:34:9-52:20
+91            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+91-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:35:13-76
+92            android:directBootAware="false"
+92-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:36:13-44
+93            android:enabled="true"
+93-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:37:13-35
+94            android:exported="true"
+94-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:38:13-36
+95            android:permission="android.permission.DUMP" >
+95-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:39:13-57
+96            <intent-filter>
+96-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:40:13-42:29
+97                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+97-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:41:17-91
+97-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:41:25-88
+98            </intent-filter>
+99            <intent-filter>
+99-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:43:13-45:29
+100                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+100-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:44:17-85
+100-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:44:25-82
+101            </intent-filter>
+102            <intent-filter>
+102-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:46:13-48:29
+103                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+103-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:47:17-88
+103-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:47:25-85
+104            </intent-filter>
+105            <intent-filter>
+105-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:49:13-51:29
+106                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+106-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:50:17-95
+106-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:50:25-92
+107            </intent-filter>
+108        </receiver>
+109    </application>
+110
+111</manifest>

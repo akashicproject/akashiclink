@@ -1,0 +1,94 @@
+ion-select::part(placeholder),
+ion-select::part(text) {
+  color: #290056;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+  font-family: 'Nunito Sans', serif;
+}
+
+.select-item {
+  width: 214px;
+  height: 40px;
+  --min-height: 40px;
+  --border-radius: 8px;
+  --border-width: 2px;
+  --border-color: #7b757f;
+}
+
+.icon-button {
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  --background: #ffffff;
+  --border-color: #7b757f;
+  --border-width: 2px;
+  --border-style: solid;
+  --border-radius: 8px;
+  --box-shadow: none;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.arrow-btn {
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  --background: transparent;
+  --box-shadow: none;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.icon-button-icon {
+  font-size: 24px;
+  color: #7b757f;
+}
+
+.arrow-btn-item {
+  width: 40px;
+  height: 40px;
+  margin-left: auto;
+  margin-right: 0;
+  --background: transparent;
+  --box-shadow: none;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.icon-arrow {
+  font-size: 24px;
+  color: #290056;
+}
+
+.icon-arrow-item {
+  font-size: 18px;
+  color: #290056;
+}
+
+.activity-list {
+  padding: 0 40px;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  background-color: #f3f5f6;
+}
+
+.activity-list-item {
+  --background: F3F5F6;
+  --min-height: 80px;
+}
+
+.address-item {
+  width: 304px;
+  --background: transparent;
+  --box-shadow: none;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.address-copy-btn {
+  color: #290056;
+  --background: none;
+  --box-shadow: none;
+}

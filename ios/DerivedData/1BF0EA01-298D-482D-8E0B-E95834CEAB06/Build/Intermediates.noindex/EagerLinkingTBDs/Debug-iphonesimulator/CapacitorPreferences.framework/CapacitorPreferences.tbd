@@ -1,0 +1,102 @@
+{
+  "main_library": {
+    "exported_symbols": [
+      {
+        "data": {
+          "global": [
+            "_$s20CapacitorPreferences0B6PluginC5clearyySo13CAPPluginCallCFTq",
+            "_$s20CapacitorPreferences0B6PluginC6bridge8pluginId0E4NameAC0A017CAPBridgeProtocol_p_S2StcfC",
+            "_$s20CapacitorPreferences0B6PluginC11preferences33_CED4831470AA8F0BA6A46CAE848ECCDFLLAA0B0Cvs",
+            "_$s20CapacitorPreferences0B6PluginC3setyySo13CAPPluginCallCF",
+            "_$s20CapacitorPreferences0B0C6remove2byySS_tFTq",
+            "_$s20CapacitorPreferences0B6PluginC11preferences33_CED4831470AA8F0BA6A46CAE848ECCDFLLAA0B0Cvpfi",
+            "_$s20CapacitorPreferences0B13ConfigurationV5GroupOMn",
+            "_$s20CapacitorPreferences0B13ConfigurationVN",
+            "_$s20CapacitorPreferences0B6PluginC3getyySo13CAPPluginCallCFTq",
+            "_$s20CapacitorPreferences0B0C6prefix33_631AC46FEB2FC4BB97CDFE933B955BE5LLSSvg",
+            "_$s20CapacitorPreferences0B13ConfigurationVMa",
+            "_$s20CapacitorPreferences0B0C7rawKeys33_631AC46FEB2FC4BB97CDFE933B955BE5LLSaySSGvg",
+            "_$s20CapacitorPreferences0B0C4withAcA0B13ConfigurationV_tcfCTq",
+            "_$s20CapacitorPreferences0B6PluginC9removeOldyySo13CAPPluginCallCFTq",
+            "_$s20CapacitorPreferences0B0CMn",
+            "_$s20CapacitorPreferences0B6PluginC7migrateyySo13CAPPluginCallCF",
+            "_$s20CapacitorPreferences0B6PluginC9configureyySo13CAPPluginCallCFTq",
+            "_$s20CapacitorPreferences0B6PluginCACycfc",
+            "_$s20CapacitorPreferences0B0C3set_3forySS_SStFTq",
+            "_$s20CapacitorPreferences0B6PluginC5clearyySo13CAPPluginCallCF",
+            "_$s20CapacitorPreferences0B6PluginC6bridge8pluginId0E4NameAC0A017CAPBridgeProtocol_p_S2Stcfc",
+            "_$s20CapacitorPreferences0B6PluginC3setyySo13CAPPluginCallCFTq",
+            "_$s20CapacitorPreferences0B6PluginCMn",
+            "_$s20CapacitorPreferences0B13ConfigurationV3forA2C5GroupO_tcfC",
+            "_$s20CapacitorPreferences0B13ConfigurationV5GroupOMa",
+            "_$s20CapacitorPreferences0B6PluginC7migrateyySo13CAPPluginCallCFTq",
+            "_$s20CapacitorPreferences0B13ConfigurationVMn",
+            "_$s20CapacitorPreferences0B6PluginC4keysyySo13CAPPluginCallCFTq",
+            "_$s20CapacitorPreferences0B0Cfd",
+            "_$s20CapacitorPreferences0B0C3set_3forySS_SStF",
+            "_$s20CapacitorPreferences0B0C6remove2byySS_tF",
+            "_$s20CapacitorPreferences0B0C4keysSaySSGyF",
+            "_$s20CapacitorPreferences0B6PluginCACycfC",
+            "_$s20CapacitorPreferences0B0C4keysSaySSGyFTq",
+            "_$s20CapacitorPreferences0B6PluginC11preferences33_CED4831470AA8F0BA6A46CAE848ECCDFLLAA0B0Cvg",
+            "_$s20CapacitorPreferences0B0C4withAcA0B13ConfigurationV_tcfc",
+            "_$s20CapacitorPreferences0B13ConfigurationV5groupAC5GroupOvg",
+            "_CapacitorPreferencesVersionNumber",
+            "_$s20CapacitorPreferences0B13ConfigurationV5groupAC5GroupOvpMV",
+            "_$s20CapacitorPreferences0B6PluginC11preferences33_CED4831470AA8F0BA6A46CAE848ECCDFLLAA0B0CvM",
+            "_$s20CapacitorPreferences0B6PluginCfD",
+            "_$s20CapacitorPreferences0B6PluginC6removeyySo13CAPPluginCallCFTq",
+            "_$s20CapacitorPreferences0B6PluginC4keysyySo13CAPPluginCallCF",
+            "_$s20CapacitorPreferences0B0CfD",
+            "_$s20CapacitorPreferences0B6PluginC9configureyySo13CAPPluginCallCF",
+            "_$s20CapacitorPreferences0B0CMa",
+            "_$s20CapacitorPreferences0B0CMm",
+            "_$s20CapacitorPreferences0B0C3get2bySSSgSS_tF",
+            "_$s20CapacitorPreferences0B6PluginC9removeOldyySo13CAPPluginCallCF",
+            "_$s20CapacitorPreferences0B0C9removeAllyyF",
+            "_$s20CapacitorPreferences0B0CN",
+            "_$s20CapacitorPreferences0B6PluginCMa",
+            "_$s20CapacitorPreferences0B0C4withAcA0B13ConfigurationV_tcfC",
+            "_CapacitorPreferencesVersionString",
+            "_$s20CapacitorPreferences0B6PluginC3getyySo13CAPPluginCallCF",
+            "_$s20CapacitorPreferences0B13ConfigurationV5GroupON",
+            "_$s20CapacitorPreferences0B6PluginCN",
+            "_$s20CapacitorPreferences0B0C11applyPrefix33_631AC46FEB2FC4BB97CDFE933B955BE5LL2toS2S_tF",
+            "_$s20CapacitorPreferences0B0C3get2bySSSgSS_tFTq",
+            "_$s20CapacitorPreferences0B6PluginC6removeyySo13CAPPluginCallCF",
+            "_$s20CapacitorPreferences0B0C8defaults33_631AC46FEB2FC4BB97CDFE933B955BE5LLSo14NSUserDefaultsCvg",
+            "_$s20CapacitorPreferences0B0C9removeAllyyFTq"
+          ],
+          "objc_class": [
+            "PodsDummy_CapacitorPreferences",
+            "PreferencesPlugin"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/CapacitorPreferences.framework/CapacitorPreferences"
+      }
+    ],
+    "swift_abi": [
+      {
+        "abi": 7
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "14",
+        "target": "arm64-ios-simulator"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}

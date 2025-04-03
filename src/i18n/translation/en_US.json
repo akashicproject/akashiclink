@@ -1,0 +1,14 @@
+{
+  "CreateWallet": "Create Wallet",
+  "LoginWithExistingCredential": "Login with existing credential",
+  "General": "General",
+  "Advanced": "Advanced",
+  "ImportWallet": "Import Wallet",
+  "Recovery": "Recovery",
+  "Login": "Login",
+  "KeyPair": "KeyPair",
+  "EnterKeyPair": "Enter KeyPair",
+  "Password": "Password",
+  "EnterPassword": "Enter Password",
+  "Confirm": "Confirm"
+}

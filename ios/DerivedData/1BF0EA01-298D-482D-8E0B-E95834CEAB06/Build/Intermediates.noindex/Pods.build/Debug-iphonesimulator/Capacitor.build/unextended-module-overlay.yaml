@@ -1,0 +1,23 @@
+{
+  'version': 0,
+  'use-external-names': 'false',
+  'case-sensitive': 'false',
+  'roots': [{
+    'type': 'directory',
+    'name': "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/1BF0EA01-298D-482D-8E0B-E95834CEAB06/Build/Products/Debug-iphonesimulator/Capacitor/Capacitor.framework/Modules"
+    'contents': [{
+      'type': 'file',
+      'name': "module.modulemap",
+      'external-contents': "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/1BF0EA01-298D-482D-8E0B-E95834CEAB06/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/Capacitor.build/unextended-module.modulemap",
+    }]
+    },
+    {
+    'type': 'directory',
+    'name': "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/1BF0EA01-298D-482D-8E0B-E95834CEAB06/Build/Products/Debug-iphonesimulator/Capacitor/Capacitor.framework/Headers"
+    'contents': [{
+      'type': 'file',
+      'name': "Capacitor-Swift.h",
+      'external-contents': "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/1BF0EA01-298D-482D-8E0B-E95834CEAB06/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/Capacitor.build/unextended-interface-header.h",
+    }]
+    }]
+}

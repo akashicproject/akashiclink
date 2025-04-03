@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_helium_pay_wallet_extension=self.webpackChunk_helium_pay_wallet_extension||[]).push([[995],{80995:(s,e,n)=>{n.r(e),n.d(e,{Browser:()=>t,BrowserWeb:()=>o});var l=n(51484);class o extends l.Uw{constructor(){super(),this._lastWindow=null}async open(s){this._lastWindow=window.open(s.url,s.windowName||"_blank")}async close(){return new Promise(((s,e)=>{null!=this._lastWindow?(this._lastWindow.close(),this._lastWindow=null,s()):e("No active window to close!")}))}}const t=new o}}]);
+//# sourceMappingURL=995.33679e05.chunk.js.map

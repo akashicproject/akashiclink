@@ -1,0 +1,23 @@
+{
+  'version': 0,
+  'use-external-names': 'false',
+  'case-sensitive': 'false',
+  'roots': [{
+    'type': 'directory',
+    'name': "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Products/Debug-iphoneos/CapacitorStatusBar/CapacitorStatusBar.framework/Modules"
+    'contents': [{
+      'type': 'file',
+      'name': "module.modulemap",
+      'external-contents': "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorStatusBar.build/unextended-module.modulemap",
+    }]
+    },
+    {
+    'type': 'directory',
+    'name': "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Products/Debug-iphoneos/CapacitorStatusBar/CapacitorStatusBar.framework/Headers"
+    'contents': [{
+      'type': 'file',
+      'name': "CapacitorStatusBar-Swift.h",
+      'external-contents': "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorStatusBar.build/unextended-interface-header.h",
+    }]
+    }]
+}

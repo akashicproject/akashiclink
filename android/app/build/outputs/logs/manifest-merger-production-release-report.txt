@@ -1,0 +1,445 @@
+-- Merging decision tree log ---
+provider#androidx.core.content.FileProvider
+INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:23:9-29:20
+	android:grantUriPermissions
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:27:13-47
+	android:authorities
+		INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:25:13-64
+	android:exported
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:26:13-37
+	android:name
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:24:13-62
+manifest
+ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:2:1-35:12
+INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:2:1-35:12
+INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:2:1-35:12
+INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:2:1-35:12
+MERGED from [:aparajita-capacitor-secure-storage] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@aparajita/capacitor-secure-storage/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:capacitor-app] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-21:12
+MERGED from [:capacitor-clipboard] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/clipboard/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:capacitor-haptics] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/haptics/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-9:12
+MERGED from [:capacitor-keyboard] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/keyboard/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:capacitor-preferences] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/preferences/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:capacitor-status-bar] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/status-bar/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:capacitor-android] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/android/capacitor/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:capacitor-cordova-android-plugins] /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/capacitor-cordova-android-plugins/build/intermediates/merged_manifest/release/AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/patrickng/.gradle/caches/transforms-3/10a1333db0e771e7bc0c0655fe76e186/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-common:2.6.0] /Users/patrickng/.gradle/caches/transforms-3/48fbb6fdd600b553f1a33fc1b7f73d89/transformed/navigation-common-2.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-runtime:2.6.0] /Users/patrickng/.gradle/caches/transforms-3/03a440bb90a977d382a378b4bce486dc/transformed/navigation-runtime-2.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-fragment:2.6.0] /Users/patrickng/.gradle/caches/transforms-3/30c1076f29e5e7752b175d93481b8660/transformed/navigation-fragment-2.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-ui:2.6.0] /Users/patrickng/.gradle/caches/transforms-3/fb1c5dd286a7c9d780c6a6e2351f469d/transformed/navigation-ui-2.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.material:material:1.9.0] /Users/patrickng/.gradle/caches/transforms-3/c1567885d1761ab5781ca978597b8db6/transformed/material-1.9.0/AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/patrickng/.gradle/caches/transforms-3/476bf2883706f01ca5ab2b1adbb85290/transformed/constraintlayout-2.1.4/AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/patrickng/.gradle/caches/transforms-3/d96150d68bf9dade15b339c84e0d0751/transformed/appcompat-1.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/28fe0310ecefb7cc770822c0a038e075/transformed/coordinatorlayout-1.2.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core-splashscreen:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/22657bb4a3cee7ba386407f91b65e416/transformed/core-splashscreen-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager2:viewpager2:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/0f74908294539ef71931bad794d725e5/transformed/viewpager2-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.fragment:fragment-ktx:1.6.0] /Users/patrickng/.gradle/caches/transforms-3/6b21942214ce47777bd7727da2d6db85/transformed/fragment-ktx-1.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.fragment:fragment:1.6.0] /Users/patrickng/.gradle/caches/transforms-3/af7b6fd46b87d98d7e592d71c08e861d/transformed/fragment-1.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity-ktx:1.7.0] /Users/patrickng/.gradle/caches/transforms-3/4b4e496933f972d124806cc092fc8d0e/transformed/activity-ktx-1.7.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity:1.7.0] /Users/patrickng/.gradle/caches/transforms-3/1873160e11240878967c7372b3ce9eea/transformed/activity-1.7.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/3d3f5276486dc0c24fb665e9c4ffb876/transformed/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/469c71abd0f7f3e48918c7779085d522/transformed/emoji2-views-helper-1.2.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.webkit:webkit:1.6.1] /Users/patrickng/.gradle/caches/transforms-3/f5261679ec4ee90a62684dab98368413/transformed/webkit-1.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.browser:browser:1.5.0] /Users/patrickng/.gradle/caches/transforms-3/32dec78dfbf7514ae0802767101c36f5/transformed/browser-1.5.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/patrickng/.gradle/caches/transforms-3/897ce36fcf69d1a9983fec8127cac269/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/patrickng/.gradle/caches/transforms-3/bc884dcb429044911be895bf1496b8c0/transformed/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/patrickng/.gradle/caches/transforms-3/0c5df16e0f20792b48505e8ff982ab9e/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/patrickng/.gradle/caches/transforms-3/713bac41ba43ace8e51bdc956313490a/transformed/savedstate-1.2.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/ce5c888d7670c3a2456f056109a9026c/transformed/dynamicanimation-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/8bf671aa5d9659bd46b987635aa2048b/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/47998cb4f49d6ba5848fa6b0b9e2d09a/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/41dfd925d2214ae647bff51383ed2fde/transformed/lifecycle-livedata-2.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/6576ad46cbfe40c488a180ee56c00fb3/transformed/lifecycle-runtime-ktx-2.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/4970be65db4ae70b269ea052fada6c11/transformed/lifecycle-viewmodel-ktx-2.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/0667922fa05cd7785505b2a94a99fdfb/transformed/lifecycle-livedata-core-ktx-2.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/b4c50acde961a9942cff9f98a90281a9/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/50cbb5bc6d3871f19637a5680a20b00e/transformed/lifecycle-livedata-core-2.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/2e2aa668131e8f491ccba9d383964a1e/transformed/lifecycle-viewmodel-2.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/134450116d2f1e00d738417a468efbad/transformed/lifecycle-runtime-2.6.1/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/0875c52596c764a1a95498e946d38063/transformed/lifecycle-viewmodel-savedstate-2.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core-ktx:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/b8629979658dcb2c63545dfd2b54db62/transformed/core-ktx-1.10.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /Users/patrickng/.gradle/caches/transforms-3/46d43a8ab33d5528ef824232fe701726/transformed/drawerlayout-1.1.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/8414d8cccc71e9a491124bd522c0f465/transformed/slidingpanelayout-1.2.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.recyclerview:recyclerview:1.1.0] /Users/patrickng/.gradle/caches/transforms-3/99a73e06bf99c5ca8d63fd563065f575/transformed/recyclerview-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/5cf2e5d00f3e9ea6f8543eddac828494/transformed/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.1.0] /Users/patrickng/.gradle/caches/transforms-3/d58db2cae525b0f9bdb95c2472740193/transformed/customview-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.transition:transition:1.4.1] /Users/patrickng/.gradle/caches/transforms-3/2c3dd39c4e2133cde048fb3358990105/transformed/transition-1.4.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/patrickng/.gradle/caches/transforms-3/9c3fb2b620e43112de3322004e50b619/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/4c654bea0b712ab626607cafb10794c8/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/patrickng/.gradle/caches/transforms-3/ddceff55619fdc961e0d9300e20a9155/transformed/startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/f18cbc7fc2283312acab998bd8f41026/transformed/tracing-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.cardview:cardview:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/2d2f5bd3dd39960f0582d578f8b24448/transformed/cardview-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/patrickng/.gradle/caches/transforms-3/fc68cd8966e04066306647510404b86f/transformed/core-runtime-2.2.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/5013b7c8735fbc18fdb7461a6e29d503/transformed/documentfile-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/bbf5b9c204bbe9e80c62250b8b66c6ec/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/b40b94d8a45eb34bb642d6dfa2daa3ec/transformed/print-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/305f3e0c89f12f5b7b70368cc1528250/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:17:1-22:12
+MERGED from [org.apache.cordova:framework:10.1.1] /Users/patrickng/.gradle/caches/transforms-3/dbe282e3abd30165ae1c86d958612395/transformed/framework-10.1.1/AndroidManifest.xml:20:1-27:12
+INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:2:1-35:12
+INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:2:1-35:12
+INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:2:1-35:12
+	package
+		INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:2:1-35:12
+		INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:2:1-35:12
+		INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:2:1-35:12
+		INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:2:11-69
+application
+ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:3:5-30:19
+MERGED from [:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:13:5-19:19
+MERGED from [:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:13:5-19:19
+MERGED from [:capacitor-cordova-android-plugins] /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/capacitor-cordova-android-plugins/build/intermediates/merged_manifest/release/AndroidManifest.xml:8:5-9:19
+MERGED from [:capacitor-cordova-android-plugins] /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/capacitor-cordova-android-plugins/build/intermediates/merged_manifest/release/AndroidManifest.xml:8:5-9:19
+MERGED from [com.google.android.material:material:1.9.0] /Users/patrickng/.gradle/caches/transforms-3/c1567885d1761ab5781ca978597b8db6/transformed/material-1.9.0/AndroidManifest.xml:24:5-20
+MERGED from [com.google.android.material:material:1.9.0] /Users/patrickng/.gradle/caches/transforms-3/c1567885d1761ab5781ca978597b8db6/transformed/material-1.9.0/AndroidManifest.xml:24:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/patrickng/.gradle/caches/transforms-3/476bf2883706f01ca5ab2b1adbb85290/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/patrickng/.gradle/caches/transforms-3/476bf2883706f01ca5ab2b1adbb85290/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
+MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/b4c50acde961a9942cff9f98a90281a9/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/b4c50acde961a9942cff9f98a90281a9/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:24:5-31:19
+MERGED from [androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:24:5-31:19
+MERGED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:28:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/patrickng/.gradle/caches/transforms-3/9c3fb2b620e43112de3322004e50b619/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/patrickng/.gradle/caches/transforms-3/9c3fb2b620e43112de3322004e50b619/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/patrickng/.gradle/caches/transforms-3/ddceff55619fdc961e0d9300e20a9155/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/patrickng/.gradle/caches/transforms-3/ddceff55619fdc961e0d9300e20a9155/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:28:18-86
+	android:supportsRtl
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:8:9-35
+	android:label
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:6:9-41
+	android:roundIcon
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:7:9-54
+	android:icon
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:5:9-43
+	android:allowBackup
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:4:9-35
+	android:theme
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:9:9-40
+activity#com.akashicpay.akashicwallet.MainActivity
+ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:10:9-21:20
+	android:label
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:13:13-56
+	android:launchMode
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:15:13-44
+	android:exported
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:16:13-36
+	android:configChanges
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:11:13-129
+	android:theme
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:14:13-62
+	android:name
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:12:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:17:13-20:29
+action#android.intent.action.MAIN
+ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:18:17-69
+	android:name
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:18:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:19:17-77
+	android:name
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:19:27-74
+uses-permission#android.permission.INTERNET
+ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:34:5-67
+	android:name
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:34:22-64
+uses-sdk
+INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+MERGED from [:aparajita-capacitor-secure-storage] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@aparajita/capacitor-secure-storage/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:aparajita-capacitor-secure-storage] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@aparajita/capacitor-secure-storage/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-app] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-app] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-clipboard] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/clipboard/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-clipboard] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/clipboard/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-haptics] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/haptics/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-haptics] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/haptics/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-keyboard] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/keyboard/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-keyboard] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/keyboard/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-preferences] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/preferences/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-preferences] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/preferences/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-status-bar] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/status-bar/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-status-bar] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/status-bar/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-android] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/android/capacitor/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-android] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/android/capacitor/build/intermediates/merged_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-cordova-android-plugins] /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/capacitor-cordova-android-plugins/build/intermediates/merged_manifest/release/AndroidManifest.xml:6:5-44
+MERGED from [:capacitor-cordova-android-plugins] /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/capacitor-cordova-android-plugins/build/intermediates/merged_manifest/release/AndroidManifest.xml:6:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/patrickng/.gradle/caches/transforms-3/10a1333db0e771e7bc0c0655fe76e186/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/patrickng/.gradle/caches/transforms-3/10a1333db0e771e7bc0c0655fe76e186/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-common:2.6.0] /Users/patrickng/.gradle/caches/transforms-3/48fbb6fdd600b553f1a33fc1b7f73d89/transformed/navigation-common-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-common:2.6.0] /Users/patrickng/.gradle/caches/transforms-3/48fbb6fdd600b553f1a33fc1b7f73d89/transformed/navigation-common-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-runtime:2.6.0] /Users/patrickng/.gradle/caches/transforms-3/03a440bb90a977d382a378b4bce486dc/transformed/navigation-runtime-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-runtime:2.6.0] /Users/patrickng/.gradle/caches/transforms-3/03a440bb90a977d382a378b4bce486dc/transformed/navigation-runtime-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-fragment:2.6.0] /Users/patrickng/.gradle/caches/transforms-3/30c1076f29e5e7752b175d93481b8660/transformed/navigation-fragment-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-fragment:2.6.0] /Users/patrickng/.gradle/caches/transforms-3/30c1076f29e5e7752b175d93481b8660/transformed/navigation-fragment-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-ui:2.6.0] /Users/patrickng/.gradle/caches/transforms-3/fb1c5dd286a7c9d780c6a6e2351f469d/transformed/navigation-ui-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-ui:2.6.0] /Users/patrickng/.gradle/caches/transforms-3/fb1c5dd286a7c9d780c6a6e2351f469d/transformed/navigation-ui-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.material:material:1.9.0] /Users/patrickng/.gradle/caches/transforms-3/c1567885d1761ab5781ca978597b8db6/transformed/material-1.9.0/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.material:material:1.9.0] /Users/patrickng/.gradle/caches/transforms-3/c1567885d1761ab5781ca978597b8db6/transformed/material-1.9.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/patrickng/.gradle/caches/transforms-3/476bf2883706f01ca5ab2b1adbb85290/transformed/constraintlayout-2.1.4/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/patrickng/.gradle/caches/transforms-3/476bf2883706f01ca5ab2b1adbb85290/transformed/constraintlayout-2.1.4/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/patrickng/.gradle/caches/transforms-3/d96150d68bf9dade15b339c84e0d0751/transformed/appcompat-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/patrickng/.gradle/caches/transforms-3/d96150d68bf9dade15b339c84e0d0751/transformed/appcompat-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/28fe0310ecefb7cc770822c0a038e075/transformed/coordinatorlayout-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/28fe0310ecefb7cc770822c0a038e075/transformed/coordinatorlayout-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-splashscreen:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/22657bb4a3cee7ba386407f91b65e416/transformed/core-splashscreen-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-splashscreen:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/22657bb4a3cee7ba386407f91b65e416/transformed/core-splashscreen-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager2:viewpager2:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/0f74908294539ef71931bad794d725e5/transformed/viewpager2-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager2:viewpager2:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/0f74908294539ef71931bad794d725e5/transformed/viewpager2-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment-ktx:1.6.0] /Users/patrickng/.gradle/caches/transforms-3/6b21942214ce47777bd7727da2d6db85/transformed/fragment-ktx-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment-ktx:1.6.0] /Users/patrickng/.gradle/caches/transforms-3/6b21942214ce47777bd7727da2d6db85/transformed/fragment-ktx-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.6.0] /Users/patrickng/.gradle/caches/transforms-3/af7b6fd46b87d98d7e592d71c08e861d/transformed/fragment-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.6.0] /Users/patrickng/.gradle/caches/transforms-3/af7b6fd46b87d98d7e592d71c08e861d/transformed/fragment-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity-ktx:1.7.0] /Users/patrickng/.gradle/caches/transforms-3/4b4e496933f972d124806cc092fc8d0e/transformed/activity-ktx-1.7.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity-ktx:1.7.0] /Users/patrickng/.gradle/caches/transforms-3/4b4e496933f972d124806cc092fc8d0e/transformed/activity-ktx-1.7.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.7.0] /Users/patrickng/.gradle/caches/transforms-3/1873160e11240878967c7372b3ce9eea/transformed/activity-1.7.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.7.0] /Users/patrickng/.gradle/caches/transforms-3/1873160e11240878967c7372b3ce9eea/transformed/activity-1.7.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/3d3f5276486dc0c24fb665e9c4ffb876/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/3d3f5276486dc0c24fb665e9c4ffb876/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/469c71abd0f7f3e48918c7779085d522/transformed/emoji2-views-helper-1.2.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/469c71abd0f7f3e48918c7779085d522/transformed/emoji2-views-helper-1.2.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.webkit:webkit:1.6.1] /Users/patrickng/.gradle/caches/transforms-3/f5261679ec4ee90a62684dab98368413/transformed/webkit-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.webkit:webkit:1.6.1] /Users/patrickng/.gradle/caches/transforms-3/f5261679ec4ee90a62684dab98368413/transformed/webkit-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.browser:browser:1.5.0] /Users/patrickng/.gradle/caches/transforms-3/32dec78dfbf7514ae0802767101c36f5/transformed/browser-1.5.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.browser:browser:1.5.0] /Users/patrickng/.gradle/caches/transforms-3/32dec78dfbf7514ae0802767101c36f5/transformed/browser-1.5.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/patrickng/.gradle/caches/transforms-3/897ce36fcf69d1a9983fec8127cac269/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/patrickng/.gradle/caches/transforms-3/897ce36fcf69d1a9983fec8127cac269/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/patrickng/.gradle/caches/transforms-3/bc884dcb429044911be895bf1496b8c0/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/patrickng/.gradle/caches/transforms-3/bc884dcb429044911be895bf1496b8c0/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/patrickng/.gradle/caches/transforms-3/0c5df16e0f20792b48505e8ff982ab9e/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/patrickng/.gradle/caches/transforms-3/0c5df16e0f20792b48505e8ff982ab9e/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/patrickng/.gradle/caches/transforms-3/713bac41ba43ace8e51bdc956313490a/transformed/savedstate-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/patrickng/.gradle/caches/transforms-3/713bac41ba43ace8e51bdc956313490a/transformed/savedstate-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/ce5c888d7670c3a2456f056109a9026c/transformed/dynamicanimation-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/ce5c888d7670c3a2456f056109a9026c/transformed/dynamicanimation-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/8bf671aa5d9659bd46b987635aa2048b/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/8bf671aa5d9659bd46b987635aa2048b/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/47998cb4f49d6ba5848fa6b0b9e2d09a/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/47998cb4f49d6ba5848fa6b0b9e2d09a/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/41dfd925d2214ae647bff51383ed2fde/transformed/lifecycle-livedata-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/41dfd925d2214ae647bff51383ed2fde/transformed/lifecycle-livedata-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/6576ad46cbfe40c488a180ee56c00fb3/transformed/lifecycle-runtime-ktx-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/6576ad46cbfe40c488a180ee56c00fb3/transformed/lifecycle-runtime-ktx-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/4970be65db4ae70b269ea052fada6c11/transformed/lifecycle-viewmodel-ktx-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/4970be65db4ae70b269ea052fada6c11/transformed/lifecycle-viewmodel-ktx-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/0667922fa05cd7785505b2a94a99fdfb/transformed/lifecycle-livedata-core-ktx-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/0667922fa05cd7785505b2a94a99fdfb/transformed/lifecycle-livedata-core-ktx-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/b4c50acde961a9942cff9f98a90281a9/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/b4c50acde961a9942cff9f98a90281a9/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/50cbb5bc6d3871f19637a5680a20b00e/transformed/lifecycle-livedata-core-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/50cbb5bc6d3871f19637a5680a20b00e/transformed/lifecycle-livedata-core-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/2e2aa668131e8f491ccba9d383964a1e/transformed/lifecycle-viewmodel-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/2e2aa668131e8f491ccba9d383964a1e/transformed/lifecycle-viewmodel-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/134450116d2f1e00d738417a468efbad/transformed/lifecycle-runtime-2.6.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/134450116d2f1e00d738417a468efbad/transformed/lifecycle-runtime-2.6.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/0875c52596c764a1a95498e946d38063/transformed/lifecycle-viewmodel-savedstate-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/0875c52596c764a1a95498e946d38063/transformed/lifecycle-viewmodel-savedstate-2.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core-ktx:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/b8629979658dcb2c63545dfd2b54db62/transformed/core-ktx-1.10.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/b8629979658dcb2c63545dfd2b54db62/transformed/core-ktx-1.10.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /Users/patrickng/.gradle/caches/transforms-3/46d43a8ab33d5528ef824232fe701726/transformed/drawerlayout-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /Users/patrickng/.gradle/caches/transforms-3/46d43a8ab33d5528ef824232fe701726/transformed/drawerlayout-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/8414d8cccc71e9a491124bd522c0f465/transformed/slidingpanelayout-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/8414d8cccc71e9a491124bd522c0f465/transformed/slidingpanelayout-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.recyclerview:recyclerview:1.1.0] /Users/patrickng/.gradle/caches/transforms-3/99a73e06bf99c5ca8d63fd563065f575/transformed/recyclerview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.recyclerview:recyclerview:1.1.0] /Users/patrickng/.gradle/caches/transforms-3/99a73e06bf99c5ca8d63fd563065f575/transformed/recyclerview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/5cf2e5d00f3e9ea6f8543eddac828494/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/5cf2e5d00f3e9ea6f8543eddac828494/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.1.0] /Users/patrickng/.gradle/caches/transforms-3/d58db2cae525b0f9bdb95c2472740193/transformed/customview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.customview:customview:1.1.0] /Users/patrickng/.gradle/caches/transforms-3/d58db2cae525b0f9bdb95c2472740193/transformed/customview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.transition:transition:1.4.1] /Users/patrickng/.gradle/caches/transforms-3/2c3dd39c4e2133cde048fb3358990105/transformed/transition-1.4.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.transition:transition:1.4.1] /Users/patrickng/.gradle/caches/transforms-3/2c3dd39c4e2133cde048fb3358990105/transformed/transition-1.4.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/patrickng/.gradle/caches/transforms-3/9c3fb2b620e43112de3322004e50b619/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/patrickng/.gradle/caches/transforms-3/9c3fb2b620e43112de3322004e50b619/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/4c654bea0b712ab626607cafb10794c8/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/4c654bea0b712ab626607cafb10794c8/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/patrickng/.gradle/caches/transforms-3/ddceff55619fdc961e0d9300e20a9155/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/patrickng/.gradle/caches/transforms-3/ddceff55619fdc961e0d9300e20a9155/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/f18cbc7fc2283312acab998bd8f41026/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/f18cbc7fc2283312acab998bd8f41026/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.cardview:cardview:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/2d2f5bd3dd39960f0582d578f8b24448/transformed/cardview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/2d2f5bd3dd39960f0582d578f8b24448/transformed/cardview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/patrickng/.gradle/caches/transforms-3/fc68cd8966e04066306647510404b86f/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/patrickng/.gradle/caches/transforms-3/fc68cd8966e04066306647510404b86f/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/5013b7c8735fbc18fdb7461a6e29d503/transformed/documentfile-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/5013b7c8735fbc18fdb7461a6e29d503/transformed/documentfile-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/bbf5b9c204bbe9e80c62250b8b66c6ec/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/bbf5b9c204bbe9e80c62250b8b66c6ec/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/b40b94d8a45eb34bb642d6dfa2daa3ec/transformed/print-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/b40b94d8a45eb34bb642d6dfa2daa3ec/transformed/print-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/305f3e0c89f12f5b7b70368cc1528250/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/305f3e0c89f12f5b7b70368cc1528250/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:20:5-44
+MERGED from [org.apache.cordova:framework:10.1.1] /Users/patrickng/.gradle/caches/transforms-3/dbe282e3abd30165ae1c86d958612395/transformed/framework-10.1.1/AndroidManifest.xml:25:5-44
+MERGED from [org.apache.cordova:framework:10.1.1] /Users/patrickng/.gradle/caches/transforms-3/dbe282e3abd30165ae1c86d958612395/transformed/framework-10.1.1/AndroidManifest.xml:25:5-44
+INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:28:13-112
+	android:resource
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:28:75-109
+	android:name
+		ADDED from /Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/android/app/src/main/AndroidManifest.xml:28:24-74
+queries
+ADDED from [:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:7:5-11:15
+intent#action:name:android.support.customtabs.action.CustomTabsService
+ADDED from [:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:8:9-10:18
+action#android.support.customtabs.action.CustomTabsService
+ADDED from [:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:9:13-90
+	android:name
+		ADDED from [:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:9:21-87
+activity#com.capacitorjs.plugins.browser.BrowserControllerActivity
+ADDED from [:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:14:9-18:75
+	android:launchMode
+		ADDED from [:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:17:13-44
+	android:exported
+		ADDED from [:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:16:13-37
+	android:theme
+		ADDED from [:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:18:13-72
+	android:name
+		ADDED from [:capacitor-browser] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:15:13-85
+uses-permission#android.permission.VIBRATE
+ADDED from [:capacitor-haptics] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/haptics/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:7:5-66
+	android:name
+		ADDED from [:capacitor-haptics] /Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/haptics/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:7:22-63
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/b4c50acde961a9942cff9f98a90281a9/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/b4c50acde961a9942cff9f98a90281a9/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/patrickng/.gradle/caches/transforms-3/ddceff55619fdc961e0d9300e20a9155/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/patrickng/.gradle/caches/transforms-3/ddceff55619fdc961e0d9300e20a9155/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:28:13-31
+	android:authorities
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:26:13-68
+	android:exported
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:25:13-67
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/patrickng/.gradle/caches/transforms-3/50fb39712b7ba480cee96e8709136c8f/transformed/emoji2-1.2.0/AndroidManifest.xml:30:17-75
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/b4c50acde961a9942cff9f98a90281a9/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/b4c50acde961a9942cff9f98a90281a9/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.6.1] /Users/patrickng/.gradle/caches/transforms-3/b4c50acde961a9942cff9f98a90281a9/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:30:17-78
+uses-library#androidx.window.extensions
+ADDED from [androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:25:9-27:40
+	android:required
+		ADDED from [androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:26:13-54
+uses-library#androidx.window.sidecar
+ADDED from [androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:28:9-30:40
+	android:required
+		ADDED from [androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:30:13-37
+	android:name
+		ADDED from [androidx.window:window:1.0.0] /Users/patrickng/.gradle/caches/transforms-3/679cd9f67e40c9e66a0de7556b5d5d06/transformed/window-1.0.0/AndroidManifest.xml:29:13-51
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:23:9-81
+permission#com.akashiclink.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:26:22-94
+uses-permission#com.akashiclink.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.10.0] /Users/patrickng/.gradle/caches/transforms-3/05ddc8b9c9302b23ebae88b05c36a782/transformed/core-1.10.0/AndroidManifest.xml:26:22-94
+meta-data#androidx.profileinstaller.ProfileInstallerInitializer
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:30:17-85
+receiver#androidx.profileinstaller.ProfileInstallReceiver
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:34:9-52:20
+	android:enabled
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:38:13-36
+	android:permission
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:39:13-57
+	android:directBootAware
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:36:13-44
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:35:13-76
+intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:40:13-42:29
+action#androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:41:17-91
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:41:25-88
+intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:43:13-45:29
+action#androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:44:17-85
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:44:25-82
+intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:46:13-48:29
+action#androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:47:17-88
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:47:25-85
+intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:49:13-51:29
+action#androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:50:17-95
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] /Users/patrickng/.gradle/caches/transforms-3/f0658b7fcd4d9dd890801663509539bd/transformed/profileinstaller-1.3.0/AndroidManifest.xml:50:25-92

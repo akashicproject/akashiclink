@@ -1,0 +1,6 @@
+framework module AparajitaCapacitorSecureStorage {
+  umbrella header "AparajitaCapacitorSecureStorage-umbrella.h"
+
+  export *
+  module * { export * }
+}

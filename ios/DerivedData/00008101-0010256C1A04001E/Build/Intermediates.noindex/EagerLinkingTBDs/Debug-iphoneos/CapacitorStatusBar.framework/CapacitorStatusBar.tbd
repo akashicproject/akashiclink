@@ -1,0 +1,70 @@
+{
+  "main_library": {
+    "exported_symbols": [
+      {
+        "data": {
+          "global": [
+            "_$s18CapacitorStatusBar0bC6PluginC7getInfoyySo13CAPPluginCallCFTq",
+            "_$s18CapacitorStatusBar0bC6PluginC4hideyySo13CAPPluginCallCFTq",
+            "_CapacitorStatusBarVersionString",
+            "_$s18CapacitorStatusBar0bC6PluginC7getInfoyySo13CAPPluginCallCF",
+            "_$s18CapacitorStatusBar0bC6PluginC18setOverlaysWebViewyySo13CAPPluginCallCFTq",
+            "_$s18CapacitorStatusBar0bC6PluginC4showyySo13CAPPluginCallCF",
+            "_$s18CapacitorStatusBar0bC6PluginCACycfC",
+            "_$s18CapacitorStatusBar0bC6PluginC6bridge8pluginId0F4NameAC0A017CAPBridgeProtocol_p_S2StcfC",
+            "_$s18CapacitorStatusBar0bC6PluginCACycfc",
+            "_$s18CapacitorStatusBar0bC6PluginCMn",
+            "_$s18CapacitorStatusBar0bC6PluginCfD",
+            "_$s18CapacitorStatusBar0bC6PluginC12setAnimationyySo13CAPPluginCallCFTq",
+            "_$s18CapacitorStatusBar0bC6PluginC8observer33_6123A04549419EC02BBFD2C366AE0C9BLLSo8NSObject_pSgvs",
+            "_$s18CapacitorStatusBar0bC6PluginC18setBackgroundColoryySo13CAPPluginCallCFTq",
+            "_$s18CapacitorStatusBar0bC6PluginC8setStyleyySo13CAPPluginCallCFTq",
+            "_$s18CapacitorStatusBar0bC6PluginC4hideyySo13CAPPluginCallCF",
+            "_$s18CapacitorStatusBar0bC6PluginC4loadyyF",
+            "_$s18CapacitorStatusBar0bC6PluginCN",
+            "_$s18CapacitorStatusBar0bC6PluginC18setBackgroundColoryySo13CAPPluginCallCF",
+            "_Swift51Overrides",
+            "_$s18CapacitorStatusBar0bC6PluginC8observer33_6123A04549419EC02BBFD2C366AE0C9BLLSo8NSObject_pSgvg",
+            "_$s18CapacitorStatusBar0bC6PluginC6bridge8pluginId0F4NameAC0A017CAPBridgeProtocol_p_S2Stcfc",
+            "_$s18CapacitorStatusBar0bC6PluginC12setAnimationyySo13CAPPluginCallCF",
+            "_$s18CapacitorStatusBar0bC6PluginCMa",
+            "_$s18CapacitorStatusBar0bC6PluginC8setStyleyySo13CAPPluginCallCF",
+            "_$s18CapacitorStatusBar0bC6PluginC4showyySo13CAPPluginCallCFTq",
+            "_$s18CapacitorStatusBar0bC6PluginC8observer33_6123A04549419EC02BBFD2C366AE0C9BLLSo8NSObject_pSgvM",
+            "_$s18CapacitorStatusBar0bC6PluginC18setOverlaysWebViewyySo13CAPPluginCallCF",
+            "_CapacitorStatusBarVersionNumber",
+            "_$s18CapacitorStatusBar0bC6PluginC8observer33_6123A04549419EC02BBFD2C366AE0C9BLLSo8NSObject_pSgvpfi"
+          ],
+          "objc_class": [
+            "StatusBarPlugin",
+            "PodsDummy_CapacitorStatusBar"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/CapacitorStatusBar.framework/CapacitorStatusBar"
+      }
+    ],
+    "swift_abi": [
+      {
+        "abi": 7
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "13",
+        "target": "arm64-ios"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}

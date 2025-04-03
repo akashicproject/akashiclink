@@ -1,0 +1,93 @@
+{
+  "main_library": {
+    "exported_symbols": [
+      {
+        "data": {
+          "global": [
+            "_$s16CapacitorHaptics0B0CfD",
+            "_$s16CapacitorHaptics0B0C16selectionChangedyyF",
+            "_$s16CapacitorHaptics0B6PluginCMn",
+            "_$s16CapacitorHaptics0B0C26selectionFeedbackGeneratorSo011UISelectiondE0CSgvgTq",
+            "_$s16CapacitorHaptics0B0C6impactyySo21UIImpactFeedbackStyleVFTq",
+            "_$s16CapacitorHaptics0B0CMn",
+            "_$s16CapacitorHaptics0B6PluginC12selectionEndyySo13CAPPluginCallCFTq",
+            "_$s16CapacitorHaptics0B6PluginC14implementation33_A9C68EC01C54EFB1A27799A130670B29LLAA0B0Cvpfi",
+            "_$s16CapacitorHaptics0B6PluginC6bridge8pluginId0E4NameAC0A017CAPBridgeProtocol_p_S2Stcfc",
+            "_$s16CapacitorHaptics0B6PluginCN",
+            "_$s16CapacitorHaptics0B0C26selectionFeedbackGeneratorSo011UISelectiondE0CSgvg",
+            "_$s16CapacitorHaptics0B6PluginC14selectionStartyySo13CAPPluginCallCFTq",
+            "_$s16CapacitorHaptics0B0C26selectionFeedbackGeneratorSo011UISelectiondE0CSgvMTq",
+            "_$s16CapacitorHaptics0B0C14selectionStartyyFTq",
+            "_$s16CapacitorHaptics0B0C26selectionFeedbackGeneratorSo011UISelectiondE0CSgvpMV",
+            "_$s16CapacitorHaptics0B0C6impactyySo21UIImpactFeedbackStyleVF",
+            "_$s16CapacitorHaptics0B6PluginC6impactyySo13CAPPluginCallCF",
+            "_$s16CapacitorHaptics0B0C26selectionFeedbackGeneratorSo011UISelectiondE0CSgvM",
+            "_$s16CapacitorHaptics0B6PluginC12selectionEndyySo13CAPPluginCallCF",
+            "_$s16CapacitorHaptics0B0C7vibrateyySdF",
+            "_$s16CapacitorHaptics0B6PluginC7vibrateyySo13CAPPluginCallCFTq",
+            "_$s16CapacitorHaptics0B6PluginCACycfc",
+            "_$s16CapacitorHaptics0B6PluginC16selectionChangedyySo13CAPPluginCallCF",
+            "_$s16CapacitorHaptics0B0CACycfc",
+            "_$s16CapacitorHaptics0B6PluginC12notificationyySo13CAPPluginCallCFTq",
+            "_$s16CapacitorHaptics0B0C26selectionFeedbackGeneratorSo011UISelectiondE0CSgvpWvd",
+            "_$s16CapacitorHaptics0B6PluginC12notificationyySo13CAPPluginCallCF",
+            "_CapacitorHapticsVersionString",
+            "_$s16CapacitorHaptics0B6PluginC6bridge8pluginId0E4NameAC0A017CAPBridgeProtocol_p_S2StcfC",
+            "_$s16CapacitorHaptics0B0C26selectionFeedbackGeneratorSo011UISelectiondE0CSgvsTq",
+            "_$s16CapacitorHaptics0B0C26selectionFeedbackGeneratorSo011UISelectiondE0CSgvs",
+            "_$s16CapacitorHaptics0B0CN",
+            "_$s16CapacitorHaptics0B0C12selectionEndyyF",
+            "_$s16CapacitorHaptics0B6PluginC16selectionChangedyySo13CAPPluginCallCFTq",
+            "_$s16CapacitorHaptics0B6PluginCACycfC",
+            "_$s16CapacitorHaptics0B0C26selectionFeedbackGeneratorSo011UISelectiondE0CSgvpfi",
+            "_$s16CapacitorHaptics0B0C12notificationyySo26UINotificationFeedbackTypeVF",
+            "_$s16CapacitorHaptics0B0C16selectionChangedyyFTq",
+            "_$s16CapacitorHaptics0B6PluginC6impactyySo13CAPPluginCallCFTq",
+            "_$s16CapacitorHaptics0B0CACycfC",
+            "_$s16CapacitorHaptics0B6PluginCfD",
+            "_$s16CapacitorHaptics0B6PluginC14selectionStartyySo13CAPPluginCallCF",
+            "_$s16CapacitorHaptics0B0CMa",
+            "_$s16CapacitorHaptics0B0C12notificationyySo26UINotificationFeedbackTypeVFTq",
+            "_$s16CapacitorHaptics0B6PluginCMa",
+            "_$s16CapacitorHaptics0B0C7vibrateyyF",
+            "_$s16CapacitorHaptics0B0C12selectionEndyyFTq",
+            "_CapacitorHapticsVersionNumber",
+            "_$s16CapacitorHaptics0B6PluginC7vibrateyySo13CAPPluginCallCF",
+            "_$s16CapacitorHaptics0B0C7vibrateyyFTq",
+            "_$s16CapacitorHaptics0B0C14selectionStartyyF",
+            "_$s16CapacitorHaptics0B0C7vibrateyySdFTq"
+          ],
+          "objc_class": [
+            "HapticsPlugin",
+            "_TtC16CapacitorHaptics7Haptics",
+            "PodsDummy_CapacitorHaptics"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/CapacitorHaptics.framework/CapacitorHaptics"
+      }
+    ],
+    "swift_abi": [
+      {
+        "abi": 7
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "14",
+        "target": "arm64-ios-simulator"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}

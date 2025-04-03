@@ -1,0 +1,28 @@
+{
+  "" : {
+    "diagnostics" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/CapacitorHaptics-master.dia",
+    "emit-module-dependencies" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/CapacitorHaptics-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/CapacitorHaptics-master-emit-module.dia",
+    "swift-dependencies" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/CapacitorHaptics-master.swiftdeps"
+  },
+  "/Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/haptics/ios/Plugin/Haptics.swift" : {
+    "const-values" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/Haptics.swiftconstvalues",
+    "dependencies" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/Haptics.d",
+    "diagnostics" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/Haptics.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/Haptics.o",
+    "llvm-bc" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/Haptics.bc",
+    "object" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/Haptics.o",
+    "swift-dependencies" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/Haptics.swiftdeps",
+    "swiftmodule" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/Haptics~partial.swiftmodule"
+  },
+  "/Users/patrickng/dreamsai/HeliumPay-monorepo/node_modules/@capacitor/haptics/ios/Plugin/HapticsPlugin.swift" : {
+    "const-values" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/HapticsPlugin-bee0788c727d11e7091ba1de0ad4e310.swiftconstvalues",
+    "dependencies" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/HapticsPlugin-bee0788c727d11e7091ba1de0ad4e310.d",
+    "diagnostics" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/HapticsPlugin-bee0788c727d11e7091ba1de0ad4e310.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/HapticsPlugin-bee0788c727d11e7091ba1de0ad4e310.o",
+    "llvm-bc" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/HapticsPlugin-bee0788c727d11e7091ba1de0ad4e310.bc",
+    "object" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/HapticsPlugin-bee0788c727d11e7091ba1de0ad4e310.o",
+    "swift-dependencies" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/HapticsPlugin-bee0788c727d11e7091ba1de0ad4e310.swiftdeps",
+    "swiftmodule" : "/Users/patrickng/dreamsai/HeliumPay-monorepo/apps/wallet-extension/ios/DerivedData/00008101-0010256C1A04001E/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/CapacitorHaptics.build/Objects-normal/arm64/HapticsPlugin-bee0788c727d11e7091ba1de0ad4e310~partial.swiftmodule"
+  }
+}
