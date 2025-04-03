@@ -1,7 +1,6 @@
 import {
   type CoinSymbol,
   type CurrencySymbol,
-  type ICallbackUrls,
   L2Regex,
 } from '@helium-pay/backend';
 import { IonCol, IonRow, IonSpinner } from '@ionic/react';
@@ -27,20 +26,7 @@ import {
   useSendL1Transaction,
   useSendL2Transaction,
 } from '../utils/hooks/nitr0gen';
-import type { BecomeBpToSign } from '../utils/hooks/useSignBecomeBpMessage';
-import { useSignBecomeBpMessage } from '../utils/hooks/useSignBecomeBpMessage';
-import {
-  type GetCallbackUrlsToSign,
-  useSignGetCallbackUrl,
-} from '../utils/hooks/useSignGetCallbackUrl';
-import type { GetWhitelistIpsToSign } from '../utils/hooks/useSignGetWhitelistIps';
-import { useSignGetWhitelistIps } from '../utils/hooks/useSignGetWhitelistIps';
-import type { RetryCallbackToSign } from '../utils/hooks/useSignRetryCallback';
-import { useSignRetryCallback } from '../utils/hooks/useSignRetryCallback';
-import type { SetCallbackUrlsToSign } from '../utils/hooks/useSignSetupCallbackUrl';
-import { useSignSetupCallbackUrl } from '../utils/hooks/useSignSetupCallbackUrl';
-import type { SetWhitelistIpsToSign } from '../utils/hooks/useSignSetWhitelistIps';
-import { useSignSetWhitelistIps } from '../utils/hooks/useSignSetWhitelistIps';
+import { useSignAuthorizeActionMessage } from '../utils/hooks/useSignAuthorizeActionMessage';
 import { useVerifyTxnAndSign } from '../utils/hooks/useVerifyTxnAndSign';
 import { useWeb3Wallet } from '../utils/web3wallet';
 
@@ -58,20 +44,15 @@ export function SignTypedData() {
     method: '',
     topic: '',
     primaryType: '',
-    message: {} as Record<
+    message: {} as Record<string, string>,
+    toSign: {} as { identity: string; expires: string } & Record<
       string,
-      string | Record<string, string> | Record<string, string>[]
+      string | Record<string, string>
     >,
-    toSign: {} as Record<string, unknown>,
     response: {},
   });
 
-  const signBecomeBpMessage = useSignBecomeBpMessage();
-  const signSetupCallbackUrl = useSignSetupCallbackUrl();
-  const signGetCallbackUrl = useSignGetCallbackUrl();
-  const signRetryCallback = useSignRetryCallback();
-  const signSetWhitelistIps = useSignSetWhitelistIps();
-  const signGetWhitelistIps = useSignGetWhitelistIps();
+  const signAuthorizeActionMessage = useSignAuthorizeActionMessage();
 
   const verifyTxnAndSign = useVerifyTxnAndSign();
   const { trigger: triggerSendL2Transaction } = useSendL2Transaction();
@@ -113,70 +94,13 @@ export function SignTypedData() {
       let signedMsg = '';
 
       switch (primaryType) {
-        case TYPED_DATA_PRIMARY_TYPE.BECOME_BP:
-          signedMsg = await signBecomeBpMessage({
-            identity: toSign.identity,
-            expires: Number(toSign.expires),
-          } as BecomeBpToSign);
-          break;
-        case TYPED_DATA_PRIMARY_TYPE.RETRY_CALLBACK:
-          signedMsg = await signRetryCallback({
+        case TYPED_DATA_PRIMARY_TYPE.AUTHORIZE_ACTION:
+          signedMsg = await signAuthorizeActionMessage({
             ...toSign,
-            expires: Number(toSign.expires),
-          } as RetryCallbackToSign);
-          break;
-        case TYPED_DATA_PRIMARY_TYPE.SETUP_CALLBACK_URL: {
-          const callbackUrls: ICallbackUrls = {};
-
-          if (toSign.pendingPayout) {
-            callbackUrls.pendingPayout = toSign.pendingPayout as string;
-          }
-          if (toSign.payout) {
-            callbackUrls.payout = toSign.payout as string;
-          }
-          if (toSign.failedPayout) {
-            callbackUrls.failedPayout = toSign.failedPayout as string;
-          }
-          if (toSign.pendingDeposit) {
-            callbackUrls.pendingDeposit = toSign.pendingDeposit as string;
-          }
-          if (toSign.deposit) {
-            callbackUrls.deposit = toSign.deposit as string;
-          }
-
-          if (toSign.failedDeposit) {
-            callbackUrls.failedDeposit = toSign.failedDeposit as string;
-          }
-
-          signedMsg = await signSetupCallbackUrl({
             identity: toSign.identity,
             expires: Number(toSign.expires),
-            callbackUrls,
-          } as SetCallbackUrlsToSign);
+          });
           break;
-        }
-        case TYPED_DATA_PRIMARY_TYPE.GET_CALLBACK_URL: {
-          signedMsg = await signGetCallbackUrl({
-            identity: toSign.identity,
-            expires: Number(toSign.expires),
-          } as GetCallbackUrlsToSign);
-          break;
-        }
-        case TYPED_DATA_PRIMARY_TYPE.SET_WHITELIST_IPS: {
-          signedMsg = await signSetWhitelistIps({
-            identity: toSign.identity,
-            expires: Number(toSign.expires),
-            whitelistIps: toSign.whitelistIps,
-          } as SetWhitelistIpsToSign);
-          break;
-        }
-        case TYPED_DATA_PRIMARY_TYPE.GET_WHITELIST_IPS: {
-          signedMsg = await signGetWhitelistIps({
-            identity: toSign.identity,
-            expires: Number(toSign.expires),
-          } as GetWhitelistIpsToSign);
-          break;
-        }
         case TYPED_DATA_PRIMARY_TYPE.PAYOUT: {
           // TODO: Fix all this casting
           const res = await verifyTxnAndSign(
@@ -343,7 +267,12 @@ export function SignTypedData() {
             />
           )}
           <List lines={'none'}>
-            {Object.entries(requestContent?.message).map(([key, value]) => {
+            {/* // TODO: prepare array of display to do render */}
+            {Object.entries(
+              requestContent?.message?.toDisplay ??
+                requestContent?.message ??
+                {}
+            ).map(([key, value]) => {
               if (Array.isArray(value)) {
                 return value.map((v) =>
                   Object.entries(v).map(([key, value]) => {
@@ -352,7 +281,7 @@ export function SignTypedData() {
                         <ListVerticalLabelValueItem
                           key={key}
                           label={t(`Popup.${key}`)}
-                          value={value ?? '-'}
+                          value={(value as string) ?? '-'}
                         />
                       );
                     }
@@ -365,7 +294,7 @@ export function SignTypedData() {
                       <ListVerticalLabelValueItem
                         key={key}
                         label={t(`Popup.${key}`)}
-                        value={value ?? '-'}
+                        value={(value as string) ?? '-'}
                       />
                     );
                   }

@@ -8,7 +8,7 @@ export const EXTENSION_EVENT = {
 export const EXTENSION_ERROR = {
   UNKNOWN: 'UNKNOWN',
   RECEIVING_END_DOES_NOT_EXIST:
-    'Could not establish connection. Receiving end does not exist.',
+    'Could not establish connection. Receiving end does not exist.', // chrome error string
   WC_SESSION_NOT_FOUND: 'WC_SESSION_NOT_FOUND',
 };
 
@@ -24,13 +24,8 @@ export const WALLET_METHOD = {
 };
 
 export const TYPED_DATA_PRIMARY_TYPE = {
-  BECOME_BP: 'BPContract',
-  SETUP_CALLBACK_URL: 'SetupCallbackUrl',
-  RETRY_CALLBACK: 'RetryCallback',
+  AUTHORIZE_ACTION: 'AuthorizeAction',
   PAYOUT: 'Payout',
-  GET_CALLBACK_URL: 'GetCallbackUrl',
-  SET_WHITELIST_IPS: 'SetWhitelistIps',
-  GET_WHITELIST_IPS: 'GetWhitelistIps',
 };
 
 export const closePopup = async () => {
