@@ -78,7 +78,7 @@ export function Nfts() {
   };
   return (
     <>
-      <NftLayout>
+      <NftLayout background={false}>
         <ActivityAndNftTabComponent
           nftTab={nftTab}
           setNftTab={setNftTab}

@@ -35,7 +35,7 @@ export function NftTransferResult() {
   const wrongResult = state?.errorMsg !== errorMsgs.NoError;
   const isMobile = isPlatform('mobile');
   return (
-    <NftLayout noFooter={true}>
+    <NftLayout noFooter={true} background={false}>
       <IonRow style={{ marginTop: isMobile ? '6rem' : '0' }}>
         <IonCol class="ion-center">
           <HeaderWrapper>

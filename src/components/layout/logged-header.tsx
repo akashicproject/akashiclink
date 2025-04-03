@@ -67,16 +67,7 @@ export function LoggedHeader({ loggedIn }: { loggedIn?: boolean }) {
             style={{ height: '100%' }}
           />
         </IonRouterLink>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: '16px',
-          }}
-        >
-          <ThemeSelect />
-        </div>
+        <ThemeSelect />
       </div>
     </IonHeader>
   );

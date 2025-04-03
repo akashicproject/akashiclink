@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 
 import { themeType } from '../../theme/const';
 import { useTheme } from '../PreferenceProvider';
+import { Toggle } from '../toggle/toggle';
 /**
  * Slider prototyped of stack overflow answer, for toggling theme
  */
@@ -48,20 +49,16 @@ export function ThemeSelect() {
       window.matchMedia('(prefers-color-scheme: dark)').matches);
 
   return (
-    <>
-      {/* eslint-disable */}
-      <div className="slider-button" onClick={handleThemeUpdate}>
-        {/* eslint-enable */}
-        <div className="slider">
-          <div className={`slider-handle ${isDarkMode ? 'right' : 'left'}`}>
-            <IonIcon icon={isDarkMode ? moon : sunny} />
-          </div>
-          <IonIcon
-            className={`icon-handle ${isDarkMode ? 'right' : 'left'}`}
-            icon={isDarkMode ? sunny : moon}
-          />
-        </div>
-      </div>
-    </>
+    <Toggle
+      onClickHandler={handleThemeUpdate}
+      currentState={isDarkMode ? 'active' : 'inActive'}
+      containerStyle={{ alignSelf: 'base-line' }}
+      sliderStyle={{
+        backgroundColor: isDarkMode ? '#7444B6' : '#C297FF',
+      }}
+      switchStyle={{ width: '60px' }}
+      firstIcon={<IonIcon style={{ left: '1px' }} icon={sunny} />}
+      secondIcon={<IonIcon style={{ right: '1px' }} icon={moon} />}
+    />
   );
 }

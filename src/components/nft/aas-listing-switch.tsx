@@ -1,12 +1,24 @@
 import './switch.css';
 
-import { IonCol, IonRow, IonToggle } from '@ionic/react';
-import { useState } from 'react';
+import styled from '@emotion/styled';
+import { IonCol, IonRow } from '@ionic/react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
+import { Toggle } from '../toggle/toggle';
+
+const StyledIonRow = styled(IonRow)`
+  width: 100%;
+  align-items: center;
+`;
+const StyledIonCol = styled(IonCol)`
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ion-color-primary-10);
+`;
 
 export const AasListingSwitch = ({
   name,
@@ -19,9 +31,10 @@ export const AasListingSwitch = ({
   const { mutate } = useNftMe();
   const { t } = useTranslation();
   const [isListed, setIsListed] = useState<boolean>(!!aasValue);
+  const [isLoading, setIsLoading] = useState(false);
   const updateAASList = async () => {
     try {
-      setIsListed(!isListed);
+      setIsLoading(true);
       if (name) {
         await OwnersAPI.updateAcns({
           name: name,
@@ -32,17 +45,23 @@ export const AasListingSwitch = ({
       setIsListed(!isListed);
     } finally {
       await mutate();
+      setIsListed(!isListed);
+      setIsLoading(false);
     }
   };
 
-  return name ? (
-    <IonRow>
-      <IonCol size={'10'}>{t('linkAlias')}</IonCol>
-      <IonCol size="2">
-        <IonToggle onIonChange={updateAASList} checked={isListed} />
+  return (
+    <StyledIonRow hidden={!name} className="link-alias-toggle-row">
+      <StyledIonCol offsetMd="3" sizeMd="4" offsetXs={'1'} sizeXs={'7'}>
+        {t('linkAlias')}
+      </StyledIonCol>
+      <IonCol sizeXs="3" sizeMd="2" style={{ padding: '5px' }}>
+        <Toggle
+          isLoading={isLoading}
+          onClickHandler={updateAASList}
+          currentState={isListed ? 'active' : 'inActive'}
+        />
       </IonCol>
-    </IonRow>
-  ) : (
-    <></>
+    </StyledIonRow>
   );
 };

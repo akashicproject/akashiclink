@@ -1,9 +1,9 @@
 import './ntf.css';
 
 import styled from '@emotion/styled';
-import { IonCol, IonIcon, IonRow } from '@ionic/react';
+import { IonCol, IonIcon, IonRow, isPlatform } from '@ionic/react';
 import { arrowBack } from 'ionicons/icons';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -22,9 +22,9 @@ const NftWrapper = styled.div({
   flexDirection: 'column',
   alignItems: 'center',
   padding: 0,
-  marginTop: '80px',
-  gap: '56px',
+  gap: '24px',
   width: '100%',
+  position: 'relative',
 });
 
 export function Nft() {
@@ -35,6 +35,7 @@ export function Nft() {
   const { nfts } = useNftMe();
   const currentNft = nfts.find((nft) => nft.name === state?.nftName)!;
   const [isOpen, setIsOpen] = useState(false);
+  const isMobile = isPlatform('mobile');
 
   const transferNft = () => {
     if (currentNft.acns?.value !== null) {
@@ -56,9 +57,18 @@ export function Nft() {
           left: '5%',
           top: '4rem',
         }}
+        forceStyle={{
+          backgroundColor: 'transparent',
+          borderColor: 'white',
+        }}
         onClick={() => history.goBack()}
       >
-        <IonIcon class="icon-button-icon" slot="icon-only" icon={arrowBack} />
+        <IonIcon
+          style={{ color: 'white' }}
+          class="icon-button-icon"
+          slot="icon-only"
+          icon={arrowBack}
+        />
       </SquareWhiteButton>
       <CustomAlert
         state={{
@@ -70,13 +80,13 @@ export function Nft() {
           },
         }}
       />
-      <NftWrapper>
-        <IonRow>
+      <NftWrapper style={{ top: isMobile ? '-10vh' : '-15vh' }}>
+        <IonRow style={{ width: '215px' }}>
           <IonCol class="ion-center">
             <OneNft nft={currentNft} isBig={true} />
           </IonCol>
         </IonRow>
-        <IonRow style={{ width: '330px' }}>
+        <IonRow style={{ width: '215px' }}>
           <IonCol>
             <PurpleButton expand="block" onClick={transferNft}>
               {t('Transfer')}

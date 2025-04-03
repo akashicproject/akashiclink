@@ -42,7 +42,6 @@ const SendWrapper = styled.div({
   flexDirection: 'column',
   alignItems: 'center',
   padding: 0,
-  margin: '24px',
   width: '270px',
 });
 
@@ -78,6 +77,15 @@ enum SearchResult {
   AcnsName = 'AcnsName',
   NoResult = 'NoResult',
 }
+const NftWrapper = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  padding: 0,
+  gap: '24px',
+  width: '100%',
+  position: 'relative',
+});
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function NftTransfer() {
@@ -188,8 +196,8 @@ export function NftTransfer() {
             <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
           </NoNtfWrapper>
         ) : (
-          <>
-            <IonRow style={{ marginTop: isMobile ? '50px' : '40px' }}>
+          <NftWrapper style={{ top: isMobile ? '-10vh' : '-15vh' }}>
+            <IonRow>
               <IonCol class="ion-center">
                 <OneNft nft={currentNft} isNameHidden={true} />
               </IonCol>
@@ -258,7 +266,7 @@ export function NftTransfer() {
                 </WhiteButton>
               </IonCol>
             </IonRow>
-          </>
+          </NftWrapper>
         )}
       </NftLayout>
     </>

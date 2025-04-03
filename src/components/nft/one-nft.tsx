@@ -39,7 +39,7 @@ export function OneNft(props: Props) {
     <NtfWrapper
       style={
         props.isBig
-          ? { width: '215px', height: '260px', padding: '16px', gap: '16px' }
+          ? { width: '181px', height: '245px', padding: '16px', gap: '16px' }
           : { width: '138px', height: '190px', padding: '8px', gap: '10px' }
       }
       onClick={props.select}
@@ -54,13 +54,13 @@ export function OneNft(props: Props) {
       >
         <NftName
           style={{
-            fontSize: props.isBig ? '21px' : '14px',
+            fontSize: '14px',
           }}
         >
-          {displayLongText(props.nft?.account)}
+          {displayLongText(props.nft?.account, 10)}
         </NftName>
         <div hidden={!props?.nft?.acns?.value}>
-          <div className="chip">AAS</div>
+          <div className={`chip-${props.isBig ? 'big' : 'small'}`}>AAS</div>
         </div>
       </div>
       <div>
@@ -71,7 +71,9 @@ export function OneNft(props: Props) {
         />
       </div>
       <IonRow>
-        <NftName style={{ color: '#7B757F', fontWeight: '700' }}>
+        <NftName
+          style={{ color: '#7B757F', fontWeight: '700', fontSize: '12px' }}
+        >
           {displayLongText(props.nft?.name)}
         </NftName>
       </IonRow>
