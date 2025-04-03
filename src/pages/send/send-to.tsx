@@ -267,6 +267,7 @@ export function SendTo() {
           setL1AddressWhenL2(undefined);
           setToAddress(recipientAddress);
           setGasFree(false);
+          debouncedHandleGasFee(amount ?? '1', recipientAddress);
         }
       }, validateAddressWithBackendTimeout)
     );
@@ -488,11 +489,7 @@ export function SendTo() {
                   type={'text'}
                   errorPrompt={StyledInputErrorPrompt.Address}
                   onIonInput={({ target: { value } }) => {
-                    validateRecipientAddressWithBackend(value as string),
-                      debouncedHandleGasFee(
-                        (amount as string) ?? '0',
-                        value as string
-                      );
+                    validateRecipientAddressWithBackend(value as string);
                   }}
                   submitOnEnter={verifyTransaction}
                   value={rawAddress}
