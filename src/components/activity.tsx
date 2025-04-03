@@ -1,6 +1,6 @@
 import '../pages/common.css';
 
-import type { ITransactionRecordResponse } from '@helium-pay/backend/src/modules/api-interfaces/transactions/transaction-records.interface';
+import type { ITransactionRecord } from '@helium-pay/backend/src/modules/api-interfaces/transactions/transaction-records.interface';
 import {
   IonButton,
   IonCard,
@@ -26,13 +26,12 @@ function Transaction({
   txn,
   onClick,
 }: {
-  txn: ITransactionRecordResponse;
+  txn: ITransactionRecord;
   onClick: () => void;
 }) {
-  const { date, amount, ownerAddress, senderAddress, coinSymbol, tokenSymbol } =
+  const { date, amount, ownerAddress, fromAddress, coinSymbol, tokenSymbol } =
     txn;
-  const txnType =
-    senderAddress === ownerAddress ? TxnType.Send : TxnType.Receive;
+  const txnType = fromAddress === ownerAddress ? TxnType.Send : TxnType.Receive;
 
   return (
     <IonCard>
@@ -74,7 +73,7 @@ export function Activity({
   onBack: () => void;
 }) {
   const transactions = txns[keyAddress];
-  const [txn, setTxn] = useState<ITransactionRecordResponse>();
+  const [txn, setTxn] = useState<ITransactionRecord>();
   const [activityView, setActivityView] = useState(ActivityView.AllTxns);
 
   if (!transactions || transactions.length == 0)

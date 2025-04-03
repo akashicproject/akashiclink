@@ -1,6 +1,7 @@
 import { CoinSymbol } from '@helium-pay/backend/src/modules/api-interfaces/coin-symbol.model';
 import type { IOwnerBalancesResponse } from '@helium-pay/backend/src/modules/api-interfaces/owner/owner-response.interface';
-import type { ITransactionRecordResponse } from '@helium-pay/backend/src/modules/api-interfaces/transactions/transaction-records.interface';
+import { TransactionLayer } from '@helium-pay/backend/src/modules/api-interfaces/transactions/transaction-layer';
+import type { ITransactionRecord } from '@helium-pay/backend/src/modules/api-interfaces/transactions/transaction-records.interface';
 import { TransactionStatus } from '@helium-pay/backend/src/modules/keys/models/transaction-status.model';
 
 export enum K {
@@ -9,38 +10,41 @@ export enum K {
   key3 = 'CCx333333',
 }
 
-export const txns: { [key: string]: ITransactionRecordResponse[] } = {
+export const txns: { [key: string]: ITransactionRecord[] } = {
   [K.key1]: [
     {
       date: new Date('2022-10-01'),
-      senderAddress: K.key1,
-      recipientAddress: 'FFx666666',
+      fromAddress: K.key1,
+      toAddress: 'FFx666666',
       coinSymbol: CoinSymbol.Bitcoin,
       amount: '100',
       status: TransactionStatus.PENDING,
       txHash: '0x1',
       ownerAddress: K.key1,
+      layer: TransactionLayer.L1,
     },
     {
       date: new Date('2022-12-01'),
-      senderAddress: K.key1,
-      recipientAddress: 'GGx7777777',
+      fromAddress: K.key1,
+      toAddress: 'GGx7777777',
       coinSymbol: CoinSymbol.Ethereum_Mainnet,
       amount: '22',
       status: TransactionStatus.CONFIRMED,
       txHash: '0x2',
       ownerAddress: K.key1,
+      layer: TransactionLayer.L1,
     },
     {
       date: new Date('2022-12-23'),
-      senderAddress: 'HHx88888888',
-      recipientAddress: K.key1,
+      fromAddress: 'HHx88888888',
+      toAddress: K.key1,
       coinSymbol: CoinSymbol.Ethereum_Mainnet,
       tokenSymbol: 'USDT',
       amount: '1',
       status: TransactionStatus.CONFIRMED,
       txHash: '0x3',
       ownerAddress: K.key1,
+      layer: TransactionLayer.L1,
     },
   ],
   [K.key2]: [],

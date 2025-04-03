@@ -1,7 +1,7 @@
 import '../pages/common.css';
 
 import { NetworkDictionary } from '@helium-pay/backend/src/modules/api-interfaces/networks/networks.model';
-import type { ITransactionRecordResponse } from '@helium-pay/backend/src/modules/api-interfaces/transactions/transaction-records.interface';
+import type { ITransactionRecord } from '@helium-pay/backend/src/modules/api-interfaces/transactions/transaction-records.interface';
 import { TransactionStatus } from '@helium-pay/backend/src/modules/keys/models/transaction-status.model';
 import {
   IonButton,
@@ -21,7 +21,7 @@ export function TransactionSummary({
   txn,
   onBack,
 }: {
-  txn: ITransactionRecordResponse;
+  txn: ITransactionRecord;
   onBack: () => void;
 }) {
   const url = `${NetworkDictionary[txn.coinSymbol].txnUrl}/${txn.txHash}`;
@@ -60,14 +60,14 @@ export function TransactionSummary({
             <IonLabel>From</IonLabel>
             <IonLabel className="ion-text-end">
               <IonIcon icon={arrowBackOutline} slot="start" />
-              {txn.senderAddress}
+              {txn.fromAddress}
             </IonLabel>
           </IonItem>
           <IonItem>
             <IonLabel>To</IonLabel>
             <IonLabel className="ion-text-end">
               <IonIcon icon={arrowBackOutline} slot="start" />
-              {txn.recipientAddress}
+              {txn.toAddress}
             </IonLabel>
           </IonItem>
           <IonItem>

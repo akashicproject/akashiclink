@@ -9,7 +9,7 @@ import type {
   IRegisterApiPassphrase,
   ITempShowOtkPrv,
   ITempShowOtkPrvResponse,
-  ITransaction,
+  ITransactionProposal,
   ITransactionVerifyResponse,
 } from '@helium-pay/backend';
 
@@ -91,7 +91,7 @@ export const OwnersAPI = {
     return response.data;
   },
   verifyTransaction: async (
-    transactionData: ITransaction
+    transactionData: ITransactionProposal
   ): Promise<ITransactionVerifyResponse[]> => {
     const response = await axiosOwnerBase.post(
       `/key/verify-txns`,
