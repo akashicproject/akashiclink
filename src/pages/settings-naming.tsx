@@ -171,7 +171,6 @@ export function SettingsNaming() {
 
   const { acns } = useNftAcnsMe();
   const namedAcns = acns.filter((a) => !!a.value);
-  console.log(namedAcns);
   const [view, setView] = useState(View.list);
   const [alert, setAlert] = useState(formAlertResetState);
   const [editAcns, setEditAcns] = useState(namedAcns[0]);
@@ -183,15 +182,18 @@ export function SettingsNaming() {
   const [loading, setLoading] = useState(false);
 
   const removeAcns = async (name: string) => {
-    setIsConfirmModel(false);
+    setLoading(true);
     try {
       await OwnersAPI.updateAcns({
         name: name,
         newValue: null,
       });
+      setIsConfirmModel(false);
       setIsResultModel(true);
     } catch (error) {
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -245,7 +247,7 @@ export function SettingsNaming() {
                     <OneAcnsWrapper>
                       <AcnsName>{oneAcns.name}</AcnsName>
                       <AcnsAddress>
-                        {displayLongText(oneAcns.ownerIdentity)}
+                        {oneAcns.value ? displayLongText(oneAcns.value) : 'N/A'}
                       </AcnsAddress>
                       <EditBox>
                         <IonButton
@@ -265,6 +267,7 @@ export function SettingsNaming() {
                             setEditAcns(oneAcns);
                             setIsConfirmModel(true);
                           }}
+                          disabled={!oneAcns.value}
                         >
                           <IonIcon
                             slot="icon-only"
@@ -368,6 +371,9 @@ export function SettingsNaming() {
                 onClick={() => removeAcns(editAcns.name)}
               >
                 {t('Confirm')}
+                {loading ? (
+                  <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
+                ) : null}
               </PurpleButton>
             </IonCol>
             <IonCol>

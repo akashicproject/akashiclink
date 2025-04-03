@@ -2,7 +2,7 @@ import './ntf.css';
 
 import styled from '@emotion/styled';
 import type { INftResponse } from '@helium-pay/backend';
-import { IonIcon } from '@ionic/react';
+import { IonIcon, IonSpinner } from '@ionic/react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -16,7 +16,7 @@ import { akashicPayPath } from '../../routing/navigation-tree';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 
-const NoNtfWrapper = styled.div({
+export const NoNtfWrapper = styled.div({
   width: '100%',
   display: 'inline-flex',
   flexDirection: 'column',
@@ -25,7 +25,7 @@ const NoNtfWrapper = styled.div({
   marginTop: '200px',
 });
 
-const NoNtfText = styled.div({
+export const NoNtfText = styled.div({
   fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 700,
@@ -53,8 +53,8 @@ export function Nfts() {
   const { t } = useTranslation();
   const history = useHistory();
 
-  const { nfts } = useNftMe();
-  const [_, setNft, __] = useLocalStorage('nft', nfts[0]?.name);
+  const { nfts, isLoading } = useNftMe();
+  const [_, setNft, __] = useLocalStorage('nft', '');
   const selectNft = (nft: INftResponse) => {
     setNft(nft.name);
     history.push({
@@ -67,7 +67,11 @@ export function Nfts() {
   };
   return (
     <NftLayout>
-      {nfts.length === 0 ? (
+      {isLoading ? (
+        <NoNtfWrapper>
+          <IonSpinner name="circular"></IonSpinner>
+        </NoNtfWrapper>
+      ) : nfts.length === 0 ? (
         <NoNtfWrapper>
           <IonIcon icon={alertCircleOutline} class="alert-icon" />
           <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>

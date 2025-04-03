@@ -57,9 +57,12 @@
   font-style: normal;
   font-weight: 400;
   width: 72px;
+  height: 40px;
   --color: #ffffff !important;
   background: #7444b6;
-  text-align: center;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
 }
 
 input::-webkit-outer-spin-button,

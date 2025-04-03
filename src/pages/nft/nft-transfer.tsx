@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { L2Regex } from '@helium-pay/owners/src/constants/currencies';
-import { IonCol, IonImg, IonRow } from '@ionic/react';
+import { IonCol, IonIcon, IonImg, IonRow, IonSpinner } from '@ionic/react';
+import { alertCircleOutline } from 'ionicons/icons';
 import { debounce } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +29,7 @@ import { displayLongText } from '../../utils/long-text';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import type { TransferResultType } from './nft-transfer-result';
 import { NftTransferResult } from './nft-transfer-result';
+import { NoNtfText, NoNtfWrapper } from './nfts';
 
 const SendWrapper = styled.div({
   display: 'flex',
@@ -90,36 +92,53 @@ enum TransferView {
   Result = 'Result',
 }
 
+enum SearchResult {
+  Layer2 = 'Layer2',
+  AcnsName = 'AcnsName',
+  NoResult = 'NoResult',
+}
+
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export function NftTransfer() {
   const { t } = useTranslation();
-  const { nfts } = useNftMe();
+  const { nfts, isLoading } = useNftMe();
   const { owner } = useOwner();
-  const [_, __, nftName] = useLocalStorage('nft', nfts[0].name);
+  const [_, __, nftName] = useLocalStorage('nft', '');
   const currentNft = nfts.find((nft) => nft.name === nftName) || nfts[0];
-  const [inputUsername, setInputUsername] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>('');
   const [toAddress, setToAddress] = useState<string>('');
   const [searched, setSearched] = useState(false);
+  const [searchedResultType, setSearchedResultType] = useState(
+    SearchResult.NoResult
+  );
 
   // Keeps track of which page the user is at
   const [pageView, setPageView] = useState(TransferView.Transfer);
   const [alert, setAlert] = useState(formAlertResetState);
   const [transferResult, setTransferResult] = useState<TransferResultType>();
+  const [loading, setLoading] = useState(false);
 
   // input username to address
   // TODO: we need to add more check constraint in the future, like l2 address start with "AS"
   const inputToAddress = async (value: string) => {
+    if (value === '') {
+      setToAddress('');
+      setSearched(false);
+      setSearchedResultType(SearchResult.NoResult);
+    }
     const searchResult = await OwnersAPI.checkL2Address({
       to: value,
     });
     if (searchResult && value.match(L2Regex)) {
       setToAddress(searchResult);
+      setSearchedResultType(SearchResult.Layer2);
       setSearched(true);
     } else {
-      // Check if anything found by Acns
-      const acnsResult = await OwnersAPI.checkL2AddressByAcns({ to: value });
-      if (acnsResult) {
-        setToAddress(acnsResult);
+      const acnsResult = await OwnersAPI.nftSearch({ searchValue: value });
+      if (acnsResult.value) {
         setSearched(true);
+        setToAddress(acnsResult.value);
+        setSearchedResultType(SearchResult.AcnsName);
       } else {
         setSearched(false);
       }
@@ -131,6 +150,7 @@ export function NftTransfer() {
       nftName: currentNft.name,
       toL2Address: toAddress,
     };
+    setLoading(true);
     try {
       const response = await OwnersAPI.nftTransfer(payload);
       const result = {
@@ -142,6 +162,8 @@ export function NftTransfer() {
       setPageView(TransferView.Result);
     } catch (error) {
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -158,70 +180,97 @@ export function NftTransfer() {
   return (
     <>
       <Alert state={alert} />
+      {isLoading && (
+        <NoNtfWrapper>
+          <IonSpinner name="circular"></IonSpinner>
+        </NoNtfWrapper>
+      )}
       {pageView === TransferView.Transfer && (
         <NftLayout>
-          <IonRow style={{ marginTop: '50px' }}>
-            <IonCol class="ion-center">
-              <OneNft nft={currentNft} />
-            </IonCol>
-          </IonRow>
-          <IonRow style={{ marginTop: '40px' }}>
-            <IonCol class="ion-center">
-              <SendWrapper>
-                <StyledInput
-                  isHorizontal={true}
-                  label={t('SendTo')}
-                  placeholder={t('EnterAddress')}
-                  type={'text'}
-                  errorPrompt={StyledInputErrorPrompt.Address}
-                  onIonInput={({ target: { value } }) => {
-                    debouncedSearchHandler(value as string);
-                    setInputUsername(value as string);
-                  }}
-                />
-                <AddressWrapper>
-                  {inputUsername && inputUsername !== toAddress && (
-                    <AddressBox>
-                      {searched
-                        ? `${inputUsername} = ${displayLongText(toAddress)}`
-                        : t('NoSearchResult')}
-                    </AddressBox>
-                  )}
-                  {!inputUsername ? null : (
-                    <IonImg
-                      alt={''}
-                      src={
-                        searched
-                          ? '/shared-assets/images/right.png'
-                          : '/shared-assets/images/wrong.png'
-                      }
-                      style={{ width: '40px', height: '40px' }}
+          {isLoading ? (
+            <NoNtfWrapper>
+              <IonSpinner name="circular"></IonSpinner>
+            </NoNtfWrapper>
+          ) : nfts.length === 0 ? (
+            <NoNtfWrapper>
+              <IonIcon icon={alertCircleOutline} class="alert-icon" />
+              <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
+            </NoNtfWrapper>
+          ) : (
+            <>
+              <IonRow style={{ marginTop: '50px' }}>
+                <IonCol class="ion-center">
+                  <OneNft nft={currentNft} />
+                </IonCol>
+              </IonRow>
+              <IonRow style={{ marginTop: '40px' }}>
+                <IonCol class="ion-center">
+                  <SendWrapper>
+                    <StyledInput
+                      isHorizontal={true}
+                      label={t('SendTo')}
+                      placeholder={t('EnterAddress')}
+                      type={'text'}
+                      errorPrompt={StyledInputErrorPrompt.Address}
+                      onIonInput={({ target: { value } }) => {
+                        debouncedSearchHandler(value as string);
+                        setInputValue(value as string);
+                      }}
                     />
-                  )}
-                </AddressWrapper>
-                <FeeMarker>{t('Fee')}: 0.001ETH</FeeMarker>
-              </SendWrapper>
-            </IonCol>
-          </IonRow>
-          <IonRow
-            class="ion-justify-content-between"
-            style={{ marginTop: '40px', width: '280px' }}
-          >
-            <IonCol>
-              <PurpleButton
-                expand="block"
-                disabled={!inputUsername || !searched}
-                onClick={transferNft}
+                    <AddressWrapper>
+                      {inputValue && (
+                        <AddressBox>
+                          {searchedResultType === SearchResult.AcnsName &&
+                            `${inputValue} = ${displayLongText(toAddress)}`}
+                          {searchedResultType === SearchResult.Layer2 &&
+                            `${displayLongText(toAddress)}`}
+                          {searchedResultType === SearchResult.NoResult &&
+                            t('NoSearchResult')}
+                        </AddressBox>
+                      )}
+                      {!inputValue ? null : (
+                        <IonImg
+                          alt={''}
+                          src={
+                            searched
+                              ? '/shared-assets/images/right.png'
+                              : '/shared-assets/images/wrong.png'
+                          }
+                          style={{ width: '40px', height: '40px' }}
+                        />
+                      )}
+                    </AddressWrapper>
+                    <FeeMarker>{t('Fee')}: 0.001ETH</FeeMarker>
+                  </SendWrapper>
+                </IonCol>
+              </IonRow>
+              <IonRow
+                class="ion-justify-content-between"
+                style={{ marginTop: '40px', width: '280px' }}
               >
-                {t('Send')}
-              </PurpleButton>
-            </IonCol>
-            <IonCol>
-              <WhiteButton expand="block" routerLink={akashicPayPath(urls.nft)}>
-                {t('Cancel')}
-              </WhiteButton>
-            </IonCol>
-          </IonRow>
+                <IonCol>
+                  <PurpleButton
+                    expand="block"
+                    disabled={!inputValue || !searched}
+                    onClick={transferNft}
+                  >
+                    {t('Send')}
+                    {loading ? (
+                      <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
+                    ) : null}
+                  </PurpleButton>
+                </IonCol>
+                <IonCol>
+                  <WhiteButton
+                    expand="block"
+                    routerLink={akashicPayPath(urls.nft)}
+                  >
+                    {t('Cancel')}
+                  </WhiteButton>
+                </IonCol>
+              </IonRow>
+            </>
+          )}
         </NftLayout>
       )}
       {pageView === TransferView.Result && (

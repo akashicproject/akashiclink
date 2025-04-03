@@ -51,7 +51,7 @@ export function Nft() {
   const history = useHistory();
 
   const { nfts } = useNftMe();
-  const [_, __, nftName] = useLocalStorage('nft', nfts[0]?.name);
+  const [_, __, nftName] = useLocalStorage('nft', '');
   const currentNft = nfts.find((nft) => nft.name === nftName) || nfts[0];
   const [isOpen, setIsOpen] = useState(false);
 
