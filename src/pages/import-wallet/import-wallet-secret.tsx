@@ -156,7 +156,10 @@ export const ImportWalletSecret = () => {
                 src="shared-assets/images/alert.svg"
               />
               <IonText>
-                <h5 className="ion-no-margin ion-text-size-xs">
+                <h5
+                  style={{ textAlign: 'left' }}
+                  className="ion-no-margin ion-text-size-xs"
+                >
                   {t('PasteYourSecretPhrase')}
                 </h5>
               </IonText>
