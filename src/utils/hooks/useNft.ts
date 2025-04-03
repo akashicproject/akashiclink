@@ -1,4 +1,4 @@
-import type { ChainType, INftResponse } from '@helium-pay/backend';
+import type { ChainType, INft } from '@helium-pay/backend';
 import buildURL from 'axios/unsafe/helpers/buildURL';
 import useSWR from 'swr';
 
@@ -11,7 +11,7 @@ export const useNft = (nftName: string, chainType: ChainType) => {
     {}
   );
   return {
-    nft: (data || {}) as INftResponse,
+    nft: (data || {}) as INft,
     isLoading: !error && !data,
     isError: error,
   };

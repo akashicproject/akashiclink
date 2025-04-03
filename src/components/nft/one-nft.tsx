@@ -2,14 +2,14 @@ import './one-nft.scss';
 
 import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
-import type { INft, INftResponse } from '@helium-pay/backend';
+import type { INft } from '@helium-pay/backend';
 import { IonContent, IonIcon, IonImg, IonPopover, IonRow } from '@ionic/react';
 import { t } from 'i18next';
 import { useRef, useState } from 'react';
 
 import { displayLongText } from '../../utils/long-text';
 interface Props {
-  nft: INft | INftResponse;
+  nft: INft;
   select?: () => void;
   style?: React.CSSProperties;
   isBig?: boolean;

@@ -1,7 +1,7 @@
 import './ntf.scss';
 
 import styled from '@emotion/styled';
-import type { INftResponse } from '@helium-pay/backend';
+import type { INft } from '@helium-pay/backend';
 import {
   IonCol,
   IonGrid,
@@ -71,7 +71,7 @@ export function Nfts() {
   });
   const isMobile = isPlatform('mobile');
 
-  const selectNft = (nft: INftResponse) => {
+  const selectNft = (nft: INft) => {
     history.push({
       pathname: akashicPayPath(urls.nft),
       state: {

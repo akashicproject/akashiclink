@@ -1,4 +1,4 @@
-import type { INftResponse } from '@helium-pay/backend';
+import type { INft } from '@helium-pay/backend';
 import useSWR from 'swr';
 
 import { REFRESH_INTERVAL } from '../../constants';
@@ -15,7 +15,7 @@ export const useNftMe = () => {
     }
   );
   return {
-    nfts: (data || []) as INftResponse[],
+    nfts: (data || []) as INft[],
     isLoading: !error && !data,
     isError: error,
     mutateNftMe: mutate,
