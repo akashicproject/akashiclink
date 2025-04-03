@@ -34,17 +34,20 @@ enum DropdownOptions {
  *
  * @param onClickCallback to execute when an account is selected
  * @param changeSelection for data binding in external component
+ * @param removeCreateImport to add the "CreateAccount" + "ImportAccount" options
  */
 export function AccountSelection({
   onClickCallback,
   changeSelection,
   isCopyButton,
   style,
+  removeCreateImport,
 }: {
   onClickCallback?: (selectedAccount: LocalAccount) => void;
   changeSelection?: (selectedAccount: LocalAccount) => void;
   isCopyButton?: boolean;
   style?: CSSProperties;
+  removeCreateImport?: boolean;
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -92,13 +95,14 @@ export function AccountSelection({
       style={{
         display: 'flex',
         flexDirection: 'row',
+        justifyContent: 'space-between',
         gap: '15px',
         width: '100%',
         ...style,
       }}
     >
       <IonSelect
-        style={{ maxWidth: isCopyButton ? '190px' : null }}
+        style={{ flexGrow: 1 }}
         value={selectedAccount}
         onIonChange={({ detail: { value } }) => {
           setSelectedAccount(value);
@@ -132,18 +136,22 @@ export function AccountSelection({
               {account.identity}
             </IonSelectOption>
           )),
-          <IonSelectOption
-            key={DropdownOptions.CreateAccount}
-            value={DropdownOptions.CreateAccount}
-          >
-            {t('CreateWallet')}
-          </IonSelectOption>,
-          <IonSelectOption
-            key={DropdownOptions.ImportAccount}
-            value={DropdownOptions.ImportAccount}
-          >
-            {t('ImportWallet')}
-          </IonSelectOption>,
+          ...(removeCreateImport
+            ? []
+            : [
+                <IonSelectOption
+                  key={DropdownOptions.CreateAccount}
+                  value={DropdownOptions.CreateAccount}
+                >
+                  {t('CreateWallet')}
+                </IonSelectOption>,
+                <IonSelectOption
+                  key={DropdownOptions.ImportAccount}
+                  value={DropdownOptions.ImportAccount}
+                >
+                  {t('ImportWallet')}
+                </IonSelectOption>,
+              ]),
         ]}
       </IonSelect>
       {isCopyButton ? (

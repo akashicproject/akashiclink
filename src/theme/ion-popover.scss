@@ -21,7 +21,7 @@ ion-popover {
     /* Item under user's cursor */
     --background-hover: var(--ion-color-primary);
     --background-hover-opacity: 30%;
-    --background: transparent !important;
+    --background: transparent;
     --ripple-color: var(--ion-color-tertiary);
 
     /* Item under selection */

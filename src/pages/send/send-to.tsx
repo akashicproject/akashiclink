@@ -111,8 +111,6 @@ const GasFreeMarker = styled.div({
   fontWeight: '400',
   fontSize: '10px',
   lineHeight: '16px',
-  background: '#41CC9A',
-  color: '#FFFFFF',
 });
 
 const FeeMarker = styled.div({
@@ -393,10 +391,11 @@ export function SendTo() {
                   <GasFreeMarker
                     style={{
                       background: !toAddress
-                        ? 'rgba(103, 80, 164, 0.08)'
+                        ? 'rgba(103, 80, 164, 0.12)'
                         : gasFree
                         ? '#41CC9A'
                         : '#DE3730',
+                      color: !toAddress ? '#2B0053' : '#FFFFFF',
                     }}
                   >
                     {t('GasFree')}

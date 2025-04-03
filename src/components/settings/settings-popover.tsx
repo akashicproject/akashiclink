@@ -148,6 +148,13 @@ export function SettingsPopover() {
         <SettingsList>
           <SettingSubmenu displayText={t('General')} id="general-menu">
             <SettingsList isSubmenu={true}>
+              <IonItem
+                style={{
+                  '--background': 'var(--ion-color-secondary)',
+                }}
+              >
+                <SettingsText text="Languages" />
+              </IonItem>
               {LANGUAGE_LIST.map((l) => (
                 <SettingsItem
                   key={l.locale}
@@ -174,10 +181,12 @@ export function SettingsPopover() {
                 displayText="Key Pair Backup"
                 routerLink={akashicPayPath(urls.settingsBackup)}
               />
-              <SettingsItem
-                displayText="Recovery"
-                routerLink={akashicPayPath(urls.recover)}
-              />
+              {/**
+               * <SettingsItem
+               * displayText="Recovery"
+               * routerLink={akashicPayPath(urls.recover)}
+               * />
+               */}
             </SettingsList>
           </SettingSubmenu>
 

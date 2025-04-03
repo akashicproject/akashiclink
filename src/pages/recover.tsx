@@ -36,7 +36,7 @@ export function Recover() {
 
   return (
     <LoggedLayout>
-      <MainGrid>
+      <MainGrid className="force-center">
         {view === ResetEmailState.SetEmail && (
           <>
             <IonRow>

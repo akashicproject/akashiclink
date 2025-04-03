@@ -1,6 +1,7 @@
 import type { CSSInterpolation } from '@emotion/serialize/types';
 import styled from '@emotion/styled';
 import { IonButton } from '@ionic/react';
+import type { CSSProperties } from 'react';
 
 const purple = '#7444B6';
 const white = '#FFFFFF';
@@ -51,14 +52,6 @@ const whiteButtonBase: CSSInterpolation = {
 const whiteButtonCss: CSSInterpolation = {
   ['&::part(native)']: {
     ...buttonBaseCss,
-    ...whiteButtonBase,
-    ...buttonTextBaseCss,
-  },
-};
-
-const squareWhiteButtonCss: CSSInterpolation = {
-  ['&::part(native)']: {
-    ...squareButtonBaseCss,
     ...whiteButtonBase,
     ...buttonTextBaseCss,
   },
@@ -123,9 +116,16 @@ export const WhiteButton = styled(IonButton)({
   ...whiteButtonCss,
 });
 
-export const SquareWhiteButton = styled(IonButton)({
-  ...squareWhiteButtonCss,
-});
+export const SquareWhiteButton = styled(IonButton, {
+  shouldForwardProp: (props) => props !== 'forceStyle',
+})<{ forceStyle?: CSSProperties }>(({ forceStyle }) => ({
+  ['&::part(native)']: {
+    ...squareButtonBaseCss,
+    ...whiteButtonBase,
+    ...buttonTextBaseCss,
+    ...(forceStyle ? forceStyle : {}),
+  },
+}));
 
 export const TabButton = styled(IonButton)({
   ...tabButtonCss,

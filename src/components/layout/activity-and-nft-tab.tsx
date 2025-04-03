@@ -11,13 +11,7 @@ import { akashicPayPath } from '../../routing/navigation-tree';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { OneActivity } from '../activity/one-activity';
 import { TabButton } from '../buttons';
-
-const Tabs = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'flex-start',
-  height: '40px',
-});
+import { Tabs } from './tabs';
 
 const SeeMore = styled(Link)({
   fontStyle: 'normal',
@@ -96,6 +90,7 @@ export const ActivityAndNftTab = () => {
                   ? { height: '40px', margin: '10px auto 9px' }
                   : { height: '40px', margin: '9px auto 5px' }
               }
+              divider={index === 0}
             />
           );
         })}

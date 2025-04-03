@@ -76,3 +76,14 @@ ion-content {
     background: black;
   }
 }
+
+/** Force move the box to approximately the middle of the screen by:
+ * - Adding a margin that occpies approximately half of screen
+ * - Translating by the height of the box
+ */
+.force-center {
+  margin-top: 40vh;
+  max-width: 70%;
+  transform: translateY(-100%);
+  --webkit-transform: translateY(-100%);
+}

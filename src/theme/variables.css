@@ -93,6 +93,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-current-selection: #6750a4;
   --ion-current-selection-opacity: 12%;
   --ion-select-border: #958e99;
+  --ion-light-text: #b0a9b3;
 
   /** settings popup background color **/
   --settings-popup-background-color: #fff;
@@ -191,6 +192,7 @@ body.dark {
   --ion-current-selection: #625b71;
   --ion-current-selection-opacity: 100%;
   --ion-select-border: #958e99;
+  --ion-light-text: #b0a9b3;
 
   /** settings popup background color **/
   --settings-popup-background-color: #2c2c2c;

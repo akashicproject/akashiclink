@@ -22,15 +22,15 @@ export function ConfirmLockPassword({
   const [password, setPassword] = useState<string>();
 
   return (
-    <MainGrid>
+    <MainGrid className="force-center">
       <IonRow>
         <IonCol>
           <h2>{t('KeyPairBackup')}</h2>
         </IonCol>
       </IonRow>
-      <IonRow>
+      <IonRow style={{ marginBottom: '24px' }}>
         <IonCol>
-          <h4>{t('PleaseEnterYourPassword')}</h4>
+          <h6>{t('PleaseEnterYourPassword')}</h6>
         </IonCol>
       </IonRow>
       <IonRow>

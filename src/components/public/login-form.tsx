@@ -84,6 +84,7 @@ export function LoginForm() {
             type={'password'}
             placeholder={t('PleaseEnterYourPassword')}
             onIonInput={({ target: { value } }) => setPassword(value as string)}
+            onKeyPress={(e) => e.key === 'Enter' && login()}
           />
         </IonCol>
       </IonRow>

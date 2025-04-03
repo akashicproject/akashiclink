@@ -27,15 +27,6 @@ import { WALLET_CURRENCIES } from '../utils/supported-currencies';
 // install Virtual module
 SwiperCore.use([Virtual, Navigation]);
 
-const BalanceWrapper = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: 0,
-  gap: '8px',
-  height: '56px',
-});
-
 const BalanceTitle = styled.div({
   fontStyle: 'normal',
   fontWeight: 700,
@@ -45,12 +36,9 @@ const BalanceTitle = styled.div({
   color: 'var(--ion-color-primary-10)',
 });
 
-const BalanceText = styled.div({
-  fontStyle: 'normal',
+const BalanceText = styled.h4({
   fontWeight: 500,
-  fontSize: '14px',
-  lineHeight: '20px',
-  color: 'var(--ion-color-primary-10)',
+  margin: '4px',
 });
 
 export function SelectCoin() {
@@ -246,17 +234,19 @@ export function SelectCoin() {
           </Swiper>
         </IonCol>
       </IonRow>
-      <IonRow style={{ minHeight: '100px' }}>
-        <IonCol class="ion-center">
-          <BalanceWrapper>
-            <BalanceTitle>
-              {limitDecimalPlaces(
-                aggregatedBalances.get(focusCurrency.currency) || 0
-              )}{' '}
-              {focusCurrency.symbol}
-            </BalanceTitle>
-            <BalanceText>${`${focusCurrencyUSDT} USD`}</BalanceText>
-          </BalanceWrapper>
+      <IonRow class="ion-margin-top">
+        <IonCol class="ion-no-padding">
+          <BalanceTitle>
+            {limitDecimalPlaces(
+              aggregatedBalances.get(focusCurrency.currency) || 0
+            )}{' '}
+            {focusCurrency.symbol.toUpperCase()}
+          </BalanceTitle>
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol class="ion-no-padding">
+          <BalanceText>${`${focusCurrencyUSDT} USD`}</BalanceText>
         </IonCol>
       </IonRow>
     </>

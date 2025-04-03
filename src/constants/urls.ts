@@ -29,7 +29,6 @@ export const urls = {
   send: 'send',
   settingsBackup: 'settings-backup',
   settingsNaming: 'settings-naming',
-  settingsInfo: 'settings-info',
   settingsVersion: 'settings-version',
   error: 'error',
   us2: 'us2',

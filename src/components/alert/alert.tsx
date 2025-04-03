@@ -48,13 +48,23 @@ export function Alert({ state: externalState }: { state: FormAlertState }) {
    */
   useEffect(() => setState(externalState), [externalState]);
 
+  /** Monitors key presses to dismiss alert on ENTER */
+  const handleKeyPress = (event: KeyboardEvent) =>
+    event.key === 'Enter' && setState(formAlertResetState);
   return (
     <IonAlert
       isOpen={state.visible}
       header={state.success ? `${t('Success')}` : `${t('Failure')}`}
       message={state.message}
       buttons={['OK']}
-      onDidDismiss={() => setState(formAlertResetState)}
+      /* Listen for keydown events once rendered - stop once closed */
+      onDidPresent={() => {
+        document.addEventListener('keydown', handleKeyPress);
+      }}
+      onDidDismiss={() => {
+        document.removeEventListener('keydown', handleKeyPress);
+        setState(formAlertResetState);
+      }}
     />
   );
 }

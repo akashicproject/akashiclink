@@ -1,27 +1,18 @@
-import styled from '@emotion/styled';
-import { IonCol, IonImg, IonRow } from '@ionic/react';
+import { IonCol, IonRow } from '@ionic/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
   Alert,
+  AlertBox,
   errorAlertShell,
   formAlertResetState,
 } from '../components/alert/alert';
-import { PurpleButton, WhiteButton } from '../components/buttons';
 import { ConfirmLockPassword } from '../components/confirm-lock-password';
-import { DividerDiv } from '../components/layout/divider';
 import { LoggedLayout } from '../components/layout/logged-layout';
 import { MainGrid } from '../components/layout/main-grid';
 import { OtkBox } from '../components/otk-box/otk-box';
 import { OwnersAPI } from '../utils/api';
-
-const WarningText = styled.span({
-  fontWeight: 700,
-  fontSize: '14px',
-  lineHeight: '20px',
-  color: 'red',
-});
 
 export enum BackupKeyPairState {
   ConfirmPassword,
@@ -57,15 +48,10 @@ export function SettingsBackup() {
         <ConfirmLockPassword setVal={fetchKeyPair} />
       )}
       {view === BackupKeyPairState.ViewKeyPair && (
-        <MainGrid>
+        <MainGrid className="force-center">
           <IonRow>
             <IonCol>
               <h2>{t('ThisIsYourKeyPair')}</h2>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol class="ion-center">
-              <IonImg alt="dummy QE" src="/shared-assets/images/no-data.svg" />
             </IonCol>
           </IonRow>
           <IonRow>
@@ -75,20 +61,13 @@ export function SettingsBackup() {
           </IonRow>
           <IonRow>
             <IonCol class="ion-center">
-              <WarningText>{t('KeyPairWarning')}</WarningText>
-            </IonCol>
-          </IonRow>
-          <IonRow class="ion-center">
-            <DividerDiv />
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <WhiteButton expand="block">{t('ViewAccountAt')}</WhiteButton>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <PurpleButton expand="block">{t('ExportKeyPair')}</PurpleButton>
+              <AlertBox
+                state={{
+                  visible: true,
+                  success: false,
+                  message: t('KeyPairWarning'),
+                }}
+              />
             </IonCol>
           </IonRow>
         </MainGrid>

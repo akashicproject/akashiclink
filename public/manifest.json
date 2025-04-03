@@ -3,6 +3,7 @@
   "name": "Akashic Wallet",
   "description": "Your interface with the nitr0gen ecosystem",
   "version": "0.0.3.7",
+  "releaseDate": "2023-07-21",
   "icons": {
     "16": "shared-assets/icons/APicon.png",
     "48": "shared-assets/icons/APicon.png",

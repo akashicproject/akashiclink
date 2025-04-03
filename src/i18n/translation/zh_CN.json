@@ -149,5 +149,7 @@
   "EditAcnsSuccess": "注册成功",
   "NftName": "Nft名称",
   "Languages": "语言",
-  "NoActivity": "未被激活"
+  "NoActivity": "未被激活",
+  "Wallet": "钱包",
+  "Address": "地址"
 }

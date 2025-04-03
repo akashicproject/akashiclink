@@ -2,7 +2,6 @@ import './otk-box.scss';
 
 import { Clipboard } from '@capacitor/clipboard';
 import {
-  IonButton,
   IonContent,
   IonIcon,
   IonItem,
@@ -12,6 +11,8 @@ import {
 import { copyOutline } from 'ionicons/icons';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { SquareWhiteButton } from '../buttons';
 
 /**
  * Simple box storing wrapped text with optional copy button on the side
@@ -63,13 +64,15 @@ export function OtkBox({
           {text}
         </h4>
         {withCopy && (
-          <IonButton
+          <SquareWhiteButton
             class="icon-button"
             slot="end"
             onClick={handleCopy}
             style={{
               height: '100%',
+              '--background': 'red',
             }}
+            forceStyle={{ height: '100%' }}
           >
             <IonIcon
               slot="icon-only"
@@ -86,7 +89,7 @@ export function OtkBox({
             >
               <IonContent class="ion-padding">{t('Copied')}</IonContent>
             </IonPopover>
-          </IonButton>
+          </SquareWhiteButton>
         )}
       </IonItem>
     </>

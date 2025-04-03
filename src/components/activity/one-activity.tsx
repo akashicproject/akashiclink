@@ -16,6 +16,7 @@ import { displayLongCurrencyAmount } from '../../utils/long-amount';
 import { L2Icon } from '../../utils/supported-currencies';
 const OneTransfer = styled.div<{ hover: boolean }>((props) => ({
   display: 'flex',
+  justifyContent: 'center',
   gap: '16px',
   cursor: props.hover ? 'pointer' : 'auto',
   transition: 'background ease-in-out 0.3s',

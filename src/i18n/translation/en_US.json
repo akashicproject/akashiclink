@@ -149,5 +149,7 @@
   "EditAcnsSuccess": "Successfully Registered",
   "NftName": "NFT Name",
   "Languages": "Languages",
-  "NoActivity": "No Activity yet"
+  "NoActivity": "No Activity yet",
+  "Wallet": "Wallet",
+  "Address": "Address"
 }
