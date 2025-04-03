@@ -31,7 +31,8 @@ export interface TransferResultType {
 export function NftTransferResult() {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
-  const wrongResult = history.location.state?.errorMsg !== errorMsgs.NoError;
+  const state = history.location.state?.nftTransferResult;
+  const wrongResult = state?.errorMsg !== errorMsgs.NoError;
   const isMobile = isPlatform('mobile');
   return (
     <NftLayout noFooter={true}>
@@ -48,9 +49,7 @@ export function NftTransferResult() {
               style={{ width: '40px', height: '40px' }}
             />
             <HeaderTitle style={{ width: '213px' }}>
-              {wrongResult
-                ? history.location.state?.errorMsg
-                : t('TransactionSuccessful')}
+              {wrongResult ? state?.errorMsg : t('TransactionSuccessful')}
             </HeaderTitle>
           </HeaderWrapper>
         </IonCol>
@@ -63,32 +62,24 @@ export function NftTransferResult() {
               <TextWrapper>
                 <TextTitle>{t('txHash')}</TextTitle>
                 <TextContent>
-                  {displayLongText(
-                    history.location.state?.transaction?.txHash || ''
-                  )}
+                  {displayLongText(state?.transaction?.txHash || '')}
                 </TextContent>
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('Sender')}</TextTitle>
                 <TextContent>
-                  {displayLongText(
-                    history.location.state?.transaction?.sender || ''
-                  )}
+                  {displayLongText(state?.transaction?.sender || '')}
                 </TextContent>
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('Receiver')}</TextTitle>
                 <TextContent>
-                  {displayLongText(
-                    history.location.state?.transaction?.receiver
-                  )}
+                  {displayLongText(state?.transaction?.receiver)}
                 </TextContent>
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{'NFT'}</TextTitle>
-                <TextContent>
-                  {history.location.state?.transaction?.acnsAlias}
-                </TextContent>
+                <TextContent>{state?.transaction?.acnsAlias}</TextContent>
               </TextWrapper>
             </ResultContent>
           </IonCol>

@@ -1,12 +1,15 @@
 import styled from '@emotion/styled';
-import type { ITransactionVerifyResponse as VerifiedTransaction } from '@helium-pay/backend';
 import { IonCol, IonImg, IonRow } from '@ionic/react';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router';
 
 import { PurpleButton } from '../../components/buttons';
 import { DividerDivWithoutMargin } from '../../components/layout/divider';
 import { errorMsgs } from '../../constants/error-messages';
+import { urls } from '../../constants/urls';
+import type { LocationState } from '../../history';
+import { akashicPayPath } from '../../routing/navigation-tree';
 import { displayLongText } from '../../utils/long-text';
 import { SendMain } from './send-main';
 
@@ -66,22 +69,19 @@ export const TextContent = styled.div({
   lineHeight: '24px',
   color: 'var(--ion-color-primary-10)',
 });
-interface Props {
-  transaction: VerifiedTransaction[] | undefined;
-  errorMsg: string;
-  currencyDisplayName: string;
-  goBack: () => void;
-}
-export function SendResult(props: Props) {
+
+export function SendResult() {
   const { t } = useTranslation();
-  const wrongResult = props.errorMsg !== errorMsgs.NoError;
+  const history = useHistory<LocationState>();
+  const state = history.location.state?.sendResult;
+  const wrongResult = state?.errorMsg !== errorMsgs.NoError;
   const Layer =
-    props.transaction && props.transaction[0]?.forceL1
+    state?.transaction && state?.transaction[0]?.forceL1
       ? ' - ' + t('Layer1')
       : '';
 
-  const totalAmount = props.transaction
-    ? props.transaction
+  const totalAmount = state?.transaction
+    ? state?.transaction
         .reduce((sum, { amount }) => Big(amount).add(sum), Big(0))
         .toString()
     : '0';
@@ -102,7 +102,7 @@ export function SendResult(props: Props) {
             />
             <HeaderTitle style={{ width: '213px' }}>
               {wrongResult
-                ? props.errorMsg
+                ? state?.errorMsg
                 : t('TransactionSuccessful') + Layer}
             </HeaderTitle>
             <DividerDivWithoutMargin />
@@ -117,7 +117,7 @@ export function SendResult(props: Props) {
                 <TextTitle>{t('Send')}</TextTitle>
                 <TextContent>
                   {displayLongText(
-                    props.transaction ? props.transaction[0].fromAddress : ''
+                    state?.transaction ? state?.transaction[0].fromAddress : ''
                   )}
                 </TextContent>
               </TextWrapper>
@@ -125,13 +125,13 @@ export function SendResult(props: Props) {
                 <TextTitle>{t('Receiver')}</TextTitle>
                 <TextContent>
                   {displayLongText(
-                    props.transaction ? props.transaction[0].toAddress : ''
+                    state?.transaction ? state?.transaction[0].toAddress : ''
                   )}
                 </TextContent>
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('Coin')}</TextTitle>
-                <TextContent>{props.currencyDisplayName}</TextContent>
+                <TextContent>{state?.currencyDisplayName}</TextContent>
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('Amount')}</TextTitle>
@@ -141,14 +141,14 @@ export function SendResult(props: Props) {
                 <TextTitle>{t('EsTGasFee')}</TextTitle>
                 <TextContent>
                   {displayLongText(
-                    props.transaction ? props.transaction[0].feesEstimate : ''
+                    state?.transaction ? state?.transaction[0].feesEstimate : ''
                   )}
                 </TextContent>
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('Fee')}</TextTitle>
                 <TextContent>
-                  {props.transaction?.[0]?.internalFee?.withdraw ?? '-'}
+                  {state?.transaction?.[0]?.internalFee?.withdraw ?? '-'}
                 </TextContent>
               </TextWrapper>
             </ResultContent>
@@ -157,7 +157,10 @@ export function SendResult(props: Props) {
       )}
       <IonRow style={{ marginTop: '50px', padding: '0px 50px' }}>
         <IonCol>
-          <PurpleButton expand="block" onClick={props.goBack}>
+          <PurpleButton
+            expand="block"
+            onClick={() => history.push(akashicPayPath(urls.loggedFunction))}
+          >
             {t('Confirm')}
           </PurpleButton>
         </IonCol>

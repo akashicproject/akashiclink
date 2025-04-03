@@ -117,8 +117,10 @@ export function ActivityAndNftTab() {
     history.push({
       pathname: akashicPayPath(urls.nft),
       state: {
-        nftName: nft.name,
-        chainType: nft.chainType,
+        nft: {
+          nftName: nft.name,
+          chainType: nft.chainType,
+        },
       },
     });
   };

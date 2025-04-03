@@ -1,10 +1,7 @@
 import './send.css';
 
 import styled from '@emotion/styled';
-import type {
-  ITransactionSettledResponse,
-  ITransactionVerifyResponse as VerifiedTransaction,
-} from '@helium-pay/backend';
+import type { ITransactionSettledResponse } from '@helium-pay/backend';
 import { userConst } from '@helium-pay/backend';
 import { IonCol, IonIcon, IonRow, IonSpinner } from '@ionic/react';
 import axios from 'axios';
@@ -12,18 +9,22 @@ import Big from 'big.js';
 import { arrowForwardCircleOutline } from 'ionicons/icons';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router';
 
 import {
   CustomAlert,
   errorAlertShell,
   formAlertResetState,
 } from '../../components/alert/alert';
-import { BackButton } from '../../components/back-button';
-import { PurpleButton } from '../../components/buttons';
+import { PurpleButton, WhiteButton } from '../../components/buttons';
 import {
   StyledInput,
   StyledInputErrorPrompt,
 } from '../../components/styled-input';
+import { errorMsgs } from '../../constants/error-messages';
+import { urls } from '../../constants/urls';
+import type { LocationState } from '../../history';
+import { akashicPayPath } from '../../routing/navigation-tree';
 import { OwnersAPI } from '../../utils/api';
 import { useOwner } from '../../utils/hooks/useOwner';
 import { displayLongText } from '../../utils/long-text';
@@ -88,28 +89,22 @@ const InputPasswordText = styled.div({
   color: 'var(--ion-color-primary-10)',
 });
 
-interface Props {
-  transaction: VerifiedTransaction[] | undefined;
-  currencyDisplayName: string;
-  gasFree: boolean;
-  isResult: () => void;
-  getErrorMsg: (msg: string) => void;
-}
-
-export function SendConfirm(props: Props) {
+export function SendConfirm() {
   const { t } = useTranslation();
   const { owner } = useOwner();
   const [password, setPassword] = useState<string>('');
   const [alert, setAlert] = useState(formAlertResetState);
   const [loading, setLoading] = useState(false);
+  const history = useHistory<LocationState>();
+  const state = history.location.state?.sendConfirm;
 
   const validatePassword = (value: string) =>
     !!value.match(userConst.passwordRegex);
 
   let totalAmount = Big(0);
 
-  const totalAmountWithFees = props.transaction
-    ? props.transaction
+  const totalAmountWithFees = state?.transaction
+    ? state?.transaction
         .reduce((sum, { amount, feesEstimate, internalFee }) => {
           totalAmount = totalAmount.add(amount);
           return Big(amount)
@@ -120,8 +115,23 @@ export function SendConfirm(props: Props) {
         .toString()
     : '0';
 
+  const goToResult = (signError: string) => {
+    setPassword('');
+    history.push({
+      pathname: akashicPayPath(urls.sendResult),
+      state: {
+        sendResult: {
+          errorMsg: signError,
+          transaction: state?.transaction,
+          currencyDisplayName: state?.currencyDisplayName,
+        },
+      },
+    });
+  };
+
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   async function signTransaction() {
-    if (props.transaction) {
+    if (state?.transaction) {
       try {
         setLoading(true);
         await OwnersAPI.login({
@@ -129,12 +139,12 @@ export function SendConfirm(props: Props) {
           password,
         });
         let response: ITransactionSettledResponse[];
-        if (!props.gasFree) {
-          response = await OwnersAPI.sendL1Transaction(props.transaction);
+        if (!state?.gasFree) {
+          response = await OwnersAPI.sendL1Transaction(state?.transaction);
         } else {
           response = [
             await OwnersAPI.sendL2Transaction({
-              ...props.transaction[0],
+              ...state?.transaction[0],
               forceL1: undefined,
             }),
           ];
@@ -145,9 +155,10 @@ export function SendConfirm(props: Props) {
               t(unpackRequestErrorMessage(response[0].reason) || '')
             )
           );
-          props.getErrorMsg(unpackRequestErrorMessage(response[0].reason));
+          goToResult(t(unpackRequestErrorMessage(response[0].reason)));
+        } else {
+          goToResult(errorMsgs.NoError);
         }
-        props.isResult();
       } catch (error) {
         // TODO: For this error msg translation: extract it into its own function you are are re-using this code
         if (
@@ -156,11 +167,9 @@ export function SendConfirm(props: Props) {
         ) {
           setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
         } else if (axios.isAxiosError(error)) {
-          props.isResult();
-          props.getErrorMsg(unpackRequestErrorMessage(error));
+          goToResult(t(unpackRequestErrorMessage(error)));
         } else {
-          props.isResult();
-          props.getErrorMsg(t('GenericFailureMsg'));
+          goToResult(t('GenericFailureMsg'));
         }
       } finally {
         setLoading(false);
@@ -176,20 +185,20 @@ export function SendConfirm(props: Props) {
             <TextWrapper>
               <TextContent>
                 {displayLongText(
-                  props.transaction ? props.transaction[0].fromAddress : ''
+                  state?.transaction ? state?.transaction[0].fromAddress : ''
                 )}
               </TextContent>
               <IonIcon icon={arrowForwardCircleOutline} />
               <TextContent>
                 {displayLongText(
-                  props.transaction ? props.transaction[0].toAddress : ''
+                  state?.transaction ? state?.transaction[0].toAddress : ''
                 )}
               </TextContent>
             </TextWrapper>
             <TextWrapper>
               <TextTitle>{t('Amount')}</TextTitle>
               <TextTitle>
-                {totalAmount.toString()} {props.currencyDisplayName}
+                {totalAmount.toString()} {state?.currencyDisplayName}
               </TextTitle>
             </TextWrapper>
             <Divider />
@@ -197,7 +206,7 @@ export function SendConfirm(props: Props) {
               <TextTitle>{t('SendTo')}</TextTitle>
               <TextContent>
                 {displayLongText(
-                  props.transaction ? props.transaction[0].toAddress : ''
+                  state?.transaction ? state?.transaction[0].toAddress : ''
                 )}
               </TextContent>
             </TextWrapper>
@@ -205,14 +214,14 @@ export function SendConfirm(props: Props) {
               <TextTitle>{t('EsTGasFee')}</TextTitle>
               <TextContent>
                 {displayLongText(
-                  props.transaction ? props.transaction[0].feesEstimate : ''
+                  state?.transaction ? state?.transaction[0].feesEstimate : ''
                 )}
               </TextContent>
             </TextWrapper>
             <TextWrapper>
               <TextTitle>{t('Fee')}</TextTitle>
               <TextContent>
-                {props.transaction?.[0]?.internalFee?.withdraw ?? '-'}
+                {state?.transaction?.[0]?.internalFee?.withdraw ?? '-'}
               </TextContent>
             </TextWrapper>
             <TextWrapper>
@@ -237,6 +246,7 @@ export function SendConfirm(props: Props) {
               validate={validatePassword}
               errorPrompt={StyledInputErrorPrompt.Password}
               submitOnEnter={signTransaction}
+              value={password}
             ></StyledInput>
           </InputPasswordWrapper>
         </IonCol>
@@ -266,7 +276,14 @@ export function SendConfirm(props: Props) {
             justifyContent: 'end',
           }}
         >
-          <BackButton />
+          <WhiteButton
+            onClick={() => {
+              history.push(akashicPayPath(urls.loggedFunction));
+              setPassword('');
+            }}
+          >
+            {t('GoBack')}
+          </WhiteButton>
         </IonCol>
       </IonRow>
     </SendMain>

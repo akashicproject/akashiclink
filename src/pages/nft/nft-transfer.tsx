@@ -86,9 +86,8 @@ export function NftTransfer() {
   const { nfts, isLoading, mutate } = useNftMe();
   const { owner } = useOwner();
   const history = useHistory<LocationState>();
-  const currentNft = nfts.find(
-    (nft) => nft.name === history.location.state?.nftName
-  )!;
+  const state = history.location.state?.nft;
+  const currentNft = nfts.find((nft) => nft.name === state?.nftName)!;
   const [inputValue, setInputValue] = useState<string>('');
   const [toAddress, setToAddress] = useState<string>('');
   const [searched, setSearched] = useState(false);
@@ -144,8 +143,10 @@ export function NftTransfer() {
       history.push({
         pathname: akashicPayPath(urls.nftTransferResult),
         state: {
-          transaction: result,
-          errorMsg: errorMsgs.NoError,
+          nftTransferResult: {
+            transaction: result,
+            errorMsg: errorMsgs.NoError,
+          },
         },
       });
     } catch (error) {

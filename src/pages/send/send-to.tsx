@@ -2,13 +2,8 @@ import './send.css';
 
 import styled from '@emotion/styled';
 import type { ITransactionProposal } from '@helium-pay/backend';
-import {
-  type ITransactionVerifyResponse as VerifiedTransaction,
-  L2Regex,
-  NetworkDictionary,
-  TEST_TO_MAIN,
-} from '@helium-pay/backend';
-import { IonCol, IonImg, IonRow, IonSpinner, useIonRouter } from '@ionic/react';
+import { L2Regex, NetworkDictionary, TEST_TO_MAIN } from '@helium-pay/backend';
+import { IonCol, IonImg, IonRow, IonSpinner } from '@ionic/react';
 import Big from 'big.js';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +26,6 @@ import {
   StyledInputErrorPrompt,
 } from '../../components/styled-input';
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
-import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { themeType } from '../../theme/const';
@@ -43,9 +37,7 @@ import { calculateInternalWithdrawalFee } from '../../utils/internal-fee';
 import { cacheCurrentPage } from '../../utils/last-page-storage';
 import { displayLongText } from '../../utils/long-text';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
-import { SendConfirm } from './send-confirm';
 import { SendMain } from './send-main';
-import { SendResult } from './send-result';
 
 /** Styled components */
 const SendWrapper = styled.div({
@@ -145,17 +137,9 @@ const EqualsL2Box = styled.div({
   border: '1px solid #958e99',
 });
 
-/** Corresponds to steps taken by user as they make a withdrawal */
-enum SendView {
-  Send = 'Send',
-  Confirm = 'Confirm',
-  Result = 'Result',
-}
-
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function SendTo() {
   const { t } = useTranslation();
-  const router = useIonRouter();
   const aggregatedBalances = useAggregatedBalances();
   const { keys: userWallets } = useKeyMe();
   const [alert, setAlert] = useState(formAlertResetState);
@@ -188,12 +172,6 @@ export function SendTo() {
   );
 
   const [internalFee, setInternalFee] = useState('0.0');
-
-  // Keeps track of which page the user is at
-  const [pageView, setPageView] = useState(SendView.Send);
-
-  const [verifiedTransaction, setVerifiedTransaction] =
-    useState<VerifiedTransaction[]>();
 
   /**
    * Handling of direct l1 transfers or gas-free l2 transfers via nitr0gen
@@ -314,7 +292,6 @@ export function SendTo() {
     return gasFree || !!value.match(NetworkDictionary[chain].regex.address);
   };
 
-  const [signError, setSignError] = useState(errorMsgs.NoError);
   const [loading, setLoading] = useState(false);
 
   // Send transaction to the backend for verification
@@ -347,7 +324,6 @@ export function SendTo() {
         setAlertRequest(errorAlertShell(t('GenericFailureMsg')));
         return;
       }
-      setVerifiedTransaction(response);
       const feesEstimate = Number(response[0].feesEstimate || '0');
       const balance = Number(
         aggregatedBalances.get({
@@ -365,7 +341,22 @@ export function SendTo() {
           )
         );
       } else {
-        setPageView(SendView.Confirm);
+        setRawAddress('');
+        setAmount('');
+        setToAddress(undefined);
+        setGasFree(false);
+        setL1AddressWhenL2(undefined);
+        setInternalFee('0.0');
+        history.push({
+          pathname: akashicPayPath(urls.sendConfirm),
+          state: {
+            sendConfirm: {
+              currencyDisplayName: currency.displayName || '',
+              transaction: response,
+              gasFree,
+            },
+          },
+        });
       }
     } catch (error) {
       setAlertRequest(errorAlertShell(t(unpackRequestErrorMessage(error))));
@@ -377,184 +368,167 @@ export function SendTo() {
   return (
     <>
       <CustomAlert state={alert} />
-      {pageView === SendView.Send && (
-        <SendMain>
-          <IonRow style={{ marginTop: '36px' }}>
-            <IonCol class="ion-center">
-              <CurrencyWrapper>
-                <SwiperSlide
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    height: '80%',
-                  }}
-                >
+      <SendMain>
+        <IonRow style={{ marginTop: '36px' }}>
+          <IonCol class="ion-center">
+            <CurrencyWrapper>
+              <SwiperSlide
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  height: '80%',
+                }}
+              >
+                <IonImg
+                  src={
+                    storedTheme === themeType.DARK
+                      ? currentWalletMetadata.darkCurrencyIcon
+                      : currentWalletMetadata.currencyIcon
+                  }
+                  style={
+                    tokenTypeMetadata
+                      ? { height: '56px', width: '56px' }
+                      : { width: '40px', height: '40px' }
+                  }
+                />
+                {tokenTypeMetadata && (
                   <IonImg
                     src={
                       storedTheme === themeType.DARK
-                        ? currentWalletMetadata.darkCurrencyIcon
-                        : currentWalletMetadata.currencyIcon
+                        ? tokenTypeMetadata.darkCurrencyIcon
+                        : tokenTypeMetadata.currencyIcon
                     }
-                    style={
-                      tokenTypeMetadata
-                        ? { height: '56px', width: '56px' }
-                        : { width: '40px', height: '40px' }
-                    }
-                  />
-                  {tokenTypeMetadata && (
-                    <IonImg
-                      src={
-                        storedTheme === themeType.DARK
-                          ? tokenTypeMetadata.darkCurrencyIcon
-                          : tokenTypeMetadata.currencyIcon
-                      }
-                      style={{
-                        height: '30px',
-                        position: 'absolute',
-                        top: 0,
-                        left: 'calc(50% + 16px)',
-                      }}
-                    />
-                  )}
-                </SwiperSlide>
-                <BalanceText>
-                  {aggregatedBalances.get(currentWalletMetadata.walletCurrency)}{' '}
-                  {currentWalletMetadata.walletCurrency.displayName}
-                </BalanceText>
-              </CurrencyWrapper>
-            </IonCol>
-          </IonRow>
-          <IonRow style={{ marginTop: '28px' }}>
-            <IonCol class="ion-center">
-              <SendWrapper>
-                <StyledInput
-                  isHorizontal={true}
-                  label={t('SendTo')}
-                  placeholder={t('EnterAddress')}
-                  type={'text'}
-                  errorPrompt={StyledInputErrorPrompt.Address}
-                  onIonInput={({ target: { value } }) =>
-                    validateRecipientAddressWithBackend(value as string)
-                  }
-                  submitOnEnter={verifyTransaction}
-                />
-                <StyledInput
-                  isHorizontal={true}
-                  label={t('Amount')}
-                  placeholder={t('EnterAmount')}
-                  type="number"
-                  errorPrompt={StyledInputErrorPrompt.Amount}
-                  onIonInput={({ target: { value } }) => {
-                    setAmount(value as string);
-                    setInternalFee(
-                      calculateInternalWithdrawalFee(
-                        value as string,
-                        exchangeRates,
-                        chain,
-                        token
-                      )
-                    );
-                  }}
-                  validate={validateAmount}
-                  submitOnEnter={verifyTransaction}
-                />
-                {gasFree && (
-                  <GasWrapper style={{ margin: '8px 0' }}>
-                    <EqualsL2Box>
-                      {l1AddressWhenL2
-                        ? `${displayLongText(rawAddress)} = ${displayLongText(
-                            toAddress
-                          )}`
-                        : `${displayLongText(toAddress, 30)}`}
-                    </EqualsL2Box>
-                    <IonImg
-                      alt={''}
-                      src={'/shared-assets/images/right.png'}
-                      style={{ width: '40px', height: '40px' }}
-                    />
-                  </GasWrapper>
-                )}
-                <Divider />
-                <GasWrapper>
-                  <GasFreeMarker
                     style={{
-                      background:
-                        !toAddress && storedTheme === themeType.LIGHT
-                          ? '#6750A41F'
-                          : !toAddress && storedTheme === themeType.DARK
-                          ? '#625B71'
-                          : gasFree
-                          ? '#41CC9A'
-                          : '#DE3730',
-
-                      color:
-                        toAddress && storedTheme === themeType.LIGHT
-                          ? '#FFFFFF'
-                          : '',
+                      height: '30px',
+                      position: 'absolute',
+                      top: 0,
+                      left: 'calc(50% + 16px)',
                     }}
-                  >
-                    {t('GasFree')}
-                  </GasFreeMarker>
-                  <FeeMarker>{`Fee: ${internalFee} ${
-                    token || TEST_TO_MAIN.get(chain) || chain
-                  }`}</FeeMarker>
-                </GasWrapper>
-                {gasFree || !toAddress ? null : (
-                  <GasWrapper>
-                    <FeeMarker>{t('Layer1Transaction')}</FeeMarker>
-                    <FeeMarker>{`+ ${t('GasFee')}`}</FeeMarker>
-                  </GasWrapper>
+                  />
                 )}
-                {alertRequest.visible && <AlertBox state={alertRequest} />}
-                <IonRow style={{ width: '100%' }}>
-                  <IonCol size="6" style={{ paddingLeft: '0' }}>
-                    <PurpleButton
-                      style={{ width: '100%', marginLeft: '0' }}
-                      expand="block"
-                      onClick={verifyTransaction}
-                      disabled={loading || !toAddress || alertRequest.visible}
-                    >
-                      {t('Send')}
-                      {loading ? (
-                        <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
-                      ) : null}
-                    </PurpleButton>
-                  </IonCol>
-                  <IonCol size="6" style={{ paddingRight: '0' }}>
-                    <WhiteButton
-                      style={{ width: '100%', marginRight: '0' }}
-                      expand="block"
-                      routerLink={akashicPayPath(urls.loggedFunction)}
-                      onClick={() => history.goBack()}
-                    >
-                      {t('Cancel')}
-                    </WhiteButton>
-                  </IonCol>
-                </IonRow>
-              </SendWrapper>
-            </IonCol>
-          </IonRow>
-        </SendMain>
-      )}
-      {pageView === SendView.Confirm && (
-        <SendConfirm
-          currencyDisplayName={currency.displayName || ''}
-          transaction={verifiedTransaction}
-          gasFree={gasFree}
-          isResult={() => setPageView(SendView.Result)}
-          getErrorMsg={(errorMsg) => setSignError(errorMsg)}
-        />
-      )}
-      {pageView === SendView.Result && (
-        <SendResult
-          errorMsg={signError}
-          transaction={verifiedTransaction}
-          currencyDisplayName={currency.displayName || ''}
-          goBack={() => router.goBack()}
-        />
-      )}
+              </SwiperSlide>
+              <BalanceText>
+                {aggregatedBalances.get(currentWalletMetadata.walletCurrency)}{' '}
+                {currentWalletMetadata.walletCurrency.displayName}
+              </BalanceText>
+            </CurrencyWrapper>
+          </IonCol>
+        </IonRow>
+        <IonRow style={{ marginTop: '28px' }}>
+          <IonCol class="ion-center">
+            <SendWrapper>
+              <StyledInput
+                isHorizontal={true}
+                label={t('SendTo')}
+                placeholder={t('EnterAddress')}
+                type={'text'}
+                errorPrompt={StyledInputErrorPrompt.Address}
+                onIonInput={({ target: { value } }) =>
+                  validateRecipientAddressWithBackend(value as string)
+                }
+                submitOnEnter={verifyTransaction}
+                value={rawAddress}
+              />
+              <StyledInput
+                isHorizontal={true}
+                label={t('Amount')}
+                placeholder={t('EnterAmount')}
+                type="number"
+                errorPrompt={StyledInputErrorPrompt.Amount}
+                onIonInput={({ target: { value } }) => {
+                  setAmount(value as string);
+                  setInternalFee(
+                    calculateInternalWithdrawalFee(
+                      value as string,
+                      exchangeRates,
+                      chain,
+                      token
+                    )
+                  );
+                }}
+                validate={validateAmount}
+                submitOnEnter={verifyTransaction}
+                value={amount}
+              />
+              {gasFree && (
+                <GasWrapper style={{ margin: '8px 0' }}>
+                  <EqualsL2Box>
+                    {l1AddressWhenL2
+                      ? `${displayLongText(rawAddress)} = ${displayLongText(
+                          toAddress
+                        )}`
+                      : `${displayLongText(toAddress, 30)}`}
+                  </EqualsL2Box>
+                  <IonImg
+                    alt={''}
+                    src={'/shared-assets/images/right.png'}
+                    style={{ width: '40px', height: '40px' }}
+                  />
+                </GasWrapper>
+              )}
+              <Divider />
+              <GasWrapper>
+                <GasFreeMarker
+                  style={{
+                    background:
+                      !toAddress && storedTheme === themeType.LIGHT
+                        ? '#6750A41F'
+                        : !toAddress && storedTheme === themeType.DARK
+                        ? '#625B71'
+                        : gasFree
+                        ? '#41CC9A'
+                        : '#DE3730',
+
+                    color:
+                      toAddress && storedTheme === themeType.LIGHT
+                        ? '#FFFFFF'
+                        : '',
+                  }}
+                >
+                  {t('GasFree')}
+                </GasFreeMarker>
+                <FeeMarker>{`Fee: ${internalFee} ${
+                  token || TEST_TO_MAIN.get(chain) || chain
+                }`}</FeeMarker>
+              </GasWrapper>
+              {gasFree || !toAddress ? null : (
+                <GasWrapper>
+                  <FeeMarker>{t('Layer1Transaction')}</FeeMarker>
+                  <FeeMarker>{`+ ${t('GasFee')}`}</FeeMarker>
+                </GasWrapper>
+              )}
+              {alertRequest.visible && <AlertBox state={alertRequest} />}
+              <IonRow style={{ width: '100%' }}>
+                <IonCol size="6" style={{ paddingLeft: '0' }}>
+                  <PurpleButton
+                    style={{ width: '100%', marginLeft: '0' }}
+                    expand="block"
+                    onClick={verifyTransaction}
+                    disabled={loading || !toAddress || alertRequest.visible}
+                  >
+                    {t('Send')}
+                    {loading ? (
+                      <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
+                    ) : null}
+                  </PurpleButton>
+                </IonCol>
+                <IonCol size="6" style={{ paddingRight: '0' }}>
+                  <WhiteButton
+                    style={{ width: '100%', marginRight: '0' }}
+                    expand="block"
+                    routerLink={akashicPayPath(urls.loggedFunction)}
+                    onClick={() => history.goBack()}
+                  >
+                    {t('Cancel')}
+                  </WhiteButton>
+                </IonCol>
+              </IonRow>
+            </SendWrapper>
+          </IonCol>
+        </IonRow>
+      </SendMain>
     </>
   );
 }

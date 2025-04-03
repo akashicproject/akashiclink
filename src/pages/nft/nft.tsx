@@ -30,11 +30,10 @@ const NftWrapper = styled.div({
 export function Nft() {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
+  const state = history.location.state?.nft;
 
   const { nfts } = useNftMe();
-  const currentNft = nfts.find(
-    (nft) => nft.name === history.location.state?.nftName
-  )!;
+  const currentNft = nfts.find((nft) => nft.name === state?.nftName)!;
   const [isOpen, setIsOpen] = useState(false);
 
   const transferNft = () => {

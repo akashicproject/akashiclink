@@ -1,3 +1,4 @@
+import type { ITransactionVerifyResponse } from '@helium-pay/backend';
 import { createMemoryHistory } from 'history';
 
 import type { TransferResultType } from './pages/nft/nft-transfer-result';
@@ -5,8 +6,22 @@ import type { TransferResultType } from './pages/nft/nft-transfer-result';
 export const history = createMemoryHistory();
 
 export interface LocationState {
-  nftName?: string;
-  chainType?: string;
-  transaction?: TransferResultType;
-  errorMsg?: string;
+  nft?: {
+    nftName?: string;
+    chainType?: string;
+  };
+  nftTransferResult?: {
+    transaction?: TransferResultType;
+    errorMsg?: string;
+  };
+  sendConfirm?: {
+    transaction?: ITransactionVerifyResponse[];
+    currencyDisplayName?: string;
+    gasFree?: boolean;
+  };
+  sendResult?: {
+    transaction?: ITransactionVerifyResponse[];
+    errorMsg?: string;
+    currencyDisplayName?: string;
+  };
 }
