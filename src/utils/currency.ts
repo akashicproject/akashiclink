@@ -1,3 +1,4 @@
+import type { IInternalFee } from '@helium-pay/backend';
 import {
   type CoinSymbol,
   type CurrencySymbol,
@@ -70,153 +71,85 @@ export function convertToDecimals(
   return convertedAmount.toFixed();
 }
 
+export interface CurrencyObject {
+  coinSymbol: CoinSymbol;
+  tokenSymbol?: CurrencySymbol;
+  amount?: string;
+  feesEstimate?: string;
+  feesPaid?: string;
+  internalFee?: IInternalFee;
+}
+
+export interface MetaCurrencyObject {
+  [key: string]: MetaCurrencyObject | CurrencyObject;
+}
+
+export type AnyCurrencyData =
+  | CurrencyObject
+  | CurrencyObject[]
+  | MetaCurrencyObject
+  | MetaCurrencyObject[];
+
 /**
- * Handle mapping amounts and fee-props in objects and arrays
- * @param object
- * @param direction 'to' or 'from' smallest denomination
- * @returns mapped object
+ * Map amounts and fee-props in objects and arrays that contain currency data,
+ * however deeply nested
+ *
+ * @param object object or array with currency data in it... somewhere
+ * @param converter either {@link convertToDecimals} or {@link convertFromDecimals}
+ * @returns object/array with the same structure, but converted amounts
  */
-// eslint-disable-next-line sonarjs/cognitive-complexity
-export function convertObjectCurrencies(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  object: any,
-  direction: 'to' | 'from'
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): any {
-  if (
-    object?.coinSymbol &&
-    (object.amount || object.feesEstimate || object.internalFee)
-  ) {
-    return {
-      ...object,
-      ...(object.amount
-        ? {
-            amount: convertToFromDecimals(
-              object.amount,
-              object.coinSymbol,
-              direction,
-              object.tokenSymbol
-            ),
-          }
-        : undefined),
-      ...(object.feesEstimate
-        ? {
-            feesEstimate: convertToFromDecimals(
-              object.feesEstimate,
-              object.coinSymbol,
-              direction
-            ),
-          }
-        : undefined),
-      ...(object.feesPaid
-        ? {
-            feesPaid: convertToFromDecimals(
-              object.feesPaid,
-              object.coinSymbol,
-              direction
-            ),
-          }
-        : undefined),
-      ...(object.internalFee
-        ? {
-            internalFee: {
-              ...(object.internalFee.withdraw
-                ? {
-                    withdraw: convertToFromDecimals(
-                      object.internalFee.withdraw,
-                      object.coinSymbol,
-                      direction,
-                      object.tokenSymbol
-                    ),
-                  }
-                : undefined),
-              ...(object.internalFee.deposit
-                ? {
-                    deposit: convertToFromDecimals(
-                      object.internalFee.deposit,
-                      object.coinSymbol,
-                      direction,
-                      object.tokenSymbol
-                    ),
-                  }
-                : undefined),
-            },
-          }
-        : undefined),
-    };
-  } else if (object instanceof Array) {
-    return object.map(
-      (entry) =>
-        entry?.amount
-          ? {
-              ...entry,
-              amount: convertToFromDecimals(
-                entry.amount,
-                entry.coinSymbol,
-                direction,
-                entry.tokenSymbol
-              ),
-              ...(entry.feesEstimate
-                ? {
-                    feesEstimate: convertToFromDecimals(
-                      entry.feesEstimate,
-                      entry.coinSymbol,
-                      direction
-                    ),
-                  }
-                : undefined),
-              ...(entry.feesPaid
-                ? {
-                    feesPaid: convertToFromDecimals(
-                      entry.feesPaid,
-                      entry.coinSymbol,
-                      direction
-                    ),
-                  }
-                : undefined),
-              ...(entry.internalFee
-                ? {
-                    internalFee: {
-                      ...(entry.internalFee.withdraw
-                        ? {
-                            withdraw: convertToFromDecimals(
-                              entry.internalFee?.withdraw ?? '0',
-                              entry.coinSymbol,
-                              direction,
-                              entry.tokenSymbol
-                            ),
-                          }
-                        : undefined),
-                      ...(entry.internalFee.deposit
-                        ? {
-                            deposit: convertToFromDecimals(
-                              entry.internalFee?.deposit ?? '0',
-                              entry.coinSymbol,
-                              direction,
-                              entry.tokenSymbol
-                            ),
-                          }
-                        : undefined),
-                    },
-                  }
-                : undefined),
-            }
-          : convertObjectCurrencies(entry, direction) // Handle nested objects
-    );
-  } else {
-    // handle nested properties
-    if (object) {
-      const keys = Object.keys(object);
-      if (typeof object === 'object' && keys?.length > 0) {
-        const result = object;
-        keys.forEach(
-          (k) => (result[k] = convertObjectCurrencies(object[k], direction))
-        );
-        return result;
-      }
-    }
-    return object;
+export function convertObjectCurrencies<T extends AnyCurrencyData>(
+  object: T,
+  converter: typeof convertToDecimals | typeof convertFromDecimals
+): T {
+  // recursively convert the elements if it's an array
+  if (Array.isArray(object)) {
+    return object.map((o) => convertObjectCurrencies(o, converter)) as T;
   }
+
+  // Just in case :P
+  if (typeof object !== 'object' || !Object.keys(object).length) return object;
+
+  // check for "meta" currency objects, where the currency object is nested
+  if (!('coinSymbol' in object))
+    return Object.fromEntries(
+      Object.entries(object).map(([key, value]) => [
+        key,
+        typeof value === 'object'
+          ? convertObjectCurrencies(value, converter)
+          : value,
+      ])
+    ) as T;
+
+  const {
+    coinSymbol,
+    amount,
+    tokenSymbol,
+    internalFee,
+    feesEstimate,
+    feesPaid,
+  } = object as CurrencyObject;
+  const convert = (value: string, tokenSymbol?: CurrencySymbol) =>
+    converter(value, coinSymbol, tokenSymbol);
+
+  return {
+    ...object,
+    ...(amount ? { amount: convert(amount, tokenSymbol) } : {}),
+    ...(feesEstimate ? { feesEstimate: convert(feesEstimate) } : {}),
+    ...(feesPaid ? { feesPaid: convert(feesPaid) } : {}),
+    ...(internalFee
+      ? {
+          internalFee: {
+            ...(internalFee.withdraw
+              ? { withdraw: convert(internalFee.withdraw, tokenSymbol) }
+              : {}),
+            ...(internalFee.deposit
+              ? { deposit: convert(internalFee.deposit, tokenSymbol) }
+              : {}),
+          },
+        }
+      : {}),
+  };
 }
 
 function getConversionFactor(

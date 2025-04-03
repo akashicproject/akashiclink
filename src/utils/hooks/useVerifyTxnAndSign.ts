@@ -12,7 +12,11 @@ import { useAppSelector } from '../../redux/app/hooks';
 import { selectCacheOtk } from '../../redux/slices/accountSlice';
 import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
 import { OwnersAPI } from '../api';
-import { convertObjectCurrencies, convertToFromDecimals } from '../currency';
+import {
+  convertFromDecimals,
+  convertObjectCurrencies,
+  convertToFromDecimals,
+} from '../currency';
 import { calculateInternalWithdrawalFee } from '../internal-fee';
 import { Nitr0genApi, signTxBody } from '../nitr0gen/nitr0gen-api';
 import { unpackRequestErrorMessage } from '../unpack-request-error-message';
@@ -61,7 +65,7 @@ export const useVerifyTxnAndSign = () => {
         // Convert back to "normal" units for displaying to user
         txns = [
           {
-            ...convertObjectCurrencies(transactionData, 'from'),
+            ...convertObjectCurrencies(transactionData, convertFromDecimals),
             internalFee: {
               withdraw: calculateInternalWithdrawalFee(
                 amount,
