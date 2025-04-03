@@ -66,7 +66,7 @@ export const TextContent = styled.div({
   color: 'var(--ion-color-primary-10)',
 });
 interface Props {
-  transaction: VerifiedTransaction | undefined;
+  transaction: VerifiedTransaction[] | undefined;
   errorMsg: string;
   coinSymbol: string;
   goBack: () => void;
@@ -74,7 +74,16 @@ interface Props {
 export function SendResult(props: Props) {
   const { t } = useTranslation();
   const wrongResult = props.errorMsg !== errorMsgs.NoError;
-  const Layer = props.transaction?.forceL1 ? ' - ' + t('Layer1') : '';
+  const Layer =
+    props.transaction && props.transaction[0]?.forceL1
+      ? ' - ' + t('Layer1')
+      : '';
+
+  const totalAmount = props.transaction
+    ? props.transaction
+        .reduce((sum, { amount }) => sum + BigInt(amount), BigInt(0))
+        .toString()
+    : '0';
 
   return (
     <SendMain>
@@ -106,13 +115,17 @@ export function SendResult(props: Props) {
               <TextWrapper>
                 <TextTitle>{t('Send')}</TextTitle>
                 <TextContent>
-                  {displayLongText(props.transaction?.fromAddress)}
+                  {displayLongText(
+                    props.transaction ? props.transaction[0].fromAddress : ''
+                  )}
                 </TextContent>
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('Receiver')}</TextTitle>
                 <TextContent>
-                  {displayLongText(props.transaction?.toAddress)}
+                  {displayLongText(
+                    props.transaction ? props.transaction[0].toAddress : ''
+                  )}
                 </TextContent>
               </TextWrapper>
               <TextWrapper>
@@ -121,11 +134,15 @@ export function SendResult(props: Props) {
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('Amount')}</TextTitle>
-                <TextContent>{props.transaction?.amount}</TextContent>
+                <TextContent>{totalAmount}</TextContent>
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('EsTGasFee')}</TextTitle>
-                <TextContent>{props.transaction?.feesEstimate}</TextContent>
+                <TextContent>
+                  {displayLongText(
+                    props.transaction ? props.transaction[0].feesEstimate : ''
+                  )}
+                </TextContent>
               </TextWrapper>
             </ResultContent>
           </IonCol>

@@ -206,7 +206,7 @@ export function SendTo() {
   const [pageView, setPageView] = useState(SendView.Send);
 
   const [verifiedTransaction, setVerifiedTransaction] =
-    useState<VerifiedTransaction>();
+    useState<VerifiedTransaction[]>();
 
   const [toAddress, setToAddress] = useState<string>('');
   const [inputAddress, setInputAddress] = useState<string>('');
@@ -296,7 +296,13 @@ export function SendTo() {
     };
     try {
       const response = await OwnersAPI.verifyTransaction(originalTxn);
-      setVerifiedTransaction(response[0]);
+      // reject the request if /verify returns multiple transfers
+      // for L2: multiple transactions from the same Nitr0gen identity can always be combined into a single one, so it should be fine
+      if (response.length > 1 && !gasFree) {
+        setAlertRequest(errorAlertShell(t('GenericFailureMsg')));
+        return;
+      }
+      setVerifiedTransaction(response);
       const feesEstimate = Number(response[0].feesEstimate || '0');
       const balance = Number(currentWallet.balance);
       // if user does not have enough balance to pay the estimated gas, can not go to next step
@@ -389,14 +395,15 @@ export function SendTo() {
                       background: !toAddress
                         ? 'rgba(103, 80, 164, 0.08)'
                         : gasFree
-                          ? '#41CC9A'
-                          : '#DE3730',
+                        ? '#41CC9A'
+                        : '#DE3730',
                     }}
                   >
                     {t('GasFree')}
                   </GasFreeMarker>
-                  <FeeMarker>{`Fee: ${internalFee.toFixed(2)} ${TEST_TO_MAIN.get(coinSymbol) || coinSymbol
-                    }`}</FeeMarker>
+                  <FeeMarker>{`Fee: ${internalFee.toFixed(2)} ${
+                    TEST_TO_MAIN.get(coinSymbol) || coinSymbol
+                  }`}</FeeMarker>
                 </GasWrapper>
                 {gasFree || !toAddress ? null : (
                   <GasWrapper>
