@@ -3,7 +3,8 @@ import './send.css';
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
 import type {
-  ISignedTransactionResponse,
+  IL1ClientSideOtkTransactionBase,
+  ITerriTransaction,
   ITransactionProposal,
 } from '@helium-pay/backend';
 import {
