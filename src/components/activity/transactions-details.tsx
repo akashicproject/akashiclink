@@ -44,9 +44,7 @@ const WithdrawDetails = ({
   const totalAmount = Big(currentTransfer.amount);
   const totalFee = Big(currentTransfer?.feesPaid ?? '0');
 
-  const internalFee = Big(currentTransfer.internalFee?.deposit ?? '0').add(
-    currentTransfer.internalFee?.withdraw ?? '0'
-  );
+  const internalFee = Big(currentTransfer.internalFee?.withdraw ?? '0');
   const totalAmountWithFee = totalAmount.add(internalFee);
 
   return (

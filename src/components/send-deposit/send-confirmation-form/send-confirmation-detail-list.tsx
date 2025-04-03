@@ -61,8 +61,7 @@ export const SendConfirmationDetailList = ({
         Big(0)
       ) ?? Big(0);
   const internalFee = txns?.reduce(
-    (accm, { internalFee }) =>
-      accm.add(internalFee?.deposit ?? '0').add(internalFee?.withdraw ?? '0'),
+    (accm, { internalFee }) => accm.add(internalFee?.withdraw ?? '0'),
     Big(0)
   );
   const totalAmountWithFee = totalAmount.add(internalFee);
