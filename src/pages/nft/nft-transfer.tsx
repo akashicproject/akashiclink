@@ -6,7 +6,7 @@ import {
   L2Regex,
   nftErrors,
 } from '@helium-pay/backend';
-import { IonCol, IonImg, IonRow, IonSpinner, isPlatform } from '@ionic/react';
+import { IonCol, IonImg, IonRow, IonSpinner } from '@ionic/react';
 import { debounce } from 'lodash';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -52,7 +52,6 @@ const SendWrapper = styled.div({
   alignItems: 'center',
   padding: 0,
   width: '270px',
-  height: '90px',
 });
 
 const AddressWrapper = styled.div({
@@ -82,7 +81,7 @@ const AddressBox = styled.div({
   border: '1px solid #958e99',
 });
 export const NftContainer = styled.div`
-  width: 180px;
+  width: 232px;
   position: relative;
   margin: 0 auto;
 `;
@@ -128,7 +127,6 @@ const verifyNftTransaction = async (
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function NftTransfer() {
   const { t } = useTranslation();
-  const isMobile = isPlatform('mobile');
   const { nfts, isLoading, mutateNftMe } = useNftMe();
   const history = useHistory<LocationState>();
   const state = history.location.state?.nft;
@@ -256,19 +254,30 @@ export function NftTransfer() {
             <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
           </NoNtfWrapper>
         ) : (
-          <NftWrapper>
+          <NftWrapper
+            style={{
+              gap: '1.5rem',
+              background: `linear-gradient(
+            to bottom,
+            var(--nft-background) 0%,
+            var(--nft-background) 28%,
+            var(--ion-background-color) 28%,
+            var(--ion-background-color) 100%
+          )`,
+            }}
+          >
             <IonRow className="w-100">
               <NftContainer>
                 <OneNft
                   nft={currentNft}
-                  isBig={false}
+                  isBig={true}
                   isAASDarkStyle={!isDarkMode}
                 />
               </NftContainer>
             </IonRow>
             <IonRow>
               <IonCol class="ion-center">
-                <SendWrapper style={{ gap: isMobile ? '24px' : '16px' }}>
+                <SendWrapper style={{ gap: '1rem' }}>
                   <StyledInput
                     className={'ion-text-size-sm'}
                     isHorizontal={true}
