@@ -14,6 +14,7 @@ export const HeaderWrapper = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  justifyContent: 'center',
   padding: 0,
   gap: '16px',
   height: '80px',
@@ -28,6 +29,7 @@ export const HeaderTitle = styled.div({
   fontSize: '14px',
   lineHeight: '20px',
   color: 'var(--ion-color-primary-10)',
+  textAlign: 'center',
 });
 
 export const ResultContent = styled.div({
@@ -102,7 +104,7 @@ export function SendResult(props: Props) {
       </IonRow>
       {wrongResult ? null : (
         <IonRow>
-          <IonCol class="ion-center">
+          <IonCol class="ion-center" style={{ marginTop: '20px' }}>
             <ResultContent>
               <TextWrapper>
                 <TextTitle>{t('Send')}</TextTitle>
@@ -132,7 +134,7 @@ export function SendResult(props: Props) {
           </IonCol>
         </IonRow>
       )}
-      <IonRow style={{ marginTop: '50px' }}>
+      <IonRow style={{ marginTop: '50px', padding: '0px 50px' }}>
         <IonCol>
           <PurpleButton expand="block" onClick={props.goBack}>
             {t('Confirm')}
