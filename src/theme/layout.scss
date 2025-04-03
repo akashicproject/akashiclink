@@ -68,13 +68,7 @@ ion-content {
 
 /** Some theme magic */
 .ion-page {
-  & body.light {
-    background: #f3f5f6;
-  }
-
-  & body.dark {
-    background: black;
-  }
+  background: var(--ion-background-color);
 }
 
 /** Force move the box to approximately the middle of the screen by:
