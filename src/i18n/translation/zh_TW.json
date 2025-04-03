@@ -85,6 +85,8 @@
   "SavingsExceeded": "您沒有足夠的資金進行這筆交易",
   "TokenNotFound": "在所選區塊鏈上的任何錢包中都找不到該幣種",
   "ActivationCodeInvalid": "啟用碼已過期或無效 - 請重試。",
+  "WalletIsBusy": "Please wait until previous transactions have been confirmed before sending more",
+  "transactionTimeOut": "Transaction has timed out. Please try again",
   "GenericFailureMsg": "你的操作已失敗，請過一段時間再嘗試。",
   "Copied": "已複製",
   "ErrorPageHeading": "喔！似乎出錯了",

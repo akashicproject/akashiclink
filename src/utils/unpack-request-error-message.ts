@@ -56,6 +56,10 @@ export const unpackRequestErrorMessage = (error: unknown) => {
       return 'SavingsExceeded';
     case keyError.tokenNotFound:
       return 'TokenNotFound';
+    case keyError.walletIsBusy:
+      return 'WalletIsBusy';
+    case keyError.transactionTimedOut:
+      return 'TransactionTimeOut';
     default:
       return 'GenericFailureMsg';
   }
