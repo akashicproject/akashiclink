@@ -2,32 +2,18 @@ import {
   generateMockTxnWithCurrency,
   mockGetOwnerDetails,
 } from '@helium-pay/api-mocks';
-import { IonReactMemoryRouter } from '@ionic/react-router';
 import type { Meta, StoryObj } from '@storybook/react/*';
-import { createMemoryHistory } from 'history';
 
 import { ActivityDetails } from '../../../src/pages/activity/activity-details';
-
-const history = createMemoryHistory({
-  initialEntries: [
-    {
-      state: {
-        activityDetails: { currentTransfer: generateMockTxnWithCurrency({}) },
-      },
-    },
-  ],
-});
 
 const meta: Meta<typeof ActivityDetails> = {
   title: 'Pages/Activity',
   component: ActivityDetails,
-  decorators: [
-    (Story) => (
-      <IonReactMemoryRouter history={history}>
-        <Story />
-      </IonReactMemoryRouter>
-    ),
-  ],
+  parameters: {
+    history: {
+      activityDetails: { currentTransfer: generateMockTxnWithCurrency({}) },
+    },
+  },
 };
 
 export default meta;

@@ -1,14 +1,25 @@
 import { IonApp } from '@ionic/react';
 import { IonReactMemoryRouter } from '@ionic/react-router';
-import type { StoryFn } from '@storybook/react';
+import type { StoryContext, StoryFn } from '@storybook/react';
 import { createMemoryHistory } from 'history';
 
-const history = createMemoryHistory();
-
-export const withIonMemoryRouter = (Story: StoryFn) => {
+export const withIonMemoryRouter = (
+  Story: StoryFn,
+  { parameters: { history } }: StoryContext
+) => {
   return (
     <IonApp>
-      <IonReactMemoryRouter history={history}>
+      <IonReactMemoryRouter
+        history={createMemoryHistory({
+          initialEntries: [
+            {
+              state: {
+                ...history,
+              },
+            },
+          ],
+        })}
+      >
         <Story />
       </IonReactMemoryRouter>
     </IonApp>
