@@ -32,7 +32,7 @@ export function SettingsSecurity() {
     },
   ];
   return (
-    <DashboardLayout>
+    <DashboardLayout showSwitchAccountBar>
       <SettingsWrapper>
         <PageHeader>{t('Security')}</PageHeader>
         <div

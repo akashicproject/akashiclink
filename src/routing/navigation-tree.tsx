@@ -8,7 +8,7 @@ import { Spinner } from '../components/common/loader/spinner';
 import { LAST_HISTORY_ENTRIES } from '../constants';
 import { urls } from '../constants/urls';
 import { Activity } from '../pages/activity/activity';
-import { ActivityDetails } from '../pages/activity-details';
+import { ActivityDetails } from '../pages/activity/activity-details';
 import { AkashicPayMain } from '../pages/akashic-main';
 import { CreateWalletPassword } from '../pages/create-wallet/create-wallet-create-password';
 import { CreateWalletSecret } from '../pages/create-wallet/create-wallet-secret';

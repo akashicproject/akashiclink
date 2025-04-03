@@ -6,7 +6,7 @@ export function SendConfirmationPage() {
   useDisableDeviceBackButton();
 
   return (
-    <DashboardLayout showAddress showBackButton={false}>
+    <DashboardLayout showSwitchAccountBar showAddress>
       <SendConfirmationForm />
     </DashboardLayout>
   );

@@ -9,20 +9,14 @@ import { DashboardLayout } from './dashboard-layout';
 export function LayoutWithActivityTab({
   children,
   loading = false,
-  showBackButton = true,
   showRefresh = true,
 }: {
   children: ReactNode;
   loading?: boolean;
-  showBackButton?: boolean;
   showRefresh?: boolean;
 }) {
   return (
-    <DashboardLayout
-      showBackButton={showBackButton}
-      showRefresh={showRefresh}
-      showAddress={true}
-    >
+    <DashboardLayout showRefresh={showRefresh} showAddress showSwitchAccountBar>
       {loading && (
         <IonGrid>
           <IonRow class="ion-justify-content-center ion-margin-vertical">

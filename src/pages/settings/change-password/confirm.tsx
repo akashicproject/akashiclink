@@ -11,7 +11,7 @@ export function ChangePasswordConfirm() {
   const logout = useLogout();
 
   return (
-    <DashboardLayout showChainDiv={false} showToolbar={false}>
+    <DashboardLayout>
       <SettingsWrapper
         className="ion-justify-content-center ion-align-items-center"
         style={{ padding: '160px 56px' }}

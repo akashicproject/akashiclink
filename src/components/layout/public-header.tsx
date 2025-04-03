@@ -3,7 +3,7 @@ import { IonHeader, IonImg, IonRouterLink } from '@ionic/react';
 import { themeType } from '../../theme/const';
 import { useTheme } from '../providers/PreferenceProvider';
 import { SettingSelect } from '../settings/setting-select';
-import { LanguageDropdown } from './language-select';
+import { LanguageDropdown } from './toolbar/language-select';
 
 export function PublicHeader() {
   const [storedTheme] = useTheme();

@@ -144,7 +144,7 @@ export function Settings() {
     },
   ];
   return (
-    <DashboardLayout>
+    <DashboardLayout showSwitchAccountBar>
       <SettingsWrapper>
         <PageHeader>{t('Settings')}</PageHeader>
         <div

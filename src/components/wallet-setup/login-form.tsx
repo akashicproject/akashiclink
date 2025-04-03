@@ -54,13 +54,8 @@ export function LoginForm() {
   addPrefixToAccounts();
   useIosScrollPasswordKeyboardIntoView();
 
-  /**
-   * Selection is populated on load to match the account save in session
-   */
+  /** Selection is populated on load to match the account save in session */
   useEffect(() => {
-    if (selectedAccount && localAccounts.includes(selectedAccount)) {
-      return;
-    }
     if (activeAccount) {
       const matchingAccount = localAccounts?.find(
         (a) => a.identity === activeAccount.identity
@@ -69,7 +64,7 @@ export function LoginForm() {
     } else {
       setSelectedAccount(localAccounts?.[0]);
     }
-  }, [activeAccount, localAccounts, owner]);
+  }, [activeAccount, localAccounts.length, owner]);
 
   const login = async () => {
     try {

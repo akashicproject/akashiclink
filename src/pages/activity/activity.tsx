@@ -74,7 +74,7 @@ export function Activity() {
     nftTransfers
   );
   return (
-    <DashboardLayout>
+    <DashboardLayout showSwitchAccountBar showAddress showRefresh>
       <TableWrapper>
         <TableHeads>
           <div

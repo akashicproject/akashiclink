@@ -247,6 +247,8 @@
   "CreatePasswordInfo": "This password will unlock your AkashicWallet only on this device. Akashic Wallet can not recover this password",
   "CreatePasswordAgree": "I understand that AkashicWallet cannot recover this password for me",
   "UnsavedDataWillBeRemoved": "This account and any unsaved data will be removed on this device.",
+  "Account": "Account",
+  "SelectAccount": "Select Account",
   "RemoveAccount": "Remove Account",
   "ManageAccounts": "Manage Accounts",
   "RemoveDevice": "Remove from this device",

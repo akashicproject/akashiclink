@@ -14,18 +14,18 @@ export function Dashboard() {
   const { t } = useTranslation();
 
   return (
-    <LayoutWithActivityTab showBackButton={false}>
+    <LayoutWithActivityTab>
       <IonGrid
         style={{
           width: '100%',
           height: '40vh',
-          margin: '0px',
-          padding: '16px 48px',
+          margin: 0,
+          padding: '8px 48px',
         }}
       >
         <SelectCoin />
-        <IonRow>
-          <IonCol>
+        <IonRow className={'ion-grid-row-gap-xs'}>
+          <IonCol size={'6'}>
             <PurpleButton
               expand="block"
               routerLink={akashicPayPath(urls.sendTo)}
@@ -34,7 +34,7 @@ export function Dashboard() {
               <IonIcon slot="end" icon={arrowForwardOutline}></IonIcon>
             </PurpleButton>
           </IonCol>
-          <IonCol>
+          <IonCol size={'6'}>
             <WhiteButton
               expand="block"
               routerLink={akashicPayPath(urls.deposit)}

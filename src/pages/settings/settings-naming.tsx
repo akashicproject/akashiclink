@@ -262,7 +262,7 @@ export function SettingsNaming() {
   };
 
   return (
-    <DashboardLayout showToolbar={true} showBackButton={true}>
+    <DashboardLayout showSwitchAccountBar showAddress>
       <CustomAlert state={alert} />
       <Tabs>
         <TabButton

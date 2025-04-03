@@ -41,7 +41,7 @@ export function SettingsVersion() {
   }, []);
 
   return (
-    <DashboardLayout>
+    <DashboardLayout showSwitchAccountBar>
       <MainGrid style={{ padding: '32px 32px' }}>
         <IonRow>
           <IonCol size={'12'}>

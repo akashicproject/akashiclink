@@ -3,7 +3,7 @@ import { IonRadioGroup } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
 import { Toggle } from '../../components/common/toggle/toggle';
-import { ThemeSelect } from '../../components/layout/theme-select';
+import { ThemeSelect } from '../../components/layout/toolbar/theme-select';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 import {
   PageHeader,
@@ -108,7 +108,7 @@ export function SettingsGeneral() {
     },
   ];
   return (
-    <DashboardLayout>
+    <DashboardLayout showSwitchAccountBar>
       <SettingsWrapper>
         <PageHeader>{t('General')}</PageHeader>
         <div

@@ -10,7 +10,7 @@ import {
 export function SettingsAboutUs() {
   const { t } = useTranslation();
   return (
-    <DashboardLayout>
+    <DashboardLayout showSwitchAccountBar>
       <SettingsWrapper>
         <PageHeader>{t('AboutUs')}</PageHeader>
         <AboutUs />

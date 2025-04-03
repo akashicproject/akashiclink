@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { SquareWhiteButton } from '../../components/common/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { AccountList } from '../../components/manage-account/account-list';
+import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 import { PublicLayout } from '../../components/page-layout/public-layout';
 import { urls } from '../../constants/urls';
 import { historyGoBackOrReplace } from '../../routing/history';
@@ -19,21 +20,25 @@ export function ManageAccounts() {
     historyGoBackOrReplace(authenticated ? urls.dashboard : urls.akashicPay);
   };
 
+  const Layout = authenticated ? DashboardLayout : PublicLayout;
+
   return (
-    <PublicLayout>
-      <MainGrid className={'ion-no-padding'}>
-        <IonRow style={{ justifyContent: 'start' }}>
-          <SquareWhiteButton
-            className="icon-button"
-            onClick={onClickBackButton}
-          >
-            <IonIcon
-              className="icon-button-icon"
-              slot="icon-only"
-              icon={arrowBack}
-            />
-          </SquareWhiteButton>
-        </IonRow>
+    <Layout>
+      <MainGrid className={authenticated ? '' : 'ion-no-padding'}>
+        {!authenticated && (
+          <IonRow style={{ justifyContent: 'start' }}>
+            <SquareWhiteButton
+              className="icon-button"
+              onClick={onClickBackButton}
+            >
+              <IonIcon
+                className="icon-button-icon"
+                slot="icon-only"
+                icon={arrowBack}
+              />
+            </SquareWhiteButton>
+          </IonRow>
+        )}
         <IonRow className={'ion-grid-row-gap-sm'}>
           <IonCol size="12">
             <h2 className={'ion-margin-bottom-xxs'}>{t('ManageAccounts')}</h2>
@@ -51,6 +56,6 @@ export function ManageAccounts() {
           </IonCol>
         </IonRow>
       </MainGrid>
-    </PublicLayout>
+    </Layout>
   );
 }

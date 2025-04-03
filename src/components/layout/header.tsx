@@ -3,7 +3,7 @@ import { IonHeader, IonImg } from '@ionic/react';
 import { themeType } from '../../theme/const';
 import { useTheme } from '../providers/PreferenceProvider';
 import { SettingSelect } from '../settings/setting-select';
-import { HistoryBackButton } from './history-back-button';
+import { HistoryBackButton } from './toolbar/history-back-button';
 
 export function Header() {
   const [storedTheme] = useTheme();

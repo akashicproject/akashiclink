@@ -247,6 +247,8 @@
   "CreatePasswordInfo": "此密碼只能在此裝置上解鎖您的 Akashic 錢包。 Akashic 錢包無法恢復此密碼",
   "CreatePasswordAgree": "我明白 AkashicWallet 無法為我恢復密碼",
   "UnsavedDataWillBeRemoved": "此帳戶和任何未儲存的資料都將在此裝置上刪除。",
+  "Account": "帳戶",
+  "SelectAccount": "選擇帳戶",
   "RemoveAccount": "刪除帳戶",
   "ManageAccounts": "管理帳戶",
   "RemoveDevice": "從該裝置移除",

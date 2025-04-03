@@ -12,7 +12,6 @@ import {
   formAlertResetState,
 } from '../../components/common/alert/alert';
 import { PurpleButton } from '../../components/common/buttons';
-import { Toolbar } from '../../components/layout/toolbar';
 import { AasListingSwitch } from '../../components/nft/aas-listing-switch';
 import { OneNft } from '../../components/nft/one-nft';
 import { NftLayout } from '../../components/page-layout/nft-layout';
@@ -69,9 +68,7 @@ export function Nft() {
         style={{
           backgroundColor: 'var(--nft-background)',
         }}
-      >
-        <Toolbar backButtonReplaceTarget={urls.nfts} />
-      </div>
+      />
 
       <CustomAlert state={alert} />
       <NftWrapper>

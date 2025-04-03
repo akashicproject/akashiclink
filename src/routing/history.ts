@@ -52,6 +52,9 @@ export interface LocationState {
   activityDetails?: {
     currentTransfer?: ITransactionRecordForExtension;
   };
+  changePassword?: {
+    isChanged?: boolean;
+  };
 }
 
 export const historyResetStackAndRedirect = async (
@@ -91,6 +94,9 @@ export const historyGo = async (
   url: Url = urls.dashboard,
   state?: Record<string, unknown>
 ) => {
+  if (history.location.pathname === akashicPayPath(url)) {
+    return;
+  }
   history.push(akashicPayPath(url), state);
   // set Preferences AFTER history is mutated
   await Preferences.set({

@@ -7,7 +7,7 @@ import { IonCol, IonGrid, IonImg, IonRow, IonText } from '@ionic/react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useTranslation } from 'react-i18next';
 
-import { OtkBox } from '../../components/otk-box/otk-box';
+import { CopyBox } from '../../components/common/copy-box';
 import { LayoutWithActivityTab } from '../../components/page-layout/layout-with-activity-tab';
 import {
   useFocusCurrency,
@@ -23,6 +23,15 @@ const CoinWrapper = styled.div({
   alignItems: 'center',
   padding: '0',
   gap: '8px',
+});
+
+const QRCodeWrapper = styled.div({
+  border: '1px solid var(--ion-color-white)',
+  lineHeight: 0,
+  padding: 8,
+  backgroundColor: 'var(--ion-color-white)',
+  borderRadius: 8,
+  margin: '4px 0',
 });
 
 export function DepositPage() {
@@ -53,8 +62,12 @@ export function DepositPage() {
 
   return (
     <LayoutWithActivityTab showRefresh={false} loading={isAddressesLoading}>
-      <IonGrid fixed>
-        <IonRow class="ion-justify-content-center ion-no-padding">
+      <IonGrid
+        style={{
+          padding: '8px 16px',
+        }}
+      >
+        <IonRow class="ion-justify-content-center ion-grid-row-gap-xxs">
           <IonCol class="ion-center" size="12">
             <CoinWrapper>
               {walletAddressDetail?.coinSymbol && (
@@ -65,7 +78,7 @@ export function DepositPage() {
                       ? currentWalletMetadata.darkCurrencyIcon
                       : currentWalletMetadata.currencyIcon
                   }
-                  style={{ height: '30px', width: '30px' }}
+                  style={{ height: '32px', width: '32px' }}
                 />
               )}
               <IonText>
@@ -76,16 +89,12 @@ export function DepositPage() {
             </CoinWrapper>
           </IonCol>
           <IonCol class={'ion-center'} size="12">
-            <QRCodeSVG value={walletAddress} size={75} />
+            <QRCodeWrapper>
+              <QRCodeSVG value={walletAddress} size={80} />
+            </QRCodeWrapper>
           </IonCol>
-        </IonRow>
-        <IonRow class="ion-justify-content-center ion-no-padding">
           <IonCol size="10">
-            <OtkBox
-              label={t('PublicAddress')}
-              text={walletAddress}
-              padding={false}
-            />
+            <CopyBox label={t('PublicAddress')} text={walletAddress} />
           </IonCol>
         </IonRow>
       </IonGrid>

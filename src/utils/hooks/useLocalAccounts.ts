@@ -22,6 +22,7 @@ export interface LocalAccount {
   identity: string;
   username?: string;
   aasName?: string;
+  accountName?: string;
 }
 
 /**
@@ -55,8 +56,9 @@ export const useAccountStorage = () => {
       }
       return l;
     });
-    if (activeAccount && activeAccount.identity === identity)
+    if (activeAccount && activeAccount.identity === identity) {
       setActiveAccount({ ...activeAccount, aasName });
+    }
     setLocalAccounts(updatedAccounts);
   };
 
@@ -75,9 +77,10 @@ export const useAccountStorage = () => {
   };
 
   const addLocalAccount = async (account: LocalAccount) => {
-    // Skip duplicate accounts
-    for (const { identity } of localAccounts ?? [])
+    // Skip duplicate accounts if it already exists locally
+    for (const { identity } of localAccounts ?? []) {
       if (identity === account.identity) return;
+    }
 
     setLocalAccounts([...(localAccounts ?? []), account]);
   };
@@ -170,8 +173,15 @@ export const useAccountStorage = () => {
       .substring(0, 32);
   };
 
+  const localAccountsWithName: LocalAccount[] = localAccounts.map(
+    (account, index) => ({
+      ...account,
+      accountName: `Account ${index + 1}`,
+    })
+  );
+
   return {
-    localAccounts,
+    localAccounts: localAccountsWithName,
     addLocalAccount,
     removeLocalAccount,
     addPrefixToAccounts,

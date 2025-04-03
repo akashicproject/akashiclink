@@ -146,110 +146,102 @@ export function SelectCoin() {
   };
 
   return (
-    <>
-      <IonRow>
-        <IonCol class="ion-center ion-no-padding">
-          <Swiper
-            onSwiper={setSwiperRef}
-            onSlideChange={handleSlideChange}
-            slidesPerView={3}
-            spaceBetween={-18}
-            centeredSlides={true}
-            navigation={{
-              enabled: true,
-            }}
-            loop={true}
-            onInit={(swiper) => {
-              setTimeout(() => {
-                try {
-                  swiper.loopCreate();
-                } catch (e) {
-                  console.warn('swiper not ready');
-                }
-              }, 1000);
-            }}
-          >
-            {CURRENCIES_FOR_SWIPER.map(
-              (
-                {
-                  currencyIcon,
-                  darkCurrencyIcon,
-                  greyCurrencyIcon,
-                  walletCurrency,
-                },
-                idx
-              ) => {
-                return (
-                  <SwiperSlide
-                    className="unselectable"
-                    key={idx}
-                    style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexDirection: 'row',
-                    }}
-                  >
+    <IonRow className={'ion-grid-row-gap-sm'}>
+      <IonCol class="ion-center">
+        <Swiper
+          onSwiper={setSwiperRef}
+          onSlideChange={handleSlideChange}
+          slidesPerView={3}
+          spaceBetween={-18}
+          centeredSlides={true}
+          navigation={{
+            enabled: true,
+          }}
+          loop={true}
+          onInit={(swiper) => {
+            setTimeout(() => {
+              try {
+                swiper.loopCreate();
+              } catch (e) {
+                console.warn('swiper not ready');
+              }
+            }, 1000);
+          }}
+        >
+          {CURRENCIES_FOR_SWIPER.map(
+            (
+              {
+                currencyIcon,
+                darkCurrencyIcon,
+                greyCurrencyIcon,
+                walletCurrency,
+              },
+              idx
+            ) => {
+              return (
+                <SwiperSlide
+                  className="unselectable"
+                  key={idx}
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                  }}
+                >
+                  <img
+                    alt={walletCurrency.displayName}
+                    src={getIcon(
+                      currencyIcon,
+                      darkCurrencyIcon,
+                      greyCurrencyIcon,
+                      idx
+                    )}
+                    style={
+                      swiperIdx === idx
+                        ? { height: '56px', width: '56px' }
+                        : {
+                            width: '32px',
+                            height: '32px',
+                          }
+                    }
+                  />
+                  {walletCurrency.token && (
                     <img
                       alt={walletCurrency.displayName}
-                      src={getIcon(
-                        currencyIcon,
-                        darkCurrencyIcon,
-                        greyCurrencyIcon,
-                        idx
-                      )}
+                      src={usdtChainIcon(walletCurrency, idx)}
                       style={
                         swiperIdx === idx
-                          ? { height: '56px', width: '56px' }
+                          ? {
+                              height: '30px',
+                              position: 'absolute',
+                              top: 0,
+                              left: '59px',
+                            }
                           : {
-                              width: '32px',
-                              height: '32px',
+                              width: '16px',
+                              height: '16px',
+                              position: 'absolute',
+                              top: 0,
+                              left: '54px',
                             }
                       }
                     />
-                    {walletCurrency.token && (
-                      <img
-                        alt={walletCurrency.displayName}
-                        src={usdtChainIcon(walletCurrency, idx)}
-                        style={
-                          swiperIdx === idx
-                            ? {
-                                height: '30px',
-                                position: 'absolute',
-                                top: 0,
-                                left: '59px',
-                              }
-                            : {
-                                width: '16px',
-                                height: '16px',
-                                position: 'absolute',
-                                top: 0,
-                                left: '54px',
-                              }
-                        }
-                      />
-                    )}
-                  </SwiperSlide>
-                );
-              }
-            )}
-          </Swiper>
-        </IonCol>
-      </IonRow>
-      <IonRow class="ion-margin-top">
-        <IonCol class="ion-no-padding">
-          <BalanceTitle>
-            {formatAmount(aggregatedBalances.get(focusCurrency) || 0)}{' '}
-            {focusCurrency.displayName}
-          </BalanceTitle>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol class="ion-no-padding">
-          <BalanceText>
-            ${`${focusCurrencyUSDTBalance?.toFixed(2)} USD`}
-          </BalanceText>
-        </IonCol>
-      </IonRow>
-    </>
+                  )}
+                </SwiperSlide>
+              );
+            }
+          )}
+        </Swiper>
+      </IonCol>
+      <IonCol size={'12'}>
+        <BalanceTitle>
+          {formatAmount(aggregatedBalances.get(focusCurrency) || 0)}{' '}
+          {focusCurrency.displayName}
+        </BalanceTitle>
+        <BalanceText>
+          ${`${focusCurrencyUSDTBalance?.toFixed(2)} USD`}
+        </BalanceText>
+      </IonCol>
+    </IonRow>
   );
 }

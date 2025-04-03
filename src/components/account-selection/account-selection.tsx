@@ -13,7 +13,6 @@ import { akashicPayPath } from '../../routing/navigation-tabs';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { displayLongText } from '../../utils/long-text';
-import { CopyButton } from '../common/copy-button';
 
 const ACCOUNT_OPERATION_OPTIONS = [
   {
@@ -32,13 +31,11 @@ const ACCOUNT_OPERATION_OPTIONS = [
 
 export function AccountSelection({
   onNewAccountClick,
-  showCopyButton,
   hideCreateImport,
   size = 'lg',
   currentSelectedAccount,
 }: {
   onNewAccountClick?: (selectedAccount: LocalAccount) => void;
-  showCopyButton?: boolean;
   hideCreateImport?: boolean;
   size?: 'md' | 'lg';
   currentSelectedAccount?: LocalAccount;
@@ -57,12 +54,11 @@ export function AccountSelection({
       const matchingAccount = localAccounts?.find(
         (a) => a.identity === activeAccount.identity
       );
-
       setSelectedAccount(matchingAccount ?? localAccounts?.[0]);
     } else {
       setSelectedAccount(localAccounts?.[0]);
     }
-  }, [activeAccount, localAccounts]);
+  }, [activeAccount, localAccounts.length]);
 
   const onSelect = ({
     detail: { value },
@@ -76,13 +72,23 @@ export function AccountSelection({
       return;
     }
 
-    if (!selectedAccount) {
-      setSelectedAccount(value);
+    const accountSelectedByUser = localAccounts.find(
+      (account) => account.identity === value
+    );
+
+    if (!selectedAccount && accountSelectedByUser) {
+      setSelectedAccount(accountSelectedByUser);
+      return;
     }
+
     // When new account is selected trigger callback
-    if (selectedAccount && value !== selectedAccount) {
-      setSelectedAccount(value);
-      if (onNewAccountClick) onNewAccountClick(value);
+    if (
+      selectedAccount &&
+      accountSelectedByUser &&
+      value !== selectedAccount.identity
+    ) {
+      setSelectedAccount(accountSelectedByUser);
+      onNewAccountClick && onNewAccountClick(accountSelectedByUser);
     }
   };
 
@@ -105,7 +111,7 @@ export function AccountSelection({
           minHeight: size === 'lg' ? 40 : 32,
           minWidth: '0',
         }}
-        value={selectedAccount}
+        value={selectedAccount?.identity}
         onIonChange={onSelect}
         interface="popover"
         interfaceOptions={{
@@ -115,17 +121,13 @@ export function AccountSelection({
         }}
       >
         {[
-          ...localAccounts.map((account, index) => {
-            const accountPrefix = account.aasName ?? `Account ${index + 1}`;
+          ...localAccounts.map((account) => {
+            const accountPrefix =
+              account.aasName ?? account?.accountName ?? `Account`;
 
             return (
-              <IonSelectOption key={account.identity} value={account}>
-                {!showCopyButton
-                  ? `${accountPrefix} - ${displayLongText(
-                      account.identity,
-                      20
-                    )}`
-                  : `${displayLongText(account.identity, 18, false, true)}`}
+              <IonSelectOption key={account.identity} value={account.identity}>
+                {`${accountPrefix} - ${displayLongText(account.identity, 20)}`}
               </IonSelectOption>
             );
           }),
@@ -142,9 +144,6 @@ export function AccountSelection({
               ))),
         ]}
       </IonSelect>
-      {showCopyButton && selectedAccount?.identity && (
-        <CopyButton value={selectedAccount?.identity} />
-      )}
     </div>
   );
 }

@@ -58,6 +58,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-danger-tint: #ed576b;
 
   --ion-color-failed: #ff5449;
+  --ion-color-white: #ffffff;
 
   /** dark **/
   --ion-color-dark: #290056;

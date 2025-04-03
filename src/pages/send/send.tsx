@@ -5,7 +5,7 @@ import { SendForm } from '../../components/send-deposit/send-form/send-form';
 
 export function SendPage() {
   return (
-    <DashboardLayout showAddress>
+    <DashboardLayout showSwitchAccountBar showAddress>
       <SendForm />
     </DashboardLayout>
   );

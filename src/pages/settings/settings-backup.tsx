@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { AlertBox } from '../../components/common/alert/alert';
-import { OtkBox } from '../../components/otk-box/otk-box';
+import { CopyBox } from '../../components/common/copy-box';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 import {
   PageHeader,
@@ -29,7 +29,7 @@ export function SettingsBackup() {
   };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout showSwitchAccountBar>
       {view === BackupKeyPairState.ConfirmPassword && (
         <ConfirmLockPassword onPasswordCheckSuccess={onPasswordCheckSuccess} />
       )}
@@ -37,13 +37,11 @@ export function SettingsBackup() {
         <SettingsWrapper>
           <PageHeader>{t('ThisIsYourKeyPair')}</PageHeader>
           <IonGrid fixed className="ion-no-padding">
-            <IonRow>
-              <IonCol className="ion-no-padding">
-                <OtkBox label="" text={keyPair} />
+            <IonRow className={'ion-grid-row-gap-sm'}>
+              <IonCol>
+                <CopyBox label="" text={keyPair} />
               </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol class="ion-center ion-no-padding">
+              <IonCol class="ion-center">
                 <AlertBox
                   state={{
                     visible: true,

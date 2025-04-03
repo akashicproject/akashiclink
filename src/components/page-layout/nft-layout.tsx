@@ -4,14 +4,11 @@ import { Preferences } from '@capacitor/preferences';
 import { IonCol, IonContent, IonPage, IonRow } from '@ionic/react';
 import type { ReactNode } from 'react';
 import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import { LAST_HISTORY_ENTRIES } from '../../constants';
-import { urls } from '../../constants/urls';
 import { history } from '../../routing/history';
-import { akashicPayPath } from '../../routing/navigation-tabs';
 import { Header } from '../layout/header';
-import { ChainDiv } from './dashboard-layout';
+import { AccountNameBar } from '../layout/toolbar/account-name-bar';
 
 export function NftLayout({
   children,
@@ -21,7 +18,6 @@ export function NftLayout({
   noFooter?: boolean;
   backButtonUrl?: string;
 }) {
-  const { t } = useTranslation();
   useEffect(() => {
     const updateLastLocation = async () => {
       await Preferences.set({
@@ -37,14 +33,9 @@ export function NftLayout({
     <IonPage>
       <Header />
       <IonContent class="nft-layout">
-        <IonRow style={{ borderBottom: '2px solid #C297FF' }}>
+        <IonRow>
           <IonCol size="12" className="ion-no-padding">
-            <ChainDiv
-              style={{ borderBottom: 'none' }}
-              routerLink={akashicPayPath(urls.dashboard)}
-            >
-              {t('AkashicChain')}
-            </ChainDiv>
+            <AccountNameBar />
           </IonCol>
         </IonRow>
         {children}

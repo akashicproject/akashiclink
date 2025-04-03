@@ -5,11 +5,11 @@ import { useTranslation } from 'react-i18next';
 
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
-import { displayLongText } from '../../utils/long-text';
+import { useLogout } from '../../utils/hooks/useLogout';
 import { SquareWhiteButton } from '../common/buttons';
 import { DeleteAccountModal } from './delete-account-modal';
 
-const InitialDiv = styled.div({
+const InitialIcon = styled.div({
   width: '32px',
   height: '32px',
   flex: '0 0 32px',
@@ -22,6 +22,13 @@ const InitialDiv = styled.div({
   color: '#FFFFFF',
   fontSize: '12px',
   fontWeight: '700',
+});
+
+const StyledList = styled(IonList)({
+  ['ion-item::part(native)']: {
+    '--padding-start': 0,
+    '--inner-padding-end': 0,
+  },
 });
 
 const IconAndLabel = styled(IonItem)({
@@ -38,13 +45,15 @@ const IconAndLabel = styled(IonItem)({
 
 export const AccountList = () => {
   const { t } = useTranslation();
-  const { localAccounts } = useAccountStorage();
+  const { localAccounts, activeAccount, setActiveAccount } =
+    useAccountStorage();
   const [alertOpen, setAlertOpen] = useState(false);
   const [accountToDelete, setAccountToDelete] = useState<LocalAccount | null>(
     null
   );
+  const logout = useLogout();
 
-  const onItemClick = (account: LocalAccount) => () => {
+  const onDeleteAccountClick = (account: LocalAccount) => () => {
     setAccountToDelete(account);
     setAlertOpen(true);
   };
@@ -53,8 +62,13 @@ export const AccountList = () => {
     setAlertOpen(false);
   };
 
+  const onSelectAccountClick = (account: LocalAccount) => async () => {
+    await logout();
+    setActiveAccount(account);
+  };
+
   return (
-    <IonList lines={'full'}>
+    <StyledList lines={'full'}>
       {localAccounts.map((account) => (
         <IconAndLabel key={account.identity}>
           <div
@@ -65,19 +79,38 @@ export const AccountList = () => {
               className={'w-100'}
               style={{ display: 'flex', flexDirection: 'row', gap: 8 }}
             >
-              <InitialDiv>AS</InitialDiv>
+              <InitialIcon>AS</InitialIcon>
               <IonLabel>
                 <h3 className={'ion-text-align-left ion-margin-bottom-0'}>
-                  {displayLongText(account.identity)}
+                  {account.aasName ?? account.accountName}
                 </h3>
                 <p className={'ion-text-align-left ion-text-size-xxs'}>
                   {account.identity}
                 </p>
               </IonLabel>
             </div>
-            <SquareWhiteButton size="small" onClick={onItemClick(account)}>
-              {t('RemoveAccount')}
-            </SquareWhiteButton>
+            <div
+              className={
+                'ion-display-flex ion-justify-content-evenly ion-gap-xs'
+              }
+            >
+              {account.identity !== activeAccount?.identity && (
+                <SquareWhiteButton
+                  className={'ion-flex-1'}
+                  size="small"
+                  onClick={onSelectAccountClick(account)}
+                >
+                  {t('SelectAccount')}
+                </SquareWhiteButton>
+              )}
+              <SquareWhiteButton
+                className={'ion-flex-1'}
+                size="small"
+                onClick={onDeleteAccountClick(account)}
+              >
+                {t('RemoveAccount')}
+              </SquareWhiteButton>
+            </div>
           </div>
         </IconAndLabel>
       ))}
@@ -88,6 +121,6 @@ export const AccountList = () => {
           onCancel={onCancelModal}
         />
       )}
-    </IonList>
+    </StyledList>
   );
 };

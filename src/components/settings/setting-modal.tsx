@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useCurrentAppInfo } from '../../utils/hooks/useCurrentAppInfo';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { getImageIconUrl } from '../../utils/url-utils';
-import { ThemeSelect } from '../layout/theme-select';
+import { ThemeSelect } from '../layout/toolbar/theme-select';
 import { AboutUs, AboutUsCaret } from './about-us';
 import { type SettingItemProps, SettingItem } from './setting-item';
 
