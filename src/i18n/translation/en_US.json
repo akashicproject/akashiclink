@@ -297,7 +297,7 @@
     "expires": "Expires",
     "payoutCallbackUrl": "Payout Callback Url",
     "depositCallbackUrl": "Deposit Callback Url",
-    "withdrawalCallbackUrl": "Withdrawal Callback Url",
+    "pendingDepositCallbackUrl": "Pending Deposit Callback Url",
     "callbackId": "Callback Id"
   },
   "SendBpByAlias": "Cannot send to business account by Akashic Alias"

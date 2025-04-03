@@ -102,6 +102,9 @@ export function SignTypedData() {
           if (toSign.payout) {
             callbackUrls.payout = toSign.payout as string;
           }
+          if (toSign.pendingDeposit) {
+            callbackUrls.pendingDeposit = toSign.pendingDeposit as string;
+          }
 
           signedMsg = await signSetupCallbackUrl({
             identity: toSign.identity,

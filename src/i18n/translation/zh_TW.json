@@ -292,12 +292,12 @@
   "ClickToSignIn": "點擊登入並接受 AkashicPay 服務條款和隱私權政策",
   "LockAndUnlockAnotherAccount": "鎖定此帳號並解鎖另一個帳號",
   "Popup": {
-    "identity": "Akashic Address",
-    "content": "Message",
-    "expires": "Expires",
-    "payoutCallbackUrl": "Payout Callback Url",
-    "depositCallbackUrl": "Deposit Callback Url",
-    "withdrawalCallbackUrl": "Withdrawal Callback Url",
+    "identity": "Akashic 地址",
+    "content": "訊息",
+    "expires": "有效期至",
+    "payoutCallbackUrl": "提幣回调URL",
+    "depositCallbackUrl": "存款回调URL",
+    "pendingDepositCallbackUrl": "待提幣回调URL",
     "callbackId": "Callback Id"
   },
   "SendBpByAlias": "無法透過 Akashic 地址發送商業帳戶"
