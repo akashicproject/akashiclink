@@ -125,7 +125,7 @@ export function NftTransferResult() {
               await mutateNftTransfersMe();
             }}
           >
-            {t('Confirm')}
+            {t('Ok')}
           </PurpleButton>
         </IonCol>
       </IonRow>

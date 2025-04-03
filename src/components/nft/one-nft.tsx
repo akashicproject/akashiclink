@@ -41,7 +41,7 @@ const NtfWrapper = styled.div<{ isAASLinked: boolean }>((props) => ({
   padding: '8px',
   borderRadius: '8px',
   borderTopRightRadius: props.isAASLinked ? '0px' : '8px',
-  marginTop: props.isAASLinked ? '0px' : '22px',
+  marginTop: props.isAASLinked ? '0px' : '20px',
   background: '#FFF',
   boxShadow: '6px 6px 20px rgba(0,0,0,0.10000000149011612)',
 }));

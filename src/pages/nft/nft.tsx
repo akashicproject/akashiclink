@@ -7,13 +7,13 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import { CustomAlert } from '../../components/common/alert/alert';
-import { PurpleButton, WhiteButton } from '../../components/common/buttons';
+import { PurpleButton } from '../../components/common/buttons';
+import { Toolbar } from '../../components/layout/toolbar';
 import { AasListingSwitch } from '../../components/nft/aas-listing-switch';
 import { OneNft } from '../../components/nft/one-nft';
 import { NftLayout } from '../../components/page-layout/nft-layout';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../routing/history';
-import { historyGoBackOrReplace } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 
@@ -21,7 +21,6 @@ export const NftWrapper = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  paddingTop: '15%',
   gap: '24px',
   width: '100%',
   position: 'relative',
@@ -64,6 +63,14 @@ export function Nft() {
 
   return (
     <NftLayout>
+      <div
+        style={{
+          backgroundColor: 'var(--nft-background)',
+        }}
+      >
+        <Toolbar showSetting={false} />
+      </div>
+
       <CustomAlert
         state={{
           visible: isOpen,
@@ -82,27 +89,13 @@ export function Nft() {
             </NftContainer>
           </IonRow>
           <IonRow className="ion-margin">
-            <IonCol>
-              <PurpleButton
-                expand="block"
-                style={{ width: '181px' }}
-                onClick={transferNft}
-              >
+            <IonCol size="8" offset="2">
+              <PurpleButton expand="block" onClick={transferNft}>
                 {t('Transfer')}
               </PurpleButton>
             </IonCol>
           </IonRow>
-          <IonRow className="ion-margin">
-            <IonCol className="ion-no-padding">
-              <WhiteButton
-                expand="block"
-                style={{ width: '181px' }}
-                onClick={() => history.goBack()}
-              >
-                {t('Cancel')}
-              </WhiteButton>
-            </IonCol>
-          </IonRow>
+
           {currentNft && currentNft.acns && (
             <AasListingSwitch
               name={currentNft.acns!.name}

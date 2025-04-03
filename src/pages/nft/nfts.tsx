@@ -2,15 +2,14 @@ import './ntf.scss';
 
 import styled from '@emotion/styled';
 import type { INftResponse } from '@helium-pay/backend';
-import { IonCol, IonIcon, IonRow, IonSpinner, isPlatform } from '@ionic/react';
-import { alertCircleOutline, arrowBack } from 'ionicons/icons';
-import React from 'react';
+import { IonCol, IonIcon, IonRow, IonSpinner } from '@ionic/react';
+import { alertCircleOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import type { GridComponents } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
-import { SquareWhiteButton } from '../../components/common/buttons';
+import { Toolbar } from '../../components/layout/toolbar';
 import { OneNft } from '../../components/nft/one-nft';
 import { NftLayout } from '../../components/page-layout/nft-layout';
 import { useTheme } from '../../components/providers/PreferenceProvider';
@@ -19,17 +18,17 @@ import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 
-export const NoNtfWrapper = styled.div({
+export const NoNtfWrapper = styled(IonCol)({
   top: '20%',
   position: 'relative',
 });
 
 const StyledNftWrapper = styled.div`
   height: 220px;
-  width: 152px;
+  width: 148px;
   margin: 16px 8px;
 `;
-export const NoNtfText = styled.div({
+export const NoNtfText = styled(IonRow)({
   fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 700,
@@ -38,21 +37,19 @@ export const NoNtfText = styled.div({
   color: 'var(--ion-color-primary-10)',
 });
 
-const StyledIonCol = styled(IonCol)`
-  padding-top: 12px;
-`;
 const ListContainer = styled.div({
   display: 'flex',
   flexWrap: 'wrap',
   alignContent: 'center',
   position: 'absolute',
-  justifyContent: 'flex-start',
+  justifyContent: 'center',
   width: '100%',
+  padding: '0px 12px',
 }) as GridComponents['List'];
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function Nfts() {
   const { t } = useTranslation();
-  const [storedTheme, setStoredTheme] = useTheme();
+  const [storedTheme] = useTheme();
   const isDarkMode =
     storedTheme === themeType.DARK || storedTheme === themeType.SYSTEM;
   const history = useHistory();
@@ -71,32 +68,17 @@ export function Nfts() {
     <>
       <NftLayout>
         <IonRow>
-          <StyledIonCol size={'3'}>
-            <SquareWhiteButton
-              className="icon-button"
-              onClick={() => {
-                history.goBack();
-              }}
-            >
-              <IonIcon
-                className="icon-button-icon"
-                slot="icon-only"
-                src={`/shared-assets/images/${
-                  storedTheme === themeType.DARK
-                    ? 'back-arrow-white.svg'
-                    : 'back-arrow-purple.svg'
-                }`}
-              />
-            </SquareWhiteButton>
-          </StyledIonCol>
+          <Toolbar showAddress={false} showSetting={false} />
         </IonRow>
         {isLoading ? (
           <IonSpinner name="circular"></IonSpinner>
         ) : nfts.length === 0 ? (
           <>
-            <NoNtfWrapper>
+            <NoNtfWrapper className="ion-center">
               <div>
-                <IonIcon icon={alertCircleOutline} className="alert-icon" />
+                <IonRow className="ion-justify-content-center">
+                  <IonIcon icon={alertCircleOutline} className="alert-icon" />
+                </IonRow>
                 <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
               </div>
             </NoNtfWrapper>
@@ -105,7 +87,7 @@ export function Nfts() {
           <Virtuoso
             style={{
               height: '70vh',
-              padding: '0px 12px',
+              width: '100%',
             }}
             overscan={900}
             totalCount={nfts.length}
