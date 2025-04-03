@@ -26,6 +26,7 @@ export interface LocalAccount {
   username?: string;
   aasName?: string;
   accountName?: string;
+  ledgerId?: string;
 }
 
 /**
@@ -89,16 +90,17 @@ export const useAccountStorage = () => {
 
   const addAasToAccountByIdentity = async (
     aasName: string,
-    identity: string
+    identity: string,
+    ledgerId: string
   ) => {
     const updatedAccounts = localAccounts.map((l) => {
       if (l.identity === identity) {
-        return { ...l, aasName };
+        return { ...l, aasName, ledgerId };
       }
       return l;
     });
     if (activeAccount && activeAccount.identity === identity) {
-      dispatch(setActiveAccountState({ ...activeAccount, aasName }));
+      dispatch(setActiveAccountState({ ...activeAccount, aasName, ledgerId }));
     }
     dispatch(setLocalAccounts(updatedAccounts));
   };
@@ -106,13 +108,19 @@ export const useAccountStorage = () => {
   const removeAasFromAccountByIdentity = async (identity: string) => {
     const updatedAccounts = localAccounts.map((l) => {
       if (l.identity === identity) {
-        const { aasName: _, ...rest } = l;
+        const { aasName: _, ledgerId: _a, ...rest } = l;
         return rest;
       }
       return l;
     });
     if (activeAccount && activeAccount.identity === identity) {
-      dispatch(setActiveAccountState({ ...activeAccount, aasName: undefined }));
+      dispatch(
+        setActiveAccountState({
+          ...activeAccount,
+          aasName: undefined,
+          ledgerId: undefined,
+        })
+      );
     }
     dispatch(setLocalAccounts(updatedAccounts));
   };

@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
 import type { JSX } from '@ionic/core/components';
-import { IonIcon, IonItem, IonLabel } from '@ionic/react';
+import { IonIcon, IonImg, IonItem, IonLabel } from '@ionic/react';
 import { removeCircle } from 'ionicons/icons';
 
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { displayLongText } from '../../utils/long-text';
+import { getNftImage } from '../../utils/nft-image-link';
 
 const InitialIcon = styled.div<{ isActive: boolean }>(({ isActive }) => ({
   width: '32px',
@@ -32,7 +33,12 @@ const InitialIcon = styled.div<{ isActive: boolean }>(({ isActive }) => ({
     height: 8,
   },
 }));
-
+const StyledNftImage = styled(IonImg)({
+  height: '32px',
+  width: '32px',
+  borderRadius: '32px',
+  overflow: 'hidden',
+});
 const IconAndLabel = styled(IonItem)<{ isLightText?: boolean }>(
   ({ isLightText }) => ({
     ['ion-label']: {
@@ -95,7 +101,13 @@ export const AccountListItem = ({
               icon={removeCircle}
             />
           )}
-          <InitialIcon isActive={isActive}>AS</InitialIcon>
+          {account.ledgerId && (
+            <StyledNftImage src={getNftImage(account.ledgerId, '32')} />
+          )}
+          {!account.ledgerId && (
+            <InitialIcon isActive={isActive}>AS</InitialIcon>
+          )}
+
           <IonLabel>
             <h3 className={'ion-text-align-left ion-margin-bottom-0'}>
               {account.aasName ?? account.accountName}
