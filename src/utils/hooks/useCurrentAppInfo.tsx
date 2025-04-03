@@ -37,7 +37,6 @@ export const useCurrentAppInfo = () => {
         setAppInfo(appInfo);
       } catch (e) {
         datadogRum.addError(e);
-        console.warn(e);
       }
     };
 

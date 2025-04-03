@@ -34,9 +34,7 @@ export const useLocalStorage = <T>(
             JSON.stringify(stateValue) !== result.value &&
               setStateValue(JSON.parse(result.value));
           } else {
-            console.warn(
-              'preference value not found, initialValue value not found'
-            );
+            console.warn(key + ' preference value & initialValue not found');
           }
         }
       } catch (e) {

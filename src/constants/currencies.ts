@@ -120,7 +120,7 @@ class CurrencyFactory {
   }
 
   /**
-   * Lookup metadata of a currency
+   * Lookup metadata of a currency or default to the first one
    */
   public lookup(wc1: IWalletCurrency) {
     return (
@@ -206,7 +206,7 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
     : []),
 ]);
 
-export const ALLOWED_NETWORKS =
+export const ALLOWED_NETWORKS: CoinSymbol[] =
   process.env.REACT_APP_ENABLE_TESTNET_CURRENCIES === 'true'
     ? [CoinSymbol.Ethereum_Sepolia, CoinSymbol.Tron_Shasta]
     : [CoinSymbol.Ethereum_Mainnet, CoinSymbol.Tron];

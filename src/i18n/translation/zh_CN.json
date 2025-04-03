@@ -28,6 +28,7 @@
   "Sender": "发送人",
   "SendCode": "发送代码",
   "Deposit": "存储",
+  "ClickToGenerateAddress": "单击生成地址",
   "VerificationCode": "验证码",
   "EnterTheCodeSent": "输入验证码",
   "CreatingYourWallet": "正在创建您的帐号",
