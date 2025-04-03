@@ -9,10 +9,6 @@ import { PublicLayout } from '../../components/page-layout/public-layout';
 import { useAppDispatch } from '../../redux/app/hooks';
 import { onClear } from '../../redux/slices/createWalletSlice';
 import { historyResetStackAndRedirect } from '../../routing/history';
-import { useAccountMe } from '../../utils/hooks/useAccountMe';
-import { useMyTransfers } from '../../utils/hooks/useMyTransfers';
-import { useNftMe } from '../../utils/hooks/useNftMe';
-import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 
 export const StyledA = styled.a({
   fontSize: '12px',
@@ -26,18 +22,10 @@ export const StyledA = styled.a({
 
 export const CreateWalletSuccessful = () => {
   const { t } = useTranslation();
-  const { mutateMyTransfers } = useMyTransfers();
-  const { mutateNftTransfersMe } = useNftTransfersMe();
-  const { mutate: mutateAccountMe } = useAccountMe();
-  const { mutateNftMe } = useNftMe();
   const dispatch = useAppDispatch();
 
   const handleOnConfirm = async () => {
     dispatch(onClear());
-    await mutateMyTransfers();
-    await mutateNftTransfersMe();
-    await mutateAccountMe();
-    await mutateNftMe();
     // creation flow is finished, completely reset router history
     await historyResetStackAndRedirect();
   };

@@ -4,12 +4,9 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { historyResetStackAndRedirect } from '../../routing/history';
-import { useAccountMe } from '../../utils/hooks/useAccountMe';
 import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemapAASToAddress';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
-import { useMyTransfers } from '../../utils/hooks/useMyTransfers';
-import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { AccountSelection } from '../account-selection/account-selection';
 import {
@@ -39,9 +36,6 @@ export function LoginForm({ isPopup = false }) {
     setActiveAccount,
   } = useAccountStorage();
   const [password, setPassword] = useState<string>('');
-  const { mutateMyTransfers } = useMyTransfers();
-  const { mutateNftTransfersMe } = useNftTransfersMe();
-  const { mutate: mutateAccountMe } = useAccountMe();
   const fetchAndRemapAASToAddress = useFetchAndRemapAASToAddress();
 
   addPrefixToAccounts();
@@ -78,9 +72,6 @@ export function LoginForm({ isPopup = false }) {
         id: activeAccount.username,
       });
       // Set the login account
-      await mutateMyTransfers();
-      await mutateNftTransfersMe();
-      await mutateAccountMe();
       await fetchAndRemapAASToAddress(activeAccount.identity);
 
       setPassword('');

@@ -22,7 +22,7 @@ export const AccountManagementList = ({
   const { t } = useTranslation();
 
   return (
-    <List style={{ backgroundColor: 'transparent', padding: '0 12px' }}>
+    <List style={{ backgroundColor: 'transparent' }}>
       <StyledIonItem detail={false} button onClick={onClickRemove}>
         <IonIcon
           style={{ fontSize: 18 }}

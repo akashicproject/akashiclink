@@ -1,5 +1,3 @@
-import './activity.scss';
-
 import styled from '@emotion/styled';
 import { IonSpinner } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +6,7 @@ import type { GridComponents } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
 import { OneActivity } from '../../components/activity/one-activity';
+import { WhiteButton } from '../../components/common/buttons';
 import { Divider } from '../../components/common/divider';
 import { AlertIcon } from '../../components/common/icons/alert-icon';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
@@ -18,7 +17,7 @@ import type { LocationState } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 import { formatMergeAndSortNftAndCryptoTransfers } from '../../utils/formatTransfers';
-import { useMyTransfers } from '../../utils/hooks/useMyTransfers';
+import { useMyTransfersInfinite } from '../../utils/hooks/useMyTransfersInfinite';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 
 const ListContainer = styled.div({
@@ -56,28 +55,42 @@ export const TableHeads = styled.div({
   justifyContent: 'space-between',
 });
 
+const ListFooter: GridComponents['Footer'] = ({
+  context: { loadMore, loading },
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <div className={'ion-display-flex ion-justify-content-center'}>
+      <WhiteButton size={'small'} disabled={loading} onClick={loadMore}>
+        {loading ? t('Loading') : t('LoadMore')}
+      </WhiteButton>
+    </div>
+  );
+};
+
 export function Activity() {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
   const storedTheme = useAppSelector(selectTheme);
-  const { transfers, isLoading } = useMyTransfers();
+  const { transfers, transactionCount, isLoading, setSize, size } =
+    useMyTransfersInfinite();
   const { transfers: nftTransfers, isLoading: isLoadingNft } =
     useNftTransfersMe();
   const walletFormatTransfers = formatMergeAndSortNftAndCryptoTransfers(
     transfers,
     nftTransfers
   );
+
+  const loadMore = () => {
+    setSize(size + 1);
+  };
+
   return (
     <DashboardLayout showSwitchAccountBar showAddress showRefresh>
       <TableWrapper>
         <TableHeads>
-          <div
-            className="ion-margin-left-xs"
-            style={{
-              display: 'flex',
-              gap: '16px',
-            }}
-          >
+          <div className="ion-margin-left-xs ion-display-flex ion-gap-lg">
             <ColumnWrapper>{t('State')}</ColumnWrapper>
             <ColumnWrapper>{t('TransactionType')}</ColumnWrapper>
           </div>
@@ -101,8 +114,13 @@ export function Activity() {
               minHeight: 'calc(100vh - 200px - var(--ion-safe-area-bottom)',
             }}
             data={walletFormatTransfers}
+            context={{ loading: isLoading, loadMore }}
             components={{
               List: ListContainer,
+              Footer:
+                transactionCount && transfers.length < transactionCount
+                  ? ListFooter
+                  : undefined,
             }}
             itemContent={(index, transfer) => (
               <OneActivity
@@ -140,7 +158,7 @@ export function Activity() {
             transform: 'translateX(-50%)',
             '--webkit-transform': 'translateX(-50%)',
           }}
-        ></IonSpinner>
+        />
       )}
     </DashboardLayout>
   );
