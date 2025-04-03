@@ -70,16 +70,31 @@ export const importWalletSlice = createAppSlice({
       async (passPhrase: string[]) => {
         // Reconstruct OTK
         const reconstructedOtk = await restoreOtk(passPhrase.join(' '));
-        const { identity } = await OwnersAPI.importAccount({
+        const { identity, username } = await OwnersAPI.importAccount({
           publicKey: reconstructedOtk.key.pub.pkcs8pem,
           signedAuth: signImportAuth(
             reconstructedOtk.key.prv.pkcs8pem,
             IMPORT_CONST
           ),
         });
-        const fullOtk = { ...reconstructedOtk, identity };
-        // The value we return becomes the `fulfilled` action payload
-        return fullOtk as FullOtk;
+        if (identity) {
+          history.push({
+            pathname: akashicPayPath(urls.importWalletPassword),
+          });
+          return { ...reconstructedOtk, identity };
+        } else if (username) {
+          history.push({
+            pathname: akashicPayPath(urls.migrateWalletNotice),
+            state: {
+              migrateWallet: {
+                username,
+              },
+            },
+          });
+          return null;
+        } else {
+          throw new Error('GenericFailureMsg');
+        }
       },
       {
         fulfilled: (state, action) => {
@@ -100,7 +115,6 @@ export const importWalletSlice = createAppSlice({
           const response = await OwnersAPI.importAccount({
             publicKey: otk.key.pub.pkcs8pem,
             signedAuth: signImportAuth(privateKey, IMPORT_CONST),
-            keyPairImport: true,
           });
           identity = response.identity;
           username = response.username;
@@ -115,7 +129,6 @@ export const importWalletSlice = createAppSlice({
             const response = await OwnersAPI.importAccount({
               publicKey: otk.key.pub.pkcs8pem,
               signedAuth: signImportAuth(privateKey, IMPORT_CONST),
-              keyPairImport: true,
             });
             identity = response.identity;
             username = response.username;
