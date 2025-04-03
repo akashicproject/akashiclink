@@ -45,9 +45,12 @@ export const useAccountStorage = () => {
       setLocalAccounts(accountsWithPrefix);
     }
   };
-  const addAasToActiveAccount = async (aasName: string) => {
+  const addAasToAccountByIdentity = async (
+    aasName: string,
+    identity: string
+  ) => {
     const updatedAccounts = localAccounts.map((l) => {
-      if (l.identity === activeAccount?.identity) {
+      if (l.identity === identity) {
         return { ...l, aasName };
       }
       return l;
@@ -55,11 +58,11 @@ export const useAccountStorage = () => {
     setLocalAccounts(updatedAccounts);
   };
 
-  const removeAasFromActiveAccount = async () => {
+  const removeAasFromAccountByIdentity = async (identity: string) => {
     const updatedAccounts = localAccounts.map((l) => {
-      if (l.identity === activeAccount?.identity) {
-        const { aasName, ...rest } = l;
-        return { ...rest };
+      if (l.identity === identity) {
+        const { aasName: _, ...rest } = l;
+        return rest;
       }
       return l;
     });
@@ -175,7 +178,7 @@ export const useAccountStorage = () => {
     removeLocalOtk,
     changeOtkPassword,
     getLocalOtk,
-    addAasToActiveAccount,
-    removeAasFromActiveAccount,
+    addAasToAccountByIdentity,
+    removeAasFromAccountByIdentity,
   };
 };

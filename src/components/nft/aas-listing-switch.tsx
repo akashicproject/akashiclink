@@ -73,7 +73,7 @@ export const AasListingSwitch = ({
           name: name,
           newValue: newValue,
         });
-        await fetchAndRemapAASToAddress();
+        await fetchAndRemapAASToAddress(activeAccount.identity);
       }
       await mutateNftMe();
       setIsListed(!isListed);

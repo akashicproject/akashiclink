@@ -122,7 +122,7 @@ export function LoginForm() {
       await mutateTransfersMe();
       await mutateNftTransfersMe();
       await mutateBalancesMe();
-      await fetchAndRemapAASToAddress();
+      await fetchAndRemapAASToAddress(selectedAccount.identity);
 
       setSelectedAccount(undefined);
       setPassword('');

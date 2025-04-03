@@ -22,13 +22,15 @@ export const StyledSpan = styled.span({
 export const ImportWalletSuccessful = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { mutateOwner } = useOwner();
+  const { mutateOwner, owner } = useOwner();
   const fetchAndRemapAASToAddress = useFetchAndRemapAASToAddress();
 
   const handleOnConfirm = async () => {
     dispatch(onClear());
     await mutateOwner();
-    await fetchAndRemapAASToAddress();
+    if (owner.ownerIdentity) {
+      await fetchAndRemapAASToAddress(owner.ownerIdentity);
+    }
     // migration flow is finished, completely reset router history
     historyResetStackAndRedirect();
   };
