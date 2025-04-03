@@ -79,7 +79,7 @@ export function Nfts() {
         <IonGrid>
           <IonRow className="ion-justify-content-center">
             <IonCol className="ion-center">
-              <div>
+              <div style={{ marginTop: '50%' }}>
                 <AlertIcon />
                 <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
               </div>
