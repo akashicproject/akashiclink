@@ -2,7 +2,7 @@
   "short_name": "AW",
   "name": "Akashic Wallet",
   "description": "Your interface with the nitr0gen ecosystem",
-  "version": "0.0.3",
+  "version": "0.0.3.7",
   "icons": {
     "16": "shared-assets/icons/APicon.png",
     "48": "shared-assets/icons/APicon.png",
