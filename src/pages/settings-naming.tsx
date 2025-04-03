@@ -35,6 +35,7 @@ import { Tabs } from '../components/layout/tabs';
 import { useTheme } from '../components/PreferenceProvider';
 import { themeType } from '../theme/const';
 import { OwnersAPI } from '../utils/api';
+import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useNftAcnsMe } from '../utils/hooks/useNftAcnsMe';
 import { displayLongText } from '../utils/long-text';
 import { unpackRequestErrorMessage } from '../utils/unpack-request-error-message';
@@ -151,7 +152,7 @@ const NoDataDiv = styled.div({
 
 export function SettingsNaming() {
   const { t } = useTranslation();
-
+  const { activeAccount } = useAccountStorage();
   const { acns, mutate } = useNftAcnsMe();
   const namedAcns = acns.filter((a) => !!a.value);
 
@@ -159,7 +160,7 @@ export function SettingsNaming() {
   const [alert, setAlert] = useState(formAlertResetState);
   const [editAcns, setEditAcns] = useState(namedAcns[0]);
   const [selectedName, setSelectedName] = useState('');
-  const [newValue, setNewValue] = useState('');
+  const [newValue, setNewValue] = useState(activeAccount!.identity);
   const [showEditToast, setShowEditToast] = useState(false);
   const [isConfirmModel, setIsConfirmModel] = useState(false);
   const [isResultModel, setIsResultModel] = useState(false);
