@@ -3,6 +3,7 @@ import { closeOutline } from 'ionicons/icons';
 import React, { type RefObject, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useCurrentAppInfo } from '../../utils/hooks/useCurrentAppInfo';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { getImageIconUrl } from '../../utils/url-utils';
 import { ThemeSelect } from '../layout/theme-select';
@@ -18,7 +19,7 @@ export function SettingsModal({
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [currentAppVersion] = useLocalStorage('current-app-version', '0.0.0');
+  const info = useCurrentAppInfo();
   const { t } = useTranslation();
   const [isAboutUs, setAboutUs] = useState(false);
   const [updateType] = useLocalStorage('update-type', '');
@@ -35,7 +36,7 @@ export function SettingsModal({
         modal.current?.setCurrentBreakpoint(updateType === 'soft' ? 0.72 : 0.6);
         setAboutUs(true);
       },
-      endComponent: <AboutUsCaret appVersion={currentAppVersion} />,
+      endComponent: <AboutUsCaret appVersion={info.version} />,
     },
   ];
   return (

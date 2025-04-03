@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { IonFooter } from '@ionic/react';
 
-import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
+import { useCurrentAppInfo } from '../../utils/hooks/useCurrentAppInfo';
 
 const StyledIonFooter = styled(IonFooter)({
   margin: 'auto',
@@ -22,10 +22,11 @@ const VersionTag = styled.div({
   margin: 'auto',
 });
 export function Footer() {
-  const [currentAppVersion] = useLocalStorage('current-app-version', '0.0.0');
+  const info = useCurrentAppInfo();
+
   return (
     <StyledIonFooter className="ion-no-border">
-      <VersionTag>{`(Version ${currentAppVersion})`}</VersionTag>
+      <VersionTag>{`(v${info?.version ?? '-'})`}</VersionTag>
     </StyledIonFooter>
   );
 }

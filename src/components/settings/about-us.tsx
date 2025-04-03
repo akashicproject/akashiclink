@@ -7,6 +7,7 @@ import type { Dispatch, RefObject, SetStateAction } from 'react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useCurrentAppInfo } from '../../utils/hooks/useCurrentAppInfo';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { getImageIconUrl } from '../../utils/url-utils';
 import { PurpleButton, WhiteButton } from '../common/buttons';
@@ -23,6 +24,7 @@ function UpdateModal({
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
+  const info = useCurrentAppInfo();
   const [availableVersion] = useLocalStorage('available-app-version', '0.0.0');
   const [updateUrl] = useLocalStorage('update_url', '');
   const { t } = useTranslation();
@@ -50,7 +52,7 @@ function UpdateModal({
           className="ion-text-size-xxs ion-no-margin"
           style={{ color: '#B0A9B3' }}
         >
-          Akashic Wallet v{availableVersion}
+          {`${info?.name} v${availableVersion}`}
         </h3>
         <PurpleButton
           style={{ width: '100%', marginTop: '24px' }}
@@ -95,7 +97,7 @@ export function AboutUs({
   isLoggedIn?: boolean;
 }) {
   const { t } = useTranslation();
-  const [currentAppVersion] = useLocalStorage('current-app-version', '0.0.0');
+  const info = useCurrentAppInfo();
   const [availableAppVersion] = useLocalStorage(
     'available-app-version',
     '0.0.0'
@@ -152,7 +154,7 @@ export function AboutUs({
         }}
       ></IonIcon>
       <h5 className={!isLoggedIn ? 'ion-margin-bottom-lg' : 'ion-no-margin'}>
-        AkashicWallet v{currentAppVersion}
+        {`${info?.name} v${info?.version}`}
       </h5>
       <div
         style={{
@@ -180,7 +182,7 @@ export function AboutUs({
             isAccordion={false}
             isDivider={true}
             backgroundColor={backgroundColor}
-            subHeading={`Akashic Wallet v${availableAppVersion}`}
+            subHeading={`${info?.name} v${availableAppVersion}`}
           />
         )}
         {aboutUsMenu.map((abm, index) => {

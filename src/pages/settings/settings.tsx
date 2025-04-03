@@ -17,7 +17,7 @@ import { SettingItem } from '../../components/settings/setting-item';
 import { SettingsRadio } from '../../components/settings/setting-radio';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
+import { useCurrentAppInfo } from '../../utils/hooks/useCurrentAppInfo';
 import { getImageIconUrl } from '../../utils/url-utils';
 
 const autoLockTimeMap: AutoLockProp[] = [
@@ -101,7 +101,7 @@ export function Settings() {
   const history = useHistory();
   const { t } = useTranslation();
   const [autoLockTime] = useLockTime();
-  const [currentAppVersion] = useLocalStorage('current-app-version', '0.0.0');
+  const info = useCurrentAppInfo();
   const [autoLock, setAutoLock] = useState<AutoLockProp>(
     autoLockTimeMap.find((e) => {
       if (e.value == autoLockTime) {
@@ -139,7 +139,7 @@ export function Settings() {
       onClick: () => {
         history.push(akashicPayPath(urls.settingsAboutUs));
       },
-      endComponent: <AboutUsCaret appVersion={currentAppVersion} />,
+      endComponent: <AboutUsCaret appVersion={info.version} />,
     },
   ];
   return (

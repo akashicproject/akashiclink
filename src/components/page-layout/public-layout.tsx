@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { IonFooter, IonPage } from '@ionic/react';
+import { IonPage } from '@ionic/react';
 import { type ReactNode } from 'react';
 
 import { Footer } from '../layout/footer';
@@ -28,8 +28,9 @@ export function PublicLayout({
 }) {
   return (
     <IonPage>
-      <PublicHeader />
       <StyledLayout className="vertical public-layout">
+        {/* Keep header within layout for space when virtual keyboard comes up */}
+        <PublicHeader />
         <div className={`content ${className ?? ''}`} style={contentStyle}>
           {children}
         </div>
