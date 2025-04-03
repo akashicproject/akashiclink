@@ -1,4 +1,5 @@
 import type {
+  INft,
   INftTransactionRecord,
   ITransactionRecord,
   ITransactionRecordForFrontend,
@@ -8,7 +9,6 @@ import {
   formatTransactionForFrontend,
   NetworkDictionary,
 } from '@helium-pay/backend';
-import type { Nft } from '@helium-pay/backend/src/modules/nft/schemas/nft.schema';
 
 import type { IWalletCurrency } from '../constants/currencies';
 import { makeWalletCurrency } from '../constants/currencies';
@@ -17,7 +17,7 @@ export interface ITransactionRecordForExtension
   extends ITransactionRecordForFrontend {
   networkIcon?: string;
   currency?: IWalletCurrency;
-  nft?: Nft;
+  nft?: INft;
   l2TxnHashUrl: string;
 }
 
