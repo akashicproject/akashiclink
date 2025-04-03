@@ -12,6 +12,7 @@ import { urls } from '../../constants/urls';
 import { history } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useFocusCurrencySymbolsAndBalances } from '../../utils/hooks/useAggregatedBalances';
+import { useConfig } from '../../utils/hooks/useConfig';
 import { useVerifyTxnAndSign } from '../../utils/hooks/useVerifyTxnAndSign';
 import type { FormAlertState } from '../common/alert/alert';
 import { errorAlertShell } from '../common/alert/alert';
@@ -24,11 +25,6 @@ const StyledPrimaryButton = styled(PrimaryButton)`
     height: 32px;
   }
 `;
-
-// TODO: 1293 - update this!! probably should get from api / not needed at all
-const SCAN_FEE_AMOUNT = '1';
-const SCAN_FEE_COLLECTOR_ADDRESS =
-  'AScbfdf6faa27a7bbc123fd1b8f6e9e2f28aa5cc146c90fc214065c49e3021e044';
 
 export const AddressScreeningFormVerifyTxnButton: FC<{
   validatedScanAddress: ValidatedScanAddress;
@@ -47,6 +43,7 @@ export const AddressScreeningFormVerifyTxnButton: FC<{
 }) => {
   const { t } = useTranslation();
   const { nativeCoinSymbol } = useFocusCurrencySymbolsAndBalances();
+  const { config, isLoading: isLoadingConfig } = useConfig();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -56,14 +53,19 @@ export const AddressScreeningFormVerifyTxnButton: FC<{
     try {
       setIsLoading(true);
 
+      if (!config) {
+        setAlert(errorAlertShell('GenericFailureMsg'));
+        return;
+      }
+
       const res = await verifyTxnAndSign(
         {
-          convertedToAddress: SCAN_FEE_COLLECTOR_ADDRESS,
-          userInputToAddress: SCAN_FEE_COLLECTOR_ADDRESS,
+          convertedToAddress: config?.addressScreeningFeeCollectorAddress ?? '',
+          userInputToAddress: config?.addressScreeningFeeCollectorAddress ?? '',
           userInputToAddressType: 'l2',
           isL2: true,
         },
-        SCAN_FEE_AMOUNT,
+        config?.addressScreeningFee ?? '',
         chain,
         token,
         FeeDelegationStrategy.None
@@ -106,8 +108,8 @@ export const AddressScreeningFormVerifyTxnButton: FC<{
       expand="block"
       className={'w-100'}
       onClick={onConfirm}
-      disabled={isLoading || disabled}
-      isLoading={isLoading}
+      disabled={isLoading || isLoadingConfig || disabled}
+      isLoading={isLoading || isLoadingConfig}
     >
       {t('Scan')}
     </StyledPrimaryButton>

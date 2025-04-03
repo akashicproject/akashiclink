@@ -119,7 +119,7 @@ export const AddressScreeningSelectCurrency: FC<{
       {alert.visible && (
         <IonRow>
           <IonCol size={'12'}>
-            <AlertBox state={errorAlertShell('SavingsExceeded')} />
+            <AlertBox state={alert} />
           </IonCol>
         </IonRow>
       )}
