@@ -39,6 +39,8 @@ export function AkashicPayMain() {
         } else {
           history.replace(lastLocation.pathname, lastLocation.state);
         }
+        // Remove the last-location as history is now reset
+        await Preferences.remove({ key: 'lastLocation' });
       }
       setIsLoading(false);
     };

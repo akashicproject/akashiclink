@@ -33,7 +33,7 @@ export const SelectImportMethod = () => {
     <PublicLayout>
       <SquareWhiteButton
         className="icon-button"
-        onClick={async () => {
+        onClick={() => {
           if (history.length > 1) {
             history.goBack();
           } else {
