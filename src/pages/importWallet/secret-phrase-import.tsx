@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { IonIcon, IonRow } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -45,6 +45,7 @@ export const SecretPhraseImport = () => {
   const importWalletForm = useAppSelector(selectImportWalletForm);
   const dispatch = useAppDispatch();
   const importWalletError = useAppSelector(selectError);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   /** Scrolling on IOS */
   const { isOpen } = useKeyboardState();
@@ -60,6 +61,12 @@ export const SecretPhraseImport = () => {
 
   const handleConfirmRecoveryPhrase = async () => {
     dispatch(reconstructOtkAsync(importWalletForm.passPhrase!));
+    dispatch(
+      onInputChange({
+        passPhrase: new Array(12).fill(''),
+      })
+    );
+    setIsDisabled(true);
   };
 
   return (
@@ -98,8 +105,10 @@ export const SecretPhraseImport = () => {
             onChange={async (value) => {
               if (validateSecretPhrase(value)) {
                 setError(false);
+                setIsDisabled(false);
               } else {
                 setError(true);
+                setIsDisabled(true);
               }
               dispatch(
                 onInputChange({
@@ -136,7 +145,7 @@ export const SecretPhraseImport = () => {
           >
             <PurpleButton
               style={{ width: '100%' }}
-              disabled={error}
+              disabled={isDisabled}
               onClick={handleConfirmRecoveryPhrase}
             >
               {t('Confirm')}
