@@ -90,4 +90,5 @@ export interface ITransactionForSigning extends ITransactionBase {
   readonly layer: TransactionLayer;
   // Presumably mandatory if layer-1... :/
   readonly feesEstimate?: string;
+  readonly fromLedgerId?: string;
 }

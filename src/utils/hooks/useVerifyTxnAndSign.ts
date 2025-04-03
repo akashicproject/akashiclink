@@ -99,46 +99,37 @@ export const useVerifyTxnAndSign = () => {
 
       const {
         fees: { feesEstimate, delegatedFee },
-        withdrawalKeys,
+        withdrawalKey,
         ethGasPrice,
       } = await OwnersAPI.prepareL1Txn(transactionData);
-      const txns: ITransactionForSigning[] = await Promise.all(
-        withdrawalKeys.map(
-          async (key) =>
-            ({
-              identity: activeAccount.identity,
-              fromAddress: key.address,
-              fromLedgerId: key.ledgerId,
-              toAddress: validatedAddressPair.convertedToAddress,
-              amount: key.transferAmount,
-              coinSymbol,
-              tokenSymbol,
-              feesEstimate,
-              layer: TransactionLayer.L1,
-              txToSign: await nitr0genApi.L2ToL1SignTransaction(
-                cacheOtk,
-                key.ledgerId,
-                coinSymbol,
-                // AC needs smallest units, so we convert
-                convertToDecimals(key.transferAmount, coinSymbol, tokenSymbol),
-                validatedAddressPair.convertedToAddress,
-                convertToDecimals(feesEstimate, coinSymbol),
-                tokenSymbol,
-                ethGasPrice
-              ),
-            } as ITransactionForSigning)
-        )
-      );
-
-      // reject the request if /verify returns multiple transfers
-      if (txns.length !== 1 || !txns[0].txToSign) return 'GenericFailureMsg';
-      const [txn] = txns;
+      const withdrawal: ITransactionForSigning = {
+        identity: activeAccount.identity,
+        fromAddress: withdrawalKey.address,
+        fromLedgerId: withdrawalKey.ledgerId,
+        toAddress: validatedAddressPair.convertedToAddress,
+        amount,
+        coinSymbol,
+        tokenSymbol,
+        feesEstimate,
+        layer: TransactionLayer.L1,
+        txToSign: await nitr0genApi.L2ToL1SignTransaction(
+          cacheOtk,
+          withdrawalKey.ledgerId,
+          coinSymbol,
+          // AC needs smallest units, so we convert
+          convertToDecimals(amount, coinSymbol, tokenSymbol),
+          validatedAddressPair.convertedToAddress,
+          convertToDecimals(feesEstimate, coinSymbol),
+          tokenSymbol,
+          ethGasPrice
+        ),
+      };
 
       // sign txns and move to final confirmation
       // Okay to assert since we have filtered out on the line before
-      const signedTxn = await signTxBody(txn.txToSign, cacheOtk);
+      const signedTxn = await signTxBody(withdrawal.txToSign, cacheOtk);
 
-      return { txn, signedTxn, delegatedFee };
+      return { txn: withdrawal, signedTxn, delegatedFee };
     } catch (error) {
       datadogRum.addError(error);
       return unpackRequestErrorMessage(error);
