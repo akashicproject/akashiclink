@@ -226,5 +226,11 @@
   "AASLinkingFailed": "目前无法解除您的 AAS 的链接。您需要等待 {{timeRemaining}} {{timeUnit}}时间后才能启动解除链接程序。",
   "hours": "時",
   "minutes": "分",
-  "seconds": "秒"
+  "seconds": "秒",
+  "UnsavedDataWillBeRemoved": "此帐户和任何未保存的数据都将在此设备上删除。",
+  "RemoveAccount": "删除帐户",
+  "ManageAccounts": "管理账户",
+  "RemoveDevice": "从该设备移除",
+  "ManageAccountOnThisDevice": "管理此设备上的账户",
+  "RemoveTheAccount": "删除账户。"
 }

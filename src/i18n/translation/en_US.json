@@ -226,5 +226,11 @@
   "AASLinkingFailed": "Unlinking your AAS is currently not available. You will need to wait for period of {{timeRemaining}} {{timeUnit}} before initiating the unlinking process.",
   "hours": "hours",
   "minutes": "minutes",
-  "seconds": "seconds"
+  "seconds": "seconds",
+  "UnsavedDataWillBeRemoved": "This account and any unsaved data will be removed on this device.",
+  "RemoveAccount": "Remove Account",
+  "ManageAccounts": "Manage Accounts",
+  "RemoveDevice": "Remove from this device",
+  "ManageAccountOnThisDevice": "Manage Accounts on this device",
+  "RemoveTheAccount": "Remove the account."
 }

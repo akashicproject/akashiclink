@@ -52,7 +52,7 @@ const SendWrapper = styled.div({
   width: '270px',
 });
 
-const Divider = styled.div({
+export const Divider = styled.div({
   borderTop: '1px solid #D9D9D9',
   boxSizing: 'border-box',
   height: '2px',

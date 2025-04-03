@@ -25,6 +25,12 @@
     min-height: 32px;
     height: 32px;
   }
+  .option-divider-top {
+    border-top: 1px solid #e8e0eb;
+  }
+  .option-divider-bottom {
+    border-bottom: 1px solid #e8e0eb;
+  }
 
   ion-item::part(native) {
     min-height: 32px;

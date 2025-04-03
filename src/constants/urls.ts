@@ -41,4 +41,5 @@ export const urls = {
   selectImportMethod: 'select-import-method',
   importSuccess: 'import-success',
   changePasswordAfterImport: 'change-password-after-import',
+  manageAccounts: 'manage-account',
 } as const;

@@ -19,6 +19,7 @@ import { SelectImportMethod } from '../pages/importWallet/select-import-method';
 import { Dashboard } from '../pages/logged/dashboard';
 import { DepositPage } from '../pages/logged/deposit-page';
 import { LoggedCreate } from '../pages/logged/logged-create';
+import { ManageAccounts } from '../pages/manage-accounts';
 import { Nft } from '../pages/nft/nft';
 import { NftTransfer } from '../pages/nft/nft-transfer';
 import { NftTransferResult } from '../pages/nft/nft-transfer-result';
@@ -50,6 +51,7 @@ export function NavigationTree() {
       {AkashicTab.registerPage(AkashicPayMain)}
       {AkashicTab.registerPage(AkashicPayMain, urls.akashicPay)}
       {AkashicTab.registerPage(CreateWallet, urls.createWalletUrl)}
+      {AkashicTab.registerPage(ManageAccounts, urls.manageAccounts)}
       {AkashicTab.registerPage(Recovery, urls.recoveryUrl)}
       {AkashicTab.registerPage(ResetPassword, urls.resetPassword)}
       {AkashicTab.registerPage(Verification, urls.verification)}

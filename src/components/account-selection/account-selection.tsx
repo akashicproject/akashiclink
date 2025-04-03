@@ -28,6 +28,7 @@ import { useTheme } from '../PreferenceProvider';
 enum DropdownOptions {
   CreateAccount,
   ImportAccount,
+  ManageAccount,
 }
 
 /**
@@ -102,6 +103,7 @@ export function AccountSelection({
       }}
     >
       <IonSelect
+        className="account-selections-options"
         style={{ flexGrow: 1, padding: '8px 8px 8px 16px' }}
         value={selectedAccount}
         onIonChange={({ detail: { value } }) => {
@@ -119,6 +121,10 @@ export function AccountSelection({
               // Pass in a state, to differentiate from the case when extension is closed and reopened
               activeAccount
             );
+            return;
+          }
+          if (value === DropdownOptions.ManageAccount) {
+            history.push(akashicPayPath(urls.manageAccounts), activeAccount);
             return;
           }
 
@@ -148,16 +154,25 @@ export function AccountSelection({
             ? []
             : [
                 <IonSelectOption
+                  className="option-divider-top"
                   key={DropdownOptions.CreateAccount}
                   value={DropdownOptions.CreateAccount}
                 >
                   {t('CreateWallet')}
                 </IonSelectOption>,
                 <IonSelectOption
+                  className="option-divider-bottom"
                   key={DropdownOptions.ImportAccount}
                   value={DropdownOptions.ImportAccount}
                 >
                   {t('ImportWallet')}
+                </IonSelectOption>,
+                <IonSelectOption
+                  key={DropdownOptions.ManageAccount}
+                  value={DropdownOptions.ManageAccount}
+                  className="settings-icon"
+                >
+                  {t('ManageAccountOnThisDevice')}
                 </IonSelectOption>,
               ]),
         ]}
