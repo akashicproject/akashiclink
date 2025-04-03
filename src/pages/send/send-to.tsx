@@ -204,7 +204,7 @@ export function SendTo() {
   const [pageView, setPageView] = useState(SendView.Send);
 
   const [verifiedTransaction, setVerifiedTransaction] =
-    useState<VerifiedTransaction[]>();
+    useState<VerifiedTransaction>();
 
   const [toAddress, setToAddress] = useState<string>('');
   const [inputAddress, setInputAddress] = useState<string>('');
@@ -294,13 +294,7 @@ export function SendTo() {
     };
     try {
       const response = await OwnersAPI.verifyTransaction(originalTxn);
-      // reject the request if /verify returns multiple transfers
-      // for L2: multiple transactions from the same Nitr0gen identity can always be combined into a single one, so it should be fine
-      if (response.length > 1 && !gasFree) {
-        setAlertRequest(errorAlertShell(t('GenericFailureMsg')));
-        return;
-      }
-      setVerifiedTransaction(response);
+      setVerifiedTransaction(response[0]);
       const feesEstimate = Number(response[0].feesEstimate || '0');
       const balance = Number(currentWallet.balance);
       // if user does not have enough balance to pay the estimated gas, can not go to next step

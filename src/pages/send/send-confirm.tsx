@@ -88,7 +88,7 @@ const InputPasswordText = styled.div({
 });
 
 interface Props {
-  transaction: VerifiedTransaction[] | undefined;
+  transaction: VerifiedTransaction | undefined;
   coinSymbol: string;
   gasFree: boolean;
   isResult: () => void;
@@ -104,11 +104,6 @@ export function SendConfirm(props: Props) {
 
   const validatePassword = (value: string) =>
     !!value.match(userConst.passwordRegex);
-  const totalAmount = props.transaction
-    ? props.transaction
-        .reduce((sum, { amount }) => sum + BigInt(amount), BigInt(0))
-        .toString()
-    : '0';
 
   async function signTransaction() {
     if (props.transaction) {
@@ -120,9 +115,9 @@ export function SendConfirm(props: Props) {
         });
         let response: ITransactionSettledResponse[];
         if (!props.gasFree) {
-          response = await OwnersAPI.sendL1Transaction(props.transaction);
+          response = await OwnersAPI.sendL1Transaction([props.transaction]);
         } else {
-          response = [await OwnersAPI.sendL2Transaction(props.transaction)];
+          response = [await OwnersAPI.sendL2Transaction([props.transaction])];
         }
         if (!response[0].isSuccess) {
           setAlert(
@@ -159,43 +154,33 @@ export function SendConfirm(props: Props) {
           <ContentWrapper>
             <TextWrapper>
               <TextContent>
-                {displayLongText(
-                  props.transaction ? props.transaction[0].fromAddress : ''
-                )}
+                {displayLongText(props.transaction?.fromAddress)}
               </TextContent>
               <IonIcon icon={arrowForwardCircleOutline} />
               <TextContent>
-                {displayLongText(
-                  props.transaction ? props.transaction[0].toAddress : ''
-                )}
+                {displayLongText(props.transaction?.toAddress)}
               </TextContent>
             </TextWrapper>
             <TextWrapper>
               <TextTitle>{t('Amount')}</TextTitle>
               <TextTitle>
-                {totalAmount} {props.coinSymbol}
+                {props.transaction?.amount} {props.coinSymbol}
               </TextTitle>
             </TextWrapper>
             <Divider />
             <TextWrapper>
               <TextTitle>{t('SendTo')}</TextTitle>
               <TextContent>
-                {displayLongText(
-                  props.transaction ? props.transaction[0].toAddress : ''
-                )}
+                {displayLongText(props.transaction?.toAddress)}
               </TextContent>
             </TextWrapper>
             <TextWrapper>
               <TextTitle>{t('EsTGasFee')}</TextTitle>
-              <TextContent>
-                {displayLongText(
-                  props.transaction ? props.transaction[0].feesEstimate : ''
-                )}
-              </TextContent>
+              <TextContent>{props.transaction?.feesEstimate}</TextContent>
             </TextWrapper>
             <TextWrapper>
               <TextTitle>{t('Total')}</TextTitle>
-              <TextContent>{totalAmount}</TextContent>
+              <TextContent>{props.transaction?.amount}</TextContent>
             </TextWrapper>
             <Divider />
           </ContentWrapper>
