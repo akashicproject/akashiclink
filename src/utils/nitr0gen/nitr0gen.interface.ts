@@ -105,3 +105,9 @@ export type TransactionSignature =
   | Nitr0EthereumTrxSignature
   | Nitr0TronTrxSignature
   | Nitr0BtcSignature;
+
+export interface INewNitr0genKey {
+  ledgerId: string;
+  address: string;
+  hashes: string[];
+}

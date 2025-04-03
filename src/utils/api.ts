@@ -1,6 +1,4 @@
 import type {
-  ICreateKeysDto,
-  ICreateKeysResponse,
   IDiffconKeysDto,
   IDiffconKeysResponse,
   IEstimateGasFee,
@@ -96,20 +94,6 @@ export const OwnersAPI = {
       throw new Error(data.message);
     }
     return response.data;
-  },
-
-  claimOrCreateKeys: async (
-    payload: ICreateKeysDto
-  ): Promise<ICreateKeysResponse> => {
-    const response = await axiosBase.post(
-      `/auth/claim-keys`,
-      JSON.stringify(payload)
-    );
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-    return data as ICreateKeysResponse;
   },
 
   diffconKeys: async (

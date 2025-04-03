@@ -6,8 +6,11 @@ import {
 } from '@helium-pay/backend';
 
 import { OwnersAPI } from '../../utils/api';
-import { useActivateNewAccount } from '../../utils/hooks/nitr0gen';
-import { Nitr0genApi, signTxBody } from '../../utils/nitr0gen/nitr0gen-api';
+import {
+  useActivateNewAccount,
+  useCreateKeys,
+} from '../../utils/hooks/nitr0gen';
+import { Nitr0genApi } from '../../utils/nitr0gen/nitr0gen-api';
 import type { FullOtk } from '../../utils/otk-generation';
 
 export async function createAccountWithKeys(
@@ -15,6 +18,7 @@ export async function createAccountWithKeys(
 ): Promise<{ otk: FullOtk; keysNotCreated: IKeysToCreate[] }> {
   const nitr0gen = new Nitr0genApi();
   const { trigger: triggerActivateNewAccount } = useActivateNewAccount();
+  const { trigger: triggerCreateKeys } = useCreateKeys();
 
   // 1. Request account-creation
   const createAccountResponse = await triggerActivateNewAccount({
@@ -31,15 +35,16 @@ export async function createAccountWithKeys(
   for (const key of createAccountResponse.keysToCreate) {
     keyCreationTxs.push({
       coinSymbol: key.coinSymbol,
-      signedTx: await signTxBody(key.txToSign, fullOtk),
+      signedTx: key.signedTx,
     });
   }
 
-  const claimKeyResponse = await OwnersAPI.claimOrCreateKeys({
+  const createKeyResponse = await triggerCreateKeys({
     keyCreationTxs,
+    otk,
   });
 
-  const createdKeys = claimKeyResponse.createdKeysToDiffcon;
+  const createdKeys = createKeyResponse.createdKeysToDiffcon;
 
   // 3. Diffcon-check any created keys for safety
   const keyDiffconTxs: IDiffconTx[] = [];
@@ -47,7 +52,7 @@ export async function createAccountWithKeys(
     keyDiffconTxs.push({
       ledgerId: key.ledgerId,
       coinSymbol: key.coinSymbol,
-      signedTx: await signTxBody(key.txToSign, fullOtk),
+      signedTx: key.signedTx,
     });
   }
 
@@ -73,6 +78,7 @@ async function createAndDiffconKeys(
   otk: IKeyExtended
 ): Promise<IKeysToCreate[]> {
   const keyCreationTxs: IKeyCreateTx[] = [];
+  const { trigger: triggerCreateKeys } = useCreateKeys();
 
   for (const key of keysToCreate) {
     keyCreationTxs.push({
@@ -81,17 +87,18 @@ async function createAndDiffconKeys(
     });
   }
 
-  const claimKeyResponse = await OwnersAPI.claimOrCreateKeys({
+  const createKeyResponse = await triggerCreateKeys({
     keyCreationTxs,
+    otk,
   });
 
   // 3. Diffcon-check any created keys for safety
   const keyDiffconTxs: IDiffconTx[] = [];
-  for (const key of claimKeyResponse.createdKeysToDiffcon) {
+  for (const key of createKeyResponse.createdKeysToDiffcon) {
     keyDiffconTxs.push({
       ledgerId: key.ledgerId,
       coinSymbol: key.coinSymbol,
-      signedTx: await signTxBody(key.txToSign, otk),
+      signedTx: key.signedTx,
     });
   }
 
