@@ -177,5 +177,9 @@
   "AreYouSureDelete": "Are you sure you want to delete your account?",
   "FundsLeftNotRecoverable": "Any funds left in your account upon deletion can not be recovered!",
   "DoNotClose": "Please do not close the app while creating!",
-  "linkAlias": "Link your Alias to your Akashic Chain Address"
+  "linkAlias": "Link your Alias to your Akashic Chain Address",
+  "MakeSureNoBodyIsLooking": "Make Sure No Body Is Looking",
+  "RevealRecoveryPhase": "Reveal Recovery Phase",
+  "HideRecoveryPhase": "Hide Recovery Phase",
+  "CopyToClipboard": "Copy To Clipboard"
 }
