@@ -1,12 +1,12 @@
-import type { ChainType, INft } from '@helium-pay/backend';
+import type { INft } from '@helium-pay/backend';
 import buildURL from 'axios/unsafe/helpers/buildURL';
 import useSWR from 'swr';
 
 import fetcher from '../ownerFetcher';
 
-export const useNft = (nftName: string, chainType: ChainType) => {
+export const useNft = (nftName: string) => {
   const { data, error } = useSWR(
-    buildURL('/nft', { nftName: nftName, chainType: chainType }),
+    buildURL('/nft', { name: nftName }),
     fetcher,
     {}
   );

@@ -156,7 +156,7 @@ export function NftTransfer() {
   const transferNft = async () => {
     const payload = {
       nftName: currentNft.name,
-      toL2Address: toAddress,
+      toAddress: toAddress,
     };
     setLoading(true);
     try {
@@ -174,7 +174,7 @@ export function NftTransfer() {
       const response = await OwnersAPI.nftTransferUsingClientSideOtk({
         signedTx,
         nftName: currentNft.name,
-        toL2Address: toAddress,
+        toAddress: toAddress,
       });
 
       const result = {
