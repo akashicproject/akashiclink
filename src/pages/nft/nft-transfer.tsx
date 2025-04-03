@@ -1,6 +1,13 @@
 import styled from '@emotion/styled';
 import { L2Regex } from '@helium-pay/owners/src/constants/currencies';
-import { IonCol, IonIcon, IonImg, IonRow, IonSpinner } from '@ionic/react';
+import {
+  IonCol,
+  IonIcon,
+  IonImg,
+  IonRow,
+  IonSpinner,
+  isPlatform,
+} from '@ionic/react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { debounce } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
@@ -36,7 +43,6 @@ const SendWrapper = styled.div({
   flexDirection: 'column',
   alignItems: 'center',
   padding: 0,
-  gap: '24px',
   minHeight: '156px',
   width: '270px',
 });
@@ -101,6 +107,7 @@ enum SearchResult {
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function NftTransfer() {
   const { t } = useTranslation();
+  const isMobile = isPlatform('mobile');
   const { nfts, isLoading, mutate } = useNftMe();
   const { owner } = useOwner();
   const [_, __, nftName] = useLocalStorage('nft', '');
@@ -200,14 +207,14 @@ export function NftTransfer() {
             </NoNtfWrapper>
           ) : (
             <>
-              <IonRow style={{ marginTop: '50px' }}>
+              <IonRow style={{ marginTop: isMobile ? '50px' : '40px' }}>
                 <IonCol class="ion-center">
                   <OneNft nft={currentNft} />
                 </IonCol>
               </IonRow>
-              <IonRow style={{ marginTop: '40px' }}>
+              <IonRow style={{ marginTop: isMobile ? '40px' : '20px' }}>
                 <IonCol class="ion-center">
-                  <SendWrapper>
+                  <SendWrapper style={{ gap: isMobile ? '24px' : '16px' }}>
                     <StyledInput
                       isHorizontal={true}
                       label={t('SendTo')}
@@ -248,7 +255,10 @@ export function NftTransfer() {
               </IonRow>
               <IonRow
                 class="ion-justify-content-between"
-                style={{ marginTop: '40px', width: '280px' }}
+                style={{
+                  marginTop: isMobile ? '40px' : '10px',
+                  width: '280px',
+                }}
               >
                 <IonCol>
                   <PurpleButton
