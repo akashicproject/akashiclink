@@ -17,7 +17,7 @@ export const useGenerateSecondaryOtk = () => {
   return async (payload: OldPubKeyPayload) => {
     try {
       if (!cacheOtk || !activeAccount || !account) {
-        return 'GenericFailureMsg';
+        throw new Error('CouldNotReadAddress');
       }
       const nitr0gen = new Nitr0genApi();
 
@@ -25,27 +25,28 @@ export const useGenerateSecondaryOtk = () => {
       const secondaryOtk = (await generateOTK()) as FullOtk;
 
       const signedTx = await nitr0gen.secondaryOtkTransaction(
+        // @ts-ignore
         cacheOtk,
         secondaryOtk.key.pub.pkcs8pem,
         payload.oldPubKeyToRemove
       );
 
-      try {
-        await OwnersAPI.generateSecondaryOtk({ signedTx });
-        // WalletConnect requires the 0x-prefix
-        return `0x${secondaryOtk.key.prv.pkcs8pem}-${secondaryOtk.key.pub.pkcs8pem}`;
-      } catch (e: unknown) {
-        const error = e as Error;
+      await OwnersAPI.generateSecondaryOtk({ signedTx });
 
-        // Special return in case assigning the new OTK fails. Should be used to
-        // prompt a message on AP to retry
-        return `0xERROR-${error?.message ?? 'GenericFailureMsg'}`;
-      }
+      return `0x${secondaryOtk.key.prv.pkcs8pem}-${secondaryOtk.key.pub.pkcs8pem}`;
 
       // return the new private key to frontend
-    } catch (error) {
+    } catch (e: unknown) {
+      const error = e as Error;
+
       datadogRum.addError(error);
-      return unpackRequestErrorMessage(error);
+
+      // Special return in case assigning the new OTK fails. Used to prompt a message on AP to retry
+      return `0xERROR-${
+        error.message === 'CouldNotReadAddress'
+          ? 'CouldNotReadAddress'
+          : unpackRequestErrorMessage(error)
+      }`;
     }
   };
 };
