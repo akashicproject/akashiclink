@@ -12,6 +12,7 @@ import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
 import {
   type LocationState,
+  historyGo,
   historyResetStackAndRedirect,
 } from '../../routing/history';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
@@ -73,8 +74,13 @@ export function NftTransferResult() {
   const isMobile = isPlatform('mobile');
 
   const onFinish = async () => {
+    // Push to dashboard ad then nfts to re-create the path taken to get to
+    // nfts. This allows backbutton from nfts -> dashboard to work
+    // Notate that mutate must be after history otherwise this page re-renders
+    // with a persistent error
+    await historyResetStackAndRedirect(urls.dashboard);
+    await historyGo(urls.nfts);
     await mutateNftTransfersMe();
-    historyResetStackAndRedirect(urls.nfts);
   };
 
   return (
