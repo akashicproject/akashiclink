@@ -1,3 +1,4 @@
+import type { Language } from '@helium-pay/common-i18n/src/locales/supported-languages';
 import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
 import { IonRadioGroup } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
@@ -24,8 +25,8 @@ const LanguageRadio = ({
   selectedLanguage,
   setSelectedLanguage,
 }: {
-  selectedLanguage: string;
-  setSelectedLanguage: (newValue: string) => Promise<void>;
+  selectedLanguage: Language;
+  setSelectedLanguage: (newValue: Language) => Promise<void>;
 }) => {
   return (
     <IonRadioGroup

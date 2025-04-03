@@ -7,6 +7,7 @@ import type { Dispatch, RefObject, SetStateAction } from 'react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { LINK_TYPE, useI18nInfoUrls } from '../../i18n/links';
 import { useCurrentAppInfo } from '../../utils/hooks/useCurrentAppInfo';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { getImageIconUrl } from '../../utils/url-utils';
@@ -134,12 +135,14 @@ export function AboutUs({
   const [updateModal, setUpdateModal] = useState(false);
   const [updateType] = useLocalStorage('update-type', '');
 
+  const infoUrls = useI18nInfoUrls();
+
   const aboutUsMenu: SettingItemProps[] = [
     {
       header: t('PrivacyPolicy'),
       onClick: async () => {
         await Browser.open({
-          url: 'https://akashic-1.gitbook.io/akashiclink/terms-of-use-and-privacy-policy-1',
+          url: infoUrls[LINK_TYPE.PrivacyPolicy],
         });
       },
       endComponent: <ForwardArrow />,
@@ -148,7 +151,7 @@ export function AboutUs({
       header: t('TermsOfUse'),
       onClick: async () => {
         await Browser.open({
-          url: 'https://akashic-1.gitbook.io/akashiclink/terms-of-use-and-privacy-policy-1',
+          url: infoUrls[LINK_TYPE.TermsOfUse],
         });
       },
       endComponent: <ForwardArrow />,
@@ -158,7 +161,7 @@ export function AboutUs({
       header: t('VisitOurWebsite'),
       onClick: async () => {
         await Browser.open({
-          url: 'https://www.akashiclink.com/en',
+          url: infoUrls[LINK_TYPE.InfoSite],
         });
       },
       endComponent: <ForwardArrow />,

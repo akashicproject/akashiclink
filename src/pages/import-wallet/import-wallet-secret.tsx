@@ -13,6 +13,7 @@ import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/page-layout/public-layout';
 import { SecretWords } from '../../components/wallet-setup/secret-words';
 import { urls } from '../../constants/urls';
+import { LINK_TYPE, useI18nInfoUrls } from '../../i18n/links';
 import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
 import {
   onClear,
@@ -43,6 +44,7 @@ export const ImportWalletSecret = () => {
   const dispatch = useAppDispatch();
   const importWalletForm = useAppSelector(selectImportWalletForm);
   const importWalletError = useAppSelector(selectError);
+  const infoUrls = useI18nInfoUrls();
 
   const [alert, setAlert] = useState(formAlertResetState);
   const [isLoading, setIsLoading] = useState(false);
@@ -104,7 +106,7 @@ export const ImportWalletSecret = () => {
               <p className={'ion-text-align-center'}>
                 {t('AkashicWalletCannotRecoverYourPassword')}{' '}
                 <a
-                  href="https://akashic-1.gitbook.io/akashiclink"
+                  href={infoUrls[LINK_TYPE.QuickGuide]}
                   target={'_blank'}
                   style={{
                     textDecoration: 'none',
