@@ -4,6 +4,7 @@ import { IonCol, IonRow, useIonRouter } from '@ionic/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 
 import { SubmitActivationCode } from '../components/activation/submit-activation-code';
 import {
@@ -19,7 +20,7 @@ import { StyledInput } from '../components/styled-input';
 import { urls } from '../constants/urls';
 import { heliumPayPath } from '../routing/navigation-tree';
 import { OwnersAPI } from '../utils/api';
-import { lastPageStorage } from '../utils/last-page-storage';
+import { lastPageStorage, ResetPageButton } from '../utils/last-page-storage';
 import { storeLocalAccount } from '../utils/local-account-storage';
 
 enum View {
@@ -31,29 +32,39 @@ export const importAccountUrl = 'import';
 export function ImportWallet() {
   const router = useIonRouter();
   const { t, i18n } = useTranslation();
+  const history = useHistory();
 
   const [view, setView] = useState(View.Submit);
   const [alert, setAlert] = useState(formAlertResetState);
-  const [keyPair, setKeyPair] = useState<string>();
+  const [privateKey, setPrivateKey] = useState<string>();
   const [password, setPassword] = useState<string>();
 
   useEffect(() => {
-    if (lastPageStorage.get() === importAccountUrl) setView(View.TwoFa);
+    if (lastPageStorage.get() === importAccountUrl) {
+      const { privateKey, password } = lastPageStorage.getVars();
+      setPrivateKey(privateKey);
+      setPassword(password);
+      setView(View.TwoFa);
+    }
   }, []);
 
   async function submit() {
     try {
-      if (keyPair && password) {
+      if (privateKey && password) {
         await OwnersAPI.requestActivationCode({
           activationType: ActivationRequestType.ImportWalletAccount,
           payload: {
-            privateKey: keyPair,
+            privateKey: privateKey,
             password,
           },
           lang: i18n.language as Language,
         });
         setView(View.TwoFa);
-        lastPageStorage.store(importAccountUrl);
+        // TODO: reword logic to avoid storing password and private key in plain text open format
+        lastPageStorage.store(importAccountUrl, {
+          privateKey,
+          password,
+        });
       }
     } catch (e) {
       let message = t('GenericFailureMsg');
@@ -64,11 +75,11 @@ export function ImportWallet() {
 
   async function submitTwoFa(activationCode: string) {
     try {
-      if (keyPair && password && activationCode) {
+      if (privateKey && password && activationCode) {
         const { username, identity } = await OwnersAPI.importAccount({
           activationCode,
           password,
-          privateKey: keyPair,
+          privateKey: privateKey,
         });
         storeLocalAccount({
           identity: identity || username,
@@ -92,6 +103,14 @@ export function ImportWallet() {
           <IonCol class="ion-center">
             <MainTitle>{t('LoginWithExistingCredential')}</MainTitle>
           </IonCol>
+          <IonCol class="ion-center" size="2">
+            <ResetPageButton
+              callback={() => {
+                history.push('/');
+                setView(View.Submit);
+              }}
+            />
+          </IonCol>
         </IonRow>
         {view === View.Submit && (
           <>
@@ -102,7 +121,7 @@ export function ImportWallet() {
                   type={'text'}
                   placeholder={t('EnterKeyPair')}
                   onIonInput={({ target: { value } }) =>
-                    setKeyPair(value as string)
+                    setPrivateKey(value as string)
                   }
                 />
               </IonCol>
@@ -122,7 +141,7 @@ export function ImportWallet() {
             <IonRow>
               <IonCol>
                 <PurpleButton
-                  disabled={!keyPair || !password}
+                  disabled={!privateKey || !password}
                   onClick={submit}
                   expand="block"
                 >

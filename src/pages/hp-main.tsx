@@ -18,6 +18,7 @@ import { PurpleButton, WhiteButton } from '../components/buttons';
 import { Footer } from '../components/layout/footer';
 import { urls } from '../constants/urls';
 import { heliumPayPath } from '../routing/navigation-tree';
+import { useOwner } from '../utils/hooks/useOwner';
 import { lastPageStorage } from '../utils/last-page-storage';
 import { getLocalAccounts } from '../utils/local-account-storage';
 
@@ -33,12 +34,19 @@ export function HeliumPayMain() {
   const { t } = useTranslation();
   const availableAccounts = getLocalAccounts();
   const history = useHistory();
+  const loginCheck = useOwner();
 
+  /** Redirect to last page user was on */
   useEffect(() => {
-    // Redirect to last page user was on
     const lastPage = lastPageStorage.get();
     if (lastPage) history.push(heliumPayPath(lastPage));
   }, []);
+
+  /** If user is logged in, redirect to main dashboard */
+  useEffect(() => {
+    if (!loginCheck.isLoading && !loginCheck.isError)
+      history.push(heliumPayPath(urls.loggedFunction));
+  }, [loginCheck]);
 
   return (
     <IonPage>

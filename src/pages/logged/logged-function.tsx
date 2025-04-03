@@ -15,7 +15,6 @@ import { LoggedMain } from './logged-main';
 export function LoggedFunction() {
   const { t } = useTranslation();
   useEffect(() => {
-    console.log(document.getElementById('activity'));
     document.getElementById('activity')?.click();
   }, []);
   const [coinSymbol, setCoinSymbol] = useState(WALLET_CURRENCIES[0].symbol);

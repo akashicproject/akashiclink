@@ -12,9 +12,12 @@ import { caretBackOutline, settingsOutline } from 'ionicons/icons';
 import type { MouseEventHandler, ReactNode } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
 import { heliumPayPath } from '../../routing/navigation-tree';
+import { OwnersAPI } from '../../utils/api';
+import { lastPageStorage } from '../../utils/last-page-storage';
 
 /** Styling the display text */
 function SettingsText({ text, id }: { text: string; id?: string }) {
@@ -45,35 +48,7 @@ const SettingsItemCss = {
   '--background-focused': 'none',
 };
 
-/** Stylised item in the settings menu */
-function SettingsItem({
-  routerLink,
-  displayText,
-  disabled,
-  onClick,
-  id,
-}: {
-  routerLink?: string;
-  displayText: string;
-  disabled?: boolean;
-  onClick?: MouseEventHandler;
-  id?: string;
-}) {
-  return (
-    <IonItem
-      button={true}
-      detail={false}
-      routerLink={routerLink}
-      style={SettingsItemCss}
-      disabled={disabled}
-      onClick={onClick}
-    >
-      <SettingsText text={displayText} id={id} />
-    </IonItem>
-  );
-}
-
-/** Container for the invidivudal items */
+/** Container for grouping related settings */
 function SettingsList(props: { children: ReactNode }) {
   return (
     <IonList
@@ -89,9 +64,13 @@ function SettingsList(props: { children: ReactNode }) {
   );
 }
 
+/**
+ * Popover exposing settings that user can toggle
+ */
 export function SettingsPopover() {
   const [focus, _] = useState<string>();
   const { t, i18n } = useTranslation();
+  const history = useHistory();
 
   /** Grouping of the settings in the popover menu
    * @param displayText
@@ -140,6 +119,45 @@ export function SettingsPopover() {
     );
   }
 
+  /** Single settings entry */
+  function SettingsItem({
+    routerLink,
+    displayText,
+    disabled,
+    onClick,
+    id,
+  }: {
+    routerLink?: string;
+    displayText: string;
+    disabled?: boolean;
+    onClick?: MouseEventHandler;
+    id?: string;
+  }) {
+    return (
+      <IonItem
+        button={true}
+        detail={false}
+        routerLink={routerLink}
+        style={SettingsItemCss}
+        disabled={disabled}
+        onClick={(e) => {
+          if (onClick) onClick(e);
+          setShowPopover({ open: false, event: e.nativeEvent });
+        }}
+      >
+        <SettingsText text={displayText} id={id} />
+      </IonItem>
+    );
+  }
+
+  const [showPopover, setShowPopover] = useState<{
+    open: boolean;
+    event: Event | undefined;
+  }>({
+    open: false,
+    event: undefined,
+  });
+
   // eslint-disable-next-line
   const changeLanguage = (event: any) => {
     if (event.target.id) {
@@ -147,9 +165,23 @@ export function SettingsPopover() {
     }
   };
 
+  async function logout() {
+    try {
+      await OwnersAPI.logout();
+    } catch {
+      console.log('Account already logged out');
+    } finally {
+      lastPageStorage.clear();
+      history.push('/');
+    }
+  }
+
   return (
     <>
-      <IonButton class="icon-button" id="settings-popover">
+      <IonButton
+        class="icon-button"
+        onClick={(e) => setShowPopover({ open: true, event: e.nativeEvent })}
+      >
         <IonIcon
           slot="icon-only"
           class="icon-button-icon"
@@ -158,8 +190,9 @@ export function SettingsPopover() {
       </IonButton>
       <IonPopover
         backdrop-dismiss={true}
-        trigger="settings-popover"
-        dismissOnSelect={false}
+        isOpen={showPopover.open}
+        event={showPopover.event}
+        onDidDismiss={() => setShowPopover({ open: false, event: undefined })}
         side="bottom"
         alignment="end"
       >
@@ -230,7 +263,7 @@ export function SettingsPopover() {
               </SettingsList>
             </SettingSubmenu>
 
-            <SettingsItem displayText="Lock" routerLink={urls.heliumPay} />
+            <SettingsItem displayText="Lock" onClick={logout} />
           </SettingsList>
         </IonContent>
       </IonPopover>

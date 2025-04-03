@@ -1,14 +1,17 @@
 {
   "short_name": "AW",
   "name": "Akashic Wallet",
+  "description": "Your interface with the nitr0gen ecosystem",
   "version": "1.0",
   "icons": {
-    "16": "shared-assets/icons/favHPicon.png"
+    "16": "shared-assets/icons/favHPicon.png",
+    "48": "shared-assets/icons/favHPicon.png",
+    "128": "shared-assets/icons/favHPicon.png"
   },
   "manifest_version": 3,
   "action": {
     "default_icon": "shared-assets/icons/favHPicon.png",
-    "default_title": "HeliumWallet",
+    "default_title": "Akashic Wallet",
     "default_popup": "index.html"
   },
   "permissions": ["notifications", "storage"]

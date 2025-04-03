@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
-import { IonCol, IonInput, IonItem, IonLabel, IonRow } from '@ionic/react';
+import { userConst } from '@helium-pay/backend';
+import { IonCol, IonRow } from '@ionic/react';
 import { useState } from 'react';
 
 import { PurpleButton, WhiteButton } from './buttons';
 import { MainGrid } from './layout/main-grid';
 import { MainTitle } from './layout/main-title';
+import { StyledInput } from './styled-input';
 
 const Message = styled.span({
   fontWeight: 700,
@@ -27,6 +29,9 @@ export function ConfirmLockPassword({
 }) {
   const [password, setPassword] = useState<string>();
 
+  const validatePassword = (value: string) =>
+    !!value.match(userConst.passwordRegex);
+
   return (
     <MainGrid>
       <IonRow>
@@ -41,15 +46,13 @@ export function ConfirmLockPassword({
       </IonRow>
       <IonRow>
         <IonCol>
-          <IonItem fill="outline">
-            <IonLabel position="floating">Password</IonLabel>
-            <IonInput
-              placeholder="Please confirm your password"
-              onIonInput={({ target: { value } }) =>
-                setPassword(value as string)
-              }
-            />
-          </IonItem>
+          <StyledInput
+            label={'Password'}
+            type="password"
+            placeholder={'Please confirm your password'}
+            onIonInput={({ target: { value } }) => setPassword(value as string)}
+            validate={validatePassword}
+          />
         </IonCol>
       </IonRow>
       <IonRow>

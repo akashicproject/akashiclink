@@ -13,6 +13,19 @@ module.exports = {
   webpack: {
     configure: (webpackConfig) => ({
       ...webpackConfig,
+      ...(process.env.OPTIMISE === 'false'
+        ? {
+            optimization: {
+              minimize: false,
+              runtimeChunk: false,
+              splitChunks: {
+                chunks(_) {
+                  return false;
+                },
+              },
+            },
+          }
+        : {}),
       module: {
         ...webpackConfig.module,
         rules: webpackConfig.module.rules.map((rule) => {

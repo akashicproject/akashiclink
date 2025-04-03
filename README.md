@@ -32,18 +32,31 @@ yarn start:all
 1. Build the extension with
 
 ```sh
-yarn build
+yarn build:dev
 ```
 
 2. Go to `browser://extensions/` and activate **Developer Mode**.
 
 3. Click **Load unpacked** and select the `build` folder. Extension should appear in browser.
 
-4. For mobile preview, run
+4. Source file updates will take around 5-6 seconds to recompile. [See here](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#reload) for information of when the extensions needs reloading.
 
-```sh
-yarn start:dev
+## Building Chrome extension for production
+
+1. Set the `.env` with
+
+```text
+REACT_APP_PUBLIC_URL=https://api.akashicpay.com
+REACT_APP_API_BASE_URL=https://api.akashicpay.com/api/v0
 ```
+
+2. Build extension
+
+```shell
+yarn build
+```
+
+3. Zip the `build` folder
 
 ## Running locally as Android App
 

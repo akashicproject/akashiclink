@@ -7,7 +7,6 @@ import {
   IonCol,
   IonContent,
   IonGrid,
-  IonImg,
   IonItem,
   IonPage,
   IonRow,
@@ -60,7 +59,11 @@ export function Login() {
     if (availableAccounts.length)
       setSelectedIdentity(availableAccounts[0].identity);
     // Move to 2fa page form last session
-    if (lastPageStorage.get() === loginUrl) setView(View.TwoFa);
+    if (lastPageStorage.get() === loginUrl) {
+      const { password } = lastPageStorage.getVars();
+      setView(View.TwoFa);
+      setPassword(password);
+    }
   }, []);
 
   async function login() {
@@ -74,7 +77,7 @@ export function Login() {
           password,
         });
         setView(View.TwoFa);
-        lastPageStorage.store(loginUrl);
+        lastPageStorage.store(loginUrl, { password });
       }
     } catch (e) {
       let message = t('GenericFailureMsg');
@@ -86,14 +89,15 @@ export function Login() {
 
   async function submitTwoFa(activationCode: string) {
     try {
-      if (password)
+      if (password) {
         await OwnersAPI.login2fa({
           activationCode,
           password,
           lang: i18n.language as Language,
         });
-      lastPageStorage.clear();
-      router.push(heliumPayPath(urls.loggedFunction));
+        lastPageStorage.clear();
+        router.push(heliumPayPath(urls.loggedFunction));
+      }
     } catch (e) {
       let message = t('GenericFailureMsg');
       if (axios.isAxiosError(e)) message = e.response?.data?.message;
@@ -107,25 +111,9 @@ export function Login() {
         <Alert state={alert} />
         <IonGrid class="main-wrapper">
           <IonRow>
-            <IonCol class="ion-center">
-              <IonImg
-                class="main-img"
-                alt=""
-                src="/shared-assets/images/main/main-img.png"
-              />
-            </IonCol>
-          </IonRow>
-          <IonRow>
             <IonCol>
               <IonText color="dark">
                 <h1>{t('WelcomeBack')}</h1>
-              </IonText>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonText color="dark">
-                <h3>{t('YourMostReliableWallet')}</h3>
               </IonText>
             </IonCol>
           </IonRow>

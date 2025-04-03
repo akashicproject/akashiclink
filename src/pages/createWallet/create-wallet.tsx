@@ -192,6 +192,7 @@ export function CreateWallet() {
               <IonCol>
                 <StyledInput
                   label={'Password'}
+                  type="password"
                   placeholder={t('EnterTheCodeSent')}
                   onIonInput={({ target: { value } }) =>
                     setPassword(value as string)
@@ -204,6 +205,7 @@ export function CreateWallet() {
               <IonCol>
                 <StyledInput
                   label={'Confirm password'}
+                  type="password"
                   placeholder={t('EnterTheCodeSent')}
                   onIonInput={({ target: { value } }) =>
                     setConfirmPassword(value as string)
