@@ -1,3 +1,4 @@
+// TODO: Merge this with "nitrogen-api" file
 import type { IBaseTransaction } from '@activeledger/sdk';
 import { TransactionHandler } from '@activeledger/sdk';
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
@@ -60,7 +61,7 @@ export const Nitr0genApi = {
    * Transaction to create keys (wallets) via nitr0gen
    */
   async keyCreateTransaction(
-    coinSymbol: string,
+    coinSymbol: CoinSymbol,
     otk: IKeyExtended
   ): Promise<string> {
     // Build Transaction
@@ -81,7 +82,7 @@ export const Nitr0genApi = {
 
     // Sign Transaction & Send
     const txHandler = new TransactionHandler();
-    return this.makeTxSafe(await txHandler.signTransaction(txBody, otk));
+    return makeTxSafe(await txHandler.signTransaction(txBody, otk));
   },
 
   /**
@@ -105,7 +106,7 @@ export const Nitr0genApi = {
         },
         $o: {
           key: {
-            $stream: key.nId,
+            $stream: key.ledgerId,
           },
         },
       },
@@ -115,7 +116,7 @@ export const Nitr0genApi = {
 
     // Sign Transaction & Send
     const txHandler = new TransactionHandler();
-    return this.makeTxSafe(await txHandler.signTransaction(txBody, otk));
+    return makeTxSafe(await txHandler.signTransaction(txBody, otk));
   },
 
   /**
@@ -147,7 +148,7 @@ export const Nitr0genApi = {
 
     // Sign Transaction & Send
     const txHandler = new TransactionHandler();
-    return this.makeTxSafe(await txHandler.signTransaction(txBody, otk));
+    return makeTxSafe(await txHandler.signTransaction(txBody, otk));
   },
 };
 

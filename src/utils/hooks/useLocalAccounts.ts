@@ -42,8 +42,8 @@ export const useAccountStorage = () => {
 
   const addLocalAccount = async (account: LocalAccount) => {
     // Skip duplicate accounts
-    for (const { username } of localAccounts ?? [])
-      if (username === account.username) return;
+    for (const { identity } of localAccounts ?? [])
+      if (identity === account.identity) return;
 
     await setLocalAccounts([...(localAccounts ?? []), account]);
   };

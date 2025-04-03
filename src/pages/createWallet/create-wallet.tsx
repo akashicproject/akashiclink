@@ -40,6 +40,7 @@ import {
 } from '../../utils/last-page-storage';
 import { generateOTK } from '../../utils/otk-generation';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
+// import { createAccountWithKeys } from './backend-interaction';
 
 enum CreateWalletView {
   RequestAccount = 'RequestAccount',
@@ -204,6 +205,22 @@ export function CreateWallet() {
           // TODO: add proper social recovery
           socialRecoveryEmail: 'test@mail.com',
         });
+
+        // TODO: When going to phase2 (i.e. v1 endpoints only or local otk only), enable this
+        // - Remove the 2FA step when creating account, go directly here. (email no longer needed)
+        // - Also remove "username" from LocalAccount, use "fullOtk" in newAccount and addLocalOtk below
+        /*
+        const { otk: fullOtk, keysNotCreated } = await createAccountWithKeys(
+          otk
+        );
+
+        if (keysNotCreated.length > 0) {
+          throw new Error(
+            'Not all wallets are healthy. Please contact CS or make a new account'
+          );
+        }
+        */
+
         // Complete the create-wallet flow
         await lastPageStorage.clear();
 

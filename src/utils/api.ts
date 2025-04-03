@@ -1,11 +1,17 @@
 import type {
   IAcnsSearch,
   IActivateWalletAccount,
+  IActivateWalletAccountClientOtk,
+  IActivateWalletAccountClientOtkResponse,
   IActivateWalletAccountResponse,
   IChangePassword,
   ICheckL2Address,
   ICheckL2AddressResponse,
+  IClaimOrCreateKeysDto,
+  IClaimOrCreateKeysResponse,
   IConfirmPassword,
+  IDiffconKeysDto,
+  IDiffconKeysResponse,
   IEstimateGasFee,
   IEstimateGasFeeResponse,
   IImportWallet,
@@ -242,6 +248,48 @@ export const OwnersAPI = {
       throw new Error(data.message);
     }
     return data as IActivateWalletAccountResponse;
+  },
+
+  activateNewAccountWithClientSideOtk: async (
+    payload: IActivateWalletAccountClientOtk
+  ): Promise<IActivateWalletAccountClientOtkResponse> => {
+    const response = await axiosBaseV1.post(
+      `/auth/activate-wallet-account`,
+      JSON.stringify(payload)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+    return data as IActivateWalletAccountClientOtkResponse;
+  },
+
+  claimOrCreateKeys: async (
+    payload: IClaimOrCreateKeysDto
+  ): Promise<IClaimOrCreateKeysResponse> => {
+    const response = await axiosBase.post(
+      `/auth/claim-keys`,
+      JSON.stringify(payload)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+    return data as IClaimOrCreateKeysResponse;
+  },
+
+  diffconKeys: async (
+    payload: IDiffconKeysDto
+  ): Promise<IDiffconKeysResponse> => {
+    const response = await axiosBase.post(
+      `/auth/diffcon-keys`,
+      JSON.stringify(payload)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+    return data as IDiffconKeysResponse;
   },
 
   nftSearch: async (iAcnsSearch: IAcnsSearch): Promise<ISearchAcnsResponse> => {

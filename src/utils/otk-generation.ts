@@ -2,6 +2,14 @@ import { ActiveCrypto } from '@activeledger/activecrypto';
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import { KeyHandler } from '@activeledger/sdk-bip39';
 
+export interface FullOtk {
+  identity: string;
+  key: ActiveCrypto.KeyHandler;
+  type: string;
+  name: string;
+  phrase?: string;
+}
+
 const secretPhraseDictionary = [
   'abandon',
   'ability',
