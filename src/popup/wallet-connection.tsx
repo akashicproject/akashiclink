@@ -201,6 +201,14 @@ export function WalletConnection() {
     });
   }, []);
 
+  const onProposalRequestExpire = useCallback(async () => {
+    responseToSite({
+      method: ETH_METHOD.REQUEST_ACCOUNTS,
+      error: EXTENSION_ERROR.REQUEST_EXPIRED,
+    });
+    await closePopup();
+  }, []);
+
   const onClickApproveConnect = async () => {
     await approve();
   };
@@ -244,6 +252,7 @@ export function WalletConnection() {
 
     web3wallet.on('session_proposal', onSessionProposal);
     web3wallet.on('session_request', onSessionRequest);
+    web3wallet.on('proposal_expire', onProposalRequestExpire);
     window.addEventListener('beforeunload', onPopupClosed);
 
     receivePairProposal();
@@ -251,6 +260,7 @@ export function WalletConnection() {
     return () => {
       web3wallet?.off('session_proposal', onSessionProposal);
       web3wallet?.off('session_request', onSessionRequest);
+      web3wallet.off('proposal_expire', onProposalRequestExpire);
       window.removeEventListener('beforeunload', onPopupClosed);
     };
   }, [onSessionProposal, web3wallet]);
