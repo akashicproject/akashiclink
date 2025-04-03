@@ -16,13 +16,13 @@ import type {
   IEstimateGasFeeResponse,
   IImportWallet,
   IImportWalletResponse,
+  IL1ClientSideOtkTransactionBase,
   ILoginUser,
   ILoginUserWithOtk,
   IMinimalUserResponse,
   IRequestActivationCode,
   IRequestActivationCodeResponse,
   ISearchAcnsResponse,
-  ISignedTransactionResponse,
   ISwapEotkDto,
   ISwapEotkResponse,
   ITempShowOtkPrv,
@@ -159,7 +159,7 @@ export const OwnersAPI = {
   },
 
   sendL1TransactionUsingClientSideOtk: async (
-    transactionToSendData: ISignedTransactionResponse[]
+    transactionToSendData: IL1ClientSideOtkTransactionBase[]
   ): Promise<ITransactionSettledResponse[]> => {
     const response = await axiosBaseV1.post(
       `/key/send/l1`,

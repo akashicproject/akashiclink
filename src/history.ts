@@ -1,7 +1,7 @@
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import type {
-  ISignedTransactionResponse,
-  ITransactionVerifyResponse,
+  IL1ClientSideOtkTransactionBase,
+  ITransactionProposalClientSideOtk,
 } from '@helium-pay/backend';
 import { createMemoryHistory } from 'history';
 
@@ -19,12 +19,20 @@ export interface LocationState {
     errorMsg?: string;
   };
   sendConfirm?: {
-    transaction?: ISignedTransactionResponse[];
+    fromAddress: string;
+    transaction?: (
+      | IL1ClientSideOtkTransactionBase
+      | ITransactionProposalClientSideOtk
+    )[];
     currencyDisplayName?: string;
     gasFree?: boolean;
   };
   sendResult?: {
-    transaction?: ITransactionVerifyResponse[];
+    fromAddress: string;
+    transaction?: (
+      | IL1ClientSideOtkTransactionBase
+      | ITransactionProposalClientSideOtk
+    )[];
     errorMsg?: string;
     currencyDisplayName?: string;
   };

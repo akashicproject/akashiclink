@@ -36,7 +36,7 @@ import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { displayLongText } from '../../utils/long-text';
-import { Nitr0genApi } from '../../utils/nitr0gen-api';
+import { signTxBody } from '../../utils/nitr0gen-api';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { NoNtfText, NoNtfWrapper } from './nfts';
 
@@ -145,11 +145,12 @@ export function NftTransfer() {
     setLoading(true);
     try {
       const verifiedNft = await OwnersAPI.verifyNftTransaction(payload);
-      const signedTx = await Nitr0genApi.transferNft(
-        verifiedNft,
-        toAddress,
-        cacheOtk!
-      );
+      // "Hack" used when signing nft transactions, identity must be something else than the otk identity
+      const signerOtk = {
+        ...cacheOtk!,
+        identity: verifiedNft.nftAcnsStreamId,
+      };
+      const signedTx = await signTxBody(verifiedNft.txToSign, signerOtk);
 
       const response = await OwnersAPI.nftTransferUsingClientSideOtk({
         signedTx,

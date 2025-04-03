@@ -2,7 +2,10 @@ import './send.css';
 
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
-import type { ITransactionSettledResponse } from '@helium-pay/backend';
+import type {
+  IL1ClientSideOtkTransactionBase,
+  ITransactionSettledResponse,
+} from '@helium-pay/backend';
 import { userConst } from '@helium-pay/backend';
 import { IonCol, IonIcon, IonRow, IonSpinner } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
@@ -100,6 +103,7 @@ export function SendConfirm() {
       pathname: akashicPayPath(urls.sendResult),
       state: {
         sendResult: {
+          fromAddress: state?.fromAddress ?? '',
           errorMsg: signError,
           transaction: state?.transaction,
           currencyDisplayName: state?.currencyDisplayName,
@@ -116,7 +120,7 @@ export function SendConfirm() {
         let response: ITransactionSettledResponse[];
         if (!state?.gasFree) {
           response = await OwnersAPI.sendL1TransactionUsingClientSideOtk(
-            state?.transaction
+            state?.transaction as IL1ClientSideOtkTransactionBase[]
           );
         } else {
           response = [
@@ -164,7 +168,10 @@ export function SendConfirm() {
             <TextWrapper>
               <TextContent>
                 {displayLongText(
-                  state?.transaction ? state?.transaction[0].fromAddress : ''
+                  state?.transaction
+                    ? (state?.transaction[0] as IL1ClientSideOtkTransactionBase)
+                        ?.fromAddress ?? state.fromAddress
+                    : ''
                 )}
               </TextContent>
               <IonIcon icon={arrowForwardCircleOutline} />

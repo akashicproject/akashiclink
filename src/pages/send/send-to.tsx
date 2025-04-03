@@ -1,11 +1,13 @@
 import './send.css';
 
+import type { IBaseTransaction } from '@activeledger/sdk-bip39';
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
 import type {
   IL1ClientSideOtkTransactionBase,
   ITerriTransaction,
   ITransactionProposal,
+  ITransactionProposalClientSideOtk,
 } from '@helium-pay/backend';
 import {
   keyError,
@@ -50,7 +52,7 @@ import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { calculateInternalWithdrawalFee } from '../../utils/internal-fee';
 import { cacheCurrentPage } from '../../utils/last-page-storage';
 import { displayLongText } from '../../utils/long-text';
-import { Nitr0genApi } from '../../utils/nitr0gen-api';
+import { signTxBody } from '../../utils/nitr0gen-api';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { SendMain } from './send-main';
 
@@ -401,23 +403,28 @@ export function SendTo() {
         return;
       }
 
-      const transaction: ISignedTransactionResponse[] = [];
+      const transaction: (
+        | IL1ClientSideOtkTransactionBase
+        | ITransactionProposalClientSideOtk
+      )[] = [];
 
       // L2
       if (gasFree) {
-        const signedTx = await Nitr0genApi.L2Transaction(
-          response[0],
+        const signedTx = await signTxBody<IBaseTransaction>(
+          response[0].txToSign!,
           cacheOtk!
         );
-        transaction.push({ ...response[0], signedTx });
+        const { txToSign: _, ...transactionDetails } = response[0];
+        transaction.push({ ...transactionDetails, signedTx });
       } else {
         // L1
         for (const res of response) {
-          const signedTx = await Nitr0genApi.L2ToL1SignTransaction(
-            res,
+          const signedTx = await signTxBody<ITerriTransaction>(
+            res.txToSign! as ITerriTransaction,
             cacheOtk!
           );
-          transaction.push({ ...res, signedTx });
+          const { txToSign: _, ...transactionDetails } = res;
+          transaction.push({ ...transactionDetails, signedTx });
         }
       }
 
@@ -448,6 +455,7 @@ export function SendTo() {
           pathname: akashicPayPath(urls.sendConfirm),
           state: {
             sendConfirm: {
+              fromAddress: response[0].fromAddress,
               currencyDisplayName: currency.displayName || '',
               transaction,
               gasFree,

@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
-import { Nitr0genApi } from '../../utils/nitr0gen-api';
+import { signTxBody } from '../../utils/nitr0gen-api';
 import { CacheOtkContext } from '../PreferenceProvider';
 import { Toggle } from '../toggle/toggle';
 
@@ -55,12 +55,15 @@ export const AasListingSwitch = ({
             newValue: newValue,
           } as IUpdateAcns);
 
-        const signedTx = await Nitr0genApi.acnsRecord(
-          cacheOtk!,
-          verifyUpdateAcnsResponse.nftAcnsStreamId,
-          verifyUpdateAcnsResponse.nftAcnsRecordType,
-          verifyUpdateAcnsResponse.nftAcnsRecordKey,
-          newValue ?? null
+        // "Hack" used when signing nft transactions, identity must be something else than the otk identity
+        const signerOtk = {
+          ...cacheOtk!,
+          identity: verifyUpdateAcnsResponse.nftAcnsStreamId,
+        };
+
+        const signedTx = await signTxBody(
+          verifyUpdateAcnsResponse.txToSign,
+          signerOtk
         );
 
         await OwnersAPI.updateAcnsUsingClientSideOtk({

@@ -44,7 +44,7 @@ import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftAcnsMe } from '../../utils/hooks/useNftAcnsMe';
 import { displayLongText } from '../../utils/long-text';
-import { Nitr0genApi } from '../../utils/nitr0gen-api';
+import { signTxBody } from '../../utils/nitr0gen-api';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 
 const enum View {
@@ -184,12 +184,14 @@ export function SettingsNaming() {
           name: name,
         } as IUpdateAcns);
 
-      const signedTx = await Nitr0genApi.acnsRecord(
-        cacheOtk!,
-        verifyUpdateAcnsResponse.nftAcnsStreamId,
-        verifyUpdateAcnsResponse.nftAcnsRecordType,
-        verifyUpdateAcnsResponse.nftAcnsRecordKey,
-        null /* forces a null value */
+      // "Hack" used when signing nft transactions, identity must be something else than the otk identity
+      const signerOtk = {
+        ...cacheOtk!,
+        identity: verifyUpdateAcnsResponse.nftAcnsStreamId,
+      };
+      const signedTx = await signTxBody(
+        verifyUpdateAcnsResponse.txToSign,
+        signerOtk
       );
 
       await OwnersAPI.updateAcnsUsingClientSideOtk({
@@ -221,12 +223,15 @@ export function SettingsNaming() {
           newValue: newValue,
         } as IUpdateAcns);
 
-      const signedTx = await Nitr0genApi.acnsRecord(
-        cacheOtk!,
-        verifyUpdateAcnsResponse.nftAcnsStreamId,
-        verifyUpdateAcnsResponse.nftAcnsRecordType,
-        verifyUpdateAcnsResponse.nftAcnsRecordKey,
-        newValue
+      // "Hack" used when signing nft transactions, identity must be something else than the otk identity
+      const signerOtk = {
+        ...cacheOtk!,
+        identity: verifyUpdateAcnsResponse.nftAcnsStreamId,
+      };
+
+      const signedTx = await signTxBody(
+        verifyUpdateAcnsResponse.txToSign,
+        signerOtk
       );
 
       await OwnersAPI.updateAcnsUsingClientSideOtk({

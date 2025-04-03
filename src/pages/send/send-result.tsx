@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import type { IL1ClientSideOtkTransactionBase } from '@helium-pay/backend';
 import { IonCol, IonImg, IonRow } from '@ionic/react';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
@@ -119,7 +120,12 @@ export function SendResult() {
                 <TextTitle>{t('Send')}</TextTitle>
                 <TextContent>
                   {displayLongText(
-                    state?.transaction ? state?.transaction[0].fromAddress : ''
+                    state?.transaction
+                      ? (
+                          state
+                            ?.transaction[0] as IL1ClientSideOtkTransactionBase
+                        )?.fromAddress ?? state.fromAddress
+                      : ''
                   )}
                 </TextContent>
               </TextWrapper>
