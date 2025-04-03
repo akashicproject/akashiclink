@@ -56,8 +56,8 @@ export function OneNft(props: Props) {
               ...props.style,
             }
           : {
-              width: '138px',
-              height: '190px',
+              width: '144px',
+              height: '196px',
               padding: '8px',
               gap: '8px',
               ...props.style,
