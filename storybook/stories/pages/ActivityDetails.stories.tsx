@@ -1,6 +1,9 @@
 import {
   generateMockTxnWithCurrency,
+  mockGetNftOwner,
+  mockGetNftOwnerTransfers,
   mockGetOwnerDetails,
+  mockGetOwnerTransactions,
 } from '@helium-pay/api-mocks';
 import type { Meta, StoryObj } from '@storybook/react/*';
 
@@ -10,6 +13,14 @@ const meta: Meta<typeof ActivityDetails> = {
   title: 'Pages/Activity',
   component: ActivityDetails,
   parameters: {
+    msw: {
+      handlers: {
+        owner: mockGetOwnerDetails,
+        nft: mockGetNftOwner,
+        transactions: mockGetOwnerTransactions(),
+        nftTransfer: mockGetNftOwnerTransfers,
+      },
+    },
     history: {
       activityDetails: { currentTransfer: generateMockTxnWithCurrency({}) },
     },
@@ -19,13 +30,4 @@ const meta: Meta<typeof ActivityDetails> = {
 export default meta;
 type Story = StoryObj<typeof ActivityDetails>;
 
-export const ActivityDetailsPage: Story = {
-  name: 'Activity Details Page',
-  parameters: {
-    msw: {
-      handlers: {
-        owner: mockGetOwnerDetails,
-      },
-    },
-  },
-};
+export const ActivityDetailsPage: Story = {};
