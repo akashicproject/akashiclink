@@ -27,10 +27,10 @@ import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import type { Preview } from '@storybook/react';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
-import { withI18next } from './providers/withI18next';
-import { withIonMemoryRouter } from './providers/withIonMemoryRouter';
-import { withReduxProvider } from './providers/withReduxProvider';
-import { withTheme } from './providers/withTheme';
+import { useI18next } from './providers/useI18next';
+import { useIonMemoryRouter } from './providers/useIonMemoryRouter';
+import { useReduxProvider } from './providers/useReduxProvider';
+import { useTheme } from './providers/useTheme';
 
 /** Must set up here to allow Ionic components to render */
 setupIonicReact();
@@ -128,7 +128,7 @@ const preview: Preview = {
       },
     },
   },
-  decorators: [withI18next, withTheme, withIonMemoryRouter, withReduxProvider],
+  decorators: [useI18next, useTheme, useIonMemoryRouter, useReduxProvider],
   loaders: [mswLoader],
 };
 
