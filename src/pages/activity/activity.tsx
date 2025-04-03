@@ -109,7 +109,7 @@ export function Activity() {
           <Virtuoso
             style={{
               margin: '8px 0px',
-              minHeight: 'calc(100vh - 200px)',
+              minHeight: 'calc(100vh - 240px - var(--ion-safe-area-bottom)',
             }}
             data={walletFormatTransfers}
             components={{
