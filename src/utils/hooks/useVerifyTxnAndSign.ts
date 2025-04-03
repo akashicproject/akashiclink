@@ -118,7 +118,7 @@ export const useVerifyTxnAndSign = () => {
                 // AC needs smallest units, so we convert
                 convertToDecimals(key.transferAmount, coinSymbol, tokenSymbol),
                 validatedAddressPair.convertedToAddress,
-                feesEstimate,
+                convertToDecimals(feesEstimate, coinSymbol, tokenSymbol),
                 tokenSymbol
               ),
             } as ITransactionVerifyResponse)
