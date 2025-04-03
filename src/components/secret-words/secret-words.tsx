@@ -12,12 +12,18 @@ import {
   IonPopover,
   IonRow,
 } from '@ionic/react';
-import { copyOutline, eyeOffOutline, eyeOutline } from 'ionicons/icons';
+import { eyeOffOutline, eyeOutline } from 'ionicons/icons';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { themeType } from '../../theme/const';
+import { useTheme } from '../PreferenceProvider';
+
 const WordItem = styled(IonItem)`
+  height: 40px;
+  width: 100px;
   &::part(native) {
+    height: 16px;
     padding: 0;
     background-color: transparent;
   }
@@ -41,6 +47,8 @@ const WordInput = styled(IonInput)<WordInputProps>`
   font-size: 10px;
   text-align: center;
   input {
+    height: 24px;
+    width: 64px;
     padding: 8px !important;
     &:disabled {
       opacity: 1 !important;
@@ -51,11 +59,8 @@ const WordInput = styled(IonInput)<WordInputProps>`
 const ActionButton = styled(IonButton)`
   font-size: 10px;
   font-weight: 700;
-`;
-
-const ActionContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
+  text-transform: none;
+  color: var(--ion-color-primary-shade);
 `;
 
 type MaskContainerProps = {
@@ -88,6 +93,16 @@ const MaskLabelContainer = styled.div`
   }
 `;
 
+const StyledIonRow = styled(IonRow)`
+  justify-content: 'space-between';
+  width: '100%';
+  text-align: 'center';
+`;
+
+const StyledIonIcon = styled(IonIcon)`
+  font-size: '12px';
+  color: 'var(--ion-color-primary-shade)!important';
+`;
 /**
  * 12 words inputs
  * initialWords => array of 12 strings
@@ -106,7 +121,7 @@ export function SecretWords({
   const { t } = useTranslation();
   const [words, setWords] = useState(initialWords);
   const [isHidden, setIsHidden] = useState(withAction ? true : false);
-
+  const [storedTheme] = useTheme();
   const handleCopy = async (e: never) => {
     await Clipboard.write({
       string: words.join(' ') || '',
@@ -126,26 +141,13 @@ export function SecretWords({
     value: string | number | null | undefined,
     i: number
   ) => {
-    const { value: clipboardContent } = await Clipboard.read();
-    if (
-      clipboardContent.split(' ').length === 12 &&
-      value === clipboardContent
-    ) {
-      // Here we check if we are doing pasting
-      // By checking the input with the content in clipboard
-      // If pasted we separate the content to 12 words
-      // And update each field accordingly
-      setWords(clipboardContent.split(' '));
-      onChange && onChange(clipboardContent.split(' '));
-    } else {
-      const newWords = [
-        ...words.slice(0, i),
-        value?.toString() || '',
-        ...words.slice(i + 1),
-      ];
-      setWords(newWords);
-      onChange && onChange(newWords);
-    }
+    const newWords = [
+      ...words.slice(0, i),
+      value?.toString() || '',
+      ...words.slice(i + 1),
+    ];
+    setWords(newWords);
+    onChange && onChange(newWords);
   };
 
   const onHiddenBtnClick = () => {
@@ -164,49 +166,62 @@ export function SecretWords({
         <MaskBlurContainer isHidden={isHidden}>
           <IonGrid>
             <IonRow>
-              {initialWords.map((initialWord, i) => (
-                <IonCol size="4" key={i}>
-                  <WordItem lines={'none'}>
-                    <WordNumber>{i + 1}.</WordNumber>
-                    <WordInput
-                      value={words[i]}
-                      disabled={initialWord !== ''}
-                      fillable={initialWord === ''}
-                      onIonInput={({ target: { value } }) =>
-                        onInputChange(value, i)
-                      }
-                    ></WordInput>
-                  </WordItem>
-                </IonCol>
-              ))}
+              {initialWords.map((initialWord, i) => {
+                return (
+                  <IonCol size="4" key={i}>
+                    <WordItem lines={'none'}>
+                      <WordNumber>{i + 1}.</WordNumber>
+                      <WordInput
+                        value={words[i]}
+                        disabled={initialWord !== ''}
+                        fillable={initialWord === ''}
+                        onIonInput={({ target: { value } }) =>
+                          onInputChange(value, i)
+                        }
+                      ></WordInput>
+                    </WordItem>
+                  </IonCol>
+                );
+              })}
             </IonRow>
           </IonGrid>
         </MaskBlurContainer>
       </MaskContainer>
       {withAction && (
-        <ActionContainer>
-          <ActionButton fill="clear" onClick={onHiddenBtnClick}>
-            <IonIcon
-              slot="start"
-              icon={isHidden ? eyeOutline : eyeOffOutline}
-            ></IonIcon>
-            {isHidden ? t('RevealRecoveryPhase') : t('HideRecoveryPhase')}
-          </ActionButton>
-          <ActionButton fill="clear" onClick={handleCopy}>
-            <IonIcon slot="start" icon={copyOutline}></IonIcon>
-            {t('CopyToClipboard')}
-          </ActionButton>
-          <IonPopover
-            side="top"
-            alignment="center"
-            ref={popover}
-            isOpen={popoverOpen}
-            class={'copied-popover'}
-            onDidDismiss={() => setPopoverOpen(false)}
-          >
-            <IonContent class="ion-padding">{t('Copied')}</IonContent>
-          </IonPopover>
-        </ActionContainer>
+        <StyledIonRow>
+          <IonCol size={'5'}>
+            <ActionButton fill="clear" onClick={onHiddenBtnClick}>
+              <IonIcon
+                slot="start"
+                icon={isHidden ? eyeOutline : eyeOffOutline}
+              ></IonIcon>
+              {isHidden ? t('RevealRecoveryPhase') : t('HideRecoveryPhase')}
+            </ActionButton>
+          </IonCol>
+          <IonCol offset={'1'} size={'6'}>
+            <ActionButton fill="clear" onClick={handleCopy}>
+              <StyledIonIcon
+                slot="icon-only"
+                src={`/shared-assets/images/${
+                  storedTheme === themeType.DARK
+                    ? 'copy-icon-secret-dark.svg'
+                    : 'copy-icon-secret-white.svg'
+                }`}
+              />
+              {t('CopyToClipboard')}
+            </ActionButton>
+            <IonPopover
+              side="top"
+              alignment="center"
+              ref={popover}
+              isOpen={popoverOpen}
+              class={'copied-popover'}
+              onDidDismiss={() => setPopoverOpen(false)}
+            >
+              <IonContent class="ion-padding">{t('Copied')}</IonContent>
+            </IonPopover>
+          </IonCol>
+        </StyledIonRow>
       )}
     </>
   );

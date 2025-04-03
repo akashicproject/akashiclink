@@ -187,5 +187,19 @@
   "NewVersionAvailable": "New version available",
   "NewVersionAvailableMessage": "There are new features available, please update your app",
   "Update": "Update",
-  "Later": "Later"
+  "Later": "Later",
+  "GotIt": "Got It",
+  "WalletCreationSuccessful": "Wallet Creation Successful",
+  "CantRecoverSecretPhrase": "AkashicWallet can’t recover your Secret Recovery Phrase.",
+  "WillNeverAskRecoveryPhrase": "AkashicWallet will never ask you for your Secret Recovery Phrase.",
+  "NeverShareRecoveryPhrase": "Never share your Secret Recovery Phrase",
+  "riskOfFunds": "with anyone or risk your funds being stolen.",
+  "LearnMore": "Learn More",
+  "WalletProtectedSuccessfully": "You’ve successfully protected your wallet. Keep your Secret Recovery Phrase safe and secret. It’s your responsibility!",
+  "Remember": "Remember",
+  "WriteSecretRecoveryPhrase": "Write down your Secret Recovery Phrase",
+  "Store12SecretRecoveryPhrase": "Write down this 12-word Secret Recovery Phrase and store it securely for your exclusive access",
+  "SaveBackUpSecureLocation": "Save your Recovery Phrase as you won't have access to it again. Backup to a secure location, preferably outside your mobile environment.",
+  "Important": "Important",
+  "ConfirmSecretRecovery": "Confirm Secret Recovery Phrase"
 }

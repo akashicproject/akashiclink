@@ -187,5 +187,19 @@
   "NewVersionAvailable": "新版本已可下载",
   "NewVersionAvailableMessage": "有新功能推出，请更新您的应用程式",
   "Update": "更新",
-  "Later": "稍后"
+  "Later": "稍后",
+  "GotIt": "明白",
+  "WalletCreationSuccessful": "钱包创建成功",
+  "CantRecoverSecretPhrase": "AkashicWallet 无法恢复您的 \"恢复密语\"。",
+  "WillNeverAskRecoveryPhrase": "AkashicWallet 绝不会要求您提供恢复密语。",
+  "NeverShareRecoveryPhrase": "切勿向任何人透露您的恢复密语",
+  "riskOfFunds": "否则您的资金有可能被盗",
+  "LearnMore": "了解更多",
+  "WalletProtectedSuccessfully": "您已经成功保护了自己的钱包。保护您的恢复密语的安全和秘密。这是您的责任!",
+  "Remember": "记住",
+  "WriteSecretRecoveryPhrase": "写下你的恢复密语",
+  "Store12SecretRecoveryPhrase": "写下这 12 个字的恢复密语，并妥善保存，供您专用",
+  "SaveBackUpSecureLocation": "保存您的恢复密语，因为您将无法再次存取该密语。备份到一个安全的位置，最好是在您的移动设备之外。",
+  "Important": "重要",
+  "ConfirmSecretRecovery": "确认恢复密语"
 }

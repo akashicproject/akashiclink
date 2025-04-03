@@ -1,5 +1,4 @@
 import { datadogRum } from '@datadog/browser-rum';
-import type { IActivateWalletAccountResponse } from '@helium-pay/backend';
 import {
   activationCodeRegex,
   ActivationRequestType,
@@ -22,8 +21,6 @@ import { PurpleButton, TextButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { Spinner } from '../../components/loader/spinner';
-import { useLogout } from '../../components/logout';
-import { OtkBox } from '../../components/otk-box/otk-box';
 import {
   StyledInput,
   StyledInputErrorPrompt,
@@ -39,6 +36,7 @@ import {
   NavigationPriority,
   ResetPageButton,
 } from '../../utils/last-page-storage';
+import { generateOTK } from '../../utils/otk-generation';
 
 enum CreateWalletView {
   RequestAccount = 'RequestAccount',
@@ -51,7 +49,6 @@ export const createWalletUrl = 'create-wallet';
 export function CreateWallet() {
   const { i18n, t } = useTranslation();
   const history = useHistory();
-  const logout = useLogout();
   const loginCheck = useOwner(true);
 
   const [view, setView] = useState(CreateWalletView.RequestAccount);
@@ -69,8 +66,6 @@ export function CreateWallet() {
 
   /** Tracking response from server after account is created */
   const [creatingAccount, setCreatingAccount] = useState(false);
-  const [newAccount, setNewAccount] =
-    useState<IActivateWalletAccountResponse>();
 
   const emailSentAlert = {
     success: true,
@@ -110,7 +105,6 @@ export function CreateWallet() {
             identity: data.identity || data.username,
             username: data.username,
           };
-          setNewAccount(data);
           addLocalAccount(newAccount);
           setActiveAccount(newAccount);
           setView(CreateWalletView.AccountCreated);
@@ -186,12 +180,14 @@ export function CreateWallet() {
       // Submit request and display "creating account loader"
       try {
         setCreatingAccount(true);
+        const otk = await generateOTK();
         const createAccountResponse = await OwnersAPI.activateNewAccount({
           lang: i18n.language as Language,
           password,
           confirmPassword,
           activationCode,
           email,
+          clientSidePubKey: otk.key.pub,
           // TODO: add proper social recovery
           socialRecoveryEmail: 'test@mail.com',
         });
@@ -204,18 +200,17 @@ export function CreateWallet() {
             createAccountResponse.identity || createAccountResponse.username,
           username: createAccountResponse.username,
         };
-        setNewAccount(createAccountResponse);
         addLocalAccount(newAccount);
         setActiveAccount(newAccount);
-        setView(CreateWalletView.AccountCreated);
         setAlertRequest(formAlertResetState);
         setAlertActivate(formAlertResetState);
         await lastPageStorage.clear();
-        lastPageStorage.store(
-          createWalletUrl,
-          NavigationPriority.IMMEDIATE,
-          createAccountResponse
-        );
+        lastPageStorage.store(urls.secret, NavigationPriority.IMMEDIATE, {
+          passPhrase: otk.phrase,
+        });
+        history.push({
+          pathname: akashicPayPath(urls.secret),
+        });
       } catch (e) {
         datadogRum.addError(e);
         let message = t('GenericFailureMsg');
@@ -257,47 +252,6 @@ export function CreateWallet() {
         />
       )}
       <MainGrid>
-        {view === CreateWalletView.AccountCreated && (
-          <>
-            <IonRow>
-              <IonCol>
-                <h2>{t('WalletCreated')}</h2>
-              </IonCol>
-            </IonRow>
-            <IonRow style={{ marginBottom: '32px' }}>
-              <IonCol>
-                <h6>{t('SaveKey')}</h6>
-              </IonCol>
-            </IonRow>
-            <IonRow class="ion-justify-content-center">
-              <IonCol>
-                <OtkBox
-                  label={t('PublicAddress')}
-                  text={newAccount?.identity}
-                  withCopy={false}
-                />
-              </IonCol>
-            </IonRow>
-            <IonRow class="ion-justify-content-center">
-              <IonCol>
-                <OtkBox label={t('PrivateKey')} text={newAccount?.privateKey} />
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <PurpleButton
-                  expand="block"
-                  onClick={async () => {
-                    setView(CreateWalletView.RequestAccount);
-                    await logout();
-                  }}
-                >
-                  {t('Continue')}
-                </PurpleButton>
-              </IonCol>
-            </IonRow>
-          </>
-        )}
         {view !== CreateWalletView.AccountCreated && (
           <IonRow>
             <IonCol>

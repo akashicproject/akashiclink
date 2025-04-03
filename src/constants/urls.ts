@@ -33,6 +33,9 @@ export const urls = {
   settingsDelete: 'settings-delete',
   settingsNaming: 'settings-naming',
   settingsVersion: 'settings-version',
+  secret: 'create-wallet-secret',
   error: 'error',
   us2: 'us2',
+  walletCreated: 'wallet-created',
+  secretConfirm: 'secret-confirm',
 } as const;

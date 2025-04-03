@@ -1,0 +1,134 @@
+import styled from '@emotion/styled';
+import { IonCol, IonRow } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
+
+import { PurpleButton, WhiteButton } from '../../components/buttons';
+import { MainGrid } from '../../components/layout/main-grid';
+import { PublicLayout } from '../../components/layout/public-layout';
+import { SecretWords } from '../../components/secret-words/secret-words';
+import { urls } from '../../constants/urls';
+import { akashicPayPath } from '../../routing/navigation-tree';
+import {
+  cacheCurrentPage,
+  lastPageStorage,
+  NavigationPriority,
+} from '../../utils/last-page-storage';
+import { getRandomNumbers } from '../../utils/random-utils';
+export const StyledSpan = styled.span({
+  fontSize: '12px',
+  fontWeight: '400',
+  color: 'var(--ion-color-primary-10)',
+  marginTop: '4px',
+  lineHeight: '16px',
+});
+
+export function CreateWalletSecretConfirm() {
+  const { t } = useTranslation();
+  const history = useHistory<{ passPhrase: string }>();
+  const [passPhrase, setPassPhrase] = useState<string>('');
+  const [secretWords, setSecretWords] = useState<Array<string>>([]);
+  const [inputValue, setInputValue] = useState<Array<string>>([]);
+  useEffect(() => {
+    cacheCurrentPage(
+      urls.secretConfirm,
+      NavigationPriority.IMMEDIATE,
+      async () => {
+        const data = await lastPageStorage.getVars();
+        if (data.passPhrase && !data.passPhraseWithEmptyWords) {
+          setPassPhrase(data.passPhrase);
+          const randomNumberArray = getRandomNumbers(1, 12, 4);
+          const sWords = data.passPhrase.split(' ');
+          randomNumberArray.forEach((e) => {
+            sWords[e] = '';
+          });
+          setSecretWords(sWords);
+        } else if (data.passPhraseWithEmptyWords) {
+          setPassPhrase(data.passPhrase);
+          setSecretWords(data.passPhraseWithEmptyWords);
+        }
+      }
+    );
+  }, []);
+  return (
+    <PublicLayout contentStyle={{ padding: '0 30px' }}>
+      <MainGrid style={{ gap: '24px', padding: '0' }}>
+        <IonRow>
+          <IonCol size="12" style={{ textAlign: 'center' }}>
+            <IonRow>
+              <h2
+                style={{
+                  margin: '0 auto',
+                }}
+              >
+                {t('ConfirmSecretRecovery')}
+              </h2>
+            </IonRow>
+            <IonRow>
+              <StyledSpan style={{ textAlign: 'center' }}>
+                {t('ConfirmSecretRecovery')}
+              </StyledSpan>
+            </IonRow>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonRow style={{ textAlign: 'left' }}>
+              <h3 style={{ margin: '0' }}>{t('Important')}</h3>
+              <StyledSpan style={{ textAlign: 'justify' }}>
+                {t('SaveBackUpSecureLocation')}
+              </StyledSpan>
+            </IonRow>
+            <IonRow style={{ marginTop: '16px' }}>
+              {secretWords.length && (
+                <SecretWords
+                  initialWords={secretWords}
+                  withAction={false}
+                  onChange={(value) => {
+                    setInputValue(value);
+                  }}
+                />
+              )}
+            </IonRow>
+            <IonRow style={{ justifyContent: 'space-around' }}>
+              <IonCol size="5">
+                <PurpleButton
+                  style={{ width: '100%' }}
+                  expand="block"
+                  onClick={async () => {
+                    if (inputValue.join(' ') === passPhrase) {
+                      await lastPageStorage.clear();
+                      history.push(akashicPayPath(urls.walletCreated));
+                    }
+                  }}
+                >
+                  {t('Confirm')}
+                </PurpleButton>
+              </IonCol>
+              <IonCol size="5">
+                <WhiteButton
+                  style={{ width: '100%' }}
+                  fill="clear"
+                  onClick={async () => {
+                    await lastPageStorage.store(
+                      urls.secret,
+                      NavigationPriority.IMMEDIATE,
+                      {
+                        passPhrase: passPhrase,
+                        passPhraseWithEmptyWords: secretWords,
+                      }
+                    );
+                    history.push(akashicPayPath(urls.secret));
+                  }}
+                >
+                  {t('GoBack')}
+                </WhiteButton>
+              </IonCol>
+            </IonRow>
+          </IonCol>
+        </IonRow>
+      </MainGrid>
+    </PublicLayout>
+  );
+}

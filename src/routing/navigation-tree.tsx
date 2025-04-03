@@ -5,6 +5,9 @@ import { urls } from '../constants/urls';
 import { Activity } from '../pages/activity';
 import { AkashicPayMain } from '../pages/akashic-main';
 import { CreateWallet } from '../pages/createWallet/create-wallet';
+import { CreateWalletSecret } from '../pages/createWallet/create-wallet-secret';
+import { CreateWalletSecretConfirm } from '../pages/createWallet/create-wallet-secret-confirm';
+import { WalletCreated } from '../pages/createWallet/wallet-created';
 import { ErrorPage } from '../pages/error';
 import { ImportWallet } from '../pages/import-wallet';
 import { Dashboard } from '../pages/logged/dashboard';
@@ -111,7 +114,9 @@ export function NavigationTree() {
       {hpSubtree.registerPage(SettingsNaming, urls.settingsNaming)}
       {hpSubtree.registerPage(SettingsVersion, urls.settingsVersion)}
       {hpSubtree.registerPage(ErrorPage, urls.error)}
-
+      {hpSubtree.registerPage(CreateWalletSecret, urls.secret)}
+      {hpSubtree.registerPage(WalletCreated, urls.walletCreated)}
+      {hpSubtree.registerPage(CreateWalletSecretConfirm, urls.secretConfirm)}
       {/* US² tree */}
       {us2Subtree.registerPage(Us2Main)}
 

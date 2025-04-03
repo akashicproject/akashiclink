@@ -15,9 +15,11 @@ import { LoggedHeader } from './logged-header';
 export function PublicLayout({
   className,
   children,
+  contentStyle,
 }: {
   className?: string;
   children: ReactNode;
+  contentStyle?: React.CSSProperties;
 }) {
   const [spin, setSpin] = useState(false);
   useIonViewWillEnter(async () => {
@@ -35,7 +37,9 @@ export function PublicLayout({
       {spin && <Spinner header={'ImportingYourWallet'} />}
       <div className="vertical public-layout">
         <LoggedHeader />
-        <div className={`content ${className}`}>{children}</div>
+        <div className={`content ${className}`} style={contentStyle}>
+          {children}
+        </div>
         <div className="footer">
           <Footer />
         </div>
