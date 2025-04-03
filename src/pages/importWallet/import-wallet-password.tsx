@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { userConst } from '@helium-pay/backend';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import React, { useEffect, useState } from 'react';
@@ -8,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { CreatePasswordForm } from '../../components/public/create-password-form';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
-import { historyGoBack } from '../../routing/history-stack';
+import { resetHistoryStackAndRedirect } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import {
   onInputChange,
@@ -22,11 +21,6 @@ import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useOwner } from '../../utils/hooks/useOwner';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
-
-export const CreatePasswordInfo = styled.p({
-  fontWeight: '400',
-  color: 'var(--ion-color-primary-10)',
-});
 
 export function ImportWalletPassword() {
   const history = useHistory<LocationState>();
@@ -88,9 +82,7 @@ export function ImportWalletPassword() {
       await mutateBalancesMe();
       await mutateNftMe();
       setIsLoading(false);
-      history.push({
-        pathname: akashicPayPath(urls.importSuccess),
-      });
+      resetHistoryStackAndRedirect(urls.importWalletSuccessful);
     }
   }
 
@@ -99,13 +91,15 @@ export function ImportWalletPassword() {
       form={importWalletForm}
       onInputChange={onInputChange}
       onCancel={() => {
-        historyGoBack(history, true);
         dispatch(
           onInputChange({
             password: '',
             confirmPassword: '',
           })
         );
+        history.length > 1
+          ? history.goBack()
+          : history.replace(akashicPayPath(urls.akashicPay));
       }}
       isLoading={isLoading}
       onSubmit={confirmPasswordAndCreateOtk}

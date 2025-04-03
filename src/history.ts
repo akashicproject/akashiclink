@@ -4,7 +4,10 @@ import type {
 } from '@helium-pay/backend';
 import { createMemoryHistory } from 'history';
 
+import type { Url } from './constants/urls';
+import { urls } from './constants/urls';
 import type { TransferResultType } from './pages/nft/nft-transfer-result';
+import { akashicPayPath } from './routing/navigation-tabs';
 
 export const history = createMemoryHistory();
 
@@ -39,3 +42,13 @@ export interface LocationState {
     oldPassword?: string;
   };
 }
+
+export const resetHistoryStackAndRedirect = (
+  url: Url = urls.loggedFunction,
+  state?: Record<string, unknown>
+) => {
+  history.entries = [history.entries[0]];
+  history.length = 1;
+  history.index = 0;
+  history.replace(akashicPayPath(url), state);
+};

@@ -21,7 +21,7 @@ import {
   StyledInputErrorPrompt,
 } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tabs';
+import { resetHistoryStackAndRedirect } from '../../history';
 import {
   onInputChange,
   selectMigrateWalletForm,
@@ -112,9 +112,7 @@ export function MigrateWalletCreatePassword() {
           signedAuth: signImportAuth(otk!.key.prv.pkcs8pem, identity),
         });
         setIsLoading(false);
-        history.push({
-          pathname: akashicPayPath(urls.migrateWalletComplete),
-        });
+        resetHistoryStackAndRedirect(urls.migrateWalletComplete);
       } catch (e) {
         datadogRum.addError(e);
         setIsLoading(false);

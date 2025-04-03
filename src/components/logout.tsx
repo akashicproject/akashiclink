@@ -3,8 +3,7 @@ import { useContext } from 'react';
 
 import { LAST_PAGE_LOCATION } from '../constants';
 import { urls } from '../constants/urls';
-import { history } from '../history';
-import { akashicPayPath } from '../routing/navigation-tabs';
+import { resetHistoryStackAndRedirect } from '../history';
 import { axiosBase } from '../utils/axios-helper';
 import { useBalancesMe } from '../utils/hooks/useBalancesMe';
 import { useOwner } from '../utils/hooks/useOwner';
@@ -51,9 +50,6 @@ export function useLogout(callLogout = true) {
     });
 
     // completely reset router history
-    history.entries = [history.entries[0]];
-    history.length = 1;
-    history.index = 0;
-    history.replace(akashicPayPath(urls.akashicPay));
+    resetHistoryStackAndRedirect(urls.akashicPay);
   };
 }

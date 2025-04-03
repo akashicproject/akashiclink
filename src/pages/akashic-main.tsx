@@ -44,7 +44,7 @@ export function AkashicPayMain() {
           dispatch(onClearCreate());
           dispatch(onClearImport());
           dispatch(onClearMigrate());
-          logout();
+          await logout();
         } else {
           history.replace(lastLocation.pathname, lastLocation.state);
         }

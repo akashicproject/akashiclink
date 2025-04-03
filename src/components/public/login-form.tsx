@@ -6,15 +6,10 @@ import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import { datadogRum } from '@datadog/browser-rum';
 
 import { AccountSelection } from '../account-selection/account-selection';
-import {
-  CustomAlert,
-  errorAlertShell,
-  formAlertResetState,
-} from '../alert/alert';
+import { CustomAlert, errorAlertShell, formAlertResetState, } from '../alert/alert';
 import { PurpleButton } from '../buttons';
 import { StyledInput } from '../styled-input';
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tabs';
 import { OwnersAPI } from '../../utils/api';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
@@ -27,6 +22,7 @@ import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
 import { useNftMe } from '../../utils/hooks/useNftMe';
+import { resetHistoryStackAndRedirect } from "../../history";
 
 /**
  * Form allowing user to login
@@ -104,12 +100,12 @@ export function LoginForm() {
       } else {
         // @TODO remove once old accounts no longer supported
         // Redirect to Migration-Flow
-        history.replace(akashicPayPath(urls.migrateWalletNotice), {
+        resetHistoryStackAndRedirect(urls.migrateWalletNotice, {
           migrateWallet: {
             username: selectedAccount.username,
             oldPassword: password,
           },
-        });
+        })
         return;
       }
 
@@ -123,9 +119,9 @@ export function LoginForm() {
       await mutateNftTransfersMe();
       await mutateBalancesMe();
       await mutateNftMe();
-      history.replace(akashicPayPath(urls.loggedFunction));
       setSelectedAccount(undefined);
       setPassword('');
+      resetHistoryStackAndRedirect()
     } catch (error) {
       datadogRum.addError(error);
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));

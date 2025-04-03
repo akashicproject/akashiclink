@@ -41,7 +41,7 @@ export function MigrateWalletSecretConfirm() {
   const dispatch = useAppDispatch();
   const [alert, setAlert] = useState(formAlertResetState);
 
-  const confirmSecret = async () => {
+  const confirmSecret = () => {
     try {
       // Check for correct 12-word confirmation
       if (
@@ -54,7 +54,7 @@ export function MigrateWalletSecretConfirm() {
       }
 
       setAlert(formAlertResetState);
-      history.push({
+      history.replace({
         pathname: akashicPayPath(urls.migrateWalletPassword),
       });
     } catch (e) {
@@ -64,20 +64,18 @@ export function MigrateWalletSecretConfirm() {
     }
   };
 
+  const onCancel = () => {
+    history.replace({
+      pathname: akashicPayPath(urls.migrateWalletSecret),
+    });
+  };
+
   return (
     <PublicLayout className="vertical-center">
       <MainGrid style={{ gap: '24px', padding: '0' }}>
         <IonRow>
           <IonCol size="12" style={{ textAlign: 'center' }}>
-            <IonRow>
-              <h2
-                style={{
-                  margin: '0 56px',
-                }}
-              >
-                {t('ConfirmSecretRecovery')}
-              </h2>
-            </IonRow>
+            <h2>{t('ConfirmSecretRecovery')}</h2>
           </IonCol>
         </IonRow>
         <IonRow>
@@ -109,25 +107,13 @@ export function MigrateWalletSecretConfirm() {
           </IonRow>
         )}
         <IonRow style={{ justifyContent: 'space-around' }}>
-          <IonCol size="5">
-            <PurpleButton
-              style={{ width: '100%' }}
-              expand="block"
-              onClick={() => confirmSecret()}
-            >
+          <IonCol size="6">
+            <PurpleButton expand="block" onClick={confirmSecret}>
               {t('Confirm')}
             </PurpleButton>
           </IonCol>
-          <IonCol size="5">
-            <WhiteButton
-              style={{ width: '100%' }}
-              fill="clear"
-              onClick={async () => {
-                history.push({
-                  pathname: akashicPayPath(urls.migrateWalletSecret),
-                });
-              }}
-            >
+          <IonCol size="6">
+            <WhiteButton expand="block" fill="clear" onClick={onCancel}>
               {t('GoBack')}
             </WhiteButton>
           </IonCol>

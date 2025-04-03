@@ -47,9 +47,9 @@ export function MigrateWalletNotice() {
     dispatch(onClear());
     // If no password provided, send to page to get old password (used to login and decrypt old eOtk for migration)
     if (!migrateWalletForm.oldPassword) {
-      history.push(akashicPayPath(urls.migrateWalletOldPassword));
+      history.replace(akashicPayPath(urls.migrateWalletOldPassword));
     } else {
-      history.push(akashicPayPath(urls.migrateWalletSecret));
+      history.replace(akashicPayPath(urls.migrateWalletSecret));
     }
   };
 

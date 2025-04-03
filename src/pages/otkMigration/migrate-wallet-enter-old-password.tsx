@@ -10,7 +10,7 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../../components/alert/alert';
-import { PurpleButton, WhiteButton } from '../../components/buttons';
+import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import {
@@ -18,7 +18,6 @@ import {
   StyledInputErrorPrompt,
 } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
-import { historyGoBack } from '../../routing/history-stack';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import {
   onInputChange,
@@ -53,7 +52,7 @@ export function MigrateWalletOldPassword() {
         });
       }
       setIsLoading(false);
-      history.push(akashicPayPath(urls.migrateWalletSecret));
+      history.replace(akashicPayPath(urls.migrateWalletSecret));
     } catch (e) {
       setIsLoading(false);
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(e))));
@@ -62,7 +61,7 @@ export function MigrateWalletOldPassword() {
 
   return (
     <PublicLayout className="vertical-center">
-      <MainGrid>
+      <MainGrid className={'ion-grid-row-gap-lg'}>
         <IonRow>
           <IonCol>
             <h2>{t('PleaseEnterYourPassword')}</h2>
@@ -104,23 +103,6 @@ export function MigrateWalletOldPassword() {
             >
               {t('Confirm')}
             </PurpleButton>
-          </IonCol>
-          <IonCol>
-            <WhiteButton
-              expand="block"
-              fill="clear"
-              onClick={() => {
-                dispatch(
-                  onInputChange({
-                    oldPassword: String(''),
-                  })
-                );
-                setAlert(formAlertResetState);
-                historyGoBack(history, true);
-              }}
-            >
-              {t('Cancel')}
-            </WhiteButton>
           </IonCol>
         </IonRow>
       </MainGrid>

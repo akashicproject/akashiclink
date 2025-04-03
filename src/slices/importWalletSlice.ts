@@ -6,8 +6,7 @@ import { isAxiosError } from 'axios';
 
 import { createAppSlice } from '../app/createAppSlice';
 import { urls } from '../constants/urls';
-import { history } from '../history';
-import { akashicPayPath } from '../routing/navigation-tabs';
+import { resetHistoryStackAndRedirect } from '../history';
 import { OwnersAPI } from '../utils/api';
 import type { FullOtk } from '../utils/otk-generation';
 import {
@@ -81,17 +80,12 @@ export const importWalletSlice = createAppSlice({
           ),
         });
         if (identity) {
-          history.push({
-            pathname: akashicPayPath(urls.importWalletPassword),
-          });
+          resetHistoryStackAndRedirect(urls.importWalletPassword);
           return { ...reconstructedOtk, identity };
         } else if (username) {
-          history.push({
-            pathname: akashicPayPath(urls.migrateWalletNotice),
-            state: {
-              migrateWallet: {
-                username,
-              },
+          resetHistoryStackAndRedirect(urls.migrateWalletNotice, {
+            migrateWallet: {
+              username,
             },
           });
           return null;
@@ -141,17 +135,13 @@ export const importWalletSlice = createAppSlice({
         }
         // The value we return becomes the `fulfilled` action payload
         if (identity) {
-          history.push({
-            pathname: akashicPayPath(urls.importWalletPassword),
-          });
+          resetHistoryStackAndRedirect(urls.importWalletPassword);
           return { ...otk, identity };
         } else if (username) {
-          history.push({
-            pathname: akashicPayPath(urls.migrateWalletNotice),
-            state: {
-              migrateWallet: {
-                username,
-              },
+          // reset history and force user to migrate wallet
+          resetHistoryStackAndRedirect(urls.migrateWalletNotice, {
+            migrateWallet: {
+              username,
             },
           });
           return null;

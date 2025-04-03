@@ -19,6 +19,7 @@ import { PublicLayout } from '../../components/layout/public-layout';
 import { Spinner } from '../../components/loader/spinner';
 import { SecretWords } from '../../components/secret-words/secret-words';
 import { urls } from '../../constants/urls';
+import { resetHistoryStackAndRedirect } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import {
   onInputChange,
@@ -91,10 +92,7 @@ export function CreateWalletSecretConfirm() {
       addLocalAccount(newAccount);
       setAlert(formAlertResetState);
       setActiveAccount(newAccount);
-      // Push to Wallet-Created page
-      history.push({
-        pathname: akashicPayPath(urls.walletCreated),
-      });
+      resetHistoryStackAndRedirect(urls.createWalletSuccessful);
     } catch (e) {
       datadogRum.addError(e);
       const error = e as Error;
@@ -105,6 +103,10 @@ export function CreateWalletSecretConfirm() {
       setIsCreatingAccount(false);
     }
   }
+
+  const onGoBack = () => {
+    history.replace(akashicPayPath(urls.createWalletSecretPhrase));
+  };
 
   return (
     <PublicLayout className="vertical-center">
@@ -118,15 +120,13 @@ export function CreateWalletSecretConfirm() {
       <MainGrid style={{ gap: '24px', padding: '0' }}>
         <IonRow>
           <IonCol size="12" style={{ textAlign: 'center' }}>
-            <IonRow>
-              <h2
-                style={{
-                  margin: '0 56px',
-                }}
-              >
-                {t('ConfirmSecretRecovery')}
-              </h2>
-            </IonRow>
+            <h2
+              className={
+                'ion-text-align-center ion-text-size-xl ion-margin-bottom-xxs'
+              }
+            >
+              {t('ConfirmSecretRecovery')}
+            </h2>
           </IonCol>
         </IonRow>
         <IonRow>
@@ -174,15 +174,7 @@ export function CreateWalletSecretConfirm() {
             </PurpleButton>
           </IonCol>
           <IonCol size="6">
-            <WhiteButton
-              expand="block"
-              fill="clear"
-              onClick={async () => {
-                history.push({
-                  pathname: akashicPayPath(urls.secret),
-                });
-              }}
-            >
+            <WhiteButton expand="block" fill="clear" onClick={onGoBack}>
               {t('GoBack')}
             </WhiteButton>
           </IonCol>

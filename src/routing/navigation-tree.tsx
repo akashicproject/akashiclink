@@ -6,16 +6,16 @@ import { Activity } from '../pages/activity';
 import { AkashicPayMain } from '../pages/akashic-main';
 import { ChangePasswordConfirm } from '../pages/changePassword/confirm';
 import { ChangePassword } from '../pages/changePassword/enter-passwords';
-import { CreateWalletPassword } from '../pages/createWallet/create-password';
+import { CreateWalletPassword } from '../pages/createWallet/create-wallet-create-password';
 import { CreateWalletSecret } from '../pages/createWallet/create-wallet-secret';
 import { CreateWalletSecretConfirm } from '../pages/createWallet/create-wallet-secret-confirm';
-import { WalletCreated } from '../pages/createWallet/wallet-created';
+import { CreateWalletSuccessful } from '../pages/createWallet/create-wallet-successful';
 import { ErrorPage } from '../pages/error';
-import { ImportSuccess } from '../pages/importWallet/import-success';
+import { ImportWalletKeypair } from '../pages/importWallet/import-wallet-keypair';
 import { ImportWalletPassword } from '../pages/importWallet/import-wallet-password';
-import { KeyPairImport } from '../pages/importWallet/keypair-import';
-import { SecretPhraseImport } from '../pages/importWallet/secret-phrase-import';
-import { SelectImportMethod } from '../pages/importWallet/select-import-method';
+import { ImportWalletSecret } from '../pages/importWallet/import-wallet-secret';
+import { ImportWalletSelectMethod } from '../pages/importWallet/import-wallet-select-method';
+import { ImportWalletSuccessful } from '../pages/importWallet/import-wallet-successful';
 import { Dashboard } from '../pages/logged/dashboard';
 import { DepositPage } from '../pages/logged/deposit-page';
 import { ManageAccounts } from '../pages/manage-accounts';
@@ -28,7 +28,7 @@ import { MigrateWalletOldPassword } from '../pages/otkMigration/migrate-wallet-e
 import { MigrateWalletNotice } from '../pages/otkMigration/migrate-wallet-notice';
 import { MigrateWalletSecret } from '../pages/otkMigration/migrate-wallet-secret';
 import { MigrateWalletSecretConfirm } from '../pages/otkMigration/migrate-wallet-secret-confirm';
-import { WalletMigrated } from '../pages/otkMigration/wallet-migrated';
+import { MigrateWalletSuccessful } from '../pages/otkMigration/migrate-wallet-successful';
 import { RecoverCode } from '../pages/recover-code';
 import { ChangePasswordAfterImport } from '../pages/recovery/change-password-after-import';
 import { SendConfirm } from '../pages/send/send-confirm';
@@ -72,19 +72,40 @@ export function NavigationTree() {
         urls.changePasswordConfirm
       )}
       {AkashicTab.registerPage(ErrorPage, urls.error)}
+      {/* create wallet flow */}
       {AkashicTab.registerPage(CreateWalletPassword, urls.createWalletPassword)}
-      {AkashicTab.registerPage(CreateWalletSecret, urls.secret)}
-      {AkashicTab.registerPage(WalletCreated, urls.walletCreated)}
-      {AkashicTab.registerPage(CreateWalletSecretConfirm, urls.secretConfirm)}
-      {AkashicTab.registerPage(SecretPhraseImport, urls.secretPhraseImport)}
+      {AkashicTab.registerPage(
+        CreateWalletSecret,
+        urls.createWalletSecretPhrase
+      )}
+      {AkashicTab.registerPage(
+        CreateWalletSecretConfirm,
+        urls.createWalletSecretPhraseConfirm
+      )}
+      {AkashicTab.registerPage(
+        CreateWalletSuccessful,
+        urls.createWalletSuccessful
+      )}
+      {/* import wallet flow */}
+      {AkashicTab.registerPage(
+        ImportWalletSecret,
+        urls.importWalletSecretPhrase
+      )}
       {AkashicTab.registerPage(ImportWalletPassword, urls.importWalletPassword)}
-      {AkashicTab.registerPage(SelectImportMethod, urls.selectImportMethod)}
-      {AkashicTab.registerPage(ImportSuccess, urls.importSuccess)}
-      {AkashicTab.registerPage(KeyPairImport, urls.keyPairImport)}
+      {AkashicTab.registerPage(
+        ImportWalletSelectMethod,
+        urls.importWalletSelectMethod
+      )}
+      {AkashicTab.registerPage(
+        ImportWalletSuccessful,
+        urls.importWalletSuccessful
+      )}
+      {AkashicTab.registerPage(ImportWalletKeypair, urls.importWalletKeypair)}
       {AkashicTab.registerPage(
         ChangePasswordAfterImport,
         urls.changePasswordAfterImport
       )}
+      {/* migrate wallet flow */}
       {AkashicTab.registerPage(MigrateWalletNotice, urls.migrateWalletNotice)}
       {AkashicTab.registerPage(MigrateWalletSecret, urls.migrateWalletSecret)}
       {AkashicTab.registerPage(
@@ -99,7 +120,10 @@ export function NavigationTree() {
         MigrateWalletCreatePassword,
         urls.migrateWalletPassword
       )}
-      {AkashicTab.registerPage(WalletMigrated, urls.migrateWalletComplete)}
+      {AkashicTab.registerPage(
+        MigrateWalletSuccessful,
+        urls.migrateWalletComplete
+      )}
       {/* US² tree */}
       {Us2Tab.registerPage(Us2Main)}
 

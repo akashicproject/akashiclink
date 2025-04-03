@@ -29,7 +29,7 @@ export function ChangePasswordAfterImport() {
         className="icon-button"
         style={{ position: 'fixed', left: '24px', marginTop: '16px' }}
         onClick={() => {
-          history.push(akashicPayPath(urls.importSuccess));
+          history.push(akashicPayPath(urls.importWalletSuccessful));
         }}
       >
         <IonIcon

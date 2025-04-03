@@ -59,7 +59,7 @@ const CreateOrImportForm = () => {
         <IonCol>
           <WhiteButton
             disabled={!checked}
-            routerLink={akashicPayPath(urls.selectImportMethod)}
+            routerLink={akashicPayPath(urls.importWalletSelectMethod)}
             expand="block"
           >
             {t('ImportWallet')}

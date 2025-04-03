@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { IonCol, IonRow, IonText } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import React, { useEffect, useState } from 'react';
@@ -25,22 +24,15 @@ import {
 } from '../../slices/createWalletSlice';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 
-export const StyledSpan = styled.span({
-  fontSize: '12px',
-  fontWeight: '400',
-  color: 'var(--ion-color-primary-10)',
-  marginTop: '4px',
-  lineHeight: '16px',
-});
 export function CreateWalletSecret() {
   const { t } = useTranslation();
 
   const history = useHistory<LocationState>();
   const otk = useAppSelector(selectOtk);
+  const createWalletError = useAppSelector(selectError);
   const dispatch = useAppDispatch();
 
   const [alert, setAlert] = useState(formAlertResetState);
-  const createWalletError = useAppSelector(selectError);
 
   /** Scrolling on IOS */
   const { isOpen } = useKeyboardState();
@@ -53,16 +45,16 @@ export function CreateWalletSecret() {
   }, [otk]);
 
   useEffect(() => {
-    if (createWalletError) {
-      setAlert(errorAlertShell(t('GenericFailureMsg')));
-    } else {
-      setAlert(formAlertResetState);
-    }
-  }, [createWalletError]);
+    setAlert(
+      createWalletError
+        ? errorAlertShell(t('GenericFailureMsg'))
+        : formAlertResetState
+    );
+  }, [createWalletError, t]);
 
-  const confirmSecret = async () => {
-    history.push({
-      pathname: akashicPayPath(urls.secretConfirm),
+  const onConfirmSecret = () => {
+    history.replace({
+      pathname: akashicPayPath(urls.createWalletSecretPhraseConfirm),
     });
   };
 
@@ -116,12 +108,7 @@ export function CreateWalletSecret() {
         )}
         <IonRow className={'ion-justify-content-center'}>
           <IonCol size="6">
-            <PurpleButton
-              expand="block"
-              onClick={() => {
-                confirmSecret();
-              }}
-            >
+            <PurpleButton expand="block" onClick={onConfirmSecret}>
               {t('Next')}
             </PurpleButton>
           </IonCol>

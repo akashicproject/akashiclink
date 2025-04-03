@@ -36,7 +36,7 @@ axiosBase.interceptors.response.use(
       await Preferences.remove({
         key: LAST_PAGE_LOCATION,
       });
-      history.push(akashicPayPath(urls.akashicPay));
+      history.replace(akashicPayPath(urls.akashicPay));
     } else {
       return Promise.reject(error);
     }

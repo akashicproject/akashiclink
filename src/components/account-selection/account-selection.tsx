@@ -115,7 +115,7 @@ export function AccountSelection({
           }
           if (value === DropdownOptions.ImportAccount) {
             history.push(
-              akashicPayPath(urls.selectImportMethod),
+              akashicPayPath(urls.importWalletSelectMethod),
               // Pass in a state, to differentiate from the case when extension is closed and reopened
               activeAccount
             );

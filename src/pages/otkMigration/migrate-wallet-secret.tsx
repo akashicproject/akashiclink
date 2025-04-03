@@ -51,15 +51,15 @@ export function MigrateWalletSecret() {
   }, [otk]);
 
   useEffect(() => {
-    if (migrateWalletError) {
-      setAlert(errorAlertShell(t('GenericFailureMsg')));
-    } else {
-      setAlert(formAlertResetState);
-    }
+    setAlert(
+      migrateWalletError
+        ? errorAlertShell(t('GenericFailureMsg'))
+        : formAlertResetState
+    );
   }, [migrateWalletError]);
 
   const confirmSecret = async () => {
-    history.push({
+    history.replace({
       pathname: akashicPayPath(urls.migrateWalletSecretConfirm),
     });
   };
