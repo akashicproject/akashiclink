@@ -8,8 +8,8 @@
  */
 
 const path = require('path');
-const { getLoader, loaderByName } = require('@craco/craco');
-
+const { getLoader, loaderByName, addPlugins } = require('@craco/craco');
+const webpack = require('webpack');
 module.exports = {
   productionSourceMap: false,
   webpack: {
@@ -38,6 +38,28 @@ module.exports = {
         '@babel/preset-typescript',
       ];
 
+      // webpack >= 5 does not auto-polyfill core node.js modules. Have to add them like this
+      // All used by AL modules (for otk generation, etc.)
+      webpackConfig.resolve['fallback'] = {
+        crypto: require.resolve('crypto-browserify'),
+        constants: require.resolve('constants-browserify'),
+        util: require.resolve('util/'),
+        http: require.resolve('stream-http'),
+        https: require.resolve('https-browserify'),
+        url: require.resolve('url/'),
+        stream: require.resolve('stream-browserify'),
+        assert: require.resolve('assert/'),
+        buffer: require.resolve('buffer/'),
+        fs: false,
+      };
+
+      // For some reason, buffer needs to be added like this too
+      addPlugins(webpackConfig, [
+        new webpack.ProvidePlugin({
+          Buffer: ['buffer', 'Buffer'],
+        }),
+      ]);
+
       return {
         ...webpackConfig,
         ...(process.env.REACT_APP_OPTIMISE === 'false'
@@ -53,6 +75,16 @@ module.exports = {
               },
             }
           : {}),
+        ignoreWarnings: [
+          function ignoreSourcemapsloaderWarnings(warning) {
+            return (
+              warning.module &&
+              warning.module.resource.includes('node_modules') &&
+              warning.details &&
+              warning.details.includes('source-map-loader')
+            );
+          },
+        ],
       };
     },
   },

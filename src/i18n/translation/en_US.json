@@ -10,6 +10,7 @@
   "Login": "Login",
   "KeyPair": "KeyPair",
   "EnterKeyPair": "Please enter your KeyPair",
+  "EnterKeyPairAndEmail": "Please enter your KeyPair and email",
   "ExportKeyPair": "Export KeyPair",
   "ThisIsYourKeyPair": "This is your KeyPair",
   "KeyPairWarning": "Warning: Never disclose this key. Anyone with your private keys can steal any assets held in your account.",

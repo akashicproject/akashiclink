@@ -10,6 +10,7 @@
   "Login": "登入",
   "KeyPair": "KeyPair",
   "EnterKeyPair": "輸入KeyPair",
+  "EnterKeyPairAndEmail": "請輸入你的 KeyPair 和 電郵地址",
   "ExportKeyPair": "導出KeyPair",
   "ThisIsYourKeyPair": "這是你的KeyPair",
   "KeyPairWarning": "警告: 永遠不要泄露這個密鑰。任何擁有妳私鑰的人都可以竊取妳賬戶中的任何資產。",

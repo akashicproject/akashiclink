@@ -32,6 +32,7 @@ import {
   NavigationPriority,
   ResetPageButton,
 } from '../utils/last-page-storage';
+import { signImportAuth } from '../utils/otk-generation';
 import { unpackRequestErrorMessage } from '../utils/unpack-request-error-message';
 
 enum View {
@@ -88,18 +89,16 @@ export function ImportWallet() {
    */
   async function requestImportAccount() {
     try {
-      if (privateKey) {
-        // adding delay
-        const { email } = await OwnersAPI.requestActivationCode({
+      if (privateKey && email) {
+        const response = await OwnersAPI.requestActivationCode({
           activationType: ActivationRequestType.ImportWalletAccount,
-          payload: { privateKey },
+          payload: { email },
           lang: i18n.language as Language,
         });
-        if (!email) {
+        if (!response.email) {
           setAlert(errorAlertShell(t('UserDoesNotExist')));
           return;
         }
-        setEmail(email);
         setView(View.TwoFa);
         setTimerReset(timerReset + 1);
         setAlertPage2(emailSentAlert);
@@ -122,7 +121,7 @@ export function ImportWallet() {
         const { username, identity } = await OwnersAPI.importAccount({
           activationCode,
           email,
-          privateKey,
+          signedAuth: signImportAuth(privateKey, email),
         });
         await lastPageStorage.clear();
 
@@ -181,6 +180,21 @@ export function ImportWallet() {
                   setPrivateKey(value as string);
                   setAlert(formAlertResetState);
                 }}
+                submitOnEnter={requestImportAccount}
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <StyledInput
+                label={t('Email')}
+                type={'text'}
+                placeholder={t('EnterYourEmail')}
+                onIonInput={({ target: { value } }) => {
+                  setEmail(value as string);
+                  setAlert(formAlertResetState);
+                }}
+                value={email}
                 submitOnEnter={requestImportAccount}
               />
             </IonCol>
