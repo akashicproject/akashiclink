@@ -1,4 +1,4 @@
-import { IonCol, IonRow } from '@ionic/react';
+import { IonCol, IonRow, IonText } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -13,8 +13,8 @@ import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { StyledInput } from '../../components/styled-input';
 import type { LocationState } from '../../history';
-import { historyGoBack } from '../../routing/history-stack';
 import {
+  onClear,
   onInputChange,
   restoreOtkFromKeypairAsync,
   selectError,
@@ -29,10 +29,6 @@ export function KeyPairImport() {
   const dispatch = useAppDispatch();
   const importWalletError = useAppSelector(selectError);
 
-  /**
-   * Track state of page
-   */
-
   const [alert, setAlert] = useState(formAlertResetState);
 
   useEffect(() => {
@@ -45,75 +41,70 @@ export function KeyPairImport() {
     }
   }, [importWalletError]);
 
-  async function requestImport() {
+  const requestImport = async () => {
     if (importWalletForm.privateKey) {
       dispatch(restoreOtkFromKeypairAsync(importWalletForm.privateKey));
     }
-  }
-
-  const CancelButton = (
-    <IonCol>
-      <WhiteButton
-        expand="block"
-        fill="clear"
-        onClick={() => {
-          historyGoBack(history, true);
-        }}
-      >
-        {t('Cancel')}
-      </WhiteButton>
-    </IonCol>
-  );
+  };
 
   return (
     <PublicLayout className="vertical-center">
-      <IonRow>
-        <IonCol>
-          <h2>{t('ImportWallet')}</h2>
+      <IonRow className={'ion-grid-row-gap-md'}>
+        <IonCol size="12" className={'ion-text-align-center'}>
+          <h2 className={'ion-margin-bottom-xxs'}>{t('ImportWallet')}</h2>
+          <IonText
+            className={
+              'ion-text-align-center ion-text-size-xs ion-margin-bottom-lg'
+            }
+            color={'dark'}
+          >
+            {t('EnterKeyPair')}
+          </IonText>
+        </IonCol>
+        <IonCol size="12">
+          <StyledInput
+            label={t('KeyPair')}
+            type={'text'}
+            value={importWalletForm.privateKey}
+            placeholder={t('EnterKeyPair')}
+            onIonInput={({ target: { value } }) => {
+              dispatch(
+                onInputChange({
+                  privateKey: String(value),
+                })
+              );
+              setAlert(formAlertResetState);
+            }}
+            submitOnEnter={requestImport}
+          />
+        </IonCol>
+        {alert.visible && (
+          <IonCol size="12">
+            <AlertBox state={alert} />
+          </IonCol>
+        )}
+        <IonCol size="6">
+          <PurpleButton
+            disabled={!importWalletForm.privateKey}
+            onClick={requestImport}
+            expand="block"
+          >
+            {t('Confirm')}
+          </PurpleButton>
+        </IonCol>
+        <IonCol size="6">
+          <WhiteButton
+            expand="block"
+            fill="clear"
+            onClick={() => {
+              history.goBack();
+              dispatch(onClear());
+            }}
+          >
+            {t('Cancel')}
+          </WhiteButton>
         </IonCol>
       </IonRow>
-
-      <>
-        <IonRow>
-          <IonCol>
-            <h6>{t('EnterKeyPair')}</h6>
-          </IonCol>
-        </IonRow>
-        <IonRow style={{ marginTop: '40px' }}>
-          <IonCol>
-            <StyledInput
-              label={t('KeyPair')}
-              type={'text'}
-              value={importWalletForm.privateKey}
-              placeholder={t('EnterKeyPair')}
-              onIonInput={({ target: { value } }) => {
-                dispatch(
-                  onInputChange({
-                    privateKey: String(value),
-                  })
-                );
-                setAlert(formAlertResetState);
-              }}
-              submitOnEnter={requestImport}
-            />
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>
-            <PurpleButton
-              disabled={!importWalletForm.privateKey}
-              onClick={requestImport}
-              expand="block"
-            >
-              {t('Confirm')}
-            </PurpleButton>
-          </IonCol>
-          {CancelButton}
-        </IonRow>
-        <IonRow style={{ marginTop: '24px' }}>
-          <AlertBox state={alert} />
-        </IonRow>
-      </>
     </PublicLayout>
   );
 }

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { IonCol, IonIcon, IonRow } from '@ionic/react';
+import { IonCol, IonIcon, IonRow, IonText } from '@ionic/react';
 import { arrowBack } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -12,8 +12,8 @@ import {
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
-import { historyGoBack } from '../../routing/history-stack';
 import { akashicPayPath } from '../../routing/navigation-tabs';
+import { useOwner } from '../../utils/hooks/useOwner';
 
 export const StyledSpan = styled.span({
   fontSize: '12px',
@@ -27,13 +27,22 @@ export const StyledSpan = styled.span({
 export const SelectImportMethod = () => {
   const { t } = useTranslation();
   const history = useHistory();
+  const { authenticated } = useOwner();
 
   return (
-    <PublicLayout contentStyle={{ padding: '0 30px' }}>
+    <PublicLayout>
       <SquareWhiteButton
         className="icon-button"
-        onClick={() => {
-          historyGoBack(history, true);
+        onClick={async () => {
+          if (history.length > 1) {
+            history.goBack();
+          } else {
+            history.replace(
+              authenticated
+                ? akashicPayPath(urls.loggedFunction)
+                : akashicPayPath(urls.akashicPay)
+            );
+          }
         }}
       >
         <IonIcon
@@ -42,36 +51,41 @@ export const SelectImportMethod = () => {
           icon={arrowBack}
         />
       </SquareWhiteButton>
-      <MainGrid style={{ gap: '16px', padding: '102px 15px' }}>
-        <IonRow>
-          <IonCol style={{ textAlign: 'center' }}>
-            <h2 style={{ marginBottom: '8px' }}>{t('ImportWallet')}</h2>
-            <StyledSpan style={{ textAlign: 'center' }}>
+      <MainGrid style={{ padding: '120px 16px' }}>
+        <IonRow className={'ion-grid-row-gap-md'}>
+          <IonCol size="12" style={{ textAlign: 'center' }}>
+            <h2 className={'ion-margin-bottom-xxs'}>{t('ImportWallet')}</h2>
+            <IonText
+              className={
+                'ion-text-align-center ion-text-size-xs ion-margin-bottom-lg'
+              }
+              color={'dark'}
+            >
               {t('PleaseChooseSecurityOptionToImportWallet')}
-            </StyledSpan>
+            </IonText>
           </IonCol>
-        </IonRow>
-        <IonRow>
-          <PurpleButton
-            style={{ width: '100%' }}
-            expand="block"
-            onClick={() => {
-              history.push(akashicPayPath(urls.secretPhraseImport));
-            }}
-          >
-            {t('12Words')}
-          </PurpleButton>
-        </IonRow>
-        <IonRow>
-          <WhiteButton
-            style={{ width: '100%' }}
-            fill="clear"
-            onClick={() => {
-              history.push(akashicPayPath(urls.keyPairImport));
-            }}
-          >
-            {t('KeyPair')}
-          </WhiteButton>
+          <IonCol size="12" style={{ textAlign: 'center' }}>
+            <PurpleButton
+              style={{ width: '100%' }}
+              expand="block"
+              onClick={() => {
+                history.push(akashicPayPath(urls.secretPhraseImport));
+              }}
+            >
+              {t('12Words')}
+            </PurpleButton>
+          </IonCol>
+          <IonCol size="12" style={{ textAlign: 'center' }}>
+            <WhiteButton
+              style={{ width: '100%' }}
+              fill="clear"
+              onClick={() => {
+                history.push(akashicPayPath(urls.keyPairImport));
+              }}
+            >
+              {t('KeyPair')}
+            </WhiteButton>
+          </IonCol>
         </IonRow>
       </MainGrid>
     </PublicLayout>

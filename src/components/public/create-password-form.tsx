@@ -5,10 +5,7 @@ import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import {
-  AlertBox,
-  FormAlertState,
-} from '../../components/alert/alert';
+import { AlertBox, FormAlertState } from '../../components/alert/alert';
 import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
@@ -17,7 +14,7 @@ import {
   StyledInputErrorPrompt,
 } from '../../components/styled-input';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
-import { useAppDispatch } from "../../app/hooks"
+import { useAppDispatch } from '../../app/hooks';
 import { CreateWalletForm } from '../../slices/createWalletSlice';
 
 export const CreatePasswordInfo = styled.p({
@@ -30,20 +27,20 @@ export function CreatePasswordForm({
   onInputChange,
   onCancel,
   onSubmit,
-  alert
+  alert,
 }: {
-  form: CreateWalletForm
-  onInputChange: Function
-  onCancel: () => void
-  onSubmit: () => void
-  alert?: FormAlertState
+  form: CreateWalletForm;
+  onInputChange: Function;
+  onCancel: () => void;
+  onSubmit: () => void;
+  alert?: FormAlertState;
 }) {
   const { t } = useTranslation();
 
   /** Tracking user input */
   const validatePassword = (value: string) =>
     !!value.match(userConst.passwordRegex);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const validateConfirmPassword = (value: string) => form.password === value;
 
   /** Scrolling on IOS */
@@ -62,71 +59,75 @@ export function CreatePasswordForm({
               {t('CreatePasswordInfo')}
             </CreatePasswordInfo>
           </IonCol>
+          <IonCol size="12">
+            <StyledInput
+              label={t('Password')}
+              placeholder={t('EnterPassword')}
+              type="password"
+              onIonInput={({ target: { value } }) =>
+                dispatch(
+                  onInputChange({
+                    password: String(value),
+                  })
+                )
+              }
+              value={form.password}
+              errorPrompt={StyledInputErrorPrompt.Password}
+              validate={validatePassword}
+            />
+            <StyledInput
+              label={t('ConfirmPassword')}
+              type="password"
+              placeholder={t('ConfirmPassword')}
+              onIonInput={({ target: { value } }) =>
+                dispatch(
+                  onInputChange({
+                    confirmPassword: String(value),
+                  })
+                )
+              }
+              value={form.confirmPassword}
+              errorPrompt={StyledInputErrorPrompt.ConfirmPassword}
+              validate={validateConfirmPassword}
+              submitOnEnter={onSubmit}
+            />
+          </IonCol>
+          <IonCol size="12" className={'ion-center'}>
+            <IonCheckbox
+              checked={form.checked}
+              labelPlacement={'end'}
+              onIonChange={() => {
+                dispatch(
+                  onInputChange({
+                    checked: !form.checked,
+                  })
+                );
+              }}
+            >
+              {t('CreatePasswordAgree')}
+            </IonCheckbox>
+          </IonCol>
+          {alert?.visible && (
             <IonCol size="12">
-              <StyledInput
-                label={t('Password')}
-                placeholder={t('EnterPassword')}
-                type="password"
-                onIonInput={({ target: { value } }) =>
-                  dispatch(onInputChange({
-                    password: String(value)
-                  }))
-                }
-                value={form.password}
-                errorPrompt={StyledInputErrorPrompt.Password}
-                validate={validatePassword}
-              />
-              <StyledInput
-                label={t('ConfirmPassword')}
-                type="password"
-                placeholder={t('ConfirmPassword')}
-                onIonInput={({ target: { value } }) =>
-                  dispatch(onInputChange({
-                    confirmPassword: String(value)
-                  }))
-                }
-                value={form.confirmPassword}
-                errorPrompt={StyledInputErrorPrompt.ConfirmPassword}
-                validate={validateConfirmPassword}
-                submitOnEnter={onSubmit}
-              />
+              <AlertBox state={alert} />
             </IonCol>
-            <IonCol size="12" className={'ion-center'}>
-              <IonCheckbox
-                checked={form.checked}
-                labelPlacement={'end'}
-                onIonChange={() => {
-                  dispatch(onInputChange({
-                    checked: !form.checked
-                  }))
-                }}
-              >
-                {t('CreatePasswordAgree')}
-              </IonCheckbox>
-            </IonCol>
-            {alert?.visible && (
-              <IonCol size="12">
-                <AlertBox state={alert} />
-              </IonCol>
-            )}
-            <IonCol size="6">
-              <PurpleButton
-                expand="block"
-                onClick={onSubmit}
-                disabled={!form.password || !form.confirmPassword || !form.checked}
-              >
-                {t('Confirm')}
-              </PurpleButton>
-            </IonCol>
-            <IonCol size="6">
-              <WhiteButton
-                expand="block"
-                fill="clear"
-                onClick={onCancel}
-              >
-                {t('Cancel')}
-              </WhiteButton>
-            </IonCol>
+          )}
+          <IonCol size="6">
+            <PurpleButton
+              expand="block"
+              onClick={onSubmit}
+              disabled={
+                !form.password || !form.confirmPassword || !form.checked
+              }
+            >
+              {t('Confirm')}
+            </PurpleButton>
+          </IonCol>
+          <IonCol size="6">
+            <WhiteButton expand="block" fill="clear" onClick={onCancel}>
+              {t('Cancel')}
+            </WhiteButton>
+          </IonCol>
         </IonRow>
       </MainGrid>
     </PublicLayout>

@@ -144,7 +144,7 @@ export function AccountSelection({
       >
         {[
           ...localAccounts.map((account) => (
-            <IonSelectOption key={account.username} value={account}>
+            <IonSelectOption key={account.identity} value={account}>
               {!showCopyButton
                 ? displayLongText(account.identity, 26)
                 : displayLongText(account.identity)}

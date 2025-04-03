@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import { IonCol, IonImg, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 
 import { useAppDispatch } from '../../app/hooks';
 import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
+import { history } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { onClear } from '../../slices/importWalletSlice';
 
@@ -20,49 +20,44 @@ export const StyledSpan = styled.span({
 });
 export const ImportSuccess = () => {
   const { t } = useTranslation();
-  const history = useHistory();
   const dispatch = useAppDispatch();
 
   return (
-    <PublicLayout contentStyle={{ padding: '0 30px', height: '100%' }}>
-      <MainGrid style={{ gap: '40px', padding: '112px 30px', height: '100%' }}>
-        <IonCol
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-          }}
-        >
-          <IonRow style={{ justifyContent: 'center' }}>
+    <PublicLayout className="vertical-center">
+      <MainGrid>
+        <IonRow className={'ion-grid-row-gap-md ion-center'}>
+          <IonCol size={'12'} className={'ion-center'}>
             <IonImg
               alt={''}
               src={'/shared-assets/images/right.png'}
               style={{ width: '40px', height: '40px' }}
             />
-            <div style={{ width: '100%', textAlign: 'center' }}>
-              <h4>{t('ImportSuccessful')}</h4>
-            </div>
-          </IonRow>
-          <IonRow>
-            <div
-              className="w-100"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px',
-                textAlign: 'center',
+          </IonCol>
+          <IonCol size={'12'} className={'ion-center'}>
+            <h3
+              className={
+                'ion-margin-0 ion-margin-bottom-lg ion-text-align-center'
+              }
+            >
+              {t('ImportSuccessful')}
+            </h3>
+          </IonCol>
+          <IonCol size={'6'}>
+            <PurpleButton
+              expand="block"
+              onClick={() => {
+                dispatch(onClear());
+                // import flow is finished, completely reset router history
+                history.entries = [history.entries[0]];
+                history.length = 1;
+                history.index = 0;
+                history.replace(akashicPayPath(urls.loggedFunction));
               }}
             >
-              <PurpleButton
-                onClick={() => {
-                  dispatch(onClear());
-                  history.push(akashicPayPath(urls.loggedFunction));
-                }}
-              >
-                {t('Confirm')}
-              </PurpleButton>
-              {/** TODO: Re-enable with different flow at later stage */}
-              {/* <Divider/>>
+              {t('Confirm')}
+            </PurpleButton>
+            {/** TODO: Re-enable with different flow at later stage */}
+            {/* <Divider/>>
             <StyledSpan>{t('YouHaveOptionTo')}</StyledSpan>
             <WhiteButton
               onClick={() => {
@@ -71,9 +66,8 @@ export const ImportSuccess = () => {
             >
               {t('ChangePassword')}
             </WhiteButton> */}
-            </div>
-          </IonRow>
-        </IonCol>
+          </IonCol>
+        </IonRow>
       </MainGrid>
     </PublicLayout>
   );
