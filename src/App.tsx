@@ -36,10 +36,7 @@ setupIonicReact();
 export default function App() {
   const { t } = useTranslation();
   const { config } = useConfig();
-  const [skipVersion, setSkipVersion] = useLocalStorage(
-    'skipVersion',
-    config.awLatestVersion
-  );
+  const [skipVersion, setSkipVersion] = useLocalStorage('skipVersion', '0.0.0');
   const [updateType, setUpdateType] = useState<'soft' | 'hard' | null>(null);
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
