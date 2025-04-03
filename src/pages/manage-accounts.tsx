@@ -93,14 +93,16 @@ export function ManageAccounts() {
             style={{ width: '48px', height: '48px' }}
           />
           <div style={{ textAlign: 'center' }}>
-            <h4 style={{ margin: '0px' }}>
+            <h4
+              style={{ color: 'var(--ion-color-primary-dark)', margin: '0px' }}
+            >
               {t('RemoveTheAccount')}
               {displayLongText(accountToDelete ? accountToDelete.identity : '')}
             </h4>
             <span
               style={{
                 fontSize: '10px',
-                color: 'var(--ion-color-primary-10)',
+                color: 'var(--ion-color-primary-dark)',
                 fontWeight: '700',
               }}
             >
