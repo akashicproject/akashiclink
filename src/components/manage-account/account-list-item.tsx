@@ -33,31 +33,36 @@ const InitialIcon = styled.div<{ isActive: boolean }>(({ isActive }) => ({
   },
 }));
 
-const IconAndLabel = styled(IonItem)({
-  ['ion-label']: {
-    ['h3']: {
-      marginBottom: 0,
-      fontWeight: 700,
+const IconAndLabel = styled(IonItem)<{ isLightText?: boolean }>(
+  ({ isLightText }) => ({
+    ['ion-label']: {
+      ['h3']: {
+        marginBottom: 0,
+        fontWeight: 700,
+        ...(isLightText && { color: 'var(--ion-color-white)' }),
+      },
+      ['p']: {
+        fontSize: '0.625rem',
+        lineHeight: '1rem',
+        overflowWrap: 'anywhere',
+        ...(isLightText && { color: 'var(--ion-color-grey)' }),
+      },
     },
-    ['p']: {
-      fontSize: '0.625rem',
-      lineHeight: '1rem',
-      overflowWrap: 'anywhere',
+    ['&:last-of-kind .item-inner']: {
+      border: 0,
     },
-  },
-  ['&:last-of-kind .item-inner']: {
-    border: 0,
-  },
-  ['&::part(native)']: {
-    background: 'transparent',
-  },
-});
+    ['&::part(native)']: {
+      background: 'transparent',
+    },
+  })
+);
 
 export const AccountListItem = ({
   account,
   showDeleteIcon = false,
   isShortAddress = false,
   isActive = false,
+  isLightText = false,
   onClick,
   ...props
 }: {
@@ -65,6 +70,7 @@ export const AccountListItem = ({
   showDeleteIcon?: boolean;
   isShortAddress?: boolean;
   isActive?: boolean;
+  isLightText?: boolean;
   onClick?: () => void;
 } & JSX.IonItem) => {
   return (
@@ -72,6 +78,7 @@ export const AccountListItem = ({
       detail={false}
       onClick={onClick}
       key={account.identity}
+      isLightText={isLightText}
       {...props}
     >
       <div

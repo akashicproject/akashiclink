@@ -279,5 +279,16 @@
   "AkashicAlias": "Akashic Alias",
   "WhatsNewIn": "Whats new in v{{version}}",
   "MoreInfo": "More Info",
-  "LessInfo": "Less Info"
+  "LessInfo": "Less Info",
+  "Deny": "Deny",
+  "Permissions": "Permission",
+  "AllowSite": "Allow this site to do the following?",
+  "SeeAddressAccountBalance": "See address, account balance, activity and suggest transactions to approve.",
+  "RequestNowFor": "Request now for:",
+  "SignatureRequest": "Signature request",
+  "OnlySignThisMessageIfYouFullyUnderstand": "Only sign this message if you fully understand the content and trust the requesting site",
+  "Message": "Message",
+  "WelcomeToAkashicPay": "Welcome to AkashicPay",
+  "ClickToSignIn": "Click to sign in and accept the AkashicPay terms of services and privacy policy",
+  "LockAndUnlockAnotherAccount": "Lock and unlock another account"
 }

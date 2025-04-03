@@ -29,7 +29,6 @@ export function AkashicPayMain({ isPopup = false }) {
               : 'welcome-img-small'
           }
         `}
-        style={{ paddingTop: '48px' }}
         alt="welcome"
       />
       {localAccounts.length ? (

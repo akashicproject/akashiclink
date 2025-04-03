@@ -1,9 +1,16 @@
 let webPort;
 let lastPopupId;
 
-const SHARED_PARAMS = ['type', 'method'];
-const ETH_REQUEST_ACCOUNTS_PARAMS = ['uri', 'appName', 'appUrl', 'submittedAt'];
-const PERSONAL_SIGN_PARAMS = ['appName', 'appUrl'];
+const ETH_METHOD = {
+  PERSONAL_SIGN: 'personal_sign',
+  REQUEST_ACCOUNTS: 'eth_requestAccounts',
+  SIGN_TYPED_DATA: 'eth_signTypedData_v4',
+};
+
+const SHARED_PARAMS = ['type', 'method', 'appName', 'appUrl'];
+const ETH_REQUEST_ACCOUNTS_PARAMS = ['uri', 'submittedAt'];
+const PERSONAL_SIGN_PARAMS = [];
+const SIGN_TYPED_DATA_PARAMS = ['identity'];
 
 //MUTATE query
 const appendQuery = (query, request, list) => {
@@ -43,17 +50,18 @@ chrome.runtime.onConnectExternal.addListener(function (port) {
     const query = new URLSearchParams();
     appendQuery(query, request, SHARED_PARAMS);
 
-    if (request.method === 'eth_requestAccounts') {
+    if (request.method === ETH_METHOD.REQUEST_ACCOUNTS) {
       appendQuery(query, request, ETH_REQUEST_ACCOUNTS_PARAMS);
     }
-    if (request.method === 'personal_sign') {
+    if (request.method === ETH_METHOD.PERSONAL_SIGN) {
       appendQuery(query, request, PERSONAL_SIGN_PARAMS);
+    }
+    if (request.method === ETH_METHOD.SIGN_TYPED_DATA) {
+      appendQuery(query, request, SIGN_TYPED_DATA_PARAMS);
     }
 
     // Do not create a new window but focus on the existing one if there is one
     try {
-      const existing = await chrome.windows.get(lastPopupId);
-
       await chrome.windows.update(lastPopupId, {
         focused: true,
       });
@@ -76,6 +84,7 @@ chrome.runtime.onConnectExternal.addListener(function (port) {
   });
 });
 
+// ---- Handle Auto lock event
 const ALARM_NAME = "autoLockAlarm"
 const AUTOLOCKBY_KEY = "autoLockBy"
 
@@ -86,22 +95,17 @@ const informSiteAutoLock = async (alarm) => {
       event: 'WALLET_AUTO_LOCKED'
     });
   }
-
 }
-
 
 const checkAlarmState = async (alarm) => {
   const { autoLockBy } = await chrome.storage.local.get(AUTOLOCKBY_KEY);
 
   if (autoLockBy) {
     const alarm = await chrome.alarms.get(ALARM_NAME);
-
     if (alarm) {
       await chrome.alarms.clear(ALARM_NAME);
     }
-
     await chrome.alarms.create(ALARM_NAME, { when: autoLockBy });
-
   }
 
   chrome.alarms.onAlarm.addListener(informSiteAutoLock);

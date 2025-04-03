@@ -2,11 +2,13 @@ import { CoinSymbol } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import { getInternalError, getSdkError } from '@walletconnect/utils';
 import { type Web3WalletTypes } from '@walletconnect/web3wallet';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { sepolia } from 'viem/chains';
 
 import { BorderedBox } from '../components/common/box/border-box';
 import { PurpleButton } from '../components/common/buttons';
+import { AccountListItem } from '../components/manage-account/account-list-item';
 import { PopupLayout } from '../components/page-layout/popup-layout';
 import {
   closePopup,
@@ -21,10 +23,13 @@ import {
   buildApproveSessionNamespace,
   useWeb3Wallet,
 } from '../utils/web3wallet';
+import { ConnectionBackButton } from './connection-back-button';
 
 const chain = sepolia;
 
 export function WalletConnection() {
+  const { t } = useTranslation();
+
   const searchParams = new URLSearchParams(window.location.search);
   const uri = searchParams.get('uri') ?? '';
 
@@ -177,33 +182,33 @@ export function WalletConnection() {
   }, [onSessionProposal, web3wallet]);
 
   return (
-    <PopupLayout>
+    <PopupLayout showIdentity={false}>
       <IonRow>
         <IonCol size={'12'}>
-          <h1 className="ion-justify-content-center ion-margin-top-lg ion-margin-bottom-xs">
-            Connect to Website
-          </h1>
-          <BorderedBox lines="full" className={'ion-margin-top-lg'}>
-            <h4 className="w-100 ion-justify-content-center ion-margin-top-lg ion-margin-bottom-lg">
-              {`${searchParams.get('appName') ?? ''} - ${
-                searchParams.get('appUrl') ?? ''
-              }`}
-            </h4>
-          </BorderedBox>
-          <h3 className="ion-justify-content-center ion-margin-top-lg ion-margin-bottom-xs">
-            Allow this website to do the following?
-          </h3>
+          <ConnectionBackButton />
         </IonCol>
         <IonCol size={'12'}>
-          <p className="ion-justify-content-center ion-margin-top-lg ion-margin-bottom-xs">
-            Let it see your wallet balance and activity
+          <h2 className="ion-justify-content-center ion-margin-top-lg ion-margin-bottom-xs">
+            {t('Permissions')}
+          </h2>
+          <p className="ion-justify-content-center ion-margin-bottom-sm ion-text-align-center">
+            {t('AllowSite')}
           </p>
-          <p className="ion-justify-content-center ion-margin-top-lg ion-margin-bottom-xs">
-            Let it send you requests for transactions
-          </p>
-          <p className="ion-justify-content-center ion-margin-top-lg ion-margin-bottom-xs">
-            Funds will not leave your wallet until you execute a transaction
-          </p>
+        </IonCol>
+        <IonCol size={'12'}>
+          <BorderedBox lines="full" className={'ion-margin-top-sm'}>
+            <div className={'ion-padding-vertical'}>
+              <p className="ion-justify-content-center ion-margin-bottom-md">
+                {t('SeeAddressAccountBalance')}
+              </p>
+              <p className="ion-justify-content-center ion-margin-bottom-xxs">
+                {t('RequestNowFor')}
+              </p>
+              {activeAccount && (
+                <AccountListItem lines={'none'} account={activeAccount} />
+              )}
+            </div>
+          </BorderedBox>
         </IonCol>
       </IonRow>
       <IonRow className={'ion-margin-top-auto'}>
@@ -215,7 +220,7 @@ export function WalletConnection() {
                 onClick={onClickRejectConnect}
                 disabled={!sessionProposalId}
               >
-                Reject
+                {t('Deny')}
               </PurpleButton>
             </IonCol>
             <IonCol size={'6'}>
@@ -224,7 +229,7 @@ export function WalletConnection() {
                 onClick={onClickApproveConnect}
                 disabled={!sessionProposalId}
               >
-                Connect
+                {t('Confirm')}
               </PurpleButton>
             </IonCol>
           </IonRow>

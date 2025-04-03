@@ -1,7 +1,8 @@
 import { IonCol, IonRow } from '@ionic/react';
 import { getSdkError } from '@walletconnect/utils';
 import { type Web3WalletTypes } from '@walletconnect/web3wallet';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { BorderedBox } from '../components/common/box/border-box';
 import { PurpleButton } from '../components/common/buttons';
@@ -19,6 +20,8 @@ import { useSignBecomeBpMessage } from '../utils/hooks/useSignBecomeBpMessage';
 import { useWeb3Wallet } from '../utils/web3wallet';
 
 export function SignTypedData() {
+  const { t } = useTranslation();
+
   const searchParams = new URLSearchParams(window.location.search);
 
   const web3wallet = useWeb3Wallet();
@@ -151,25 +154,25 @@ export function SignTypedData() {
   return (
     <PopupLayout>
       <IonRow>
-        <IonCol size={'12'}>
-          <h1 className="ion-justify-content-center ion-margin-top-lg ion-margin-bottom-xs">
-            Sign Message Request
-          </h1>
-          <BorderedBox lines="full" className={'ion-margin-top-lg'}>
-            <h4 className="w-100 ion-justify-content-center ion-margin-top-lg ion-margin-bottom-lg">
-              {`${searchParams.get('appName') ?? ''} - ${
-                searchParams.get('appUrl') ?? ''
-              }`}
+        <IonCol size={'8'} offset={'2'}>
+          <BorderedBox lines="full" compact>
+            <h4 className="w-100 ion-justify-content-center ion-margin-0">
+              {searchParams.get('appUrl') ?? '-'}
             </h4>
           </BorderedBox>
-          <h4 className="ion-justify-content-center ion-margin-top-lg ion-margin-bottom-lg">
-            This site is requesting to sign a message
-          </h4>
         </IonCol>
         <IonCol size={'12'}>
-          <List bordered lines={'none'}>
+          <h2 className="ion-justify-content-center ion-margin-top-lg ion-margin-bottom-xs">
+            {t('SignatureRequest')}
+          </h2>
+          <p className="ion-justify-content-center ion-margin-bottom-sm ion-text-align-center">
+            {t('OnlySignThisMessageIfYouFullyUnderstand')}
+          </p>
+        </IonCol>
+        <IonCol size={'12'}>
+          <List lines={'none'}>
             <ListVerticalLabelValueItem
-              label={'Message'}
+              label={t('Message')}
               value={
                 requestContent?.message?.content === ''
                   ? '-'
@@ -177,8 +180,8 @@ export function SignTypedData() {
               }
             />
             <ListVerticalLabelValueItem
-              label={'Chain ID'}
-              value={searchParams.get('chain') ?? '11'}
+              label={t('WalletAddress')}
+              value={searchParams.get('identity') ?? '-'}
             />
           </List>
         </IonCol>
@@ -190,7 +193,7 @@ export function SignTypedData() {
             disabled={requestContent.method === ''}
             onClick={onClickReject}
           >
-            Reject
+            {t('Deny')}
           </PurpleButton>
         </IonCol>
         <IonCol size={'6'}>
@@ -199,7 +202,7 @@ export function SignTypedData() {
             disabled={requestContent.method === ''}
             onClick={onClickSign}
           >
-            Accept
+            {t('Confirm')}
           </PurpleButton>
         </IonCol>
       </IonRow>

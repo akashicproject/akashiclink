@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import { IonGrid, IonHeader, IonPage } from '@ionic/react';
-import { type ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 
+import { PopupHeader } from '../../popup/popup-header';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
-import { displayLongText } from '../../utils/long-text';
-import { Divider } from '../common/divider';
 import { Footer } from '../layout/footer';
+import { AccountListItem } from '../manage-account/account-list-item';
 
 const StyledLayout = styled.div({
   ['& > .content']: {
@@ -34,20 +34,22 @@ export function PopupLayout({
     <IonPage>
       <StyledLayout className="vertical public-layout">
         {showIdentity && (
-          <>
-            <IonHeader
-              className="ion-no-border"
-              style={{
-                background: 'var(--ion-background-color)',
-              }}
-            >
-              <h4>
-                {`Connecting with ${displayLongText(activeAccount?.identity)}`}
-              </h4>
-            </IonHeader>
-            <Divider className={'w-100'} />
-          </>
+          <IonHeader
+            className="ion-no-border "
+            style={{
+              background: 'var(--ion-header-background)',
+            }}
+          >
+            {activeAccount && (
+              <AccountListItem
+                lines={'none'}
+                account={activeAccount}
+                isLightText
+              />
+            )}
+          </IonHeader>
         )}
+        {!showIdentity && <PopupHeader />}
         <div className={`h-100 ${className ?? ''}`}>
           <IonGrid
             className={'h-100 ion-display-flex ion-flex-direction-column'}

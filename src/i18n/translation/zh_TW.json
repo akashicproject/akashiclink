@@ -279,5 +279,16 @@
   "AkashicAlias": "Akashic域名",
   "WhatsNewIn": "v{{version}} 中的新功能",
   "MoreInfo": "詳細資訊",
-  "LessInfo": "更少信息"
+  "LessInfo": "更少信息",
+  "Deny": "拒絕",
+  "Permissions": "授權",
+  "AllowSite": "允許本網站執行下列操作？",
+  "SeeAddressAccountBalance": "查看地址、帳號餘額、活動和建議批准的交易。",
+  "RequestNowFor": "現時請求：",
+  "SignatureRequest": "簽名要求",
+  "OnlySignThisMessageIfYouFullyUnderstand": "僅在您完全瞭解內容且信任請求網站的情況下簽署此訊息",
+  "Message": "訊息",
+  "WelcomeToAkashicPay": "歡迎使用 AkashicPay",
+  "ClickToSignIn": "點擊登入並接受 AkashicPay 服務條款和隱私權政策",
+  "LockAndUnlockAnotherAccount": "鎖定此帳號並解鎖另一個帳號"
 }
