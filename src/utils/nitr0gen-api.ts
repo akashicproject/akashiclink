@@ -22,7 +22,7 @@ export const Nitr0genApi = {
   /**
    * Transaction to onboard otk to nitr0gen, giving it an identity
    */
-  async onboardOtk(otk: IKeyExtended) {
+  async onboardOtk(otk: IKeyExtended): Promise<IBaseTransaction> {
     const txBody: IBaseTransaction = {
       $tx: {
         $namespace: Nitr0gen.Namespace,
@@ -40,14 +40,6 @@ export const Nitr0genApi = {
 
     // Sign Transaction & Send
     const txHandler = new TransactionHandler();
-    return makeTxSafe(await txHandler.signTransaction(txBody, otk));
+    return await txHandler.signTransaction(txBody, otk);
   },
 };
-
-/**
- * Converts object to string, Encoding to base64 so doesn't get parsed by Nitr0gen gateway
- * or any other middleware which sees JSON strings (or JSON header) and wants to parse it automatically.
- */
-function makeTxSafe(tx: object): string {
-  return Buffer.from(JSON.stringify(tx)).toString('base64');
-}
