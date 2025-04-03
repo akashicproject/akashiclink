@@ -27,6 +27,7 @@ export function CreateWalletSecret() {
   const { t } = useTranslation();
   const [secretWords, setSecretWords] = useState<Array<string>>([]);
   const history = useHistory<{ passPhrase: string }>();
+
   useEffect(() => {
     cacheCurrentPage(urls.secret, NavigationPriority.IMMEDIATE, async () => {
       const data = await lastPageStorage.getVars();
@@ -35,6 +36,7 @@ export function CreateWalletSecret() {
       }
     });
   }, []);
+
   const confirmSecret = async () => {
     const data = await lastPageStorage.getVars();
     await lastPageStorage.store(
@@ -49,6 +51,7 @@ export function CreateWalletSecret() {
       pathname: akashicPayPath(urls.secretConfirm),
     });
   };
+
   return (
     <PublicLayout contentStyle={{ padding: '24px 30px' }}>
       <MainGrid style={{ gap: '24px', padding: '0' }}>

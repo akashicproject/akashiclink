@@ -30,6 +30,7 @@ export function CreateWalletSecretConfirm() {
   const [passPhrase, setPassPhrase] = useState<string>('');
   const [secretWords, setSecretWords] = useState<Array<string>>([]);
   const [inputValue, setInputValue] = useState<Array<string>>([]);
+
   useEffect(() => {
     cacheCurrentPage(
       urls.secretConfirm,
@@ -44,6 +45,10 @@ export function CreateWalletSecretConfirm() {
             sWords[e] = '';
           });
           setSecretWords(sWords);
+          lastPageStorage.store(urls.secret, NavigationPriority.IMMEDIATE, {
+            passPhrase: data.passPhrase,
+            passPhraseWithEmptyWords: sWords,
+          });
         } else if (data.passPhraseWithEmptyWords) {
           setPassPhrase(data.passPhrase);
           setSecretWords(data.passPhraseWithEmptyWords);
@@ -51,6 +56,7 @@ export function CreateWalletSecretConfirm() {
       }
     );
   }, []);
+
   return (
     <PublicLayout contentStyle={{ padding: '0 30px' }}>
       <MainGrid style={{ gap: '24px', padding: '0' }}>
