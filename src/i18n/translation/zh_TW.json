@@ -317,7 +317,8 @@
     "chain": "鏈",
     "toAddress": "發送至",
     "ip": "IP",
-    "remark": "備注"
+    "remark": "備注",
+    "canIpsBypassSigning": "允許回調重試"
   },
   "SendBpByAlias": "無法透過 Akashic 地址發送商業帳戶",
   "SelectYourPreferredNode": "請選擇您偏好的節點。",

@@ -317,7 +317,8 @@
     "chain": "Network",
     "toAddress": "Send to",
     "ip": "IP",
-    "remark": "Remark"
+    "remark": "Remark",
+    "canIpsBypassSigning": "Allow Callback Retry"
   },
   "SendBpByAlias": "Cannot send to business account by Akashic Alias",
   "SelectYourPreferredNode": "Please select your preferred node.",
