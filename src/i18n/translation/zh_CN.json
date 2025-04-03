@@ -111,6 +111,7 @@
   "ConfirmEmailSent": "激活链接已发送。请检查{{email}}以完成更新。",
   "InvalidEmail": "请输入有效的电子邮件地址。",
   "PasswordHelperText": "密码必须是10个字符，包含一个大写字母和一个数字",
+  "NewPasswordMustBeDifferent": "请勿使用旧密码作为新密码",
   "SaveKey": "API口令应包含小写和大写字符、数字和特殊符号，并且至少有20个字符长。",
   "InvalidPassword": "密码错误！",
   "ActivationCode": "激活码",

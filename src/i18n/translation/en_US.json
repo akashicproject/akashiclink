@@ -111,6 +111,7 @@
   "GenericFailureMsg": "Your operation failed, please try again later.",
   "InvalidEmail": "Please enter a valid email address",
   "PasswordHelperText": "Password must be at least 10 characters long, contain 1 capital letter and 1 number",
+  "NewPasswordMustBeDifferent": "Please do not use old password as your new password",
   "SaveKey": "This is the only copy of the private key and cannot be restored if lost (but can be replaced)",
   "InvalidPassword": "Password is incorrect!",
   "ActivationCode": "Activation Code",

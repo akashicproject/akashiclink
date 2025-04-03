@@ -62,17 +62,18 @@ export function ChangePassword() {
       return;
     }
 
+    // Can not change to same password
+    if (oldPassword === newPassword) {
+      setAlertRequest(errorAlertShell(t('NewPasswordMustBeDifferent')));
+      return;
+    }
+
     // All fields must adhere to password-regex
     if (
       !userConst.passwordRegex.exec(oldPassword) ||
       !userConst.passwordRegex.exec(newPassword) ||
       !userConst.passwordRegex.exec(confirmPassword)
     ) {
-      return;
-    }
-
-    // Can not change to same password
-    if (oldPassword === newPassword) {
       return;
     }
 
@@ -85,6 +86,7 @@ export function ChangePassword() {
   };
 
   async function changePassword() {
+    if (!allowedToChange) return;
     if (newPassword && oldPassword) {
       try {
         await changeOtkPassword(
