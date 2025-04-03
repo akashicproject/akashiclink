@@ -19,7 +19,6 @@ import { EthereumChainMetadata, EthereumHelper } from './ethereum.service';
 import type {
   ActiveLedgerResponse,
   IKeyCreationResponse,
-  INewNitr0genKey,
   IOnboardedIdentity,
   L1TxDetail,
   L2TxDetail,
@@ -131,59 +130,6 @@ export class Nitr0genApi {
     if (diffResponse.$responses && diffResponse.$responses[0] !== 'confirmed') {
       throw new Error(
         `Key Generation Failed on DiffCon (UMID:${diffResponse.$umid})`
-      );
-    }
-
-    return {
-      ledgerId: convertToFromASPrefix(newKey.id, 'to'),
-      address: newKey.address,
-      hashes: newKey.hashes,
-    };
-  }
-
-  /**
-   * Creates a wallet key in Nitr0gen for the specified coinSymbol (chain) that is linked to the provided otk
-   */
-  public async diffconSignedTx(
-    signedTx: IBaseTransactionWithDbIndex
-  ): Promise<boolean> {
-    const diffResponse = await this.post<ActiveLedgerResponse>(signedTx);
-
-    // Check for confirmation of consensus call
-    if (diffResponse.$responses && diffResponse.$responses[0] !== 'confirmed') {
-      datadogRum.addError(
-        new Error(
-          `Key Generation Failed on DiffCon (UMID:${diffResponse.$umid})`
-        )
-      );
-      return false;
-    }
-    return true;
-  }
-
-  /**
-   * Creates a wallet key in Nitr0gen for the specified coinSymbol (chain) that is linked to the provided otk
-   */
-  public async createFromSignedTx(
-    coinSymbol: CoinSymbol,
-    signedTx: IBaseTransactionWithDbIndex
-  ): Promise<INewNitr0genKey> {
-    const nitr0genCoin = NetworkDictionary[coinSymbol].nitr0genSymbol;
-    if (nitr0genCoin === undefined) {
-      throw new Error(
-        `Key creation failed due to unsupported network: ${coinSymbol}`
-      );
-    }
-
-    const response = await this.post<
-      ActiveLedgerResponse<IKeyCreationResponse>
-    >(signedTx);
-
-    const newKey = response.$responses?.[0];
-
-    if (!newKey) {
-      throw new Error(
-        'Nitr0gen did not provided a new key in successful key creation response'
       );
     }
 

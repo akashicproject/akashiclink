@@ -95,13 +95,7 @@ export function CreateWalletSecretConfirm({ isPopup = false }) {
       // all checks are passed, immediately clear otk so otk is not reusable
       dispatch(onClearOtk());
 
-      const { otk: fullOtk, keysNotCreated } = await createAccountWithKeys(otk);
-
-      if (keysNotCreated.length > 0) {
-        throw new Error(
-          'Not all wallets are healthy. Please contact CS or make a new account'
-        );
-      }
+      const { otk: fullOtk } = await createAccountWithKeys(otk);
 
       // Set new account details and display summary screen
       const newAccount = {
