@@ -29,6 +29,7 @@ export const TYPED_DATA_PRIMARY_TYPE = {
   AUTHORIZE_ACTION: 'AuthorizeAction',
   PAYOUT: 'Payout',
   GENERATE_SECONDARY_OTK: 'generateSecondaryOtk',
+  BECOME_FX_BP: 'becomeFxBp',
 };
 
 export const closePopup = async () => {

@@ -60,4 +60,8 @@ export const OwnersAPI = {
       JSON.stringify(signedReq)
     );
   },
+
+  becomeFxBp: async (signedReq: ICreateSecondaryOtk): Promise<void> => {
+    apiCall<void>(`/owner/become-fx-bp`, 'POST', JSON.stringify(signedReq));
+  },
 };

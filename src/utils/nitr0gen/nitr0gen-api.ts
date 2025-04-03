@@ -47,6 +47,7 @@ enum ProductionContracts {
   CryptoTransfer = '2bae6ea681826c0307ee047ef68eb0cf53487a257c498de7d081d66de119d666@1',
   DiffConsensus = '94479927cbe0860a3f51cbd36230faef7d1b69974323a83c8abcc78e3d0e8dd9@1',
   Onboard = 'a456ddc07da6d46a6897d24de188e767b87a9d9f2f3c617d858aaf819e0e5bce@1',
+  AfxOnboad = '', // TODO: update production contract
   NFTNamespace = 'akashicnft',
   NFTTransfer = 'e7ba6aa2aea7ae33f6bce49a07e6f8a2e6a5983e66b44f236e76cf689513c20a@1',
   NFTAasRecord = '6b1acfbfba1f54571036fd579f509f4c60ac1e363c111f70815bea33957cf64a@1',
@@ -60,6 +61,7 @@ enum TestNetContracts {
   CryptoTransfer = 'a32a8bc21ceaeeaa671573126a246c15ec4dc3a5c825e3cffc9441636019acb1@1',
   DiffConsensus = '17be1db84dbf81c1ff1b2f5aebd4ba4e95d81338daf98d7c2bc7b54ad8994d1c@1',
   Onboard = 'c19c6f4d3c443ae7abb14d17d33b29d134df8d11bdabc568bd23f7023ee991fd@1',
+  AfxOnboad = '205eb96fcc4ca79bde62475177c3f189f098776ff74b66246bf0df6e4a54b5de@1',
   NFTNamespace = 'akashicnft',
   NFTTransfer = '604fd945206ef3bf410a714971152576e75ad98bec9eaef169a5c6fffcf4c2d1@1',
   // The "Testing" contract has a 60s cooldown on Alias-linking (vs 72hrs for
@@ -73,6 +75,11 @@ const NFT_RECORD_NAME = 'key';
 
 const Nitr0gen =
   process.env.REACT_APP_ENV === 'prod' ? ProductionContracts : TestNetContracts;
+
+const fxMultiSignIdentity =
+  process.env.REACT_APP_ENV === 'prod'
+    ? 'ASad1414566948845b404e8b6ac91639cc3643129d0ef8b7828ede7a0ac1044d6e'
+    : 'ASeffcb8790aff2439522ef4bd834cca5233dc1670e5fa1c93fa19305323937a17';
 
 export async function signTxBody<T extends IBaseAcTransaction>(
   txBody: T,
@@ -309,6 +316,26 @@ export class Nitr0genApi {
     };
 
     // Sign Transaction
+    return await signTxBody(txBody, otk);
+  }
+
+  public async afxOnboardTransaction(otk: IKeyExtended) {
+    const txBody: IBaseAcTransaction = {
+      $tx: {
+        $namespace: Nitr0gen.Namespace,
+        $contract: Nitr0gen.AfxOnboad,
+        $i: {
+          owner: {
+            $stream: otk.identity,
+          },
+          afx: {
+            $stream: fxMultiSignIdentity,
+            $sigOnly: true,
+          },
+        },
+      },
+      $sigs: {},
+    };
     return await signTxBody(txBody, otk);
   }
 
