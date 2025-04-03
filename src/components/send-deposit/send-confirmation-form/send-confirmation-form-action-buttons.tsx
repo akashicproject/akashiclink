@@ -18,6 +18,7 @@ import {
   historyResetStackAndRedirect,
 } from '../../../routing/history';
 import { OwnersAPI } from '../../../utils/api';
+import { useSendL2Transaction } from '../../../utils/hooks/nitr0gen';
 import { useInterval } from '../../../utils/hooks/useInterval';
 import { useVerifyTxnAndSign } from '../../../utils/hooks/useVerifyTxnAndSign';
 import { unpackRequestErrorMessage } from '../../../utils/unpack-request-error-message';
@@ -48,6 +49,7 @@ export const SendConfirmationFormActionButtons = ({
 }) => {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
+  const { trigger: triggerSendL2Transaction } = useSendL2Transaction();
 
   const [forceAlert, setForceAlert] = useState(formAlertResetState);
   const [formAlert, setFormAlert] = useState(formAlertResetState);
@@ -117,7 +119,7 @@ export const SendConfirmationFormActionButtons = ({
       const signedTxn = txnsDetail?.signedTxns[0];
 
       const response = isL2
-        ? await OwnersAPI.sendL2TransactionUsingClientSideOtk({
+        ? await triggerSendL2Transaction({
             ...txn,
             signedTx: signedTxn as IBaseTransactionWithDbIndex,
             initiatedToNonL2:
