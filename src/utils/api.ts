@@ -19,7 +19,7 @@ import type {
   ITransactionProposal,
   ITransactionSettledResponse,
   ITransactionVerifyResponse,
-  ITransferNftByMintOperator,
+  ITransferNft,
   ITransferNftResponse,
   IUpdateAcns,
 } from '@helium-pay/backend';
@@ -217,12 +217,10 @@ export const OwnersAPI = {
     return response.data;
   },
 
-  nftTransfer: async (
-    transferNftByMintOperatorDto: ITransferNftByMintOperator
-  ): Promise<ITransferNftResponse> => {
+  nftTransfer: async (payload: ITransferNft): Promise<ITransferNftResponse> => {
     const response = await axiosOwnerBase.post(
       `/nft/transfer`,
-      JSON.stringify(transferNftByMintOperatorDto)
+      JSON.stringify(payload)
     );
     const { data, status } = response;
     if (status >= 400) {
