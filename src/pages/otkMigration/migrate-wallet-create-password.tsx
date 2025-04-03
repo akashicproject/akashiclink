@@ -7,12 +7,13 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   AlertBox,
   errorAlertShell,
   formAlertResetState,
 } from '../../components/alert/alert';
-import { PurpleButton } from '../../components/buttons';
+import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import {
@@ -22,14 +23,14 @@ import {
 import { urls } from '../../constants/urls';
 import { historyGoBack } from '../../routing/history-stack';
 import { akashicPayPath } from '../../routing/navigation-tabs';
+import {
+  onInputChange,
+  selectMigrateWalletForm,
+  selectOtk,
+  selectUsername,
+} from '../../slices/migrateWalletSlice';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
-import {
-  cacheCurrentPage,
-  lastPageStorage,
-  NavigationPriority,
-  ResetPageButton,
-} from '../../utils/last-page-storage';
 import type { FullOtk } from '../../utils/otk-generation';
 import { signImportAuth } from '../../utils/otk-generation';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
@@ -42,14 +43,16 @@ export const CreatePasswordInfo = styled.p({
 export function MigrateWalletCreatePassword() {
   const { t } = useTranslation();
   const history = useHistory();
+  const migrateWalletForm = useAppSelector(selectMigrateWalletForm);
+  const otk = useAppSelector(selectOtk);
+  const username = useAppSelector(selectUsername);
+  const dispatch = useAppDispatch();
 
   /** Tracking user input */
-  const [password, setPassword] = useState<string>();
   const validatePassword = (value: string) =>
     !!value.match(userConst.passwordRegex);
-  const [confirmPassword, setConfirmPassword] = useState<string>();
-  const validateConfirmPassword = (value: string) => password === value;
-  const [checked, setChecked] = useState(false);
+  const validateConfirmPassword = (value: string) =>
+    migrateWalletForm.password === value;
 
   /** Scrolling on IOS */
   const { isOpen } = useKeyboardState();
@@ -60,68 +63,53 @@ export function MigrateWalletCreatePassword() {
   const { addLocalAccount, setActiveAccount, addLocalOtkAndCache } =
     useAccountStorage();
 
-  useEffect(() => {
-    cacheCurrentPage(
-      urls.migrateWalletPassword,
-      NavigationPriority.IMMEDIATE,
-      async () => {
-        const data = await lastPageStorage.getVars();
-        if (data.password) {
-          setPassword(data.password);
-          setConfirmPassword(data.confirmPassword);
-        }
-      }
-    );
-  }, []);
-
   /**
    * Validates Password and migrates from BE-otk to FE-otk
    */
   async function confirmPasswordAndMigrateOtk() {
-    if (!(password && confirmPassword && checked)) return;
+    if (
+      !(
+        migrateWalletForm.password &&
+        migrateWalletForm.confirmPassword &&
+        migrateWalletForm.checked
+      )
+    )
+      return;
 
     if (
-      validateConfirmPassword(confirmPassword) &&
-      validatePassword(password)
+      validateConfirmPassword(migrateWalletForm.confirmPassword) &&
+      validatePassword(migrateWalletForm.password)
     ) {
       try {
-        const {
-          otk,
-          username,
-          oldPassword,
-        }: { otk: FullOtk; username: string; oldPassword: string } =
-          await lastPageStorage.getVars();
-
         // Login With v0-api to be authenticated for swap-endpoint
         await OwnersAPI.login({
-          username,
-          password: oldPassword,
+          username: username!,
+          password: migrateWalletForm.oldPassword!,
         });
 
         // Transfers permissions from server-side OTK to the just-generated client-side otk
         const { identity } = await OwnersAPI.swapEotkToOtk(
-          otk.key.pub.pkcs8pem
+          otk!.key.pub.pkcs8pem
         );
 
         setAlert(formAlertResetState);
-        await lastPageStorage.clear();
 
         // Set new account details and display summary screen
         const newAccount = {
           identity,
         };
-        addLocalOtkAndCache({ ...otk, identity }, password);
+        addLocalOtkAndCache(
+          { ...otk, identity } as FullOtk,
+          migrateWalletForm.password
+        );
         addLocalAccount(newAccount);
         setActiveAccount(newAccount);
 
         // Login so user is authenticated
         await OwnersAPI.loginV1({
           identity,
-          signedAuth: signImportAuth(otk.key.prv.pkcs8pem, identity),
+          signedAuth: signImportAuth(otk!.key.prv.pkcs8pem, identity),
         });
-
-        setPassword(undefined);
-        setConfirmPassword(undefined);
 
         history.push({
           pathname: akashicPayPath(urls.migrateWalletComplete),
@@ -151,9 +139,13 @@ export function MigrateWalletCreatePassword() {
               placeholder={t('EnterPassword')}
               type="password"
               onIonInput={({ target: { value } }) =>
-                setPassword(value as string)
+                dispatch(
+                  onInputChange({
+                    password: String(value),
+                  })
+                )
               }
-              value={password}
+              value={migrateWalletForm.password}
               errorPrompt={StyledInputErrorPrompt.Password}
               validate={validatePassword}
             />
@@ -162,9 +154,13 @@ export function MigrateWalletCreatePassword() {
               type="password"
               placeholder={t('ConfirmPassword')}
               onIonInput={({ target: { value } }) =>
-                setConfirmPassword(value as string)
+                dispatch(
+                  onInputChange({
+                    confirmPassword: String(value),
+                  })
+                )
               }
-              value={confirmPassword}
+              value={migrateWalletForm.confirmPassword}
               errorPrompt={StyledInputErrorPrompt.ConfirmPassword}
               validate={validateConfirmPassword}
               submitOnEnter={confirmPasswordAndMigrateOtk}
@@ -172,10 +168,14 @@ export function MigrateWalletCreatePassword() {
           </IonCol>
           <IonCol size="12" className={'ion-center'}>
             <IonCheckbox
-              checked={checked}
+              checked={migrateWalletForm.checked}
               labelPlacement={'end'}
               onIonChange={() => {
-                setChecked(!checked);
+                dispatch(
+                  onInputChange({
+                    checked: !migrateWalletForm.checked,
+                  })
+                );
               }}
             >
               {t('CreatePasswordAgree')}
@@ -190,18 +190,25 @@ export function MigrateWalletCreatePassword() {
             <PurpleButton
               expand="block"
               onClick={confirmPasswordAndMigrateOtk}
-              disabled={!password || !confirmPassword || !checked}
+              disabled={
+                !migrateWalletForm.password ||
+                !migrateWalletForm.confirmPassword ||
+                !migrateWalletForm.checked
+              }
             >
               {t('Confirm')}
             </PurpleButton>
           </IonCol>
           <IonCol size="6">
-            <ResetPageButton
+            <WhiteButton
               expand="block"
-              callback={() => {
+              fill="clear"
+              onClick={() => {
                 historyGoBack(history, true);
               }}
-            />
+            >
+              {t('Cancel')}
+            </WhiteButton>
           </IonCol>
         </IonRow>
       </MainGrid>

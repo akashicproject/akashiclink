@@ -12,6 +12,7 @@ import { CreateWalletSecretConfirm } from '../pages/createWallet/create-wallet-s
 import { WalletCreated } from '../pages/createWallet/wallet-created';
 import { ErrorPage } from '../pages/error';
 import { ImportSuccess } from '../pages/importWallet/import-success';
+import { ImportWalletPassword } from '../pages/importWallet/import-wallet-password';
 import { KeyPairImport } from '../pages/importWallet/keypair-import';
 import { SecretPhraseImport } from '../pages/importWallet/secret-phrase-import';
 import { SelectImportMethod } from '../pages/importWallet/select-import-method';
@@ -78,6 +79,7 @@ export function NavigationTree() {
       {AkashicTab.registerPage(WalletCreated, urls.walletCreated)}
       {AkashicTab.registerPage(CreateWalletSecretConfirm, urls.secretConfirm)}
       {AkashicTab.registerPage(SecretPhraseImport, urls.secretPhraseImport)}
+      {AkashicTab.registerPage(ImportWalletPassword, urls.importWalletPassword)}
       {AkashicTab.registerPage(SelectImportMethod, urls.selectImportMethod)}
       {AkashicTab.registerPage(ImportSuccess, urls.importSuccess)}
       {AkashicTab.registerPage(KeyPairImport, urls.keyPairImport)}

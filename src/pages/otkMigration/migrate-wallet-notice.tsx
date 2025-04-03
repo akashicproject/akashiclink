@@ -4,51 +4,47 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
 import {
-  lastPageStorage,
-  NavigationPriority,
-} from '../../utils/last-page-storage';
-import { generateOTK } from '../../utils/otk-generation';
+  onInputChange,
+  selectMigrateWalletForm,
+  setUsername,
+} from '../../slices/migrateWalletSlice';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 
 export function MigrateWalletNotice() {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
+  const migrateWalletForm = useAppSelector(selectMigrateWalletForm);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (history.location.state?.migrateWallet?.username) {
+      dispatch(setUsername(history.location.state.migrateWallet.username));
+    }
+    if (history.location.state?.migrateWallet?.oldPassword) {
+      dispatch(
+        onInputChange({
+          oldPassword: history.location.state.migrateWallet?.oldPassword,
+        })
+      );
+    }
+  }, [history.location.state]);
 
   /** Scrolling on IOS */
   const { isOpen } = useKeyboardState();
   useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   const nextPage = async () => {
-    const otk = await generateOTK();
     // If no password provided, send to page to get old password (used to login and decrypt old eOtk for migration)
-    if (!history.location.state.migrateWallet?.oldPassword) {
-      await lastPageStorage.store(
-        urls.migrateWalletOldPassword,
-        NavigationPriority.IMMEDIATE,
-        {
-          username: history.location.state.migrateWallet?.username,
-          passPhrase: otk.phrase,
-          otk,
-        }
-      );
+    if (!migrateWalletForm.oldPassword) {
       history.push(urls.migrateWalletOldPassword);
     } else {
-      await lastPageStorage.store(
-        urls.migrateWalletSecret,
-        NavigationPriority.IMMEDIATE,
-        {
-          username: history.location.state.migrateWallet?.username,
-          oldPassword: history.location.state.migrateWallet?.oldPassword,
-          passPhrase: otk.phrase,
-          otk,
-        }
-      );
       history.push(urls.migrateWalletSecret);
     }
   };

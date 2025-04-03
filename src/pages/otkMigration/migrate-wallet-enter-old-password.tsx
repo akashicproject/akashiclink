@@ -1,4 +1,3 @@
-import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import { datadogRum } from '@datadog/browser-rum';
 import { IonCol, IonRow } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
@@ -6,12 +5,13 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   AlertBox,
   errorAlertShell,
   formAlertResetState,
 } from '../../components/alert/alert';
-import { PurpleButton } from '../../components/buttons';
+import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import {
@@ -21,19 +21,16 @@ import {
 import { urls } from '../../constants/urls';
 import { historyGoBack } from '../../routing/history-stack';
 import {
-  cacheCurrentPage,
-  lastPageStorage,
-  NavigationPriority,
-  ResetPageButton,
-} from '../../utils/last-page-storage';
+  onInputChange,
+  selectMigrateWalletForm,
+} from '../../slices/migrateWalletSlice';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 
 export function MigrateWalletOldPassword() {
   const { t } = useTranslation();
   const history = useHistory();
-
-  /** Tracking user input */
-  const [password, setPassword] = useState<string>();
+  const migrateWalletForm = useAppSelector(selectMigrateWalletForm);
+  const dispatch = useAppDispatch();
 
   /** Scrolling on IOS */
   const { isOpen } = useKeyboardState();
@@ -41,45 +38,10 @@ export function MigrateWalletOldPassword() {
 
   const [alert, setAlert] = useState(formAlertResetState);
 
-  useEffect(() => {
-    cacheCurrentPage(
-      urls.migrateWalletOldPassword,
-      NavigationPriority.IMMEDIATE,
-      async () => {
-        const data = await lastPageStorage.getVars();
-        if (data.password) {
-          setPassword(data.password);
-        }
-      }
-    );
-  }, []);
-
   async function confirmOldPassword() {
-    if (!password) return;
+    if (!migrateWalletForm.oldPassword) return;
 
     try {
-      const {
-        otk,
-        username,
-        passPhrase,
-      }: { otk: IKeyExtended; username: string; passPhrase: string } =
-        await lastPageStorage.getVars();
-
-      setAlert(formAlertResetState);
-      await lastPageStorage.clear();
-
-      await lastPageStorage.store(
-        urls.migrateWalletSecret,
-        NavigationPriority.IMMEDIATE,
-        {
-          username,
-          oldPassword: password,
-          passPhrase,
-          otk,
-        }
-      );
-
-      setPassword(undefined);
       history.push(urls.migrateWalletSecret);
     } catch (e) {
       datadogRum.addError(e);
@@ -92,12 +54,15 @@ export function MigrateWalletOldPassword() {
    */
   const CancelButton = (
     <IonCol>
-      <ResetPageButton
+      <WhiteButton
         expand="block"
-        callback={() => {
+        fill="clear"
+        onClick={() => {
           historyGoBack(history, true);
         }}
-      />
+      >
+        {t('Cancel')}
+      </WhiteButton>
     </IonCol>
   );
   return (
@@ -120,10 +85,14 @@ export function MigrateWalletOldPassword() {
                 label={t('Password')}
                 placeholder={t('EnterPassword')}
                 type="password"
-                onIonInput={({ target: { value } }) =>
-                  setPassword(value as string)
-                }
-                value={password}
+                onIonInput={({ target: { value } }) => {
+                  dispatch(
+                    onInputChange({
+                      oldPassword: String(value),
+                    })
+                  );
+                }}
+                value={migrateWalletForm.oldPassword}
                 errorPrompt={StyledInputErrorPrompt.Password}
               />
             </IonCol>
@@ -133,7 +102,7 @@ export function MigrateWalletOldPassword() {
               <PurpleButton
                 expand="block"
                 onClick={confirmOldPassword}
-                disabled={!password}
+                disabled={!migrateWalletForm.oldPassword}
               >
                 {t('Confirm')}
               </PurpleButton>

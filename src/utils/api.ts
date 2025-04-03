@@ -207,7 +207,6 @@ export const OwnersAPI = {
     let requestUrl = `/owner/check-l2-address?to=${l2Check.to}`;
     if (l2Check.coinSymbol) requestUrl += `&coinSymbol=${l2Check.coinSymbol}`;
     const response = await axiosBase.get(requestUrl);
-    console.log(response);
     const { data, status } = response;
     if (status >= 400) {
       throw new Error(data.message);
@@ -221,7 +220,6 @@ export const OwnersAPI = {
     const response = await axiosBase.get(
       `/nft/acns/check-l2-address?to=${l2Check.to}`
     );
-    console.log(response);
     const { data, status } = response;
     if (status >= 400) {
       throw new Error(data.message);

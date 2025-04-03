@@ -3,12 +3,13 @@ import { IonCol, IonImg, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
+import { useAppDispatch } from '../../app/hooks';
 import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import { lastPageStorage } from '../../utils/last-page-storage';
+import { onClear } from '../../slices/createWalletSlice';
 
 export const StyledA = styled.a({
   fontSize: '12px',
@@ -22,6 +23,7 @@ export const StyledA = styled.a({
 export const WalletCreated = () => {
   const { t } = useTranslation();
   const history = useHistory();
+  const dispatch = useAppDispatch();
 
   return (
     <PublicLayout className="vertical-center">
@@ -77,7 +79,7 @@ export const WalletCreated = () => {
             <PurpleButton
               expand="block"
               onClick={async () => {
-                await lastPageStorage.clear();
+                dispatch(onClear());
                 history.push(akashicPayPath(urls.loggedFunction));
               }}
             >

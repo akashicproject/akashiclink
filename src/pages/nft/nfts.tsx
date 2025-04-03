@@ -70,7 +70,6 @@ export function Nfts() {
       state: {
         nft: {
           nftName: nft.name,
-          chainType: nft.chainType,
         },
       },
     });

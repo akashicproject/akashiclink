@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
-import { IMPORT_CONST } from '@helium-pay/backend';
 import { IonIcon, IonRow } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
@@ -13,17 +13,12 @@ import { SecretWords } from '../../components/secret-words/secret-words';
 import { urls } from '../../constants/urls';
 import { historyGoBack } from '../../routing/history-stack';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import { OwnersAPI } from '../../utils/api';
 import {
-  cacheCurrentPage,
-  lastPageStorage,
-  NavigationPriority,
-} from '../../utils/last-page-storage';
-import {
-  restoreOtk,
-  signImportAuth,
-  validateSecretPhrase,
-} from '../../utils/otk-generation';
+  onInputChange,
+  reconstructOtkAsync,
+  selectImportWalletForm,
+} from '../../slices/importWalletSlice';
+import { validateSecretPhrase } from '../../utils/otk-generation';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 
 const StyledSpan = styled.span({
@@ -46,58 +41,21 @@ const StyledDiv = styled.div<DivProps>`
 `;
 export const SecretPhraseImport = () => {
   const history = useHistory();
-  const [initialWords, setInitialWords] = useState(new Array(12).fill(''));
-  const [phrase, setPhrase] = useState<string[]>([]);
   const [error, setError] = useState(false);
   const { t } = useTranslation();
+  const importWalletForm = useAppSelector(selectImportWalletForm);
+  const dispatch = useAppDispatch();
 
   /** Scrolling on IOS */
   const { isOpen } = useKeyboardState();
   useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
-  useEffect(() => {
-    cacheCurrentPage(
-      urls.secretPhraseImport,
-      NavigationPriority.IMMEDIATE,
-      async () => {
-        const { passPhrase } = await lastPageStorage.getVars();
-        if (passPhrase) {
-          setInitialWords(passPhrase);
-        }
-      }
-    );
-  }, []);
-
   const handleConfirmRecoveryPhrase = async () => {
     try {
-      const reconstructedOtk = await restoreOtk(phrase.join(' '));
-      const { identity } = await OwnersAPI.importAccount({
-        publicKey: reconstructedOtk.key.pub.pkcs8pem,
-        signedAuth: signImportAuth(
-          reconstructedOtk.key.prv.pkcs8pem,
-          IMPORT_CONST
-        ),
-      });
-      const fullOtk = { ...reconstructedOtk, identity };
-      await lastPageStorage.clear();
-      await lastPageStorage.store(
-        urls.createWalletPassword,
-        NavigationPriority.IMMEDIATE,
-        {
-          otk: fullOtk,
-        }
-      );
-      // Remove phrase state before leaving page
-      setPhrase([]);
-      setInitialWords([]);
+      dispatch(reconstructOtkAsync(importWalletForm.passPhrase!));
       setError(false);
       history.push({
-        pathname: akashicPayPath(urls.createWalletPassword),
-        state: {
-          createPassword: {
-            isImport: true,
-          },
-        },
+        pathname: akashicPayPath(urls.importWalletPassword),
       });
     } catch (err) {
       setError(true);
@@ -135,7 +93,7 @@ export const SecretPhraseImport = () => {
         <IonRow>
           <SecretWords
             inputVisibility={true}
-            initialWords={initialWords}
+            initialWords={importWalletForm.passPhrase!}
             disableInput={false}
             onChange={async (value) => {
               if (validateSecretPhrase(value)) {
@@ -143,13 +101,10 @@ export const SecretPhraseImport = () => {
               } else {
                 setError(true);
               }
-              setPhrase(value);
-              await lastPageStorage.store(
-                urls.secretPhraseImport,
-                NavigationPriority.IMMEDIATE,
-                {
+              dispatch(
+                onInputChange({
                   passPhrase: value,
-                }
+                })
               );
             }}
           ></SecretWords>
@@ -189,10 +144,12 @@ export const SecretPhraseImport = () => {
             <WhiteButton
               style={{ width: '100%' }}
               onClick={async () => {
-                setPhrase([]);
-                setInitialWords([]);
+                dispatch(
+                  onInputChange({
+                    passPhrase: new Array(12).fill(''),
+                  })
+                );
                 setError(false);
-                await lastPageStorage.clear();
                 historyGoBack(history, true);
               }}
             >

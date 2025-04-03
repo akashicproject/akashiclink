@@ -1,4 +1,4 @@
-import { IonCol, IonGrid, IonIcon, IonRow, isPlatform } from '@ionic/react';
+import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSWRConfig } from 'swr';
@@ -78,7 +78,7 @@ export function LoggedToolbar({
               onNewAccountClick={async (selectedAccount) => {
                 // When a different account is clicked, set it as the active account and logout
                 setActiveAccount(selectedAccount);
-                logout().then(() => isPlatform('mobile') && location.reload());
+                logout();
               }}
             />
           )}

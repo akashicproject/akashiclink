@@ -1,9 +1,9 @@
+import { Preferences } from '@capacitor/preferences';
 import axios from 'axios';
 
 import { urls } from '../constants/urls';
 import { history } from '../history';
 import { akashicPayPath } from '../routing/navigation-tabs';
-import { lastPageStorage, NavigationPriority } from './last-page-storage';
 
 const createAxiosInstance = (baseURL: string | undefined) => {
   return axios.create({
@@ -32,17 +32,10 @@ axiosBase.interceptors.response.use(
       // Skip if already on root page
       if (history.location.pathname.match(/^\/$|\/akashic$/)) return;
 
-      // Get the current page user in on from memory
-      const currentPage = await lastPageStorage.get();
-      // If current page is undefined, or required authentication, kick user to the landing page
-      if (
-        !currentPage ||
-        currentPage.navigationPriority ===
-          NavigationPriority.AWAIT_AUTHENTICATION
-      ) {
-        history.push(akashicPayPath(urls.akashicPay));
-        window.location.reload();
-      }
+      await Preferences.remove({
+        key: 'lastLocation',
+      });
+      history.push(akashicPayPath(urls.akashicPay));
     } else {
       return Promise.reject(error);
     }

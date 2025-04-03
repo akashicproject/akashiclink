@@ -9,7 +9,7 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../../components/alert/alert';
-import { PurpleButton } from '../../components/buttons';
+import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { LoggedLayout } from '../../components/layout/logged-layout';
 import { MainGrid } from '../../components/layout/main-grid';
 import { Spinner } from '../../components/loader/spinner';
@@ -18,7 +18,6 @@ import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
-import { ResetPageButton } from '../../utils/last-page-storage';
 
 export function SettingsDelete() {
   const { t } = useTranslation();
@@ -66,12 +65,15 @@ export function SettingsDelete() {
             </PurpleButton>
           </IonCol>
           <IonCol size="12">
-            <ResetPageButton
+            <WhiteButton
               style={{ width: '100%' }}
-              callback={() => {
+              fill="clear"
+              onClick={() => {
                 history.push(akashicPayPath(urls.loggedFunction));
               }}
-            />
+            >
+              {t('Cancel')}
+            </WhiteButton>
           </IonCol>
         </IonRow>
         {alert.visible && <CustomAlert state={alert} />}

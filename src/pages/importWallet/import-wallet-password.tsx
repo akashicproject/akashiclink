@@ -1,16 +1,10 @@
-import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
 import { userConst } from '@helium-pay/backend';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  errorAlertShell,
-  formAlertResetState,
-} from '../../components/alert/alert';
 import { CreatePasswordForm } from '../../components/public/create-password-form';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
@@ -18,8 +12,10 @@ import { historyGoBack } from '../../routing/history-stack';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import {
   onInputChange,
-  selectCreateWalletForm,
-} from '../../slices/createWalletSlice';
+  selectImportWalletForm,
+  selectOtk,
+} from '../../slices/importWalletSlice';
+import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 
 export const CreatePasswordInfo = styled.p({
@@ -27,23 +23,22 @@ export const CreatePasswordInfo = styled.p({
   color: 'var(--ion-color-primary-10)',
 });
 
-export function CreateWalletPassword() {
-  const { t } = useTranslation();
+export function ImportWalletPassword() {
   const history = useHistory<LocationState>();
 
   /** Tracking user input */
   const validatePassword = (value: string) =>
     !!value.match(userConst.passwordRegex);
-  const createWalletForm = useAppSelector(selectCreateWalletForm);
+  const { addLocalOtkAndCache, addLocalAccount } = useAccountStorage();
+  const importWalletForm = useAppSelector(selectImportWalletForm);
+  const otk = useAppSelector(selectOtk);
   const dispatch = useAppDispatch();
   const validateConfirmPassword = (value: string) =>
-    createWalletForm.password === value;
+    importWalletForm.password === value;
 
   /** Scrolling on IOS */
   const { isOpen } = useKeyboardState();
   useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
-
-  const [alert, setAlert] = useState(formAlertResetState);
 
   /**
    * Validates Password, creates OTK and sends on to OTK-confirmation (Create)
@@ -52,32 +47,34 @@ export function CreateWalletPassword() {
   async function confirmPasswordAndCreateOtk() {
     if (
       !(
-        createWalletForm.password &&
-        createWalletForm.confirmPassword &&
-        createWalletForm.checked
+        importWalletForm.password &&
+        importWalletForm.confirmPassword &&
+        importWalletForm.checked
       )
     )
       return;
     const isPasswordValid =
-      validateConfirmPassword(createWalletForm.confirmPassword) &&
-      validatePassword(createWalletForm.password);
+      validateConfirmPassword(importWalletForm.confirmPassword) &&
+      validatePassword(importWalletForm.password);
 
-    if (isPasswordValid) {
-      try {
-        setAlert(formAlertResetState);
-        history.push({
-          pathname: akashicPayPath(urls.secret),
-        });
-      } catch (e) {
-        datadogRum.addError(e);
-        setAlert(errorAlertShell(t('GenericFailureMsg')));
-      }
-    } else setAlert(errorAlertShell(t('PasswordHelperText')));
+    if (isPasswordValid && otk && otk.identity) {
+      // call import api and store the Identity.
+      // added local otk
+      addLocalOtkAndCache(otk, importWalletForm.password);
+      // need to add local account
+      addLocalAccount({
+        identity: otk.identity,
+      });
+
+      history.push({
+        pathname: akashicPayPath(urls.importSuccess),
+      });
+    }
   }
 
   return (
     <CreatePasswordForm
-      form={createWalletForm}
+      form={importWalletForm}
       onInputChange={onInputChange}
       onCancel={() => {
         historyGoBack(history, true);
@@ -89,7 +86,6 @@ export function CreateWalletPassword() {
         );
       }}
       onSubmit={confirmPasswordAndCreateOtk}
-      alert={alert}
     />
   );
 }

@@ -14,7 +14,7 @@ import dayjs from 'dayjs';
 import { t } from 'i18next';
 import { alertCircleOutline, closeOutline } from 'ionicons/icons';
 import type { Dispatch, SetStateAction } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { GridComponents } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
@@ -23,12 +23,10 @@ import { ActivityDetail } from '../components/activity/activity-detail';
 import { OneActivity } from '../components/activity/one-activity';
 import { LoggedLayout } from '../components/layout/logged-layout';
 import { OneNft } from '../components/nft/one-nft';
-import { urls } from '../constants/urls';
 import type { ITransactionRecordForExtension } from '../utils/formatTransfers';
 import { formatMergeAndSortNftAndCryptoTransfers } from '../utils/formatTransfers';
 import { useNftTransfersMe } from '../utils/hooks/useNftTransfersMe';
 import { useTransfersMe } from '../utils/hooks/useTransfersMe';
-import { cacheCurrentPage } from '../utils/last-page-storage';
 
 export const Divider = styled.div<{
   borderColor?: string;
@@ -154,9 +152,6 @@ export function Activity() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentTransfer, setCurrentTransfer] =
     useState<ITransactionRecordForExtension>();
-  useEffect(() => {
-    cacheCurrentPage(urls.activity);
-  }, []);
   const [transferParams, _] = useState({
     startDate: dayjs().subtract(1, 'month').toDate(),
   });

@@ -1,19 +1,15 @@
 import styled from '@emotion/styled';
 import { IonCol, IonImg, IonRow } from '@ionic/react';
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
+import { useAppDispatch } from '../../app/hooks';
 import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import {
-  cacheCurrentPage,
-  lastPageStorage,
-  NavigationPriority,
-} from '../../utils/last-page-storage';
+import { onClear } from '../../slices/importWalletSlice';
 
 export const StyledSpan = styled.span({
   fontSize: '12px',
@@ -25,9 +21,7 @@ export const StyledSpan = styled.span({
 export const ImportSuccess = () => {
   const { t } = useTranslation();
   const history = useHistory();
-  useEffect(() => {
-    cacheCurrentPage(urls.importSuccess, NavigationPriority.IMMEDIATE);
-  }, []);
+  const dispatch = useAppDispatch();
 
   return (
     <PublicLayout contentStyle={{ padding: '0 30px', height: '100%' }}>
@@ -61,8 +55,8 @@ export const ImportSuccess = () => {
             >
               <PurpleButton
                 onClick={async () => {
-                  await lastPageStorage.clear();
-                  history.push(akashicPayPath(urls.akashicPay));
+                  dispatch(onClear());
+                  history.push(akashicPayPath(urls.loggedFunction));
                 }}
               >
                 {t('Confirm')}

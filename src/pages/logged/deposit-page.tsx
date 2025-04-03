@@ -5,7 +5,6 @@ import type { CoinSymbol } from '@helium-pay/backend';
 import { NetworkDictionary } from '@helium-pay/backend';
 import { IonCol, IonGrid, IonImg, IonRow, IonText } from '@ionic/react';
 import { QRCodeSVG } from 'qrcode.react';
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { OtkBox } from '../../components/otk-box/otk-box';
@@ -14,10 +13,8 @@ import {
   useTheme,
 } from '../../components/PreferenceProvider';
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
-import { urls } from '../../constants/urls';
 import { themeType } from '../../theme/const';
 import { useLargestBalanceKeys } from '../../utils/hooks/useLargestBalanceKeys';
-import { cacheCurrentPage } from '../../utils/last-page-storage';
 import { LoggedLayoutWithActivityTab } from './logged-layout-with-activity-tab';
 
 const CoinWrapper = styled.div({
@@ -32,10 +29,6 @@ export function DepositPage() {
   const { t } = useTranslation();
   const [currency] = useFocusCurrency();
   const [storedTheme] = useTheme();
-
-  useEffect(() => {
-    cacheCurrentPage(urls.loggedDeposit);
-  }, []);
 
   // Find specified currency or default to the first one
   const currentWalletMetadata =

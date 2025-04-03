@@ -1,4 +1,3 @@
-import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import type {
   IL1ClientSideOtkTransactionBase,
   ITransactionProposalClientSideOtk,
@@ -12,7 +11,6 @@ export const history = createMemoryHistory();
 export interface LocationState {
   nft?: {
     nftName?: string;
-    chainType?: string;
   };
   nftTransferResult?: {
     transaction?: TransferResultType;
@@ -36,21 +34,8 @@ export interface LocationState {
     errorMsg?: string;
     currencyDisplayName?: string;
   };
-  changePassTwoFa?: {
-    oldPassword: string;
-    newPassword: string;
-    confirmPassword: string;
-    email: string;
-  };
-  createWallet?: {
-    password: string;
-    otk: IKeyExtended;
-  };
   migrateWallet?: {
-    username: string;
+    username?: string;
     oldPassword?: string;
-  };
-  createPassword?: {
-    isImport: boolean;
   };
 }

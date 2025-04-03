@@ -1,21 +1,18 @@
 import styled from '@emotion/styled';
 import { IonCol, IonRow } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { SecretWords } from '../../components/secret-words/secret-words';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import {
-  cacheCurrentPage,
-  lastPageStorage,
-  NavigationPriority,
-} from '../../utils/last-page-storage';
+import { generateOtkAsync, selectOtk } from '../../slices/migrateWalletSlice';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 
 export const StyledSpan = styled.span({
@@ -27,36 +24,21 @@ export const StyledSpan = styled.span({
 });
 export function MigrateWalletSecret() {
   const { t } = useTranslation();
-  const [secretWords, setSecretWords] = useState<Array<string>>([]);
   const history = useHistory();
+  const otk = useAppSelector(selectOtk);
+  const dispatch = useAppDispatch();
 
   /** Scrolling on IOS */
   const { isOpen } = useKeyboardState();
   useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   useEffect(() => {
-    cacheCurrentPage(
-      urls.migrateWalletSecret,
-      NavigationPriority.IMMEDIATE,
-      async () => {
-        const data = await lastPageStorage.getVars();
-        if (data.passPhrase && !secretWords.length) {
-          setSecretWords(data.passPhrase.split(' '));
-        }
-      }
-    );
-  }, []);
+    if (!otk) {
+      dispatch(generateOtkAsync(0));
+    }
+  }, [otk]);
 
   const confirmSecret = async () => {
-    const data = await lastPageStorage.getVars();
-    await lastPageStorage.store(
-      urls.migrateWalletSecretConfirm,
-      NavigationPriority.IMMEDIATE,
-      {
-        ...data,
-        passPhrase: secretWords.join(' '),
-      }
-    );
     history.push({
       pathname: akashicPayPath(urls.migrateWalletSecretConfirm),
     });
@@ -93,8 +75,11 @@ export function MigrateWalletSecret() {
               </StyledSpan>
             </IonRow>
             <IonRow style={{ marginTop: '16px' }}>
-              {secretWords.length && (
-                <SecretWords initialWords={secretWords} withAction={true} />
+              {otk?.phrase && (
+                <SecretWords
+                  initialWords={otk.phrase.split(' ')}
+                  withAction={true}
+                />
               )}
             </IonRow>
             <IonRow style={{ justifyContent: 'center' }}>

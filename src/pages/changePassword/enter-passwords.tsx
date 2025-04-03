@@ -1,6 +1,6 @@
 import { userConst } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../../components/alert/alert';
-import { PurpleButton } from '../../components/buttons';
+import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { LoggedLayout } from '../../components/layout/logged-layout';
 import { MainGrid } from '../../components/layout/main-grid';
 import {
@@ -19,10 +19,6 @@ import {
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
-import {
-  cacheCurrentPage,
-  ResetPageButton,
-} from '../../utils/last-page-storage';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 
 export function ChangePassword() {
@@ -40,9 +36,6 @@ export function ChangePassword() {
   const [alertRequest, setAlertRequest] = useState(formAlertResetState);
   const { changeOtkPassword } = useAccountStorage();
 
-  useEffect(() => {
-    cacheCurrentPage(urls.changePassword);
-  }, []);
   /**
      * Activation request is sent -> email with activation code is sent to user
   
@@ -114,12 +107,15 @@ export function ChangePassword() {
             </IonCol>
           )}
           <IonCol size="6">
-            <ResetPageButton
+            <WhiteButton
               expand="block"
-              callback={() => {
+              fill="clear"
+              onClick={() => {
                 history.push(akashicPayPath(urls.loggedFunction));
               }}
-            />
+            >
+              {t('Cancel')}
+            </WhiteButton>
           </IonCol>
           <IonCol size="6">
             <PurpleButton

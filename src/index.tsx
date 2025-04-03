@@ -2,10 +2,16 @@ import './i18n/i18n';
 
 import { datadogRum } from '@datadog/browser-rum';
 import { isPlatform } from '@ionic/react';
+import { ConnectedRouter } from 'connected-react-router';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import App from './App';
+import { store } from './app/store';
+import { history } from './history';
 import { reportWebVitals } from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
@@ -36,9 +42,18 @@ if (!isPlatform('android')) {
   datadogRum.startSessionReplayRecording();
 }
 
+const persistor = persistStore(store);
 root.render(
   <React.StrictMode>
-    <App />
+    {/* Providers should be placed in App.tsx for consistency */}
+    {/* Except for below redux providers */}
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <ConnectedRouter history={history}>
+          <App />
+        </ConnectedRouter>
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );
 

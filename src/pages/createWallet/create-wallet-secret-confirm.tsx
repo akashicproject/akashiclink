@@ -2,10 +2,12 @@ import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
 import { IonCol, IonRow } from '@ionic/react';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { isEqual } from 'lodash';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   AlertBox,
   errorAlertShell,
@@ -18,13 +20,13 @@ import { Spinner } from '../../components/loader/spinner';
 import { SecretWords } from '../../components/secret-words/secret-words';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import {
-  cacheCurrentPage,
-  lastPageStorage,
-  NavigationPriority,
-} from '../../utils/last-page-storage';
-import { getRandomNumbers } from '../../utils/random-utils';
+  onInputChange,
+  selectCreateWalletForm,
+  selectMaskedPassPhrase,
+  selectOtk,
+} from '../../slices/createWalletSlice';
+import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { createAccountWithKeys } from './backend-interaction';
 
 export const StyledSpan = styled.span({
@@ -38,9 +40,10 @@ export const StyledSpan = styled.span({
 export function CreateWalletSecretConfirm() {
   const { t } = useTranslation();
   const history = useHistory();
-  const [passPhrase, setPassPhrase] = useState<string>('');
-  const [secretWords, setSecretWords] = useState<Array<string>>([]);
-  const [inputValue, setInputValue] = useState<Array<string>>([]);
+  const otk = useAppSelector(selectOtk);
+  const createWalletForm = useAppSelector(selectCreateWalletForm);
+  const maskedPassPhrase = useAppSelector(selectMaskedPassPhrase);
+  const dispatch = useAppDispatch();
 
   const [alert, setAlert] = useState(formAlertResetState);
 
@@ -50,46 +53,19 @@ export function CreateWalletSecretConfirm() {
   const { addLocalAccount, setActiveAccount, addLocalOtkAndCache } =
     useAccountStorage();
 
-  useEffect(() => {
-    cacheCurrentPage(
-      urls.secretConfirm,
-      NavigationPriority.IMMEDIATE,
-      async () => {
-        const data = await lastPageStorage.getVars();
-        if (data.passPhrase && !data.passPhraseWithEmptyWords) {
-          setPassPhrase(data.passPhrase);
-          const randomNumberArray = getRandomNumbers(0, 11, 4);
-          const sWords = data.passPhrase.split(' ');
-          randomNumberArray.forEach((e) => {
-            sWords[e] = '';
-          });
-          setSecretWords(sWords);
-          await lastPageStorage.store(
-            urls.secret,
-            NavigationPriority.IMMEDIATE,
-            {
-              ...data,
-              passPhrase: data.passPhrase,
-              passPhraseWithEmptyWords: sWords,
-            }
-          );
-        } else if (data.passPhraseWithEmptyWords) {
-          setPassPhrase(data.passPhrase);
-          setSecretWords(data.passPhraseWithEmptyWords);
-        }
-      }
-    );
-  }, []);
-
   async function activateWalletAccount() {
     // Check for correct 12-word confirmation
-    if (inputValue.join(' ') !== passPhrase) return;
-
-    const { otk, password } = await lastPageStorage.getVars();
+    if (
+      !isEqual(
+        createWalletForm.confirmPassPhrase!.join(' '),
+        otk!.phrase!.trim()
+      )
+    )
+      return;
 
     // Submit request and display "creating account loader"
     try {
-      if (!otk || !password) {
+      if (!otk || !createWalletForm.password) {
         throw new Error('Something went wrong. Try again');
       }
       setCreatingAccount(true);
@@ -106,15 +82,12 @@ export function CreateWalletSecretConfirm() {
         );
       }
 
-      // Complete the create-wallet flow
-      await lastPageStorage.clear();
-
       // Set new account details and display summary screen
       const newAccount = {
         identity: fullOtk.identity,
       };
 
-      addLocalOtkAndCache(fullOtk, password);
+      addLocalOtkAndCache(fullOtk, createWalletForm.password);
       addLocalAccount(newAccount);
       setAlert(formAlertResetState);
       setActiveAccount(newAccount);
@@ -167,15 +140,17 @@ export function CreateWalletSecretConfirm() {
               </StyledSpan>
             </IonRow>
             <IonRow style={{ marginTop: '16px' }}>
-              {secretWords.length && (
-                <SecretWords
-                  initialWords={secretWords}
-                  withAction={false}
-                  onChange={(value) => {
-                    setInputValue(value);
-                  }}
-                />
-              )}
+              <SecretWords
+                initialWords={maskedPassPhrase}
+                withAction={false}
+                onChange={(value) => {
+                  dispatch(
+                    onInputChange({
+                      confirmPassPhrase: value,
+                    })
+                  );
+                }}
+              />
             </IonRow>
             <IonRow style={{ justifyContent: 'space-around' }}>
               <IonCol size="5">
@@ -192,16 +167,6 @@ export function CreateWalletSecretConfirm() {
                   style={{ width: '100%' }}
                   fill="clear"
                   onClick={async () => {
-                    const data = lastPageStorage.getVars();
-                    await lastPageStorage.store(
-                      urls.secret,
-                      NavigationPriority.IMMEDIATE,
-                      {
-                        ...data,
-                        passPhrase: passPhrase,
-                        passPhraseWithEmptyWords: secretWords,
-                      }
-                    );
                     history.push({
                       pathname: akashicPayPath(urls.secret),
                     });

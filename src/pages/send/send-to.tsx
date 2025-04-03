@@ -19,7 +19,7 @@ import { IonCol, IonImg, IonRow, IonSpinner } from '@ionic/react';
 import axios from 'axios';
 import Big from 'big.js';
 import { debounce } from 'lodash';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { SwiperSlide } from 'swiper/react';
@@ -50,7 +50,6 @@ import { useExchangeRates } from '../../utils/hooks/useExchangeRates';
 import { useKeyMe } from '../../utils/hooks/useKeyMe';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { calculateInternalWithdrawalFee } from '../../utils/internal-fee';
-import { cacheCurrentPage } from '../../utils/last-page-storage';
 import { displayLongText } from '../../utils/long-text';
 import { signTxBody } from '../../utils/nitr0gen-api';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
@@ -181,10 +180,6 @@ export function SendTo() {
   const [currency] = useFocusCurrency();
   const [storedTheme] = useTheme();
   const history = useHistory();
-
-  useEffect(() => {
-    cacheCurrentPage(urls.sendTo);
-  }, []);
 
   // Find specified currency or default to the first one
   const currentWalletMetadata =

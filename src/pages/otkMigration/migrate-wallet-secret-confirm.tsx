@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
 import { IonCol, IonRow } from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { isEqual } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
@@ -11,11 +12,11 @@ import { SecretWords } from '../../components/secret-words/secret-words';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import {
-  cacheCurrentPage,
-  lastPageStorage,
-  NavigationPriority,
-} from '../../utils/last-page-storage';
-import { getRandomNumbers } from '../../utils/random-utils';
+  onInputChange,
+  selectMaskedPassPhrase,
+  selectMigrateWalletForm,
+  selectOtk,
+} from '../../slices/migrateWalletSlice';
 
 export const StyledSpan = styled.span({
   fontSize: '12px',
@@ -28,51 +29,20 @@ export const StyledSpan = styled.span({
 export function MigrateWalletSecretConfirm() {
   const { t } = useTranslation();
   const history = useHistory();
-  const [passPhrase, setPassPhrase] = useState<string>('');
-  const [secretWords, setSecretWords] = useState<Array<string>>([]);
-  const [inputValue, setInputValue] = useState<Array<string>>([]);
-
-  useEffect(() => {
-    cacheCurrentPage(
-      urls.migrateWalletSecretConfirm,
-      NavigationPriority.IMMEDIATE,
-      async () => {
-        const data = await lastPageStorage.getVars();
-        if (data.passPhrase && !data.passPhraseWithEmptyWords) {
-          setPassPhrase(data.passPhrase);
-          const randomNumberArray = getRandomNumbers(0, 11, 4);
-          const sWords = data.passPhrase.split(' ');
-          randomNumberArray.forEach((e) => {
-            sWords[e] = '';
-          });
-          setSecretWords(sWords);
-          lastPageStorage.store(
-            urls.migrateWalletSecret,
-            NavigationPriority.IMMEDIATE,
-            {
-              ...data,
-              passPhrase: data.passPhrase,
-              passPhraseWithEmptyWords: sWords,
-            }
-          );
-        } else if (data.passPhraseWithEmptyWords) {
-          setPassPhrase(data.passPhrase);
-          setSecretWords(data.passPhraseWithEmptyWords);
-        }
-      }
-    );
-  }, []);
+  const migrateWalletForm = useAppSelector(selectMigrateWalletForm);
+  const otk = useAppSelector(selectOtk);
+  const maskedPassPhrase = useAppSelector(selectMaskedPassPhrase);
+  const dispatch = useAppDispatch();
 
   const confirmSecret = async () => {
     // Check for correct 12-word confirmation
-    if (inputValue.join(' ') !== passPhrase) return;
-
-    const data = await lastPageStorage.getVars();
-    await lastPageStorage.store(
-      urls.migrateWalletPassword,
-      NavigationPriority.IMMEDIATE,
-      data
-    );
+    if (
+      !isEqual(
+        migrateWalletForm.confirmPassPhrase!.join(' '),
+        otk!.phrase!.trim()
+      )
+    )
+      return;
 
     history.push({
       pathname: akashicPayPath(urls.migrateWalletPassword),
@@ -104,15 +74,17 @@ export function MigrateWalletSecretConfirm() {
               </StyledSpan>
             </IonRow>
             <IonRow style={{ marginTop: '16px' }}>
-              {secretWords.length && (
-                <SecretWords
-                  initialWords={secretWords}
-                  withAction={false}
-                  onChange={(value) => {
-                    setInputValue(value);
-                  }}
-                />
-              )}
+              <SecretWords
+                initialWords={maskedPassPhrase}
+                withAction={false}
+                onChange={(value) => {
+                  dispatch(
+                    onInputChange({
+                      confirmPassPhrase: value,
+                    })
+                  );
+                }}
+              />
             </IonRow>
             <IonRow style={{ justifyContent: 'space-around' }}>
               <IonCol size="5">
@@ -129,16 +101,6 @@ export function MigrateWalletSecretConfirm() {
                   style={{ width: '100%' }}
                   fill="clear"
                   onClick={async () => {
-                    const data = await lastPageStorage.getVars();
-                    await lastPageStorage.store(
-                      urls.migrateWalletSecret,
-                      NavigationPriority.IMMEDIATE,
-                      {
-                        ...data,
-                        passPhrase: passPhrase,
-                        passPhraseWithEmptyWords: secretWords,
-                      }
-                    );
                     history.push({
                       pathname: akashicPayPath(urls.migrateWalletSecret),
                     });

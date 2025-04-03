@@ -110,6 +110,7 @@ export function LoginForm() {
       setActiveAccount(selectedAccount);
       await mutate(`/owner/me`);
       history.push(akashicPayPath(urls.loggedFunction));
+      setPassword('');
     } catch (error) {
       datadogRum.addError(error);
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));

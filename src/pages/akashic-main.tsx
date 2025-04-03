@@ -1,20 +1,24 @@
 import './akashic-main.scss';
 
+import { Preferences } from '@capacitor/preferences';
 import { IonCol, IonImg, IonRow, isPlatform } from '@ionic/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { useAppDispatch } from '../app/hooks';
 import { PublicLayout } from '../components/layout/public-layout';
+import { Spinner } from '../components/loader/spinner';
 import CreateOrImportForm from '../components/public/create-or-import-form';
 import { LoginForm } from '../components/public/login-form';
-import { urls } from '../constants/urls';
-import { akashicPayPath } from '../routing/navigation-tabs';
-import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
-import { useOwner } from '../utils/hooks/useOwner';
 import {
-  lastPageStorage,
-  NavigationPriority,
-} from '../utils/last-page-storage';
+  createWalletUrls,
+  importWalletUrls,
+  migrateWalletUrls,
+} from '../constants/urls';
+import { onClear as onCreateWalletClear } from '../slices/createWalletSlice';
+import { onClear as onImportWalletClear } from '../slices/importWalletSlice';
+import { onClear as onMigrateWalletClear } from '../slices/migrateWalletSlice';
+import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 
 /**
  * First page seen by user when navigating to app
@@ -27,41 +31,31 @@ export function AkashicPayMain() {
   const isMobile = isPlatform('mobile');
   const { localAccounts } = useAccountStorage();
   const history = useHistory();
-  const loginCheck = useOwner(true);
-  /**
-   * Check if there is a forced page to redirect to
-   * Sometimes a random loggedFunction with immediate priority sneaks in there (at least when moving between app versions)
-   *  which causes unwanted push here, so we check for that.
-   * TODO: Figure out root cause and address
-   */
+  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    const loadPage = async () => {
-      const lastPage = await lastPageStorage.get();
-      if (
-        lastPage &&
-        lastPage.lastPageUrl !== urls.loggedFunction &&
-        lastPage.navigationPriority === NavigationPriority.IMMEDIATE
-      )
-        history.push(akashicPayPath(lastPage.lastPageUrl));
+    const redirectToLastLocation = async () => {
+      // this is saved from App.tsx as last location
+      const lastLocationJson = await Preferences.get({
+        key: 'lastLocation',
+      });
+      const lastLocation = JSON.parse(lastLocationJson?.value || '{}');
+      if (lastLocation?.pathname) {
+        if (shouldClearLocalStorage(lastLocation.pathname)) {
+          dispatch(onCreateWalletClear());
+          dispatch(onImportWalletClear());
+          dispatch(onMigrateWalletClear());
+        } else {
+          history.push(lastLocation.pathname, lastLocation.state);
+        }
+      }
+      setIsLoading(false);
     };
-    loadPage();
+    setTimeout(redirectToLastLocation, 1000);
   }, []);
 
-  /**
-   * For all other redirects, await until user has passed authentication
-   */
-  useEffect(
-    () => {
-      if (!loginCheck.isLoading && loginCheck.authenticated)
-        lastPageStorage.get().then((lastPage) => {
-          lastPage
-            ? history.push(akashicPayPath(lastPage.lastPageUrl))
-            : history.push(akashicPayPath(urls.loggedFunction));
-        });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [loginCheck.isLoading]
-  );
+  if (isLoading) return <Spinner />;
 
   return (
     <PublicLayout>
@@ -81,3 +75,22 @@ export function AkashicPayMain() {
     </PublicLayout>
   );
 }
+
+const shouldClearLocalStorage = (pathname: string) => {
+  if (isPlatform('ios') || isPlatform('android')) {
+    const pathnameParts = pathname.split('/');
+    const lastPartOfPathname = pathnameParts[pathnameParts.length - 1];
+    if (
+      (
+        [
+          ...createWalletUrls,
+          ...importWalletUrls,
+          ...migrateWalletUrls,
+        ] as string[]
+      ).includes(lastPartOfPathname)
+    ) {
+      return true;
+    }
+  }
+  return false;
+};

@@ -1,3 +1,4 @@
+import { Preferences } from '@capacitor/preferences';
 import styled from '@emotion/styled';
 import {
   IonContent,
@@ -12,7 +13,6 @@ import { useTranslation } from 'react-i18next';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useOwner } from '../../utils/hooks/useOwner';
-import { lastPageStorage } from '../../utils/last-page-storage';
 import { Spinner } from '../loader/spinner';
 import { LoggedToolbar } from '../logged/logged-toolbar';
 import { LoggedHeader } from './logged-header';
@@ -53,8 +53,14 @@ export function LoggedLayout({
 
   /** If user auth has expired, redirect to login page */
   useEffect(() => {
+    const removeLastLocation = async () => {
+      await Preferences.remove({
+        key: 'lastLocation',
+      });
+    };
+
     if (!isLoading && !authenticated) {
-      lastPageStorage.clear();
+      removeLastLocation();
     }
   }, [isLoading, authenticated]);
 

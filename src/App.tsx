@@ -16,17 +16,17 @@ import './theme/variables.css';
 import './theme/font.css';
 import './theme/common.scss';
 
+import { Preferences } from '@capacitor/preferences';
 import { IonApp, setupIonicReact } from '@ionic/react';
 import { IonReactMemoryRouter } from '@ionic/react-router';
-import { useContext } from 'react';
+import { useEffect } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
 
+import { useAppSelector } from './app/hooks';
+import type { RootState } from './app/store';
 import VersionUpdateAlert from './components/layout/version-update-alert';
 import { useLogout } from './components/logout';
-import {
-  CacheOtkContext,
-  PreferenceProvider,
-} from './components/PreferenceProvider';
+import { PreferenceProvider } from './components/PreferenceProvider';
 import { history } from './history';
 import { NavigationTree } from './routing/navigation-tree';
 
@@ -34,19 +34,33 @@ setupIonicReact();
 
 // eslint-disable-next-line import/no-default-export
 export default function App() {
+  const lastLocation = useAppSelector(
+    (state: RootState) => state?.router?.location
+  );
   const logout = useLogout();
-  const { setCacheOtk } = useContext(CacheOtkContext);
 
   useIdleTimer({
-    onIdle: () => {
-      logout().then(() => location.reload());
-      setCacheOtk(null);
-    },
+    onIdle: () => logout(),
     // TODO
     // Move this to preference and store in local storage
     timeout: 10 * 60 * 1000,
     throttle: 500,
   });
+
+  useEffect(() => {
+    const cacheLastLocation = async () => {
+      // below indicates an event of opening a soft closed app
+      if (lastLocation && lastLocation.pathname !== history.location.pathname) {
+        // saving the last location to the local storage
+        // so that akashic-main.tsx can redirect to it
+        await Preferences.set({
+          key: 'lastLocation',
+          value: JSON.stringify(lastLocation),
+        });
+      }
+    };
+    cacheLastLocation();
+  }, [lastLocation.pathname]);
 
   return (
     <IonApp>

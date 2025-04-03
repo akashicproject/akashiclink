@@ -4,12 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { mutate } from 'swr';
 
+import { useAppDispatch } from '../../app/hooks';
 import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import { lastPageStorage } from '../../utils/last-page-storage';
+import { onClear } from '../../slices/migrateWalletSlice';
 import { StyledSpan } from './migrate-wallet-secret';
 
 export const StyledA = styled.a({
@@ -24,9 +25,10 @@ export const StyledA = styled.a({
 export const WalletMigrated = () => {
   const { t } = useTranslation();
   const history = useHistory();
+  const dispatch = useAppDispatch();
 
   const handleOnClick = async () => {
-    await lastPageStorage.clear();
+    dispatch(onClear());
     await mutate(`/owner/me`);
     history.push(akashicPayPath(urls.loggedFunction));
   };

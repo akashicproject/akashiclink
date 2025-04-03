@@ -4,6 +4,7 @@ import { KeyHandler, KeyType } from '@activeledger/sdk-bip39';
 import * as crypto from 'crypto';
 
 import { decodeECPrivateKey, encodeECPublicKey } from './otk-helpers';
+
 export interface FullOtk {
   identity: string;
   key: ActiveCrypto.KeyHandler;
@@ -56,7 +57,7 @@ export function restoreOtkFromKeypair(keyPair: string): IKeyExtended {
 
   if (otkPriv.startsWith('0x')) {
     curve.setPrivateKey(keyPair.replace('0x', ''), 'hex');
-    publicKey = curve.getPublicKey('hex', 'uncompressed');
+    publicKey = curve.getPublicKey('hex', 'compressed');
     if (!publicKey.startsWith('0x')) {
       publicKey = '0x' + publicKey;
     }

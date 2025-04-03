@@ -1,12 +1,19 @@
+import { Preferences } from '@capacitor/preferences';
+import { useContext } from 'react';
+
+import { urls } from '../constants/urls';
+import { history } from '../history';
+import { akashicPayPath } from '../routing/navigation-tabs';
 import { axiosBase } from '../utils/axios-helper';
 import { useOwner } from '../utils/hooks/useOwner';
-import { lastPageStorage } from '../utils/last-page-storage';
+import { CacheOtkContext } from './PreferenceProvider';
 
 /**
  * Hook that logs user out and clears all session settings
  */
 export function useLogout(callLogout = true) {
   const { mutate } = useOwner(true);
+  const { setCacheOtk } = useContext(CacheOtkContext);
 
   return async () => {
     // callLogout will be false if getting 401 errors, prevents recursive calls
@@ -19,9 +26,14 @@ export function useLogout(callLogout = true) {
     }
 
     // Clear session variables
-    await lastPageStorage.clear();
+    setCacheOtk(null);
+    await Preferences.set({
+      key: 'lastPage',
+      value: '',
+    });
 
     // Trigger refresh of login status
     await mutate();
+    history.push(akashicPayPath(urls.akashicPay));
   };
 }

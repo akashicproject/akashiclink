@@ -1,43 +1,32 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { IMPORT_CONST } from '@helium-pay/backend';
-import { IonCol, IonRow, isPlatform } from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { IonCol, IonRow } from '@ionic/react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   AlertBox,
   errorAlertShell,
   formAlertResetState,
 } from '../../components/alert/alert';
-import { PurpleButton } from '../../components/buttons';
+import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { StyledInput } from '../../components/styled-input';
-import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
 import { historyGoBack } from '../../routing/history-stack';
-import { akashicPayPath } from '../../routing/navigation-tabs';
-import { OwnersAPI } from '../../utils/api';
 import {
-  cacheCurrentPage,
-  lastPageStorage,
-  NavigationPriority,
-  ResetPageButton,
-} from '../../utils/last-page-storage';
-import {
-  restoreOtkFromKeypair,
-  signImportAuth,
-} from '../../utils/otk-generation';
+  onInputChange,
+  restoreOtkFromKeypairAsync,
+  selectImportWalletForm,
+} from '../../slices/importWalletSlice';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 
 export function KeyPairImport() {
   const history = useHistory<LocationState>();
   const { t } = useTranslation();
-
-  /**
-   * Track user inputs
-   */
-  const [privateKey, setPrivateKey] = useState<string>();
+  const importWalletForm = useAppSelector(selectImportWalletForm);
+  const dispatch = useAppDispatch();
 
   /**
    * Track state of page
@@ -45,61 +34,10 @@ export function KeyPairImport() {
 
   const [alert, setAlert] = useState(formAlertResetState);
 
-  useEffect(() => {
-    cacheCurrentPage(
-      urls.importAccountUrl,
-      NavigationPriority.IMMEDIATE,
-      async () => {
-        const { otk } = await lastPageStorage.getVars();
-        if (otk) {
-          setPrivateKey(otk.key.prv.pkcs8pem || '');
-        }
-      }
-    );
-  });
-
   async function requestImport() {
     try {
-      if (privateKey) {
-        const otk = restoreOtkFromKeypair(privateKey);
-        console.log(otk);
-
-        const { identity, username } = await OwnersAPI.importAccount({
-          publicKey: otk.key.pub.pkcs8pem,
-          signedAuth: signImportAuth(privateKey, IMPORT_CONST),
-          keyPairImport: true,
-        });
-
-        // If no identity: User must migrate to 12-word otk
-        if (!identity && username) {
-          await lastPageStorage.clear();
-          history.push({
-            pathname: akashicPayPath(urls.migrateWalletNotice),
-            state: { migrateWallet: { username } },
-          });
-        } else if (identity) {
-          const fullOtk = { ...otk, identity };
-          await lastPageStorage.clear();
-          await lastPageStorage.store(
-            urls.createWalletPassword,
-            NavigationPriority.IMMEDIATE,
-            {
-              otk: fullOtk,
-            }
-          );
-          setPrivateKey(undefined);
-          setAlert(formAlertResetState);
-          history.push({
-            pathname: akashicPayPath(urls.createWalletPassword),
-            state: {
-              createPassword: {
-                isImport: true,
-              },
-            },
-          });
-        } else {
-          throw new Error(t('GenericFailureMsg'));
-        }
+      if (importWalletForm.privateKey) {
+        dispatch(restoreOtkFromKeypairAsync(importWalletForm.privateKey));
       }
     } catch (error) {
       datadogRum.addError(error);
@@ -109,14 +47,15 @@ export function KeyPairImport() {
 
   const CancelButton = (
     <IonCol>
-      <ResetPageButton
+      <WhiteButton
         expand="block"
-        callback={() => {
-          // Reset view and navigate back up the stack
+        fill="clear"
+        onClick={() => {
           historyGoBack(history, true);
-          isPlatform('mobile') && location.reload();
         }}
-      />
+      >
+        {t('Cancel')}
+      </WhiteButton>
     </IonCol>
   );
 
@@ -139,10 +78,14 @@ export function KeyPairImport() {
             <StyledInput
               label={t('KeyPair')}
               type={'text'}
-              value={privateKey}
+              value={importWalletForm.privateKey}
               placeholder={t('EnterKeyPair')}
               onIonInput={({ target: { value } }) => {
-                setPrivateKey(value as string);
+                dispatch(
+                  onInputChange({
+                    privateKey: String(value),
+                  })
+                );
                 setAlert(formAlertResetState);
               }}
               submitOnEnter={requestImport}
@@ -152,7 +95,7 @@ export function KeyPairImport() {
         <IonRow>
           <IonCol>
             <PurpleButton
-              disabled={!privateKey}
+              disabled={!importWalletForm.privateKey}
               onClick={requestImport}
               expand="block"
             >
