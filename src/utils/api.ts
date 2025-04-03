@@ -22,7 +22,7 @@ export const OwnersAPI = {
       throw new Error(data.message);
     }
 
-    return response.data;
+    return response.data as IRetrieveIdentityResponse;
   },
 
   lookForL2Address: async (
@@ -35,7 +35,7 @@ export const OwnersAPI = {
     if (status >= 400) {
       throw new Error(data.message);
     }
-    return response.data;
+    return response.data as ILookForL2AddressResponse;
   },
 
   prepareL1Txn: async (
@@ -50,7 +50,7 @@ export const OwnersAPI = {
       throw new Error(data.message);
     }
 
-    return response.data;
+    return response.data as IPrepareL1TxnResponse;
   },
 
   generateSecondaryOtk: async (

@@ -100,6 +100,11 @@ function addExpireToTxBody<T extends IBaseAcTransaction>(txBody: T): T {
   return txBody;
 }
 
+function isActiveLedgerResponse(data: unknown): data is ActiveLedgerResponse {
+  if (typeof data !== 'object' || data === null) return false;
+  return '$umid' in data && '$summary' in data;
+}
+
 /**
  * Class implements basic interactions with the Nitr0gen network
  */
@@ -239,18 +244,20 @@ export class Nitr0genApi {
       'Ap-Client': Capacitor.getPlatform(),
     };
 
-    const response = await requestFunction(url, tx, {
+    const response = await requestFunction<T>(url, tx, {
       ...(method === 'get' ? { timeout, headers } : { headers }),
     });
 
     // Prefix "AS" to umids for "L2-hashes"
-    if (response.data.$umid) {
-      response.data.$umid = 'AS' + response.data.$umid;
-    }
-    if (!response.data.$summary.commit) {
-      throw new Error(
-        response.data?.$summary?.errors?.[0] ?? 'Unknown AC Error'
-      );
+    if (isActiveLedgerResponse(response.data)) {
+      if (response.data.$umid) {
+        response.data.$umid = 'AS' + response.data.$umid;
+      }
+      if (!response.data.$summary.commit) {
+        throw new Error(
+          response.data?.$summary?.errors?.[0] ?? 'Unknown AC Error'
+        );
+      }
     }
     return response.data;
   }
