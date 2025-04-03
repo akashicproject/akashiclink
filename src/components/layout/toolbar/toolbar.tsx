@@ -13,7 +13,7 @@ export function Toolbar({ showRefresh = false }: { showRefresh?: boolean }) {
         height: 'auto',
         display: 'flex',
         gap: '8px',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
       }}
     >
       <div style={{ flex: 1 }}>

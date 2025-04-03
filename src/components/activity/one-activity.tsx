@@ -237,7 +237,7 @@ export function OneActivity({
               <NftItem className="ion-margin-top-xxs">{t('NFT')}</NftItem>
               <NftItem
                 style={{
-                  color: 'var(--activity-dim-text)',
+                  color: 'var(--ion-color-primary-10)',
                 }}
               >
                 {displayLongText(transfer?.nft?.account, 20)}
@@ -272,10 +272,11 @@ export function OneActivity({
             {!isTxnDeposit && transfer.feesPaid && (
               <GasFee
                 style={{
-                  color:
-                    storedTheme === themeType.DARK
-                      ? 'var(--ion-dark-text)'
-                      : 'var(--ion-light-text)',
+                  color: !isTxnConfirmed
+                    ? 'var(--activity-dim-text)'
+                    : storedTheme === themeType.DARK
+                    ? 'var(--ion-color-primary-10)'
+                    : 'var(--ion-light-text)',
                 }}
               >{`${t('GasFee')}: ≈${Big(
                 Big(transfer.feesPaid).toFixed(gasPrecision)

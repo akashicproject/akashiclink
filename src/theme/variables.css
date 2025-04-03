@@ -227,7 +227,7 @@ body.dark {
   --ion-current-selection-opacity: 100%;
   --ion-select-border: #958e99;
   --ion-light-text: #b0a9b3;
-  --ion-dark-text: #4a454e;
+  --ion-dark-text: #ffffff;
 
   /** settings popup background color **/
   --settings-popup-background-color: #2c2c2c;
@@ -256,7 +256,7 @@ body.dark {
   --toggle-track: #625b71;
   --nft-background: #5b299c;
   --chain-icon-background: #c297ff;
-  --activity-dim-text: #4a454e;
+  --activity-dim-text: #958e99;
   --activity-list-divider: #2f2f2f;
 }
 
