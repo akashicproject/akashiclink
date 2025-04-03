@@ -37,10 +37,16 @@ export function LoginForm() {
   const { t } = useTranslation();
   const [alert, setAlert] = useState(formAlertResetState);
   const [isLoading, setIsLoading] = useState(false);
-  const { localAccounts, activeAccount, setActiveAccount } =
-    useAccountStorage();
+  const {
+    localAccounts,
+    addPrefixToAccounts,
+    activeAccount,
+    setActiveAccount,
+  } = useAccountStorage();
   const [selectedAccount, setSelectedAccount] = useState<LocalAccount>();
   const [password, setPassword] = useState<string>();
+
+  addPrefixToAccounts();
 
   /**
    * Selection is populated on load to match the account save in session

@@ -1,3 +1,4 @@
+import { L2Regex } from '@helium-pay/backend';
 import { useContext } from 'react';
 
 import {
@@ -23,6 +24,18 @@ export interface LocalAccount {
 export const useAccountStorage = () => {
   const { localAccounts, setLocalAccounts } = useContext(LocalAccountContext);
   const { activeAccount, setActiveAccount } = useContext(ActiveAccountContext);
+
+  const addPrefixToAccounts = async () => {
+    if (localAccounts.some((acc) => !L2Regex.exec(acc.identity))) {
+      const accountsWithPrefix = localAccounts.map((acc) => ({
+        ...acc,
+        identity: L2Regex.exec(acc.identity)
+          ? acc.identity
+          : 'AS' + acc.identity,
+      }));
+      setLocalAccounts(accountsWithPrefix);
+    }
+  };
 
   const addLocalAccount = async (account: LocalAccount) => {
     // Skip duplicate accounts
@@ -52,6 +65,7 @@ export const useAccountStorage = () => {
     localAccounts,
     addLocalAccount,
     removeLocalAccount,
+    addPrefixToAccounts,
     activeAccount,
     setActiveAccount,
     clearActiveAccount,
