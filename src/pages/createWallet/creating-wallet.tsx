@@ -3,6 +3,7 @@ import './create-wallet.css';
 import styled from '@emotion/styled';
 import { IonCol, IonProgressBar, IonRow } from '@ionic/react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 
 import { MainGrid } from '../../components/layout/main-grid';
@@ -19,6 +20,7 @@ const ContentText = styled.span({
 });
 
 export function CreatingWallet() {
+  const { t } = useTranslation();
   const [progress, setProgress] = useState(0);
   useEffect(() => {
     const interval = setInterval(() => {
@@ -45,7 +47,7 @@ export function CreatingWallet() {
         </IonRow>
         <IonRow>
           <IonCol class="ion-center">
-            <ContentText>Creating your Wallet</ContentText>
+            <ContentText>{t('CreatingYourWallet')}</ContentText>
           </IonCol>
         </IonRow>
       </MainGrid>

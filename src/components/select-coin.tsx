@@ -1,17 +1,28 @@
-import styled from '@emotion/styled';
-import { IonButton, IonCol, IonIcon, IonImg, IonRow } from '@ionic/react';
-import { chevronBackOutline, chevronForwardOutline } from 'ionicons/icons';
-import { useState } from 'react';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import './selection-coin.css';
 
-const SliderWrapper = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  padding: '0',
-  gap: '24px',
-  width: '265px',
-  height: '56px',
-});
+import styled from '@emotion/styled';
+import type { CoinSymbol } from '@helium-pay/backend';
+import { TEST_TO_MAIN } from '@helium-pay/backend';
+import { IonCol, IonImg, IonRow } from '@ionic/react';
+import Big from 'big.js';
+import { useEffect, useState } from 'react';
+import SwiperCore, { Navigation, Virtual } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import { useBalancesMe } from '../utils/hooks/useBalancesMe';
+import { useExchangeRates } from '../utils/hooks/useExchangeRates';
+import {
+  CurrencyMap,
+  makeWalletCurrency,
+  WALLET_CURRENCIES,
+} from '../utils/supported-currencies';
+
+// install Virtual module
+SwiperCore.use([Virtual, Navigation]);
 
 const BalanceWrapper = styled.div({
   display: 'flex',
@@ -28,6 +39,7 @@ const BalanceTitle = styled.div({
   fontWeight: 700,
   fontSize: '24px',
   lineHeight: '28px',
+  textAlign: 'center',
   color: '#290056',
 });
 
@@ -40,86 +52,108 @@ const BalanceText = styled.div({
   color: '#290056',
 });
 
-interface CurrencyObject {
-  [key: number]: string;
+interface Props {
+  changeCurrency: (wc: string) => void;
 }
 
-export function SelectCoin() {
-  const Currency: CurrencyObject = {
-    1: 'Bitcoin',
-    2: 'ETH',
-    3: 'Tether',
-  };
-  const [selectedCoin, setSelectedCoin] = useState(1);
-  const backCoin = () => {
-    if (selectedCoin > 1) {
-      setSelectedCoin(selectedCoin - 1);
-    } else {
-      setSelectedCoin(1);
-    }
+/** Map balances from backend onto the currencies supported nby the wallet */
+export function useAggregatedBalances() {
+  const { keys: userBalances } = useBalancesMe();
+
+  const [aggregatedBalances, setAggregatedBalances] = useState(
+    new CurrencyMap<string>()
+  );
+
+  useEffect(() => {
+    const updatedAggregatedBalances = new CurrencyMap<string>();
+    for (const { coinSymbol, tokenSymbol, balance } of userBalances)
+      updatedAggregatedBalances.set(
+        makeWalletCurrency(coinSymbol, tokenSymbol),
+        balance
+      );
+    setAggregatedBalances(updatedAggregatedBalances);
+  }, [userBalances]);
+
+  return aggregatedBalances;
+}
+
+export function SelectCoin(props: Props) {
+  const aggregatedBalances = useAggregatedBalances();
+  const { keys: exchangeRates } = useExchangeRates();
+
+  /** Tracking of swiper and currency under focus */
+  const [swiperRef, setSwiperRef] = useState<SwiperCore>();
+  const [swiperIdx, setSwiperIdx] = useState(0);
+  const [selectedCurrency, setSelectedCurrency] = useState(
+    WALLET_CURRENCIES[0]
+  );
+  const [selectedCurrencyUSDT, setSelectedCurrencyUSDT] = useState<Big>();
+
+  const handleSlideChange = () => {
+    setSwiperIdx(swiperRef?.activeIndex ?? 0);
+    const wc = WALLET_CURRENCIES[swiperRef?.activeIndex ?? 0];
+    setSelectedCurrency(wc);
+    const conversionRate =
+      exchangeRates.find(
+        (ex) =>
+          ex.coinSymbol ===
+          (wc.symbol || TEST_TO_MAIN.get(wc.symbol as CoinSymbol))
+      )?.price || 1;
+    const bigCurrency = Big(aggregatedBalances.get(wc.currency) || 0);
+    setSelectedCurrencyUSDT(Big(conversionRate).times(bigCurrency));
+    props.changeCurrency(wc.symbol);
   };
 
-  const forwardCoin = () => {
-    if (selectedCoin < 3) {
-      setSelectedCoin(selectedCoin + 1);
-    } else {
-      setSelectedCoin(3);
-    }
-  };
+  useEffect(() => {
+    const defaultBig = Big(
+      aggregatedBalances.get(WALLET_CURRENCIES[0].currency) || 0
+    );
+    const conversionRate =
+      exchangeRates.find((ex) => ex.coinSymbol === WALLET_CURRENCIES[0].symbol)
+        ?.price || 1;
+    setSelectedCurrencyUSDT(Big(conversionRate).times(defaultBig));
+  }, [aggregatedBalances, exchangeRates]);
+
   return (
     <>
       <IonRow style={{ marginTop: '15px' }}>
         <IonCol class="ion-center">
-          <SliderWrapper>
-            <IonButton class={'arrow-btn'} onClick={backCoin}>
-              <IonIcon
-                class={'icon-arrow'}
-                slot="icon-only"
-                icon={chevronBackOutline}
-              ></IonIcon>
-            </IonButton>
-            <IonImg
-              alt={''}
-              src="/shared-assets/images/bitcoin.png"
-              style={
-                selectedCoin == 1
-                  ? { width: '56px', height: '56px' }
-                  : { width: '32px', height: '32px', opacity: 0.2 }
-              }
-            />
-            <IonImg
-              alt={''}
-              src="/shared-assets/images/eth.png"
-              style={
-                selectedCoin == 2
-                  ? { width: '56px', height: '56px' }
-                  : { width: '32px', height: '32px', opacity: 0.2 }
-              }
-            />
-            <IonImg
-              alt={''}
-              src="/shared-assets/images/eth.png"
-              style={
-                selectedCoin == 3
-                  ? { width: '56px', height: '56px' }
-                  : { width: '32px', height: '32px', opacity: 0.2 }
-              }
-            />
-            <IonButton class={'arrow-btn'} onClick={forwardCoin}>
-              <IonIcon
-                slot="icon-only"
-                class={'icon-arrow'}
-                icon={chevronForwardOutline}
-              ></IonIcon>
-            </IonButton>
-          </SliderWrapper>
+          <Swiper
+            onSwiper={setSwiperRef}
+            onSlideChange={handleSlideChange}
+            slidesPerView={3}
+            centeredSlides={true}
+            spaceBetween={0}
+            navigation={{
+              enabled: true,
+            }}
+          >
+            {WALLET_CURRENCIES.map(({ logo, symbol }, idx) => {
+              return (
+                <SwiperSlide key={symbol}>
+                  <IonImg
+                    alt={''}
+                    src={logo}
+                    style={
+                      swiperIdx == idx
+                        ? { width: '56px', height: '56px' }
+                        : { width: '32px', height: '32px', opacity: 0.2 }
+                    }
+                  />
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
         </IonCol>
       </IonRow>
       <IonRow>
         <IonCol class="ion-center">
           <BalanceWrapper>
-            <BalanceTitle>0 {Currency[selectedCoin]}</BalanceTitle>
-            <BalanceText>$0.00 USD</BalanceText>
+            <BalanceTitle>
+              {aggregatedBalances.get(selectedCurrency.currency) || 0}{' '}
+              {selectedCurrency.symbol}
+            </BalanceTitle>
+            <BalanceText>{`${selectedCurrencyUSDT} USD`}</BalanceText>
           </BalanceWrapper>
         </IonCol>
       </IonRow>

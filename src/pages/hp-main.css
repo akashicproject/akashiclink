@@ -26,3 +26,15 @@
   align-items: center;
   justify-content: center;
 }
+
+.select-item-account {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --background: transparent;
+  --box-shadow: none;
+  --min-height: 40px;
+  width: 270px;
+  --border-radius: 8px;
+  --border-width: 2px;
+  --border-color: #7b757f;
+}

@@ -87,14 +87,14 @@ export function HeliumPayMain() {
               </WhiteButton>
             </IonCol>
           </IonRow>
-          {availableAccounts.length && (
+          {!!availableAccounts.length && (
             <IonRow>
               <IonCol>
                 <PurpleButton
                   routerLink={heliumPayPath(urls.login)}
                   expand="block"
                 >
-                  Login
+                  {t('Login')}
                 </PurpleButton>
               </IonCol>
             </IonRow>

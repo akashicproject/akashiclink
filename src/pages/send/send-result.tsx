@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { IonCol, IonImg, IonRow } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 import { PurpleButton } from '../../components/buttons';
 import { DividerDivWithoutMargin } from '../../components/layout/divider';
@@ -63,6 +64,7 @@ const TextContent = styled.div({
 });
 
 export function SendResult() {
+  const { t } = useTranslation();
   return (
     <SendMain>
       <IonRow>
@@ -73,7 +75,7 @@ export function SendResult() {
               src="/shared-assets/images/right.png"
               style={{ width: '40px', height: '40px' }}
             />
-            <HeaderTitle>Transaction Successful</HeaderTitle>
+            <HeaderTitle>{t('TransactionSuccessful')}</HeaderTitle>
             <DividerDivWithoutMargin />
           </HeaderWrapper>
         </IonCol>
@@ -82,15 +84,15 @@ export function SendResult() {
         <IonCol class="ion-center">
           <ResultContent>
             <TextWrapper>
-              <TextTitle>Send</TextTitle>
+              <TextTitle>{t('Send')}</TextTitle>
               <TextContent>AAx111111</TextContent>
             </TextWrapper>
             <TextWrapper>
-              <TextTitle>Receiver</TextTitle>
+              <TextTitle>{t('Receiver')}</TextTitle>
               <TextContent>AAx111111</TextContent>
             </TextWrapper>
             <TextWrapper>
-              <TextTitle>Amount</TextTitle>
+              <TextTitle>{t('Amount')}</TextTitle>
               <TextContent>USDT xx</TextContent>
             </TextWrapper>
             <TextWrapper>
@@ -98,7 +100,7 @@ export function SendResult() {
               <TextContent>Gas Fee/xx Gwei</TextContent>
             </TextWrapper>
             <TextWrapper>
-              <TextTitle>Fee</TextTitle>
+              <TextTitle>{t('Fee')}</TextTitle>
               <TextContent>...</TextContent>
             </TextWrapper>
           </ResultContent>
@@ -106,7 +108,7 @@ export function SendResult() {
       </IonRow>
       <IonRow style={{ marginTop: '50px' }}>
         <IonCol>
-          <PurpleButton expand="block">Confirm</PurpleButton>
+          <PurpleButton expand="block">{t('Confirm')}</PurpleButton>
         </IonCol>
       </IonRow>
     </SendMain>

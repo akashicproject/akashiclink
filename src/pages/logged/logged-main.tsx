@@ -1,12 +1,18 @@
 import './logged.css';
 
 import styled from '@emotion/styled';
+import { CoinSymbol } from '@helium-pay/backend';
 import { IonImg, IonItem } from '@ionic/react';
+import Big from 'big.js';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { TabButton } from '../../components/buttons';
 import { LoggedLayout } from '../../components/layout/loggedLayout';
+import { useAggregatedBalances } from '../../components/select-coin';
+import { useExchangeRates } from '../../utils/hooks/useExchangeRates';
+import { makeWalletCurrency } from '../../utils/supported-currencies';
 
 const ItemBalanceWrapper = styled.div({
   display: 'flex',
@@ -56,11 +62,43 @@ const NFTDiv = styled.div({
 
 export const LoggedMain: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [tab, setTab] = useState('activity');
+  const { t } = useTranslation();
+  const aggregatedBalances = useAggregatedBalances();
+  /**
+   * TODO: refactor this by tracking state of an object rather than each currency and conversion individually
+   * Suggested (feel free to restructure/rename) base objects that can replace BTC, ETH, USDT_BTC, USDT_ETH:
+      type MainBalance = {
+        balance: Big;
+        convertedBalance: Big;
+      };
+      const [balances, setBalances] = useState<CurrencyMap<MainBalance>[]>([]);
+   */
+  const { keys: exchangeRates } = useExchangeRates();
+  const [BTC, setBTC] = useState<Big>();
+  const [ETH, setETH] = useState<Big>();
+  const [USDT_BTC, setUSDT_BTC] = useState<Big>();
+  const [USDT_ETH, setUSDT_ETH] = useState<Big>();
 
   useEffect(() => {
-    console.log(document.getElementById('activity'));
+    const BTC = Big(
+      aggregatedBalances.get(makeWalletCurrency(CoinSymbol.Bitcoin)) || 0
+    );
+    const ETH = Big(
+      aggregatedBalances.get(makeWalletCurrency(CoinSymbol.Ethereum_Mainnet)) ||
+        0
+    );
+    setBTC(BTC);
+    setETH(ETH);
+    const BTC_exchange =
+      exchangeRates.find((ex) => ex.coinSymbol === CoinSymbol.Bitcoin)?.price ||
+      1;
+    const ETH_exchange =
+      exchangeRates.find((ex) => ex.coinSymbol === CoinSymbol.Ethereum_Mainnet)
+        ?.price || 1;
+    setUSDT_BTC(Big(BTC_exchange).times(BTC));
+    setUSDT_ETH(Big(ETH_exchange).times(ETH));
     document.getElementById('activity')?.click();
-  }, []);
+  }, [aggregatedBalances, exchangeRates]);
 
   return (
     <LoggedLayout>
@@ -72,7 +110,7 @@ export const LoggedMain: React.FC<{ children: ReactNode }> = ({ children }) => {
             id={'activity'}
             onClick={() => setTab('activity')}
           >
-            Activity
+            {t('Activity')}
           </TabButton>
           <TabButton
             style={{ width: '50%' }}
@@ -99,8 +137,8 @@ export const LoggedMain: React.FC<{ children: ReactNode }> = ({ children }) => {
                 style={{ width: '40px', height: '40px' }}
               />
               <ItemBalanceWrapper>
-                <ItemBalanceTitle>0 BTC</ItemBalanceTitle>
-                <ItemBalanceText>$0.00 USD</ItemBalanceText>
+                <ItemBalanceTitle>{`${BTC} BTC`}</ItemBalanceTitle>
+                <ItemBalanceText>{`${USDT_BTC} USD`}</ItemBalanceText>
               </ItemBalanceWrapper>
             </IonItem>
             <IonItem
@@ -118,8 +156,8 @@ export const LoggedMain: React.FC<{ children: ReactNode }> = ({ children }) => {
                 style={{ width: '40px', height: '40px' }}
               />
               <ItemBalanceWrapper>
-                <ItemBalanceTitle>0 ETH</ItemBalanceTitle>
-                <ItemBalanceText>$0.00 USD</ItemBalanceText>
+                <ItemBalanceTitle>{`${ETH} ETH`}</ItemBalanceTitle>
+                <ItemBalanceText>{`${USDT_ETH} USD`}</ItemBalanceText>
               </ItemBalanceWrapper>
             </IonItem>
           </>

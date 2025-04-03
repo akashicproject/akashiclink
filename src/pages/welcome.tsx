@@ -11,6 +11,7 @@ import {
   IonPage,
   IonRow,
 } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 import { PurpleButton } from '../components/buttons';
 import { Footer } from '../components/layout/footer';
@@ -35,6 +36,7 @@ const ContentText = styled.span({
 });
 
 export function Welcome() {
+  const { t } = useTranslation();
   return (
     <IonPage>
       <IonContent style={{ background: '#F3F5F6' }}>
@@ -59,18 +61,19 @@ export function Welcome() {
           </IonRow>
           <IonRow>
             <IonCol class="ion-center">
-              <MainTitle>Welcome back！</MainTitle>
+              <MainTitle>{t('WelcomeBack')}</MainTitle>
             </IonCol>
           </IonRow>
           <IonRow style={{ marginTop: '-5px' }}>
             <IonCol class="ion-center">
-              <ContentText>your most reliable wallet</ContentText>
+              <ContentText>{t('YourMostReliableWallet')}</ContentText>
             </IonCol>
           </IonRow>
           <IonRow style={{ marginTop: '20px' }}>
             <IonCol>
               <IonItem fill="outline">
-                <IonInput placeholder="Password"></IonInput>
+                {/** TODO: t('Locale') is not correctly recognised as string - maybe be fixed in the translations refactor */}
+                <IonInput placeholder={t('Password') as string}></IonInput>
               </IonItem>
             </IonCol>
           </IonRow>
@@ -80,14 +83,14 @@ export function Welcome() {
                 routerLink={heliumPayPath(urls.beforeCreateWallet)}
                 expand="block"
               >
-                <span>Unlock</span>
+                <span>{t('Unlock')}</span>
               </PurpleButton>
             </IonCol>
           </IonRow>
           <IonRow style={{ marginTop: '18px' }}>
             <IonCol class="ion-center">
               <FooterText href={heliumPayPath(urls.recovery)}>
-                Forgot your password?
+                {t('ForgotYourPassword')}
               </FooterText>
             </IonCol>
           </IonRow>

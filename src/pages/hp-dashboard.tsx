@@ -15,6 +15,7 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Activity } from '../components/activity';
 import { AggregatedBalances } from '../components/aggregated-balances';
@@ -41,6 +42,7 @@ enum DashboardViews {
 }
 
 export function HeliumPayDashboard() {
+  const { t } = useTranslation();
   const keys = Object.keys(aggregatedWalletBalances);
 
   const [key, setKey] = useState(keys.length > 0 ? keys[0] : undefined);
@@ -53,7 +55,7 @@ export function HeliumPayDashboard() {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Helium Pay Dashboard</IonTitle>
+          <IonTitle>{t('AkashicWalletDashboard')}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
@@ -65,7 +67,8 @@ export function HeliumPayDashboard() {
                   <IonSelect
                     value={key}
                     interface="popover"
-                    placeholder="Select wallet"
+                    /** TODO: t('SelectWallet') is not correctly recognised as string - maybe be fixed in the translations refactor */
+                    placeholder={t('SelectWallet') as string}
                     onIonChange={({ detail: { value: key } }) => setKey(key)}
                   >
                     {keys.map((k) => (
@@ -152,7 +155,7 @@ export function HeliumPayDashboard() {
                   )
                 }
               >
-                {view === DashboardViews.SendView ? 'Deposit' : 'Send'}
+                {view === DashboardViews.SendView ? t('Deposit') : t('Send')}
               </IonButton>
             </IonCol>
             <IonCol>
@@ -160,7 +163,7 @@ export function HeliumPayDashboard() {
                 expand="block"
                 onClick={() => setView(DashboardViews.Activity)}
               >
-                Activity
+                {t('Activity')}
               </IonButton>
             </IonCol>
           </IonRow>

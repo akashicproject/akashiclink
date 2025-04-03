@@ -1,6 +1,7 @@
 import './send.css';
 
 import styled from '@emotion/styled';
+import type { CoinSymbol } from '@helium-pay/backend';
 import {
   IonCol,
   IonImg,
@@ -9,9 +10,13 @@ import {
   IonLabel,
   IonRow,
 } from '@ionic/react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import type { RouteComponentProps } from 'react-router';
 
 import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { DividerDivWithoutMargin } from '../../components/layout/divider';
+import { useKeyMe } from '../../utils/hooks/useKeyMe';
 import { SendMain } from './send-main';
 
 const SendWrapper = styled.div({
@@ -50,31 +55,6 @@ const InputWrapper = styled.div({
   padding: 0,
   gap: '24px',
   width: '270px',
-});
-
-const ChipWrapper = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'flex-start',
-  padding: 0,
-  gap: '16px',
-  width: '270px',
-});
-
-const ChipText = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: '6px 16px',
-  width: '214px',
-  height: '40px',
-  border: '1px solid #958E99',
-  borderRadius: '8px',
-  fontFamily: 'Nunito Sans',
-  fontStyle: 'normal',
-  fontWeight: 400,
-  fontSize: '10px',
 });
 
 const ResultChip = styled.div({
@@ -123,10 +103,49 @@ const FeeRightDiv = styled.div({
   color: '#2B0053',
 });
 
-export function SendTo() {
+interface WithdrawalTransaction {
+  fromAddress: string;
+  toAddress: string;
+  amount: string;
+  coinSymbol: CoinSymbol;
+  tokenSymbol?: string;
+  actualAmount?: string;
+  remark?: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface Props extends RouteComponentProps<{ currency: string }> {}
+
+export function SendTo(props: Props) {
+  const { t } = useTranslation();
+  const currentCurrency = props.match.params.currency;
+  const [_proposedTransactions, _setProposedTransactions] = useState<
+    WithdrawalTransaction[]
+  >([]);
+
+  const { keys: userWallets } = useKeyMe();
+  console.log(userWallets);
+  // const [userAddress, setUserAddress] = useState('');
+  // const [userCurrency, setUserCurrency] = useState('');
+  // const [chain, setChain] = useState<CoinSymbol>();
+  // const [toAddress, setToAddress] = useState<string>();
+  // const [amount, setAmount] = useState<number>();
+  // useEffect(() => {
+  //   if (userWallets.length === 0) return;
+  //   // Select current chain
+  //   if (currentCurrency === 'BTC') {
+  //     setChain(CoinSymbol.Bitcoin);
+  //   } else if (currentCurrency === 'ETH' || currentCurrency === 'USDT-ERC20') {
+  //     setChain(CoinSymbol.Ethereum_Mainnet);
+  //   } else if (currentCurrency === 'TRX' || currentCurrency === 'USDT-TRC20') {
+  //     setChain(CoinSymbol.Tron);
+  //   }
+  //   setUserCurrency(currentCurrency);
+  // }, [userWallets?.length]);
+
   return (
     <SendMain>
-      <IonRow>
+      <IonRow style={{ marginTop: '50px' }}>
         <IonCol class="ion-center">
           <CurrencyWrapper>
             <IonImg
@@ -134,7 +153,7 @@ export function SendTo() {
               src="/shared-assets/images/eth.png"
               style={{ width: '40px', height: '40px' }}
             />
-            <BalanceText>0.000 ETH</BalanceText>
+            <BalanceText>0.000 {currentCurrency}</BalanceText>
           </CurrencyWrapper>
         </IonCol>
       </IonRow>
@@ -143,21 +162,29 @@ export function SendTo() {
           <SendWrapper>
             <InputWrapper>
               <IonItem class="input-item">
-                <IonLabel class="input-label">Send To</IonLabel>
+                <IonLabel class="input-label">{t('SendTo')}</IonLabel>
                 <IonInput
                   class="input-input"
                   placeholder="Enter the address"
+                  // onIonInput={({ target: { value } }) =>
+                  //   setToAddress(value as string)
+                  // }
                 ></IonInput>
               </IonItem>
             </InputWrapper>
-            <ChipWrapper>
-              <ChipText>Iloveu.he = AAx222222222222</ChipText>
-              <IonImg
-                alt={''}
-                src="/shared-assets/images/right.png"
-                style={{ width: '40px', height: '40px' }}
-              />
-            </ChipWrapper>
+            <InputWrapper>
+              <IonItem class="input-item">
+                <IonLabel class="input-label">{t('Amount')}</IonLabel>
+                <IonInput
+                  class="input-input"
+                  type="number"
+                  placeholder="Enter the amount"
+                  // onIonInput={({ target: { value } }) =>
+                  //   setAmount(value as number)
+                  // }
+                ></IonInput>
+              </IonItem>
+            </InputWrapper>
             <DividerDivWithoutMargin />
             <ResultChip>
               <FeeLeftDiv>Gas Free</FeeLeftDiv>
@@ -168,10 +195,10 @@ export function SendTo() {
       </IonRow>
       <IonRow class="ion-justify-content-between" style={{ marginTop: '24px' }}>
         <IonCol>
-          <PurpleButton expand="block">Send</PurpleButton>
+          <PurpleButton expand="block">{t('Send')}</PurpleButton>
         </IonCol>
         <IonCol>
-          <WhiteButton expand="block">Cancel</WhiteButton>
+          <WhiteButton expand="block">{t('Cancel')}</WhiteButton>
         </IonCol>
       </IonRow>
     </SendMain>

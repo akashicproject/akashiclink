@@ -7,6 +7,7 @@ import {
   IonContent,
   IonGrid,
   IonImg,
+  IonItem,
   IonPage,
   IonRow,
   IonSelect,
@@ -15,6 +16,7 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { PurpleButton } from '../components/buttons';
 import { Footer } from '../components/layout/footer';
@@ -22,7 +24,6 @@ import { StyledInput } from '../components/styled-input';
 import { urls } from '../constants/urls';
 import { heliumPayPath } from '../routing/navigation-tree';
 import { OwnersAPI } from '../utils/api';
-import type { CachedAccount } from '../utils/local-storage';
 import { unpackCachedAccounts } from '../utils/local-storage';
 
 const HelpLink = styled.a({
@@ -31,17 +32,22 @@ const HelpLink = styled.a({
 
 export function Login() {
   const router = useIonRouter();
+  const { t } = useTranslation();
 
   const availableAccounts = unpackCachedAccounts();
-  const [selectedAccount, setSelectedAccount] = useState<CachedAccount>();
+  const [selectedIdentity, setSelectedIdentity] = useState('');
   const [password, setPassword] = useState<string>();
 
   useEffect(() => {
-    if (availableAccounts.length) setSelectedAccount(availableAccounts[0]);
+    if (availableAccounts.length)
+      setSelectedIdentity(availableAccounts[0].identity);
   }, []);
 
   async function login() {
     try {
+      const selectedAccount = availableAccounts.find(
+        (account) => account.identity === selectedIdentity
+      );
       if (selectedAccount && password) {
         await OwnersAPI.login({
           username: selectedAccount.username,
@@ -70,46 +76,48 @@ export function Login() {
           <IonRow>
             <IonCol>
               <IonText color="dark">
-                <h1>Welcome back!</h1>
+                <h1>{t('WelcomeBack')}</h1>
               </IonText>
             </IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
               <IonText color="dark">
-                <h3>Your most reliable wallet</h3>
+                <h3>{t('YourMostReliableWallet')}</h3>
               </IonText>
             </IonCol>
           </IonRow>
           <IonRow>
-            <IonCol>
-              <IonSelect
-                value={selectedAccount?.identity}
-                onIonChange={({ detail: { value } }) =>
-                  setSelectedAccount(value)
-                }
-                interface="popover"
-              >
-                {availableAccounts.map((account) => {
-                  return (
-                    <IonSelectOption
-                      key={account.identity}
-                      value={account}
-                      class="menu-text"
-                    >
-                      {account.identity}
-                    </IonSelectOption>
-                  );
-                })}
-              </IonSelect>
+            <IonCol class="ion-center">
+              <IonItem class={'select-item-account'}>
+                <IonSelect
+                  value={selectedIdentity}
+                  onIonChange={({ detail: { value } }) => {
+                    setSelectedIdentity(value);
+                  }}
+                  interface="popover"
+                >
+                  {availableAccounts.map((account) => {
+                    return (
+                      <IonSelectOption
+                        key={account.identity}
+                        value={account.identity}
+                        class="menu-text"
+                      >
+                        {account.identity}
+                      </IonSelectOption>
+                    );
+                  })}
+                </IonSelect>
+              </IonItem>
             </IonCol>
           </IonRow>
           <IonRow>
             <IonCol class="ion-center">
               <StyledInput
-                label={'Password'}
+                label={t('Password')}
                 type={'password'}
-                placeholder={'Please enter your password'}
+                placeholder={t('PleaseEnterYourPassword')}
                 onIonInput={({ target: { value } }) =>
                   setPassword(value as string)
                 }
@@ -119,7 +127,7 @@ export function Login() {
           <IonRow>
             <IonCol>
               <PurpleButton onClick={login} expand="block">
-                Unlock
+                {t('Unlock')}
               </PurpleButton>
             </IonCol>
           </IonRow>
@@ -127,7 +135,9 @@ export function Login() {
             <IonCol>
               <IonText>
                 <h3>
-                  <HelpLink href="www.bing.com">Forgot your password?</HelpLink>
+                  <HelpLink href="www.bing.com">
+                    {t('ForgotYourPassword')}
+                  </HelpLink>
                 </h3>
               </IonText>
             </IonCol>

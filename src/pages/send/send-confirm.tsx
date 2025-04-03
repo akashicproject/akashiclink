@@ -2,6 +2,7 @@ import './send.css';
 
 import styled from '@emotion/styled';
 import { IonCol, IonImg, IonInput, IonRow } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { DividerDivWithoutMargin } from '../../components/layout/divider';
@@ -100,6 +101,7 @@ const InputPasswordText = styled.div({
 });
 
 export function SendConfirm() {
+  const { t } = useTranslation();
   return (
     <SendMain>
       <IonRow>
@@ -137,7 +139,7 @@ export function SendConfirm() {
             </TextWrapper>
             <DividerDivWithoutMargin />
             <TextWrapper>
-              <TextTitle>Send to</TextTitle>
+              <TextTitle>{t('SendTo')}</TextTitle>
               <TextContent>I love.he</TextContent>
             </TextWrapper>
             <TextWrapper>
@@ -145,11 +147,11 @@ export function SendConfirm() {
               <TextContent>...</TextContent>
             </TextWrapper>
             <TextWrapper>
-              <TextTitle>Total</TextTitle>
+              <TextTitle>{t('Total')}</TextTitle>
               <TextContent>...</TextContent>
             </TextWrapper>
             <TextWrapper style={{ marginTop: '-24px' }}>
-              <TextLastTitle>Amount + gas dee</TextLastTitle>
+              <TextLastTitle>{t('Amount')} + gas fee</TextLastTitle>
               <TextContent>...</TextContent>
             </TextWrapper>
             <DividerDivWithoutMargin />
@@ -159,11 +161,10 @@ export function SendConfirm() {
       <IonRow>
         <IonCol class="ion-center">
           <InputPasswordWrapper>
-            <InputPasswordText>
-              Please type your Password to Confirm
-            </InputPasswordText>
+            <InputPasswordText>{t('PleaseConfirm')}</InputPasswordText>
             <IonInput
-              placeholder="Enter your password"
+              /** TODO: t('PleaseEnterYourPassword') is not correctly recognised as string - maybe be fixed in the translations refactor */
+              placeholder={t('PleaseEnterYourPassword') as string}
               class="input-password"
             ></IonInput>
           </InputPasswordWrapper>
@@ -171,10 +172,10 @@ export function SendConfirm() {
       </IonRow>
       <IonRow class="ion-justify-content-between" style={{ marginTop: '24px' }}>
         <IonCol>
-          <PurpleButton expand="block">Confirm</PurpleButton>
+          <PurpleButton expand="block">{t('Confirm')}</PurpleButton>
         </IonCol>
         <IonCol>
-          <WhiteButton expand="block">Go Back</WhiteButton>
+          <WhiteButton expand="block">{t('GoBack')}</WhiteButton>
         </IonCol>
       </IonRow>
     </SendMain>

@@ -1,4 +1,5 @@
 import { IonCol, IonRow } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 import { PurpleButton } from '../../components/buttons';
 import { CountdownDiv } from '../../components/layout/countdown';
@@ -10,12 +11,13 @@ import { urls } from '../../constants/urls';
 import { heliumPayPath } from '../../routing/navigation-tree';
 
 export function Verification() {
+  const { t } = useTranslation();
   return (
     <MainLayout>
       <MainGrid>
         <IonRow>
           <IonCol class="ion-center">
-            <MainTitle>Verification Code Sent</MainTitle>
+            <MainTitle>{t('VerificationCode')}</MainTitle>
           </IonCol>
         </IonRow>
         <IonRow>
@@ -26,9 +28,9 @@ export function Verification() {
         <IonRow>
           <IonCol class="ion-center">
             <StyledInput
-              label={'Verification Code'}
+              label={t('VerificationCode')}
               type={'text'}
-              placeholder={'Enter the code sent'}
+              placeholder={t('EnterTheCodeSent')}
             />
           </IonCol>
         </IonRow>
@@ -38,7 +40,7 @@ export function Verification() {
               routerLink={heliumPayPath(urls.resetPassword)}
               expand="block"
             >
-              Confirm
+              {t('Confirm')}
             </PurpleButton>
           </IonCol>
         </IonRow>

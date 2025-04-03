@@ -1,4 +1,5 @@
 import { IonCol, IonRow } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
@@ -9,20 +10,21 @@ import { urls } from '../../constants/urls';
 import { heliumPayPath } from '../../routing/navigation-tree';
 
 export function Recovery() {
+  const { t } = useTranslation();
   return (
     <MainLayout>
       <MainGrid>
         <IonRow>
           <IonCol class="ion-center">
-            <MainTitle>Please enter your email</MainTitle>
+            <MainTitle>{t('PleaseEnterYourEmail')}</MainTitle>
           </IonCol>
         </IonRow>
         <IonRow>
           <IonCol class="ion-center">
             <StyledInput
-              label={'Email'}
+              label={t('Email')}
               type={'email'}
-              placeholder={'Enter your email'}
+              placeholder={t('Enter your email')}
             />
           </IonCol>
         </IonRow>
@@ -32,7 +34,7 @@ export function Recovery() {
               routerLink={heliumPayPath(urls.verification)}
               expand="block"
             >
-              Send
+              {t('Send')}
             </PurpleButton>
           </IonCol>
         </IonRow>

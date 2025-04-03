@@ -1,0 +1,23 @@
+.dialog-content {
+  display: flex;
+  align-items: center;
+  --padding-top: 24px;
+  --padding-bottom: 24px;
+  --padding-start: 24px;
+  --padding-end: 24px;
+}
+
+.copy-button {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  --background: #ffffff;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.copy-button {
+  margin-left: 5px;
+  font-size: 20px;
+  color: #290056;
+}

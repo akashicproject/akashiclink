@@ -9,7 +9,6 @@ ion-select::part(text) {
 
 .select-item {
   width: 214px;
-  height: 40px;
   --min-height: 40px;
   --border-radius: 8px;
   --border-width: 2px;

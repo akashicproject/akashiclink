@@ -1,0 +1,28 @@
+.swiper-button-next {
+  background-image: url('/public/shared-assets/images/arrow-forward.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 24px;
+  height: 24px;
+}
+
+.swiper-button-prev {
+  background-image: url('/public/shared-assets/images/arrow-back.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 24px;
+  height: 24px;
+}
+
+.swiper-button-next::after {
+  display: none;
+}
+
+.swiper-button-prev::after {
+  display: none;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+}

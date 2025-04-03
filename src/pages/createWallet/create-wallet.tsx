@@ -1,4 +1,5 @@
 import { IonCol, IonRow } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { CountdownDiv } from '../../components/layout/countdown';
@@ -10,12 +11,13 @@ import { urls } from '../../constants/urls';
 import { heliumPayPath } from '../../routing/navigation-tree';
 
 export function CreateWallet() {
+  const { t } = useTranslation();
   return (
     <MainLayout>
       <MainGrid>
         <IonRow>
           <IonCol class="ion-center">
-            <MainTitle>Create Your Wallet</MainTitle>
+            <MainTitle>{t('CreateWallet')}</MainTitle>
           </IonCol>
         </IonRow>
         <IonRow>
@@ -23,13 +25,13 @@ export function CreateWallet() {
             <StyledInput
               label={'Email'}
               type={'email'}
-              placeholder={'Enter your email'}
+              placeholder={t('EnterYourEmail')}
             />
           </IonCol>
         </IonRow>
         <IonRow>
           <IonCol>
-            <WhiteButton expand="block">Send</WhiteButton>
+            <WhiteButton expand="block">{t('Send')}</WhiteButton>
           </IonCol>
         </IonRow>
         <IonRow>
@@ -40,9 +42,9 @@ export function CreateWallet() {
         <IonRow>
           <IonCol>
             <StyledInput
-              label={'Verification Code'}
+              label={t('VerificationCode')}
               type={'text'}
-              placeholder={'Enter the code sent'}
+              placeholder={t('EnterTheCodeSent')}
             />
           </IonCol>
         </IonRow>
@@ -52,7 +54,7 @@ export function CreateWallet() {
               routerLink={heliumPayPath(urls.creatingWallet)}
               expand="block"
             >
-              Confirm
+              {t('Confirm')}
             </PurpleButton>
           </IonCol>
         </IonRow>

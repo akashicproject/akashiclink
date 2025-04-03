@@ -1,4 +1,5 @@
 import { IonCol, IonRow } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
@@ -8,12 +9,13 @@ import { urls } from '../../constants/urls';
 import { heliumPayPath } from '../../routing/navigation-tree';
 
 export function BeforeCreateWallet() {
+  const { t } = useTranslation();
   return (
     <MainLayout>
       <MainGrid>
         <IonRow>
           <IonCol class="ion-center">
-            <MainTitle>New in HeliumWallet?</MainTitle>
+            <MainTitle>{t('NewInHeliumWallet')}</MainTitle>
           </IonCol>
         </IonRow>
         <IonRow style={{ marginTop: '40px' }}>
@@ -22,14 +24,14 @@ export function BeforeCreateWallet() {
               routerLink={heliumPayPath(urls.createWallet)}
               expand="block"
             >
-              <span>Create your Wallet</span>
+              <span>{t('CreateYourWallet')}</span>
             </PurpleButton>
           </IonCol>
         </IonRow>
         <IonRow style={{ marginTop: '16px' }}>
           <IonCol>
             <WhiteButton routerLink={heliumPayPath(urls.import)} expand="block">
-              <span>Import Wallet</span>
+              <span>{t('ImportWallet')}</span>
             </WhiteButton>
           </IonCol>
         </IonRow>

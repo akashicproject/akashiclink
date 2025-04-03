@@ -2,6 +2,7 @@ import { IonLabel, IonRouterOutlet, IonTabButton } from '@ionic/react';
 import { Redirect, Route } from 'react-router';
 
 import { urls } from '../constants/urls';
+import { Activity } from '../pages/activity';
 import { BeforeCreateWallet } from '../pages/createWallet/before-create-wallet';
 import { CreateWallet } from '../pages/createWallet/create-wallet';
 import { CreatingWallet } from '../pages/createWallet/creating-wallet';
@@ -9,8 +10,8 @@ import { WalletCreated } from '../pages/createWallet/wallet-created';
 import { HeliumPayDashboard } from '../pages/hp-dashboard';
 import { HeliumPayMain } from '../pages/hp-main';
 import { ImportWallet } from '../pages/import-wallet';
-import { LoggedAddress } from '../pages/logged/logged-address';
 import { LoggedCreate } from '../pages/logged/Logged-create';
+import { LoggedDeposit } from '../pages/logged/logged-deposit';
 import { LoggedFunction } from '../pages/logged/logged-function';
 import { Login } from '../pages/login';
 import { Recover } from '../pages/recover';
@@ -19,7 +20,6 @@ import { Recovery } from '../pages/Recovery/recovery';
 import { ResetPassword } from '../pages/Recovery/reset-password';
 import { Verification } from '../pages/Recovery/verification';
 import { SendConfirm } from '../pages/send/send-confirm';
-import { SendFunction } from '../pages/send/send-function';
 import { SendResult } from '../pages/send/send-result';
 import { SendTo } from '../pages/send/send-to';
 import { Settings } from '../pages/settings';
@@ -93,11 +93,11 @@ export function NavigationTree() {
       {hpSubtree.registerPage(Welcome, urls.welcome)}
       {hpSubtree.registerPage(LoggedFunction, urls.loggedFunction)}
       {hpSubtree.registerPage(LoggedCreate, urls.loggedCreate)}
-      {hpSubtree.registerPage(LoggedAddress, urls.loggedAddress)}
-      {hpSubtree.registerPage(SendFunction, urls.sendFunction)}
+      {hpSubtree.registerPage(LoggedDeposit, urls.loggedDeposit)}
       {hpSubtree.registerPage(SendConfirm, urls.sendConfirm)}
-      {hpSubtree.registerPage(SendTo, urls.sendTo)}
+      {hpSubtree.registerPage(SendTo, urls.sendTo + '/:currency')}
       {hpSubtree.registerPage(SendResult, urls.sendResult)}
+      {hpSubtree.registerPage(Activity, urls.activity)}
       {hpSubtree.registerPage(Recover, urls.recover)}
       {hpSubtree.registerPage(HeliumPayDashboard, urls.dashboard)}
       {hpSubtree.registerPage(Settings, urls.settings)}
