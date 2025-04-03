@@ -298,6 +298,7 @@ export class Nitr0genApi {
     network: CoinSymbol,
     amount: string,
     toAddress: string,
+    feesEstimate: string,
     token?: CurrencySymbol
   ): Promise<IBaseTransactionWithDbIndex> {
     const $o: { [keyLedgerId: string]: L1TxDetail } = {
@@ -324,6 +325,7 @@ export class Nitr0genApi {
           },
         },
         $o,
+        metadata: { feesEstimate },
       },
       $sigs: {},
     };
