@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const AppConfig = {
-  apiBaseUrl: 'http://localhost:8081/api/v0',
+  apiBaseUrl: process.env.REACT_APP_API_BASE_URL,
 };
 
 /** For requests that don't need cookies */
