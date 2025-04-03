@@ -1,7 +1,7 @@
 import type { History } from 'history';
 
 import { urls } from '../constants/urls';
-import { akashicPayPath, akashicPayRoot } from './navigation-tabs';
+import { akashicPayPath } from './navigation-tabs';
 
 /**
  * Attempt to back to the previous page, with custom logic to
@@ -17,7 +17,7 @@ export function historyGoBack(history: History, loggedOut?: boolean) {
   if (history.location.state) history.goBack();
   else {
     // Otherwise redirect to dashboard to login page, depending on logged in state
-    if (loggedOut) history.push(akashicPayRoot);
+    if (loggedOut) history.push(akashicPayPath(urls.akashicPay));
     else history.push(akashicPayPath(urls.loggedFunction));
   }
 }
