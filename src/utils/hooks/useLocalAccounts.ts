@@ -55,6 +55,7 @@ export const useAccountStorage = () => {
       }
       return l;
     });
+    if (activeAccount) setActiveAccount({ ...activeAccount, aasName });
     setLocalAccounts(updatedAccounts);
   };
 
@@ -66,6 +67,9 @@ export const useAccountStorage = () => {
       }
       return l;
     });
+    if (activeAccount) {
+      setActiveAccount({ ...activeAccount, aasName: undefined });
+    }
     setLocalAccounts(updatedAccounts);
   };
 

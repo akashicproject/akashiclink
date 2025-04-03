@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { OwnersAPI } from '../../../utils/api';
+import { useLargestBalanceKeys } from '../../../utils/hooks/useLargestBalanceKeys';
 import { useAccountStorage } from '../../../utils/hooks/useLocalAccounts';
 import { unpackRequestErrorMessage } from '../../../utils/unpack-request-error-message';
 import {
@@ -25,7 +26,10 @@ import {
   formAlertResetState,
 } from '../../common/alert/alert';
 import { StyledInput } from '../../common/input/styled-input';
-import { useFocusCurrencyDetail } from '../../providers/PreferenceProvider';
+import {
+  useFocusCurrency,
+  useFocusCurrencyDetail,
+} from '../../providers/PreferenceProvider';
 import type { ValidatedAddressPair } from './types';
 
 const LockedAddress = styled(IonItem)({
@@ -55,6 +59,11 @@ export const SendAddressInput = ({
   const [alert, setAlert] = useState(formAlertResetState);
   const { activeAccount } = useAccountStorage();
   const { chain } = useFocusCurrencyDetail();
+  const [currency] = useFocusCurrency();
+  const { keys: addresses } = useLargestBalanceKeys({
+    coinSymbols: [currency.chain],
+  });
+  const walletAddress = addresses[0]?.address || '-';
 
   const validateAddress = debounce(async (input: string) => {
     setAlert(formAlertResetState);
@@ -64,7 +73,11 @@ export const SendAddressInput = ({
     if (!userInput) return;
 
     // Not allow sending to self address
-    if (userInput === activeAccount?.identity) {
+    if (
+      userInput === activeAccount?.identity ||
+      userInput === walletAddress ||
+      userInput === activeAccount?.aasName
+    ) {
       setAlert(errorAlertShell('NoSelfSend'));
       return;
     }
