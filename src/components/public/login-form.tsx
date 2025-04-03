@@ -1,4 +1,4 @@
-import { IonCol, IonRow, IonText, isPlatform } from '@ionic/react';
+import { IonCol, IonRow, isPlatform } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -7,7 +7,6 @@ import { AccountSelection } from '../account-selection/account-selection';
 import { Alert, errorAlertShell, formAlertResetState } from '../alert/alert';
 import { PurpleButton } from '../buttons';
 import { StyledInput } from '../styled-input';
-import { ContentText } from '../text/context-text';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { OwnersAPI } from '../../utils/api';
@@ -70,23 +69,14 @@ export function LoginForm() {
   return (
     <>
       <Alert state={alert} />
-      <IonRow>
-        <IonCol>
-          <IonText color="dark">
-            <h1>{t('WelcomeBack')}</h1>
-          </IonText>
-        </IonCol>
-      </IonRow>
-      <IonRow style={{ marginTop: '-5px' }}>
-        <IonCol class="ion-center">
-          <ContentText>{t('YourMostReliableWallet')}</ContentText>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <AccountSelection changeSelection={(a) => setSelectedAccount(a)} />
-        </IonCol>
-      </IonRow>
+      <h1 className="ion-justify-content-center">{t('WelcomeBack')}</h1>
+      <h3 className="ion-justify-content-center">
+        {t('YourMostReliableWallet')}
+      </h3>
+      <AccountSelection
+        changeSelection={(a) => setSelectedAccount(a)}
+        style={{ marginTop: '24px' }}
+      />
       <IonRow>
         <IonCol>
           <StyledInput

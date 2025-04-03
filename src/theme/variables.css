@@ -84,9 +84,6 @@ http://ionicframework.com/docs/theming/ */
   --ion-white-button-text: #7444b6;
   --ion-white-button-background: #f3f5f6;
 
-  /** select **/
-  --ion-color-select: #7444b6;
-
   /** header-background also used in setting-naming as icon color**/
   --ion-logged-header: #290056;
   --ion-slider: #c297ff;
@@ -184,9 +181,6 @@ body.dark {
   /** buttons **/
   --ion-white-button-text: #eddcff;
   --ion-white-button-background: #1f1f1f;
-
-  /** select **/
-  --ion-color-select: #f4f5f8;
 
   /** header-background also used in setting-naming as icon color**/
   --ion-logged-header: #c297ff;

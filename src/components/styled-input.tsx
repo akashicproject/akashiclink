@@ -1,4 +1,4 @@
-import './styled-input.css';
+import './styled-input.scss';
 
 import { IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
 import type { ComponentProps } from 'react';
@@ -71,37 +71,23 @@ export function StyledInput({
 
   return (
     <IonItem
-      class={isHorizontal ? 'styled-item-horizontal' : 'styled-item'}
+      class={isHorizontal ? 'styled-input-horizontal' : 'styled-input'}
       lines="none"
     >
       {label ? (
-        <IonLabel
-          class={isHorizontal ? 'styled-label-horizontal' : 'styled-label'}
-          position={isHorizontal ? undefined : 'stacked'}
-        >
+        <IonLabel position={isHorizontal ? undefined : 'stacked'}>
           {label}
         </IonLabel>
       ) : null}
       <IonInput
-        class={isHorizontal ? 'styled-input-horizontal' : 'styled-input'}
-        className={!inputValid && !isHorizontal ? 'fail' : 'null'}
+        className={!inputValid && !isHorizontal ? 'input-fail' : 'null'}
         onIonInput={(event) => {
           onIonInput && onIonInput(event);
           validateInput(event);
         }}
         {...props}
       ></IonInput>
-      <IonNote
-        slot="error"
-        style={{
-          fontSize: '10px',
-          paddingLeft: '0',
-          display: 'flex',
-          justifyContent: 'flex-start',
-        }}
-      >
-        {!inputValid ? helpText : ' '}
-      </IonNote>
+      <IonNote slot="error">{!inputValid ? helpText : ' '}</IonNote>
     </IonItem>
   );
 }

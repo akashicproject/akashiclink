@@ -33,7 +33,7 @@ export const LanguageDropdown = () => {
   const triggerId = 'popover-trigger';
 
   return (
-    <div className="language-select">
+    <div>
       <IonButton class="language-button" fill="clear" id={triggerId}>
         <IonIcon slot="icon-only" icon={globeOutline} />
         <IonIcon slot="end" icon={caretDownOutline} />

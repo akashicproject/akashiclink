@@ -1,29 +1,15 @@
 import './deposit-page.scss';
 
-import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import type { CoinSymbol } from '@helium-pay/backend';
 import { NetworkDictionary } from '@helium-pay/backend';
-import {
-  IonCol,
-  IonContent,
-  IonGrid,
-  IonIcon,
-  IonImg,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonPopover,
-  IonRow,
-  IonText,
-} from '@ionic/react';
-import { copyOutline } from 'ionicons/icons';
+import { IonCol, IonGrid, IonImg, IonRow, IonText } from '@ionic/react';
 import { QRCodeSVG } from 'qrcode.react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 
-import { BackButton } from '../../components/back-button';
+import { OtkBox } from '../../components/otk-box/otk-box';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { useLargestBalanceKeys } from '../../utils/hooks/useLargestBalanceKeys';
@@ -63,9 +49,6 @@ export function DepositPage() {
       coinSymbols: Object.keys(NetworkDictionary) as CoinSymbol[],
     });
 
-  const popover = useRef<HTMLIonPopoverElement>(null);
-  const [popoverOpen, setPopoverOpen] = useState(false);
-
   const walletAddressDetail = addresses?.find(
     (address) =>
       address.coinSymbol.toLowerCase() ===
@@ -74,19 +57,6 @@ export function DepositPage() {
 
   const walletAddress = walletAddressDetail?.address ?? '-';
 
-  const copyAddress = async (e: never) => {
-    await Clipboard.write({
-      string: walletAddress,
-    });
-    if (popover.current) {
-      popover.current.event = e;
-    }
-    setPopoverOpen(true);
-    setTimeout(() => {
-      setPopoverOpen(false);
-    }, 1000);
-  };
-
   if (!isAddressesLoading && walletAddressDetail === undefined) {
     return <Redirect to={akashicPayPath(urls.error)} />;
   }
@@ -94,14 +64,14 @@ export function DepositPage() {
   return (
     <LoggedMain loading={isAddressesLoading}>
       <IonGrid fixed>
-        <IonRow class="ion-justify-content-center ion-margin-vertical">
-          <IonCol class={'ion-center'} size="12">
+        <IonRow class="ion-justify-content-center ion-no-padding">
+          <IonCol class="ion-center" size="12">
             <CoinWrapper>
               {walletAddressDetail?.coinSymbol && (
                 <IonImg
                   alt={''}
                   src={currentWalletCurrency.logo}
-                  style={{ width: '40px', height: '40px' }}
+                  style={{ height: '30px' }}
                 />
               )}
               <IonText>
@@ -110,34 +80,17 @@ export function DepositPage() {
             </CoinWrapper>
           </IonCol>
           <IonCol class={'ion-center'} size="12">
-            <QRCodeSVG value={walletAddress} size={120} />
+            <QRCodeSVG value={walletAddress} size={75} />
           </IonCol>
         </IonRow>
-        <IonRow class="ion-justify-content-center">
-          <IonCol size={'10'}>
-            <IonLabel position="stacked">{t('PublicAddress')}</IonLabel>
-            {/* TODO: a known issue before ionic 7 where IonItem is not clickable when IonInput within is disabled: https://github.com/ionic-team/ionic-framework/issues/23331, Resolved this workaround when migrated to v7 */}
-            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
-            <div onClick={copyAddress}>
-              <IonItem fill="outline">
-                <IonInput disabled value={walletAddress}></IonInput>
-                <IonIcon slot="end" icon={copyOutline}></IonIcon>
-              </IonItem>
-            </div>
-            <IonPopover
-              side="top"
-              alignment="center"
-              ref={popover}
-              isOpen={popoverOpen}
-              class={'copied-popover'}
-              onDidDismiss={() => setPopoverOpen(false)}
-            >
-              <IonContent class="ion-padding">{t('Copied')}</IonContent>
-            </IonPopover>
+        <IonRow class="ion-justify-content-center ion-no-padding">
+          <IonCol size="10">
+            <OtkBox
+              label={t('PublicAddress')}
+              text={walletAddress}
+              padding={false}
+            />
           </IonCol>
-        </IonRow>
-        <IonRow class="ion-justify-content-center">
-          <BackButton />
         </IonRow>
       </IonGrid>
     </LoggedMain>

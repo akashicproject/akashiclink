@@ -17,4 +17,10 @@ ion-button {
     --padding-start: 0;
     --padding-end: 0;
   }
+
+  /** Square icons */
+  .icon-button-icon {
+    font-size: 24px;
+    color: var(--ion-settings-color);
+  }
 }

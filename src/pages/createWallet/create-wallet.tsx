@@ -59,9 +59,6 @@ export function CreateWallet() {
   }, []);
 
   const [view, setView] = useState(CreateWalletView.RequestAccount);
-  const [alertRequest, setAlertRequest] = useState(formAlertResetState);
-  const [alertActivate, setAlertActivate] = useState(formAlertResetState);
-  const { addLocalAccount, setActiveAccount } = useAccountStorage();
 
   /** Tracking user input */
   const [email, setEmail] = useState<string>();
@@ -79,6 +76,15 @@ export function CreateWallet() {
   const [creatingAccount, setCreatingAccount] = useState(false);
   const [newAccount, setNewAccount] =
     useState<IActivateWalletAccountResponse>();
+
+  const emailSentAlert = {
+    success: true,
+    visible: true,
+    message: t('ConfirmEmailSent', { email }),
+  };
+  const [alertRequest, setAlertRequest] = useState(formAlertResetState);
+  const [alertActivate, setAlertActivate] = useState(emailSentAlert);
+  const { addLocalAccount, setActiveAccount } = useAccountStorage();
 
   /**
    * Countdown showing validity of activation code
@@ -115,7 +121,7 @@ export function CreateWallet() {
         // Launch countdown while code is valid
         setTimerReset(timerReset + 1);
         setAlertRequest(formAlertResetState);
-        setAlertActivate(formAlertResetState);
+        setAlertActivate(emailSentAlert);
       } catch (e) {
         setAlertRequest(errorAlertShell(t('GenericFailureMsg')));
       }
@@ -191,7 +197,7 @@ export function CreateWallet() {
   );
 
   return (
-    <PublicLayout>
+    <PublicLayout className="vertical-center">
       <MainGrid>
         {view !== CreateWalletView.AccountCreated && (
           <IonRow>
@@ -202,15 +208,9 @@ export function CreateWallet() {
         )}
         {view === CreateWalletView.RequestAccount && (
           <>
-            <IonRow>
+            <IonRow style={{ marginBottom: '40px' }}>
               <IonCol>
-                <h3
-                  style={{
-                    color: 'var(--ion-color-primary-10)',
-                  }}
-                >
-                  {t('EnterEmailToCreateAccount')}
-                </h3>
+                <h6>{t('EnterEmailToCreateAccount')}</h6>
               </IonCol>
             </IonRow>
           </>
@@ -249,13 +249,13 @@ export function CreateWallet() {
                 </PurpleButton>
               </IonCol>
             </IonRow>
+            <IonRow style={{ marginTop: '24px' }}>
+              <AlertBox state={alertRequest} />
+            </IonRow>
           </>
         )}
         {view === CreateWalletView.ActivateAccount && (
           <>
-            <IonRow>
-              <h4>{t('ConfirmEmailSent', { email: '' })}</h4>
-            </IonRow>
             <IonRow>
               <IonCol class="ion-center">
                 <ActivationTimer resetTrigger={timerReset} />
@@ -271,15 +271,17 @@ export function CreateWallet() {
               </IonCol>
             </IonRow>
             <IonRow>
+              <AlertBox state={alertActivate} />
+            </IonRow>
+            <IonRow class="ion-no-padding">
               <IonCol>
                 <StyledInput
                   label={t('VerificationCode')}
                   type={'text'}
                   placeholder={t('EnterTheCodeSent')}
-                  onIonInput={({ target: { value } }) => {
-                    setActivationCode(value as string);
-                    setAlertActivate(formAlertResetState);
-                  }}
+                  onIonInput={({ target: { value } }) =>
+                    setActivationCode(value as string)
+                  }
                   errorPrompt={StyledInputErrorPrompt.ActivationCode}
                   validate={validateActivationCode}
                 />
@@ -325,9 +327,6 @@ export function CreateWallet() {
                 </PurpleButton>
               </IonCol>
             </IonRow>
-            <IonRow>
-              <AlertBox state={alertActivate} />
-            </IonRow>
           </>
         )}
         {view === CreateWalletView.AccountCreated && (
@@ -337,9 +336,9 @@ export function CreateWallet() {
                 <h2>{t('WalletCreated')}</h2>
               </IonCol>
             </IonRow>
-            <IonRow>
+            <IonRow style={{ marginBottom: '32px' }}>
               <IonCol>
-                <h4>{t('SaveKey')}</h4>
+                <h6>{t('SaveKey')}</h6>
               </IonCol>
             </IonRow>
             <IonRow class="ion-justify-content-center">
@@ -373,9 +372,6 @@ export function CreateWallet() {
             </IonRow>
           </>
         )}
-        <IonRow>
-          <AlertBox state={alertRequest} />
-        </IonRow>
       </MainGrid>
     </PublicLayout>
   );

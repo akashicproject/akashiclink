@@ -1,5 +1,4 @@
-import './otk-box.css';
-import '../styled-input.css';
+import './otk-box.scss';
 
 import { Clipboard } from '@capacitor/clipboard';
 import { IonButton, IonIcon, IonItem, IonLabel } from '@ionic/react';
@@ -12,44 +11,36 @@ export function OtkBox({
   label,
   text,
   withCopy = true,
+  onClick,
+  padding = true,
 }: {
   label: string;
   text?: string;
   withCopy?: boolean;
+  onClick?: () => void;
+  padding?: boolean;
 }) {
   const handleCopy = async () => {
     await Clipboard.write({
       string: text || '',
     });
+    onClick && onClick();
   };
 
   return (
     <>
-      <IonLabel class="styled-label">{label}</IonLabel>
+      <IonLabel class="otk-box-label">{label}</IonLabel>
       <IonItem
-        class="ion-no-padding"
+        class="ion-no-padding otk-box"
         lines="none"
         style={{
-          '--padding-end': '0px',
-          '--inner-padding-end': '0px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          paddingBottom: '20px',
+          paddingBottom: padding ? '20px' : '0px',
         }}
       >
         <h4
           style={{
-            border: '1px solid var(--ion-color-dark)',
-            borderRadius: '4px',
-            width: withCopy ? '80%' : '100%',
-            padding: '10px',
-            margin: 0,
+            width: withCopy ? '70%' : '100%',
             marginRight: withCopy ? '5px' : 0,
-            wordWrap: 'break-word',
-            fontWeight: 600,
-            fontSize: '13px',
-            flexGrow: 1,
-            minHeight: '48px',
           }}
         >
           {text}

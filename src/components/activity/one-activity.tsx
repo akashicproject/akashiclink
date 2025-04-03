@@ -20,7 +20,7 @@ const OneTransfer = styled.div({
   padding: 0,
   gap: '16px',
   height: '58px',
-  margin: '24px 2px',
+  margin: '9px 2px',
   width: '98%',
 });
 

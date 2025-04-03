@@ -65,11 +65,15 @@ export function Alert({ state: externalState }: { state: FormAlertState }) {
  * - visibility state
  */
 export function AlertBox({ state }: { state: FormAlertState }) {
+  const color = state.success
+    ? 'var(--ion-color-success)'
+    : 'var(--ion-color-danger)';
+
   return (
     <IonNote
       style={{
         ...(state.visible && {
-          border: '1px solid #de3730',
+          border: `1px solid ${color}`,
         }),
       }}
     >
@@ -77,7 +81,7 @@ export function AlertBox({ state }: { state: FormAlertState }) {
         style={{
           marginTop: '5px',
           marginBottom: '5px',
-          color: 'var(--ion-color-danger)',
+          color,
         }}
       >
         {state.message}

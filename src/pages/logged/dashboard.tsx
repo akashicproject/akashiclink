@@ -22,9 +22,9 @@ export function Dashboard() {
 
   return (
     <LoggedMain>
-      <SelectCoin />
-      <IonGrid class="ion-center">
-        <IonRow class="ion-justify-content-between" style={{ width: '248px' }}>
+      <IonGrid style={{ width: '264px' }}>
+        <SelectCoin />
+        <IonRow>
           <IonCol>
             <PurpleButton
               expand="block"

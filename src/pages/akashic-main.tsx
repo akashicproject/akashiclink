@@ -1,4 +1,4 @@
-import './akashic-main.css';
+import './akashic-main.scss';
 
 import { IonCol, IonImg, IonRow, isPlatform } from '@ionic/react';
 import { useEffect } from 'react';
@@ -8,7 +8,6 @@ import { useHistory } from 'react-router-dom';
 import { PurpleButton, WhiteButton } from '../components/buttons';
 import { PublicLayout } from '../components/layout/public-layout';
 import { LoginForm } from '../components/public/login-form';
-import { ContentText } from '../components/text/context-text';
 import { urls } from '../constants/urls';
 import { akashicPayPath } from '../routing/navigation-tree';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
@@ -54,9 +53,10 @@ export function AkashicPayMain() {
       <IonRow>
         <IonCol class="ion-center">
           <IonImg
-            class={
-              // Large icon on mobile or when account has not been imported locally
-              isMobile || !localAccounts.length ? 'main-img' : 'main-img-web'
+            className={
+              isMobile || !localAccounts.length
+                ? 'welcome-img'
+                : 'welcome-img-small'
             }
             alt=""
           />
@@ -68,22 +68,22 @@ export function AkashicPayMain() {
           <LoginForm />
         ) : (
           <>
-            <IonRow style={{ marginTop: '10px' }}>
+            <IonRow style={{ marginTop: '16px' }}>
               <IonCol class="ion-center">
-                <ContentText>{t('BestWayToInvestYourMoney')}</ContentText>
+                <h3>{t('BestWayToInvestYourMoney')}</h3>
               </IonCol>
             </IonRow>
-            <IonRow style={{ marginTop: '8px' }}>
+            <IonRow style={{ marginTop: '16px' }}>
               <IonCol>
                 <PurpleButton
                   routerLink={akashicPayPath(urls.createWalletUrl)}
                   expand="block"
                 >
-                  <span>{t('CreateWallet')}</span>
+                  {t('CreateYourWallet')}
                 </PurpleButton>
               </IonCol>
             </IonRow>
-            <IonRow>
+            <IonRow style={{ marginTop: '16px' }}>
               <IonCol>
                 <WhiteButton
                   routerLink={akashicPayPath(urls.importAccountUrl)}

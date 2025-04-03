@@ -1,5 +1,3 @@
-import './layout.css';
-
 import styled from '@emotion/styled';
 import {
   IonContent,
@@ -32,13 +30,17 @@ export const ChainDiv = styled(IonRouterLink)({
   borderBottom: '2px solid #C297FF',
 });
 
-export const LoggedLayout: React.FC<{
+export function LoggedLayout({
+  children,
+  footer,
+}: {
   children: ReactNode;
   footer?: ReactNode;
-}> = ({ children, footer }) => {
+}) {
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
   const ChainDivMarginBottom = isMobile ? '32px' : '0px';
+
   return (
     <IonPage>
       <LoggedHeader loggedIn={true} />
@@ -55,4 +57,4 @@ export const LoggedLayout: React.FC<{
       {footer && <IonFooter class={'ion-no-border'}>{footer}</IonFooter>}
     </IonPage>
   );
-};
+}

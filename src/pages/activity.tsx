@@ -1,24 +1,25 @@
+import './activity.scss';
+
 import styled from '@emotion/styled';
 import type { ITransactionRecord } from '@helium-pay/backend';
 import type { ITransactionRecordForTable } from '@helium-pay/owners/src/components/tables/formatter';
 import { transferToTableFormat } from '@helium-pay/owners/src/components/tables/formatter';
 import {
+  IonBackdrop,
   IonButton,
   IonButtons,
-  IonHeader,
-  IonModal,
-  IonRow,
-  IonTitle,
-  IonToolbar,
+  IonCard,
+  IonCardTitle,
+  IonIcon,
 } from '@ionic/react';
 import dayjs from 'dayjs';
+import { closeOutline } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Virtuoso } from 'react-virtuoso';
 
 import { ActivityDetail } from '../components/activity/activity-detail';
 import { OneActivity } from '../components/activity/one-activity';
-import { BackButton } from '../components/back-button';
 import { LoggedLayout } from '../components/layout/logged-layout';
 import { urls } from '../constants/urls';
 import { useTransfersMe } from '../utils/hooks/useTransfersMe';
@@ -81,10 +82,26 @@ export function Activity() {
 
   return (
     <LoggedLayout>
-      <IonRow class="ion-justify-content-center">
-        <BackButton />
-      </IonRow>
-      <Divider style={{ margin: '20px 0px' }} />
+      {isOpen && <IonBackdrop />}
+      {isOpen && currentTransfer && (
+        <IonCard class="activity-card unselectable">
+          <IonCardTitle>
+            <div className="spread">
+              <h2>{t('ContractInteraction')}</h2>
+              <IonButtons slot="end">
+                <IonButton onClick={() => setIsOpen(false)}>
+                  <IonIcon
+                    class="icon-button-icon"
+                    slot="icon-only"
+                    icon={closeOutline}
+                  />
+                </IonButton>
+              </IonButtons>
+            </div>
+          </IonCardTitle>
+          <ActivityDetail currentTransfer={currentTransfer} />
+        </IonCard>
+      )}
       <Virtuoso
         style={{
           height: '450px',
@@ -105,21 +122,6 @@ export function Activity() {
         )}
       ></Virtuoso>
       <Divider style={{ marginTop: '20px' }} />
-      {currentTransfer && (
-        <IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>{t('ContractInteraction')}</IonTitle>
-              <IonButtons slot="end">
-                <IonButton onClick={() => setIsOpen(false)}>
-                  {t('Close')}
-                </IonButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
-          <ActivityDetail currentTransfer={currentTransfer} />
-        </IonModal>
-      )}
     </LoggedLayout>
   );
 }

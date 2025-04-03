@@ -1,5 +1,15 @@
-import { IonCol, IonGrid, IonRow, IonSpinner, isPlatform } from '@ionic/react';
+import {
+  IonButton,
+  IonCol,
+  IonGrid,
+  IonIcon,
+  IonRow,
+  IonSpinner,
+  isPlatform,
+} from '@ionic/react';
+import { arrowBack } from 'ionicons/icons';
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { AccountSelection } from '../account-selection/account-selection';
@@ -8,6 +18,7 @@ import { SettingsPopover } from '../settings/settings-popover';
 
 export function LoggedToolbar() {
   const logout = useLogout();
+  const history = useHistory();
 
   const { setActiveAccount } = useAccountStorage();
   // const [logoutTrigger, setLogoutTrigger] = useState<LocalAccount>();
@@ -16,6 +27,16 @@ export function LoggedToolbar() {
   return (
     <IonGrid fixed>
       <IonRow class="ion-justify-content-around">
+        <IonCol size="auto">
+          <IonButton class="icon-button" onClick={() => history.goBack()}>
+            <IonIcon
+              class="icon-button-icon"
+              icon={arrowBack}
+              slot="icon-only"
+            />
+          </IonButton>
+        </IonCol>
+
         {pending ? (
           <IonCol size="1">
             <IonSpinner />

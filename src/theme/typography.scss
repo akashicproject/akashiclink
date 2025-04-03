@@ -48,6 +48,14 @@ h5 {
   font-size: 12px;
 }
 
+h6 {
+  @extend %heading-shared;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  margin: 0;
+}
+
 /**
  * Labels placed next to inputs
  */

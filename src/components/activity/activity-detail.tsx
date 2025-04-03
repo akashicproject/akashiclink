@@ -9,6 +9,7 @@ import { arrowForwardCircleOutline, copyOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 
 import type { WalletTransactionRecord } from '../../pages/activity';
+import { Divider } from '../../pages/activity';
 import { displayLongText } from '../../utils/long-text';
 
 const DetailColumn = styled.div({
@@ -18,12 +19,12 @@ const DetailColumn = styled.div({
   justifyContent: 'space-between',
   padding: '0px',
   height: '24px',
+  marginTop: '8px',
 });
 
 const TextContent = styled.div({
   display: 'flex',
   alignContent: 'center',
-  fontStyle: 'normal',
   fontWeight: 400,
   fontSize: '16px',
   lineHeight: '20px',
@@ -67,13 +68,13 @@ export function ActivityDetail({
   const backendUpdated = false;
 
   return (
-    <IonContent class="ion-padding" className="transfer-detail">
+    <IonContent className="transfer-detail">
       <DetailColumn>
-        <h3>{t('Status')}</h3>
+        <h4>{t('Status')}</h4>
         <TextContent>{statusString(currentTransfer.status)}</TextContent>
       </DetailColumn>
-      <DetailColumn style={{ marginTop: '20px' }}>
-        <h3>{t('txHash')}</h3>
+      <DetailColumn>
+        <h4>{t('txHash')}</h4>
         <TextContent>
           <Link href={currentTransfer.txHashUrl}>
             {displayLongText(currentTransfer.txHash)}
@@ -90,9 +91,9 @@ export function ActivityDetail({
           </IonButton>
         </TextContent>
       </DetailColumn>
-      <DetailColumn style={{ marginTop: '20px' }}>
-        <h3>{t('From')}</h3>
-        <h3>{t('To')}</h3>
+      <DetailColumn>
+        <h4>{t('From')}</h4>
+        <h4>{t('To')}</h4>
       </DetailColumn>
       <DetailColumn>
         <TextContent>
@@ -129,7 +130,8 @@ export function ActivityDetail({
           </IonButton>
         </TextContent>
       </DetailColumn>
-      <DetailColumn style={{ marginTop: '20px' }}>
+      <Divider style={{ margin: '8px' }} />
+      <DetailColumn>
         <h3>{t('Transaction')}</h3>
       </DetailColumn>
       {backendUpdated && (

@@ -1,5 +1,3 @@
-import './layout.css';
-
 import { IonGrid } from '@ionic/react';
 import type { ComponentProps } from 'react';
 
@@ -14,7 +12,7 @@ export function MainGrid({
   ...props
 }: ComponentProps<typeof IonGrid>) {
   return (
-    <IonGrid {...props} fixed class="middle">
+    <IonGrid {...props} fixed class="vertical">
       {children}
     </IonGrid>
   );

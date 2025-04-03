@@ -6,7 +6,7 @@ import './selection-coin.css';
 
 import styled from '@emotion/styled';
 import { TEST_TO_MAIN } from '@helium-pay/backend';
-import { IonCol, IonGrid, IonImg, IonRow } from '@ionic/react';
+import { IonCol, IonImg, IonRow } from '@ionic/react';
 import Big from 'big.js';
 import { useEffect, useState } from 'react';
 import SwiperCore, { Navigation, Virtual } from 'swiper';
@@ -14,6 +14,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import type { ThemeType } from '../theme/const';
 import { themeType } from '../theme/const';
+import { limitDecimalPlaces } from '../utils/conversions';
 import { useAggregatedBalances } from '../utils/hooks/useAggregatedBalances';
 import { useExchangeRates } from '../utils/hooks/useExchangeRates';
 import { useLocalStorage } from '../utils/hooks/useLocalStorage';
@@ -179,7 +180,7 @@ export function SelectCoin() {
   };
 
   return (
-    <IonGrid style={{ width: '280px' }}>
+    <>
       <IonRow style={{ marginTop: '15px' }}>
         <IonCol class="ion-center">
           <Swiper
@@ -197,6 +198,7 @@ export function SelectCoin() {
               ({ logo, darkLogo, greyLogo, symbol, currency }, idx) => {
                 return (
                   <SwiperSlide
+                    className="unselectable"
                     key={symbol}
                     style={{
                       alignItems: 'center',
@@ -244,17 +246,19 @@ export function SelectCoin() {
           </Swiper>
         </IonCol>
       </IonRow>
-      <IonRow>
+      <IonRow style={{ minHeight: '100px' }}>
         <IonCol class="ion-center">
           <BalanceWrapper>
             <BalanceTitle>
-              {aggregatedBalances.get(focusCurrency.currency) || 0}{' '}
+              {limitDecimalPlaces(
+                aggregatedBalances.get(focusCurrency.currency) || 0
+              )}{' '}
               {focusCurrency.symbol}
             </BalanceTitle>
-            <BalanceText>{`${focusCurrencyUSDT} USD`}</BalanceText>
+            <BalanceText>${`${focusCurrencyUSDT} USD`}</BalanceText>
           </BalanceWrapper>
         </IonCol>
       </IonRow>
-    </IonGrid>
+    </>
   );
 }

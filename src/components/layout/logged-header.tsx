@@ -29,9 +29,9 @@ export function LoggedHeader({ loggedIn }: { loggedIn?: boolean }) {
           ? 'var(--ion-logged-header)'
           : 'var(--ion-background-color)',
         justifyContent: 'space-between',
-        height: isMobile ? '72px' : '60px',
+        height: isMobile ? '72px' : loggedIn ? '72px' : '80px',
         gap: '10px',
-        padding: loggedIn ? '0px 32px' : '0px',
+        padding: loggedIn ? '0px 32px' : '0px 24px',
       }}
     >
       {!loggedIn && <LanguageDropdown />}
@@ -48,16 +48,7 @@ export function LoggedHeader({ loggedIn }: { loggedIn?: boolean }) {
           style={{ height: '100%' }}
         />
       </IonRouterLink>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: '16px',
-        }}
-      >
-        <ThemeSelect updateTheme={setCurrentTheme} />
-      </div>
+      <ThemeSelect updateTheme={setCurrentTheme} />
     </IonHeader>
   );
 }

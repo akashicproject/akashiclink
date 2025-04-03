@@ -1,0 +1,14 @@
+/**  Layout style for all public pages */
+.public-layout {
+  /** Main content is slightly narrowed */
+  & > .content {
+    padding: 0 40px;
+    overflow: scroll;
+  }
+
+  /** Anchor the footer at bottom of page */
+  & > .footer {
+    margin: auto;
+    margin-bottom: 16px;
+  }
+}

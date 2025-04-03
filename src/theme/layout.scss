@@ -15,3 +15,53 @@ ion-backdrop {
   opacity: 0.95;
   background: var(--ion-background-color);
 }
+
+ion-content {
+  --offset-bottom: auto !important;
+  --overflow: hidden;
+  overflow: auto;
+}
+
+/**  Hides the scrollbar */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/** Container stacking it's children vertically with spacings */
+.vertical {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 2px;
+  --ion-grid-column-padding: 1px;
+}
+
+/** Container which centers content vertically */
+.vertical-center {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+/** Container with items centered vertically and horizontally */
+.ion-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/** Container with items spread horizontally */
+.spread {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/** Prevent hovering over certain icons */
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

@@ -1,5 +1,17 @@
+import './nft-layout.scss';
+
 import styled from '@emotion/styled';
-import { IonContent, IonFooter, IonPage, isPlatform } from '@ionic/react';
+import {
+  IonButton,
+  IonCol,
+  IonContent,
+  IonFooter,
+  IonIcon,
+  IonPage,
+  IonRow,
+  isPlatform,
+} from '@ionic/react';
+import { arrowBack } from 'ionicons/icons';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -17,10 +29,13 @@ const Tabs = styled.div({
   height: '40px',
 });
 
-export const NftLayout: React.FC<{
+export function NftLayout({
+  children,
+  noFooter,
+}: {
   children: ReactNode;
   noFooter?: boolean;
-}> = ({ children, noFooter }) => {
+}) {
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
   const history = useHistory();
@@ -35,6 +50,17 @@ export const NftLayout: React.FC<{
         >
           {t('AkashicChain')}
         </ChainDiv>
+        <IonRow class="ion-justify-content-start">
+          <IonCol size="auto">
+            <IonButton class="icon-button" onClick={() => history.goBack()}>
+              <IonIcon
+                class="icon-button-icon"
+                icon={arrowBack}
+                slot="icon-only"
+              />
+            </IonButton>
+          </IonCol>
+        </IonRow>
         {children}
       </IonContent>
       {noFooter ? null : (
@@ -59,4 +85,4 @@ export const NftLayout: React.FC<{
       )}
     </IonPage>
   );
-};
+}

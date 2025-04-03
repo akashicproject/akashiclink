@@ -1,4 +1,7 @@
-import { ActivationRequestType } from '@helium-pay/backend';
+import {
+  activationCodeRegex,
+  ActivationRequestType,
+} from '@helium-pay/backend';
 import type { Language } from '@helium-pay/common-i18n';
 import { IonCol, IonRow, isPlatform } from '@ionic/react';
 import axios from 'axios';
@@ -7,19 +10,22 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import { ActivationTimer } from '../components/activation/activation-timer';
-import { SubmitActivationCode } from '../components/activation/submit-activation-code';
 import {
   AlertBox,
   errorAlertShell,
   formAlertResetState,
 } from '../components/alert/alert';
-import { PurpleButton, TextButton } from '../components/buttons';
+import { PurpleButton, TextButton, WhiteButton } from '../components/buttons';
 import { PublicLayout } from '../components/layout/public-layout';
 import { useLogout } from '../components/logout';
-import { StyledInput } from '../components/styled-input';
+import {
+  StyledInput,
+  StyledInputErrorPrompt,
+} from '../components/styled-input';
 import { OwnersAPI } from '../utils/api';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { lastPageStorage, ResetPageButton } from '../utils/last-page-storage';
+import { unpackRequestErrorMessage } from '../utils/unpack-request-error-message';
 
 enum View {
   Submit,
@@ -32,16 +38,26 @@ export function ImportWallet() {
   const { t, i18n } = useTranslation();
   const logout = useLogout();
 
-  const { addLocalAccount, setActiveAccount } = useAccountStorage();
-  const [view, setView] = useState(View.Submit);
-  const [alert, setAlert] = useState(formAlertResetState);
-  const [timerReset, setTimerReset] = useState(0);
-
   /**
    * Track user inputs
    */
   const [privateKey, setPrivateKey] = useState<string>();
   const [email, setEmail] = useState<string>();
+  const emailSentAlert = {
+    success: true,
+    visible: true,
+    message: t('ConfirmEmailSent', { email }),
+  };
+
+  const { addLocalAccount, setActiveAccount } = useAccountStorage();
+  const [view, setView] = useState(View.Submit);
+  const [alert, setAlert] = useState(formAlertResetState);
+  const [alertPage2, setAlertPage2] = useState(emailSentAlert);
+  const [timerReset, setTimerReset] = useState(0);
+  const [activationCode, setActivationCode] = useState<string>();
+
+  const validateActivationCode = (value: string) =>
+    !!value.match(activationCodeRegex);
 
   useEffect(() => {
     if (lastPageStorage.get() === importAccountUrl) {
@@ -52,8 +68,8 @@ export function ImportWallet() {
     }
   }, []);
 
-  async function submitTwoFa(activationCode: string) {
-    if (privateKey && email) {
+  async function submitTwoFa() {
+    if (privateKey && email && activationCode) {
       const { username, identity } = await OwnersAPI.importAccount({
         activationCode,
         email,
@@ -97,6 +113,7 @@ export function ImportWallet() {
         setEmail(email);
         setView(View.TwoFa);
         setTimerReset(timerReset + 1);
+        setAlertPage2(emailSentAlert);
         // TODO: reword logic to avoid storing private key in plain text open format
         lastPageStorage.store(importAccountUrl, {
           privateKey,
@@ -127,7 +144,7 @@ export function ImportWallet() {
   );
 
   return (
-    <PublicLayout>
+    <PublicLayout className="vertical-center">
       <IonRow>
         <IonCol>
           <h2>{t('ImportWallet')}</h2>
@@ -137,16 +154,10 @@ export function ImportWallet() {
         <>
           <IonRow>
             <IonCol>
-              <h3
-                style={{
-                  color: 'var(--ion-color-primary-10)',
-                }}
-              >
-                {t('EnterKeyPair')}
-              </h3>
+              <h6>{t('EnterKeyPair')}</h6>
             </IonCol>
           </IonRow>
-          <IonRow>
+          <IonRow style={{ marginTop: '40px' }}>
             <IonCol>
               <StyledInput
                 label={t('KeyPair')}
@@ -171,7 +182,7 @@ export function ImportWallet() {
               </PurpleButton>
             </IonCol>
           </IonRow>
-          <IonRow>
+          <IonRow style={{ marginTop: '24px' }}>
             <AlertBox state={alert} />
           </IonRow>
         </>
@@ -204,15 +215,51 @@ export function ImportWallet() {
             </IonCol>
           </IonRow>
           <IonRow>
+            <AlertBox state={alertPage2} />
+          </IonRow>
+          <IonRow>
             <IonCol>
-              <SubmitActivationCode
-                onClose={() => {
+              <StyledInput
+                label={t('ActivationCode')}
+                placeholder={t('PleaseEnterCode')}
+                onIonInput={({ target: { value } }) => {
+                  setActivationCode(value as string);
+                }}
+                errorPrompt={StyledInputErrorPrompt.ActivationCode}
+                validate={validateActivationCode}
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <WhiteButton
+                expand="block"
+                onClick={() => {
+                  setActivationCode(undefined);
                   lastPageStorage.clear();
                   setView(View.Submit);
                   history.push('/');
                 }}
-                submitWithActivationCode={submitTwoFa}
-              />
+              >
+                {t('Cancel')}
+              </WhiteButton>
+            </IonCol>
+            <IonCol>
+              <PurpleButton
+                expand="block"
+                disabled={!activationCode}
+                onClick={async () => {
+                  try {
+                    await submitTwoFa();
+                  } catch (error) {
+                    setAlertPage2(
+                      errorAlertShell(t(unpackRequestErrorMessage(error)))
+                    );
+                  }
+                }}
+              >
+                {t('Confirm')}
+              </PurpleButton>
             </IonCol>
           </IonRow>
         </>

@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 
 import {
   Alert,
+  AlertBox,
   errorAlertShell,
   formAlertResetState,
 } from '../../components/alert/alert';
@@ -44,8 +45,9 @@ const SendWrapper = styled.div({
   flexDirection: 'column',
   alignItems: 'center',
   padding: 0,
-  gap: '24px',
-  minHeight: '180px',
+  gap: '8px',
+  paddingLeft: '40px',
+  paddingRight: '40px',
   width: '270px',
 });
 
@@ -84,15 +86,6 @@ const NativeCoinNeededText = styled.div({
   textAlign: 'center',
   border: '1px solid red',
   width: '270px',
-});
-
-const Error = styled.div({
-  fontStyle: 'normal',
-  fontWeight: 700,
-  fontSize: '20px',
-  lineHeight: '24px',
-  color: 'red',
-  textAlign: 'center',
 });
 
 const GasWrapper = styled.div({
@@ -169,6 +162,7 @@ export function SendTo() {
   const aggregatedBalances = useAggregatedBalances();
   const { keys: userWallets } = useKeyMe();
   const [alert, setAlert] = useState(formAlertResetState);
+  const [alertRequest, setAlertRequest] = useState(formAlertResetState);
   const { keys: exchangeRates } = useExchangeRates();
 
   const [_, __, currency] = useLocalStorage(
@@ -276,7 +270,6 @@ export function SendTo() {
   };
 
   const [signError, setSignError] = useState(errorMsgs.NoError);
-  const [verifyError, setVerifyError] = useState(errorMsgs.NoError);
   const [loading, setLoading] = useState(false);
 
   // Send transaction to the backend for verification
@@ -308,16 +301,18 @@ export function SendTo() {
       const balance = Number(currentWallet.balance);
       // if user does not have enough balance to pay the estimated gas, can not go to next step
       if (balance < feesEstimate) {
-        setVerifyError(
-          t('insufficientBalance', {
-            coinSymbol,
-          }) as string
+        setAlertRequest(
+          errorAlertShell(
+            t('insufficientBalance', {
+              coinSymbol,
+            })
+          )
         );
       } else {
         setPageView(SendView.Confirm);
       }
     } catch (error) {
-      setVerifyError(t(unpackRequestErrorMessage(error)) as string);
+      setAlertRequest(errorAlertShell(t(unpackRequestErrorMessage(error))));
     } finally {
       setLoading(false);
     }
@@ -328,7 +323,7 @@ export function SendTo() {
       <Alert state={alert} />
       {pageView === SendView.Send && (
         <SendMain>
-          <IonRow style={{ marginTop: '50px' }}>
+          <IonRow style={{ marginTop: '36px' }}>
             <IonCol class="ion-center">
               <CurrencyWrapper>
                 <IonImg
@@ -348,7 +343,7 @@ export function SendTo() {
               </CurrencyWrapper>
             </IonCol>
           </IonRow>
-          <IonRow style={{ marginTop: '40px' }}>
+          <IonRow style={{ marginTop: '28px' }}>
             <IonCol class="ion-center">
               <SendWrapper>
                 <StyledInput
@@ -394,15 +389,14 @@ export function SendTo() {
                       background: !toAddress
                         ? 'rgba(103, 80, 164, 0.08)'
                         : gasFree
-                        ? '#41CC9A'
-                        : '#DE3730',
+                          ? '#41CC9A'
+                          : '#DE3730',
                     }}
                   >
                     {t('GasFree')}
                   </GasFreeMarker>
-                  <FeeMarker>{`Fee: ${internalFee.toFixed(2)} ${
-                    TEST_TO_MAIN.get(coinSymbol) || coinSymbol
-                  }`}</FeeMarker>
+                  <FeeMarker>{`Fee: ${internalFee.toFixed(2)} ${TEST_TO_MAIN.get(coinSymbol) || coinSymbol
+                    }`}</FeeMarker>
                 </GasWrapper>
                 {gasFree || !toAddress ? null : (
                   <GasWrapper>
@@ -413,16 +407,14 @@ export function SendTo() {
               </SendWrapper>
             </IonCol>
           </IonRow>
-          {verifyError === errorMsgs.NoError ? null : (
-            <IonRow>
-              <IonCol class="ion-center">
-                <Error>{verifyError}</Error>
-              </IonCol>
+          {alertRequest.visible && (
+            <IonRow style={{ margin: '12px 40px' }}>
+              <AlertBox state={alertRequest} />
             </IonRow>
           )}
           <IonRow
             class="ion-justify-content-between"
-            style={{ padding: '20px 50px' }}
+            style={{ padding: '20px 40px' }}
           >
             <IonCol>
               <PurpleButton

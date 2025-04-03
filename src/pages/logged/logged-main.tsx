@@ -6,10 +6,13 @@ import type { ReactNode } from 'react';
 import { ActivityAndNftTab } from '../../components/layout/activity-and-nft-tab';
 import { LoggedLayout } from '../../components/layout/logged-layout';
 
-export const LoggedMain: React.FC<{
+export function LoggedMain({
+  children,
+  loading = false,
+}: {
   children: ReactNode;
   loading?: boolean;
-}> = ({ children, loading = false }) => {
+}) {
   return (
     <LoggedLayout footer={<ActivityAndNftTab />}>
       {loading && (
@@ -24,4 +27,4 @@ export const LoggedMain: React.FC<{
       {!loading && children}
     </LoggedLayout>
   );
-};
+}

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useHistory } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
-import { Divider, formatWalletTransfer } from '../../pages/activity';
+import { formatWalletTransfer } from '../../pages/activity';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { OneActivity } from '../activity/one-activity';
@@ -17,17 +17,6 @@ const Tabs = styled.div({
   flexDirection: 'row',
   alignItems: 'flex-start',
   height: '40px',
-});
-
-const NftDiv = styled.div({
-  height: '200px',
-});
-
-const ActivityDiv = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  height: '200px',
 });
 
 const SeeMore = styled(Link)({
@@ -44,7 +33,6 @@ const SeeMore = styled(Link)({
 });
 
 export const ActivityAndNftTab = () => {
-  const [tab, setTab] = useState('activity');
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
   const history = useHistory();
@@ -56,13 +44,9 @@ export const ActivityAndNftTab = () => {
   const walletFormatTransfers = formatWalletTransfer(transfers);
 
   return (
-    <div>
+    <>
       <Tabs>
-        <TabButton
-          style={{ width: '50%', marginInline: '0' }}
-          id={'activity'}
-          onClick={() => setTab('activity')}
-        >
+        <TabButton style={{ width: '50%', marginInline: '0' }} id="activity">
           {t('Activity')}
         </TabButton>
         <TabButton
@@ -73,30 +57,30 @@ export const ActivityAndNftTab = () => {
           Nft
         </TabButton>
       </Tabs>
-      {tab === 'activity' ? (
-        <ActivityDiv style={{ height: isMobile ? '200px' : '180px' }}>
-          {walletFormatTransfers.slice(0, 2).map((transfer, index) => {
-            return (
-              <OneActivity
-                key={transfer.id}
-                transfer={transfer}
-                style={
-                  index === 0
-                    ? { height: '40px', margin: '30px auto 15px' }
-                    : { height: '40px', margin: '10px auto 5px' }
-                }
-              >
-                <Divider />
-              </OneActivity>
-            );
-          })}
-          {walletFormatTransfers.length >= 1 ? (
-            <SeeMore to={akashicPayPath(urls.activity)}>{t('SeeMore')}</SeeMore>
-          ) : null}
-        </ActivityDiv>
-      ) : (
-        <NftDiv style={{ height: isMobile ? '200px' : '180px' }}> nft</NftDiv>
-      )}
-    </div>
+      <div
+        className="vertical"
+        style={{
+          alignItems: 'center',
+          maxHeight: isMobile ? '200px' : '180px',
+        }}
+      >
+        {walletFormatTransfers.slice(0, 2).map((transfer, index) => {
+          return (
+            <OneActivity
+              key={transfer.id}
+              transfer={transfer}
+              style={
+                index === 0
+                  ? { height: '40px', margin: '10px auto 9px' }
+                  : { height: '40px', margin: '9px auto 5px' }
+              }
+            />
+          );
+        })}
+        {walletFormatTransfers.length >= 1 ? (
+          <SeeMore to={akashicPayPath(urls.activity)}>{t('SeeMore')}</SeeMore>
+        ) : null}
+      </div>
+    </>
   );
 };

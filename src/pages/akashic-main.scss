@@ -1,0 +1,16 @@
+$image: var(--main-image);
+
+.welcome-img {
+  content: $image;
+  width: 144px;
+  height: 210px;
+  margin-top: 40px;
+}
+
+/** Small version used when space is limited */
+.welcome-img-small {
+  content: $image;
+  width: 96px;
+  height: 140px;
+  margin-top: 14px;
+}

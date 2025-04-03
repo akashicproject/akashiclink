@@ -4,6 +4,7 @@ import '../../pages/logged/logged.css';
 import { Clipboard } from '@capacitor/clipboard';
 import { IonButton, IonIcon, IonSelect, IonSelectOption } from '@ionic/react';
 import { copyOutline } from 'ionicons/icons';
+import type { CSSProperties } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -31,10 +32,12 @@ export function AccountSelection({
   onClickCallback,
   changeSelection,
   isCopyButton,
+  style,
 }: {
   onClickCallback?: (selectedAccount: LocalAccount) => void;
   changeSelection?: (selectedAccount: LocalAccount) => void;
   isCopyButton?: boolean;
+  style?: CSSProperties;
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -67,6 +70,7 @@ export function AccountSelection({
         flexDirection: 'row',
         gap: '15px',
         width: '100%',
+        ...style,
       }}
     >
       <IonSelect
