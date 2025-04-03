@@ -1,4 +1,4 @@
-# Akashic Wallet
+# AkashicLink
 
 > Mobile apps + Chrome extension
 
@@ -8,10 +8,10 @@
 graph LR
   linkStyle default fill:#ffffff
 
-  subgraph diagram [Akashic System - Akashic Wallet - Components]
+  subgraph diagram [Akashic System - AkashicLink - Components]
     style diagram fill:#ffffff,stroke:#ffffff
 
-    subgraph 7 [Akashic Wallet]
+    subgraph 7 [AkashicLink]
       style 7 fill:#ffffff,stroke:#2e6295,color:#2e6295
 
       11("<div style='font-weight: bold'>Chrome Extension</div><div style='font-size: 70%; margin-top: 0px'>[Component]</div>")

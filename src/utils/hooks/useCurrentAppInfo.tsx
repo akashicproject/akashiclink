@@ -42,7 +42,7 @@ export const useCurrentAppInfo = () => {
   }, []);
 
   return {
-    name: appInfo?.name ?? 'Akashic Wallet',
+    name: appInfo?.name ?? 'AkashicLink',
     version: appInfo?.version ?? version,
   };
 };

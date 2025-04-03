@@ -61,7 +61,7 @@ export function SettingsVersion() {
             />
           </IonCol>
           <IonCol size={'12'} class="ion-center">
-            <b>{`${appInfo?.name ?? 'Akashic Wallet'} v${
+            <b>{`${appInfo?.name ?? 'AkashicLink'} v${
               appInfo?.version ?? version ?? '-'
             }`}</b>
           </IonCol>

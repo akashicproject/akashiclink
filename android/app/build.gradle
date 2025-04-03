@@ -47,16 +47,16 @@ android {
     productFlavors {
         production {
             applicationId "com.akashicpay.akashicwallet"
-            resValue "string", "app_name", "Akashic Wallet"
-            resValue "string", "title_activity_main", "Akashic Wallet"
+            resValue "string", "app_name", "AkashicLink"
+            resValue "string", "title_activity_main", "AkashicLink"
             resValue "string", "package_name", "com.akashicpay.akashicwallet"
             resValue "string", "custom_url_scheme", "com.akashicpay.akashicwallet"
             signingConfig signingConfigs.production
         }
         staging {
             applicationId "com.staging.akashicpay.akashicwallet"
-            resValue "string", "app_name", "Akashic Wallet Staging"
-            resValue "string", "title_activity_main", "Akashic Wallet Staging"
+            resValue "string", "app_name", "AkashicLink Staging"
+            resValue "string", "title_activity_main", "AkashicLink Staging"
             resValue "string", "package_name", "com.staging.akashicpay.akashicwallet"
             resValue "string", "custom_url_scheme", "com.staging.akashicpay.akashicwallet"
             signingConfig signingConfigs.staging
