@@ -63,10 +63,7 @@ export function LoginForm() {
     }
     if (activeAccount) {
       const matchingAccount = localAccounts?.find(
-        (a) =>
-          (typeof a.username !== 'undefined' &&
-            a.username === activeAccount.username) ||
-          a.identity === activeAccount.identity
+        (a) => a.identity === activeAccount.identity
       );
       setSelectedAccount(matchingAccount ?? localAccounts?.[0]);
     } else {
@@ -148,7 +145,10 @@ export function LoginForm() {
       </h3>
       <IonRow className={'ion-grid-gap-xs'}>
         <IonCol size="12">
-          <AccountSelection onNewAccountClick={(a) => setSelectedAccount(a)} />
+          <AccountSelection
+            onNewAccountClick={(a) => setSelectedAccount(a)}
+            currentSelectedAccount={selectedAccount}
+          />
         </IonCol>
         <IonCol size="12">
           <StyledInput

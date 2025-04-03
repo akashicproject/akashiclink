@@ -35,11 +35,13 @@ export function AccountSelection({
   showCopyButton,
   hideCreateImport,
   size = 'lg',
+  currentSelectedAccount,
 }: {
   onNewAccountClick?: (selectedAccount: LocalAccount) => void;
   showCopyButton?: boolean;
   hideCreateImport?: boolean;
   size?: 'md' | 'lg';
+  currentSelectedAccount?: LocalAccount;
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -49,12 +51,11 @@ export function AccountSelection({
 
   // preselect active account in this browsing session in the dropdown menu
   useEffect(() => {
-    if (activeAccount) {
+    if (currentSelectedAccount) {
+      setSelectedAccount(currentSelectedAccount);
+    } else if (activeAccount) {
       const matchingAccount = localAccounts?.find(
-        (a) =>
-          (typeof a.username !== 'undefined' &&
-            a.username === activeAccount.username) ||
-          a.identity === activeAccount.identity
+        (a) => a.identity === activeAccount.identity
       );
 
       setSelectedAccount(matchingAccount ?? localAccounts?.[0]);
