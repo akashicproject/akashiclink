@@ -5,6 +5,9 @@ input {
     margin: 0;
   }
 }
+input {
+  padding: 0 !important;
+}
 
 input[type='number'] {
   -moz-appearance: textfield !important;
