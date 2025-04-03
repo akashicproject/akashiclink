@@ -74,6 +74,10 @@ const tabButtonCss: CSSInterpolation = {
     ...buttonTextBaseCss,
     ...tabButtonEffectsCss,
   },
+  ['&.open::part(native)']: {
+    borderBottom: '2px solid #C297FF',
+    background: 'transparent',
+  },
 };
 
 const bottomTabButton: CSSInterpolation = {

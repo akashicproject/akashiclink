@@ -475,32 +475,31 @@ export function SendTo() {
                   </GasWrapper>
                 )}
                 {alertRequest.visible && <AlertBox state={alertRequest} />}
+                <IonRow style={{ width: '100%' }}>
+                  <IonCol size="6">
+                    <PurpleButton
+                      style={{ width: '100%' }}
+                      expand="block"
+                      onClick={verifyTransaction}
+                      disabled={loading || !toAddress}
+                    >
+                      {t('Send')}
+                      {loading ? (
+                        <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
+                      ) : null}
+                    </PurpleButton>
+                  </IonCol>
+                  <IonCol size="6">
+                    <WhiteButton
+                      style={{ width: '100%' }}
+                      expand="block"
+                      routerLink={akashicPayPath(urls.loggedFunction)}
+                    >
+                      {t('Cancel')}
+                    </WhiteButton>
+                  </IonCol>
+                </IonRow>
               </SendWrapper>
-            </IonCol>
-          </IonRow>
-          <IonRow
-            class="ion-justify-content-between"
-            style={{ padding: '20px 40px' }}
-          >
-            <IonCol>
-              <PurpleButton
-                expand="block"
-                onClick={verifyTransaction}
-                disabled={loading || !toAddress}
-              >
-                {t('Send')}
-                {loading ? (
-                  <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
-                ) : null}
-              </PurpleButton>
-            </IonCol>
-            <IonCol>
-              <WhiteButton
-                expand="block"
-                routerLink={akashicPayPath(urls.loggedFunction)}
-              >
-                {t('Cancel')}
-              </WhiteButton>
             </IonCol>
           </IonRow>
         </SendMain>

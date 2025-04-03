@@ -11,7 +11,7 @@ import {
   IonSpinner,
 } from '@ionic/react';
 import dayjs from 'dayjs';
-import { closeOutline } from 'ionicons/icons';
+import { alertCircleOutline, closeOutline } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Virtuoso } from 'react-virtuoso';
@@ -33,22 +33,22 @@ export const Divider = styled.div({
 });
 
 // @TODO can be used when we add text.
-// export const NoActivityWrapper = styled.div({
-//   width: '100%',
-//   display: 'inline-flex',
-//   flexDirection: 'column',
-//   alignItems: 'center',
-//   gap: '8px',
-//   marginTop: '200px',
-// });
-// export const NoActivityText = styled.div({
-//   fontFamily: 'Nunito Sans',
-//   fontStyle: 'normal',
-//   fontWeight: 700,
-//   fontSize: '16px',
-//   lineHeight: '24px',
-//   color: 'var(--ion-color-primary-10)',
-// });
+export const NoActivityWrapper = styled.div({
+  width: '100%',
+  display: 'inline-flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '8px',
+  marginTop: '200px',
+});
+export const NoActivityText = styled.div({
+  fontFamily: 'Nunito Sans',
+  fontStyle: 'normal',
+  fontWeight: 700,
+  fontSize: '16px',
+  lineHeight: '24px',
+  color: 'var(--ion-color-primary-10)',
+});
 
 export function Activity() {
   const { t } = useTranslation();
@@ -108,12 +108,10 @@ export function Activity() {
             )}
           />
         ) : (
-          <></>
-          // @TODO can be used when we add text for no activities
-          // <NoActivityWrapper>
-          //   <IonIcon icon={alertCircleOutline} class="alert-icon" />
-          //   <NoActivityText>{t('NoActivities')}</NoActivityText>
-          // </NoActivityWrapper>
+          <NoActivityWrapper>
+            <IonIcon icon={alertCircleOutline} class="alert-icon" />
+            <NoActivityText>{t('NoActivity')}</NoActivityText>
+          </NoActivityWrapper>
         )
       ) : (
         <IonSpinner

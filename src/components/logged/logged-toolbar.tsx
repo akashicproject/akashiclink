@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import {
   IonCol,
   IonGrid,
@@ -17,6 +18,11 @@ import { SquareWhiteButton } from '../buttons';
 import { useLogout } from '../logout';
 import { SettingsPopover } from '../settings/settings-popover';
 
+const HorizontalDivider = styled.div({
+  border: '2px solid #D9D9D9',
+  margin: '5px',
+  height: '40px',
+});
 // In seconds
 const TIMEOUT = 5 * 60;
 
@@ -62,20 +68,23 @@ export function LoggedToolbar() {
 
   return (
     <IonGrid fixed>
-      <IonRow class="ion-justify-content-around">
+      <IonRow class="ion-justify-content-center">
         {isDashboard ? null : (
-          <IonCol size="auto">
-            <SquareWhiteButton
-              class="icon-button"
-              onClick={() => history.goBack()}
-            >
-              <IonIcon
-                class="icon-button-icon"
-                slot="icon-only"
-                icon={arrowBack}
-              />
-            </SquareWhiteButton>
-          </IonCol>
+          <>
+            <IonCol size="auto">
+              <SquareWhiteButton
+                class="icon-button"
+                onClick={() => history.goBack()}
+              >
+                <IonIcon
+                  class="icon-button-icon"
+                  slot="icon-only"
+                  icon={arrowBack}
+                />
+              </SquareWhiteButton>
+            </IonCol>
+            <HorizontalDivider />
+          </>
         )}
 
         {pending ? (
