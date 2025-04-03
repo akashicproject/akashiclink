@@ -53,7 +53,7 @@ enum ProductionContracts {
 
 enum TestNetContracts {
   Namespace = 'akashic',
-  Create = 'c4f1186c58f49db2fdba401a1b36832902325d11a2e69ac6ef800836274c6894@5.1.4',
+  Create = 'c4f1186c58f49db2fdba401a1b36832902325d11a2e69ac6ef800836274c6894@5.2.1',
   CreateSecondaryOtk = '5160b43ea831f05faace12e01a82ebec8a4eb036ddfd429559c7d37fe32c4ffb@1.1.1',
   CryptoTransfer = 'd1903e29ea83413ecc759d129f7a21e4f8039ac5650360cf83d993343b5ffaa6@5.8.3',
   DiffConsensus = '76869d5f632c283324b0cb7c8e16ba14eec2cf5d6d7b3f4521cc9b6a12818623@3.0.3',
