@@ -4,6 +4,9 @@ import { Redirect, Route } from 'react-router';
 import { urls } from '../constants/urls';
 import { Activity } from '../pages/activity';
 import { AkashicPayMain } from '../pages/akashic-main';
+import { ChangePasswordConfirm } from '../pages/changePassword/confirm';
+import { ChangePasswordTwoFa } from '../pages/changePassword/email-2fa';
+import { ChangePassword } from '../pages/changePassword/enter-passwords';
 import { CreateWallet } from '../pages/createWallet/create-wallet';
 import { CreateWalletSecret } from '../pages/createWallet/create-wallet-secret';
 import { CreateWalletSecretConfirm } from '../pages/createWallet/create-wallet-secret-confirm';
@@ -113,6 +116,12 @@ export function NavigationTree() {
       {hpSubtree.registerPage(SettingsDelete, urls.settingsDelete)}
       {hpSubtree.registerPage(SettingsNaming, urls.settingsNaming)}
       {hpSubtree.registerPage(SettingsVersion, urls.settingsVersion)}
+      {hpSubtree.registerPage(ChangePassword, urls.changePassword)}
+      {hpSubtree.registerPage(ChangePasswordTwoFa, urls.changePassword2FA)}
+      {hpSubtree.registerPage(
+        ChangePasswordConfirm,
+        urls.changePasswordConfirm
+      )}
       {hpSubtree.registerPage(ErrorPage, urls.error)}
       {hpSubtree.registerPage(CreateWalletSecret, urls.secret)}
       {hpSubtree.registerPage(WalletCreated, urls.walletCreated)}

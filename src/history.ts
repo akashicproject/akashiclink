@@ -24,4 +24,10 @@ export interface LocationState {
     errorMsg?: string;
     currencyDisplayName?: string;
   };
+  changePassTwoFa?: {
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+    email: string;
+  };
 }

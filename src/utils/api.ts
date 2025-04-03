@@ -70,6 +70,21 @@ export const OwnersAPI = {
 
     return response.data;
   },
+  confirmPassword: async (
+    loginData: ILoginUser
+  ): Promise<IMinimalUserResponse> => {
+    const response = await axiosBasePublic.post(
+      `/auth/confirm-password`,
+      JSON.stringify(loginData)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+
+    return response.data;
+  },
+
   logout: async (): Promise<void> => {
     const response = await axiosOwnerBase.post(`/auth/logout`);
     const { data, status } = response;

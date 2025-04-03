@@ -135,7 +135,7 @@ export function SendConfirm() {
     if (state?.transaction) {
       try {
         setLoading(true);
-        await OwnersAPI.login({
+        await OwnersAPI.confirmPassword({
           username: owner.username,
           password,
         });
