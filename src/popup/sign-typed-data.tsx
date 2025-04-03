@@ -105,6 +105,15 @@ export function SignTypedData() {
           if (toSign.pendingDeposit) {
             callbackUrls.pendingDeposit = toSign.pendingDeposit as string;
           }
+          if (toSign.pendingPayout) {
+            callbackUrls.pendingPayout = toSign.pendingPayout as string;
+          }
+          if (toSign.failedDeposit) {
+            callbackUrls.failedDeposit = toSign.failedDeposit as string;
+          }
+          if (toSign.failedPayout) {
+            callbackUrls.failedPayout = toSign.failedPayout as string;
+          }
 
           signedMsg = await signSetupCallbackUrl({
             identity: toSign.identity,
