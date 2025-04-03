@@ -64,6 +64,7 @@ export const useAccountStorage = () => {
     }, [] as LocalAccount[]);
 
     await setLocalAccounts(accsToKeep);
+    await removeLocalOtk(account.identity);
   };
 
   const clearActiveAccount = async () => {
@@ -91,7 +92,7 @@ export const useAccountStorage = () => {
       const otk = localOtks.find((l) => l.identity === activeAccount?.identity);
       if (otk) {
         await addLocalOtk(otk, password);
-        await removeLocalOtkFromLocalStorage(otk);
+        await removeLocalOtkFromLocalStorage(otk.identity);
         return otk;
       } else {
         return undefined;
@@ -137,21 +138,21 @@ export const useAccountStorage = () => {
     }
   };
 
-  const removeLocalOtk = async (otk: FullOtk) => {
-    await SecureStorage.removeItem(otk.identity!);
+  const removeLocalOtk = async (identity: string) => {
+    await SecureStorage.removeItem(identity);
 
     // Legacy
     // remove otk from localstorage
-    await removeLocalOtkFromLocalStorage(otk);
+    await removeLocalOtkFromLocalStorage(identity);
 
     setCacheOtk(null);
   };
 
   // Legacy
   // remove otk from localstorage
-  const removeLocalOtkFromLocalStorage = async (otk: FullOtk) => {
+  const removeLocalOtkFromLocalStorage = async (identity: string) => {
     const otksToKeep = localOtks.reduce((p, c) => {
-      if (c.identity !== otk.identity) {
+      if (c.identity !== identity) {
         p.push(c);
       }
       return p;
