@@ -26,6 +26,8 @@ import {
   StyledInput,
   StyledInputErrorPrompt,
 } from '../../components/styled-input';
+import { urls } from '../../constants/urls';
+import { akashicPayPath } from '../../routing/navigation-tree';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import {
@@ -196,7 +198,7 @@ export function CreateWallet() {
         expand="block"
         callback={() => {
           setView(CreateWalletView.RequestAccount);
-          history.push('/');
+          history.push(akashicPayPath(urls.loggedFunction));
           isPlatform('mobile') && location.reload();
         }}
       />

@@ -22,6 +22,8 @@ import {
   StyledInput,
   StyledInputErrorPrompt,
 } from '../components/styled-input';
+import { urls } from '../constants/urls';
+import { akashicPayPath } from '../routing/navigation-tree';
 import { OwnersAPI } from '../utils/api';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import {
@@ -149,7 +151,7 @@ export function ImportWallet() {
         expand="block"
         callback={() => {
           setView(View.Submit);
-          history.push('/');
+          history.push(akashicPayPath(urls.loggedFunction));
           isPlatform('mobile') && location.reload();
         }}
       />
@@ -253,7 +255,7 @@ export function ImportWallet() {
                   setActivationCode(undefined);
                   await lastPageStorage.clear();
                   setView(View.Submit);
-                  history.push('/');
+                  history.push(akashicPayPath(urls.loggedFunction));
                 }}
               >
                 {t('Cancel')}
