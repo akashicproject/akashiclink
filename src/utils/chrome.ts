@@ -28,6 +28,7 @@ export const TYPED_DATA_PRIMARY_TYPE = {
   SETUP_CALLBACK_URL: 'SetupCallbackUrl',
   RETRY_CALLBACK: 'RetryCallback',
   PAYOUT: 'Payout',
+  GET_CALLBACK_URL: 'GetCallbackUrl',
 };
 
 export const closePopup = async () => {

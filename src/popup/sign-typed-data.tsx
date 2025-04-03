@@ -29,6 +29,10 @@ import {
 } from '../utils/hooks/nitr0gen';
 import type { BecomeBpToSign } from '../utils/hooks/useSignBecomeBpMessage';
 import { useSignBecomeBpMessage } from '../utils/hooks/useSignBecomeBpMessage';
+import {
+  type GetCallbackUrlsToSign,
+  useSignGetCallbackUrl,
+} from '../utils/hooks/useSignGetCallbackUrl';
 import type { RetryCallbackToSign } from '../utils/hooks/useSignRetryCallback';
 import { useSignRetryCallback } from '../utils/hooks/useSignRetryCallback';
 import type { SetCallbackUrlsToSign } from '../utils/hooks/useSignSetupCallbackUrl';
@@ -57,6 +61,7 @@ export function SignTypedData() {
 
   const signBecomeBpMessage = useSignBecomeBpMessage();
   const signSetupCallbackUrl = useSignSetupCallbackUrl();
+  const signGetCallbackUrl = useSignGetCallbackUrl();
   const signRetryCallback = useSignRetryCallback();
 
   const verifyTxnAndSign = useVerifyTxnAndSign();
@@ -139,6 +144,13 @@ export function SignTypedData() {
             expires: Number(toSign.expires),
             callbackUrls,
           } as SetCallbackUrlsToSign);
+          break;
+        }
+        case TYPED_DATA_PRIMARY_TYPE.GET_CALLBACK_URL: {
+          signedMsg = await signGetCallbackUrl({
+            identity: toSign.identity,
+            expires: Number(toSign.expires),
+          } as GetCallbackUrlsToSign);
           break;
         }
         case TYPED_DATA_PRIMARY_TYPE.PAYOUT: {
