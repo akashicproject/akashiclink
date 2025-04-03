@@ -1,11 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
-import {
-  type INft,
-  type IVerifyNftResponse,
-  L2Regex,
-  nftErrors,
-} from '@helium-pay/backend';
+import type { IBaseTransactionWithDbIndex } from '@helium-pay/backend';
+import { type INft, L2Regex, nftErrors } from '@helium-pay/backend';
 import { IonCol, IonImg, IonRow, IonSpinner } from '@ionic/react';
 import { debounce } from 'lodash';
 import { useState } from 'react';
@@ -92,6 +88,12 @@ enum SearchResult {
   NoInput = 'NoInput',
   IsSelfAddress = 'isSelfAddress',
   SendBpByAlias = 'SendBpByAlias',
+}
+
+interface IVerifyNftResponse {
+  nftOwnerIdentity: string;
+  nftAcnsStreamId: string;
+  txToSign: IBaseTransactionWithDbIndex;
 }
 
 const verifyNftTransaction = async (
@@ -203,11 +205,7 @@ export function NftTransfer() {
       };
       const signedTx = await signTxBody(verifiedNft.txToSign, signerOtk);
 
-      const response = await triggerNftTransfer({
-        signedTx,
-        nftName: currentNft.name,
-        toAddress: toAddress,
-      });
+      const response = await triggerNftTransfer(signedTx);
 
       const result = {
         sender: activeAccount?.identity,

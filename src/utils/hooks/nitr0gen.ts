@@ -1,10 +1,9 @@
 import { Preferences } from '@capacitor/preferences';
 import { datadogRum } from '@datadog/browser-rum';
+import type { IBaseTransactionWithDbIndex } from '@helium-pay/backend';
 import {
   type ITransactionProposalClientSideOtk,
   type ITransferNftResponse,
-  type ITransferNftUsingClientSideOtk,
-  type IUpdateAcnsUsingClientSideOtk,
   nftErrors,
   TransactionLayer,
   TransactionStatus,
@@ -147,13 +146,11 @@ export const useNftTransfer = () => {
   const nitr0genApi = new Nitr0genApi();
 
   const trigger = async (
-    signedTransactionData: ITransferNftUsingClientSideOtk
+    signedTx: IBaseTransactionWithDbIndex
   ): Promise<
     Omit<ITransferNftResponse, 'nftName' | 'ownerIdentity' | 'acnsAlias'>
   > => {
-    const response = await nitr0genApi.sendSignedTx(
-      signedTransactionData.signedTx
-    );
+    const response = await nitr0genApi.sendSignedTx(signedTx);
     nitr0genApi.checkForNitr0genError(response);
 
     return {
@@ -167,12 +164,10 @@ export const useUpdateAcns = () => {
   const nitr0genApi = new Nitr0genApi();
 
   const trigger = async (
-    signedTransactionData: IUpdateAcnsUsingClientSideOtk
+    signedTx: IBaseTransactionWithDbIndex
   ): Promise<{ txHash: string }> => {
     try {
-      const response = await nitr0genApi.sendSignedTx(
-        signedTransactionData.signedTx
-      );
+      const response = await nitr0genApi.sendSignedTx(signedTx);
       nitr0genApi.checkForNitr0genError(response);
 
       return {

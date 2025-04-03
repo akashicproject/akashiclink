@@ -122,7 +122,7 @@ export const AasListingSwitch = ({
 
         const signedTx = await signTxBody(txToSign, signerOtk);
 
-        await triggerUpdateAcns({ signedTx, name: aas.name });
+        await triggerUpdateAcns(signedTx);
 
         await fetchAndRemapAASToAddress(activeAccount.identity);
       }
