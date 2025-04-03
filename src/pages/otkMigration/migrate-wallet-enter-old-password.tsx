@@ -1,6 +1,6 @@
-import { IonCol, IonRow } from '@ionic/react';
+import { IonCol, IonRow, IonSpinner } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -35,7 +35,7 @@ export function MigrateWalletOldPassword() {
   const migrateWalletForm = useAppSelector(selectMigrateWalletForm);
   const username = useAppSelector(selectUsername);
   const dispatch = useAppDispatch();
-
+  const [isLoading, setIsLoading] = useState(false);
   /** Scrolling on IOS */
   const { isOpen } = useKeyboardState();
   useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
@@ -44,7 +44,7 @@ export function MigrateWalletOldPassword() {
 
   async function confirmOldPassword() {
     if (!migrateWalletForm.oldPassword) return;
-
+    setIsLoading(true);
     try {
       if (username && migrateWalletForm.oldPassword) {
         await OwnersAPI.validatePassword({
@@ -52,8 +52,10 @@ export function MigrateWalletOldPassword() {
           password: migrateWalletForm.oldPassword,
         });
       }
+      setIsLoading(false);
       history.push(akashicPayPath(urls.migrateWalletSecret));
     } catch (e) {
+      setIsLoading(false);
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(e))));
     }
   }
@@ -98,6 +100,7 @@ export function MigrateWalletOldPassword() {
               expand="block"
               onClick={confirmOldPassword}
               disabled={!migrateWalletForm.oldPassword}
+              isLoading={isLoading}
             >
               {t('Confirm')}
             </PurpleButton>

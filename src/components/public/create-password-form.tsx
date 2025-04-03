@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { userConst } from '@helium-pay/backend';
-import { IonCheckbox, IonCol, IonRow } from '@ionic/react';
+import { IonCheckbox, IonCol, IonRow, IonSpinner } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +16,7 @@ import {
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 import { useAppDispatch } from '../../app/hooks';
 import { CreateWalletForm } from '../../slices/createWalletSlice';
+import React from 'react';
 
 export const CreatePasswordInfo = styled.p({
   fontWeight: '400',
@@ -28,12 +29,14 @@ export function CreatePasswordForm({
   onCancel,
   onSubmit,
   alert,
+  isLoading = false
 }: {
   form: CreateWalletForm;
   onInputChange: Function;
   onCancel: () => void;
   onSubmit: () => void;
   alert?: FormAlertState;
+  isLoading?: boolean;
 }) {
   const { t } = useTranslation();
 
@@ -119,6 +122,7 @@ export function CreatePasswordForm({
               disabled={
                 !form.password || !form.confirmPassword || !form.checked
               }
+              isLoading={isLoading}
             >
               {t('Confirm')}
             </PurpleButton>

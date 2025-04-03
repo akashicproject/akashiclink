@@ -1,5 +1,5 @@
-import { IonCol, IonRow, IonText } from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { IonCol, IonIcon, IonRow, IonSpinner, IonText } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -28,7 +28,7 @@ export function KeyPairImport() {
   const importWalletForm = useAppSelector(selectImportWalletForm);
   const dispatch = useAppDispatch();
   const importWalletError = useAppSelector(selectError);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState(formAlertResetState);
 
   useEffect(() => {
@@ -43,7 +43,9 @@ export function KeyPairImport() {
 
   const requestImport = async () => {
     if (importWalletForm.privateKey) {
+      setIsLoading(true);
       dispatch(restoreOtkFromKeypairAsync(importWalletForm.privateKey));
+      setIsLoading(false);
     }
   };
 
@@ -88,6 +90,7 @@ export function KeyPairImport() {
             disabled={!importWalletForm.privateKey}
             onClick={requestImport}
             expand="block"
+            isLoading={isLoading}
           >
             {t('Confirm')}
           </PurpleButton>

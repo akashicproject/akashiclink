@@ -1,10 +1,12 @@
 import type { CSSInterpolation } from '@emotion/serialize/types';
 import styled from '@emotion/styled';
-import { IonButton } from '@ionic/react';
+import { IonButton, IonSpinner } from '@ionic/react';
 import type { CSSProperties } from 'react';
 
 const purple = '#7444B6';
 const white = '#FFFFFF';
+
+type IonButtonProps = React.ComponentProps<typeof IonButton>;
 
 const squareButtonBaseCss: CSSInterpolation = {
   border: '1px solid transparent',
@@ -112,10 +114,25 @@ const topTabButtonActive: CSSInterpolation = {
   },
 };
 
-export const PurpleButton = styled(IonButton)({
+const PurpleButtonCSS = styled(IonButton)({
   ...purpleButtonCss,
 });
-
+export const PurpleButton = (
+  props: IonButtonProps & { isLoading?: boolean }
+) => {
+  return (
+    <PurpleButtonCSS {...props}>
+      {props.children}
+      {props.isLoading && (
+        <IonSpinner
+          className={'ion-margin-start'}
+          slot="end"
+          name="circular"
+        ></IonSpinner>
+      )}
+    </PurpleButtonCSS>
+  );
+};
 export const WhiteButton = styled(IonButton)({
   ...whiteButtonCss,
 });

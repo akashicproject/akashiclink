@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { userConst } from '@helium-pay/backend';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -30,7 +30,7 @@ export const CreatePasswordInfo = styled.p({
 
 export function ImportWalletPassword() {
   const history = useHistory<LocationState>();
-
+  const [isLoading, setIsLoading] = useState(false);
   /** Tracking user input */
   const validatePassword = (value: string) =>
     !!value.match(userConst.passwordRegex);
@@ -62,8 +62,10 @@ export function ImportWalletPassword() {
         importWalletForm.confirmPassword &&
         importWalletForm.checked
       )
-    )
+    ) {
       return;
+    }
+    setIsLoading(true);
     const isPasswordValid =
       validateConfirmPassword(importWalletForm.confirmPassword) &&
       validatePassword(importWalletForm.password);
@@ -85,7 +87,7 @@ export function ImportWalletPassword() {
       await mutateNftTransfersMe();
       await mutateBalancesMe();
       await mutateNftMe();
-
+      setIsLoading(false);
       history.push({
         pathname: akashicPayPath(urls.importSuccess),
       });
@@ -105,6 +107,7 @@ export function ImportWalletPassword() {
           })
         );
       }}
+      isLoading={isLoading}
       onSubmit={confirmPasswordAndCreateOtk}
     />
   );

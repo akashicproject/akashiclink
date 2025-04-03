@@ -1,7 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
 import { userConst } from '@helium-pay/backend';
-import { IonCheckbox, IonCol, IonRow } from '@ionic/react';
+import { IonCheckbox, IonCol, IonRow, IonSpinner } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -46,6 +46,7 @@ export function MigrateWalletCreatePassword() {
   const otk = useAppSelector(selectOtk);
   const username = useAppSelector(selectUsername);
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   /** Tracking user input */
   const validatePassword = (value: string) =>
@@ -80,6 +81,7 @@ export function MigrateWalletCreatePassword() {
       validatePassword(migrateWalletForm.password)
     ) {
       try {
+        setIsLoading(true);
         // Login With v0-api to be authenticated for swap-endpoint
         await OwnersAPI.login({
           username: username!,
@@ -109,12 +111,13 @@ export function MigrateWalletCreatePassword() {
           identity,
           signedAuth: signImportAuth(otk!.key.prv.pkcs8pem, identity),
         });
-
+        setIsLoading(false);
         history.push({
           pathname: akashicPayPath(urls.migrateWalletComplete),
         });
       } catch (e) {
         datadogRum.addError(e);
+        setIsLoading(false);
         setAlert(errorAlertShell(t('GenericFailureMsg')));
       }
     } else setAlert(errorAlertShell(t('PasswordHelperText')));
@@ -195,6 +198,7 @@ export function MigrateWalletCreatePassword() {
                 !migrateWalletForm.confirmPassword ||
                 !migrateWalletForm.checked
               }
+              isLoading={isLoading}
             >
               {t('Confirm')}
             </PurpleButton>

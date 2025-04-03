@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { IonCol, IonIcon, IonRow, IonText } from '@ionic/react';
 import { arrowBack } from 'ionicons/icons';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
