@@ -14,6 +14,7 @@ import { Divider } from '../../pages/activity';
 import { formatDate } from '../../utils/formatDate';
 import { displayLongCurrencyAmount } from '../../utils/long-amount';
 import { L2Icon } from '../../utils/supported-currencies';
+import { limitDecimalPlaces } from '../../utils/conversions';
 const OneTransfer = styled.div<{ hover: boolean }>((props) => ({
   display: 'flex',
   justifyContent: 'center',
@@ -28,10 +29,11 @@ const OneTransfer = styled.div<{ hover: boolean }>((props) => ({
 const ActivityWrapper = styled.div({
   display: 'flex',
   flexDirection: 'row',
+  justifyContent: 'space-around',
   alignItems: 'center',
-  padding: '8px 0',
+  padding: '12px 0',
   // Gap between the elements
-  gap: '8px',
+  gap: '4px',
 });
 
 const TimeWrapper = styled.div({
@@ -185,7 +187,7 @@ export function OneActivity({
           {/* HACK: Reduce currency symbols to a single word to fit small screen */}
           <Amount>
             {displayLongCurrencyAmount(
-              transfer.amount,
+              limitDecimalPlaces(transfer.amount),
               transfer.currency.displayName.split('-')[0]
             )}
           </Amount>

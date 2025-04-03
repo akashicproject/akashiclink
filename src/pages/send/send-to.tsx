@@ -6,10 +6,10 @@ import {
   NetworkDictionary,
   TEST_TO_MAIN,
 } from '@helium-pay/backend';
+import { L2Regex } from '@helium-pay/owners/src/constants/currencies';
 import { IonCol, IonImg, IonRow, IonSpinner, useIonRouter } from '@ionic/react';
 import Big from 'big.js';
-import { debounce } from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -46,8 +46,6 @@ const SendWrapper = styled.div({
   alignItems: 'center',
   padding: 0,
   gap: '8px',
-  paddingLeft: '40px',
-  paddingRight: '40px',
   width: '270px',
 });
 
@@ -75,17 +73,6 @@ const BalanceText = styled.div({
   lineHeight: '28px',
   color: 'var(--ion-color-primary-10)',
   textAlign: 'center',
-});
-
-const NativeCoinNeededText = styled.div({
-  fontStyle: 'normal',
-  fontWeight: 700,
-  fontSize: '14px',
-  lineHeight: '20px',
-  color: 'var(--ion-color-primary-10)',
-  textAlign: 'center',
-  border: '1px solid red',
-  width: '270px',
 });
 
 const GasWrapper = styled.div({
@@ -135,14 +122,18 @@ const EqualsL2Box = styled.div({
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
+
   gap: '8px',
   width: '270px',
   height: '40px',
+
   borderRadius: '8px',
+
   fontWeight: '400',
-  fontSize: '12px',
+  fontSize: '10px',
   lineHeight: '16px',
-  color: '#290056',
+  color: 'var(--ion-color-primary-10)',
+
   border: '1px solid #958e99',
 });
 
@@ -184,12 +175,6 @@ export function SendTo() {
   const coinSymbol = currentWalletCurrency.currency[0];
   const tokenSymbol = currentWalletCurrency.currency[1];
 
-  // Communicate to users that native coin is needed for token transfers whenever they try to send a token
-  const [showNativeCoinNeeded, setShowNativeCoinNeeded] = useState(false);
-  const showNativeCoinNeededMsg = t('showNativeCoinNeededMsg', {
-    coinSymbol,
-  });
-
   const internalFee = Big(0.1).div(
     Big(
       exchangeRates.find(
@@ -204,56 +189,98 @@ export function SendTo() {
   const [pageView, setPageView] = useState(SendView.Send);
 
   const [verifiedTransaction, setVerifiedTransaction] =
-    useState<VerifiedTransaction>();
+    useState<VerifiedTransaction[]>();
 
-  const [toAddress, setToAddress] = useState<string>('');
-  const [inputAddress, setInputAddress] = useState<string>('');
-  const [l1AddressWhenL2, setL1AddressWhenL2] = useState<string>('');
-
+  /**
+   * Handling of direct l1 transfers or gas-free l2 transfers via nitr0gen
+   */
+  const [toAddress, setToAddress] = useState<string>();
+  const [rawAddress, setRawAddress] = useState('');
+  const [l1AddressWhenL2, setL1AddressWhenL2] = useState<string>();
   const [gasFree, setGasFree] = useState(false);
 
-  const inputToAddress = async (value: string) => {
-    const l2address = await OwnersAPI.checkL2Address({
-      to: value,
-      coinSymbol: currentWalletCurrency.currency[0],
-    });
-    if (l2address) {
-      setToAddress(l2address);
-      if (
-        value.match(
-          NetworkDictionary[currentWalletCurrency.currency[0]].regex.address
-        )
-      )
-        setL1AddressWhenL2(value);
-      setGasFree(true);
-    } else {
-      setL1AddressWhenL2('');
-      // Check if anything found by Acns
-      const acnsResult = await OwnersAPI.nftSearch({ searchValue: value });
-      if (acnsResult.value) {
-        setToAddress(acnsResult.value);
-        setGasFree(true);
-      } else {
-        setShowNativeCoinNeeded(tokenSymbol !== undefined);
-        setToAddress(value);
-        setGasFree(false);
-      }
+  /**
+   * Timeout to avoid spamming of backend with address checks
+   */
+  const validateAddressWithBackendTimeout = 500;
+  const [timeoutHandle, setTimeoutHandle] =
+    useState<ReturnType<typeof setTimeout>>();
+
+  const validateRecipientAddressWithBackend = (recipientAddress: string) => {
+    // Reset pending
+    clearTimeout(timeoutHandle);
+
+    // Reset form
+    setRawAddress(recipientAddress);
+    setToAddress(undefined);
+    setAlertRequest(formAlertResetState);
+    setGasFree(false);
+    if (!recipientAddress) return;
+
+    // 1. Regex validation
+    if (
+      !recipientAddress.match(
+        NetworkDictionary[currentWalletCurrency.currency[0]].regex.address
+      ) &&
+      !recipientAddress.match(L2Regex)
+    ) {
+      // 2a. If input address does not match standard form, lookup value in the ACNS
+      setTimeoutHandle(
+        setTimeout(async () => {
+          setL1AddressWhenL2(undefined);
+
+          const acnsResult = await OwnersAPI.nftSearch({
+            searchValue: recipientAddress,
+          });
+
+          if (acnsResult.value) {
+            setToAddress(acnsResult.value);
+            setGasFree(true);
+          } else {
+            setAlertRequest({
+              success: false,
+              visible: true,
+              message: t('AddressHelpText'),
+            });
+          }
+        }, validateAddressWithBackendTimeout)
+      );
+      return;
     }
-    return l2address;
+
+    // 2b. Check with backend if there is a l2 that can fulfill this request
+    setTimeoutHandle(
+      setTimeout(async () => {
+        setL1AddressWhenL2(undefined);
+
+        const l2address = await OwnersAPI.checkL2Address({
+          to: recipientAddress,
+          coinSymbol: currentWalletCurrency.currency[0],
+        });
+
+        if (l2address) {
+          // If l2 address exists
+          setToAddress(l2address);
+          recipientAddress.match(
+            NetworkDictionary[currentWalletCurrency.currency[0]].regex.address
+          ) && setL1AddressWhenL2(recipientAddress);
+          setGasFree(true);
+        } else {
+          setL1AddressWhenL2(undefined);
+          setToAddress(recipientAddress);
+          if (tokenSymbol !== undefined)
+            setAlertRequest({
+              success: false,
+              visible: true,
+              message: t('showNativeCoinNeededMsg', {
+                coinSymbol: currentWalletCurrency.currency[0],
+              }),
+            });
+          setGasFree(false);
+        }
+      }, validateAddressWithBackendTimeout)
+    );
   };
-
-  // Use "debounced" function, i.e. only call the relevant function (inputToAddress) if >= 500 ms have passed since the last function call.
-  // This ensures the backend is not spammed with calls for every key-stroke in the send-to box
-  const debouncedSearchHandler = useMemo(
-    () => debounce(inputToAddress, 500),
-    []
-  );
-
-  useEffect(() => {
-    return () => {
-      debouncedSearchHandler.cancel();
-    };
-  }, []);
 
   const [amount, setAmount] = useState<string>('');
   const validateAmount = (value: string) =>
@@ -272,7 +299,7 @@ export function SendTo() {
 
   // Send transaction to the backend for verification
   const verifyTransaction = async () => {
-    if (!gasFree && !validateAddress(toAddress)) {
+    if (!toAddress || !validateAddress(toAddress)) {
       setAlert(errorAlertShell(t('AddressHelpText')));
       return;
     }
@@ -294,7 +321,13 @@ export function SendTo() {
     };
     try {
       const response = await OwnersAPI.verifyTransaction(originalTxn);
-      setVerifiedTransaction(response[0]);
+      // reject the request if /verify returns multiple transfers
+      // for L2: multiple transactions from the same Nitr0gen identity can always be combined into a single one, so it should be fine
+      if (response.length > 1 && !gasFree) {
+        setAlertRequest(errorAlertShell(t('GenericFailureMsg')));
+        return;
+      }
+      setVerifiedTransaction(response);
       const feesEstimate = Number(response[0].feesEstimate || '0');
       const balance = Number(currentWallet.balance);
       // if user does not have enough balance to pay the estimated gas, can not go to next step
@@ -333,11 +366,6 @@ export function SendTo() {
                   {aggregatedBalances.get(currentWalletCurrency.currency)}{' '}
                   {currentWalletCurrency.symbol}
                 </BalanceText>
-                {showNativeCoinNeeded && (
-                  <NativeCoinNeededText>
-                    {showNativeCoinNeededMsg}
-                  </NativeCoinNeededText>
-                )}
               </CurrencyWrapper>
             </IonCol>
           </IonRow>
@@ -350,10 +378,9 @@ export function SendTo() {
                   placeholder={t('EnterAddress')}
                   type={'text'}
                   errorPrompt={StyledInputErrorPrompt.Address}
-                  onIonInput={({ target: { value } }) => {
-                    debouncedSearchHandler(value as string);
-                    setInputAddress(value as string);
-                  }}
+                  onIonInput={({ target: { value } }) =>
+                    validateRecipientAddressWithBackend(value as string)
+                  }
                 />
                 <StyledInput
                   isHorizontal={true}
@@ -366,12 +393,14 @@ export function SendTo() {
                   }}
                   validate={validateAmount}
                 />
-                {gasFree && inputAddress !== toAddress && (
-                  <GasWrapper>
+                {gasFree && (
+                  <GasWrapper style={{ margin: '8px 0' }}>
                     <EqualsL2Box>
-                      {(l1AddressWhenL2 === ''
-                        ? `${displayLongText(inputAddress)} = `
-                        : '') + `${displayLongText(toAddress)}`}
+                      {l1AddressWhenL2
+                        ? `${displayLongText(rawAddress)} = ${displayLongText(
+                            toAddress
+                          )}`
+                        : `${displayLongText(toAddress, 30)}`}
                     </EqualsL2Box>
                     <IonImg
                       alt={''}
@@ -404,14 +433,10 @@ export function SendTo() {
                     <FeeMarker>{`+ ${t('GasFee')}`}</FeeMarker>
                   </GasWrapper>
                 )}
+                {alertRequest.visible && <AlertBox state={alertRequest} />}
               </SendWrapper>
             </IonCol>
           </IonRow>
-          {alertRequest.visible && (
-            <IonRow style={{ margin: '12px 40px' }}>
-              <AlertBox state={alertRequest} />
-            </IonRow>
-          )}
           <IonRow
             class="ion-justify-content-between"
             style={{ padding: '20px 40px' }}
@@ -420,7 +445,7 @@ export function SendTo() {
               <PurpleButton
                 expand="block"
                 onClick={verifyTransaction}
-                disabled={loading}
+                disabled={loading || !toAddress}
               >
                 {t('Send')}
                 {loading ? (

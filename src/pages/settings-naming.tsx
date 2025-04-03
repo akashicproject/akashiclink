@@ -5,7 +5,6 @@ import type { IAcnsResponse } from '@helium-pay/backend';
 import {
   IonCol,
   IonGrid,
-  IonIcon,
   IonImg,
   IonModal,
   IonRow,
@@ -14,11 +13,7 @@ import {
   IonSpinner,
   IonToast,
 } from '@ionic/react';
-import {
-  checkmarkCircleOutline,
-  pencilOutline,
-  trashOutline,
-} from 'ionicons/icons';
+import { checkmarkCircleOutline } from 'ionicons/icons';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -266,10 +261,9 @@ export function SettingsNaming() {
                             height: 'auto',
                           }}
                         >
-                          <IonIcon
-                            class="icon-button-icon"
-                            slot="icon-only"
-                            icon={pencilOutline}
+                          <IonImg
+                            alt="edit"
+                            src="/shared-assets/icons/pencil.svg"
                           />
                         </SquareWhiteButton>
                         <SquareWhiteButton
@@ -292,10 +286,9 @@ export function SettingsNaming() {
                             height: 'auto',
                           }}
                         >
-                          <IonIcon
-                            class="icon-button-icon"
-                            slot="icon-only"
-                            icon={trashOutline}
+                          <IonImg
+                            alt="edit"
+                            src="/shared-assets/icons/trash.svg"
                           />
                         </SquareWhiteButton>
                       </AcnsAddress>
