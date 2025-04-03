@@ -28,27 +28,33 @@ import { getImageIconUrl } from '../../utils/url-utils';
 
 const autoLockTimeMap: AutoLockProp[] = [
   {
-    label: '10 minutes',
+    label: '10',
+    unit: 'minutes',
     value: 10,
   },
   {
-    label: '30 minutes',
+    label: '30',
+    unit: 'minutes',
     value: 30,
   },
   {
-    label: '1 hour',
+    label: '1',
+    unit: 'hour',
     value: 60,
   },
   {
-    label: '2 hours',
+    label: '2',
+    unit: 'hours',
     value: 60 * 2,
   },
   {
-    label: '4 hours',
+    label: '4',
+    unit: 'hours',
     value: 60 * 4,
   },
   {
-    label: '8 hours',
+    label: '8',
+    unit: 'hours',
     value: 60 * 8,
   },
 ];
@@ -68,6 +74,7 @@ const AutoLockTextCaret = ({ autoLockTime }: { autoLockTime: string }) => {
 };
 type AutoLockProp = {
   label: string;
+  unit: string;
   value: number;
 };
 const AutoLockAccordion = ({
@@ -77,7 +84,9 @@ const AutoLockAccordion = ({
   autoLock: AutoLockProp;
   setAutoLock: Dispatch<SetStateAction<AutoLockProp>>;
 }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
+
   return (
     <IonRadioGroup value={autoLock.value} style={{ padding: '0px 8px' }}>
       {autoLockTimeMap.map((item, i) => {
@@ -95,7 +104,9 @@ const AutoLockAccordion = ({
               width={'33.33%'}
               mode="md"
             >
-              <h5 className="ion-no-margin">{item.label}</h5>
+              <h5 className="ion-no-margin">{`${item.label} ${t(
+                item.unit
+              )}`}</h5>
             </SettingsRadio>
           </>
         );
@@ -136,7 +147,11 @@ export function Settings() {
     {
       header: t('AutoLock'),
       iconUrl: getImageIconUrl('lock-light.svg'),
-      endComponent: <AutoLockTextCaret autoLockTime={autoLock.label} />,
+      endComponent: (
+        <AutoLockTextCaret
+          autoLockTime={`${autoLock.label} ${t(autoLock.unit)}`}
+        />
+      ),
       isAccordion: true,
       children: (
         <AutoLockAccordion autoLock={autoLock} setAutoLock={setAutoLock} />
