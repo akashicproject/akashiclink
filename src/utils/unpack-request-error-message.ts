@@ -66,6 +66,8 @@ export const unpackRequestErrorMessage = (error: unknown) => {
       return 'TransactionTimeOut';
     case errorMsg === otherError.signingError:
       return 'ProviderError';
+    case errorMsg === otherError.otkSwapAlreadyDone:
+      return 'AlreadyMigratedPleaseReImport';
     default:
       return 'GenericFailureMsg';
   }

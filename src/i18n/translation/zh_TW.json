@@ -245,5 +245,6 @@
   "UpdateNoticeBullet2": "您必須確保這 12 個密語的安全，否則您的帳戶將無法恢復。",
   "UpdateNoticeBullet3": "Akashic 錢包不會儲存或收集您的密鑰對、12 個密語或密碼。",
   "WalletMigrationSuccessful": "成功創建 12 個字的恢復密語",
-  "InvalidSecretPhrase": "無效密語"
+  "InvalidSecretPhrase": "無效密語",
+  "AlreadyMigratedPleaseReImport": "錢包已遷移，請刪除您的帳戶並使用新的恢復方法匯入"
 }

@@ -6,7 +6,11 @@ import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import { datadogRum } from '@datadog/browser-rum';
 
 import { AccountSelection } from '../account-selection/account-selection';
-import { CustomAlert, errorAlertShell, formAlertResetState, } from '../alert/alert';
+import {
+  CustomAlert,
+  errorAlertShell,
+  formAlertResetState,
+} from '../alert/alert';
 import { PurpleButton } from '../buttons';
 import { StyledInput } from '../styled-input';
 import { urls } from '../../constants/urls';
@@ -22,7 +26,7 @@ import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
 import { useNftMe } from '../../utils/hooks/useNftMe';
-import { historyResetStackAndRedirect } from "../../history";
+import { historyResetStackAndRedirect } from '../../history';
 
 /**
  * Form allowing user to login
@@ -98,6 +102,11 @@ export function LoginForm() {
           ),
         });
       } else {
+        // Check if supplied password is correct
+        await OwnersAPI.validatePassword({
+          username: selectedAccount.username,
+          password,
+        });
         // @TODO remove once old accounts no longer supported
         // Redirect to Migration-Flow
         historyResetStackAndRedirect(urls.migrateWalletNotice, {
@@ -105,7 +114,7 @@ export function LoginForm() {
             username: selectedAccount.username,
             oldPassword: password,
           },
-        })
+        });
         return;
       }
 
@@ -121,7 +130,7 @@ export function LoginForm() {
       await mutateNftMe();
       setSelectedAccount(undefined);
       setPassword('');
-      historyResetStackAndRedirect()
+      historyResetStackAndRedirect();
     } catch (error) {
       datadogRum.addError(error);
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
@@ -135,7 +144,9 @@ export function LoginForm() {
   return (
     <>
       <CustomAlert state={alert} />
-      <h1 className="ion-justify-content-center ion-margin-top-lg ion-margin-bottom-xs">{t('WelcomeBack')}</h1>
+      <h1 className="ion-justify-content-center ion-margin-top-lg ion-margin-bottom-xs">
+        {t('WelcomeBack')}
+      </h1>
       <h3 className="ion-justify-content-center ion-margin-top-0">
         {t('EmpoweringYourWealth')}
       </h3>
