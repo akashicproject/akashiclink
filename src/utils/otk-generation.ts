@@ -88,18 +88,22 @@ export function restoreOtkFromKeypair(
 
 // Sign a piece of data using the private key to be verified by the backend
 export function signImportAuth(otkPriv: string, data: string) {
-  // Have to but private key into correct format
-  const pemPrivate =
-    '-----BEGIN EC PRIVATE KEY-----\n' +
-    `${otkPriv}\n` +
-    '-----END EC PRIVATE KEY-----';
-  let kp;
-  if (otkPriv.startsWith('0x')) {
-    kp = new ActiveCrypto.KeyPair('secp256k1', otkPriv);
-  } else {
-    kp = new ActiveCrypto.KeyPair('secp256k1', pemPrivate);
+  try {
+    // Have to but private key into correct format
+    const pemPrivate =
+      '-----BEGIN EC PRIVATE KEY-----\n' +
+      `${otkPriv}\n` +
+      '-----END EC PRIVATE KEY-----';
+    let kp;
+    if (otkPriv.startsWith('0x')) {
+      kp = new ActiveCrypto.KeyPair('secp256k1', otkPriv);
+    } else {
+      kp = new ActiveCrypto.KeyPair('secp256k1', pemPrivate);
+    }
+    return kp.sign(data);
+  } catch (error) {
+    throw new Error(keyError.invalidPrivateKey);
   }
-  return kp.sign(data);
 }
 
 const secretPhraseDictionary = [

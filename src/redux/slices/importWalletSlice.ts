@@ -147,6 +147,8 @@ export const importWalletSlice = createAppSlice({
               });
               identity = response.identity;
               username = response.username;
+            } else {
+              throw e;
             }
           }
         } catch (e) {
