@@ -32,7 +32,17 @@
   font-weight: 400;
   line-height: 40px;
   --min-height: none;
-  --color: #ccc4cf;
+  --color: #290056;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield !important;
 }
 
 .input-password {

@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next';
 
 import { LoggedLayout } from '../components/layout/loggedLayout';
 import { useTransfersMe } from '../utils/hooks/useTransfersMe';
+import { displayLongText } from '../utils/long-text';
 
 const MainWrapper = styled.div({
   display: 'flex',
@@ -209,11 +210,6 @@ export function Activity() {
     else return t('Success');
   };
 
-  const longText = (long: string | undefined) => {
-    if (long && long.length > 15) {
-      return long.slice(0, 10) + '...' + long.slice(-5);
-    }
-  };
   return (
     <LoggedLayout>
       <MainWrapper>
@@ -294,13 +290,13 @@ export function Activity() {
               <DetailColumn>
                 <TextTitle>{t('From')}</TextTitle>
                 <TextContent>
-                  {longText(currentTransfer?.senderAddressUrl)}
+                  {displayLongText(currentTransfer?.senderAddressUrl)}
                 </TextContent>
               </DetailColumn>
               <DetailColumn>
                 <TextTitle>{t('To')}</TextTitle>
                 <TextContent>
-                  {longText(currentTransfer?.recipientAddressUrl)}
+                  {displayLongText(currentTransfer?.recipientAddressUrl)}
                 </TextContent>
               </DetailColumn>
               <DetailColumn>

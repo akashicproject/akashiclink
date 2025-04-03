@@ -1,9 +1,12 @@
 import styled from '@emotion/styled';
+import type { ITransactionVerifyResponse as VerifiedTransaction } from '@helium-pay/backend';
 import { IonCol, IonImg, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
 import { PurpleButton } from '../../components/buttons';
 import { DividerDivWithoutMargin } from '../../components/layout/divider';
+import { errorMsgs } from '../../constants/error-messages';
+import { displayLongText } from '../../utils/long-text';
 import { SendMain } from './send-main';
 
 const HeaderWrapper = styled.div({
@@ -62,9 +65,16 @@ const TextContent = styled.div({
   lineHeight: '24px',
   color: '#290056',
 });
-
-export function SendResult() {
+interface Props {
+  transaction: VerifiedTransaction | undefined;
+  errorMsg: string;
+  coinSymbol: string;
+  goBack: () => void;
+}
+export function SendResult(props: Props) {
   const { t } = useTranslation();
+  const wrongResult = props.errorMsg !== errorMsgs.NoError;
+
   return (
     <SendMain>
       <IonRow>
@@ -72,43 +82,57 @@ export function SendResult() {
           <HeaderWrapper>
             <IonImg
               alt={''}
-              src="/shared-assets/images/right.png"
+              src={
+                wrongResult
+                  ? '/shared-assets/images/wrong.png'
+                  : '/shared-assets/images/right.png'
+              }
               style={{ width: '40px', height: '40px' }}
             />
-            <HeaderTitle>{t('TransactionSuccessful')}</HeaderTitle>
+            <HeaderTitle>
+              {wrongResult ? props.errorMsg : t('TransactionSuccessful')}
+            </HeaderTitle>
             <DividerDivWithoutMargin />
           </HeaderWrapper>
         </IonCol>
       </IonRow>
-      <IonRow>
-        <IonCol class="ion-center">
-          <ResultContent>
-            <TextWrapper>
-              <TextTitle>{t('Send')}</TextTitle>
-              <TextContent>AAx111111</TextContent>
-            </TextWrapper>
-            <TextWrapper>
-              <TextTitle>{t('Receiver')}</TextTitle>
-              <TextContent>AAx111111</TextContent>
-            </TextWrapper>
-            <TextWrapper>
-              <TextTitle>{t('Amount')}</TextTitle>
-              <TextContent>USDT xx</TextContent>
-            </TextWrapper>
-            <TextWrapper>
-              <TextTitle>Gas</TextTitle>
-              <TextContent>Gas Fee/xx Gwei</TextContent>
-            </TextWrapper>
-            <TextWrapper>
-              <TextTitle>{t('Fee')}</TextTitle>
-              <TextContent>...</TextContent>
-            </TextWrapper>
-          </ResultContent>
-        </IonCol>
-      </IonRow>
+      {wrongResult ? null : (
+        <IonRow>
+          <IonCol class="ion-center">
+            <ResultContent>
+              <TextWrapper>
+                <TextTitle>{t('Send')}</TextTitle>
+                <TextContent>
+                  {displayLongText(props.transaction?.fromAddress)}
+                </TextContent>
+              </TextWrapper>
+              <TextWrapper>
+                <TextTitle>{t('Receiver')}</TextTitle>
+                <TextContent>
+                  {displayLongText(props.transaction?.toAddress)}
+                </TextContent>
+              </TextWrapper>
+              <TextWrapper>
+                <TextTitle>{t('Coin')}</TextTitle>
+                <TextContent>{props.coinSymbol}</TextContent>
+              </TextWrapper>
+              <TextWrapper>
+                <TextTitle>{t('Amount')}</TextTitle>
+                <TextContent>{props.transaction?.amount}</TextContent>
+              </TextWrapper>
+              <TextWrapper>
+                <TextTitle>{t('EsTGasFee')}</TextTitle>
+                <TextContent>{props.transaction?.feesEstimate}</TextContent>
+              </TextWrapper>
+            </ResultContent>
+          </IonCol>
+        </IonRow>
+      )}
       <IonRow style={{ marginTop: '50px' }}>
         <IonCol>
-          <PurpleButton expand="block">{t('Confirm')}</PurpleButton>
+          <PurpleButton expand="block" onClick={props.goBack}>
+            {t('Confirm')}
+          </PurpleButton>
         </IonCol>
       </IonRow>
     </SendMain>

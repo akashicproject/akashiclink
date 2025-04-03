@@ -1,7 +1,7 @@
 import type { AxiosRequestConfig } from 'axios';
 import type { SWRConfiguration } from 'swr/dist/types';
 
-import { axiosOwnerBase } from './axiosHelper';
+import { axiosOwnerBase } from './axios-helper';
 
 // eslint-disable-next-line import/no-default-export
 export default async function (path: string, config?: AxiosRequestConfig) {

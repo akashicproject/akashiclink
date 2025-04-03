@@ -10,10 +10,13 @@ import type {
   ITempShowOtkPrv,
   ITempShowOtkPrvResponse,
   ITransactionProposal,
+  ITransactionSettledResponse,
+  ITransactionSigned,
+  ITransactionSignResponse,
   ITransactionVerifyResponse,
 } from '@helium-pay/backend';
 
-import { axiosBasePublic, axiosOwnerBase } from '../utils/axiosHelper';
+import { axiosBasePublic, axiosOwnerBase } from './axios-helper';
 
 export const OwnersAPI = {
   importWallet: async (
@@ -96,6 +99,34 @@ export const OwnersAPI = {
     const response = await axiosOwnerBase.post(
       `/key/verify-txns`,
       JSON.stringify(transactionData)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+
+    return response.data;
+  },
+  signTransaction: async (
+    transactionToSignData: ITransactionProposal[]
+  ): Promise<ITransactionSignResponse[]> => {
+    const response = await axiosOwnerBase.post(
+      `/key/sign`,
+      JSON.stringify(transactionToSignData)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+
+    return response.data;
+  },
+  sendTransaction: async (
+    signedTransactionData: ITransactionSigned[]
+  ): Promise<ITransactionSettledResponse[]> => {
+    const response = await axiosOwnerBase.post(
+      `/key/send`,
+      JSON.stringify(signedTransactionData)
     );
     const { data, status } = response;
     if (status >= 400) {

@@ -29,6 +29,7 @@
   "PleaseEnterYourEmail": "請輸入您的電子郵箱",
   "SetYourLockPassword": "設置鎖定密碼",
   "PleaseEnterYourPassword": "請輸入您的密碼",
+  "WrongPassword": "密碼錯誤，請重試。",
   "NewPassword": "新密碼",
   "EnterYourNewPassword": "輸入新密碼",
   "ConfirmPassword": "確認密碼",
@@ -62,8 +63,19 @@
   "Failure": "抱歉",
   "MissingTranslationError": "缺少翻譯錯誤",
   "ContractInteraction": "細節",
+  "UserDoesNotExist": "用戶不存在",
+  "OTKNotFound": "不能找到正確的OTK",
+  "UnownedKey": "你不擁有該錢包",
+  "ProviderError": "向區塊鏈發送請求時發生錯誤。請再試一次。",
+  "NoTransaction": "沒有提供任何請求",
+  "UnsupportedCoinError": "此幣暫不支持",
+  "TransactionTooSmall": "請求的金額太小或有許多小數位",
+  "ValidationError": "其中一個提交的字段有錯誤，請檢查您的輸入",
+  "GenericFailureMsg": "你的操作已失敗，請過一段時間再嘗試。",
   "Copied": "已複製",
   "ErrorPageHeading": "喔！似乎出錯了",
   "ErrorPageDesc": "非常抱歉，請聯絡客服或",
-  "ErrorPageBackButton": "返回主頁"
+  "ErrorPageBackButton": "返回主頁",
+  "Coin": "幣",
+  "EsTGasFee": "預估礦工費"
 }
