@@ -26,9 +26,9 @@ export const CreateOrImportForm = () => {
             onIonChange={() => {
               setChecked(!checked);
             }}
-            className="ion-text-size-sm"
+            className="ion-text-size-xs"
             labelPlacement={'end'}
-            style={{ marginRight: '8px' }}
+            style={{ marginRight: '4px' }}
           >
             {`${t('IAgreeToTermsOfUse')}`}
           </IonCheckbox>
@@ -40,7 +40,7 @@ export const CreateOrImportForm = () => {
               color: '#7444B6',
               textDecoration: 'none',
             }}
-            className="ion-text-size-sm"
+            className="ion-text-size-xs"
           >
             {t('TermsOfUse')}
           </a>
