@@ -19,7 +19,6 @@ const VersionTag = styled.div({
   borderRadius: '8px 8px 0px 0px',
   padding: '8px',
   color: 'var(--ion-text-color)',
-  width: 80,
   margin: 'auto',
 });
 export function Footer() {
