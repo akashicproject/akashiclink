@@ -10,13 +10,13 @@ import type {
   IKeyGenerationResponse,
   ILoginUser,
   IMinimalUserResponse,
-  IOrderDetails,
   IRegisterApiPassphrase,
   IRequestActivationCode,
   IRequestActivationCodeResponse,
   ISearchAcnsResponse,
   ITempShowOtkPrv,
   ITempShowOtkPrvResponse,
+  ITransactionBase,
   ITransactionProposal,
   ITransactionSettledResponse,
   ITransactionVerifyResponse,
@@ -117,7 +117,7 @@ export const OwnersAPI = {
     return response.data;
   },
   sendL1Transaction: async (
-    transactionToSendData: ITransactionProposal[]
+    transactionToSendData: ITransactionBase[]
   ): Promise<ITransactionSettledResponse[]> => {
     const response = await axiosOwnerBase.post(
       `/key/send/l1`,
@@ -131,7 +131,7 @@ export const OwnersAPI = {
     return response.data;
   },
   sendL2Transaction: async (
-    signedTransactionData: IOrderDetails
+    signedTransactionData: ITransactionProposal
   ): Promise<ITransactionSettledResponse> => {
     const response = await axiosOwnerBase.post(
       `/key/send/l2`,
