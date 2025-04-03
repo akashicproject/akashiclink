@@ -16,6 +16,7 @@ import {
   NavigationPriority,
 } from '../../utils/last-page-storage';
 import { getRandomNumbers } from '../../utils/random-utils';
+
 export const StyledSpan = styled.span({
   fontSize: '12px',
   fontWeight: '400',
@@ -79,7 +80,7 @@ export function MigrateWalletSecretConfirm() {
   };
 
   return (
-    <PublicLayout contentStyle={{ padding: '0 30px' }}>
+    <PublicLayout className="vertical-center">
       <MainGrid style={{ gap: '24px', padding: '0' }}>
         <IonRow>
           <IonCol size="12" style={{ textAlign: 'center' }}>

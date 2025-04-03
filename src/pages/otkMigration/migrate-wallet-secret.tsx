@@ -63,7 +63,7 @@ export function MigrateWalletSecret() {
   };
 
   return (
-    <PublicLayout contentStyle={{ padding: '24px 30px' }}>
+    <PublicLayout className="vertical-center">
       <MainGrid style={{ gap: '24px', padding: '0' }}>
         <IonRow>
           <IonCol size="12" style={{ textAlign: 'center' }}>

@@ -72,9 +72,11 @@ export function AccountSelection({
     if (activeAccount) {
       const matchingAccount = localAccounts?.find(
         (a) =>
-          a.username === activeAccount.username ||
+          (typeof a.username !== 'undefined' &&
+            a.username === activeAccount.username) ||
           a.identity === activeAccount.identity
       );
+
       setSelectedAccount(matchingAccount ?? localAccounts?.[0]);
     } else {
       setSelectedAccount(localAccounts?.[0]);

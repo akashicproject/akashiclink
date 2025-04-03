@@ -133,7 +133,7 @@ export function CreateWalletSecretConfirm() {
   }
 
   return (
-    <PublicLayout contentStyle={{ padding: '0 30px' }}>
+    <PublicLayout className="vertical-center">
       {creatingAccount && (
         <Spinner
           header={'CreatingYourWallet'}

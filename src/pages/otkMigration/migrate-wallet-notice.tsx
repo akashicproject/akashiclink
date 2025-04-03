@@ -54,7 +54,7 @@ export function MigrateWalletNotice() {
   };
 
   return (
-    <PublicLayout contentStyle={{ padding: '24px 30px' }}>
+    <PublicLayout className="vertical-center">
       <MainGrid style={{ gap: '12px', padding: '0' }}>
         <IonRow className={'ion-text-align-center ion-center'}>
           <IonCol size="12">

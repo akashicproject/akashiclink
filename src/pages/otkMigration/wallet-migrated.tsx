@@ -32,7 +32,7 @@ export const WalletMigrated = () => {
   };
 
   return (
-    <PublicLayout contentStyle={{ padding: '0 30px' }}>
+    <PublicLayout className="vertical-center">
       <MainGrid style={{ gap: '24px', padding: '0' }}>
         <IonRow style={{ marginTop: '56px', justifyContent: 'center' }}>
           <IonImg
