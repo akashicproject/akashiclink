@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import type { INft } from '@helium-pay/backend';
 import { IonContent, IonIcon, IonImg, IonPopover, IonRow } from '@ionic/react';
 import { t } from 'i18next';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { displayLongText } from '../../utils/long-text';
 import { getNftImage } from '../../utils/nft-image-link';
@@ -95,6 +95,16 @@ export function OneNft(props: Props) {
   };
   const popover = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
+  const [nftUrl, setNftUrl] = useState('');
+
+  useEffect(() => {
+    async function getNft() {
+      const nftUrl = await getNftImage(props.nft?.ledgerId);
+      setNftUrl(nftUrl);
+    }
+    getNft();
+  }, []);
+
   return (
     <OneNFTContainer>
       {props.nft?.acns?.value && (
@@ -122,7 +132,7 @@ export function OneNft(props: Props) {
       >
         <IonImg
           alt={props.nft?.description}
-          src={getNftImage(props.nft?.ledgerId)}
+          src={nftUrl}
           class={
             props.isBig
               ? 'nft-image-big nft-img-size'

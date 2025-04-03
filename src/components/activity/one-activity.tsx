@@ -6,7 +6,7 @@ import {
 } from '@helium-pay/backend';
 import { IonImg } from '@ionic/react';
 import Big from 'big.js';
-import type { CSSProperties } from 'react';
+import { type CSSProperties, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
@@ -174,6 +174,15 @@ export function OneActivity({
     ? transfer?.currency?.token + (isL2 ? ` (${transfer.currency.chain})` : '')
     : transfer?.currency?.chain;
 
+  const [nftUrl, setNftUrl] = useState('');
+
+  useEffect(() => {
+    async function getNft() {
+      const nftUrl = await getNftImage(transfer.nft?.ledgerId ?? '', '30');
+      setNftUrl(nftUrl);
+    }
+    getNft();
+  }, []);
   /**
    * Style the icon displaying the chain information:
    * - L2 transactions need to display the full AkashicChain text and so need less padding
@@ -252,9 +261,7 @@ export function OneActivity({
               </NftItem>
             </NftName>
             <NftImage>
-              <IonImg
-                src={getNftImage(transfer.nft?.ledgerId ?? '', '30')}
-              ></IonImg>
+              <IonImg src={nftUrl}></IonImg>
             </NftImage>
           </Nft>
         ) : (

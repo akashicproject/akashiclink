@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import type { JSX } from '@ionic/core/components';
 import { IonIcon, IonImg, IonItem, IonLabel } from '@ionic/react';
 import { removeCircle } from 'ionicons/icons';
+import { useEffect, useState } from 'react';
 
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { displayLongText } from '../../utils/long-text';
@@ -79,6 +80,17 @@ export const AccountListItem = ({
   isLightText?: boolean;
   onClick?: () => void;
 } & JSX.IonItem) => {
+  const [nftUrl, setNftUrl] = useState('');
+
+  useEffect(() => {
+    async function getNft() {
+      if (account.ledgerId) {
+        const nftUrl = await getNftImage(account.ledgerId, '32');
+        setNftUrl(nftUrl);
+      }
+    }
+    getNft();
+  }, []);
   return (
     <IconAndLabel
       detail={false}
@@ -101,9 +113,7 @@ export const AccountListItem = ({
               icon={removeCircle}
             />
           )}
-          {account.ledgerId && (
-            <StyledNftImage src={getNftImage(account.ledgerId, '32')} />
-          )}
+          {account.ledgerId && <StyledNftImage src={nftUrl} />}
           {!account.ledgerId && (
             <InitialIcon isActive={isActive}>AS</InitialIcon>
           )}
