@@ -27,6 +27,7 @@ export const StyledInputErrorPrompt: {
  * @param isHorizontal applies the "horizontal" style to input, with label on the left
  * @param validate method to trigger on user input
  * @param errorPrompt to display to user is validation fails
+ * @param submitOnEnter will trigger the supplied callback when enter is hit
  * @param ...props any other parameters native to IonInput
  */
 type StyledInputProps = ComponentProps<typeof IonInput> & {
@@ -36,6 +37,7 @@ type StyledInputProps = ComponentProps<typeof IonInput> & {
   errorPrompt?: typeof StyledInputErrorPrompt[keyof typeof StyledInputErrorPrompt];
   // Required to allow translations to be passed in e.g. t('ConfirmPassword')
   placeholder: string;
+  submitOnEnter?: () => void;
 };
 
 /**
@@ -48,6 +50,7 @@ export function StyledInput({
   validate,
   isHorizontal = false,
   errorPrompt,
+  submitOnEnter,
   ...props
 }: StyledInputProps) {
   const [inputValid, setInputValid] = useState(true);
@@ -85,6 +88,9 @@ export function StyledInput({
           onIonInput && onIonInput(event);
           validateInput(event);
         }}
+        onKeyPress={(e) =>
+          e.key === 'Enter' && submitOnEnter && submitOnEnter()
+        }
         {...props}
       ></IonInput>
       <IonNote slot="error">{!inputValid ? helpText : ' '}</IonNote>

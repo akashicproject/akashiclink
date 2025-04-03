@@ -215,6 +215,7 @@ export function SendConfirm(props: Props) {
               }
               validate={validatePassword}
               errorPrompt={StyledInputErrorPrompt.Password}
+              submitOnEnter={signTransaction}
             ></StyledInput>
           </InputPasswordWrapper>
         </IonCol>

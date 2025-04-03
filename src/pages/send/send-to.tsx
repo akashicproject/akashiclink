@@ -381,6 +381,7 @@ export function SendTo() {
                   onIonInput={({ target: { value } }) =>
                     validateRecipientAddressWithBackend(value as string)
                   }
+                  submitOnEnter={verifyTransaction}
                 />
                 <StyledInput
                   isHorizontal={true}
@@ -392,6 +393,7 @@ export function SendTo() {
                     setAmount(value as string);
                   }}
                   validate={validateAmount}
+                  submitOnEnter={verifyTransaction}
                 />
                 {gasFree && (
                   <GasWrapper style={{ margin: '8px 0' }}>

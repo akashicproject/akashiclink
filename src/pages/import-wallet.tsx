@@ -68,31 +68,6 @@ export function ImportWallet() {
     }
   }, []);
 
-  async function submitTwoFa() {
-    if (privateKey && email && activationCode) {
-      const { username, identity } = await OwnersAPI.importAccount({
-        activationCode,
-        email,
-        privateKey,
-      });
-      lastPageStorage.clear();
-
-      // Add accounts, and redirect to login page
-      const importedAccount = {
-        identity: identity || username,
-        username,
-      };
-      addLocalAccount(importedAccount);
-      setActiveAccount(importedAccount);
-      setTimeout(() => {
-        logout().then(() => {
-          setView(View.Submit);
-          isPlatform('mobile') && location.reload();
-        });
-      }, 500);
-    }
-  }
-
   /**
    * Uploads user credentials in a request to import an
    * account
@@ -124,6 +99,35 @@ export function ImportWallet() {
       let message = t('GenericFailureMsg');
       if (axios.isAxiosError(e)) message = e.response?.data?.message || message;
       setAlert(errorAlertShell(message));
+    }
+  }
+
+  async function submit2fa() {
+    try {
+      if (privateKey && email && activationCode) {
+        const { username, identity } = await OwnersAPI.importAccount({
+          activationCode,
+          email,
+          privateKey,
+        });
+        lastPageStorage.clear();
+
+        // Add accounts, and redirect to login page
+        const importedAccount = {
+          identity: identity || username,
+          username,
+        };
+        addLocalAccount(importedAccount);
+        setActiveAccount(importedAccount);
+        setTimeout(() => {
+          logout().then(() => {
+            setView(View.Submit);
+            isPlatform('mobile') && location.reload();
+          });
+        }, 500);
+      }
+    } catch (error) {
+      setAlertPage2(errorAlertShell(t(unpackRequestErrorMessage(error))));
     }
   }
 
@@ -167,6 +171,7 @@ export function ImportWallet() {
                   setPrivateKey(value as string);
                   setAlert(formAlertResetState);
                 }}
+                submitOnEnter={requestImportAccount}
               />
             </IonCol>
           </IonRow>
@@ -227,6 +232,7 @@ export function ImportWallet() {
                 }}
                 errorPrompt={StyledInputErrorPrompt.ActivationCode}
                 validate={validateActivationCode}
+                submitOnEnter={submit2fa}
               />
             </IonCol>
           </IonRow>
@@ -248,15 +254,7 @@ export function ImportWallet() {
               <PurpleButton
                 expand="block"
                 disabled={!activationCode}
-                onClick={async () => {
-                  try {
-                    await submitTwoFa();
-                  } catch (error) {
-                    setAlertPage2(
-                      errorAlertShell(t(unpackRequestErrorMessage(error)))
-                    );
-                  }
-                }}
+                onClick={submit2fa}
               >
                 {t('Confirm')}
               </PurpleButton>

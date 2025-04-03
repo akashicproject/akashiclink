@@ -41,11 +41,11 @@ export function AkashicPayMain() {
   /** If user is logged in, redirect to main dashboard */
   useEffect(
     () => {
-      if (!loginCheck.isLoading && !loginCheck.isError)
+      if (!loginCheck.isLoading && loginCheck.authenticated)
         history.push(akashicPayPath(urls.loggedFunction));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [loginCheck]
+    [loginCheck.isLoading]
   );
 
   return (

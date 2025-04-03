@@ -18,8 +18,12 @@ export const useOwner = (noReload = false) => {
         }
       : {}
   );
+
+  const owner = (data || {}) as IOwnerInfoResponse;
+
   return {
-    owner: (data || {}) as IOwnerInfoResponse,
+    owner,
+    authenticated: Object.keys(owner).length !== 0,
     isLoading: !error && !data,
     isError: error,
     mutate,

@@ -230,6 +230,7 @@ export function CreateWallet() {
                 errorPrompt={StyledInputErrorPrompt.Email}
                 validate={validateEmail}
                 disabled={view === CreateWalletView.ActivateAccount}
+                submitOnEnter={requestWalletAccount}
               />
             </IonCol>
           </IonRow>
@@ -312,6 +313,7 @@ export function CreateWallet() {
                   }
                   errorPrompt={StyledInputErrorPrompt.ConfirmPassword}
                   validate={validateConfirmPassword}
+                  submitOnEnter={activateWalletAccount}
                 />
               </IonCol>
             </IonRow>

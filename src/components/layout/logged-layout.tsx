@@ -6,11 +6,14 @@ import {
   IonRouterLink,
   isPlatform,
 } from '@ionic/react';
-import { type ReactNode } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
+import { useOwner } from '../../utils/hooks/useOwner';
+import { lastPageStorage } from '../../utils/last-page-storage';
 import { LoggedToolbar } from '../logged/logged-toolbar';
 import { LoggedHeader } from './logged-header';
 
@@ -40,6 +43,21 @@ export function LoggedLayout({
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
   const ChainDivMarginBottom = isMobile ? '32px' : '0px';
+
+  const history = useHistory();
+  const loginCheck = useOwner(true);
+
+  /** If user auth has expired, redirect to login page */
+  useEffect(
+    () => {
+      if (!loginCheck.isLoading && !loginCheck.authenticated) {
+        lastPageStorage.clear();
+        history.push(akashicPayPath(''));
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [loginCheck.isLoading]
+  );
 
   return (
     <IonPage>
