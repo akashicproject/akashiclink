@@ -1,5 +1,9 @@
 import { datadogRum } from '@datadog/browser-rum';
-import type { CoinSymbol, CurrencySymbol } from '@helium-pay/backend';
+import type {
+  CoinSymbol,
+  CurrencySymbol,
+  IBaseAcTransaction,
+} from '@helium-pay/backend';
 import {
   type IWithdrawalProposal,
   keyError,
@@ -9,7 +13,11 @@ import {
 
 import type { ValidatedAddressPair } from '../../components/send-deposit/send-form/types';
 import { OwnersAPI } from '../api';
-import { convertObjectCurrencies, convertToSmallestUnit } from '../currency';
+import {
+  convertFromSmallestUnit,
+  convertObjectCurrencies,
+  convertToSmallestUnit,
+} from '../currency';
 import { calculateInternalWithdrawalFee } from '../internal-fee';
 import type {
   ITransactionForSigning,
@@ -20,6 +28,16 @@ import { unpackRequestErrorMessage } from '../unpack-request-error-message';
 import { useAccountMe } from './useAccountMe';
 import { useExchangeRates } from './useExchangeRates';
 import { useAccountStorage } from './useLocalAccounts';
+
+export interface UseVerifyAndSignResponse {
+  /** The signed txn sent to the chain. NOTE: the monetary amounts are in the
+   * smallest, indivisible units, which is not typical for client code. */
+  signedTxn: IBaseAcTransaction;
+  /** The txn with extra contextual data, useful for caching */
+  txn: ITransactionForSigning;
+  /** The delegated fee, if any. In UI units (in contrast to the txn) */
+  delegatedFee?: string;
+}
 
 export const useVerifyTxnAndSign = () => {
   const { activeAccount } = useAccountStorage();
@@ -32,7 +50,7 @@ export const useVerifyTxnAndSign = () => {
     amount: string,
     coinSymbol: CoinSymbol,
     tokenSymbol?: CurrencySymbol
-  ) => {
+  ): Promise<string | UseVerifyAndSignResponse> => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
     const nitr0genApi = new Nitr0genApi();
 
@@ -94,39 +112,27 @@ export const useVerifyTxnAndSign = () => {
         tokenSymbol,
       };
 
-      const {
-        fees: { feesEstimate, delegatedFee },
-        withdrawalKey,
-        ethGasPrice,
-      } = await OwnersAPI.prepareL1Txn(transactionData);
-      const withdrawal: ITransactionForSigning = {
+      const { preparedTxn, fromAddress, delegatedFee } =
+        await OwnersAPI.prepareL1Txn(transactionData);
+      const signedTxn = await signTxBody(preparedTxn, cacheOtk);
+      const uiFeesEstimate = convertFromSmallestUnit(
+        preparedTxn.$tx.metadata?.feesEstimate ?? '0',
+        coinSymbol,
+        tokenSymbol
+      );
+      const txn: ITransactionForSigning = {
         identity: activeAccount.identity,
-        fromAddress: withdrawalKey.address,
-        fromLedgerId: withdrawalKey.ledgerId,
+        fromAddress,
         toAddress: validatedAddressPair.convertedToAddress,
         amount,
         coinSymbol,
         tokenSymbol,
-        feesEstimate,
+        feesEstimate: uiFeesEstimate,
         layer: TransactionLayer.L1,
-        txToSign: await nitr0genApi.L2ToL1SignTransaction(
-          cacheOtk,
-          withdrawalKey.ledgerId,
-          coinSymbol,
-          // AC needs smallest units, so we convert
-          convertToDecimals(amount, coinSymbol, tokenSymbol),
-          validatedAddressPair.convertedToAddress,
-          convertToDecimals(feesEstimate, coinSymbol),
-          tokenSymbol,
-          ethGasPrice
-        ),
+        txToSign: signedTxn,
       };
 
-      // sign txns and move to final confirmation
-      // Okay to assert since we have filtered out on the line before
-      const signedTxn = await signTxBody(withdrawal.txToSign, cacheOtk);
-
-      return { txn: withdrawal, signedTxn, delegatedFee };
+      return { txn, signedTxn, delegatedFee };
     } catch (error) {
       datadogRum.addError(error);
       return unpackRequestErrorMessage(error);

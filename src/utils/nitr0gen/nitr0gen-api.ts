@@ -71,7 +71,8 @@ export async function signTxBody<T extends IBaseAcTransaction>(
       'You must specify the variable `REACT_APP_REDIS_DB_INDEX` in your AW .env file or you will clobber staging!'
     );
   }
-  txBody.$tx._dbIndex = parseInt(process.env.REACT_APP_REDIS_DB_INDEX);
+  // For payouts, the backend should already have set it. Hence the `??=`
+  txBody.$tx._dbIndex ??= parseInt(process.env.REACT_APP_REDIS_DB_INDEX);
 
   addExpireToTxBody(txBody);
 
@@ -311,12 +312,13 @@ export class Nitr0genApi {
   }
 
   /**
-   * L1 transaction from Nitr0gen where wallet has funds registered to L2
+   * Builds and signs an L1 withdrawal transaction from a wallet that has funds
+   * registered in AC.
+   * Only to be used if the backend is down and the user needs to withdraw.
    * If a non-root owner is sending L1, need a ledgerId of a key on the same
-   * network owned as root by the sender
-   *
+   * network owned as root by the sender.
    */
-  async L2ToL1SignTransaction(
+  async l1WithdrawalTransaction(
     otk: IKeyExtended,
     keyLedgerId: string,
     network: CoinSymbol,
