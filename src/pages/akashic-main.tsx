@@ -10,6 +10,7 @@ import { Spinner } from '../components/loader/spinner';
 import { useLogout } from '../components/logout';
 import CreateOrImportForm from '../components/public/create-or-import-form';
 import { LoginForm } from '../components/public/login-form';
+import { LAST_PAGE_LOCATION } from '../constants';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 
 /**
@@ -30,7 +31,7 @@ export function AkashicPayMain() {
     const redirectToLastLocation = async () => {
       // this is saved from App.tsx as last location
       const lastLocationJson = await Preferences.get({
-        key: 'lastLocation',
+        key: LAST_PAGE_LOCATION,
       });
       const lastLocation = JSON.parse(lastLocationJson?.value || '{}');
       if (lastLocation?.pathname) {
@@ -40,7 +41,7 @@ export function AkashicPayMain() {
           history.replace(lastLocation.pathname, lastLocation.state);
         }
         // Remove the last-location as history is now reset
-        await Preferences.remove({ key: 'lastLocation' });
+        await Preferences.remove({ key: LAST_PAGE_LOCATION });
       }
       setIsLoading(false);
     };

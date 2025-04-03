@@ -1,6 +1,7 @@
 import { Preferences } from '@capacitor/preferences';
 import axios from 'axios';
 
+import { LAST_PAGE_LOCATION } from '../constants';
 import { urls } from '../constants/urls';
 import { history } from '../history';
 import { akashicPayPath } from '../routing/navigation-tabs';
@@ -33,7 +34,7 @@ axiosBase.interceptors.response.use(
       if (history.location.pathname.match(/^\/$|\/akashic$/)) return;
 
       await Preferences.remove({
-        key: 'lastLocation',
+        key: LAST_PAGE_LOCATION,
       });
       history.push(akashicPayPath(urls.akashicPay));
     } else {

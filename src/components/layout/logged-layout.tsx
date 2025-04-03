@@ -10,6 +10,7 @@ import {
 import { type ReactNode, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { LAST_PAGE_LOCATION } from '../../constants';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useOwner } from '../../utils/hooks/useOwner';
@@ -55,7 +56,7 @@ export function LoggedLayout({
   useEffect(() => {
     const removeLastLocation = async () => {
       await Preferences.remove({
-        key: 'lastLocation',
+        key: LAST_PAGE_LOCATION,
       });
     };
 

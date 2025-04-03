@@ -27,6 +27,7 @@ import type { RootState } from './app/store';
 import VersionUpdateAlert from './components/layout/version-update-alert';
 import { useLogout } from './components/logout';
 import { PreferenceProvider } from './components/PreferenceProvider';
+import { LAST_PAGE_LOCATION } from './constants';
 import { history } from './history';
 import { NavigationTree } from './routing/navigation-tree';
 
@@ -54,7 +55,7 @@ export default function App() {
         // saving the last location to the local storage
         // so that akashic-main.tsx can redirect to it
         await Preferences.set({
-          key: 'lastLocation',
+          key: LAST_PAGE_LOCATION,
           value: JSON.stringify(lastLocation),
         });
       }

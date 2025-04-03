@@ -1,6 +1,7 @@
 import { Preferences } from '@capacitor/preferences';
 import { useContext } from 'react';
 
+import { LAST_PAGE_LOCATION } from '../constants';
 import { urls } from '../constants/urls';
 import { history } from '../history';
 import { akashicPayPath } from '../routing/navigation-tabs';
@@ -31,9 +32,8 @@ export function useLogout(callLogout = true) {
 
     // Clear session variables
     setCacheOtk(null);
-    await Preferences.set({
-      key: 'lastPage',
-      value: '',
+    await Preferences.remove({
+      key: LAST_PAGE_LOCATION,
     });
 
     // Trigger refresh of login status
