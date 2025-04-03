@@ -27,7 +27,6 @@ export interface ITransactionRecordForExtension
  * @param transfers fetched from backend
  */
 export function formatTransfers(transfers: ITransactionRecord[]) {
-  console.dir(transfers);
   const formattedTransfers = transfers.map(
     (t, id): ITransactionRecordForExtension => ({
       ...formatTransactionForFrontend(t, id),
