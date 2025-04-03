@@ -10,10 +10,11 @@ import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useLogout } from '../../utils/hooks/useLogout';
 import { getImageIconUrl } from '../../utils/url-utils';
 import { SettingsModal } from './setting-modal';
+
 const SettingsDropDownItem = styled(IonItem)`
   --min-height: 32px;
   --inner-border-width: 0px;
-  padding: 4px 0px;
+  padding: 4px 0;
 `;
 export function SettingSelect({ loggedIn }: { loggedIn: boolean }) {
   const logout = useLogout();
@@ -26,7 +27,13 @@ export function SettingSelect({ loggedIn }: { loggedIn: boolean }) {
   return (
     <>
       <IonIcon
-        style={{ height: '24px', width: '24px', cursor: 'pointer' }}
+        style={{
+          height: '24px',
+          width: '24px',
+          cursor: 'pointer',
+          padding: 8,
+          marginRight: -8,
+        }}
         src={
           loggedIn
             ? getImageIconUrl('setting-menu.svg')
@@ -51,10 +58,7 @@ export function SettingSelect({ loggedIn }: { loggedIn: boolean }) {
               setPopoverOpen(false);
             }}
           >
-            <div
-              className="ion-align-items-center"
-              style={{ display: 'flex', gap: '8px' }}
-            >
+            <div className="ion-align-items-center ion-display-flex ion-gap-xs">
               <IonIcon
                 style={{ height: '16px', width: '16px' }}
                 src={getImageIconUrl('setting-icon-primary.svg')}
@@ -68,6 +72,7 @@ export function SettingSelect({ loggedIn }: { loggedIn: boolean }) {
             className="ion-no-margin"
             button
             onClick={logout}
+            detail={false}
           >
             <div
               className="ion-align-items-center"
@@ -77,7 +82,7 @@ export function SettingSelect({ loggedIn }: { loggedIn: boolean }) {
                 style={{ height: '16px', width: '16px' }}
                 src={getImageIconUrl('lock.svg')}
               />
-              <h3 className="ion-no-margin ion-text-size-sm">
+              <h3 className="ion-no-margin ion-text-size-sm ion-text-align-left">
                 {t('LockAkashicWallet')}
               </h3>
             </div>

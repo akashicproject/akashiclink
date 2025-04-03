@@ -10,7 +10,7 @@ import {
 export function SettingsAboutUs() {
   const { t } = useTranslation();
   return (
-    <DashboardLayout showToolbar={true} showBackButton={true}>
+    <DashboardLayout>
       <SettingsWrapper>
         <PageHeader>{t('AboutUs')}</PageHeader>
         <AboutUs />

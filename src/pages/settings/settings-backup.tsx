@@ -1,5 +1,5 @@
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { AlertBox } from '../../components/common/alert/alert';
@@ -29,11 +29,7 @@ export function SettingsBackup() {
   };
 
   return (
-    <DashboardLayout
-      showToolbar={true}
-      showBackButton={true}
-      showChainDiv={false}
-    >
+    <DashboardLayout>
       {view === BackupKeyPairState.ConfirmPassword && (
         <ConfirmLockPassword onPasswordCheckSuccess={onPasswordCheckSuccess} />
       )}

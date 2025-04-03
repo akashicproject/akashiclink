@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -33,11 +32,7 @@ export function SettingsSecurity() {
     },
   ];
   return (
-    <DashboardLayout
-      showToolbar={true}
-      showBackButton={true}
-      showChainDiv={true}
-    >
+    <DashboardLayout>
       <SettingsWrapper>
         <PageHeader>{t('Security')}</PageHeader>
         <div

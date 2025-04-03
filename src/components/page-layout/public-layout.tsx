@@ -1,15 +1,22 @@
-import './public-layout.scss';
-
-import { IonPage } from '@ionic/react';
+import styled from '@emotion/styled';
+import { IonFooter, IonPage } from '@ionic/react';
 import { type ReactNode } from 'react';
 
 import { Footer } from '../layout/footer';
 import { PublicHeader } from '../layout/public-header';
 
-/**
- * Narrow layout for all public pages (before user has completed login)
- * With centered child content
- */
+const StyledLayout = styled.div({
+  ['& > .content']: {
+    padding: '0 24px',
+    overflow: 'scroll',
+  },
+  ['& > .footer']: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+  },
+});
+
 export function PublicLayout({
   className,
   children,
@@ -21,15 +28,13 @@ export function PublicLayout({
 }) {
   return (
     <IonPage>
-      <div className="vertical public-layout">
-        <PublicHeader />
+      <PublicHeader />
+      <StyledLayout className="vertical public-layout">
         <div className={`content ${className ?? ''}`} style={contentStyle}>
           {children}
         </div>
-        <div className="footer">
-          <Footer />
-        </div>
-      </div>
+      </StyledLayout>
+      <Footer />
     </IonPage>
   );
 }

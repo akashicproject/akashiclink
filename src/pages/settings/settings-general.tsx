@@ -121,11 +121,7 @@ export function SettingsGeneral() {
     },
   ];
   return (
-    <DashboardLayout
-      showToolbar={true}
-      showBackButton={true}
-      showChainDiv={true}
-    >
+    <DashboardLayout>
       <SettingsWrapper>
         <PageHeader>{t('General')}</PageHeader>
         <div
