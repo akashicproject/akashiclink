@@ -49,7 +49,10 @@ export function SettingSelect({ loggedIn }: { loggedIn: boolean }) {
         }}
       />
       <IonPopover ref={settingPopoverRef} isOpen={popoverOpen}>
-        <IonContent className="ion-padding-left">
+        <IonContent
+          className="ion-padding-left"
+          style={{ backgroundColor: 'var(--ion-modal-background)' }}
+        >
           <SettingsDropDownItem
             className="ion-no-margin"
             button
