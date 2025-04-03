@@ -20,7 +20,7 @@ const meta: Meta<typeof SignTypedDataContent> = {
     },
     msw: {
       handlers: {
-        keys: mockGetOwnerKeys,
+        keys: mockGetOwnerKeys(),
         owner: mockGetOwnerDetails,
       },
     },

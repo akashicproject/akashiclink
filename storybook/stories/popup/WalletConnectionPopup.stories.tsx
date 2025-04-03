@@ -18,7 +18,7 @@ const meta: Meta<typeof WalletConnection> = {
     },
     msw: {
       handlers: {
-        keys: mockGetOwnerKeys,
+        keys: mockGetOwnerKeys(),
       },
     },
   },

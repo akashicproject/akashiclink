@@ -21,6 +21,7 @@ import {
   mockGetManifest,
   mockGetMinigate,
   mockGetMinigateNftImage,
+  mockPostToAC,
 } from '@helium-pay/api-mocks';
 import { setupIonicReact } from '@ionic/react';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
@@ -58,6 +59,7 @@ const preview: Preview = {
         manifest: mockGetManifest,
         minigateNftImage: mockGetMinigateNftImage,
         minigate: mockGetMinigate,
+        akashicChainPost: mockPostToAC,
       },
     },
     actions: { argTypesRegex: '^on[A-Z].*' },
