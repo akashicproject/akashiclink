@@ -131,7 +131,7 @@ export function CreateWalletSecretConfirm({ isPopup = false }) {
       {isCreatingAccount && (
         <Spinner header={'CreatingYourWallet'} warning={'DoNotClose'} />
       )}
-      <MainGrid style={{ padding: 0 }}>
+      <MainGrid className="ion-padding-0">
         <IonRow className={'ion-grid-column-gap-0'}>
           <IonCol size="12" style={{ textAlign: 'center' }}>
             <h2

@@ -193,9 +193,8 @@ export function OneNft(props: Props) {
           </h5>
           <IonIcon
             slot="icon-only"
-            className="copy-icon"
+            className="copy-icon ion-margin-left-xxs"
             style={{
-              marginLeft: '4px',
               width: '20px',
               height: '20px',
             }}

@@ -54,11 +54,7 @@ export function SettingsModal({
       }}
     >
       <IonContent className="settings-modal-content">
-        <div
-          style={{
-            padding: '24px',
-          }}
-        >
+        <div className="ion-padding-top-lg ion-padding-bottom-lg ion-padding-left-lg ion-padding-right-lg">
           <div
             style={{
               display: 'flex',

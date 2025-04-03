@@ -107,10 +107,7 @@ export function ActivityAndNftTab() {
         setNftTab={setNftTab}
         fromNfts={false}
       />
-      <div
-        className="vertical"
-        style={{ padding: '0px 16px', paddingTop: '24px' }}
-      >
+      <div className="vertical ion-padding-top-lg ion-padding-bottom-0 ion-padding-left-md ion-padding-right-md">
         {!nftTab &&
           walletFormatTransfers
             .slice(0, itemDisplayIndex - 1)
@@ -136,7 +133,7 @@ export function ActivityAndNftTab() {
             })}
         {walletFormatTransfers.length >= itemDisplayIndex && !nftTab && (
           <SeeMore
-            style={{ marginTop: '8px' }}
+            className="ion-margin-top-xs"
             to={akashicPayPath(urls.activity)}
           >
             {t('SeeMore')}

@@ -27,11 +27,11 @@ export function SettingSelect({ loggedIn }: { loggedIn: boolean }) {
   return (
     <>
       <IonIcon
+        className="ion-padding-top-xs ion-padding-bottom-xs ion-padding-left-xs ion-padding-right-xs"
         style={{
           height: '24px',
           width: '24px',
           cursor: 'pointer',
-          padding: 8,
           marginRight: -8,
         }}
         src={

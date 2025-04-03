@@ -49,7 +49,7 @@ function UpdateModal({
             margin: '0 auto',
           }}
         />
-        <h4 style={{ marginBottom: '0px' }}>{t('UpdatesAvailable')}</h4>
+        <h4 className="ion-padding-bottom-0">{t('UpdatesAvailable')}</h4>
         <h3
           className="ion-text-size-xxs ion-no-margin"
           style={{ color: '#B0A9B3' }}
@@ -85,7 +85,8 @@ function UpdateModal({
           {!isMoreInfo ? t('MoreInfo') : t('LessInfo')}
         </IonButton>
         <PrimaryButton
-          style={{ width: '100%', marginTop: '24px' }}
+          className="ion-margin-top-lg"
+          style={{ width: '100%' }}
           onClick={async () => {
             setIsOpen(false);
             await Browser.open({
@@ -103,10 +104,7 @@ function UpdateModal({
 export function AboutUsCaret({ appVersion }: { appVersion: string }) {
   return (
     <>
-      <h5
-        className="ion-no-margin ion-text-size-xs"
-        style={{ marginRight: '8px' }}
-      >
+      <h5 className="ion-no-margin ion-text-size-xs ion-margin-right-xs">
         {appVersion}
       </h5>
       <ForwardArrow />

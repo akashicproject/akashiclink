@@ -62,10 +62,7 @@ const autoLockTimeMap: AutoLockProp[] = [
 const AutoLockTextCaret = ({ autoLockTime }: { autoLockTime: string }) => {
   return (
     <>
-      <h5
-        className="ion-no-margin ion-text-size-xs"
-        style={{ marginRight: '8px' }}
-      >
+      <h5 className="ion-no-margin ion-text-size-xs ion-margin-right-xs">
         {autoLockTime}
       </h5>
       <DownArrow />
@@ -88,7 +85,10 @@ const AutoLockAccordion = ({
   const dispatch = useAppDispatch();
 
   return (
-    <IonRadioGroup value={autoLock.value} style={{ padding: '0px 8px' }}>
+    <IonRadioGroup
+      value={autoLock.value}
+      className="ion-padding-top-0 ion-padding-bottom-0 ion-padding-left-xs ion-padding-right-xs"
+    >
       {autoLockTimeMap.map((item, i) => {
         return (
           <>
@@ -170,8 +170,7 @@ export function Settings() {
       iconUrl: getImageIconUrl('support_agent.svg'),
       endComponent: (
         <IonIcon
-          style={{ marginLeft: '8px' }}
-          className="ion-no-margin"
+          className="ion-no-margin ion-margin-left-xs"
           size="45px"
           src={getImageIconUrl(
             storedTheme === themeType.DARK

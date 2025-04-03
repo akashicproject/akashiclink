@@ -42,7 +42,7 @@ export function SettingsVersion() {
 
   return (
     <DashboardLayout showSwitchAccountBar>
-      <MainGrid style={{ padding: '32px 32px' }}>
+      <MainGrid className="ion-padding-top-xl ion-padding-bottom-xl ion-padding-left-xl ion-padding-right-xl">
         <IonRow>
           <IonCol size={'12'}>
             <h2>{t('AboutUs')}</h2>

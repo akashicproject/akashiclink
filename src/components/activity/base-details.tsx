@@ -48,12 +48,11 @@ export function BaseDetails({
 
   return (
     <div
-      className="transfer-detail"
+      className="transfer-detail ion-margin-top-lg"
       style={{
         display: 'flex',
         gap: '16px',
         flexDirection: 'column',
-        marginTop: '24px',
       }}
     >
       <DetailColumn>

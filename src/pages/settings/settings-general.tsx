@@ -28,7 +28,10 @@ const LanguageRadio = ({
   setSelectedLanguage: (newValue: string) => Promise<void>;
 }) => {
   return (
-    <IonRadioGroup value={selectedLanguage} style={{ padding: '0px 8px' }}>
+    <IonRadioGroup
+      value={selectedLanguage}
+      className="ion-padding-top-0 ion-padding-bottom-0 ion-padding-left-xs ion-padding-right-xs"
+    >
       {LANGUAGE_LIST.map((item, i) => {
         return (
           <SettingsRadio
@@ -55,10 +58,7 @@ const LanguageTextCaret = ({
 }) => {
   return (
     <>
-      <h5
-        className="ion-no-margin ion-text-size-xs"
-        style={{ marginRight: '8px' }}
-      >
+      <h5 className="ion-no-margin ion-text-size-xs ion-margin-right-xs">
         {getLanguageTitle(selectedLanguage)}
       </h5>
       <DownArrow />

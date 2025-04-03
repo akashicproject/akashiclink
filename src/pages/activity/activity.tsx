@@ -72,28 +72,24 @@ export function Activity() {
       <TableWrapper>
         <TableHeads>
           <div
+            className="ion-margin-left-xs"
             style={{
               display: 'flex',
               gap: '16px',
-              marginLeft: '8px',
             }}
           >
             <ColumnWrapper>{t('State')}</ColumnWrapper>
             <ColumnWrapper>{t('TransactionType')}</ColumnWrapper>
           </div>
-          <ColumnWrapper style={{ marginRight: '8px' }}>
+          <ColumnWrapper className="ion-margin-right-xs">
             {t('Amount/NFT')}
           </ColumnWrapper>
         </TableHeads>
         <Divider
+          className="ion-margin-right-xs ion-margin-left-xs ion-margin-top-xs"
           borderColor={storedTheme === themeType.DARK ? '#2F2F2F' : '#D9D9D9'}
           height={'1px'}
           borderWidth={'0.5px'}
-          style={{
-            marginTop: '8px',
-            marginLeft: '8px',
-            marginRight: '8px',
-          }}
         />
       </TableWrapper>
 

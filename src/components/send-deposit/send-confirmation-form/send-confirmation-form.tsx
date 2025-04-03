@@ -43,7 +43,11 @@ export const SendConfirmationForm = () => {
   }
 
   return (
-    <IonGrid className={'ion-grid-gap-xs'} style={{ padding: '4px 16px' }}>
+    <IonGrid
+      className={
+        'ion-grid-gap-xs ion-padding-top-xxs ion-padding-bottom-xxs ion-padding-left-md ion-padding-right-md'
+      }
+    >
       {txnFinal?.txHash && (
         <IonRow>
           <IonCol size={'12'}>
