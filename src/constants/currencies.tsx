@@ -161,16 +161,10 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
   ...(process.env.REACT_APP_ENABLE_TESTNET_CURRENCIES === 'true'
     ? [
         {
-          chain: CoinSymbol.Görli,
+          chain: CoinSymbol.Sepolia,
           currencyIcon: '/shared-assets/images/eth.png',
           darkCurrencyIcon: '/shared-assets/images/eth-dark.png',
           greyCurrencyIcon: '/shared-assets/images/eth-grey.png',
-        },
-        {
-          chain: CoinSymbol.Tron_Nile,
-          currencyIcon: '/shared-assets/images/trx.png',
-          darkCurrencyIcon: '/shared-assets/images/trx.png',
-          greyCurrencyIcon: '/shared-assets/images/trx-grey.png',
         },
         {
           chain: CoinSymbol.Tron_Shasta,
@@ -179,15 +173,15 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
           greyCurrencyIcon: '/shared-assets/images/trx-grey.png',
         },
         {
-          chain: CoinSymbol.Görli,
+          chain: CoinSymbol.Sepolia,
           token: CurrencySymbol.USDT,
           currencyIcon: '/shared-assets/images/usdt.png',
           darkCurrencyIcon: '/shared-assets/images/usdt.png',
           greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
         },
         {
-          chain: CoinSymbol.Tron_Nile,
-          token: CurrencySymbol.USDT,
+          chain: CoinSymbol.Tron_Shasta,
+          token: CurrencySymbol.TETHER,
           currencyIcon: '/shared-assets/images/usdt.png',
           darkCurrencyIcon: '/shared-assets/images/usdt.png',
           greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
