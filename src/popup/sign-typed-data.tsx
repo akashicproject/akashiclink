@@ -19,6 +19,8 @@ import {
 } from '../utils/chrome';
 import type { BecomeBpToSign } from '../utils/hooks/useSignBecomeBpMessage';
 import { useSignBecomeBpMessage } from '../utils/hooks/useSignBecomeBpMessage';
+import type { RetryCallbackToSign } from '../utils/hooks/useSignRetryCallback';
+import { useSignRetryCallback } from '../utils/hooks/useSignRetryCallback';
 import { useSignSetupCallbackUrl } from '../utils/hooks/useSignSetupCallbackUrl';
 import { useWeb3Wallet } from '../utils/web3wallet';
 
@@ -41,6 +43,7 @@ export function SignTypedData() {
 
   const signBecomeBpMessage = useSignBecomeBpMessage();
   const signSetupCallbackUrl = useSignSetupCallbackUrl();
+  const signRetryCallback = useSignRetryCallback();
 
   const onSessionRequest = useCallback(
     async (event: Web3WalletTypes.SessionRequest) => {
@@ -76,13 +79,24 @@ export function SignTypedData() {
     try {
       let signedMsg = '';
 
-      if (primaryType === TYPED_DATA_PRIMARY_TYPE.BECOME_BP) {
-        signedMsg = await signBecomeBpMessage({
-          identity: toSign.identity,
-          expires: Number(toSign.expires),
-        } as BecomeBpToSign);
-      } else {
-        signedMsg = await signSetupCallbackUrl();
+      switch (primaryType) {
+        case TYPED_DATA_PRIMARY_TYPE.BECOME_BP:
+          signedMsg = await signBecomeBpMessage({
+            identity: toSign.identity,
+            expires: Number(toSign.expires),
+          } as BecomeBpToSign);
+          break;
+        case TYPED_DATA_PRIMARY_TYPE.RETRY_CALLBACK:
+          signedMsg = await signRetryCallback({
+            ...toSign,
+            expires: Number(toSign.expires),
+          } as RetryCallbackToSign);
+          break;
+        case TYPED_DATA_PRIMARY_TYPE.SETUP_CALLBACK_URL:
+          signedMsg = await signSetupCallbackUrl();
+          break;
+        default:
+          throw new Error('Unreachable');
       }
 
       await web3wallet?.respondSessionRequest({

@@ -297,6 +297,7 @@
     "expires": "Expires",
     "payoutCallbackUrl": "Payout Callback Url",
     "depositCallbackUrl": "Deposit Callback Url",
-    "withdrawalCallbackUrl": "Withdrawal Callback Url"
+    "withdrawalCallbackUrl": "Withdrawal Callback Url",
+    "callbackId": "Callback Id"
   }
 }
