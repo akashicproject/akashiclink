@@ -9,7 +9,6 @@ import {
   IonSelect,
   IonSelectOption,
 } from '@ionic/react';
-import { copyOutline } from 'ionicons/icons';
 import type { CSSProperties } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,9 +16,11 @@ import { useHistory } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
+import { themeType } from '../../theme/const';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { SquareWhiteButton } from '../buttons';
+import { useTheme } from '../PreferenceProvider';
 
 /**
  * Options in the dropdown menu in addition to regular account selection
@@ -51,6 +52,7 @@ export function AccountSelection({
 }) {
   const history = useHistory();
   const { t } = useTranslation();
+  const [storedTheme] = useTheme();
 
   const popover = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -159,7 +161,11 @@ export function AccountSelection({
           <IonIcon
             class="icon-button-icon"
             slot="icon-only"
-            icon={copyOutline}
+            src={`/shared-assets/images/${
+              storedTheme === themeType.DARK
+                ? 'copy-icon-white.svg'
+                : 'copy-icon-dark.svg'
+            }`}
           />
           <IonPopover
             side="top"

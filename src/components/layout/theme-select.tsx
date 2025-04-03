@@ -42,7 +42,10 @@ export function ThemeSelect() {
   };
 
   // Shorthand for setting css props of the slider
-  const isDarkMode = storedTheme === themeType.DARK;
+  const isDarkMode =
+    storedTheme === themeType.DARK ||
+    (storedTheme === themeType.SYSTEM &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches);
 
   return (
     <>

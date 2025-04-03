@@ -104,6 +104,16 @@ export const useTheme: () => [
   const { theme: storedTheme, setTheme: setStoredTheme } =
     useContext(ThemeContext);
 
+  // If system, set light or dark otherwise checks for light/dark return wrong answer in rest of the app
+  if (storedTheme === themeType.SYSTEM) {
+    return [
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? themeType.DARK
+        : themeType.LIGHT,
+      setStoredTheme,
+    ];
+  }
+
   return [storedTheme, setStoredTheme];
 };
 

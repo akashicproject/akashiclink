@@ -2,16 +2,18 @@ import './settings-popover.scss';
 
 import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
 import { IonIcon, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
-import { caretBackOutline, settingsOutline } from 'ionicons/icons';
+import { caretBackOutline } from 'ionicons/icons';
 import type { MouseEventHandler, ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
+import { themeType } from '../../theme/const';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { SquareWhiteButton } from '../buttons';
 import { useLogout } from '../logout';
+import { useTheme } from '../PreferenceProvider';
 
 /** Styling the display text */
 function SettingsText({ text, id }: { text: string; id?: string }) {
@@ -43,7 +45,7 @@ function SettingsList(props: { children: ReactNode; isSubmenu?: boolean }) {
  */
 export function SettingsPopover() {
   const { t, i18n } = useTranslation();
-
+  const [storedTheme] = useTheme();
   const logout = useLogout();
 
   /** Grouping of the settings in the popover menu
@@ -109,7 +111,11 @@ export function SettingsPopover() {
       </IonItem>
     );
   }
+  const [buttonBackground, setButtonBackground] = useState(false);
 
+  const handleButtonClick = () => {
+    setButtonBackground(!buttonBackground);
+  };
   const [showPopover, setShowPopover] = useState<{
     open: boolean;
     event: Event | undefined;
@@ -138,12 +144,22 @@ export function SettingsPopover() {
     <>
       <SquareWhiteButton
         class="icon-button"
-        onClick={(e) => setShowPopover({ open: true, event: e.nativeEvent })}
+        onClick={(e) => {
+          handleButtonClick(),
+            setShowPopover({ open: true, event: e.nativeEvent });
+        }}
+        forceStyle={
+          buttonBackground ? { background: '#EDDCFF', transition: 'none' } : {}
+        }
       >
         <IonIcon
           slot="icon-only"
-          class="icon-button-icon"
-          icon={settingsOutline}
+          class="icon-button-icons"
+          src={`/shared-assets/images/${
+            storedTheme === themeType.DARK && !buttonBackground
+              ? 'setting-icon-white.svg'
+              : 'setting-icon-purple.svg'
+          }`}
         />
       </SquareWhiteButton>
       <IonPopover
@@ -151,7 +167,10 @@ export function SettingsPopover() {
         backdrop-dismiss={true}
         isOpen={showPopover.open}
         event={showPopover.event}
-        onDidDismiss={() => setShowPopover({ open: false, event: undefined })}
+        onDidDismiss={() => {
+          setButtonBackground(false),
+            setShowPopover({ open: false, event: undefined });
+        }}
         side="bottom"
         alignment="end"
       >

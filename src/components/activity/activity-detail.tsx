@@ -9,13 +9,15 @@ import {
 } from '@helium-pay/backend';
 import { IonButton, IonContent, IonIcon, IonPopover } from '@ionic/react';
 import Big from 'big.js';
-import { arrowForwardCircleOutline, copyOutline } from 'ionicons/icons';
+import { arrowForwardCircleOutline } from 'ionicons/icons';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Divider } from '../../pages/activity';
+import { themeType } from '../../theme/const';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { displayLongText } from '../../utils/long-text';
+import { useTheme } from '../PreferenceProvider';
 
 const darkColor = {
   color: 'var(--ion-color-primary-dark)',
@@ -43,6 +45,7 @@ const Header = styled.h4(darkColor);
 const Header3 = styled.h3(darkColor);
 const Link = styled.a(darkColor);
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export function ActivityDetail({
   currentTransfer,
 }: {
@@ -50,6 +53,7 @@ export function ActivityDetail({
 }) {
   const { t } = useTranslation();
   const isLayer2 = currentTransfer.layer === TransactionLayer.L2;
+  const [storedTheme] = useTheme();
 
   const statusString = (status: string | undefined) => {
     switch (status) {
@@ -131,7 +135,11 @@ export function ActivityDetail({
                 <IonIcon
                   slot="icon-only"
                   class="copy-icon"
-                  icon={copyOutline}
+                  src={`/shared-assets/images/${
+                    storedTheme === themeType.DARK
+                      ? 'copy-icon-white.svg'
+                      : 'copy-icon-dark.svg'
+                  }`}
                 />
                 <IonPopover
                   side="top"
@@ -168,7 +176,15 @@ export function ActivityDetail({
                 copyData(currentTransfer.senderAddressUrl, e)
               }
             >
-              <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />
+              <IonIcon
+                slot="icon-only"
+                class="copy-icon"
+                src={`/shared-assets/images/${
+                  storedTheme === themeType.DARK
+                    ? 'copy-icon-white.svg'
+                    : 'copy-icon-dark.svg'
+                }`}
+              />
             </IonButton>
           </TextContent>
         )}
@@ -190,7 +206,15 @@ export function ActivityDetail({
                 copyData(currentTransfer.recipientAddressUrl, e)
               }
             >
-              <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />
+              <IonIcon
+                slot="icon-only"
+                class="copy-icon"
+                src={`/shared-assets/images/${
+                  storedTheme === themeType.DARK
+                    ? 'copy-icon-white.svg'
+                    : 'copy-icon-dark.svg'
+                }`}
+              />
             </IonButton>
           </TextContent>
         )}

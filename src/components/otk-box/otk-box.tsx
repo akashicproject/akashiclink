@@ -8,11 +8,12 @@ import {
   IonLabel,
   IonPopover,
 } from '@ionic/react';
-import { copyOutline } from 'ionicons/icons';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { themeType } from '../../theme/const';
 import { SquareWhiteButton } from '../buttons';
+import { useTheme } from '../PreferenceProvider';
 
 /**
  * Simple box storing wrapped text with optional copy button on the side
@@ -29,7 +30,7 @@ export function OtkBox({
   padding?: boolean;
 }) {
   const { t } = useTranslation();
-
+  const [storedTheme] = useTheme();
   const handleCopy = async (e: never) => {
     await Clipboard.write({
       string: text || '',
@@ -77,7 +78,11 @@ export function OtkBox({
             <IonIcon
               slot="icon-only"
               class="icon-button-icon"
-              icon={copyOutline}
+              src={`/shared-assets/images/${
+                storedTheme === themeType.DARK
+                  ? 'copy-icon-white.svg'
+                  : 'copy-icon-dark.svg'
+              }`}
             />
             <IonPopover
               side="top"

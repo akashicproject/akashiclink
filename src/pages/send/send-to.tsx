@@ -476,9 +476,9 @@ export function SendTo() {
                 )}
                 {alertRequest.visible && <AlertBox state={alertRequest} />}
                 <IonRow style={{ width: '100%' }}>
-                  <IonCol size="6">
+                  <IonCol size="6" style={{ paddingLeft: '0' }}>
                     <PurpleButton
-                      style={{ width: '100%' }}
+                      style={{ width: '100%', marginLeft: '0' }}
                       expand="block"
                       onClick={verifyTransaction}
                       disabled={loading || !toAddress}
@@ -489,9 +489,9 @@ export function SendTo() {
                       ) : null}
                     </PurpleButton>
                   </IonCol>
-                  <IonCol size="6">
+                  <IonCol size="6" style={{ paddingRight: '0' }}>
                     <WhiteButton
-                      style={{ width: '100%' }}
+                      style={{ width: '100%', marginRight: '0' }}
                       expand="block"
                       routerLink={akashicPayPath(urls.loggedFunction)}
                     >

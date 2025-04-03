@@ -7,15 +7,16 @@ import {
   IonSpinner,
   isPlatform,
 } from '@ionic/react';
-import { arrowBack } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
+import { themeType } from '../../theme/const';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { AccountSelection } from '../account-selection/account-selection';
 import { SquareWhiteButton } from '../buttons';
 import { useLogout } from '../logout';
+import { useTheme } from '../PreferenceProvider';
 import { SettingsPopover } from '../settings/settings-popover';
 
 const HorizontalDivider = styled.div({
@@ -31,6 +32,7 @@ export function LoggedToolbar() {
   const history = useHistory();
   const isDashboard =
     history.location.pathname === `/akashic/${urls.loggedFunction}`;
+  const [storedTheme] = useTheme();
 
   const { setActiveAccount } = useAccountStorage();
   // const [logoutTrigger, setLogoutTrigger] = useState<LocalAccount>();
@@ -79,7 +81,11 @@ export function LoggedToolbar() {
                 <IonIcon
                   class="icon-button-icon"
                   slot="icon-only"
-                  icon={arrowBack}
+                  src={`/shared-assets/images/${
+                    storedTheme === themeType.DARK
+                      ? 'back-arrow-white.svg'
+                      : 'back-arrow-purple.svg'
+                  }`}
                 />
               </SquareWhiteButton>
             </IonCol>
