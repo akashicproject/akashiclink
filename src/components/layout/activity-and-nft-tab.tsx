@@ -99,7 +99,10 @@ export function ActivityAndNftTab() {
   });
   const itemDisplayIndex = 3;
   const [nftTab, setNftTab] = useState(false);
-  const { transfers } = useTransfersMe(transferParams);
+  const { transfers } = useTransfersMe({
+    ...transferParams,
+    hideSmallTransactions: true,
+  });
   const { transfers: nftTransfers } = useNftTransfersMe(transferParams);
   const walletFormatTransfers = formatMergeAndSortNftAndCryptoTransfers(
     transfers,

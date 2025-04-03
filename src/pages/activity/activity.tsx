@@ -154,6 +154,7 @@ export function Activity() {
     useState<ITransactionRecordForExtension>();
   const [transferParams, _] = useState({
     startDate: dayjs().subtract(1, 'month').toDate(),
+    hideSmallTransactions: true,
   });
   const { transfers, isLoading } = useTransfersMe(transferParams);
   const { transfers: nftTransfers, isLoading: isLoadingNft } =
