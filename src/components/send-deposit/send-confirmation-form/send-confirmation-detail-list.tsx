@@ -80,7 +80,7 @@ export const SendConfirmationDetailList = ({
     ? currencySymbol + (isL2 ? ` (${nativeCoinSymbol})` : '')
     : nativeCoinSymbol;
 
-  const alias = validatedAddressPair.acnsAlias ?? '-';
+  const alias = validatedAddressPair.alias ?? '-';
 
   const feeCurrencyDisplayName =
     isCurrencyTypeToken && (isL2 || !!delegatedFee)

@@ -271,7 +271,7 @@ export function OneActivity({
                   color: 'var(--ion-color-primary-10)',
                 }}
               >
-                {displayLongText(transfer?.nft?.account, 20)}
+                {displayLongText(transfer?.nft?.alias, 20)}
               </NftItem>
             </NftName>
             <NftImage>

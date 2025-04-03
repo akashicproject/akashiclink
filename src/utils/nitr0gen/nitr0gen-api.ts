@@ -47,8 +47,8 @@ enum ProductionContracts {
   Onboard = 'a456ddc07da6d46a6897d24de188e767b87a9d9f2f3c617d858aaf819e0e5bce@1.0.0',
   NFTNamespace = 'akashicnft',
   NFTTransfer = 'e7ba6aa2aea7ae33f6bce49a07e6f8a2e6a5983e66b44f236e76cf689513c20a@1.0.0',
-  NFTAcnsRecord = '6b1acfbfba1f54571036fd579f509f4c60ac1e363c111f70815bea33957cf64a@1.0.0',
-  NFTAcnsRecordTesting = 'DNE',
+  NFTAasRecord = '6b1acfbfba1f54571036fd579f509f4c60ac1e363c111f70815bea33957cf64a@1.0.0',
+  NFTAasRecordTesting = 'DNE',
 }
 
 enum TestNetContracts {
@@ -62,9 +62,12 @@ enum TestNetContracts {
   NFTTransfer = '9c6ce3ed0c1e669471cd72ad9a81ea6ad13b6c3ba18b3ca05281fa721903f0e0@1.0.8',
   // The "Testing" contract has a 60s cooldown on Alias-linking (vs 72hrs for
   // real contract)
-  NFTAcnsRecord = '4efd09f16b5c50ac95aeddcd36852d52eca0cf59e46dda39607e872b298dbefb@1.0.5',
-  NFTAcnsRecordTesting = '48192d7629e1b42772b9a4b87974e24c7d7c7225346e7dc9cbe74acb311a29db@1.0.2',
+  NFTAasRecord = '4efd09f16b5c50ac95aeddcd36852d52eca0cf59e46dda39607e872b298dbefb@1.0.5',
+  NFTAasRecordTesting = '48192d7629e1b42772b9a4b87974e24c7d7c7225346e7dc9cbe74acb311a29db@1.0.2',
 }
+
+const NFT_RECORD_TYPE = 'wallet';
+const NFT_RECORD_NAME = 'key';
 
 const Nitr0gen =
   process.env.REACT_APP_ENV === 'prod' ? ProductionContracts : TestNetContracts;
@@ -444,9 +447,7 @@ export class Nitr0genApi {
    */
   async aasSwitchTransaction(
     otk: IKeyExtended,
-    acnsStreamId: string,
-    recordType: string,
-    recordKey: string,
+    aasStreamId: string,
     value?: string
   ): Promise<IBaseAcTransaction> {
     const txBody: IBaseAcTransaction = {
@@ -455,13 +456,13 @@ export class Nitr0genApi {
         $namespace: Nitr0gen.NFTNamespace,
         $contract:
           process.env.REACT_APP_ENV === 'prod'
-            ? Nitr0gen.NFTAcnsRecord
-            : Nitr0gen.NFTAcnsRecordTesting,
+            ? Nitr0gen.NFTAasRecord
+            : Nitr0gen.NFTAasRecordTesting,
         $i: {
           nft: {
-            $stream: acnsStreamId,
-            recordType: recordType,
-            recordName: recordKey,
+            $stream: aasStreamId,
+            recordType: NFT_RECORD_TYPE,
+            recordName: NFT_RECORD_NAME,
             recordValue: value,
           },
         },
@@ -472,7 +473,7 @@ export class Nitr0genApi {
 
     return await signTxBody(txBody, {
       ...otk,
-      identity: acnsStreamId,
+      identity: aasStreamId,
     });
   }
 
@@ -488,7 +489,7 @@ export class Nitr0genApi {
    */
   public async transferNftTransaction(
     otk: IKeyExtended,
-    acnsStreamId: string,
+    aasStreamId: string,
     newOwnerIdentity: string
   ): Promise<IBaseAcTransaction> {
     // Build Transaction
@@ -498,7 +499,7 @@ export class Nitr0genApi {
         $contract: Nitr0gen.NFTTransfer,
         $i: {
           nft: {
-            $stream: acnsStreamId,
+            $stream: aasStreamId,
           },
         },
         $o: {
@@ -513,7 +514,7 @@ export class Nitr0genApi {
     // "Hack" used when signing nft transactions, identity must be something else than the otk identity
     return await signTxBody(txBody, {
       ...otk,
-      identity: acnsStreamId,
+      identity: aasStreamId,
     });
   }
 

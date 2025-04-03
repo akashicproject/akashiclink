@@ -73,21 +73,21 @@ export const SendAddressInput = ({
     if (
       userInput === activeAccount?.identity ||
       userInput === walletAddress ||
-      userInput === activeAccount?.aasName
+      userInput === activeAccount?.alias
     ) {
       setAlert(errorAlertShell('NoSelfSend'));
       return;
     }
 
     try {
-      const { l2Address, acnsAlias, isBp, ledgerId } =
+      const { l2Address, alias, isBp, ledgerId } =
         await OwnersAPI.lookForL2Address({
           to: userInput,
           coinSymbol: chain,
         });
 
       // Not allow sending BP by alias
-      if (userInput === acnsAlias && isBp) {
+      if (userInput === alias && isBp) {
         setAlert(errorAlertShell('SendBpByAlias'));
         return;
       }
@@ -95,7 +95,7 @@ export const SendAddressInput = ({
       if (userInput.match(NetworkDictionary[chain].regex.address)) {
         // Sending by L1 address
         onAddressValidated({
-          acnsAlias,
+          alias,
           convertedToAddress: l2Address ?? userInput,
           userInputToAddress: userInput,
           userInputToAddressType: 'l1',
@@ -112,7 +112,7 @@ export const SendAddressInput = ({
           setAlert(errorAlertShell('invalidL2Address'));
         } else {
           onAddressValidated({
-            acnsAlias,
+            alias,
             convertedToAddress: l2Address,
             userInputToAddress: userInput,
             userInputToAddressType: 'l2',
@@ -127,7 +127,7 @@ export const SendAddressInput = ({
           return;
         } else {
           onAddressValidated({
-            acnsAlias,
+            alias,
             convertedToAddress: l2Address,
             userInputToAddress: userInput,
             userInputToAddressType: 'alias',

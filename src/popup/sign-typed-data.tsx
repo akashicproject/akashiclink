@@ -119,7 +119,7 @@ export function SignTypedData() {
             {
               userInputToAddress: toSign.addressInput as string,
               convertedToAddress: toSign.convertedToAddress as string,
-              acnsAlias: toSign.acnsAlias as string,
+              alias: toSign.alias as string,
             },
             toSign.amount as string,
             toSign.chain as CoinSymbol,

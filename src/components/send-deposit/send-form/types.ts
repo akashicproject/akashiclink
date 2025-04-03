@@ -10,7 +10,7 @@ export type ValidatedAddressPair = {
   userInputToAddress: string;
   isL2?: boolean;
   initiatedToNonL2?: string;
-  acnsAlias?: string;
+  alias?: string;
   userInputToAddressType?: 'l2' | 'l1' | 'alias';
   /** LedgerId of L1 wallet if that was input but result was an L2. Helps effectivize some
    * fee-proceedings for specific L2s on AC */

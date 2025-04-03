@@ -38,10 +38,10 @@ export const SendDetailBox = ({
     <IonRow className={'ion-grid-row-gap-sm'}>
       <IonCol size={'12'}>
         <List lines="none" bordered compact>
-          {validatedAddressPair.acnsAlias && (
+          {validatedAddressPair.alias && (
             <ListLabelValueItem
               label={t('AkashicAlias')}
-              value={validatedAddressPair.acnsAlias}
+              value={validatedAddressPair.alias}
               labelBold
             />
           )}

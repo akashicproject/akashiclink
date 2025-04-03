@@ -148,7 +148,7 @@ export const useNftTransfer = () => {
   const trigger = async (
     signedTx: IBaseAcTransaction
   ): Promise<
-    Omit<ITransferNftResponse, 'nftName' | 'ownerIdentity' | 'acnsAlias'>
+    Omit<ITransferNftResponse, 'nftName' | 'ownerIdentity' | 'alias'>
   > => {
     const response = await nitr0genApi.sendSignedTx(signedTx);
     nitr0genApi.checkForNitr0genError(response);
@@ -160,7 +160,7 @@ export const useNftTransfer = () => {
   return { trigger };
 };
 
-export const useUpdateAcns = () => {
+export const useUpdateAas = () => {
   const nitr0genApi = new Nitr0genApi();
 
   const trigger = async (
@@ -175,7 +175,7 @@ export const useUpdateAcns = () => {
       };
     } catch (err) {
       const error =
-        err instanceof Error ? err : new Error(nftErrors.linkingAcnsFailed);
+        err instanceof Error ? err : new Error(nftErrors.linkingAasFailed);
       datadogRum.addError(error);
       throw err;
     }

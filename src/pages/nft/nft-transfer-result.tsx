@@ -61,7 +61,7 @@ export interface TransferResultType {
   sender: string | null | undefined;
   receiver: string;
   nftName: string;
-  acnsAlias: string;
+  alias: string;
   txHash?: string;
 }
 
@@ -120,7 +120,7 @@ export function NftTransferResult() {
                 </TextWrapper>
                 <TextWrapper>
                   <TextTitle>{'NFT'}</TextTitle>
-                  <TextContent>{state?.transaction?.acnsAlias}</TextContent>
+                  <TextContent>{state?.transaction?.alias}</TextContent>
                 </TextWrapper>
               </ResultContent>
             </IonCol>

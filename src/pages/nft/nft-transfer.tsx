@@ -89,7 +89,7 @@ export const NftContainer = styled.div`
 `;
 enum SearchResult {
   Layer2 = 'Layer2',
-  AcnsName = 'AcnsName',
+  Alias = 'Alias',
   NoResult = 'NoResult',
   NoInput = 'NoInput',
   IsSelfAddress = 'isSelfAddress',
@@ -98,7 +98,7 @@ enum SearchResult {
 
 interface IVerifyNftResponse {
   nftOwnerIdentity: string;
-  nftAcnsStreamId: string;
+  nftAasStreamId: string;
   txToSign: IBaseAcTransaction;
 }
 
@@ -107,13 +107,13 @@ const verifyNftTransaction = async (
   cacheOtk: FullOtk | null,
   toAddress: string
 ): Promise<IVerifyNftResponse> => {
-  if (!cacheOtk || !nft.acns?.ledgerId) {
+  if (!cacheOtk || !nft.aas?.ledgerId) {
     throw new Error('GenericFailureMsg');
   }
 
   const nitr0genApi = new Nitr0genApi();
-  if (nft.acns?.value) {
-    throw new Error(nftErrors.acnsValueShouldBeDeleted);
+  if (nft.aas?.linked) {
+    throw new Error(nftErrors.aasValueShouldBeDeleted);
   }
   if (nft.ownerIdentity === toAddress) {
     throw new Error(nftErrors.toAddressIsAlreadyOwner);
@@ -121,13 +121,13 @@ const verifyNftTransaction = async (
 
   const txToSign = await nitr0genApi.transferNftTransaction(
     cacheOtk,
-    nft.acns?.ledgerId,
+    nft.aas?.ledgerId,
     toAddress
   );
 
   return {
     nftOwnerIdentity: nft.ownerIdentity,
-    nftAcnsStreamId: nft.acns.ledgerId,
+    nftAasStreamId: nft.aas.ledgerId,
     txToSign,
   };
 };
@@ -138,7 +138,7 @@ export function NftTransfer() {
   const { nfts, isLoading, mutateNftMe } = useNftMe();
   const history = useHistory<LocationState>();
   const state = history.location.state?.nft;
-  const currentNft = nfts.find((nft) => nft.name === state?.nftName) ?? nfts[0];
+  const currentNft = nfts.find((nft) => nft.name === state?.nftName);
   const [inputValue, setInputValue] = useState<string>('');
   const [toAddress, setToAddress] = useState<string>('');
   const [searched, setSearched] = useState(false);
@@ -163,18 +163,18 @@ export function NftTransfer() {
       return;
     }
     // Not allow sending to self address
-    if (value === activeAccount?.identity || value === activeAccount?.aasName) {
+    if (value === activeAccount?.identity || value === activeAccount?.alias) {
       setToAddress('');
       setSearched(false);
       setSearchedResultType(SearchResult.IsSelfAddress);
       return;
     }
-    const { l2Address, acnsAlias, isBp } = await OwnersAPI.lookForL2Address({
+    const { l2Address, alias, isBp } = await OwnersAPI.lookForL2Address({
       to: value,
     });
 
     // Not allow sending BP by alias
-    if (acnsAlias === value && isBp) {
+    if (alias === value && isBp) {
       setToAddress('');
       setSearched(false);
       setSearchedResultType(SearchResult.SendBpByAlias);
@@ -194,7 +194,7 @@ export function NftTransfer() {
   const transferNft = async () => {
     setLoading(true);
     try {
-      if (!cacheOtk) {
+      if (!cacheOtk || !currentNft) {
         throw new Error('GenericFailureMsg');
       }
 
@@ -207,7 +207,7 @@ export function NftTransfer() {
       // "Hack" used when signing nft transactions, identity must be something else than the otk identity
       const signerOtk = {
         ...cacheOtk,
-        identity: verifiedNft.nftAcnsStreamId,
+        identity: verifiedNft.nftAasStreamId,
       };
       const signedTx = await signTxBody(verifiedNft.txToSign, signerOtk);
 
@@ -217,7 +217,7 @@ export function NftTransfer() {
         sender: activeAccount?.identity,
         receiver: toAddress,
         nftName: currentNft.name,
-        acnsAlias: currentNft.acns?.name || '',
+        alias: currentNft.alias || '',
         txHash: response.txHash,
       };
       history.push({
@@ -274,15 +274,17 @@ export function NftTransfer() {
             }}
           >
             <IonRow className="w-100">
-              <StyledNftWrapper>
-                <OneNft
-                  nft={currentNft}
-                  isBig={true}
-                  isAASDarkStyle={!isDarkMode}
-                  nftImgWrapper="nft-wrapper-transfer"
-                  screen="transfer"
-                />
-              </StyledNftWrapper>
+              {currentNft && (
+                <StyledNftWrapper>
+                  <OneNft
+                    nft={currentNft}
+                    isBig={true}
+                    isAASDarkStyle={!isDarkMode}
+                    nftImgWrapper="nft-wrapper-transfer"
+                    screen="transfer"
+                  />
+                </StyledNftWrapper>
+              )}
             </IonRow>
             <IonRow>
               <IonCol class="ion-center">
@@ -304,7 +306,7 @@ export function NftTransfer() {
                   {inputValue && searchedResultType !== SearchResult.NoInput && (
                     <AddressWrapper>
                       <AddressBox>
-                        {searchedResultType === SearchResult.AcnsName &&
+                        {searchedResultType === SearchResult.Alias &&
                           `${inputValue} = ${displayLongText(toAddress)}`}
                         {searchedResultType === SearchResult.Layer2 &&
                           `${displayLongText(toAddress)}`}
