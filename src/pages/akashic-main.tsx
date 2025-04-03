@@ -16,6 +16,7 @@ import { useHistory } from 'react-router-dom';
 
 import { PurpleButton, WhiteButton } from '../components/buttons';
 import { Footer } from '../components/layout/footer';
+import { LoggedHeader } from '../components/layout/logged-header';
 import { ContentText } from '../components/text/context-text';
 import { urls } from '../constants/urls';
 import { akashicPayPath } from '../routing/navigation-tree';
@@ -54,15 +55,7 @@ export function AkashicPayMain() {
     <IonPage>
       <IonContent>
         <IonGrid class="main-wrapper">
-          <IonRow>
-            <IonCol class="ion-center">
-              <IonImg
-                class={isMobile ? 'logo' : 'logo-web'}
-                alt={''}
-                src="/shared-assets/images/main/main-icon.png"
-              />
-            </IonCol>
-          </IonRow>
+          <LoggedHeader loggedIn={false} />
           <IonRow>
             <IonCol class="ion-center">
               <IonImg
@@ -78,7 +71,7 @@ export function AkashicPayMain() {
             <>
               <IonRow style={{ marginTop: '40px' }}>
                 <IonCol class="ion-center">
-                  <ContentText>Best way to invest Your Money!</ContentText>
+                  <ContentText>{t('BestWayToInvestYourMoney')}</ContentText>
                 </IonCol>
               </IonRow>
               <IonRow style={{ marginTop: '8px' }}>

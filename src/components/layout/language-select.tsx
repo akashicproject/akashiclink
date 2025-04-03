@@ -3,12 +3,32 @@ import './language-dropdown.css';
 import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
 import { IonButton, IonIcon, IonSelect, IonSelectOption } from '@ionic/react';
 import { globeOutline } from 'ionicons/icons';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 
 export const LanguageDropdown = () => {
   const { i18n } = useTranslation();
-  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
+
+  /**
+   * Get language of the user's browser
+   */
+  const getLocalisationLanguage = (): string => {
+    const browserLanguage = window.navigator.language;
+    for (const lang of LANGUAGE_LIST)
+      if (lang.locale === browserLanguage) return lang.locale;
+    // Default to english
+    return LANGUAGE_LIST[0].locale;
+  };
+  const [selectedLanguage, setSelectedLanguage] = useLocalStorage(
+    'language',
+    getLocalisationLanguage()
+  );
+
+  useEffect(() => {
+    i18n.changeLanguage(selectedLanguage);
+  }, [selectedLanguage]);
 
   return (
     <div style={{ display: 'flex' }}>
@@ -26,7 +46,6 @@ export const LanguageDropdown = () => {
         interface="popover"
         onIonChange={(event) => {
           setSelectedLanguage(event.target.value);
-          i18n.changeLanguage(event.target.value);
         }}
       >
         {LANGUAGE_LIST.map((item) => (
