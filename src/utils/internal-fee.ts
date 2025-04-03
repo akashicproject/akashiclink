@@ -8,7 +8,8 @@ import Big from 'big.js';
 
 /**
  * Calculates internal withdrawal fee for the specified amount to send. Fee is charged in same currency as user wants to send.
- * For details on the fee-amounts, see https://docs.google.com/spreadsheets/d/1PaCU2WOZJD-U73rmrylmgM2xvrI9XghOY1_I8FOH7O4/edit?pli=1#gid=0
+ * Fee is always 0.1 USDT (or equivalent in relevant currency) for transactions
+ * above 1 USDT in value
  *
  * Currently only charged for L2 transactions
  */
@@ -28,17 +29,8 @@ export function calculateInternalWithdrawalFee(
   );
 
   // Check if not empty string
-  if (requestedAmount && Big(requestedAmount).gt(0)) {
-    if (Big(requestedAmount).times(exchangeRate).gt('100000')) {
-      internalFeeBase = '0.4';
-    } else if (Big(requestedAmount).times(exchangeRate).gt('10000')) {
-      internalFeeBase = '0.3';
-    } else if (Big(requestedAmount).times(exchangeRate).gt('1000')) {
-      internalFeeBase = '0.2';
-    } else if (Big(requestedAmount).times(exchangeRate).gt('1')) {
-      internalFeeBase = '0.1';
-    }
-    return Big(internalFeeBase).div(exchangeRate).toPrecision(2);
+  if (requestedAmount && Big(requestedAmount).times(exchangeRate).gt('1')) {
+    internalFeeBase = '0.1';
   }
-  return '0.0';
+  return Big(internalFeeBase).div(exchangeRate).toPrecision(2);
 }
