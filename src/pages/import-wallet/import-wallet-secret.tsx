@@ -72,6 +72,7 @@ export const ImportWalletSecret = () => {
     }
 
     try {
+      // user will be redirected to other page if import is successful
       dispatch(reconstructOtkAsync(importWalletForm.passPhrase));
     } catch (e) {
       setAlert(
@@ -81,9 +82,9 @@ export const ImportWalletSecret = () => {
             'GenericFailureMsg'
         )
       );
+      // if not, release button to let user try again
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   const onSecretWordsChange = async (values: string[]) => {
@@ -183,7 +184,7 @@ export const ImportWalletSecret = () => {
             </PrimaryButton>
           </IonCol>
           <IonCol size="6">
-            <WhiteButton expand="block" onClick={onCancel}>
+            <WhiteButton disabled={isLoading} expand="block" onClick={onCancel}>
               {t('Cancel')}
             </WhiteButton>
           </IonCol>

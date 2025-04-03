@@ -38,11 +38,17 @@ export function ImportWalletKeypair() {
     );
   }, [importWalletError, t]);
 
-  const onRequestImport = async () => {
+  const onRequestImport = () => {
     if (importWalletForm.privateKey) {
       setIsLoading(true);
-      dispatch(restoreOtkFromKeypairAsync(importWalletForm.privateKey));
-      setIsLoading(false);
+      try {
+        // user will be redirected to other page if import is successful
+        dispatch(restoreOtkFromKeypairAsync(importWalletForm.privateKey));
+      } catch (e) {
+        setAlert(errorAlertShell((e as Error).message || 'GenericFailureMsg'));
+        // if not, release button to let user try again
+        setIsLoading(false);
+      }
     }
   };
 
@@ -99,7 +105,12 @@ export function ImportWalletKeypair() {
           </PrimaryButton>
         </IonCol>
         <IonCol size="6">
-          <WhiteButton expand="block" fill="clear" onClick={onCancel}>
+          <WhiteButton
+            disabled={isLoading}
+            expand="block"
+            fill="clear"
+            onClick={onCancel}
+          >
             {t('Cancel')}
           </WhiteButton>
         </IonCol>
