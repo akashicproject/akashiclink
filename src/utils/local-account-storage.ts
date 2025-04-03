@@ -1,6 +1,3 @@
-import { useLocalStorage } from './hooks/useLocalStorage';
-
-/** Tag under which local accounts are stored in local storage */
 const LocalAccountStorage = 'cached-account';
 
 /**
@@ -17,31 +14,27 @@ export interface LocalAccount {
  * Store a username-identity pair in a local storage list
  */
 export function storeLocalAccount(account: LocalAccount) {
-  const [accounts, setAccounts] = useLocalStorage(
-    LocalAccountStorage,
-    [] as LocalAccount[]
-  );
+  const cachedAccounts = JSON.parse(
+    localStorage.getItem(LocalAccountStorage) || '[]'
+  ) as LocalAccount[];
+
   // Do not add duplicate accounts
-  if (
-    accounts.every(
-      ({ identity, username }) =>
-        identity !== account.identity || username !== account.username
-    )
-  ) {
-    setAccounts([
-      ...accounts,
+  for (const { identity, username } of cachedAccounts) {
+    if (identity === account.identity && username === account.username) return;
+  }
+
+  localStorage.setItem(
+    LocalAccountStorage,
+    JSON.stringify([
+      ...cachedAccounts,
       {
         identity: account.identity || 'undefined',
         username: account.username,
       },
-    ]);
-  }
+    ])
+  );
 }
 
 export function getLocalAccounts(): LocalAccount[] {
-  const [accounts, _] = useLocalStorage(
-    LocalAccountStorage,
-    [] as LocalAccount[]
-  );
-  return accounts;
+  return JSON.parse(localStorage.getItem(LocalAccountStorage) || '[]');
 }
