@@ -2,20 +2,18 @@ import { IonCol, IonImg, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
 import { PurpleButton } from '../../components/buttons';
+import { LoggedLayout } from '../../components/layout/logged-layout';
 import { MainGrid } from '../../components/layout/main-grid';
-import { PublicLayout } from '../../components/layout/public-layout';
 import { useLogout } from '../../components/logout';
 import { HeaderTitle, HeaderWrapper } from '../send/send-result';
-
-export const createWalletUrl = 'create-wallet';
 
 export function ChangePasswordConfirm() {
   const { t } = useTranslation();
   const logout = useLogout();
 
   return (
-    <PublicLayout className="vertical-center">
-      <MainGrid>
+    <LoggedLayout>
+      <MainGrid style={{ padding: '56px 32px' }}>
         <IonRow>
           <IonCol class="ion-center">
             <HeaderWrapper>
@@ -38,6 +36,6 @@ export function ChangePasswordConfirm() {
           {t('Confirm')}
         </PurpleButton>
       </MainGrid>
-    </PublicLayout>
+    </LoggedLayout>
   );
 }

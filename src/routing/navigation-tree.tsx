@@ -17,7 +17,6 @@ import { SecretPhraseImport } from '../pages/importWallet/secret-phrase-import';
 import { SelectImportMethod } from '../pages/importWallet/select-import-method';
 import { Dashboard } from '../pages/logged/dashboard';
 import { DepositPage } from '../pages/logged/deposit-page';
-import { LoggedCreate } from '../pages/logged/logged-create';
 import { ManageAccounts } from '../pages/manage-accounts';
 import { Nft } from '../pages/nft/nft';
 import { NftTransfer } from '../pages/nft/nft-transfer';
@@ -30,7 +29,7 @@ import { MigrateWalletSecret } from '../pages/otkMigration/migrate-wallet-secret
 import { MigrateWalletSecretConfirm } from '../pages/otkMigration/migrate-wallet-secret-confirm';
 import { WalletMigrated } from '../pages/otkMigration/wallet-migrated';
 import { RecoverCode } from '../pages/recover-code';
-import { ChangePasswordAfterImport } from '../pages/Recovery/change-password-after-import';
+import { ChangePasswordAfterImport } from '../pages/recovery/change-password-after-import';
 import { SendConfirm } from '../pages/send/send-confirm';
 import { SendResult } from '../pages/send/send-result';
 import { SendTo } from '../pages/send/send-to';
@@ -53,7 +52,6 @@ export function NavigationTree() {
       {AkashicTab.registerPage(AkashicPayMain, urls.akashicPay)}
       {AkashicTab.registerPage(ManageAccounts, urls.manageAccounts)}
       {AkashicTab.registerPage(Dashboard, urls.loggedFunction)}
-      {AkashicTab.registerPage(LoggedCreate, urls.loggedCreate)}
       {AkashicTab.registerPage(DepositPage, urls.loggedDeposit)}
       {AkashicTab.registerPage(SendConfirm, urls.sendConfirm)}
       {AkashicTab.registerPage(SendTo, urls.sendTo)}

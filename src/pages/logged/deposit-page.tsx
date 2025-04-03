@@ -18,7 +18,7 @@ import { urls } from '../../constants/urls';
 import { themeType } from '../../theme/const';
 import { useLargestBalanceKeys } from '../../utils/hooks/useLargestBalanceKeys';
 import { cacheCurrentPage } from '../../utils/last-page-storage';
-import { LoggedMain } from './logged-main';
+import { LoggedLayoutWithActivityTab } from './logged-layout-with-activity-tab';
 
 const CoinWrapper = styled.div({
   display: 'flex',
@@ -59,7 +59,10 @@ export function DepositPage() {
   // }
 
   return (
-    <LoggedMain loading={isAddressesLoading}>
+    <LoggedLayoutWithActivityTab
+      showRefresh={false}
+      loading={isAddressesLoading}
+    >
       <IonGrid fixed>
         <IonRow class="ion-justify-content-center ion-no-padding">
           <IonCol class="ion-center" size="12">
@@ -96,6 +99,6 @@ export function DepositPage() {
           </IonCol>
         </IonRow>
       </IonGrid>
-    </LoggedMain>
+    </LoggedLayoutWithActivityTab>
   );
 }

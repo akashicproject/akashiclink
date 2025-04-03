@@ -36,13 +36,15 @@ export const ChainDiv = styled(IonRouterLink)({
 export function LoggedLayout({
   children,
   footer,
-  isRefresh = false,
-  isToolBar = true,
+  showRefresh = false,
+  showAddress = false,
+  showBackButton = true,
 }: {
   children: ReactNode;
   footer?: ReactNode;
-  isRefresh?: boolean;
-  isToolBar?: boolean;
+  showRefresh?: boolean;
+  showAddress?: boolean;
+  showBackButton?: boolean;
 }) {
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
@@ -68,7 +70,11 @@ export function LoggedLayout({
         >
           {t('AkashicChain')}
         </ChainDiv>
-        {isToolBar && <LoggedToolbar isRefresh={isRefresh} />}
+        <LoggedToolbar
+          showAddress={showAddress}
+          showRefresh={showRefresh}
+          showBackButton={showBackButton}
+        />
         {children}
       </IonContent>
       {footer && <IonFooter class={'ion-no-border'}>{footer}</IonFooter>}

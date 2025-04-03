@@ -13,7 +13,7 @@ import {
   cacheCurrentPage,
   NavigationPriority,
 } from '../../utils/last-page-storage';
-import { LoggedMain } from './logged-main';
+import { LoggedLayoutWithActivityTab } from './logged-layout-with-activity-tab';
 
 export function Dashboard() {
   const { t } = useTranslation();
@@ -26,13 +26,13 @@ export function Dashboard() {
   }, []);
 
   return (
-    <LoggedMain isRefresh={true}>
+    <LoggedLayoutWithActivityTab showBackButton={false}>
       <IonGrid
         style={{
           width: '100%',
           height: '40vh',
           margin: '0px',
-          padding: '32px 47px',
+          padding: '32px 48px',
         }}
       >
         <SelectCoin />
@@ -57,6 +57,6 @@ export function Dashboard() {
           </IonCol>
         </IonRow>
       </IonGrid>
-    </LoggedMain>
+    </LoggedLayoutWithActivityTab>
   );
 }

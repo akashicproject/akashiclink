@@ -10,8 +10,8 @@ import {
   formAlertResetState,
 } from '../../components/alert/alert';
 import { PurpleButton } from '../../components/buttons';
+import { LoggedLayout } from '../../components/layout/logged-layout';
 import { MainGrid } from '../../components/layout/main-grid';
-import { PublicLayout } from '../../components/layout/public-layout';
 import {
   StyledInput,
   StyledInputErrorPrompt,
@@ -62,35 +62,17 @@ export function ChangePassword() {
     }
   }
 
-  /**
-   * Drop any intermediate state and redirect to landing page
-   */
-  const ResetButton = (
-    <IonCol>
-      <ResetPageButton
-        expand="block"
-        callback={() => {
-          history.push(akashicPayPath(urls.loggedFunction));
-        }}
-      />
-    </IonCol>
-  );
   return (
-    <PublicLayout className="vertical-center">
-      <MainGrid>
-        <IonRow>
-          <IonCol>
-            <h2>{t('ChangePassword')}</h2>
-          </IonCol>
-        </IonRow>
-        <IonRow style={{ marginBottom: '40px' }}>
-          <IonCol>
+    <LoggedLayout>
+      <MainGrid style={{ padding: '32px 48px' }}>
+        <IonRow className={'ion-grid-row-gap-xl'}>
+          <IonCol size="12">
+            <h2 className={'ion-margin-top-0 ion-margin-bottom-xs'}>
+              {t('ChangePassword')}
+            </h2>
             <h6>{t('ChangePasswordInfo')}</h6>
           </IonCol>
-        </IonRow>
-
-        <IonRow>
-          <IonCol>
+          <IonCol size="12">
             <StyledInput
               label={t('OldPassword')}
               placeholder={t('EnterPassword')}
@@ -102,10 +84,6 @@ export function ChangePassword() {
               errorPrompt={StyledInputErrorPrompt.Password}
               validate={validatePassword}
             />
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>
             <StyledInput
               label={t('NewPassword')}
               placeholder={t('EnterPassword')}
@@ -117,10 +95,6 @@ export function ChangePassword() {
               errorPrompt={StyledInputErrorPrompt.Password}
               validate={validatePassword}
             />
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>
             <StyledInput
               label={t('ConfirmPassword')}
               type="password"
@@ -134,11 +108,20 @@ export function ChangePassword() {
               submitOnEnter={changePassword}
             />
           </IonCol>
-        </IonRow>
-        {alertRequest.visible && <AlertBox state={alertRequest} />}
-        <IonRow>
-          {ResetButton}
-          <IonCol>
+          {alertRequest.visible && (
+            <IonCol size="12">
+              <AlertBox state={alertRequest} />
+            </IonCol>
+          )}
+          <IonCol size="6">
+            <ResetPageButton
+              expand="block"
+              callback={() => {
+                history.push(akashicPayPath(urls.loggedFunction));
+              }}
+            />
+          </IonCol>
+          <IonCol size="6">
             <PurpleButton
               expand="block"
               onClick={changePassword}
@@ -149,6 +132,6 @@ export function ChangePassword() {
           </IonCol>
         </IonRow>
       </MainGrid>
-    </PublicLayout>
+    </LoggedLayout>
   );
 }

@@ -1,16 +1,15 @@
 import styled from '@emotion/styled';
 import { IonCol, IonIcon, IonRow } from '@ionic/react';
+import { arrowBack } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import { PurpleButton, SquareWhiteButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
-import { useTheme } from '../../components/PreferenceProvider';
 import { StyledInput } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import { themeType } from '../../theme/const';
 
 const StyledSpan = styled.span({
   fontSize: '12px',
@@ -23,7 +22,7 @@ const StyledSpan = styled.span({
 export function ChangePasswordAfterImport() {
   const { t } = useTranslation();
   const history = useHistory();
-  const [storedTheme] = useTheme();
+
   return (
     <PublicLayout contentStyle={{ padding: '0 48px' }}>
       <SquareWhiteButton
@@ -36,11 +35,7 @@ export function ChangePasswordAfterImport() {
         <IonIcon
           className="icon-button-icon"
           slot="icon-only"
-          src={`/shared-assets/images/${
-            storedTheme === themeType.DARK
-              ? 'back-arrow-white.svg'
-              : 'back-arrow-purple.svg'
-          }`}
+          icon={arrowBack}
         />
       </SquareWhiteButton>
       <MainGrid style={{ gap: '24px', padding: '72px 0px' }}>

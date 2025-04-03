@@ -32,7 +32,7 @@ export function SettingsVersion() {
 
   return (
     <LoggedLayout>
-      <MainGrid>
+      <MainGrid style={{ padding: '32px 32px' }}>
         <IonRow>
           <IonCol>
             <h2>{t('VersionInfo')}</h2>

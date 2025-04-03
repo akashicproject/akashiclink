@@ -6,7 +6,6 @@ export const urls = {
   importAccountUrl: 'import',
   welcome: 'welcome',
   loggedFunction: 'logged-function',
-  loggedCreate: 'logged-create',
   loggedDeposit: 'logged-deposit',
   sendFunction: 'send-function',
   sendTo: 'send-to',

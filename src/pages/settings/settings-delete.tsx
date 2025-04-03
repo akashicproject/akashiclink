@@ -51,13 +51,11 @@ export function SettingsDelete() {
   if (isLoading) return <Spinner />;
 
   return (
-    <LoggedLayout isToolBar={false}>
-      <MainGrid style={{ padding: '112px 48px', gap: '24px' }}>
+    <LoggedLayout>
+      <MainGrid style={{ padding: '56px 48px' }}>
         <IonRow className={'ion-grid-row-gap-lg ion-center'}>
           <IonCol size="12">
-            <h2 className={'ion-text-align-center ion-text-size-lg'}>
-              {t('AreYouSureDelete')}
-            </h2>
+            <h2 className={'ion-text-align-center'}>{t('AreYouSureDelete')}</h2>
             <IonText className={'ion-text-align-center ion-text-size-xs'}>
               <p>{t('FundsLeftNotRecoverable')}</p>
             </IonText>

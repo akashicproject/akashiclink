@@ -14,17 +14,19 @@ import { SettingsPopover } from '../settings/settings-popover';
 
 export function LoggedToolbar({
   backButtonUrl = urls.loggedFunction,
-  isRefresh = false,
+  showRefresh = false,
+  showAddress = false,
+  showBackButton = true,
 }: {
   backButtonUrl?: string;
-  isRefresh?: boolean;
+  showRefresh?: boolean;
+  showAddress?: boolean;
+  showBackButton?: boolean;
 }) {
   // Mutate is ued to to trigger a revalidation
   const { mutate } = useSWRConfig();
   const logout = useLogout();
   const history = useHistory();
-  const isDashboard =
-    history.location.pathname === `/akashic/${urls.loggedFunction}`;
   const [storedTheme] = useTheme();
   const [refreshDisabled, setRefreshDisabled] = useState(false);
 
@@ -37,7 +39,7 @@ export function LoggedToolbar({
       fixed
     >
       <IonRow style={{ gap: '8px' }}>
-        {isDashboard ? null : (
+        {showBackButton && (
           <>
             <IonCol
               className="ion-no-padding"
@@ -67,47 +69,57 @@ export function LoggedToolbar({
           className="ion-no-padding"
           style={{
             width: '71%',
+            flex: '0 0 71%',
           }}
         >
-          <AccountSelection
-            showCopyButton={true}
-            onNewAccountClick={async (selectedAccount) => {
-              // When a different account is clicked, set it as the active account and logout
-              setActiveAccount(selectedAccount);
-              logout().then(() => isPlatform('mobile') && location.reload());
-            }}
-          />
-        </IonCol>
-        <IonCol className="ion-no-padding" hidden={!isRefresh} size="auto">
-          <SquareWhiteButton
-            disabled={refreshDisabled}
-            className="icon-button"
-            id="refresh-button"
-            onClick={() => {
-              mutate(
-                (key) =>
-                  typeof key === 'string' && key.startsWith('/key/transfers/me')
-              );
-              mutate(
-                (key) =>
-                  typeof key === 'string' && key.startsWith('/nft/transfers/me')
-              );
-              mutate('/owner/agg-balances');
-              setRefreshDisabled(true);
-              setTimeout(() => setRefreshDisabled(false), 750);
-            }}
-          >
-            <IonIcon
-              slot="icon-only"
-              className="icon-button-icons"
-              src={`/shared-assets/images/${
-                storedTheme === themeType.DARK
-                  ? 'refresh-dark.svg'
-                  : 'refresh-light.svg'
-              }`}
+          {showAddress && (
+            <AccountSelection
+              showCopyButton={true}
+              onNewAccountClick={async (selectedAccount) => {
+                // When a different account is clicked, set it as the active account and logout
+                setActiveAccount(selectedAccount);
+                logout().then(() => isPlatform('mobile') && location.reload());
+              }}
             />
-          </SquareWhiteButton>
+          )}
         </IonCol>
+        {showRefresh && (
+          <IonCol className="ion-no-padding" size="auto">
+            <SquareWhiteButton
+              disabled={refreshDisabled}
+              className="icon-button"
+              id="refresh-button"
+              onClick={async () => {
+                try {
+                  setRefreshDisabled(true);
+                  await mutate(
+                    (key) =>
+                      typeof key === 'string' &&
+                      key.startsWith('/key/transfers/me')
+                  );
+                  await mutate(
+                    (key) =>
+                      typeof key === 'string' &&
+                      key.startsWith('/nft/transfers/me')
+                  );
+                  await mutate('/owner/agg-balances');
+                } finally {
+                  setRefreshDisabled(false);
+                }
+              }}
+            >
+              <IonIcon
+                slot="icon-only"
+                className="icon-button-icons"
+                src={`/shared-assets/images/${
+                  storedTheme === themeType.DARK
+                    ? 'refresh-dark.svg'
+                    : 'refresh-light.svg'
+                }`}
+              />
+            </SquareWhiteButton>
+          </IonCol>
+        )}
         <IonCol
           className="ion-no-padding"
           style={{
