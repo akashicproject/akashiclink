@@ -123,7 +123,10 @@ export function CreatePasswordForm({
               expand="block"
               onClick={onSubmit}
               disabled={
-                !form.password || !form.confirmPassword || !form.checked
+                !form.password ||
+                !form.confirmPassword ||
+                !form.checked ||
+                form.password !== form.confirmPassword
               }
               isLoading={isLoading}
             >

@@ -59,6 +59,11 @@ export function ImportWalletPassword() {
       validateConfirmPassword(importWalletForm.confirmPassword) &&
       validatePassword(importWalletForm.password);
 
+    if (!isPasswordValid) {
+      setIsLoading(false);
+      return;
+    }
+
     if (isPasswordValid && otk && otk.identity) {
       // call import api and store the Identity.
       // added local otk
