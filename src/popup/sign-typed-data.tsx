@@ -113,23 +113,25 @@ export function SignTypedData() {
           break;
         case TYPED_DATA_PRIMARY_TYPE.SETUP_CALLBACK_URL: {
           const callbackUrls: ICallbackUrls = {};
-          if (toSign.deposit) {
-            callbackUrls.deposit = toSign.deposit as string;
+
+          if (toSign.pendingPayout) {
+            callbackUrls.pendingPayout = toSign.pendingPayout as string;
           }
           if (toSign.payout) {
             callbackUrls.payout = toSign.payout as string;
           }
+          if (toSign.failedPayout) {
+            callbackUrls.failedPayout = toSign.failedPayout as string;
+          }
           if (toSign.pendingDeposit) {
             callbackUrls.pendingDeposit = toSign.pendingDeposit as string;
           }
-          if (toSign.pendingPayout) {
-            callbackUrls.pendingPayout = toSign.pendingPayout as string;
+          if (toSign.deposit) {
+            callbackUrls.deposit = toSign.deposit as string;
           }
+
           if (toSign.failedDeposit) {
             callbackUrls.failedDeposit = toSign.failedDeposit as string;
-          }
-          if (toSign.failedPayout) {
-            callbackUrls.failedPayout = toSign.failedPayout as string;
           }
 
           signedMsg = await signSetupCallbackUrl({
