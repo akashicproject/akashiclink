@@ -206,6 +206,7 @@
   "PasswordChangeSuccess": "Password has been successfully changed",
   "TransactionDetails": "Transaction Details",
   "linkAlias": "Link your Alias to your Akashic Address",
+  "unlinkNftWarning": "(Unlinked NFT requires 72 hours to re-link)",
   "MakeSureNoBodyIsLooking": "Make Sure No Body Is Looking",
   "RevealRecoveryPhase": "Reveal Recovery Phase",
   "HideRecoveryPhase": "Hide Recovery Phase",

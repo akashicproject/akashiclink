@@ -206,6 +206,7 @@
   "OldPasswordIncorrect": "你的舊密碼不正確，請檢查後重試。",
   "PasswordChangeSuccess": "密碼更新成功！",
   "linkAlias": "將您的域名與您的 Akashic 地址連接",
+  "unlinkNftWarning": "(未連接的 NFT 需要 72 小時才能重新連接)",
   "MakeSureNoBodyIsLooking": "請確保沒有人在看",
   "RevealRecoveryPhase": "顯示私鑰恢復詞語",
   "HideRecoveryPhase": "隱藏私鑰恢復詞語",

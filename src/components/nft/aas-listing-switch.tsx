@@ -100,7 +100,18 @@ export const AasListingSwitch = ({
 
   return (
     <AASListSwitchContainer>
-      <h5 className="ion-no-margin ion-text-size-xxs">{t('linkAlias')}</h5>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <h5 className="ion-no-margin ion-text-size-xxs">{t('linkAlias')}</h5>
+        <p className={'ion-text-color-grey ion-text-bold ion-text-size-xxs'}>
+          {t('unlinkNftWarning')}
+        </p>
+      </div>
       <div className="toggle-wrapper">
         <Toggle
           isLoading={isLoading}
