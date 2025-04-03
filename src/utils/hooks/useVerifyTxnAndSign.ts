@@ -31,6 +31,10 @@ export const useVerifyTxnAndSign = () => {
         coinSymbol: chain,
         tokenSymbol: token,
         forceL1: !isL2,
+        toL1Address:
+          isL2 && validatedAddressPair.userInputToAddressType === 'l1'
+            ? validatedAddressPair.userInputToAddress
+            : undefined,
       });
 
       // reject the request if /verify returns multiple transfers

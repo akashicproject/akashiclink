@@ -83,6 +83,7 @@ export const SendAddressInput = ({
           onAddressValidated({
             convertedToAddress: l2Address,
             userInputToAddress: userInput,
+            userInputToAddressType: 'l2',
           });
         }
 
@@ -99,6 +100,7 @@ export const SendAddressInput = ({
         onAddressValidated({
           convertedToAddress: pairedL2Address ?? userInput,
           userInputToAddress: userInput,
+          userInputToAddressType: 'l1',
         });
 
         return;
@@ -117,6 +119,7 @@ export const SendAddressInput = ({
       onAddressValidated({
         convertedToAddress: aliasL2Address,
         userInputToAddress: userInput,
+        userInputToAddressType: 'alias',
       });
     } catch (error) {
       setAlert(
