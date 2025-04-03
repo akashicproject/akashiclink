@@ -8,7 +8,7 @@ const getLocalisationLanguage = (): string => {
   const browserLanguage = window.navigator.language;
   for (const lang of LANGUAGE_LIST)
     if (lang.locale === browserLanguage) return lang.locale;
-  // Default to english
+
   return LANGUAGE_LIST[0].locale;
 };
 
@@ -29,5 +29,5 @@ export const useSetGlobalLanguage = (): [
     }
   }, [selectedLanguage, i18n]);
 
-  return [selectedLanguage ?? getLocalisationLanguage(), setSelectedLanguage];
+  return [selectedLanguage || getLocalisationLanguage(), setSelectedLanguage];
 };
