@@ -1,6 +1,7 @@
 import './send.css';
 
 import styled from '@emotion/styled';
+import type { ITransactionProposal } from '@helium-pay/backend';
 import {
   type ITransactionVerifyResponse as VerifiedTransaction,
   NetworkDictionary,
@@ -289,12 +290,12 @@ export function SendTo() {
 
     setLoading(true);
 
-    const originalTxn = {
+    const originalTxn: ITransactionProposal = {
       fromAddress: currentWallet.address,
       toAddress,
       amount,
       coinSymbol: chain,
-      token: token ? token : undefined,
+      tokenSymbol: token ? token : undefined,
       forceL1: !gasFree,
       toL1Address: l1AddressWhenL2,
     };
