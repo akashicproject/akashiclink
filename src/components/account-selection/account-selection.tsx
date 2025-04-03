@@ -115,7 +115,7 @@ export function AccountSelection({
         onIonChange={({ detail: { value } }) => {
           if (value === DropdownOptions.CreateAccount) {
             history.push(
-              akashicPayPath(urls.createWalletUrl),
+              akashicPayPath(urls.createWalletPassword),
               // Pass in a state, to differentiate from the case when extension is closed and reopened
               activeAccount
             );

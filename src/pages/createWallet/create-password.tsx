@@ -145,19 +145,17 @@ export function CreateWalletPassword() {
         // Generate OTK
         const otk = await generateOTK();
 
-        await lastPageStorage.clear();
-
         setAlert(formAlertResetState);
         await lastPageStorage.clear();
 
         // Navigate to pages to see and confirm the 12-words from the otk
-        // TODO: Edit secret-confirm page to trigger backend-interaction, loading screen and storing the otk (with the identity fetched from backend)
         lastPageStorage.store(urls.secret, NavigationPriority.IMMEDIATE, {
           passPhrase: otk.phrase,
+          password,
+          otk,
         });
         history.push({
           pathname: akashicPayPath(urls.secret),
-          state: { createWallet: { password, otk } },
         });
       } catch (e) {
         datadogRum.addError(e);

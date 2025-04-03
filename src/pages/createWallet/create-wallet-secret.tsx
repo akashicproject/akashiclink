@@ -10,8 +10,8 @@ import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { SecretWords } from '../../components/secret-words/secret-words';
 import { urls } from '../../constants/urls';
+import type { LocationState } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import {
   cacheCurrentPage,
   lastPageStorage,
@@ -28,8 +28,9 @@ export const StyledSpan = styled.span({
 });
 export function CreateWalletSecret() {
   const { t } = useTranslation();
+
+  const history = useHistory<LocationState>();
   const [secretWords, setSecretWords] = useState<Array<string>>([]);
-  const history = useHistory<LocalAccount>();
 
   /** Scrolling on IOS */
   const { isOpen } = useKeyboardState();
@@ -50,13 +51,12 @@ export function CreateWalletSecret() {
       urls.secretConfirm,
       NavigationPriority.IMMEDIATE,
       {
-        ...data,
+        ...data, // Contains otk and password
         passPhrase: secretWords.join(' '),
       }
     );
     history.push({
       pathname: akashicPayPath(urls.secretConfirm),
-      state: history.location.state,
     });
   };
 

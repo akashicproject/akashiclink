@@ -8,8 +8,6 @@ import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
-import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { lastPageStorage } from '../../utils/last-page-storage';
 import { StyledSpan } from './create-wallet-secret';
 
@@ -24,8 +22,7 @@ export const StyledA = styled.a({
 
 export const WalletCreated = () => {
   const { t } = useTranslation();
-  const history = useHistory<LocalAccount>();
-  const { setActiveAccount } = useAccountStorage();
+  const history = useHistory();
 
   return (
     <PublicLayout contentStyle={{ padding: '0 30px' }}>
@@ -91,8 +88,6 @@ export const WalletCreated = () => {
             expand="block"
             onClick={async () => {
               await lastPageStorage.clear();
-              // Set the new active account after passphrase has been added
-              setActiveAccount(history.location.state);
               history.push(akashicPayPath(urls.loggedFunction));
             }}
           >

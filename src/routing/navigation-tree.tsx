@@ -7,7 +7,6 @@ import { AkashicPayMain } from '../pages/akashic-main';
 import { ChangePasswordConfirm } from '../pages/changePassword/confirm';
 import { ChangePassword } from '../pages/changePassword/enter-passwords';
 import { CreateWalletPassword } from '../pages/createWallet/create-password';
-import { CreateWallet } from '../pages/createWallet/create-wallet';
 import { CreateWalletSecret } from '../pages/createWallet/create-wallet-secret';
 import { CreateWalletSecretConfirm } from '../pages/createWallet/create-wallet-secret-confirm';
 import { WalletCreated } from '../pages/createWallet/wallet-created';
@@ -51,7 +50,6 @@ export function NavigationTree() {
       {/* AkashicPay tree - default so redirect at bottom */}
       {AkashicTab.registerPage(AkashicPayMain)}
       {AkashicTab.registerPage(AkashicPayMain, urls.akashicPay)}
-      {AkashicTab.registerPage(CreateWallet, urls.createWalletUrl)}
       {AkashicTab.registerPage(ManageAccounts, urls.manageAccounts)}
       {AkashicTab.registerPage(Dashboard, urls.loggedFunction)}
       {AkashicTab.registerPage(LoggedCreate, urls.loggedCreate)}

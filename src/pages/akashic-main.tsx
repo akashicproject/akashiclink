@@ -142,7 +142,7 @@ export function AkashicPayMain() {
               <IonCol>
                 <PurpleButton
                   disabled={!checked}
-                  routerLink={akashicPayPath(urls.createWalletUrl)}
+                  routerLink={akashicPayPath(urls.createWalletPassword)}
                   expand="block"
                 >
                   {t('CreateYourWallet')}
