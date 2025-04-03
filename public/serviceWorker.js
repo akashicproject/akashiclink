@@ -139,7 +139,8 @@ const ALARM_NAME = 'autoLockAlarm';
 const AUTOLOCKBY_KEY = 'autoLockBy';
 
 const informSiteAutoLock = async (alarm) => {
-  const {autoLockBy} = await chrome.storage.local.get(AUTOLOCKBY_KEY);
+  const { autoLockBy } = await chrome.storage.session.get(AUTOLOCKBY_KEY);
+
   if (webPort && Date.now() >= autoLockBy) {
     webPort.postMessage({
       event: 'WALLET_AUTO_LOCKED',
@@ -148,7 +149,7 @@ const informSiteAutoLock = async (alarm) => {
 };
 
 const checkAlarmState = async (alarm) => {
-  const {autoLockBy} = await chrome.storage.local.get(AUTOLOCKBY_KEY);
+  const { autoLockBy } = await chrome.storage.session.get(AUTOLOCKBY_KEY);
 
   if (autoLockBy) {
     const alarm = await chrome.alarms.get(ALARM_NAME);

@@ -21,10 +21,36 @@ export function useIdleTime() {
     onAction: async () => {
       const newVal = Date.now() + autoLockTime * 60 * 1000;
       await setAutoLockBy(newVal);
-      // Also saving this to chrome extension for direct access
-      await chrome?.storage?.local?.set({ [AUTOLOCKBY_STORAGE_KEY]: newVal });
+      try {
+        // Also saving this to chrome extension for direct access
+        await chrome?.storage?.session?.set({
+          [AUTOLOCKBY_STORAGE_KEY]: newVal,
+        });
+      } catch (e) {
+        console.warn(e);
+      }
     },
   });
+
+  useEffect(() => {
+    const checkExtensionAutoLock = async () => {
+      try {
+        // Check if chrome?.storage?.session still exist
+        // if not, indicated that user has quited chrome before
+        const extensionAutoLockVal = await chrome?.storage?.session?.get(
+          AUTOLOCKBY_STORAGE_KEY
+        );
+
+        if (!extensionAutoLockVal?.autoLockBy) {
+          logout();
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+    };
+    checkExtensionAutoLock();
+  }, []);
+
   useEffect(() => {
     // on soft close autoLockBy is initially 0 and after the Preference is resolved it get its actual value, hence the condition autoLock === 0
     if (autoLockBy === 0) return;
