@@ -17,6 +17,7 @@ import { useHistory } from 'react-router-dom';
 import { urls } from '../../constants/urls';
 import { heliumPayPath } from '../../routing/navigation-tree';
 import { OwnersAPI } from '../../utils/api';
+import { useOwner } from '../../utils/hooks/useOwner';
 import { lastPageStorage } from '../../utils/last-page-storage';
 
 /** Styling the display text */
@@ -71,6 +72,7 @@ export function SettingsPopover() {
   const [focus, _] = useState<string>();
   const { t, i18n } = useTranslation();
   const history = useHistory();
+  const { mutate } = useOwner();
 
   /** Grouping of the settings in the popover menu
    * @param displayText
@@ -171,6 +173,8 @@ export function SettingsPopover() {
     } catch {
       console.log('Account already logged out');
     } finally {
+      // Trigger refresh of login status
+      await mutate();
       lastPageStorage.clear();
       history.push('/');
     }

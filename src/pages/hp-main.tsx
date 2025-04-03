@@ -34,7 +34,7 @@ export function HeliumPayMain() {
   const { t } = useTranslation();
   const availableAccounts = getLocalAccounts();
   const history = useHistory();
-  const loginCheck = useOwner();
+  const loginCheck = useOwner(true);
 
   /** Redirect to last page user was on */
   useEffect(() => {
@@ -46,7 +46,7 @@ export function HeliumPayMain() {
   useEffect(() => {
     if (!loginCheck.isLoading && !loginCheck.isError)
       history.push(heliumPayPath(urls.loggedFunction));
-  }, []);
+  }, [loginCheck]);
 
   return (
     <IonPage>

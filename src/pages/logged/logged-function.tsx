@@ -2,7 +2,7 @@ import './logged.css';
 
 import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { arrowDownOutline, arrowForwardOutline } from 'ionicons/icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { PurpleButton, WhiteButton } from '../../components/buttons';
@@ -15,9 +15,6 @@ import { LoggedMain } from './logged-main';
 
 export function LoggedFunction() {
   const { t } = useTranslation();
-  useEffect(() => {
-    document.getElementById('activity')?.click();
-  }, []);
   const [coinSymbol, setCoinSymbol] = useState(WALLET_CURRENCIES[0].symbol);
 
   // store current page to main logged page if reopen

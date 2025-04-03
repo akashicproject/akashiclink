@@ -2,7 +2,6 @@ import './common.css';
 import './hp-main.css';
 
 import styled from '@emotion/styled';
-import type { Language } from '@helium-pay/common-i18n';
 import {
   IonCol,
   IonContent,
@@ -19,7 +18,6 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { SubmitActivationCode } from '../components/activation/submit-activation-code';
 import {
   Alert,
   errorAlertShell,
@@ -31,42 +29,35 @@ import { StyledInput } from '../components/styled-input';
 import { urls } from '../constants/urls';
 import { heliumPayPath } from '../routing/navigation-tree';
 import { OwnersAPI } from '../utils/api';
-import { lastPageStorage } from '../utils/last-page-storage';
 import { getLocalAccounts } from '../utils/local-account-storage';
 
 const HelpLink = styled.a({
   textDecoration: 'none',
 });
 
-enum View {
-  Login,
-  TwoFa,
-}
 export const loginUrl = 'login';
 
 export function Login() {
   const router = useIonRouter();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const availableAccounts = getLocalAccounts();
   const [selectedIdentity, setSelectedIdentity] = useState('');
   const [password, setPassword] = useState<string>();
-  const [view, setView] = useState(View.Login);
   const [alert, setAlert] = useState(formAlertResetState);
 
   useEffect(() => {
     // Select first account
     if (availableAccounts.length)
       setSelectedIdentity(availableAccounts[0].identity);
-    // Move to 2fa page form last session
-    if (lastPageStorage.get() === loginUrl) {
-      const { password } = lastPageStorage.getVars();
-      setView(View.TwoFa);
-      setPassword(password);
-    }
   }, []);
 
-  async function login() {
+  /**
+   * Perform login - if 201 is returned, attempt to fetch some data:
+   * - 401 means that 2fa has not been passed yet
+   * - 200 means that 2fa is not required by backend
+   */
+  const login = async () => {
     try {
       const selectedAccount = availableAccounts.find(
         (account) => account.identity === selectedIdentity
@@ -76,34 +67,15 @@ export function Login() {
           username: selectedAccount.username,
           password,
         });
-        setView(View.TwoFa);
-        lastPageStorage.store(loginUrl, { password });
-      }
-    } catch (e) {
-      let message = t('GenericFailureMsg');
-      if (axios.isAxiosError(e)) message = e.response?.data?.message;
-
-      setAlert(errorAlertShell(message));
-    }
-  }
-
-  async function submitTwoFa(activationCode: string) {
-    try {
-      if (password) {
-        await OwnersAPI.login2fa({
-          activationCode,
-          password,
-          lang: i18n.language as Language,
-        });
-        lastPageStorage.clear();
         router.push(heliumPayPath(urls.loggedFunction));
       }
     } catch (e) {
       let message = t('GenericFailureMsg');
       if (axios.isAxiosError(e)) message = e.response?.data?.message;
+
       setAlert(errorAlertShell(message));
     }
-  }
+  };
 
   return (
     <IonPage>
@@ -117,82 +89,61 @@ export function Login() {
               </IonText>
             </IonCol>
           </IonRow>
-          {view === View.Login && (
-            <>
-              <IonRow>
-                <IonCol>
-                  <IonItem class="select-item-account" lines="none">
-                    <IonSelect
-                      value={selectedIdentity}
-                      onIonChange={({ detail: { value } }) => {
-                        setSelectedIdentity(value);
-                      }}
-                      interface="popover"
-                    >
-                      {availableAccounts.map((account) => {
-                        return (
-                          <IonSelectOption
-                            key={account.identity}
-                            value={account.identity}
-                            class="menu-text"
-                          >
-                            {account.identity}
-                          </IonSelectOption>
-                        );
-                      })}
-                    </IonSelect>
-                  </IonItem>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <StyledInput
-                    label={t('Password')}
-                    type={'password'}
-                    placeholder={t('PleaseEnterYourPassword')}
-                    onIonInput={({ target: { value } }) =>
-                      setPassword(value as string)
-                    }
-                  />
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <PurpleButton
-                    onClick={login}
-                    expand="block"
-                    disabled={!password}
-                  >
-                    {t('Unlock')}
-                  </PurpleButton>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <IonText>
-                    <h3>
-                      <HelpLink href="www.bing.com">
-                        {t('ForgotYourPassword')}
-                      </HelpLink>
-                    </h3>
-                  </IonText>
-                </IonCol>
-              </IonRow>
-            </>
-          )}
-          {view === View.TwoFa && (
-            <IonRow>
-              <IonCol>
-                <SubmitActivationCode
-                  onClose={() => {
-                    setView(View.Login);
-                    lastPageStorage.clear();
+          <IonRow>
+            <IonCol>
+              <IonItem class="select-item-account" lines="none">
+                <IonSelect
+                  value={selectedIdentity}
+                  onIonChange={({ detail: { value } }) => {
+                    setSelectedIdentity(value);
                   }}
-                  submitWithActivationCode={submitTwoFa}
-                />
-              </IonCol>
-            </IonRow>
-          )}
+                  interface="popover"
+                >
+                  {availableAccounts.map((account) => {
+                    return (
+                      <IonSelectOption
+                        key={account.identity}
+                        value={account.identity}
+                        class="menu-text"
+                      >
+                        {account.identity}
+                      </IonSelectOption>
+                    );
+                  })}
+                </IonSelect>
+              </IonItem>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <StyledInput
+                label={t('Password')}
+                type={'password'}
+                placeholder={t('PleaseEnterYourPassword')}
+                onIonInput={({ target: { value } }) =>
+                  setPassword(value as string)
+                }
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <PurpleButton onClick={login} expand="block" disabled={!password}>
+                {t('Unlock')}
+              </PurpleButton>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonText>
+                <h3>
+                  <HelpLink href="www.bing.com">
+                    {t('ForgotYourPassword')}
+                  </HelpLink>
+                </h3>
+              </IonText>
+            </IonCol>
+          </IonRow>
         </IonGrid>
       </IonContent>
       <Footer />
