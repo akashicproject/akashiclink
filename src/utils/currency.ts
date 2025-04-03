@@ -9,11 +9,17 @@ import { BadRequestException } from '@nestjs/common';
 import Big from 'big.js';
 
 /**
- * Method for safe conversion to coin/token decimals
+ * Method for safe conversion from the smallest, indivisible coin/token unit, to
+ * the human-friendly, divisible units displayed in the UI.
+ * @example from SUN to TRX
+ * convertFromSmallestUnit('9_987_543', 'TRX') => '9.876_543'
+ * @example from WEI to ETH
+ * convertFromSmallestUnit('1_234_567_890_123_456_789', 'ETH') => '1.234_567_890_123_456_789'
+ * @param amount a string representing the amount in the smallest unit
  *
  * @throws BadRequestException if:
  * - the coin/token combination is not supported
- * - amount cannot be represented as an integer in the smallest denomination
+ * - the amount cannot be represented as an integer in the smallest denomination
  */
 export function convertFromSmallestUnit(
   amount: string,
@@ -31,11 +37,17 @@ export function convertFromSmallestUnit(
 }
 
 /**
- * Method for safe conversion from coin/token decimals
+ * Method for safe conversion from the human-friendly, divisible units displayed
+ * in the UI, to the smallest, indivisible coin/token unit.
+ * @example from TRX to SUN
+ * convertFromSmallestUnit('9.876_543', 'TRX') => '9_987_543'
+ * @example from WEI to ETH
+ * convertFromSmallestUnit('1.234_567_890_123_456_789', 'ETH') => '1_234_567_890_123_456_789'
+ * @param amount a string representing the amount in human-friendly, divisible units
  *
  * @throws BadRequestException if:
  * - the coin/token combination is not supported
- * - amount cannot be represented as an integer in the smallest denomination
+ * - the amount cannot be represented as an integer in the smallest denomination
  */
 export function convertToSmallestUnit(
   amount: string,
