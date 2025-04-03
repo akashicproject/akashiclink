@@ -84,6 +84,7 @@ export const useAccountStorage = () => {
 
   return {
     localAccounts,
+    localOtks,
     addLocalAccount,
     removeLocalAccount,
     addPrefixToAccounts,

@@ -106,6 +106,7 @@ export function NftTransfer() {
 
   const [alert, setAlert] = useState(formAlertResetState);
   const [loading, setLoading] = useState(false);
+  // const { localOtks, activeAccount } = useAccountStorage(); // enable it when we switch to V1 apis
 
   // input username to address
   // TODO: we need to add more check constraint in the future, like l2 address start with "AS"
@@ -142,6 +143,22 @@ export function NftTransfer() {
     setLoading(true);
     try {
       const response = await OwnersAPI.nftTransfer(payload);
+
+      // enable it when we switch to V1 apis
+      // const verifiedNft = await OwnersAPI.verifyNftTransaction(payload);
+      // const signedTx = await Nitr0genApi.transferNft(
+      //   verifiedNft,
+      //   toAddress,
+      //   localOtks,
+      //   activeAccount!
+      // );
+
+      // const response = await OwnersAPI.nftTransferUsingClientSideOtk({
+      //   signedTx,
+      //   nftName: currentNft.name,
+      //   toL2Address: toAddress,
+      // });
+
       const result = {
         sender: owner.ownerIdentity,
         receiver: toAddress,

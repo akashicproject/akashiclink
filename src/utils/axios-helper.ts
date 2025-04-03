@@ -5,11 +5,20 @@ import { history } from '../history';
 import { akashicPayPath } from '../routing/navigation-tabs';
 import { lastPageStorage, NavigationPriority } from './last-page-storage';
 
-export const axiosBase = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL,
-  headers: { 'Content-Type': 'application/json' },
-  withCredentials: true,
-});
+const createAxiosInstance = (baseURL: string | undefined) => {
+  return axios.create({
+    baseURL,
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true,
+  });
+};
+
+export const axiosBase = createAxiosInstance(
+  process.env.REACT_APP_API_BASE_URL
+);
+export const axiosBaseV1 = createAxiosInstance(
+  process.env.REACT_APP_VERSION_ONE_API_BASE_URL
+);
 
 /**
  * Any request that 401s (auth cookie expired or not set) should chuck user
