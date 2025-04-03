@@ -9,6 +9,7 @@ import {
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSWRConfig } from 'swr';
 
 import { urls } from '../../constants/urls';
 import { themeType } from '../../theme/const';
@@ -34,6 +35,7 @@ export function LoggedToolbar({
   backButtonUrl?: string;
   isRefresh?: boolean;
 }) {
+  const { mutate } = useSWRConfig();
   const logout = useLogout();
   const history = useHistory();
   const isDashboard =
@@ -126,8 +128,10 @@ export function LoggedToolbar({
         <IonCol size="auto" hidden={!isRefresh}>
           <SquareWhiteButton
             class="icon-button"
+            id="refresh-button"
             onClick={() => {
-              location.reload();
+              mutate(['/key/transfers/me']);
+              mutate(['/owner/agg-balances']);
             }}
           >
             <IonIcon
