@@ -382,6 +382,9 @@ export class Nitr0genApi {
         $o: {
           to: { $stream: details.toAddress },
         },
+        metadata: {
+          initiatedToNonL2: details.initiatedToNonL2,
+        },
       },
       $sigs: {},
     };

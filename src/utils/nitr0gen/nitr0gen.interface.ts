@@ -10,6 +10,7 @@ export interface L2TxDetail {
   coinSymbol: CoinSymbol;
   tokenSymbol?: CurrencySymbol;
   amount: string;
+  initiatedToNonL2?: string;
 }
 
 export interface L1TxDetail {

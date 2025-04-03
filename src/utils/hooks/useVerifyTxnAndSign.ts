@@ -41,6 +41,11 @@ export const useVerifyTxnAndSign = () => {
       if (isL2) {
         // AC needs smallest units, so we convert
         const transactionData: ITransactionProposal = {
+          initiatedToNonL2: !L2Regex.exec(
+            validatedAddressPair.userInputToAddress
+          )
+            ? validatedAddressPair.userInputToAddress
+            : undefined,
           toAddress: validatedAddressPair.convertedToAddress,
           amount: convertToFromDecimals(amount, chain, 'to', token),
           coinSymbol: chain,
