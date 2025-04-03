@@ -9,7 +9,7 @@ import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { LanguageDropdown } from './language-select';
 import { ThemeSelect } from './theme-select';
 
-export function LoggedHeader(props: { loggedIn?: boolean }) {
+export function LoggedHeader({ loggedIn }: { loggedIn?: boolean }) {
   const isMobile = isPlatform('mobile');
 
   const [_, __, storedTheme] = useLocalStorage(
@@ -25,24 +25,23 @@ export function LoggedHeader(props: { loggedIn?: boolean }) {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        background: props.loggedIn
+        background: loggedIn
           ? 'var(--ion-logged-header)'
           : 'var(--ion-background-color)',
         justifyContent: 'space-between',
-        height: isMobile ? '72px' : '40px',
+        height: isMobile ? '72px' : '60px',
         gap: '10px',
+        padding: loggedIn ? '0px 32px' : '0px',
       }}
     >
-      <LanguageDropdown />
+      {!loggedIn && <LanguageDropdown />}
       <IonRouterLink
-        routerLink={
-          props.loggedIn ? akashicPayPath(urls.loggedFunction) : undefined
-        }
+        routerLink={loggedIn ? akashicPayPath(urls.loggedFunction) : undefined}
       >
         <IonImg
           alt={''}
           src={
-            props.loggedIn || currentTheme === themeType.DARK
+            loggedIn || currentTheme === themeType.DARK
               ? '/shared-assets/images/wallet-logo-white.svg'
               : '/shared-assets/images/wallet-logo-black.svg'
           }

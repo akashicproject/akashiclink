@@ -76,6 +76,10 @@ export function AccountSelection({
         if (changeSelection) changeSelection(value);
       }}
       interface="popover"
+      interfaceOptions={{
+        side: 'bottom',
+        size: 'cover',
+      }}
     >
       {[
         ...localAccounts.map((account) => (

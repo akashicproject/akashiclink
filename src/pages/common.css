@@ -13,6 +13,22 @@ ion-checkbox {
   --background-checked: #41cc9a;
 }
 
+ion-item {
+  --background-hover: var(--ion-color-primary);
+  --background-hover-opacity: 12%;
+  --ripple-color: var(--ion-color-tertiary);
+
+  /* Turn of default grey highlight on focus */
+  --background-focused: none;
+
+  padding-right: 0px;
+
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'Nunito Sans';
+  color: var(--ion-settings-color);
+}
+
 ion-checkbox::part(container) {
   border-radius: 6px;
   border: 2px solid;

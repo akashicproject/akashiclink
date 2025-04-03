@@ -36,16 +36,6 @@ function SettingsText({ text, id }: { text: string; id?: string }) {
   );
 }
 
-/** Styling the clickable settings containers */
-const SettingsItemCss = {
-  '--background-hover': 'var(--ion-color-primary)',
-  '--background-hover-opacity': '12%',
-  '--ripple-color': 'var(--ion-color-tertiary)',
-
-  // Turn of default grey highlight on focus
-  '--background-focused': 'none',
-};
-
 /** Container for grouping related settings */
 function SettingsList(props: { children: ReactNode }) {
   return (
@@ -90,7 +80,7 @@ export function SettingsPopover() {
     // isOpen = { focus === id}
     return (
       <>
-        <IonItem button={true} detail={false} id={id} style={SettingsItemCss}>
+        <IonItem button={true} detail={false} id={id}>
           <IonIcon
             slot="start"
             icon={caretBackOutline}
@@ -137,7 +127,6 @@ export function SettingsPopover() {
         button={true}
         detail={false}
         routerLink={routerLink}
-        style={SettingsItemCss}
         disabled={disabled}
         onClick={(e) => {
           if (onClick) onClick(e);
@@ -190,7 +179,6 @@ export function SettingsPopover() {
               <SettingsList>
                 <IonItem
                   style={{
-                    ...SettingsItemCss,
                     '--ion-item-background': 'var(--ion-color-secondary)',
                   }}
                   detail={false}

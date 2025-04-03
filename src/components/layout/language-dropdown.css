@@ -1,13 +1,8 @@
-ion-select::part(placeholder),
-ion-select::part(icon),
-ion-select::part(text) {
-  color: var(--ion-color-select);
-  --placeholder-opacity: 1;
-  font-size: 14px;
-  font-weight: 700;
+.language-popover {
+  width: 250px;
 }
 
-ion-button {
+.language-button {
   --padding-start: 0 !important;
   --padding-end: 0 !important;
   --padding-top: 0 !important;
@@ -17,4 +12,6 @@ ion-button {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   color: var(--ion-color-select);
+  --background-hover: none;
+  --ripple-color: transparent;
 }
