@@ -181,9 +181,11 @@ export function SendTo() {
     return wallet.coinSymbol === chain;
   })[0];
 
-  const [internalFee, setInternalFee] = useState(
-    calculateInternalWithdrawalFee('1', exchangeRates, chain, token)
+  const availableBalance = aggregatedBalances.get(
+    currentWalletMetadata.walletCurrency
   );
+
+  const [internalFee, setInternalFee] = useState('0');
 
   // Keeps track of which page the user is at
   const [pageView, setPageView] = useState(SendView.Send);
@@ -265,14 +267,6 @@ export function SendTo() {
         } else {
           setL1AddressWhenL2(undefined);
           setToAddress(recipientAddress);
-          if (token !== undefined)
-            setAlertRequest({
-              success: false,
-              visible: true,
-              message: t('showNativeCoinNeededMsg', {
-                coinSymbol: chain,
-              }),
-            });
           setGasFree(false);
         }
       }, validateAddressWithBackendTimeout)
@@ -280,8 +274,38 @@ export function SendTo() {
   };
 
   const [amount, setAmount] = useState<string>('');
-  const validateAmount = (value: string) =>
-    !(!value || value.charAt(0) === '-' || Big(value).lte(0));
+  const validateAmount = (value: string) => {
+    if (Big(value).gt(Big(availableBalance ?? 0).sub(internalFee))) {
+      setAlertRequest(errorAlertShell(t('SavingsExceeded')));
+      return false;
+    } else {
+      setAlertRequest(formAlertResetState);
+    }
+
+    // If sending token, check balances for native coin of the chain
+    if (
+      token !== undefined &&
+      Big(
+        aggregatedBalances.get({
+          displayName: NetworkDictionary[chain].nativeCoin.displayName,
+          chain,
+        }) ?? '0'
+      ).lte('0')
+    ) {
+      setAlertRequest({
+        success: false,
+        visible: true,
+        message: t('showNativeCoinNeededMsg', {
+          coinSymbol: chain,
+        }),
+      });
+      return false;
+    } else {
+      setAlertRequest(formAlertResetState);
+    }
+    return !(!value || value.charAt(0) === '-' || Big(value).lte(0));
+  };
+
   const validateAddress = (value: string) => {
     return gasFree || !!value.match(NetworkDictionary[chain].regex.address);
   };
@@ -464,8 +488,8 @@ export function SendTo() {
                   >
                     {t('GasFree')}
                   </GasFreeMarker>
-                  <FeeMarker>{`Fee: ${internalFee.toFixed(2)} ${
-                    TEST_TO_MAIN.get(chain) || chain
+                  <FeeMarker>{`Fee: ${internalFee} ${
+                    token || TEST_TO_MAIN.get(chain) || chain
                   }`}</FeeMarker>
                 </GasWrapper>
                 {gasFree || !toAddress ? null : (
@@ -481,7 +505,7 @@ export function SendTo() {
                       style={{ width: '100%', marginLeft: '0' }}
                       expand="block"
                       onClick={verifyTransaction}
-                      disabled={loading || !toAddress}
+                      disabled={loading || !toAddress || alertRequest.visible}
                     >
                       {t('Send')}
                       {loading ? (

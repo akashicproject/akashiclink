@@ -151,7 +151,7 @@ export function ImportWallet() {
         expand="block"
         callback={() => {
           setView(View.Submit);
-          history.push(akashicPayPath(urls.loggedFunction));
+          history.push(akashicPayPath(urls.akashicPay));
           isPlatform('mobile') && location.reload();
         }}
       />
