@@ -2,7 +2,6 @@ import { Browser } from '@capacitor/browser';
 import { Clipboard } from '@capacitor/clipboard';
 import {
   IonContent,
-  IonIcon,
   IonLabel,
   IonNote,
   IonPopover,
@@ -11,10 +10,8 @@ import {
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAppSelector } from '../../redux/app/hooks';
-import { selectTheme } from '../../redux/slices/preferenceSlice';
-import { themeType } from '../../theme/const';
 import { displayLongText } from '../../utils/long-text';
+import { CopyIcon } from '../common/icons/copy-icon';
 
 export const ListCopyTxHashItem = ({
   txHash,
@@ -28,7 +25,6 @@ export const ListCopyTxHashItem = ({
   color?: string;
 }) => {
   const { t } = useTranslation();
-  const storedTheme = useAppSelector(selectTheme);
   const popover = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const copyData = async (data: string, e: never) => {
@@ -80,17 +76,11 @@ export const ListCopyTxHashItem = ({
           style={{ height: '18px', width: '18px' }}
           className="ion-margin-left-xs"
         >
-          <IonIcon
+          <CopyIcon
             onClick={onClickCopyIcon}
             slot="icon-only"
             className="copy-icon"
-            src={`/shared-assets/images/copy-icon-${
-              suffix === 'AS'
-                ? 'gray'
-                : storedTheme === themeType.DARK
-                  ? 'white'
-                  : 'blue'
-            }.svg`}
+            isGrey={suffix === 'AS'}
           />
         </div>
         <IonPopover

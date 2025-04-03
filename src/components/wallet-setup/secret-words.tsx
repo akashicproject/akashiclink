@@ -13,6 +13,8 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { CopyIcon } from '../common/icons/copy-icon';
+
 const WordCol = styled(IonCol)`
   --ion-padding: 4px;
 `;
@@ -92,12 +94,6 @@ const MaskLabelContainer = styled.div`
   z-index: 1;
 `;
 
-const StyledIonIcon = styled(IonIcon)`
-  font-size: 0.75rem;
-  height: 20px;
-  width: 20px;
-`;
-
 const CopyClipBoardLabel = styled(IonLabel)`
   color: var(--ion-color-primary);
   font-weight: 700;
@@ -136,6 +132,7 @@ export function SecretWords({
   onHiddenChange?: (isSecretPhraseHidden: boolean) => void;
 }) {
   const { t } = useTranslation();
+
   const [words, setWords] = useState(initialWords);
   const [isHidden, setIsHidden] = useState(withAction ? true : false);
   const [visibilityArray, setVisibilityArray] = useState<boolean[]>(
@@ -267,9 +264,14 @@ export function SecretWords({
                 className="ion-no-margin"
                 onClick={handleCopy}
               >
-                <StyledIonIcon
+                <CopyIcon
+                  isPrimaryInDark
                   slot="icon-only"
-                  src={`/shared-assets/images/copy-icon-secret-white.svg`}
+                  style={{
+                    fontSize: '0.75rem',
+                    height: '20px',
+                    width: '20px',
+                  }}
                 />
                 {t('CopyToClipboard')}
               </CopyClipBoardLabel>

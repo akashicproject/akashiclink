@@ -3,12 +3,13 @@ import './one-nft.css';
 import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import type { INft } from '@helium-pay/backend';
-import { IonContent, IonIcon, IonImg, IonPopover, IonRow } from '@ionic/react';
+import { IonContent, IonImg, IonPopover, IonRow } from '@ionic/react';
 import { t } from 'i18next';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { displayLongText } from '../../utils/long-text';
 import { getNftImage } from '../../utils/nft-image-link';
+import { CopyIcon } from '../common/icons/copy-icon';
 interface Props {
   nft: INft;
   isLinked?: boolean;
@@ -197,18 +198,13 @@ export function OneNft(props: Props) {
           >
             {displayLongText(props.nft?.alias, 32)}
           </h5>
-          <IonIcon
+          <CopyIcon
             slot="icon-only"
             className="copy-icon ion-margin-left-xxs"
             style={{
               width: '20px',
               height: '20px',
             }}
-            src={`/shared-assets/images/${
-              props.isAASDarkStyle
-                ? `copy-icon-light.svg`
-                : `copy-icon-white.svg`
-            }`}
             onClick={async (e) => {
               e.stopPropagation();
               handleCopy(props.nft?.alias);
