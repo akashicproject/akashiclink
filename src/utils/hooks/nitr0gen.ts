@@ -1,3 +1,4 @@
+import { Preferences } from '@capacitor/preferences';
 import { datadogRum } from '@datadog/browser-rum';
 import {
   type ITransactionProposalClientSideOtk,
@@ -13,10 +14,12 @@ import {
 import { useAppDispatch } from '../../redux/app/hooks';
 import { addLocalTransaction } from '../../redux/slices/localTransactionSlice';
 import { Nitr0genApi } from '../../utils/nitr0gen/nitr0gen-api';
+import { useValueOfAmountInUSDT } from './useExchangeRates';
 
 export const useSendL2Transaction = () => {
   const nitr0genApi = new Nitr0genApi();
   const dispatch = useAppDispatch();
+  const valueOfAmountInUSDT = useValueOfAmountInUSDT();
 
   const trigger = async (
     signedTransactionData: ITransactionProposalClientSideOtk
@@ -28,6 +31,10 @@ export const useSendL2Transaction = () => {
         )
       ).$umid;
 
+      const hideSmallTransactions = await Preferences.get({
+        key: 'hide-small-balances',
+      });
+
       const {
         fromAddress,
         toAddress,
@@ -37,23 +44,32 @@ export const useSendL2Transaction = () => {
         amount,
         internalFee,
       } = signedTransactionData;
-      dispatch(
-        addLocalTransaction({
-          fromAddress,
-          toAddress,
-          senderIdentity: fromAddress,
-          receiverIdentity: toAddress,
-          coinSymbol,
-          tokenSymbol,
-          l2TxnHash: txHash,
-          date: new Date(),
-          status: TransactionStatus.CONFIRMED,
-          layer: TransactionLayer.L2,
-          amount,
-          internalFee,
-          initiatedToNonL2,
-        })
-      );
+
+      const usdtValue = valueOfAmountInUSDT(amount, coinSymbol, tokenSymbol);
+
+      // Only store locally if we are not hiding the transaction
+      if (
+        (hideSmallTransactions && usdtValue.gte(1)) ||
+        !hideSmallTransactions
+      ) {
+        dispatch(
+          addLocalTransaction({
+            fromAddress,
+            toAddress,
+            senderIdentity: fromAddress,
+            receiverIdentity: toAddress,
+            coinSymbol,
+            tokenSymbol,
+            l2TxnHash: txHash,
+            date: new Date(),
+            status: TransactionStatus.CONFIRMED,
+            layer: TransactionLayer.L2,
+            amount,
+            internalFee,
+            initiatedToNonL2,
+          })
+        );
+      }
 
       return {
         isSuccess: true,
