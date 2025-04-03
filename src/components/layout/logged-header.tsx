@@ -15,46 +15,54 @@ export function LoggedHeader({ loggedIn }: { loggedIn?: boolean }) {
     <IonHeader
       className="ion-no-border"
       style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
         background: loggedIn
           ? 'var(--ion-logged-header)'
           : 'var(--ion-background-color)',
-        justifyContent: 'space-between',
-        height: isMobile ? '72px' : loggedIn ? '72px' : '80px',
-        gap: '10px',
         padding: loggedIn ? '0px 32px' : '0px 24px',
       }}
     >
-      {!loggedIn && <LanguageDropdown />}
-      <IonRouterLink
-        routerLink={loggedIn ? akashicPayPath(urls.loggedFunction) : undefined}
-      >
-        <IonImg
-          alt={''}
-          src={
-            (!loggedIn && storedTheme === themeType.DARK) ||
-            (loggedIn &&
-              (storedTheme === themeType.LIGHT ||
-                storedTheme === themeType.SYSTEM))
-              ? '/shared-assets/images/wallet-logo-white.svg'
-              : loggedIn && storedTheme === themeType.DARK
-              ? '/shared-assets/images/wallet-logo-dark.svg'
-              : '/shared-assets/images/wallet-logo-black.svg'
-          }
-          style={{ height: '100%' }}
-        />
-      </IonRouterLink>
       <div
         style={{
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          gap: '16px',
+          justifyContent: 'space-between',
+          height: isMobile ? '72px' : loggedIn ? '72px' : '80px',
+          gap: '10px',
+          marginTop: 'var(--ion-safe-area-top, 0)',
         }}
       >
-        <ThemeSelect />
+        {!loggedIn && <LanguageDropdown />}
+        <IonRouterLink
+          routerLink={
+            loggedIn ? akashicPayPath(urls.loggedFunction) : undefined
+          }
+        >
+          <IonImg
+            alt={''}
+            src={
+              (!loggedIn && storedTheme === themeType.DARK) ||
+              (loggedIn &&
+                (storedTheme === themeType.LIGHT ||
+                  storedTheme === themeType.SYSTEM))
+                ? '/shared-assets/images/wallet-logo-white.svg'
+                : loggedIn && storedTheme === themeType.DARK
+                ? '/shared-assets/images/wallet-logo-dark.svg'
+                : '/shared-assets/images/wallet-logo-black.svg'
+            }
+            style={{ height: '100%' }}
+          />
+        </IonRouterLink>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: '16px',
+          }}
+        >
+          <ThemeSelect />
+        </div>
       </div>
     </IonHeader>
   );
