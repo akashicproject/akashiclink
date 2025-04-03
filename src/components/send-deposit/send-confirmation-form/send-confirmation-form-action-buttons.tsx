@@ -80,7 +80,9 @@ export const SendConfirmationFormActionButtons = ({
 
         const res = await verifyTxnAndSign(
           txnsDetail.validatedAddressPair,
-          txnsDetail.amount
+          txnsDetail.amount,
+          txnsDetail.txn.coinSymbol,
+          txnsDetail.txn.tokenSymbol
         );
 
         if (typeof res === 'string') {

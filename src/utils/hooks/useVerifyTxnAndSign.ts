@@ -8,8 +8,6 @@ import {
 } from '@helium-pay/backend';
 
 import type { ValidatedAddressPair } from '../../components/send-deposit/send-form/types';
-import { useAppSelector } from '../../redux/app/hooks';
-import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
 import { OwnersAPI } from '../api';
 import { convertObjectCurrencies, convertToDecimals } from '../currency';
 import { calculateInternalWithdrawalFee } from '../internal-fee';
@@ -24,7 +22,6 @@ import { useExchangeRates } from './useExchangeRates';
 import { useAccountStorage } from './useLocalAccounts';
 
 export const useVerifyTxnAndSign = () => {
-  const { chain, token } = useAppSelector(selectFocusCurrencyDetail);
   const { activeAccount } = useAccountStorage();
   const { exchangeRates } = useExchangeRates();
   const { data: account } = useAccountMe();
@@ -33,8 +30,8 @@ export const useVerifyTxnAndSign = () => {
   return async (
     validatedAddressPair: ValidatedAddressPair,
     amount: string,
-    coinSymbol: CoinSymbol = chain,
-    tokenSymbol: CurrencySymbol | undefined = token
+    coinSymbol: CoinSymbol,
+    tokenSymbol?: CurrencySymbol
   ) => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
     const nitr0genApi = new Nitr0genApi();
