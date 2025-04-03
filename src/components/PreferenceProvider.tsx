@@ -1,12 +1,12 @@
 import type { Dispatch, ReactNode } from 'react';
 import { createContext, useContext } from 'react';
 
+import type { IWalletCurrency } from '../constants/currencies';
+import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../constants/currencies';
 import type { ThemeType } from '../theme/const';
 import { themeType } from '../theme/const';
 import type { LocalAccount } from '../utils/hooks/useLocalAccounts';
 import { useLocalStorage } from '../utils/hooks/useLocalStorage';
-import type { WalletCurrency } from '../utils/supported-currencies';
-import { WALLET_CURRENCIES } from '../utils/supported-currencies';
 
 export const ThemeContext = createContext<{
   theme: ThemeType;
@@ -19,10 +19,10 @@ export const ThemeContext = createContext<{
 });
 
 export const CurrencyContext = createContext<{
-  focusCurrency: WalletCurrency;
-  setFocusCurrency: Dispatch<WalletCurrency>;
+  focusCurrency: IWalletCurrency;
+  setFocusCurrency: Dispatch<IWalletCurrency>;
 }>({
-  focusCurrency: WALLET_CURRENCIES[0].currency,
+  focusCurrency: SUPPORTED_CURRENCIES_FOR_EXTENSION.default.walletCurrency,
   setFocusCurrency: () => {
     console.warn('setFocusCurrency not ready');
   },
@@ -54,9 +54,9 @@ export const PreferenceProvider = ({ children }: { children: ReactNode }) => {
     themeType.SYSTEM as ThemeType
   );
 
-  const [focusCurrency, setFocusCurrency] = useLocalStorage<WalletCurrency>(
+  const [focusCurrency, setFocusCurrency] = useLocalStorage<IWalletCurrency>(
     'focusCurrency',
-    WALLET_CURRENCIES[0].currency
+    SUPPORTED_CURRENCIES_FOR_EXTENSION.default.walletCurrency
   );
 
   const [localAccounts, setLocalAccounts] = useLocalStorage<LocalAccount[]>(
@@ -108,8 +108,8 @@ export const useTheme: () => [
 };
 
 export const useFocusCurrency: () => [
-  WalletCurrency,
-  Dispatch<WalletCurrency> | undefined
+  IWalletCurrency,
+  Dispatch<IWalletCurrency> | undefined
 ] = () => {
   const { focusCurrency, setFocusCurrency } = useContext(CurrencyContext);
 

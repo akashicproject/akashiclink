@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { CurrencyMap, makeWalletCurrency } from '../supported-currencies';
+import { makeWalletCurrency } from '../../constants/currencies';
+import { CurrencyMap } from '../currencyMap';
 import { useBalancesMe } from './useBalancesMe';
 
 /** Map balances from backend onto the currencies supported nby the wallet */
