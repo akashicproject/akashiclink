@@ -129,6 +129,9 @@ export const useVerifyTxnAndSign = () => {
         feesEstimate: uiFeesEstimate,
         layer: TransactionLayer.L1,
         txToSign: signedTxn,
+        internalFee: {
+          withdraw: delegatedFee,
+        },
       };
 
       return { txn, signedTxn, delegatedFee };
