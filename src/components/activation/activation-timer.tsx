@@ -1,7 +1,7 @@
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
 // TODO: Link this with the backend value
-const ACTIVATION_CODE_EXPIRY_IN_MINUTES = 5;
+const ACTIVATION_CODE_EXPIRY_IN_MINUTES = 6;
 
 /**
  * Countdown timer after activation code is submitted.
