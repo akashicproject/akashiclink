@@ -119,20 +119,15 @@ const PurpleButtonCSS = styled(IonButton)({
 });
 export const PurpleButton = (
   props: IonButtonProps & { isLoading?: boolean }
-) => {
-  return (
-    <PurpleButtonCSS {...props}>
-      {props.children}
-      {props.isLoading && (
-        <IonSpinner
-          className={'ion-margin-start'}
-          slot="end"
-          name="circular"
-        ></IonSpinner>
-      )}
-    </PurpleButtonCSS>
-  );
-};
+) => (
+  <PurpleButtonCSS disabled={props.isLoading ?? props.disabled} {...props}>
+    {props.children}
+    {props.isLoading && (
+      <IonSpinner className={'ion-margin-start'} slot="end" name="circular" />
+    )}
+  </PurpleButtonCSS>
+);
+
 export const WhiteButton = styled(IonButton)({
   ...whiteButtonCss,
 });

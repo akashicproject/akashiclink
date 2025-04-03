@@ -1,18 +1,17 @@
 import styled from '@emotion/styled';
 import {
+  NetworkDictionary,
   TransactionLayer,
   TransactionStatus,
   TransactionType,
 } from '@helium-pay/backend';
 import { IonImg } from '@ionic/react';
 import Big from 'big.js';
-// TODO: Replace these by non-mui things
 import type { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { themeType } from '../../theme/const';
-import { formatAmount } from '../../utils/formatAmount';
 import { formatDate } from '../../utils/formatDate';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { displayLongText } from '../../utils/long-text';
@@ -29,7 +28,7 @@ const ActivityWrapper = styled.div<{ hover: boolean }>((props) => ({
   '&:hover': {
     background: props.hover ? 'rgba(103, 80, 164, 0.14)' : 'transparent',
   },
-  padding: '4px 10px',
+  padding: '4px 8px',
 }));
 
 const TransactionStatusWrapper = styled.div({
@@ -50,12 +49,12 @@ const TypeIcon = styled.div({
 
 const Time = styled.div({
   textAlign: 'center',
-  fontSize: '0.5rem',
+  fontSize: '0.625rem',
   fontWeight: 400,
 });
 
 const Amount = styled.div({
-  fontSize: '0.625rem',
+  fontSize: '0.75rem',
   fontWeight: 700,
   color: 'var(--ion-color-primary-10)',
 });
@@ -68,9 +67,9 @@ const AmountWrapper = styled.div({
 });
 const GasFee = styled.div({
   overflow: 'hidden',
-  fontSize: '0.5rem',
+  fontSize: '0.625rem',
   fontWeight: 400,
-  color: 'var(--ion-light-text)',
+  color: 'var(--activity-dim-text)',
 });
 
 const Nft = styled.div({
@@ -100,11 +99,11 @@ const NftImage = styled.div({
   alignItems: 'center',
   justifyContent: 'center',
   overflow: 'hidden',
-  width: '50%',
-  height: '40px',
   fontSize: '0.625rem',
   fontWeight: 700,
   color: 'var(--ion-color-primary-10)',
+  height: '32px',
+  width: '32px',
 });
 
 const currenciesIcon = [...SUPPORTED_CURRENCIES_FOR_EXTENSION.list];
@@ -138,39 +137,22 @@ export function OneActivity({
   const isL2 = transfer.layer === TransactionLayer.L2;
   const isNft = !!transfer?.nft;
   const [storedTheme] = useTheme();
-  const transferType =
-    transfer.transferType === TransactionType.DEPOSIT
-      ? t('Deposit')
-      : t('Send');
-  // HACK: Reduce chain names to a single word to fit small screen
-  let label = transfer.chain;
-  switch (label.split(' ').length) {
-    case 2:
-      label = label.split(' ')[0];
-      break;
-    case 3:
-      label = label.split(' ')[1];
-      break;
-  }
-  const L2Icon = `/shared-assets/images/${
-    transfer.status === TransactionStatus.CONFIRMED
-      ? 'akashic-pay-logo'
-      : 'akashic-grey-logo'
-  }.svg`;
+
+  const isTxnDeposit = transfer.transferType === TransactionType.DEPOSIT;
+  const isTxnConfirmed = transfer.status === TransactionStatus.CONFIRMED;
+
   const currencyObj = currenciesIcon.find(
     (c) => c.walletCurrency.chain === transfer.currency?.chain
   );
+
   const iconImg =
     isL2 || isNft
-      ? L2Icon
-      : transfer.status === TransactionStatus.CONFIRMED
+      ? `/shared-assets/images/${
+          isTxnConfirmed ? 'akashic-pay-logo' : 'akashic-grey-logo'
+        }.svg`
+      : isTxnConfirmed
       ? currencyObj?.currencyIcon
       : currencyObj?.greyCurrencyIcon;
-  /**
-   * Style the icon displaying the chain information:
-   * - L2 transactions need to display the full AkashicChain text and so need less padding
-   * - If the more-info-chevron is displayed, reduce the spacing
-   */
 
   return (
     <>
@@ -192,10 +174,8 @@ export function OneActivity({
             />
             <IonImg
               alt=""
-              src={`/shared-assets/images/${
-                storedTheme === themeType.DARK
-                  ? `${transfer.status}-dark`
-                  : `${transfer.status}-white`
+              src={`/shared-assets/images/${transfer.status}-${
+                storedTheme === themeType.DARK ? 'dark' : 'white'
               }.svg`}
               style={{
                 position: 'absolute',
@@ -207,39 +187,31 @@ export function OneActivity({
             />
           </TypeIcon>
           <TransactionStatusWrapper>
-            {transfer.status !== TransactionStatus.CONFIRMED ? (
-              <div
-                className={'ion-text-size-sm ion-text-bold'}
-                style={{
-                  color:
-                    storedTheme === themeType.DARK
-                      ? 'var(--ion-dark-text)'
-                      : 'var(--ion-light-text)',
-                }}
-              >
-                {transfer.status === TransactionStatus.PENDING
-                  ? `${transferType} - ${t('Pending')}`
-                  : `${transferType} - ${t('Failed')}`}
-              </div>
-            ) : (
-              <div className={'ion-text-size-sm ion-text-bold'}>
-                {transferType}
-              </div>
-            )}
-            {transfer.status !== TransactionStatus.CONFIRMED ? (
-              <Time
-                style={{
-                  color:
-                    storedTheme === themeType.DARK
-                      ? 'var(--ion-dark-text)'
-                      : 'var(--ion-light-text)',
-                }}
-              >
-                {formatDate(new Date(transfer.date))}
-              </Time>
-            ) : (
-              <Time>{formatDate(new Date(transfer.date))}</Time>
-            )}
+            <div
+              style={{
+                ...(!isTxnConfirmed && {
+                  color: 'var(--activity-dim-text)',
+                }),
+              }}
+              className={'ion-text-size-sm ion-text-bold'}
+            >
+              {`${isTxnDeposit ? t('Deposit') : t('Send')}${
+                transfer.status === TransactionStatus.PENDING
+                  ? ` - ${t('Pending')}`
+                  : transfer.status === TransactionStatus.FAILED
+                  ? ` - ${t('Failed')}`
+                  : ''
+              }`}
+            </div>
+            <Time
+              style={{
+                ...(!isTxnConfirmed && {
+                  color: 'var(--activity-dim-text)',
+                }),
+              }}
+            >
+              {formatDate(new Date(transfer.date))}
+            </Time>
           </TransactionStatusWrapper>
         </IconWrapper>
         {isNft ? (
@@ -248,24 +220,13 @@ export function OneActivity({
               <NftItem className="ion-margin-top-xxs">{t('NFT')}</NftItem>
               <NftItem
                 style={{
-                  color:
-                    storedTheme === themeType.DARK
-                      ? 'var(--ion-dark-text)'
-                      : 'var(--ion-light-text)',
-                  fontSize: '0.5rem',
-                  fontWeight: 400,
-                  marginBottom: '4px',
+                  color: 'var(--activity-dim-text)',
                 }}
               >
                 {displayLongText(transfer?.nft?.account, 20)}
               </NftItem>
             </NftName>
-            <NftImage
-              style={{
-                height: '32px',
-                width: '32px',
-              }}
-            >
+            <NftImage>
               <IonImg src={transfer?.nft?.image}></IonImg>
             </NftImage>
           </Nft>
@@ -273,46 +234,39 @@ export function OneActivity({
           <AmountWrapper>
             <Amount
               style={{
-                color:
-                  transfer.status !== TransactionStatus.CONFIRMED
-                    ? storedTheme === themeType.DARK
-                      ? 'var(--ion-dark-text)'
-                      : 'var(--ion-light-text)'
-                    : transfer.type === TransactionType.DEPOSIT
-                    ? 'var(--ion-color-success)'
-                    : '#ff5449',
+                color: !isTxnConfirmed
+                  ? 'var(--activity-dim-text)'
+                  : isTxnDeposit
+                  ? 'var(--ion-color-success)'
+                  : 'var(--ion-color-failed)',
               }}
             >
-              {`${
-                transfer.type === TransactionType.DEPOSIT ? '+' : '-'
-              }${formatAmount(transfer.amount)} ${
-                transfer.tokenSymbol
-                  ? `${transfer?.currency?.token ?? ''} (${
-                      transfer?.currency?.chain?.split('-')[0]
-                    })`
-                  : transfer?.currency?.displayName?.split('-')[0] || ''
+              {`${isTxnDeposit ? '+' : '-'}${Big(transfer.amount).toFixed(2)} ${
+                transfer?.currency?.token
+                  ? transfer?.currency?.token
+                  : transfer?.currency?.chain
+                  ? NetworkDictionary[transfer?.currency?.chain].nativeCoin
+                      .displayName
+                  : transfer?.currency?.displayName
               }`}
             </Amount>
-            {transfer.feesPaid && (
-              <GasFee
-                style={{
-                  color:
-                    storedTheme === themeType.DARK
-                      ? 'var(--ion-dark-text)'
-                      : 'var(--ion-light-text)',
-                }}
-              >{`${t('GasFee')}: ${Big(transfer.feesPaid).toFixed(2)}`}</GasFee>
+            {!isTxnDeposit && transfer.feesPaid && (
+              <GasFee>
+                {`${t('GasFee')}: ${Big(transfer.feesPaid).toFixed(6)} ${
+                  transfer?.currency?.chain
+                    ? NetworkDictionary[transfer?.currency?.chain].nativeCoin
+                        .displayName
+                    : ''
+                }`}
+              </GasFee>
             )}
           </AmountWrapper>
         )}
       </ActivityWrapper>
       {divider && (
         <Divider
-          style={{
-            marginLeft: '8px',
-            marginRight: '8px',
-          }}
-          borderColor={storedTheme === themeType.DARK ? '#2F2F2F' : '#D9D9D9'}
+          className={'ion-margin-left-xs ion-margin-right-xs'}
+          borderColor={'var(--activity-list-divider)'}
           height={'1px'}
           borderWidth={'0.5px'}
         />

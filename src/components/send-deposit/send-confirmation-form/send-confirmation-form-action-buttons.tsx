@@ -50,11 +50,12 @@ export const SendConfirmationFormActionButtons = ({
   // Re-verify txn every 1 mins
   useInterval(async () => {
     try {
-      setIsLoading(true);
-
-      if (forceAlert.visible || formAlert.visible || txnFinal) {
+      // skip when there was an error / txn request in progress / txn completed
+      if (forceAlert.visible || formAlert.visible || isLoading || txnFinal) {
         return;
       }
+
+      setIsLoading(true);
 
       if (!txnsDetail.validatedAddressPair || !txnsDetail.amount) {
         setFormAlert(errorAlertShell(t('GenericFailureMsg')));
