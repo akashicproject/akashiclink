@@ -10,6 +10,8 @@ import { BorderedBox } from '../components/common/box/border-box';
 import { OutlineButton, PrimaryButton } from '../components/common/buttons';
 import { AccountListItem } from '../components/manage-account/account-list-item';
 import { PopupLayout } from '../components/page-layout/popup-layout';
+import { useAppSelector } from '../redux/app/hooks';
+import { selectTheme } from '../redux/slices/preferenceSlice';
 import {
   closePopup,
   ETH_METHOD,
@@ -19,6 +21,7 @@ import {
 } from '../utils/chrome';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useOwnerKeys } from '../utils/hooks/useOwnerKeys';
+import { useSetGlobalLanguage } from '../utils/hooks/useSetGlobalLanguage';
 import { useSignAuthorizeActionMessage } from '../utils/hooks/useSignAuthorizeActionMessage';
 import {
   buildApproveSessionNamespace,
@@ -33,6 +36,10 @@ const chain =
 
 export function WalletConnection() {
   const { t } = useTranslation();
+
+  // retrieve user AL setting
+  const storedTheme = useAppSelector(selectTheme);
+  const [globalLanguage] = useSetGlobalLanguage();
 
   const searchParams = new URLSearchParams(window.location.search);
   const uri = searchParams.get('uri') ?? '';
@@ -132,6 +139,11 @@ export function WalletConnection() {
         expires: Date.now() + 60 * 1000,
       };
 
+      const walletPreference = {
+        theme: storedTheme,
+        language: globalLanguage.replace('-', '='), // use replace for backward compatible with "-"
+      };
+
       const signedMsg = await signAuthorizeActionMessage(payloadToSign);
 
       await web3wallet?.respondSessionRequest({
@@ -139,7 +151,9 @@ export function WalletConnection() {
         response: {
           id,
           jsonrpc: '2.0',
-          result: `${signedMsg}-${JSON.stringify(payloadToSign)}`,
+          result: `${signedMsg}-${JSON.stringify(
+            payloadToSign
+          )}-${JSON.stringify(walletPreference)}`,
         },
       });
 
