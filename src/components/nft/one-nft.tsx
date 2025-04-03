@@ -1,3 +1,5 @@
+import './one-nft.css';
+
 import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import type { INft } from '@helium-pay/backend';
@@ -146,7 +148,7 @@ export function OneNft(props: Props) {
         isAASDarkStyle={props.isAASDarkStyle}
         isBig={props.isBig}
       >
-        <div style={{ position: 'relative', width: '312px', height: '312px' }}>
+        <div className={'nft-image-wrapper'}>
           <IonImg
             style={{
               position: 'absolute',
@@ -165,8 +167,9 @@ export function OneNft(props: Props) {
             <IonImg
               style={{
                 position: 'absolute',
-                top: 0,
-                left: 0,
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
                 width: '100%',
                 height: '100%',
                 opacity: imageLoaded ? 1 : 0,
@@ -184,7 +187,7 @@ export function OneNft(props: Props) {
             style={{
               color: props.isAASDarkStyle
                 ? 'var(--ion-color-primary-dark)'
-                : '#ffffff',
+                : 'var(--ion-color-primary-light)',
             }}
             title={props.nft?.account}
             className={'ion-no-margin ion-text-size-sm'}
@@ -201,7 +204,7 @@ export function OneNft(props: Props) {
             src={`/shared-assets/images/${
               props.isAASDarkStyle
                 ? `copy-icon-only-dark.svg`
-                : `copy-icon-white.svg`
+                : `copy-icon-light.svg`
             }`}
             onClick={async (e) => {
               e.stopPropagation();

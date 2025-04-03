@@ -77,15 +77,13 @@ export function Nft() {
       <NftWrapper>
         <IonGrid fixed={true}>
           <IonRow>
-            <IonCol size="10" offset="1">
-              <NftContainer>
-                <OneNft
-                  nft={currentNft}
-                  isBig={true}
-                  isAASDarkStyle={!isDarkMode}
-                />
-              </NftContainer>
-            </IonCol>
+            <NftContainer>
+              <OneNft
+                nft={currentNft}
+                isBig={true}
+                isAASDarkStyle={!isDarkMode}
+              />
+            </NftContainer>
           </IonRow>
           <IonRow className="ion-margin-top-xs ion-margin-bottom-xxs">
             <IonCol size="10" offset="1">
