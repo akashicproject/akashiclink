@@ -14,8 +14,8 @@ import type {
   IDiffconKeysResponse,
   IEstimateGasFee,
   IEstimateGasFeeResponse,
-  IImportWallet,
-  IImportWalletResponse,
+  IImportWalletNew,
+  IImportWalletResponseNew,
   IL1ClientSideOtkTransactionBase,
   ILoginUser,
   ILoginUserWithOtk,
@@ -46,8 +46,8 @@ import { axiosBase, axiosBaseV1 } from './axios-helper';
 
 export const OwnersAPI = {
   importAccount: async (
-    importData: IImportWallet
-  ): Promise<IImportWalletResponse> => {
+    importData: IImportWalletNew
+  ): Promise<IImportWalletResponseNew> => {
     const response = await axiosBase.post(
       `/auth/import-wallet`,
       JSON.stringify(importData)
