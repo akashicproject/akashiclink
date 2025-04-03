@@ -16,7 +16,7 @@ export function calculateInternalWithdrawalFee(
   coinSymbol: CoinSymbol,
   tokenSymbol?: CurrencySymbol
 ): string {
-  let internalFeeBase = '0.1';
+  let internalFeeBase = '0.0';
   const exchangeRate = Big(
     exchangeRates.find(
       (ex) =>
@@ -33,8 +33,10 @@ export function calculateInternalWithdrawalFee(
       internalFeeBase = '0.3';
     } else if (Big(requestedAmount).times(exchangeRate).gt('1000')) {
       internalFeeBase = '0.2';
+    } else if (Big(requestedAmount).times(exchangeRate).gt('1')) {
+      internalFeeBase = '0.1';
     }
     return Big(internalFeeBase).div(exchangeRate).toPrecision(2);
   }
-  return '0';
+  return '0.0';
 }

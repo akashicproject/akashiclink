@@ -185,7 +185,7 @@ export function SendTo() {
     currentWalletMetadata.walletCurrency
   );
 
-  const [internalFee, setInternalFee] = useState('0');
+  const [internalFee, setInternalFee] = useState('0.0');
 
   // Keeps track of which page the user is at
   const [pageView, setPageView] = useState(SendView.Send);
