@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
 import { OwnersAPI } from '../../utils/api';
-import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
+import { useAccountMe } from '../../utils/hooks/useAccountMe';
 import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemapAASToAddress';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
@@ -46,7 +46,7 @@ export function LoginForm() {
   const { mutateOwner } = useOwner();
   const { mutateTransfersMe } = useTransfersMe();
   const { mutateNftTransfersMe } = useNftTransfersMe();
-  const { mutateBalancesMe } = useBalancesMe();
+  const { mutate: mutateAccountMe } = useAccountMe();
   const fetchAndRemapAASToAddress = useFetchAndRemapAASToAddress();
 
   addPrefixToAccounts();
@@ -105,7 +105,7 @@ export function LoginForm() {
       await mutateOwner();
       await mutateTransfersMe();
       await mutateNftTransfersMe();
-      await mutateBalancesMe();
+      await mutateAccountMe();
       await fetchAndRemapAASToAddress(activeAccount.identity);
 
       setPassword('');

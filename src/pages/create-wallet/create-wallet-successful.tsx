@@ -9,7 +9,7 @@ import { PublicLayout } from '../../components/page-layout/public-layout';
 import { useAppDispatch } from '../../redux/app/hooks';
 import { onClear } from '../../redux/slices/createWalletSlice';
 import { historyResetStackAndRedirect } from '../../routing/history';
-import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
+import { useAccountMe } from '../../utils/hooks/useAccountMe';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useOwner } from '../../utils/hooks/useOwner';
@@ -29,7 +29,7 @@ export const CreateWalletSuccessful = () => {
   const { mutateOwner } = useOwner();
   const { mutateTransfersMe } = useTransfersMe();
   const { mutateNftTransfersMe } = useNftTransfersMe();
-  const { mutateBalancesMe } = useBalancesMe();
+  const { mutate: mutateAccountMe } = useAccountMe();
   const { mutateNftMe } = useNftMe();
   const dispatch = useAppDispatch();
 
@@ -38,7 +38,7 @@ export const CreateWalletSuccessful = () => {
     await mutateOwner();
     await mutateTransfersMe();
     await mutateNftTransfersMe();
-    await mutateBalancesMe();
+    await mutateAccountMe();
     await mutateNftMe();
     // creation flow is finished, completely reset router history
     await historyResetStackAndRedirect();

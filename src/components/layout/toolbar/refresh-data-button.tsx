@@ -5,7 +5,7 @@ import { REFRESH_BUTTON_DISABLED_TIME } from '../../../constants';
 import { useAppSelector } from '../../../redux/app/hooks';
 import { selectTheme } from '../../../redux/slices/preferenceSlice';
 import { themeType } from '../../../theme/const';
-import { useBalancesMe } from '../../../utils/hooks/useBalancesMe';
+import { useAccountMe } from '../../../utils/hooks/useAccountMe';
 import { useNftMe } from '../../../utils/hooks/useNftMe';
 import { useNftTransfersMe } from '../../../utils/hooks/useNftTransfersMe';
 import { useTransfersMe } from '../../../utils/hooks/useTransfersMe';
@@ -14,7 +14,7 @@ import { SquareWhiteButton } from '../../common/buttons';
 export const RefreshDataButton = () => {
   const { mutateTransfersMe } = useTransfersMe();
   const { mutateNftTransfersMe } = useNftTransfersMe();
-  const { mutateBalancesMe } = useBalancesMe();
+  const { mutate: mutateAccountMe } = useAccountMe();
   const { mutateNftMe } = useNftMe();
 
   const storedTheme = useAppSelector(selectTheme);
@@ -30,7 +30,7 @@ export const RefreshDataButton = () => {
           setRefreshDisabled(true);
           await mutateTransfersMe();
           await mutateNftTransfersMe();
-          await mutateBalancesMe();
+          await mutateAccountMe();
           await mutateNftMe();
         } finally {
           // To prevent spam of the backend, disable the refresh button for a little while

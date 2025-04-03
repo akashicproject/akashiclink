@@ -3,14 +3,18 @@ import type {
   IClientTransactionRecord,
   ITransactionRecord,
 } from '@helium-pay/backend';
-import { TransactionResult, TransactionStatus } from '@helium-pay/backend';
+import {
+  TransactionResult,
+  TransactionStatus,
+  TransactionType,
+} from '@helium-pay/backend';
 import type { AxiosRequestConfig } from 'axios';
 import buildURL from 'axios/unsafe/helpers/buildURL';
 import useSWR from 'swr';
 
 import { REFRESH_INTERVAL } from '../../constants';
 import fetcher from '../ownerFetcher';
-import { useOwner } from './useOwner';
+import { useAccountStorage } from './useLocalAccounts';
 
 const transferMeFetcher = async (path: string, config?: AxiosRequestConfig) => {
   const hideSmallTransactions = await Preferences.get({
@@ -25,13 +29,18 @@ const transferMeFetcher = async (path: string, config?: AxiosRequestConfig) => {
 };
 
 export const useTransfersMe = (params?: IClientTransactionRecord) => {
-  const { authenticated } = useOwner();
+  const { activeAccount } = useAccountStorage();
   const {
     data,
     mutate: mutateTransfersMe,
     ...response
   } = useSWR<ITransactionRecord[], Error>(
-    authenticated ? buildURL(`/key/transfers/me`, { ...params }) : null,
+    activeAccount?.identity
+      ? buildURL(`/public-api/owner/transactions`, {
+          identity: activeAccount?.identity,
+          ...params,
+        })
+      : null,
     transferMeFetcher,
     {
       refreshInterval: REFRESH_INTERVAL,
@@ -39,24 +48,33 @@ export const useTransfersMe = (params?: IClientTransactionRecord) => {
     }
   );
 
-  // Dates come from backend as string so need to transform them here
-  // also, remove trailing zeros from amounts
-  const dataWithDates = (data ?? []).map((d) => ({
+  const transformedTransfers = (data ?? []).map((d) => ({
     ...d,
+    // remove trailing zeros from amounts
     amount: d.amount.replace(/\.*0+$/, ''),
     feesPaid: d.feesPaid?.replace(/\.*0+$/, ''),
+    // Dates come from backend as string so need to transform them here
     date: new Date(d.date),
+    // HACK: set transactions with result = Failure to status = Failed
+    // temporary solution until we finish the status code
+    ...(d.result === TransactionResult.FAILURE && {
+      status: TransactionStatus.FAILED,
+    }),
+    // Condition to determine the transaction type: if it's senderIdentity then withdraw else deposit
+    type:
+      d.senderIdentity === activeAccount?.identity
+        ? TransactionType.WITHDRAWAL
+        : TransactionType.DEPOSIT,
+    // Checking if the tokenSymbol field exists and is not null and status is 'confirmed'
+    // Otherwise, keep the existing value of the 'result'. Hence there is no result so it won't be in records.
+    ...(d.tokenSymbol &&
+      d.status === TransactionStatus.CONFIRMED && {
+        result: TransactionResult.SUCCESS,
+      }),
   }));
 
-  // HACK: set transactions with result = Failure to status = Failed
-  // temporary solution until we finish the status code
-  const transformedFails = dataWithDates.map((t) =>
-    t.result === TransactionResult.FAILURE
-      ? { ...t, status: TransactionStatus.FAILED }
-      : t
-  );
   return {
-    transfers: transformedFails,
+    transfers: transformedTransfers,
     mutateTransfersMe,
     ...response,
   };

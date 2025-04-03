@@ -5,12 +5,12 @@ import { makeWalletCurrency } from '../../constants/currencies';
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
 import { CurrencyMap } from '../currencyMap';
-import { useBalancesMe } from './useBalancesMe';
+import { useAccountMe } from './useAccountMe';
 
 /** Map balances from backend onto the currencies supported nby the wallet */
 export function useAggregatedBalances() {
-  const { keys: userBalances } = useBalancesMe();
-  const userBalancesStringify = JSON.stringify(userBalances);
+  const { data: account } = useAccountMe();
+  const userBalancesStringify = JSON.stringify(account?.totalBalances);
 
   const [aggregatedBalances, setAggregatedBalances] = useState(
     new CurrencyMap<string>()
@@ -18,12 +18,14 @@ export function useAggregatedBalances() {
 
   useEffect(() => {
     const updatedAggregatedBalances = new CurrencyMap<string>();
-    for (const { coinSymbol, tokenSymbol, balance } of userBalances)
-      updatedAggregatedBalances.set(
-        makeWalletCurrency(coinSymbol, tokenSymbol),
-        balance
-      );
-    setAggregatedBalances(updatedAggregatedBalances);
+    if (account?.totalBalances) {
+      for (const { coinSymbol, tokenSymbol, balance } of account.totalBalances)
+        updatedAggregatedBalances.set(
+          makeWalletCurrency(coinSymbol, tokenSymbol),
+          balance
+        );
+      setAggregatedBalances(updatedAggregatedBalances);
+    }
   }, [userBalancesStringify]);
 
   return aggregatedBalances;

@@ -14,7 +14,7 @@ import {
   historyGoBackOrReplace,
   historyResetStackAndRedirect,
 } from '../../routing/history';
-import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
+import { useAccountMe } from '../../utils/hooks/useAccountMe';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
@@ -38,7 +38,7 @@ export function ImportWalletPassword() {
   const { mutateOwner } = useOwner();
   const { mutateTransfersMe } = useTransfersMe();
   const { mutateNftTransfersMe } = useNftTransfersMe();
-  const { mutateBalancesMe } = useBalancesMe();
+  const { mutate: mutateAccountMe } = useAccountMe();
   const { mutateNftMe } = useNftMe();
 
   /**
@@ -80,7 +80,7 @@ export function ImportWalletPassword() {
       await mutateOwner();
       await mutateTransfersMe();
       await mutateNftTransfersMe();
-      await mutateBalancesMe();
+      await mutateAccountMe();
       await mutateNftMe();
       setIsLoading(false);
       historyResetStackAndRedirect(urls.importWalletSuccessful);
