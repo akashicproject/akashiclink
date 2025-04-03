@@ -60,7 +60,7 @@ export const useSendL2Transaction = () => {
             coinSymbol,
             tokenSymbol,
             l2TxnHash: txHash,
-            date: new Date(),
+            initiatedAt: new Date(),
             status: TransactionStatus.CONFIRMED,
             layer: TransactionLayer.L2,
             amount,
@@ -120,7 +120,7 @@ export const useSendL1Transaction = () => {
           addLocalTransaction({
             ...signedTransactionData,
             status: TransactionStatus.PENDING,
-            date: new Date(),
+            initiatedAt: new Date(),
             layer: TransactionLayer.L1,
             l2TxnHash,
             senderIdentity: identity,

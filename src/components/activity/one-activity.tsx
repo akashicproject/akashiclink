@@ -258,7 +258,7 @@ export function OneActivity({
                 }),
               }}
             >
-              {formatDate(new Date(transfer.date))}
+              {formatDate(new Date(transfer.initiatedAt))}
             </Time>
           </TransactionStatusWrapper>
         </IconWrapper>

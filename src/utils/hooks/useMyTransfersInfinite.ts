@@ -111,7 +111,7 @@ export const useMyTransfersInfinite = (limit = 100, query = {}) => {
     // feesPaid could be undefined, remove trailing zeros if it is not
     feesPaid: d.feesPaid ? Big(d.feesPaid).toString() : d.feesPaid,
     // Dates come from backend as string so need to transform them here
-    date: new Date(d.date),
+    initiatedAt: new Date(d.initiatedAt),
     // HACK: set transactions with result = Failure to status = Failed
     // temporary solution until we finish the status code
     ...(d.result === TransactionResult.FAILURE && {
