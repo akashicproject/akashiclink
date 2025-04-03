@@ -1,6 +1,6 @@
-import type { IBaseTransaction } from '@activeledger/sdk-bip39';
 import { Preferences } from '@capacitor/preferences';
 import type {
+  IBaseTransactionWithDbIndex,
   IL1ClientSideOtkTransactionBase,
   ITerriTransaction,
   ITransactionProposalClientSideOtk,
@@ -31,7 +31,7 @@ export interface LocationState {
   };
   sendConfirm?: {
     txns: ITransactionVerifyResponse[];
-    signedTxns: (IBaseTransaction | ITerriTransaction)[];
+    signedTxns: (IBaseTransactionWithDbIndex | ITerriTransaction)[];
     validatedAddressPair: ValidatedAddressPair;
     amount: string;
     txnFinal?: SendConfirmationTxnFinal;

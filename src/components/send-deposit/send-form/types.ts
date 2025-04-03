@@ -1,5 +1,5 @@
-import type { IBaseTransaction } from '@activeledger/sdk-bip39';
 import type {
+  IBaseTransactionWithDbIndex,
   ITerriTransaction,
   ITransactionVerifyResponse,
 } from '@helium-pay/backend';
@@ -18,7 +18,7 @@ export const validatedAddressPairInitialState = {
 
 export type SendConfirmationTxnsDetail = {
   txns: ITransactionVerifyResponse[];
-  signedTxns: (IBaseTransaction | ITerriTransaction)[];
+  signedTxns: (IBaseTransactionWithDbIndex | ITerriTransaction)[];
   validatedAddressPair: ValidatedAddressPair;
   amount: string;
 };

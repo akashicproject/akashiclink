@@ -1,5 +1,7 @@
-import type { IBaseTransaction } from '@activeledger/sdk-bip39';
-import type { ITerriTransaction } from '@helium-pay/backend';
+import type {
+  IBaseTransactionWithDbIndex,
+  ITerriTransaction,
+} from '@helium-pay/backend';
 import { L2Regex, otherError } from '@helium-pay/backend';
 import { IonAlert, IonCol, IonRow } from '@ionic/react';
 import type { Dispatch, SetStateAction } from 'react';
@@ -117,7 +119,7 @@ export const SendConfirmationFormActionButtons = ({
       const response = isL2
         ? await OwnersAPI.sendL2TransactionUsingClientSideOtk({
             ...txn,
-            signedTx: signedTxn as IBaseTransaction,
+            signedTx: signedTxn as IBaseTransactionWithDbIndex,
             initiatedToNonL2:
               txnsDetail.validatedAddressPair.userInputToAddressType !== 'l2'
                 ? txnsDetail.validatedAddressPair.userInputToAddress

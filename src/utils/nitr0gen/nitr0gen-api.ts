@@ -1,7 +1,9 @@
-import type { IBaseTransaction } from '@activeledger/sdk';
 import { TransactionHandler } from '@activeledger/sdk';
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
-import type { CurrencySymbol } from '@helium-pay/backend';
+import type {
+  CurrencySymbol,
+  IBaseTransactionWithDbIndex,
+} from '@helium-pay/backend';
 import { CoinSymbol, NetworkDictionary, otherError } from '@helium-pay/backend';
 import axios from 'axios';
 
@@ -58,11 +60,20 @@ const Nitr0gen =
     ? ProductionContracts
     : TestNetContracts;
 
-export async function signTxBody<T extends IBaseTransaction>(
+export async function signTxBody<T extends IBaseTransactionWithDbIndex>(
   txBody: T,
   otk: IKeyExtended
 ): Promise<T> {
   const txHandler = new TransactionHandler();
+  if (process.env.NODE_ENV !== 'production') {
+    if (!process.env.REDIS_DB_INDEX) {
+      throw new Error(
+        'You must specify the variable `REDIS_DB_INDEX` in your AW .env file or you will clobber staging!'
+      );
+    }
+    txBody.$tx._dbIndex = parseInt(process.env.REDIS_DB_INDEX);
+  }
+
   return await txHandler.signTransaction(txBody, otk);
 }
 
@@ -193,8 +204,8 @@ export class Nitr0genApi {
    */
   public async onboardOtkTransaction(
     otk: IKeyExtended
-  ): Promise<IBaseTransaction> {
-    const txBody: IBaseTransaction = {
+  ): Promise<IBaseTransactionWithDbIndex> {
+    const txBody: IBaseTransactionWithDbIndex = {
       $tx: {
         $namespace: Nitr0gen.Namespace,
         $contract: Nitr0gen.Onboard,
@@ -210,8 +221,7 @@ export class Nitr0genApi {
     };
 
     // Sign Transaction
-    const txHandler = new TransactionHandler();
-    return await txHandler.signTransaction(txBody, otk);
+    return await signTxBody(txBody, otk);
   }
 
   /**
@@ -222,9 +232,9 @@ export class Nitr0genApi {
   async keyCreateTransaction(
     otk: IKeyExtended,
     coinSymbol: string
-  ): Promise<IBaseTransaction> {
+  ): Promise<IBaseTransactionWithDbIndex> {
     // Build Transaction
-    const txBody: IBaseTransaction = {
+    const txBody: IBaseTransactionWithDbIndex = {
       $tx: {
         $namespace: Nitr0gen.Namespace,
         $contract: Nitr0gen.Create,
@@ -239,8 +249,7 @@ export class Nitr0genApi {
       $selfsign: false,
     };
     // Sign Transaction
-    const txHandler = new TransactionHandler();
-    return await txHandler.signTransaction(txBody, otk);
+    return await signTxBody(txBody, otk);
   }
 
   /**
@@ -252,9 +261,9 @@ export class Nitr0genApi {
   async differentialConsensusTransaction(
     otk: IKeyExtended,
     key: IKeyCreationResponse
-  ): Promise<IBaseTransaction> {
+  ): Promise<IBaseTransactionWithDbIndex> {
     // Build Transaction
-    const txBody: IBaseTransaction = {
+    const txBody: IBaseTransactionWithDbIndex = {
       $tx: {
         $namespace: Nitr0gen.Namespace,
         $contract: Nitr0gen.DiffConsensus,
@@ -276,8 +285,7 @@ export class Nitr0genApi {
     };
 
     // Sign Transaction
-    const txHandler = new TransactionHandler();
-    return await txHandler.signTransaction(txBody, otk);
+    return await signTxBody(txBody, otk);
   }
 
   /**
@@ -293,7 +301,7 @@ export class Nitr0genApi {
     amount: string,
     transaction: TransactionSignature,
     token?: CurrencySymbol
-  ): Promise<IBaseTransaction> {
+  ): Promise<IBaseTransactionWithDbIndex> {
     // Build Transaction
     const txDetail: L1TxDetail = {
       amount,
@@ -312,7 +320,7 @@ export class Nitr0genApi {
 
     $o[keyLedgerId] = txDetail;
 
-    const txBody: IBaseTransaction = {
+    const txBody: IBaseTransactionWithDbIndex = {
       $tx: {
         $namespace: Nitr0gen.Namespace,
         $contract: Nitr0gen.CryptoTransfer,
@@ -333,8 +341,7 @@ export class Nitr0genApi {
     };
 
     // Sign Transaction
-    const txHandler = new TransactionHandler();
-    return await txHandler.signTransaction(txBody, otk);
+    return await signTxBody(txBody, otk);
   }
 
   /**
@@ -345,7 +352,7 @@ export class Nitr0genApi {
   async L2Transaction(
     otk: IKeyExtended,
     details: L2TxDetail
-  ): Promise<IBaseTransaction> {
+  ): Promise<IBaseTransactionWithDbIndex> {
     const $i = {
       owner: {
         $stream: otk.identity,
@@ -355,7 +362,7 @@ export class Nitr0genApi {
       },
     };
 
-    const txBody: IBaseTransaction = {
+    const txBody: IBaseTransactionWithDbIndex = {
       $tx: {
         $namespace: Nitr0gen.Namespace,
         $contract: Nitr0gen.CryptoTransfer,
@@ -369,8 +376,7 @@ export class Nitr0genApi {
       $selfsign: false,
     };
     // Sign Transaction
-    const txHandler = new TransactionHandler();
-    return await txHandler.signTransaction(txBody, otk);
+    return await signTxBody(txBody, otk);
   }
 
   /**
@@ -382,8 +388,8 @@ export class Nitr0genApi {
     recordType: string,
     recordKey: string,
     value?: string
-  ): Promise<IBaseTransaction> {
-    const txBody: IBaseTransaction = {
+  ): Promise<IBaseTransactionWithDbIndex> {
+    const txBody: IBaseTransactionWithDbIndex = {
       $sigs: {},
       $tx: {
         $namespace: Nitr0gen.NFTNamespace,
@@ -402,10 +408,9 @@ export class Nitr0genApi {
       },
     };
     // Sign Transaction
-    const txHandler = new TransactionHandler();
     // "Hack" used when signing nft transactions, identity must be something else than the otk identity
 
-    return await txHandler.signTransaction(txBody, {
+    return await signTxBody(txBody, {
       ...otk,
       identity: acnsStreamId,
     });
@@ -418,9 +423,9 @@ export class Nitr0genApi {
     otk: IKeyExtended,
     acnsStreamId: string,
     newOwnerIdentity: string
-  ): Promise<IBaseTransaction> {
+  ): Promise<IBaseTransactionWithDbIndex> {
     // Build Transaction
-    const txBody: IBaseTransaction = {
+    const txBody: IBaseTransactionWithDbIndex = {
       $tx: {
         $namespace: Nitr0gen.NFTNamespace,
         $contract: Nitr0gen.NFTTransfer,
@@ -438,9 +443,8 @@ export class Nitr0genApi {
       $sigs: {},
     };
     // Sign Transaction
-    const txHandler = new TransactionHandler();
     // "Hack" used when signing nft transactions, identity must be something else than the otk identity
-    return await txHandler.signTransaction(txBody, {
+    return await signTxBody(txBody, {
       ...otk,
       identity: acnsStreamId,
     });
