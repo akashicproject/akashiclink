@@ -162,7 +162,7 @@ export function SelectCoin() {
             onSwiper={setSwiperRef}
             onSlideChange={handleSlideChange}
             slidesPerView={3}
-            spaceBetween={-30}
+            spaceBetween={-18}
             centeredSlides={true}
             navigation={{
               enabled: true,
@@ -198,8 +198,8 @@ export function SelectCoin() {
                       flexDirection: 'row',
                     }}
                   >
-                    <IonImg
-                      alt={''}
+                    <img
+                      alt={walletCurrency.displayName}
                       src={getIcon(
                         currencyIcon,
                         darkCurrencyIcon,
@@ -216,7 +216,8 @@ export function SelectCoin() {
                       }
                     />
                     {walletCurrency.token && (
-                      <IonImg
+                      <img
+                        alt={walletCurrency.displayName}
                         src={usdtChainIcon(walletCurrency, idx)}
                         style={
                           swiperIdx === idx
@@ -224,14 +225,14 @@ export function SelectCoin() {
                                 height: '30px',
                                 position: 'absolute',
                                 top: 0,
-                                left: '66px',
+                                left: '59px',
                               }
                             : {
-                                width: '10px',
+                                width: '16px',
                                 height: '16px',
                                 position: 'absolute',
                                 top: 0,
-                                left: '59px',
+                                left: '54px',
                               }
                         }
                       />
