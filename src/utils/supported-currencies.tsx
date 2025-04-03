@@ -105,17 +105,17 @@ const TESTNET_CURRENCIES: WalletCurrencyMetadata[] = [
     logo: '/shared-assets/images/btc.png',
   },
   {
-    symbol: 'tETH',
+    symbol: 'GOR',
     currency: makeWalletCurrency(CoinSymbol.Görli),
     logo: '/shared-assets/images/eth.png',
   },
   {
-    symbol: 'tTRX2',
+    symbol: 'Nile',
     currency: makeWalletCurrency(CoinSymbol.Tron_Nile),
     logo: '/shared-assets/images/trx.png',
   },
   {
-    symbol: 'tTRX1',
+    symbol: 'Shasta',
     currency: makeWalletCurrency(CoinSymbol.Tron_Shasta),
     logo: '/shared-assets/images/trx.png',
   },

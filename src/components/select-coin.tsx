@@ -5,7 +5,6 @@ import 'swiper/css/navigation';
 import './selection-coin.css';
 
 import styled from '@emotion/styled';
-import type { CoinSymbol } from '@helium-pay/backend';
 import { TEST_TO_MAIN } from '@helium-pay/backend';
 import { IonCol, IonGrid, IonImg, IonRow } from '@ionic/react';
 import Big from 'big.js';
@@ -93,17 +92,21 @@ export function SelectCoin(props: Props) {
     props.changeCurrency(WALLET_CURRENCIES[0].symbol);
   }, []);
 
+  /** Handling choosing another currency and convert to USDT */
   const handleSlideChange = () => {
     setSwiperIdx(swiperRef?.activeIndex ?? 0);
     const wc = WALLET_CURRENCIES[swiperRef?.activeIndex ?? 0];
     setSelectedCurrency(wc);
+
     const conversionRate =
       exchangeRates.find(
         (ex) =>
-          ex.coinSymbol ===
-          (wc.symbol || TEST_TO_MAIN.get(wc.symbol as CoinSymbol))
+          !wc.currency[1] &&
+          ex.coinSymbol === (TEST_TO_MAIN.get(wc.currency[0]) || wc.currency[0])
       )?.price || 1;
+
     const bigCurrency = Big(aggregatedBalances.get(wc.currency) || 0);
+
     setSelectedCurrencyUSDT(Big(conversionRate).times(bigCurrency));
     props.changeCurrency(wc.symbol);
   };
@@ -113,8 +116,9 @@ export function SelectCoin(props: Props) {
       aggregatedBalances.get(WALLET_CURRENCIES[0].currency) || 0
     );
     const conversionRate =
-      exchangeRates.find((ex) => ex.coinSymbol === WALLET_CURRENCIES[0].symbol)
-        ?.price || 1;
+      exchangeRates.find(
+        (ex) => ex.coinSymbol === WALLET_CURRENCIES[0].currency[0]
+      )?.price || 1;
     setSelectedCurrencyUSDT(Big(conversionRate).times(defaultBig));
   }, [aggregatedBalances, exchangeRates]);
 

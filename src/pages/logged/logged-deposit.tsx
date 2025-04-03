@@ -25,6 +25,7 @@ import type { RouteComponentProps } from 'react-router';
 import { urls } from '../../constants/urls';
 import { heliumPayPath } from '../../routing/navigation-tree';
 import { useLargestBalanceKeys } from '../../utils/hooks/useLargestBalanceKeys';
+import { WALLET_CURRENCIES } from '../../utils/supported-currencies';
 import { LoggedMain } from './logged-main';
 
 const CoinWrapper = styled.div({
@@ -40,8 +41,14 @@ export function LoggedDeposit({
 }: RouteComponentProps<{ coinSymbol?: string }>) {
   const { t } = useTranslation();
   const router = useIonRouter();
+  const [isError, setIsError] = useState(false);
 
-  const selectedCoin = params.coinSymbol;
+  const { coinSymbol } = params;
+
+  // Find specified currency or default to the first one
+  const currentWalletCurrency =
+    WALLET_CURRENCIES.find((currency) => currency.symbol === coinSymbol) ||
+    WALLET_CURRENCIES[0];
 
   const { keys: addresses, isLoading: isAddressesLoading } =
     useLargestBalanceKeys({
@@ -53,13 +60,11 @@ export function LoggedDeposit({
 
   const walletAddressDetail = addresses?.find(
     (address) =>
-      address.coinSymbol.toLowerCase() === selectedCoin?.toLowerCase()
+      address.coinSymbol.toLowerCase() ===
+      currentWalletCurrency.currency[0].toLowerCase()
   );
 
   const walletAddress = walletAddressDetail?.address ?? '-';
-  const networkDetail =
-    walletAddressDetail?.coinSymbol &&
-    NetworkDictionary[walletAddressDetail?.coinSymbol];
 
   const copyAddress = async (e: never) => {
     await Clipboard.write({
@@ -74,8 +79,13 @@ export function LoggedDeposit({
     }, 1000);
   };
 
-  if (!isAddressesLoading && walletAddressDetail === undefined) {
-    router.push(heliumPayPath(urls.error));
+  if (!isAddressesLoading && walletAddressDetail === undefined && !isError) {
+    // TODO: Figure out how to stop router pushing a bunch of pages to the history
+    // The "isError" currently prevents this, and unmount: true assures isError is set to false again
+    setIsError(true);
+    router.push(heliumPayPath(urls.error), 'forward', 'push', {
+      unmount: true,
+    });
   }
 
   return (
@@ -84,15 +94,15 @@ export function LoggedDeposit({
         <IonRow class="ion-justify-content-center ion-margin-vertical">
           <IonCol class={'ion-center'} size="12">
             <CoinWrapper>
-              {walletAddressDetail?.coinSymbol && networkDetail && (
+              {walletAddressDetail?.coinSymbol && (
                 <IonImg
                   alt={''}
-                  src={`/shared-assets/images/${networkDetail.nativeCoin.symbol.toLowerCase()}.png`}
+                  src={currentWalletCurrency.logo}
                   style={{ width: '40px', height: '40px' }}
                 />
               )}
               <IonText>
-                <h3>{networkDetail?.nativeCoin?.symbol ?? '-'}</h3>
+                <h3>{currentWalletCurrency.symbol ?? '-'}</h3>
               </IonText>
             </CoinWrapper>
           </IonCol>
