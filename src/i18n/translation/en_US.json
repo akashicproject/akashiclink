@@ -183,5 +183,9 @@
   "MakeSureNoBodyIsLooking": "Make Sure No Body Is Looking",
   "RevealRecoveryPhase": "Reveal Recovery Phase",
   "HideRecoveryPhase": "Hide Recovery Phase",
-  "CopyToClipboard": "Copy To Clipboard"
+  "CopyToClipboard": "Copy To Clipboard",
+  "NewVersionAvailable": "New version available",
+  "NewVersionAvailableMessage": "There are new features available, please update your app",
+  "Update": "Update",
+  "Later": "Later"
 }

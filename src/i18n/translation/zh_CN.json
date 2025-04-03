@@ -183,5 +183,9 @@
   "MakeSureNoBodyIsLooking": "请确保没有人在看",
   "RevealRecoveryPhase": "显示私钥恢复词汇",
   "HideRecoveryPhase": "隐藏私钥恢复词汇",
-  "CopyToClipboard": "复制"
+  "CopyToClipboard": "复制",
+  "NewVersionAvailable": "新版本已可下载",
+  "NewVersionAvailableMessage": "有新功能推出，请更新您的应用程式",
+  "Update": "更新",
+  "Later": "稍后"
 }
