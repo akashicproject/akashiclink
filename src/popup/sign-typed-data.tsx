@@ -8,10 +8,15 @@ import { PurpleButton } from '../components/common/buttons';
 import { List } from '../components/common/list/list';
 import { ListVerticalLabelValueItem } from '../components/common/list/list-vertical-label-value-item';
 import { PopupLayout } from '../components/page-layout/popup-layout';
-import { closePopup, responseToSite } from '../utils/chrome';
+import {
+  closePopup,
+  ETH_METHOD,
+  EXTENSION_ERROR,
+  EXTENSION_EVENT,
+  responseToSite,
+} from '../utils/chrome';
 import { useSignBecomeBpMessage } from '../utils/hooks/useSignBecomeBpMessage';
 import { useWeb3Wallet } from '../utils/web3wallet';
-import { ETH_METHOD } from './popup-tree';
 
 export function SignTypedData() {
   const searchParams = new URLSearchParams(window.location.search);
@@ -33,7 +38,7 @@ export function SignTypedData() {
       const { topic, params, id } = event;
       const { request } = params;
 
-      if (request.method === ETH_METHOD.EthSignTypedDataV4) {
+      if (request.method === ETH_METHOD.SIGN_TYPED_DATA) {
         const typedData = JSON.parse(request.params[1]);
 
         setRequestContent({
@@ -95,10 +100,8 @@ export function SignTypedData() {
   const onPopupClosed = useCallback(() => {
     rejectSessionRequest();
     responseToSite({
-      event: 'POPUP_CLOSED',
-      reason: 'USER_CLOSED',
-      method: ETH_METHOD.EthSignTypedDataV4,
-      isExtensionPopupClosed: true,
+      method: ETH_METHOD.SIGN_TYPED_DATA,
+      event: EXTENSION_EVENT.USER_CLOSED_POPUP,
     });
   }, []);
 
@@ -123,18 +126,16 @@ export function SignTypedData() {
     if (!activeSessions || Object.values(activeSessions).length === 0) {
       // TODO: perhaps an error page?
       responseToSite({
-        event: 'POPUP_CLOSED',
-        reason: 'SESSION_NOT_FOUND',
-        method: ETH_METHOD.EthSignTypedDataV4,
-        isExtensionPopupClosed: true,
+        method: ETH_METHOD.SIGN_TYPED_DATA,
+        error: EXTENSION_ERROR.WC_SESSION_NOT_FOUND,
       });
       closePopup();
       return;
     }
 
     responseToSite({
-      method: ETH_METHOD.EthSignTypedDataV4,
-      isExtensionPopupReady: true,
+      method: ETH_METHOD.SIGN_TYPED_DATA,
+      event: EXTENSION_EVENT.POPUP_READY,
     });
 
     web3wallet.on('session_request', onSessionRequest);

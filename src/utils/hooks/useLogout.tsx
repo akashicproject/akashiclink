@@ -7,6 +7,7 @@ import { useAppDispatch } from '../../redux/app/hooks';
 import { setCacheOtk } from '../../redux/slices/accountSlice';
 import { historyResetStackAndRedirect } from '../../routing/history';
 import { axiosBase } from '../axios-helper';
+import { EXTENSION_EVENT, responseToSite } from '../chrome';
 
 export function useLogout(callLogout = true) {
   const dispatch = useAppDispatch();
@@ -29,6 +30,10 @@ export function useLogout(callLogout = true) {
 
     // Clear the SWR cache for every key
     mutate((_key) => true, undefined, { revalidate: false });
+
+    responseToSite({
+      event: EXTENSION_EVENT.USER_LOCKED_WALLET,
+    });
 
     // completely reset router history
     historyResetStackAndRedirect(urls.akashicPay);

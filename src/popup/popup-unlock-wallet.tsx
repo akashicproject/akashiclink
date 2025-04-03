@@ -3,15 +3,17 @@ import { useCallback, useEffect } from 'react';
 
 import { PopupLayout } from '../components/page-layout/popup-layout';
 import { LoginForm } from '../components/wallet-setup/login-form';
-import { responseToSite } from '../utils/chrome';
+import {
+  EXTENSION_EVENT,
+  responseToSite,
+  WALLET_METHOD,
+} from '../utils/chrome';
 
 export function PopupUnlockWallet() {
   const onPopupClosed = useCallback(() => {
     responseToSite({
-      event: 'POPUP_CLOSED',
-      reason: 'USER_CLOSED',
-      method: 'UNLOCK_WALLET',
-      isExtensionPopupClosed: true,
+      method: WALLET_METHOD.UNLOCK_WALLET,
+      event: EXTENSION_EVENT.USER_CLOSED_POPUP,
     });
   }, []);
 

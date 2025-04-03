@@ -15,7 +15,7 @@
     "default_title": "AkashicLink Staging",
     "default_popup": "index.html"
   },
-  "permissions": ["activeTab", "storage", "scripting", "tabs"],
+  "permissions": ["activeTab", "storage", "scripting", "tabs", "alarms"],
   "background": {
     "service_worker": "serviceWorker.js",
     "type": "module"
@@ -31,8 +31,8 @@
     "ids": ["*"],
     "matches": [
       "https://*.google.com/*",
-      "http://*/*",
-      "https://*/*",
+      "https://*.akashicpay.com/*",
+      "https://*.staging-akashicpay.com/*",
       "http://localhost:3000/*"
     ]
   }

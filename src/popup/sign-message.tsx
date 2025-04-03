@@ -9,10 +9,15 @@ import { PurpleButton } from '../components/common/buttons';
 import { List } from '../components/common/list/list';
 import { ListVerticalLabelValueItem } from '../components/common/list/list-vertical-label-value-item';
 import { PopupLayout } from '../components/page-layout/popup-layout';
-import { closePopup, responseToSite } from '../utils/chrome';
+import {
+  closePopup,
+  ETH_METHOD,
+  EXTENSION_ERROR,
+  EXTENSION_EVENT,
+  responseToSite,
+} from '../utils/chrome';
 import { useSignBecomeBpMessage } from '../utils/hooks/useSignBecomeBpMessage';
 import { useWeb3Wallet } from '../utils/web3wallet';
-import { ETH_METHOD } from './popup-tree';
 
 export function SignMessage() {
   const searchParams = new URLSearchParams(window.location.search);
@@ -95,10 +100,8 @@ export function SignMessage() {
   const onPopupClosed = useCallback(() => {
     rejectSessionRequest();
     responseToSite({
-      event: 'POPUP_CLOSED',
-      reason: 'USER_CLOSED',
-      method: ETH_METHOD.PersonalSign,
-      isExtensionPopupClosed: true,
+      event: EXTENSION_EVENT.USER_CLOSED_POPUP,
+      method: ETH_METHOD.PERSONAL_SIGN,
     });
   }, []);
 
@@ -123,18 +126,16 @@ export function SignMessage() {
     if (!activeSessions || Object.values(activeSessions).length === 0) {
       // TODO: perhaps an error page?
       responseToSite({
-        event: 'POPUP_CLOSED',
-        reason: 'SESSION_NOT_FOUND',
-        method: ETH_METHOD.PersonalSign,
-        isExtensionPopupClosed: true,
+        method: ETH_METHOD.PERSONAL_SIGN,
+        error: EXTENSION_ERROR.WC_SESSION_NOT_FOUND,
       });
       closePopup();
       return;
     }
 
     responseToSite({
-      method: ETH_METHOD.PersonalSign,
-      isExtensionPopupReady: true,
+      method: ETH_METHOD.PERSONAL_SIGN,
+      event: EXTENSION_EVENT.POPUP_READY,
     });
 
     web3wallet.on('session_request', onSessionRequest);

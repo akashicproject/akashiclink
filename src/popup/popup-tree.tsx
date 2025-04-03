@@ -1,15 +1,10 @@
 import { Spinner } from '../components/common/loader/spinner';
+import { ETH_METHOD } from '../utils/chrome';
 import { useOwner } from '../utils/hooks/useOwner';
 import { PopupUnlockWallet } from './popup-unlock-wallet';
 import { SignMessage } from './sign-message';
 import { SignTypedData } from './sign-typed-data';
 import { WalletConnection } from './wallet-connection';
-
-export const ETH_METHOD = {
-  PersonalSign: 'personal_sign',
-  EthRequestAccounts: 'eth_requestAccounts',
-  EthSignTypedDataV4: 'eth_signTypedData_v4',
-};
 
 export function PopupTree() {
   const query = new URLSearchParams(window.location.search);
@@ -26,16 +21,16 @@ export function PopupTree() {
     return <PopupUnlockWallet />;
   }
 
-  if (method === ETH_METHOD.EthRequestAccounts) {
+  if (method === ETH_METHOD.REQUEST_ACCOUNTS) {
     return <WalletConnection />;
   }
 
-  if (method === ETH_METHOD.PersonalSign) {
+  if (method === ETH_METHOD.PERSONAL_SIGN) {
     return <SignMessage />;
   }
 
   // TODO: possible different layout for typed data
-  if (method === ETH_METHOD.EthSignTypedDataV4) {
+  if (method === ETH_METHOD.SIGN_TYPED_DATA) {
     return <SignTypedData />;
   }
 

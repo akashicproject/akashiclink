@@ -6,15 +6,23 @@ import { selectAutoLockTime } from '../../redux/slices/preferenceSlice';
 import { useLocalStorage } from './useLocalStorage';
 import { useLogout } from './useLogout';
 
+const AUTOLOCKBY_STORAGE_KEY = 'autoLockBy';
+
 export function useIdleTime() {
   const autoLockTime = useAppSelector(selectAutoLockTime);
-  const [autoLockBy, setAutoLockBy] = useLocalStorage('autoLockBy', 0);
+  const [autoLockBy, setAutoLockBy] = useLocalStorage(
+    AUTOLOCKBY_STORAGE_KEY,
+    0
+  );
   const logout = useLogout();
   const { reset } = useIdleTimer({
     timeout: autoLockTime * 60000,
     onIdle: logout,
     onAction: async () => {
-      await setAutoLockBy(Date.now() + autoLockTime * 60 * 1000);
+      const newVal = Date.now() + autoLockTime * 60 * 1000;
+      await setAutoLockBy(newVal);
+      // Also saving this to chrome extension for direct access
+      await chrome.storage.local.set({ [AUTOLOCKBY_STORAGE_KEY]: newVal });
     },
   });
   useEffect(() => {

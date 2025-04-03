@@ -75,3 +75,38 @@ chrome.runtime.onConnectExternal.addListener(function (port) {
 
   });
 });
+
+const ALARM_NAME = "autoLockAlarm"
+const AUTOLOCKBY_KEY = "autoLockBy"
+
+const informSiteAutoLock = async (alarm) => {
+  const { autoLockBy } = await chrome.storage.local.get(AUTOLOCKBY_KEY);
+  if (webPort && Date.now() >= autoLockBy) {
+    webPort.postMessage({
+      event: 'WALLET_AUTO_LOCKED'
+    });
+  }
+
+}
+
+
+const checkAlarmState = async (alarm) => {
+  const { autoLockBy } = await chrome.storage.local.get(AUTOLOCKBY_KEY);
+
+  if (autoLockBy) {
+    const alarm = await chrome.alarms.get(ALARM_NAME);
+
+    if (alarm) {
+      await chrome.alarms.clear(ALARM_NAME);
+    }
+
+    await chrome.alarms.create(ALARM_NAME, { when: autoLockBy });
+
+  }
+
+  chrome.alarms.onAlarm.addListener(informSiteAutoLock);
+}
+
+checkAlarmState();
+
+chrome.storage.onChanged.addListener(checkAlarmState)

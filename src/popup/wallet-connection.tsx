@@ -8,14 +8,19 @@ import { sepolia } from 'viem/chains';
 import { BorderedBox } from '../components/common/box/border-box';
 import { PurpleButton } from '../components/common/buttons';
 import { PopupLayout } from '../components/page-layout/popup-layout';
-import { closePopup, responseToSite } from '../utils/chrome';
+import {
+  closePopup,
+  ETH_METHOD,
+  EXTENSION_ERROR,
+  EXTENSION_EVENT,
+  responseToSite,
+} from '../utils/chrome';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useOwnerKeys } from '../utils/hooks/useOwnerKeys';
 import {
   buildApproveSessionNamespace,
   useWeb3Wallet,
 } from '../utils/web3wallet';
-import { ETH_METHOD } from './popup-tree';
 
 const chain = sepolia;
 
@@ -62,9 +67,8 @@ export function WalletConnection() {
     } catch (e) {
       console.warn('Failed to connect', e);
       responseToSite({
-        event: 'CONNECTION_FAILED',
-        reason: 'UNKNOWN',
-        error: e,
+        method: ETH_METHOD.REQUEST_ACCOUNTS,
+        error: EXTENSION_ERROR.WC_SESSION_NOT_FOUND,
       });
     }
   };
@@ -92,7 +96,7 @@ export function WalletConnection() {
       const { topic, id, params } = event;
       const method = params.request.method;
 
-      if (method !== ETH_METHOD.PersonalSign) {
+      if (method !== ETH_METHOD.PERSONAL_SIGN) {
         await closePopup();
       }
 
@@ -125,10 +129,8 @@ export function WalletConnection() {
   // Do NOT remove useCallback for removeEventListener to work
   const onPopupClosed = useCallback(() => {
     responseToSite({
-      event: 'POPUP_CLOSED',
-      reason: 'USER_CLOSED',
-      method: ETH_METHOD.EthRequestAccounts,
-      isExtensionPopupClosed: true,
+      method: ETH_METHOD.REQUEST_ACCOUNTS,
+      event: EXTENSION_EVENT.USER_CLOSED_POPUP,
     });
   }, []);
 
