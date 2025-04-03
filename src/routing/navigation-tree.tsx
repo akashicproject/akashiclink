@@ -81,7 +81,7 @@ export const { createPath: us2Path } = us2Subtree;
  */
 export function NavigationTree() {
   return (
-    <IonRouterOutlet>
+    <IonRouterOutlet animated={false}>
       {/* AkashicPay tree - default so redirect at bottom */}
       {hpSubtree.registerPage(AkashicPayMain)}
       {hpSubtree.registerPage(CreateWallet, urls.createWalletUrl)}
