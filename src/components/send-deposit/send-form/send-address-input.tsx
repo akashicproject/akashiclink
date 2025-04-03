@@ -17,13 +17,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAppSelector } from '../../../redux/app/hooks';
-import {
-  selectFocusCurrency,
-  selectFocusCurrencyDetail,
-} from '../../../redux/slices/preferenceSlice';
+import { selectFocusCurrencyDetail } from '../../../redux/slices/preferenceSlice';
 import { OwnersAPI } from '../../../utils/api';
-import { useLargestBalanceKeys } from '../../../utils/hooks/useLargestBalanceKeys';
 import { useAccountStorage } from '../../../utils/hooks/useLocalAccounts';
+import { useOwnerKeys } from '../../../utils/hooks/useOwnerKeys';
 import { unpackRequestErrorMessage } from '../../../utils/unpack-request-error-message';
 import {
   AlertBox,
@@ -60,11 +57,9 @@ export const SendAddressInput = ({
   const [alert, setAlert] = useState(formAlertResetState);
   const { activeAccount } = useAccountStorage();
   const { chain } = useAppSelector(selectFocusCurrencyDetail);
-  const currency = useAppSelector(selectFocusCurrency);
-  const { keys: addresses } = useLargestBalanceKeys({
-    coinSymbols: [currency.chain],
-  });
-  const walletAddress = addresses[0]?.address || '-';
+  const addresses = useOwnerKeys(activeAccount?.identity ?? '').keys;
+
+  const walletAddress = addresses.find((k) => k.coinSymbol === chain)?.address;
 
   const validateAddress = debounce(async (input: string) => {
     setAlert(formAlertResetState);

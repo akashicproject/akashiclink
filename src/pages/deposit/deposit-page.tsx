@@ -1,8 +1,6 @@
 import './deposit-page.scss';
 
 import styled from '@emotion/styled';
-import type { CoinSymbol } from '@helium-pay/backend';
-import { NetworkDictionary } from '@helium-pay/backend';
 import { IonCol, IonGrid, IonImg, IonRow, IonText } from '@ionic/react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +14,8 @@ import {
   selectTheme,
 } from '../../redux/slices/preferenceSlice';
 import { themeType } from '../../theme/const';
-import { useLargestBalanceKeys } from '../../utils/hooks/useLargestBalanceKeys';
+import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { useOwnerKeys } from '../../utils/hooks/useOwnerKeys';
 
 const CoinWrapper = styled.div({
   display: 'flex',
@@ -39,16 +38,14 @@ export function DepositPage() {
   const { t } = useTranslation();
   const storedTheme = useAppSelector(selectTheme);
   const currency = useAppSelector(selectFocusCurrency);
-
+  const { activeAccount } = useAccountStorage();
   // Find specified currency or default to the first one
   const currentWalletMetadata =
     SUPPORTED_CURRENCIES_FOR_EXTENSION.lookup(currency);
 
-  const { keys: addresses, isLoading: isAddressesLoading } =
-    useLargestBalanceKeys({
-      coinSymbols: Object.keys(NetworkDictionary) as CoinSymbol[],
-    });
-
+  const { keys: addresses, isLoading: isAddressesLoading } = useOwnerKeys(
+    activeAccount?.identity ?? ''
+  );
   const walletAddressDetail = addresses?.find(
     (address) =>
       address.coinSymbol.toLowerCase() ===
