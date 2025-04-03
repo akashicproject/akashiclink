@@ -169,6 +169,12 @@ export function SignTypedData() {
           result: signedMsg,
         },
       });
+
+      // Need this setTimeout for respondSessionRequest to completely finish before closing itself
+      setTimeout(() => {
+        window.removeEventListener('beforeunload', onPopupClosed);
+        closePopup();
+      }, 100);
     } catch (e) {
       try {
         await web3wallet?.respondSessionRequest({
@@ -180,10 +186,15 @@ export function SignTypedData() {
           },
         });
       } finally {
+        console.warn('Failed to sign', e);
         responseToSite({
           method: ETH_METHOD.SIGN_TYPED_DATA,
           error: EXTENSION_ERROR.UNKNOWN,
         });
+        setTimeout(() => {
+          window.removeEventListener('beforeunload', onPopupClosed);
+          closePopup();
+        }, 100);
       }
     }
   };
@@ -211,16 +222,19 @@ export function SignTypedData() {
 
   const onClickSign = async () => {
     setIsProcessingRequest(true);
-    window.removeEventListener('beforeunload', onPopupClosed);
     await acceptSessionRequest();
     setIsProcessingRequest(false);
-    await closePopup();
   };
 
   const onClickReject = async () => {
-    window.removeEventListener('beforeunload', onPopupClosed);
-    await rejectSessionRequest();
-    await closePopup();
+    try {
+      await rejectSessionRequest();
+    } finally {
+      setTimeout(() => {
+        window.removeEventListener('beforeunload', onPopupClosed);
+        closePopup();
+      }, 100);
+    }
   };
 
   useEffect(() => {
@@ -250,6 +264,7 @@ export function SignTypedData() {
 
     return () => {
       web3wallet?.off('session_request', onSessionRequest);
+      web3wallet?.off('session_request_expire', onSessionRequestExpire);
       window.removeEventListener('beforeunload', onPopupClosed);
     };
   }, [onSessionRequest, web3wallet]);

@@ -217,8 +217,11 @@ export function WalletConnection() {
     try {
       await reject();
     } finally {
-      window.removeEventListener('beforeunload', onPopupClosed);
-      await closePopup();
+      // Need this setTimeout for respondSessionRequest to completely finish before closing itself
+      setTimeout(() => {
+        window.removeEventListener('beforeunload', onPopupClosed);
+        closePopup();
+      }, 100);
     }
   };
 
