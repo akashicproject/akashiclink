@@ -9,6 +9,7 @@ const meta: Meta<typeof AkashicPayMain> = {
     isPopup: false,
   },
   parameters: {
+    hasLocalAccounts: false,
     isLoggedIn: false,
   },
 };
@@ -16,4 +17,4 @@ const meta: Meta<typeof AkashicPayMain> = {
 export default meta;
 type Story = StoryObj<typeof AkashicPayMain>;
 
-export const LoginPage: Story = {};
+export const WelcomePage: Story = {};
