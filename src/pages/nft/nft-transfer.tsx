@@ -85,6 +85,7 @@ enum SearchResult {
   AcnsName = 'AcnsName',
   NoResult = 'NoResult',
   NoInput = 'NoInput',
+  IsSelfAddress = 'isSelfAddress',
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -106,7 +107,6 @@ export function NftTransfer() {
   const [alert, setAlert] = useState(formAlertResetState);
   const [loading, setLoading] = useState(false);
   const [cacheOtk, _] = useCacheOtk();
-
   // input username to address
   // TODO: we need to add more check constraint in the future, like l2 address start with "AS"
   const inputToAddress = debounce(async (value: string) => {
@@ -114,6 +114,13 @@ export function NftTransfer() {
       setToAddress('');
       setSearched(false);
       setSearchedResultType(SearchResult.NoInput);
+      return;
+    }
+    // Not allow sending to self address
+    if (value === activeAccount?.identity || value === activeAccount?.aasName) {
+      setToAddress('');
+      setSearched(false);
+      setSearchedResultType(SearchResult.IsSelfAddress);
       return;
     }
     const { l2Address } = await OwnersAPI.checkL2Address({
@@ -233,6 +240,8 @@ export function NftTransfer() {
                           `${displayLongText(toAddress)}`}
                         {searchedResultType === SearchResult.NoResult &&
                           t('NoSearchResult')}
+                        {searchedResultType === SearchResult.IsSelfAddress &&
+                          t('NoSelfSend')}
                       </AddressBox>
 
                       <IonImg
