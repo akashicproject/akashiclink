@@ -16,6 +16,7 @@ import {
   selectOtk,
 } from '../../slices/importWalletSlice';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { useOwner } from '../../utils/hooks/useOwner';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 
 export const CreatePasswordInfo = styled.p({
@@ -36,6 +37,7 @@ export function ImportWalletPassword() {
   const dispatch = useAppDispatch();
   const validateConfirmPassword = (value: string) =>
     importWalletForm.password === value;
+  const { mutateOwner } = useOwner();
 
   /** Scrolling on IOS */
   const { isOpen } = useKeyboardState();
@@ -69,6 +71,8 @@ export function ImportWalletPassword() {
       setActiveAccount({
         identity: otk.identity,
       });
+
+      await mutateOwner();
 
       history.push({
         pathname: akashicPayPath(urls.importSuccess),
