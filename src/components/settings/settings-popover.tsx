@@ -1,3 +1,4 @@
+import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
 import {
   IonButton,
   IonContent,
@@ -175,21 +176,14 @@ export function SettingsPopover() {
                 >
                   <SettingsText text="Languages" />
                 </IonItem>
-                <SettingsItem
-                  displayText="English"
-                  id={'en_US'}
-                  onClick={(event) => changeLanguage(event)}
-                />
-                <SettingsItem
-                  displayText="简体中文"
-                  id={'zh_CN'}
-                  onClick={(event) => changeLanguage(event)}
-                />
-                <SettingsItem
-                  displayText="繁体中文"
-                  id={'zh_TW'}
-                  onClick={(event) => changeLanguage(event)}
-                />
+                {LANGUAGE_LIST.map((l) => (
+                  <SettingsItem
+                    key={l.locale}
+                    displayText={l.title}
+                    id={l.locale}
+                    onClick={(event) => changeLanguage(event)}
+                  />
+                ))}
               </SettingsList>
             </SettingSubmenu>
 

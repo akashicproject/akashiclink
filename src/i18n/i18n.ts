@@ -1,4 +1,7 @@
-import { DEFAULT_LANGUAGE } from '@helium-pay/common-i18n/src/locales/supported-languages';
+import {
+  DEFAULT_LANGUAGE,
+  Language,
+} from '@helium-pay/common-i18n/src/locales/supported-languages';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
@@ -6,14 +9,16 @@ import translationEN from './translation/en_US.json';
 import translationCN from './translation/zh_CN.json';
 import translationTW from './translation/zh_TW.json';
 
-const resources = {
-  en_US: {
+type Translation = typeof translationEN;
+
+const resources: { [key in Language]: { translation: Translation } } = {
+  [Language.enUS]: {
     translation: translationEN,
   },
-  zh_TW: {
+  [Language.zhTW]: {
     translation: translationTW,
   },
-  zh_CN: {
+  [Language.zhCN]: {
     translation: translationCN,
   },
 };

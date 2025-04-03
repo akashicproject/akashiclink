@@ -37,13 +37,13 @@ export function SettingsLanguage() {
       <IonContent class="center">
         <IonList>
           <IonRadioGroup
-            value={LANGUAGE_LIST[0].id}
+            value={LANGUAGE_LIST[0].locale}
             onIonChange={({ detail: { value } }) => changeLanguage(value)}
           >
             {LANGUAGE_LIST.map((l) => (
               <IonItem key={String(l)}>
                 <IonLabel>{l.title}</IonLabel>
-                <IonRadio slot="end" value={l.id}></IonRadio>
+                <IonRadio slot="end" value={l.locale}></IonRadio>
               </IonItem>
             ))}
           </IonRadioGroup>
