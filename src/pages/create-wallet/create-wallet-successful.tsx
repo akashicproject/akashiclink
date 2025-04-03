@@ -17,11 +17,12 @@ import { useOwner } from '../../utils/hooks/useOwner';
 
 export const StyledA = styled.a({
   fontSize: '12px',
-  fontWeight: '400',
-  color: 'var(--ion-white-button-text)',
+  fontWeight: '700',
+  color: 'var(--ion-color-primary)',
   marginTop: '4px',
   lineHeight: '16px',
   cursor: 'pointer',
+  textDecoration: 'none',
 });
 
 export const CreateWalletSuccessful = () => {

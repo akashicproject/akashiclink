@@ -42,7 +42,7 @@
     font-weight: 700;
     color: var(--ion-color-primary-10);
 
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     margin-top: 0;
     padding: 0;
   }
@@ -77,8 +77,9 @@
   ion-label {
     font-family: 'Nunito Sans', serif;
     font-size: 12px !important;
+    font-weight: 700;
     --color: #ffffff !important;
-    background: #7444b6;
+    background: var(--ion-color-primary);
 
     margin: 0;
     width: 72px;
@@ -92,6 +93,6 @@
   ion-input {
     width: 100px;
     font-size: 12px;
-    font-weight: 400;
+    font-weight: 700;
   }
 }

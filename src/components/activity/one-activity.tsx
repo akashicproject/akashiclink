@@ -148,9 +148,9 @@ export function OneActivity({
 
   const iconImg =
     isL2 || isNft
-      ? `/shared-assets/images/${
-          isTxnConfirmed ? 'akashic-pay-logo' : 'akashic-grey-logo'
-        }.svg`
+      ? storedTheme === themeType.DARK
+        ? `/shared-assets/images/akashic-activity-dark.svg`
+        : `/shared-assets/images/akashic-activity-light.svg`
       : isTxnConfirmed
       ? currencyObj?.currencyIcon
       : currencyObj?.greyCurrencyIcon;

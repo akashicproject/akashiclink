@@ -8,11 +8,10 @@ import { LanguageDropdown } from './toolbar/language-select';
 
 export function PublicHeader() {
   const storedTheme = useAppSelector(selectTheme);
-
   const logoName =
     storedTheme === themeType.DARK
-      ? 'wallet-logo-white.svg'
-      : 'wallet-logo-dark.svg';
+      ? 'wallet-logo-dark.svg'
+      : 'wallet-logo-light.svg';
 
   return (
     <IonHeader

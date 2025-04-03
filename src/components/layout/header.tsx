@@ -11,8 +11,8 @@ export function Header() {
 
   const logoName =
     storedTheme === themeType.DARK
-      ? 'wallet-logo-dark.svg'
-      : 'wallet-logo-white.svg';
+      ? 'wallet-logo-light.svg'
+      : 'wallet-logo-dark.svg';
 
   return (
     <IonHeader
@@ -21,14 +21,7 @@ export function Header() {
         background: 'var(--ion-header-background)',
       }}
     >
-      <div
-        style={{
-          height: 40,
-          width: 40,
-        }}
-      >
-        <HistoryBackButton />
-      </div>
+      <HistoryBackButton />
       <div>
         <IonImg
           alt={''}

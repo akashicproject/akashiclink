@@ -46,6 +46,7 @@ export function SettingsSecurity() {
           {securityMenuItems.map((securityMenuItem, index) => {
             return (
               <SettingItem
+                backgroundColor="var(--ion-background)"
                 key={index}
                 iconUrl={securityMenuItem.iconUrl}
                 header={securityMenuItem.header}

@@ -31,7 +31,7 @@ export function SettingsModal({
     },
     {
       header: t('AboutUs'),
-      iconUrl: getImageIconUrl('about-us.svg'),
+      iconUrl: getImageIconUrl('people.svg'),
       onClick: () => {
         modal.current?.setCurrentBreakpoint(updateType === 'soft' ? 0.72 : 0.6);
         setAboutUs(true);
@@ -53,7 +53,7 @@ export function SettingsModal({
         setIsOpen(false);
       }}
     >
-      <IonContent>
+      <IonContent className="settings-modal-content">
         <div
           style={{
             padding: '24px',
@@ -95,7 +95,7 @@ export function SettingsModal({
                   onClick={m.onClick}
                   endComponent={m.endComponent}
                   isAccordion={m.isAccordion}
-                  backgroundColor={'var(--settings-popup-background-color)'}
+                  backgroundColor={'var(--background-alt)'}
                 >
                   {m.children}
                 </SettingItem>
@@ -103,7 +103,7 @@ export function SettingsModal({
             })}
           {isAboutUs && (
             <AboutUs
-              backgroundColor={'var(--settings-popup-background-color)'}
+              backgroundColor={'var(--ion-background)'}
               isLoggedIn={false}
             />
           )}

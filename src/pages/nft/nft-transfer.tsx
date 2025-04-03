@@ -76,7 +76,7 @@ const AddressBox = styled.div({
   height: '40px',
   borderRadius: '8px',
   fontFamily: 'Nunito Sans',
-  fontWeight: '400',
+  fontWeight: '700',
   fontSize: '12px',
   lineHeight: '16px',
   color: 'var(--ion-color-primary-10)',

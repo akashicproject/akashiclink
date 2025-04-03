@@ -14,7 +14,15 @@ $image: var(--main-image);
 
 ion-checkbox {
   --size: 24px;
-  --checkbox-background-checked: #7444b6;
+  --checkbox-background-checked: #1b00b3;
+}
+
+body.dark {
+  ion-checkbox {
+    --size: 24px;
+    --checkbox-background-checked: var(--ion-color-primary-container);
+    --checkmark-color: var(--ion-color-primary-10);
+  }
 }
 
 ion-checkbox::part(container) {

@@ -26,7 +26,9 @@ export function ThemeSelect() {
       currentState={isDarkMode ? 'active' : 'inActive'}
       containerStyle={{ alignSelf: 'base-line' }}
       sliderStyle={{
-        backgroundColor: isDarkMode ? '#7444B6' : '#C297FF',
+        backgroundColor: isDarkMode
+          ? 'var(--ion-color-primary)'
+          : 'var(--ion-color-primary-70)',
       }}
       switchStyle={{ width: '60px' }}
       firstIcon={

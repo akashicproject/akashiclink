@@ -41,7 +41,7 @@ function UpdateModal({
     >
       <div className="update-modal-wrapper">
         <IonIcon
-          src={getImageIconUrl('akashic-logo-primary.svg')}
+          src={getImageIconUrl('akashic-link-logo.svg')}
           style={{
             height: '56px',
             width: '100%',
@@ -93,7 +93,7 @@ function UpdateModal({
             });
           }}
         >
-          {t('UpdatesNow')}
+          {t('UpdateNow')}
         </PurpleButton>
       </div>
     </IonModal>
@@ -175,7 +175,7 @@ export function AboutUs({
         setIsOpen={setUpdateModal}
       />
       <IonIcon
-        src={getImageIconUrl('akashic-logo-primary.svg')}
+        src={getImageIconUrl('akashic-link-logo.svg')}
         style={{
           height: '56px',
           width: '100%',
@@ -225,7 +225,7 @@ export function AboutUs({
               endComponent={abm.endComponent}
               isAccordion={abm.isAccordion}
               isDivider={abm.isDivider}
-              backgroundColor={backgroundColor}
+              backgroundColor={'var(--ion-background)'}
             >
               {abm.children}
             </SettingItem>

@@ -1,4 +1,4 @@
-import { IonRadioGroup } from '@ionic/react';
+import { IonIcon, IonRadioGroup } from '@ionic/react';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -131,7 +131,7 @@ export function Settings() {
     },
     {
       header: t('AutoLock'),
-      iconUrl: getImageIconUrl('auto-lock.svg'),
+      iconUrl: getImageIconUrl('lock.svg'),
       endComponent: <AutoLockTextCaret autoLockTime={autoLock.label} />,
       isAccordion: true,
       children: (
@@ -140,11 +140,23 @@ export function Settings() {
     },
     {
       header: t('AboutUs'),
-      iconUrl: getImageIconUrl('about-us.svg'),
+      iconUrl: getImageIconUrl('people.svg'),
       onClick: () => {
         history.push(akashicPayPath(urls.settingsAboutUs));
       },
       endComponent: <AboutUsCaret appVersion={info.version ?? '0.0.0'} />,
+    },
+    {
+      header: t('Support'),
+      iconUrl: getImageIconUrl('support_agent.svg'),
+      endComponent: (
+        <IonIcon
+          style={{ marginLeft: '8px' }}
+          className="ion-no-margin"
+          size="45px"
+          src={getImageIconUrl('speech-bubbles.svg')}
+        />
+      ),
     },
   ];
   return (
@@ -164,6 +176,7 @@ export function Settings() {
               <SettingItem
                 key={index}
                 iconUrl={menuItem.iconUrl}
+                backgroundColor={'var(--ion-background)'}
                 header={menuItem.header}
                 onClick={menuItem.onClick}
                 endComponent={menuItem.endComponent}

@@ -17,6 +17,10 @@ export const DetailColumn = styled.div({
   maxHeight: '20px',
 });
 
+const StyledList = styled(List)({
+  backgroundColor: 'var(--ion-background-color)',
+});
+
 export function BaseDetails({
   currentTransfer,
 }: {
@@ -60,18 +64,16 @@ export function BaseDetails({
           />
         </div>
       </DetailColumn>
-      <List lines="none">
-        {
-          <ListVerticalLabelValueItem
-            label={t('InputAddress')}
-            value={
-              currentTransfer.initiatedToNonL2 &&
-              currentTransfer.initiatedToNonL2 !== ''
-                ? currentTransfer.initiatedToNonL2
-                : currentTransfer.toAddress
-            }
-          />
-        }
+      <StyledList lines="none">
+        <ListVerticalLabelValueItem
+          label={t('InputAddress')}
+          value={
+            currentTransfer.initiatedToNonL2 &&
+            currentTransfer.initiatedToNonL2 !== ''
+              ? currentTransfer.initiatedToNonL2
+              : currentTransfer.toAddress
+          }
+        />
         <FromToAddressBlock
           fromAddress={currentTransfer.fromAddress}
           toAddress={currentTransfer.toAddress}
@@ -99,7 +101,7 @@ export function BaseDetails({
             color="var(--activity-dim-text)"
           />
         )}
-      </List>
+      </StyledList>
     </div>
   );
 }

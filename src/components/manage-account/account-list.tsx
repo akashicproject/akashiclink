@@ -10,6 +10,7 @@ import { AccountManagementList } from './account-management-list';
 import { DeleteAccountModal } from './delete-account-modal';
 
 const StyledList = styled(IonList)({
+  backgroundColor: 'var(--ion-background)',
   marginBottom: 16,
   overflow: 'scroll',
   ['ion-item::part(native)']: {

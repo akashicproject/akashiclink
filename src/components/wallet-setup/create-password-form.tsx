@@ -64,7 +64,7 @@ export function CreatePasswordForm({
           <IonRow className="w-100 ion-grid-row-gap-xs">
             <IonCol size="12">
               <StyledInput
-                label={t('Password')}
+                label={t('NewPassword')}
                 placeholder={t('EnterPassword')}
                 type="password"
                 onIonInput={({ target: { value } }) =>
@@ -140,7 +140,7 @@ export function CreatePasswordForm({
               fill="clear"
               onClick={onCancel}
             >
-              {t('Cancel')}
+              {t('GoBack')}
             </WhiteButton>
           </IonCol>
         </IonRow>

@@ -3,9 +3,6 @@ import styled from '@emotion/styled';
 import { IonButton, IonSpinner } from '@ionic/react';
 import type { CSSProperties } from 'react';
 
-const purple = '#7444B6';
-const white = '#FFFFFF';
-
 type IonButtonProps = React.ComponentProps<typeof IonButton>;
 
 const squareButtonBaseCss: CSSInterpolation = {
@@ -33,17 +30,8 @@ const buttonTextBaseCss: CSSInterpolation = {
   },
 };
 
-const purpleButtonCss: CSSInterpolation = {
-  ['&::part(native)']: {
-    ...buttonBaseCss,
-    background: purple,
-    color: white,
-    ...buttonTextBaseCss,
-  },
-};
-
 const whiteButtonBase: CSSInterpolation = {
-  background: 'var(--ion-white-button-background)',
+  background: 'var(--ion-button-background)',
   borderColor: '#7B757F',
   color: 'var(--ion-white-button-text)',
   [':active, :focus']: {
@@ -82,11 +70,25 @@ const tabButtonCss: CSSInterpolation = {
   },
 };
 
-const PurpleButtonCSS = styled(IonButton)({
-  ...purpleButtonCss,
-});
+const PurpleButtonCSS = styled(IonButton)<{ disabled?: boolean }>`
+  &::part(native) {
+    ${(props) =>
+      props.disabled
+        ? `
+        background: var(--ion-disabled-button-background);
+        color: var(--ion-button-text); 
+        `
+        : `
+        background: var(--ion-color-primary);
+        color: var(--ion-color-on-primary);
+        `}
+    ${buttonBaseCss}
+    ${buttonTextBaseCss}
+  }
+`;
+
 export const PurpleButton = (
-  props: IonButtonProps & { isLoading?: boolean }
+  props: IonButtonProps & { isLoading?: boolean; disabled?: boolean }
 ) => (
   <PurpleButtonCSS disabled={props.isLoading ?? props.disabled} {...props}>
     {props.children}
@@ -96,9 +98,19 @@ export const PurpleButton = (
   </PurpleButtonCSS>
 );
 
-export const WhiteButton = styled(IonButton)({
-  ...whiteButtonCss,
-});
+export const WhiteButton = styled(IonButton)<{ disabled?: boolean }>`
+  ${whiteButtonCss}
+  &::part(native) {
+    ${(props) =>
+      props.disabled
+        ? `
+        color: var(--ion-white-button-text);
+        `
+        : `
+        color: var(--ion-color-primary);
+        `}
+  }
+`;
 
 export const OutlineButton = styled(IonButton)({
   ['&::part(native)']: {

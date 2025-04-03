@@ -37,7 +37,7 @@ export const CreateOrImportForm = () => {
             href="https://akashic-1.gitbook.io/akashicwallet/terms-of-use"
             target={'_blank'}
             style={{
-              color: '#7444B6',
+              color: 'var(--ion-color-primary)',
               textDecoration: 'none',
             }}
             className="ion-text-size-xs"

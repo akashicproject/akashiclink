@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { PurpleButton } from '../../components/common/buttons';
 import { SuccessfulIconWithTitle } from '../../components/common/state-icon-with-title/successful-icon-with-title';
+import { ContactSupportText } from '../../components/common/text/contact-support-text';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/page-layout/public-layout';
 import { useAppDispatch } from '../../redux/app/hooks';
@@ -58,6 +59,7 @@ export const ImportWalletSuccessful = () => {
             </WhiteButton> */}
           </IonCol>
         </IonRow>
+        <ContactSupportText />
       </MainGrid>
     </PublicLayout>
   );

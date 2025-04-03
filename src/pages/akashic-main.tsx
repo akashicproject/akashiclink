@@ -29,6 +29,7 @@ export function AkashicPayMain() {
               : 'welcome-img-small'
           }
         `}
+        style={{ paddingTop: '48px' }}
         alt="welcome"
       />
       {localAccounts.length ? <LoginForm /> : <CreateOrImportForm />}

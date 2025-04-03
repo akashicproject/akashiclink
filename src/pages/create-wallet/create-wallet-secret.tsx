@@ -8,6 +8,7 @@ import {
   formAlertResetState,
 } from '../../components/common/alert/alert';
 import { PurpleButton } from '../../components/common/buttons';
+import { ContactSupportText } from '../../components/common/text/contact-support-text';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/page-layout/public-layout';
 import { SecretWords } from '../../components/wallet-setup/secret-words';
@@ -114,6 +115,7 @@ export function CreateWalletSecret() {
             </PurpleButton>
           </IonCol>
         </IonRow>
+        <ContactSupportText />
       </MainGrid>
     </PublicLayout>
   );

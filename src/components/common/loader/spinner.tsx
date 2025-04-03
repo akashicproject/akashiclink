@@ -1,16 +1,10 @@
 import './loader.scss';
 
 import styled from '@emotion/styled';
-import { IonIcon } from '@ionic/react';
+import { IonIcon, IonImg } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import Lottie from 'react-lottie';
 
-import { useAppSelector } from '../../../redux/app/hooks';
-import { selectTheme } from '../../../redux/slices/preferenceSlice';
-import { themeType } from '../../../theme/const';
 import { ContentText } from '../text/context-text';
-import * as darkLoader from './loader-dark.json';
-import * as lightLoader from './loader-light.json';
 
 const LoaderDiv = styled.div({
   position: 'absolute',
@@ -48,7 +42,7 @@ export const Spinner = ({
   const StyledIonIcon = styled(IonIcon)`
     font-size: 24px;
   `;
-  const storedTheme = useAppSelector(selectTheme);
+
   const { t } = useTranslation();
   return (
     <LoaderDiv
@@ -60,20 +54,26 @@ export const Spinner = ({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          justifyContent: 'space-around',
           position: 'relative',
           top: '50%',
           transform: 'translateY(-50%)',
           height: '40vh',
         }}
       >
-        <Lottie
+        <IonImg
+          alt={''}
+          src={'/shared-assets/images/create-wallet.png'}
+          style={{ height: '107px', width: '137px' }}
+        />
+        {/* <Lottie
           options={{
             loop: true,
             autoplay: true,
             animationData:
               storedTheme === themeType.DARK ? darkLoader : lightLoader,
           }}
-        />
+        /> */}
         {header && (
           <ContentText className="blink">{t(header) + '...'}</ContentText>
         )}

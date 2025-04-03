@@ -53,7 +53,7 @@ const chainBackgroundMap: CoinInfo = {
     icon: 'eth_icon.png',
   },
   AKASHIC: {
-    background: '#7444B6',
+    background: 'transparent',
     icon: 'akashic-details-icon.svg',
   },
 };
@@ -64,6 +64,7 @@ const IconBackground = styled.div((props: { backgroundColor: string }) => ({
   width: '18px',
   borderRadius: '100%',
   padding: '4px',
+  position: 'relative',
 }));
 
 const ActivityContainer = styled.div({
@@ -115,7 +116,13 @@ export const ActivityDetails = () => {
                     <IonImg
                       alt=""
                       src={`/shared-assets/icons/${chain.icon}`}
-                      style={{ width: '100%', height: '100%' }}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                      }}
                     />
                   </IconBackground>
                   <span

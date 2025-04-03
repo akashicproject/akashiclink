@@ -8,12 +8,12 @@ export const SettingsRadio = styled(IonRadio)<RadioProps>`
   height: 16px;
   width: ${(props) => props.width};
   padding-left: 1px;
-  --color-checked: #c297ff;
+  --color-checked: var(--ion-color-primary);
   margin-bottom: 8px;
   ::part(container) {
     height: 16px;
     width: 16px;
-    border-color: #c297ff;
+    border-color: var(--ion-color-primary);
   }
   ::part(label) {
     margin-inline: 8px 0px;

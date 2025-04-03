@@ -8,13 +8,15 @@ http://ionicframework.com/docs/theming/ */
   --ion-text-color: #290056;
 
   /** primary **/
-  --ion-color-primary: #8a5bcd;
+  --ion-color-primary: #1b00b3;
+  --ion-color-on-primary: #ffffff;
   --ion-color-primary-rgb: 34, 36, 40;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
   --ion-color-primary-shade: #7444b6;
   --ion-color-primary-tint: #7444b6;
   --ion-color-primary-10: #290056;
+  --ion-color-primary-70: #a2a2ff;
   --ion-color-primary-dark: #290056;
 
   /** secondary **/
@@ -87,15 +89,17 @@ http://ionicframework.com/docs/theming/ */
 
   --ion-color-grey: #958e99;
 
-  --ion-background-color: #f3f5f6;
+  --ion-background-color: #ffffff;
   --ion-background-color-rgb: 243, 245, 246;
+  --ion-background-alt: #ffffff;
 
   /** buttons **/
   --ion-white-button-text: #7444b6;
   --ion-white-button-background: #f3f5f6;
+  --ion-disabled-button-background: rgba(31, 31, 31, 0.12);
 
   /** header-background also used in setting-naming as icon color**/
-  --ion-header-background: #290056;
+  --ion-header-background: #060030;
   --ion-slider: #c297ff;
 
   /** grid **/
@@ -109,6 +113,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-current-selection-opacity: 12%;
   --ion-select-border: #958e99;
   --ion-light-text: #b0a9b3;
+  --ion-button-text: #1c1b1c;
 
   /** settings popup background color **/
   --settings-popup-background-color: #fff;
@@ -127,11 +132,12 @@ http://ionicframework.com/docs/theming/ */
   /** modal  **/
   --ion-toolbar-background: #ffffff;
   --ion-modal-background: #ffffff;
+  --ion-modal-nft: #e4e5f6;
 
   /** custom component  **/
   --ion-text-header: #7444b6;
   --toggle-track: #e8e0eb;
-  --nft-background: #1f1f1f;
+  --nft-background: #1b1547;
   --chain-icon-background: #290056;
   --activity-dim-text: #b0a9b3;
   --activity-list-divider: #d9d9d9;
@@ -139,7 +145,9 @@ http://ionicframework.com/docs/theming/ */
 
 /** Dark Colors **/
 body.dark {
-  --ion-color-primary: #f4f5f8;
+  --ion-color-primary: #c2c1ff;
+  --ion-color-on-primary: #1800a7;
+  --ion-color-primary-container: #8382ff;
   --ion-color-primary-rgb: 244, 245, 248;
   --ion-color-primary-contrast: #000000;
   --ion-color-primary-contrast-rgb: 0, 0, 0;
@@ -210,15 +218,18 @@ body.dark {
   --ion-text-color: #ffffff;
   --ion-text-color-rgb: 255, 255, 255;
 
-  --ion-background-color: #1f1f1f;
+  --ion-background-color: #060030;
+  --ion-background-alt: #150f42;
   --ion-background-color-rgb: 31, 31, 31;
 
   /** buttons **/
+  --ion-button-text: #e5e2e1;
   --ion-white-button-text: #eddcff;
   --ion-white-button-background: #1f1f1f;
+  --ion-disabled-button-background: rgba(227, 227, 227, 0.12);
 
   /** header-background also used in setting-naming as icon color**/
-  --ion-header-background: #c297ff;
+  --ion-header-background: #a2a2ff;
   --ion-slider: #7444b6;
 
   /** setting **/
@@ -238,18 +249,18 @@ body.dark {
   --swiper-button-next-background-image: url('/public/shared-assets/images/arrow-forward-dark.png');
 
   /** Image for main page **/
-  --main-image: url('/public/shared-assets/images/main/main-img-dark-mode.png');
+  --main-image: url('/public/shared-assets/images/main/main-img-dark.png');
 
   /** list item  **/
   --ion-item-border-color: #2f2f2f;
-  --ion-item-background: #1e1e1e;
+  --ion-item-background: #060030;
 
   /** card  **/
   --ion-card-background: #1c1c1d;
 
   /** modal  **/
   --ion-toolbar-background: #2c2c2c;
-  --ion-modal-background: #2c2c2c;
+  --ion-modal-background: #1b1547;
 
   /** custom component  **/
   --ion-text-header: #c297ff;

@@ -45,7 +45,9 @@ const NtfWrapper = styled.div<{
     ? '24px'
     : '8px',
   marginTop: props.isAASLinked ? '0px' : '20px',
-  background: props.isAASDarkStyle ? '#FFF' : '#2C2C2C',
+  background: props.isAASDarkStyle
+    ? 'var(--ion-modal-nft)'
+    : 'var(--ion-modal-background)',
   boxShadow: '6px 6px 20px rgba(0,0,0,0.10000000149011612)',
 }));
 
@@ -73,7 +75,7 @@ const NftName = styled.div({
 
 const AASListTag = styled.div({
   color: 'var(--ion-color-primary-dark)',
-  background: '#C297FF',
+  background: 'var(--ion-color-primary-70)',
   borderTopLeftRadius: '8px',
   borderTopRightRadius: '8px',
   float: 'right',
@@ -173,7 +175,9 @@ export function OneNft(props: Props) {
               color: '#958E99',
               fontWeight: '700',
               width: '100%',
-              background: props.isAASDarkStyle ? '#FFF' : '#2C2C2C',
+              background: props.isAASDarkStyle
+                ? 'var(--ion-modal-nft)'
+                : 'var(--ion-modal-background)',
             }}
             className={'ion-text-size-xs'}
           >

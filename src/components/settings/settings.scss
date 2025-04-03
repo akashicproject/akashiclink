@@ -23,6 +23,10 @@ ion-select::part(placeholder) {
   --ion-background-color: var(--settings-popup-background-color) !important;
 }
 
+.settings-modal-content {
+  background-color: var(--ion-background);
+}
+
 ion-modal#update-modal {
   --width: fit-content;
   --min-width: 250px;

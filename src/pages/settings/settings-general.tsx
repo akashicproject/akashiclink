@@ -94,7 +94,7 @@ export function SettingsGeneral() {
     },
     {
       header: t('HideSmallBalances'),
-      iconUrl: getImageIconUrl('visibility-secondary.svg'),
+      iconUrl: getImageIconUrl('visibility_off.svg'),
       endComponent: (
         <div style={{ width: '60px' }}>
           <Toggle
@@ -123,6 +123,7 @@ export function SettingsGeneral() {
             return (
               <SettingItem
                 key={index}
+                backgroundColor="var(--ion-background)"
                 header={gMenuItems.header}
                 iconUrl={gMenuItems.iconUrl}
                 isAccordion={gMenuItems.isAccordion}

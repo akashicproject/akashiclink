@@ -13,7 +13,7 @@ export function SettingsAboutUs() {
     <DashboardLayout showSwitchAccountBar>
       <SettingsWrapper>
         <PageHeader>{t('AboutUs')}</PageHeader>
-        <AboutUs />
+        <AboutUs backgroundColor="var(--ion-background)" />
       </SettingsWrapper>
     </DashboardLayout>
   );
