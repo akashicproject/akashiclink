@@ -2060,6 +2060,15 @@ export async function generateOTK(): Promise<IKeyExtended> {
 }
 
 export function validateSecretPhrase(wordArray: string[]) {
+  // Slightly hacky solution to prevent alert from showing when user re-enters page after past bad input.
+  // For some reason, the array gets overwritten with a len-1 empty string array upon exiting the 12-word page.
+  // Further, an empty input should not be false
+  if (
+    wordArray.length === 0 ||
+    (wordArray.length === 1 && wordArray[0] === '')
+  ) {
+    return true;
+  }
   if (wordArray.length !== 12) {
     return false;
   }

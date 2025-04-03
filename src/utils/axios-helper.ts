@@ -21,7 +21,7 @@ axiosBase.interceptors.response.use(
   async (error) => {
     if (401 === error.response.status) {
       // Skip if already on root page
-      if (history.location.pathname.match(/^\/$|\/akashic/)) return;
+      if (history.location.pathname.match(/^\/$|\/akashic$/)) return;
 
       // Get the current page user in on from memory
       const currentPage = await lastPageStorage.get();

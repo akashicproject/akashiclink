@@ -1,5 +1,5 @@
 import { IonCol, IonRow } from '@ionic/react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -48,7 +48,7 @@ export function SettingsBackup() {
         <ConfirmLockPassword setVal={fetchKeyPair} />
       )}
       {view === BackupKeyPairState.ViewKeyPair && (
-        <MainGrid className="force-center">
+        <MainGrid>
           <IonRow>
             <IonCol>
               <h2>{t('ThisIsYourKeyPair')}</h2>

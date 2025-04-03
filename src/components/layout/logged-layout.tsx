@@ -39,10 +39,12 @@ export function LoggedLayout({
   children,
   footer,
   isRefresh = false,
+  isToolBar = true,
 }: {
   children: ReactNode;
   footer?: ReactNode;
   isRefresh?: boolean;
+  isToolBar?: boolean;
 }) {
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
@@ -87,7 +89,7 @@ export function LoggedLayout({
         >
           {t('AkashicChain')}
         </ChainDiv>
-        <LoggedToolbar isRefresh={isRefresh} />
+        {isToolBar && <LoggedToolbar isRefresh={isRefresh} />}
         {children}
       </IonContent>
       {footer && <IonFooter class={'ion-no-border'}>{footer}</IonFooter>}

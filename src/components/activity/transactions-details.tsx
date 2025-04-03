@@ -231,7 +231,7 @@ export function TransactionDetails({
         </>
       )}
       <DetailColumn style={{ marginTop: '20px' }}>
-        <TextContent>{'Total'}</TextContent>
+        <TextContent>{t('Total')}</TextContent>
         <Header3>
           {currentTransfer.transferType === TransactionType.DEPOSIT
             ? currentTransfer.amount +

@@ -1,6 +1,6 @@
 import { IonCol, IonRow } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -27,15 +27,15 @@ export function ConfirmLockPassword({
   useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   return (
-    <MainGrid className="force-center">
+    <MainGrid style={{ padding: '80px 48px' }}>
       <IonRow>
-        <IonCol>
-          <h2>{t('KeyPairBackup')}</h2>
+        <IonCol className="ion-no-padding">
+          <h2 style={{ marginBottom: '8px' }}>{t('KeyPairBackup')}</h2>
         </IonCol>
       </IonRow>
-      <IonRow style={{ marginBottom: '24px' }}>
+      <IonRow style={{ marginBottom: '40px' }}>
         <IonCol>
-          <h6>{t('PleaseEnterYourPassword')}</h6>
+          <h6 style={{ margin: '0px' }}>{t('PleaseEnterYourPassword')}</h6>
         </IonCol>
       </IonRow>
       <IonRow>
