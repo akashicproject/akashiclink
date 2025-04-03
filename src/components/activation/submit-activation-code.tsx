@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
+import { activationCodeRegex } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { PurpleButton, WhiteButton } from '../buttons';
 import { MainGrid } from '../layout/main-grid';
-import { StyledInput } from '../styled-input';
+import { StyledInput, StyledInputErrorPrompt } from '../styled-input';
 
 const Message = styled.span({
   fontWeight: 700,
@@ -26,23 +28,29 @@ export function SubmitActivationCode({
   onClose: () => void;
   submitWithActivationCode: (activationCode: string) => Promise<void>;
 }) {
+  const { t } = useTranslation();
   const [activationCode, setActivationCode] = useState<string>();
+
+  const validateActivationCode = (value: string) =>
+    !!value.match(activationCodeRegex);
 
   return (
     <MainGrid>
       <IonRow>
         <IonCol class="ion-center">
-          <Message>Please complete 2FA</Message>
+          <Message>{t('Complete2FA')}</Message>
         </IonCol>
       </IonRow>
       <IonRow>
         <IonCol>
           <StyledInput
-            label="Activation Code"
-            placeholder="Please enter code sent to your email"
+            label={t('ActivationCode')}
+            placeholder={t('PleaseEnterCode')}
             onIonInput={({ target: { value } }) =>
               setActivationCode(value as string)
             }
+            errorPrompt={StyledInputErrorPrompt.ActivationCode}
+            validate={validateActivationCode}
           />
         </IonCol>
       </IonRow>
@@ -54,7 +62,7 @@ export function SubmitActivationCode({
               onClose();
             }}
           >
-            Cancel
+            {t('Cancel')}
           </WhiteButton>
         </IonCol>
         <IonCol class="ion-center">
@@ -64,7 +72,7 @@ export function SubmitActivationCode({
               activationCode && submitWithActivationCode(activationCode);
             }}
           >
-            Confirm
+            {t('Confirm')}
           </PurpleButton>
         </IonCol>
       </IonRow>

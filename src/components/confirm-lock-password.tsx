@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { userConst } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { PurpleButton, WhiteButton } from './buttons';
 import { MainGrid } from './layout/main-grid';
@@ -27,6 +28,7 @@ export function ConfirmLockPassword({
 }: {
   setVal: (password: string) => void;
 }) {
+  const { t } = useTranslation();
   const [password, setPassword] = useState<string>();
 
   const validatePassword = (value: string) =>
@@ -41,7 +43,7 @@ export function ConfirmLockPassword({
       </IonRow>
       <IonRow>
         <IonCol class="ion-center">
-          <Message>Please enter your password</Message>
+          <Message>{t('PleaseEnterYourPassword')}</Message>
         </IonCol>
       </IonRow>
       <IonRow>
@@ -57,14 +59,14 @@ export function ConfirmLockPassword({
       </IonRow>
       <IonRow>
         <IonCol>
-          <WhiteButton>Cancel</WhiteButton>
+          <WhiteButton>{t('Cancel')}</WhiteButton>
         </IonCol>
         <IonCol>
           <PurpleButton
             disabled={!password}
             onClick={() => password && setVal(password)}
           >
-            Confirm
+            {t('Confirm')}
           </PurpleButton>
         </IonCol>
       </IonRow>

@@ -1,28 +1,63 @@
 import './styled-input.css';
 
-import { IonInput, IonItem, IonLabel } from '@ionic/react';
+import { IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
 import type { ComponentProps } from 'react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
+import type Translation from '../i18n/translation/en_US.json';
+
+/**
+ * Useful prompts to display to user for invalid input.
+ * The prompt MUST exist in the Translation files in ../i18n/Translation/en_US.json
+ */
+export const StyledInputErrorPrompt: {
+  [key: string]: keyof typeof Translation;
+} = {
+  Password: 'PasswordHelpText',
+  ConfirmPassword: 'ConfirmPasswordHelpText',
+  Email: 'EmailHelpText',
+  Amount: 'AmountHelpText',
+  Address: 'AddressHelpText',
+  ActivationCode: 'ActivationCodeText',
+} as const;
+
+/**
+ * @param label to show next to the input box
+ * @param isHorizontal applies the "horizontal" style to input, with label on the left
+ * @param validate method to trigger on user input
+ * @param errorPrompt to display to user is validation fails
+ * @param ...props any other parameters native to IonInput
+ */
 type StyledInputProps = ComponentProps<typeof IonInput> & {
-  label: string;
-  placeholder: string;
+  label?: string | null;
+  isHorizontal?: boolean;
   validate?: (value: string) => boolean;
+  errorPrompt?: typeof StyledInputErrorPrompt[keyof typeof StyledInputErrorPrompt];
+  // Required to allow translations to be passed in e.g. t('ConfirmPassword')
+  placeholder: string;
 };
 
 /**
- * Standard input box with validation highlighting
+ * Our styled input box, supporting validation, highlighting on error
+ * and some common styles
  */
 export function StyledInput({
-  className,
   label,
   onIonInput,
   validate,
+  isHorizontal = false,
+  errorPrompt,
   ...props
 }: StyledInputProps) {
   const [inputValid, setInputValid] = useState<boolean>();
+  const { t } = useTranslation();
+  const helpText = errorPrompt ? t(errorPrompt) : t('InvalidInput');
 
-  /** Set validation state based off user defined function */
+  /**
+   * Execute the user-supplied validation function
+   * flagging error by highlighting the input box in red
+   */
   function validateInput(ev: Event) {
     if (!validate) return;
 
@@ -33,19 +68,32 @@ export function StyledInput({
   }
 
   return (
-    <IonItem class={'styled-item'} lines="none">
-      <IonLabel class={'styled-label'} position={'stacked'}>
-        {label}
-      </IonLabel>
+    <IonItem
+      class={isHorizontal ? 'styled-item-horizontal' : 'styled-item'}
+      lines="none"
+    >
+      {label ? (
+        <IonLabel
+          class={isHorizontal ? 'styled-label-horizontal' : 'styled-label'}
+          position={isHorizontal ? undefined : 'stacked'}
+        >
+          {label}
+        </IonLabel>
+      ) : null}
       <IonInput
-        class="styled-input"
-        className={`${!inputValid && 'fail'} ${className}`}
+        class={isHorizontal ? 'styled-input-horizontal' : 'styled-input'}
+        className={inputValid === false && !isHorizontal ? 'fail' : 'null'}
         onIonInput={(event) => {
           onIonInput && onIonInput(event);
           validateInput(event);
         }}
         {...props}
       ></IonInput>
+      {inputValid === false ? (
+        <IonNote class={isHorizontal ? 'help-text-horizontal' : 'help-text'}>
+          {helpText}
+        </IonNote>
+      ) : null}
     </IonItem>
   );
 }

@@ -64,7 +64,7 @@ export function SettingsBackup() {
         <MainGrid>
           <IonRow>
             <IonCol class="ion-center">
-              <MainTitle>This is your KeyPair</MainTitle>
+              <MainTitle>{t('ThisIsYourKeyPair')}</MainTitle>
             </IonCol>
           </IonRow>
           <IonRow>
@@ -79,10 +79,7 @@ export function SettingsBackup() {
           </IonRow>
           <IonRow>
             <IonCol class="ion-center">
-              <WarningText>
-                Warning: Never disclose this key. Anyone with your private keys
-                can steal any assets held in your account.
-              </WarningText>
+              <WarningText>{t('KeyPairWarning')}</WarningText>
             </IonCol>
           </IonRow>
           <IonRow class="ion-center">
@@ -90,14 +87,12 @@ export function SettingsBackup() {
           </IonRow>
           <IonRow>
             <IonCol>
-              <WhiteButton expand="block">
-                View Account at Akashicscan.com
-              </WhiteButton>
+              <WhiteButton expand="block">{t('ViewAccountAt')}</WhiteButton>
             </IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
-              <PurpleButton expand="block">Export KeyPair</PurpleButton>
+              <PurpleButton expand="block">{t('ExportKeyPair')}</PurpleButton>
             </IonCol>
           </IonRow>
         </MainGrid>

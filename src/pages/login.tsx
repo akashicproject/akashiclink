@@ -14,7 +14,6 @@ import {
   IonText,
   useIonRouter,
 } from '@ionic/react';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -30,6 +29,7 @@ import { urls } from '../constants/urls';
 import { heliumPayPath } from '../routing/navigation-tree';
 import { OwnersAPI } from '../utils/api';
 import { getLocalAccounts } from '../utils/local-account-storage';
+import { unpackRequestErrorMessage } from '../utils/unpack-request-error-message';
 
 const HelpLink = styled.a({
   textDecoration: 'none',
@@ -69,11 +69,8 @@ export function Login() {
         });
         router.push(heliumPayPath(urls.loggedFunction));
       }
-    } catch (e) {
-      let message = t('GenericFailureMsg');
-      if (axios.isAxiosError(e)) message = e.response?.data?.message;
-
-      setAlert(errorAlertShell(message));
+    } catch (error) {
+      setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
     }
   };
 

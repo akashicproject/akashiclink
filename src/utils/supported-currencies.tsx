@@ -4,8 +4,11 @@ import { CoinSymbol, isCoinSymbol } from '@helium-pay/backend';
  * Unlike the owners webapp, the wallet will support
  * a discreete set of currencies and there is no longer
  * a nested structure of the form
+ *
  *      {chain1: [token1, token2]}, {chain2: [token1, token2]}
+ *
  * and instead the currencies are completely standalone
+ *
  *      {chain1, token1}, {chain2, token1}, {chain2, token2}
  *
  * This file declares the lookup tables and types to work
@@ -62,6 +65,14 @@ export class CurrencyMap<T> extends Map {
 
 /**
  * Information for display of currency in app
+ * TODO: combine currency and symbol - they both represent the same information
+   currency: [CoinSymbol, TokenSymbol]
+   symbol: [CoinSymbol-TokenSymbol]
+   Will need to include parsing and dynamic typechecks and make use of `parseWalletCurrency`
+ *
+ * @param symbol of the currency WITHIN the wallet extension.
+ * @param currency indenity, see WalletCurrency: [CoinSymbol (chain currency is on), Token(does not exist for native coins)]
+ * @param logo of currency
  */
 export interface WalletCurrencyMetadata {
   currency: WalletCurrency;

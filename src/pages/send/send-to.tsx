@@ -2,21 +2,17 @@ import './send.css';
 
 import styled from '@emotion/styled';
 import type { ITransactionVerifyResponse as VerifiedTransaction } from '@helium-pay/backend';
-import {
-  IonCol,
-  IonImg,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonRow,
-  IonSpinner,
-  useIonRouter,
-} from '@ionic/react';
+import { IonCol, IonImg, IonRow, IonSpinner, useIonRouter } from '@ionic/react';
 import axios from 'axios';
+import Big from 'big.js';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { PurpleButton, WhiteButton } from '../../components/buttons';
+import {
+  StyledInput,
+  StyledInputErrorPrompt,
+} from '../../components/styled-input';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
 import { heliumPayPath } from '../../routing/navigation-tree';
@@ -120,6 +116,9 @@ export function SendTo() {
   const [verifyError, setVerifyError] = useState(errorMsgs.NoError);
   const [loading, setLoading] = useState(false);
 
+  const validateAmount = (value: string) =>
+    !(value.charAt(0) === '-' || Big(value).lte(0));
+
   // Send transaction to the backend for verification
   const verifyTransaction = async () => {
     setLoading(true);
@@ -171,29 +170,28 @@ export function SendTo() {
             <IonCol class="ion-center">
               <SendWrapper>
                 <InputWrapper>
-                  <IonItem class="input-item">
-                    <IonLabel class="input-label">{t('SendTo')}</IonLabel>
-                    <IonInput
-                      class="input-input"
-                      placeholder="Enter the address"
-                      onIonInput={({ target: { value } }) =>
-                        setToAddress(value as string)
-                      }
-                    ></IonInput>
-                  </IonItem>
+                  <StyledInput
+                    isHorizontal={true}
+                    label={t('SendTo')}
+                    placeholder={t('EnterAddress')}
+                    type={'text'}
+                    onIonInput={({ target: { value } }) =>
+                      setToAddress(value as string)
+                    }
+                  />
                 </InputWrapper>
                 <InputWrapper>
-                  <IonItem class="input-item">
-                    <IonLabel class="input-label">{t('Amount')}</IonLabel>
-                    <IonInput
-                      class="input-input"
-                      type="number"
-                      placeholder="Enter the amount"
-                      onIonInput={({ target: { value } }) =>
-                        setAmount(value as string)
-                      }
-                    ></IonInput>
-                  </IonItem>
+                  <StyledInput
+                    isHorizontal={true}
+                    label={t('Amount')}
+                    placeholder={t('EnterAmount')}
+                    type="number"
+                    errorPrompt={StyledInputErrorPrompt.Amount}
+                    onIonInput={({ target: { value } }) => {
+                      setAmount(value as string);
+                    }}
+                    validate={validateAmount}
+                  />
                 </InputWrapper>
               </SendWrapper>
             </IonCol>

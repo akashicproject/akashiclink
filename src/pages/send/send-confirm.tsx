@@ -2,17 +2,27 @@ import './send.css';
 
 import styled from '@emotion/styled';
 import type { ITransactionVerifyResponse as VerifiedTransaction } from '@helium-pay/backend';
-import { IonCol, IonInput, IonRow } from '@ionic/react';
+import { userConst } from '@helium-pay/backend';
+import { IonCol, IonRow } from '@ionic/react';
 import axios from 'axios';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import {
+  Alert,
+  errorAlertShell,
+  formAlertResetState,
+} from '../../components/alert/alert';
 import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { DividerDivWithoutMargin } from '../../components/layout/divider';
+import {
+  StyledInput,
+  StyledInputErrorPrompt,
+} from '../../components/styled-input';
 import { OwnersAPI } from '../../utils/api';
-import { handleErrorMessage } from '../../utils/getErrorMessageTKey';
 import { useOwner } from '../../utils/hooks/useOwner';
 import { displayLongText } from '../../utils/long-text';
+import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { SendMain } from './send-main';
 
 const ContentWrapper = styled.div({
@@ -81,10 +91,12 @@ export function SendConfirm(props: Props) {
   const { t } = useTranslation();
   const { owner } = useOwner();
   const [password, setPassword] = useState<string>('');
-  const [passwordWrong, setPasswordWrong] = useState(false);
+  const [alert, setAlert] = useState(formAlertResetState);
+
+  const validatePassword = (value: string) =>
+    !!value.match(userConst.passwordRegex);
 
   async function signTransaction() {
-    setPasswordWrong(false);
     if (props.transaction) {
       try {
         await OwnersAPI.login({
@@ -96,20 +108,25 @@ export function SendConfirm(props: Props) {
         ]);
         const response = await OwnersAPI.sendTransaction(signedTransaction);
         if (!response[0].isSuccess) {
-          handleErrorMessage(response[0].reason || '');
+          setAlert(
+            errorAlertShell(
+              t(unpackRequestErrorMessage(response[0].reason) || '')
+            )
+          );
         }
         props.isResult();
       } catch (error) {
         // TODO: For this error msg translation: extract it into its own function you are are re-using this code
         if (
           axios.isAxiosError(error) &&
-          error?.response?.data?.message === 'Invalid passphrase or password'
+          error?.response?.data?.message === userConst.invalidUserErrorMsg
         ) {
-          setPasswordWrong(true);
-          setPassword('');
+          setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
         } else if (axios.isAxiosError(error)) {
           props.isResult();
-          props.getErrorMsg(handleErrorMessage(error?.response?.data?.message));
+          props.getErrorMsg(
+            unpackRequestErrorMessage(error?.response?.data?.message)
+          );
         } else {
           props.isResult();
           props.getErrorMsg(t('GenericFailureMsg'));
@@ -119,6 +136,7 @@ export function SendConfirm(props: Props) {
   }
   return (
     <SendMain>
+      <Alert state={alert} />
       <IonRow style={{ marginTop: '40px' }}>
         <IonCol class="ion-center">
           <ContentWrapper>
@@ -149,21 +167,17 @@ export function SendConfirm(props: Props) {
       <IonRow>
         <IonCol class="ion-center">
           <InputPasswordWrapper>
-            <InputPasswordText
-              /* TODO: make it into a reusable component */
-              style={passwordWrong ? { color: 'red' } : { color: '#290056' }}
-            >
-              {passwordWrong ? t('WrongPassword') : t('PleaseConfirm')}
-            </InputPasswordText>
-            <IonInput
-              /** TODO: t('PleaseEnterYourPassword') is not correctly recognised as string - maybe be fixed in the translations refactor */
+            <InputPasswordText>{t('PleaseConfirm')}</InputPasswordText>
+            <StyledInput
+              style={{ width: '270px' }}
               placeholder={t('PleaseEnterYourPassword') as string}
-              class="input-password"
               type={'password'}
               onIonInput={({ target: { value } }) =>
                 setPassword(value as string)
               }
-            ></IonInput>
+              validate={validatePassword}
+              errorPrompt={StyledInputErrorPrompt.Password}
+            ></StyledInput>
           </InputPasswordWrapper>
         </IonCol>
       </IonRow>

@@ -22,6 +22,7 @@ import { heliumPayPath } from '../routing/navigation-tree';
 import { OwnersAPI } from '../utils/api';
 import { lastPageStorage, ResetPageButton } from '../utils/last-page-storage';
 import { storeLocalAccount } from '../utils/local-account-storage';
+import { unpackRequestErrorMessage } from '../utils/unpack-request-error-message';
 
 enum View {
   Submit,
@@ -88,10 +89,8 @@ export function ImportWallet() {
         lastPageStorage.clear();
         router.push(heliumPayPath(urls.loggedFunction));
       }
-    } catch (e) {
-      let message = t('GenericFailureMsg');
-      if (axios.isAxiosError(e)) message = e.response?.data?.message;
-      setAlert(errorAlertShell(message));
+    } catch (error) {
+      setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
     }
   }
 

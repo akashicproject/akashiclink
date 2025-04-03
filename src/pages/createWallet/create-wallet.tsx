@@ -16,7 +16,10 @@ import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { MainTitle } from '../../components/layout/main-title';
 import { MainLayout } from '../../components/layout/mainLayout';
-import { StyledInput } from '../../components/styled-input';
+import {
+  StyledInput,
+  StyledInputErrorPrompt,
+} from '../../components/styled-input';
 import { OwnersAPI } from '../../utils/api';
 import {
   lastPageStorage,
@@ -156,6 +159,7 @@ export function CreateWallet() {
                   onIonInput={({ target: { value } }) =>
                     setEmail(value as string)
                   }
+                  errorPrompt={StyledInputErrorPrompt.Email}
                   validate={validateEmail}
                 />
               </IonCol>
@@ -192,11 +196,12 @@ export function CreateWallet() {
               <IonCol>
                 <StyledInput
                   label={'Password'}
+                  placeholder={t('EnterPassword')}
                   type="password"
-                  placeholder={t('EnterTheCodeSent')}
                   onIonInput={({ target: { value } }) =>
                     setPassword(value as string)
                   }
+                  errorPrompt={StyledInputErrorPrompt.Password}
                   validate={validatePassword}
                 />
               </IonCol>
@@ -206,10 +211,11 @@ export function CreateWallet() {
                 <StyledInput
                   label={'Confirm password'}
                   type="password"
-                  placeholder={t('EnterTheCodeSent')}
+                  placeholder={t('ConfirmPassword')}
                   onIonInput={({ target: { value } }) =>
                     setConfirmPassword(value as string)
                   }
+                  errorPrompt={StyledInputErrorPrompt.ConfirmPassword}
                   validate={validateConfirmPassword}
                 />
               </IonCol>
