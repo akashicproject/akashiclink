@@ -152,19 +152,21 @@ export function OneNft(props: Props) {
         isBig={props.isBig}
         className={props.nftImgWrapper}
       >
-        <IonImg
-          style={{
-            position: 'absolute',
-            top: '40%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '20%',
-            height: '20%',
-          }}
-          alt="image-loading"
-          src={placeholderSrc}
-          class={imageClass}
-        />
+        {!imageLoaded && (
+          <IonImg
+            style={{
+              position: 'absolute',
+              top: '40%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '20%',
+              height: '20%',
+            }}
+            alt="image-loading"
+            src={placeholderSrc}
+            class={imageClass}
+          />
+        )}
 
         {nftUrl && (
           <IonImg
