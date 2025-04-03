@@ -177,7 +177,7 @@ export function OneNft(props: Props) {
             }}
             className={'ion-text-size-xs'}
           >
-            {displayLongText(props.nft?.name, 16)}
+            {props.nft?.name}
           </NftName>
         </IonRow>
       </NtfWrapper>
