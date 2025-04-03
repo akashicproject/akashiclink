@@ -14,7 +14,7 @@ export const OwnersAPI = {
     retrieveData: IRetrieveIdentity
   ): Promise<IRetrieveIdentityResponse> => {
     const response = await axiosBase.get(
-      `/public-api/owner/retrieve-identity?publicKey=${retrieveData.publicKey}`
+      `/owner/retrieve-identity?publicKey=${retrieveData.publicKey}`
     );
     const { data, status } = response;
     if (status >= 400) {

@@ -9,7 +9,7 @@ export const useAccountMe = () => {
   const { activeAccount } = useAccountStorage();
   return useSWR<IOwnerDetailsResponse>(
     activeAccount?.identity
-      ? `/public-api/owner/details?address=${activeAccount?.identity}`
+      ? `/owner/details?address=${activeAccount?.identity}`
       : null,
     fetcher,
     { refreshInterval: REFRESH_INTERVAL }

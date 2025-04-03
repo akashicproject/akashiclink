@@ -43,7 +43,7 @@ export const useMyTransfers = (params?: IClientTransactionRecord) => {
     ...response
   } = useSWR<IOwnerTransactionsResponse, Error>(
     activeAccount?.identity
-      ? buildURL(`/public-api/owner/transactions`, {
+      ? buildURL(`/owner/transactions`, {
           identity: activeAccount?.identity,
           ...params,
         })
