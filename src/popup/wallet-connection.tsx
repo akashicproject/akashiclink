@@ -23,6 +23,7 @@ import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useOwnerKeys } from '../utils/hooks/useOwnerKeys';
 import { useSetGlobalLanguage } from '../utils/hooks/useSetGlobalLanguage';
 import { useSignAuthorizeActionMessage } from '../utils/hooks/useSignAuthorizeActionMessage';
+import { createL1Address } from '../utils/wallet-creation';
 import {
   buildApproveSessionNamespace,
   useWeb3Wallet,
@@ -33,6 +34,11 @@ const chain =
   process.env.REACT_APP_ENABLE_TESTNET_CURRENCIES === 'true'
     ? sepolia
     : mainnet;
+
+const coinSymbolForConnect =
+  process.env.REACT_APP_ENABLE_TESTNET_CURRENCIES === 'true'
+    ? CoinSymbol.Ethereum_Sepolia
+    : CoinSymbol.Ethereum_Mainnet;
 
 export function WalletConnection() {
   const { t } = useTranslation();
@@ -46,7 +52,7 @@ export function WalletConnection() {
 
   const web3wallet = useWeb3Wallet();
 
-  const { activeAccount } = useAccountStorage();
+  const { activeAccount, cacheOtk } = useAccountStorage();
   const { keys: addresses } = useOwnerKeys(activeAccount?.identity ?? '');
 
   const signAuthorizeActionMessage = useSignAuthorizeActionMessage();
@@ -71,20 +77,32 @@ export function WalletConnection() {
 
   const approve = async () => {
     setIsProcessing(true);
-
     try {
       if (!sessionProposalId || !sessionProposal) {
         throw new Error(EXTENSION_ERROR.WC_SESSION_NOT_FOUND);
       }
 
+      // if user does not have l1 address at the time of connection, generate for them
+      let generatedL1Address;
       if (!activeAccountL1Address) {
-        throw new Error(EXTENSION_ERROR.COULD_NOT_READ_ADDRESS);
+        if (!cacheOtk) {
+          throw new Error(EXTENSION_ERROR.COULD_NOT_READ_ADDRESS);
+        }
+
+        try {
+          generatedL1Address = await createL1Address(
+            cacheOtk,
+            coinSymbolForConnect
+          );
+        } catch {
+          throw new Error(EXTENSION_ERROR.COULD_NOT_READ_ADDRESS);
+        }
       }
 
       const approvedNamespaces = buildApproveSessionNamespace({
         sessionProposal,
         chain,
-        l1Address: activeAccountL1Address,
+        l1Address: generatedL1Address ?? activeAccountL1Address,
       });
 
       await web3wallet?.approveSession({
