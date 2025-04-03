@@ -1,9 +1,11 @@
+import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import { L2Regex } from '@helium-pay/backend';
 import { useContext } from 'react';
 
 import {
   ActiveAccountContext,
   LocalAccountContext,
+  LocalOtkContext,
 } from '../../components/PreferenceProvider';
 
 /**
@@ -24,6 +26,7 @@ export interface LocalAccount {
 export const useAccountStorage = () => {
   const { localAccounts, setLocalAccounts } = useContext(LocalAccountContext);
   const { activeAccount, setActiveAccount } = useContext(ActiveAccountContext);
+  const { localOtks, setLocalOtks } = useContext(LocalOtkContext);
 
   const addPrefixToAccounts = async () => {
     if (localAccounts.some((acc) => !L2Regex.exec(acc.identity))) {
@@ -60,6 +63,25 @@ export const useAccountStorage = () => {
     await setActiveAccount(null);
   };
 
+  const addLocalOtk = async (otk: IKeyExtended) => {
+    // Skip duplicate accounts
+    for (const { key } of localOtks ?? [])
+      if (key.pub.pkcs8pem === otk.key.pub.pkcs8pem) return;
+
+    await setLocalOtks([...(localOtks ?? []), otk]);
+  };
+
+  const removeLocalOtk = async (otk: IKeyExtended) => {
+    const otksToKeep = localOtks.reduce((p, c) => {
+      if (c.key.pub.pkcs8pem !== otk.key.pub.pkcs8pem) {
+        p.push(c);
+      }
+      return p;
+    }, [] as IKeyExtended[]);
+
+    await setLocalOtks(otksToKeep);
+  };
+
   return {
     localAccounts,
     addLocalAccount,
@@ -68,5 +90,7 @@ export const useAccountStorage = () => {
     activeAccount,
     setActiveAccount,
     clearActiveAccount,
+    addLocalOtk,
+    removeLocalOtk,
   };
 };

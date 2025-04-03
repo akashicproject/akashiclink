@@ -1,3 +1,4 @@
+import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import type { Dispatch, ReactNode } from 'react';
 import { createContext, useContext } from 'react';
 
@@ -49,6 +50,16 @@ export const LocalAccountContext = createContext<{
   },
 });
 
+export const LocalOtkContext = createContext<{
+  localOtks: IKeyExtended[];
+  setLocalOtks: Dispatch<IKeyExtended[]>;
+}>({
+  localOtks: [],
+  setLocalOtks: () => {
+    console.warn('setLocalOtks not ready');
+  },
+});
+
 export const ActiveAccountContext = createContext<{
   activeAccount: LocalAccount | null;
   setActiveAccount: Dispatch<LocalAccount | null>;
@@ -75,6 +86,8 @@ export const PreferenceProvider = ({ children }: { children: ReactNode }) => {
     []
   );
 
+  const [localOtks, setLocalOtks] = useLocalStorage<IKeyExtended[]>('otks', []);
+
   const [activeAccount, setActiveAccount] =
     useLocalStorage<LocalAccount | null>('session-account', null);
 
@@ -88,21 +101,28 @@ export const PreferenceProvider = ({ children }: { children: ReactNode }) => {
           setLocalAccounts,
         }}
       >
-        <ActiveAccountContext.Provider
+        <LocalOtkContext.Provider
           value={{
-            activeAccount,
-            setActiveAccount,
+            localOtks,
+            setLocalOtks,
           }}
         >
-          <CurrencyContext.Provider
+          <ActiveAccountContext.Provider
             value={{
-              focusCurrency: focusCurrency,
-              setFocusCurrency: setFocusCurrency,
+              activeAccount,
+              setActiveAccount,
             }}
           >
-            {children}
-          </CurrencyContext.Provider>
-        </ActiveAccountContext.Provider>
+            <CurrencyContext.Provider
+              value={{
+                focusCurrency: focusCurrency,
+                setFocusCurrency: setFocusCurrency,
+              }}
+            >
+              {children}
+            </CurrencyContext.Provider>
+          </ActiveAccountContext.Provider>
+        </LocalOtkContext.Provider>
       </LocalAccountContext.Provider>
     </ThemeContext.Provider>
   );

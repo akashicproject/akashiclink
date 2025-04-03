@@ -1,3 +1,4 @@
+import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import {
   activationCodeRegex,
   ActivationRequestType,
@@ -57,6 +58,7 @@ export function ImportWallet() {
    * Track user inputs
    */
   const [view, setView] = useState(stateView);
+  const [otk, setOtk] = useState<IKeyExtended>();
   const [privateKey, setPrivateKey] = useState<string>();
   const [email, setEmail] = useState<string>();
   const emailSentAlert = {
@@ -72,7 +74,8 @@ export function ImportWallet() {
   /**
    * Track state of page
    */
-  const { addLocalAccount, setActiveAccount } = useAccountStorage();
+  const { addLocalAccount, setActiveAccount, addLocalOtk } =
+    useAccountStorage();
 
   const [alert, setAlert] = useState(formAlertResetState);
   const [alertPage2, setAlertPage2] = useState(emailSentAlert);
@@ -83,11 +86,12 @@ export function ImportWallet() {
       urls.importAccountUrl,
       NavigationPriority.IMMEDIATE,
       async () => {
-        const { privateKey, email, view, passPhrase } =
+        const { otk, email, view, passPhrase } =
           await lastPageStorage.getVars();
         setView(view || View.SubmitRequest);
         setEmail(email || '');
-        setPrivateKey(privateKey || '');
+        setOtk(otk);
+        setPrivateKey(otk.key.prv.pkcs8pem || '');
         setActivationCode('');
         setPassPhrase(passPhrase || '');
       }
@@ -144,16 +148,20 @@ export function ImportWallet() {
         setActivationCode('');
         setView(View.SubmitRequest);
 
-        // Add accounts, and redirect to login page
+        // Add otk, accounts, and redirect to login page
         const importedAccount = {
           identity: identity || username,
           username,
         };
+        if (otk) {
+          addLocalOtk({ ...otk, identity });
+        }
         addLocalAccount(importedAccount);
         setActiveAccount(importedAccount);
 
         // Clear all states when finished
         setPrivateKey(undefined);
+        setOtk(undefined);
         setActivationCode(undefined);
         setPassPhrase(undefined);
         setEmail(undefined);

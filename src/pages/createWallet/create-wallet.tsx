@@ -78,7 +78,8 @@ export function CreateWallet() {
   };
   const [alertRequest, setAlertRequest] = useState(formAlertResetState);
   const [alertActivate, setAlertActivate] = useState(emailSentAlert);
-  const { addLocalAccount, setActiveAccount } = useAccountStorage();
+  const { addLocalAccount, setActiveAccount, addLocalOtk } =
+    useAccountStorage();
 
   /**
    * Countdown showing validity of activation code
@@ -210,6 +211,7 @@ export function CreateWallet() {
             createAccountResponse.identity || createAccountResponse.username,
           username: createAccountResponse.username,
         };
+        addLocalOtk({ ...otk, identity: createAccountResponse.identity });
         addLocalAccount(newAccount);
         setAlertRequest(formAlertResetState);
         setAlertActivate(formAlertResetState);

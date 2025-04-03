@@ -69,14 +69,14 @@ export const SecretPhraseImport = () => {
 
   const handleConfirmRecoveryPhrase = async () => {
     try {
-      const privateKey = await restoreOtk(phrase.join(' '));
+      const reconstructedOtk = await restoreOtk(phrase.join(' '));
       await lastPageStorage.clear();
       await lastPageStorage.store(
         urls.importAccountUrl,
         NavigationPriority.IMMEDIATE,
         {
           view: View.SubmitSecretPhrase,
-          privateKey: privateKey.key.prv.pkcs8pem,
+          otk: reconstructedOtk,
           passPhrase: phrase,
         }
       );
