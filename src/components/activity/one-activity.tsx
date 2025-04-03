@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
-import { TransactionLayer, TransactionStatus } from '@helium-pay/backend';
+import {
+  TransactionLayer,
+  TransactionStatus,
+  TransactionType,
+} from '@helium-pay/backend';
 import { IonIcon, IonImg } from '@ionic/react';
 import { chevronForwardOutline } from 'ionicons/icons';
 import type { CSSProperties, ReactNode } from 'react';
@@ -135,7 +139,9 @@ export function OneActivity({
   const { t } = useTranslation();
   const isL2 = transfer.layer === TransactionLayer.L2;
   const transferType =
-    transfer.transferType === 'Deposit' ? t('Deposit') : t('Send');
+    transfer.transferType === TransactionType.DEPOSIT
+      ? t('Deposit')
+      : t('Send');
   // HACK: Reduce chain names to a single word to fit small screen
   let label = transfer.chain;
   switch (label.split(' ').length) {
