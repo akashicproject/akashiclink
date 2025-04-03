@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { RiskLevel } from '@helium-pay/backend';
+import { type RiskDescription } from '@helium-pay/backend';
 import {
   IonBadge,
   IonCard,
@@ -30,6 +31,7 @@ import { themeType } from '../../theme/const';
 import { useWalletScreenDetail } from '../../utils/hooks/useWalletScreenDetail';
 import { Divider } from '../common/divider';
 import { AlertIcon } from '../common/icons/alert-icon';
+import { RiskGraph } from '../common/risk-graph';
 
 const IconWrapper = styled.div({
   display: 'flex',
@@ -246,14 +248,11 @@ export const AddressScreeningDetail = () => {
                 riskLevel={screening?.riskLevel}
               />
             </StyledIonCardContent>
-            <div
-              style={{
-                width: '100%',
-                height: '150px',
-                background: 'var(--ion-color-grey)',
-                borderRadius: '8px',
-              }}
-            ></div>
+            <RiskGraph
+              riskLevel={screening.riskLevel}
+              detailList={screening.detailList as RiskDescription[]}
+              hackingEvent={screening.hackingEvent}
+            />
           </StyledIonCard>
 
           {[RiskLevel.HIGH, RiskLevel.SEVERE].includes(
