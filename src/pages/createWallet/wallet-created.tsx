@@ -10,6 +10,7 @@ import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { onClear } from '../../slices/createWalletSlice';
+import { useOwner } from '../../utils/hooks/useOwner';
 
 export const StyledA = styled.a({
   fontSize: '12px',
@@ -23,6 +24,7 @@ export const StyledA = styled.a({
 export const WalletCreated = () => {
   const { t } = useTranslation();
   const history = useHistory();
+  const { mutateOwner } = useOwner();
   const dispatch = useAppDispatch();
 
   return (
@@ -80,6 +82,7 @@ export const WalletCreated = () => {
               expand="block"
               onClick={async () => {
                 dispatch(onClear());
+                mutateOwner();
                 history.push(akashicPayPath(urls.loggedFunction));
               }}
             >
