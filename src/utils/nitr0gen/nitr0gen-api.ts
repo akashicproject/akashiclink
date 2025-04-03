@@ -453,7 +453,7 @@ export class Nitr0genApi {
    *
    * Dev-info: Relevant return is response.$umid (which is the "l2-hash")
    */
-  async L2Transaction(
+  async l2Transaction(
     otk: IKeyExtended,
     details: L2TxDetail
   ): Promise<IBaseAcTransaction> {
