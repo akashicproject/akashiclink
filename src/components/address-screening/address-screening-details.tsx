@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { RiskLevel } from '@helium-pay/backend';
 import {
   IonBadge,
   IonCard,
@@ -13,16 +14,22 @@ import {
   IonRow,
 } from '@ionic/react';
 import { helpCircleOutline } from 'ionicons/icons';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
+import {
+  NoActivityText,
+  NoActivityWrapper,
+} from '../../pages/activity/activity';
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectTheme } from '../../redux/slices/preferenceSlice';
 import type { LocationState } from '../../routing/history';
 import { themeType } from '../../theme/const';
-import useAddressScreeningDetail from '../../utils/hooks/useAddressScreeningDetail';
+import { useWalletScreenDetail } from '../../utils/hooks/useWalletScreenDetail';
 import { Divider } from '../common/divider';
+import { AlertIcon } from '../common/icons/alert-icon';
 
 const IconWrapper = styled.div({
   display: 'flex',
@@ -54,8 +61,6 @@ const StyledIonCardContent = styled(IonCardContent)({
   gap: '12px',
 });
 const currenciesIcon = [...SUPPORTED_CURRENCIES_FOR_EXTENSION.list];
-
-type RiskLevel = 'Low' | 'Moderate' | 'High' | 'Severe';
 
 const getBadgeStyle = (riskLevel: RiskLevel) => {
   const styles = {
@@ -172,15 +177,19 @@ export const AddressScreeningDetail = () => {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
 
-  const data = useAddressScreeningDetail();
+  const { trigger, screening, isMutating } = useWalletScreenDetail();
   const storedTheme = useAppSelector(selectTheme);
   const currencyObj = currenciesIcon.find(
-    (c) => c.walletCurrency.chain === data.network
+    (c) => c.walletCurrency.chain === screening?.coinSymbol
   );
 
-  //TODO: 1299 - handle data fetching here using the id
   const addressScreeningId =
     history.location.state?.addressScreeningSearch?.id ?? undefined;
+
+  useEffect(() => {
+    if (!addressScreeningId) return;
+    trigger({ id: addressScreeningId });
+  }, []);
 
   if (!addressScreeningId) {
     return null;
@@ -192,108 +201,120 @@ export const AddressScreeningDetail = () => {
         'ion-grid-gap-xs ion-padding-top-xxs ion-padding-bottom-xxs ion-padding-left-md ion-padding-right-md'
       }
     >
-      <IconWrapper>
-        <IonImg
-          alt=""
-          src={
-            storedTheme === themeType.DARK
-              ? currencyObj?.darkCurrencyIcon
-              : currencyObj?.currencyIcon
-          }
-          style={{ height: '32px', width: '32px' }}
-        />
-        <AddressWrapper>
-          <div className={'ion-text-size-xxs ion-text-bold'}>
-            {data.network}
-          </div>
-          <Address>{data.address}</Address>
-        </AddressWrapper>
-      </IconWrapper>
-
-      <StyledIonCard>
-        <Divider
-          borderColor={'var(--activity-list-divider-light)'}
-          height={'1px'}
-          borderWidth={'0.5px'}
-        />
-        <SectionHeader title={t('RiskScore')} />
-        <StyledIonCardContent className="ion-padding-0 ion-padding-top-lg ion-padding-bottom-md">
-          <BadgeItem
-            label={`${t('RiskScore')}:`}
-            value={data.score.toString()}
-            riskLevel={data.risk_level as RiskLevel}
-          />
-          <BadgeItem
-            label={`${t('RiskLevel')}:`}
-            value={data.risk_level}
-            riskLevel={data.risk_level as RiskLevel}
-          />
-        </StyledIonCardContent>
-        <div
-          style={{
-            width: '100%',
-            height: '150px',
-            background: 'var(--ion-color-grey)',
-            borderRadius: '8px',
-          }}
-        ></div>
-      </StyledIonCard>
-
-      {['High', 'Severe'].includes(data.risk_level) && (
-        <IonCardContent
-          className="ion-text-center ion-text-size-xs ion-padding-top-xs ion-padding-bottom-xs ion-padding-left-lg  ion-padding-right-lg"
-          style={{
-            borderRadius: '8px',
-            color: 'var(--ion-color-danger-dark)',
-            fontWeight: 'bold',
-            border: '1px solid var(--ion-color-danger-dark)',
-          }}
-        >
-          <strong>{t('ReceivingCryptoWarning')}</strong>
-        </IonCardContent>
+      {!isMutating && !screening && (
+        <NoActivityWrapper>
+          <AlertIcon />
+          <NoActivityText>{t('NoActivity')}</NoActivityText>
+        </NoActivityWrapper>
       )}
+      {!isMutating && screening && (
+        <>
+          <IconWrapper>
+            <IonImg
+              alt=""
+              src={
+                storedTheme === themeType.DARK
+                  ? currencyObj?.darkCurrencyIcon
+                  : currencyObj?.currencyIcon
+              }
+              style={{ height: '32px', width: '32px' }}
+            />
+            <AddressWrapper>
+              <div className={'ion-text-size-xxs ion-text-bold'}>
+                {screening.coinSymbol}
+              </div>
+              <Address>{screening.address}</Address>
+            </AddressWrapper>
+          </IconWrapper>
 
-      <StyledIonCard>
-        <SectionHeader title={t('Overview')} />
-        <IonGrid className="ion-padding-0">
-          <IonRow>
-            <OverviewItem
-              label={t('Overview')}
-              value={`${data.data.balance} ETH`}
+          <StyledIonCard>
+            <Divider
+              borderColor={'var(--activity-list-divider-light)'}
+              height={'1px'}
+              borderWidth={'0.5px'}
             />
-            <OverviewItem
-              label={t('TxsCount')}
-              value={data.data.txs_count.toString()}
-              offset={'1'}
-              size={'5'}
-            />
-          </IonRow>
-          <IonRow>
-            <OverviewItem
-              label={t('TotalReceived')}
-              value={`${data.data.total_received} ETH`}
-            />
-            <OverviewItem
-              label={t('TotalSpent')}
-              value={`${data.data.total_spent} ETH`}
-              offset={'1'}
-              size={'5'}
-            />
-          </IonRow>
-          <IonRow>
-            <OverviewItem
-              label={t('IncomingCount')}
-              value={data.data.received_txs_count.toString()}
-            />
-            <OverviewItem
-              label={t('OutgoingCount')}
-              value={data.data.spent_txs_count.toString()}
-              offset={'1'}
-              size={'5'}
-            />
-          </IonRow>
-        </IonGrid>
-      </StyledIonCard>
+            <SectionHeader title={t('RiskScore')} />
+            <StyledIonCardContent className="ion-padding-0 ion-padding-top-lg ion-padding-bottom-md">
+              <BadgeItem
+                label={`${t('RiskScore')}:`}
+                value={screening?.score.toString()}
+                riskLevel={screening?.riskLevel}
+              />
+              <BadgeItem
+                label={`${t('RiskLevel')}:`}
+                value={screening?.riskLevel}
+                riskLevel={screening?.riskLevel}
+              />
+            </StyledIonCardContent>
+            <div
+              style={{
+                width: '100%',
+                height: '150px',
+                background: 'var(--ion-color-grey)',
+                borderRadius: '8px',
+              }}
+            ></div>
+          </StyledIonCard>
+
+          {[RiskLevel.HIGH, RiskLevel.SEVERE].includes(
+            screening?.riskLevel
+          ) && (
+            <IonCardContent
+              className="ion-text-center ion-text-size-xs ion-padding-top-xs ion-padding-bottom-xs ion-padding-left-lg  ion-padding-right-lg"
+              style={{
+                borderRadius: '8px',
+                color: 'var(--ion-color-danger-dark)',
+                fontWeight: 'bold',
+                border: '1px solid var(--ion-color-danger-dark)',
+              }}
+            >
+              <strong>{t('ReceivingCryptoWarning')}</strong>
+            </IonCardContent>
+          )}
+
+          <StyledIonCard>
+            <SectionHeader title={t('Overview')} />
+            <IonGrid className="ion-padding-0">
+              <IonRow>
+                <OverviewItem
+                  label={t('Overview')}
+                  value={`${screening?.addressOverview?.balance} ${screening.coinSymbol}`}
+                />
+                <OverviewItem
+                  label={t('TxsCount')}
+                  value={`${screening?.addressOverview?.txsCount}`}
+                  offset={'1'}
+                  size={'5'}
+                />
+              </IonRow>
+              <IonRow>
+                <OverviewItem
+                  label={t('TotalReceived')}
+                  value={`${screening?.addressOverview?.totalReceived} ${screening.coinSymbol}`}
+                />
+                <OverviewItem
+                  label={t('TotalSpent')}
+                  value={`${screening?.addressOverview?.totalSpent} ${screening.coinSymbol}`}
+                  offset={'1'}
+                  size={'5'}
+                />
+              </IonRow>
+              <IonRow>
+                <OverviewItem
+                  label={t('IncomingCount')}
+                  value={`${screening?.addressOverview?.receivedTxsCount}`}
+                />
+                <OverviewItem
+                  label={t('OutgoingCount')}
+                  value={`${screening?.addressOverview?.spentTxsCount}`}
+                  offset={'1'}
+                  size={'5'}
+                />
+              </IonRow>
+            </IonGrid>
+          </StyledIonCard>
+        </>
+      )}
     </IonGrid>
   );
 };
