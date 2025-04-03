@@ -113,6 +113,8 @@ yarn serve:android
 
 ## Live reloading Android or ios App
 
+add IS_LIVE_RELOAD=true in `.env.staging.local`
+
 ```sh
 yarn debug:ios
 ```
