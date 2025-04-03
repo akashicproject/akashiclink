@@ -75,7 +75,7 @@
     "lodash": "4.17.21",
     "qrcode.react": "3.1.0",
     "react-countdown-circle-timer": "3.2.1",
-    "react-i18next": "14.0.5",
+    "react-i18next": "15.1.0",
     "react-idle-timer": "5.7.2",
     "react-lottie": "1.2.3",
     "react-redux": "9.1.0",
