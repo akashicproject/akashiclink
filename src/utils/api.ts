@@ -57,7 +57,7 @@ export const OwnersAPI = {
     transactionData: ITransactionProposal
   ): Promise<IPrepareL1TxnResponse> => {
     const response = await axiosBase.post(
-      `/key/prepare-l1-txn`,
+      `/l1-txn-orchestrator/prepare-withdrawal`,
       JSON.stringify(transactionData)
     );
     const { data, status } = response;
