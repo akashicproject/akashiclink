@@ -156,28 +156,6 @@ export const useNftTransfer = () => {
     );
     nitr0genApi.checkForNitr0genError(response);
 
-    // Double-check nftStream and acnsStream
-    if (!response.$streams || !response.$streams.updated) {
-      const error = new Error(
-        `${nftErrors.nftTransferError}, $streams is empty`
-      );
-      datadogRum.addError(error);
-      throw error;
-    }
-    let updatedAcnsStreamId = null;
-    for (const streamUpdated of response.$streams.updated) {
-      if ('.acm' === streamUpdated.name) {
-        updatedAcnsStreamId = streamUpdated.id;
-      }
-    }
-    if (!updatedAcnsStreamId) {
-      const error = new Error(
-        `${nftErrors.nftTransferError}, updatedAcnsStreamId is empty`
-      );
-      datadogRum.addError(error);
-      throw error;
-    }
-
     return {
       txHash: response.$umid,
     };
