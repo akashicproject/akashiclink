@@ -8,28 +8,6 @@ import {
 import { BadRequestException } from '@nestjs/common';
 import Big from 'big.js';
 
-/** Direction of coin/token decimal conversion */
-type ConversionDirection = 'to' | 'from';
-
-/**
- * Method for safe conversion to and from coin/token decimals
- *
- * @throws BadRequestException if:
- * - the coin/token combination is not supported
- * - amount cannot be represented as an integer in the smallest denomination
- * @deprecated use {@link convertToDecimals} or {@link convertFromDecimals}
- */
-export function convertToFromDecimals(
-  amount: string,
-  coinSymbol: CoinSymbol,
-  direction: ConversionDirection,
-  tokenSymbol?: CurrencySymbol
-): string {
-  return direction === 'to'
-    ? convertToDecimals(amount, coinSymbol, tokenSymbol)
-    : convertFromDecimals(amount, coinSymbol, tokenSymbol);
-}
-
 /**
  * Method for safe conversion to coin/token decimals
  *
@@ -37,7 +15,7 @@ export function convertToFromDecimals(
  * - the coin/token combination is not supported
  * - amount cannot be represented as an integer in the smallest denomination
  */
-export function convertFromDecimals(
+export function convertFromSmallestUnit(
   amount: string,
   coinSymbol: CoinSymbol,
   tokenSymbol?: CurrencySymbol
@@ -59,7 +37,7 @@ export function convertFromDecimals(
  * - the coin/token combination is not supported
  * - amount cannot be represented as an integer in the smallest denomination
  */
-export function convertToDecimals(
+export function convertToSmallestUnit(
   amount: string,
   coinSymbol: CoinSymbol,
   tokenSymbol?: CurrencySymbol
@@ -95,12 +73,12 @@ export type AnyCurrencyData =
  * however deeply nested
  *
  * @param object object or array with currency data in it... somewhere
- * @param converter either {@link convertToDecimals} or {@link convertFromDecimals}
+ * @param converter either {@link convertToSmallestUnit} or {@link convertFromSmallestUnit}
  * @returns object/array with the same structure, but converted amounts
  */
 export function convertObjectCurrencies<T extends AnyCurrencyData>(
   object: T,
-  converter: typeof convertToDecimals | typeof convertFromDecimals
+  converter: typeof convertToSmallestUnit | typeof convertFromSmallestUnit
 ): T {
   // recursively convert the elements if it's an array
   if (Array.isArray(object)) {

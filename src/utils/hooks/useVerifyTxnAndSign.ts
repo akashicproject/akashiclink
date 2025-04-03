@@ -9,7 +9,7 @@ import {
 
 import type { ValidatedAddressPair } from '../../components/send-deposit/send-form/types';
 import { OwnersAPI } from '../api';
-import { convertObjectCurrencies, convertToDecimals } from '../currency';
+import { convertObjectCurrencies, convertToSmallestUnit } from '../currency';
 import { calculateInternalWithdrawalFee } from '../internal-fee';
 import type {
   ITransactionForSigning,
@@ -61,7 +61,7 @@ export const useVerifyTxnAndSign = () => {
         const txBody = await nitr0genApi.L2Transaction(
           cacheOtk,
           // AC needs smallest units, so we convert
-          convertObjectCurrencies(l2TransactionData, convertToDecimals)
+          convertObjectCurrencies(l2TransactionData, convertToSmallestUnit)
         );
 
         const txn: ITransactionForSigning = {
