@@ -158,7 +158,7 @@ export async function fetchNodesPing(
         await axios.get(endpoint);
         ping = Date.now() - start;
       } catch {
-        ping = 1000; // Set default ping to be unreachable
+        ping = 0; // Set default ping to be unreachable
       }
       return { key, ping };
     })

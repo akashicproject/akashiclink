@@ -47,6 +47,7 @@ export type SettingItemProps = {
   ripple?: boolean;
   link?: string;
   headerStyle?: CSSProperties;
+  iconStyle?: CSSProperties;
 };
 
 const handleLink = async (link: string) => {
@@ -72,6 +73,7 @@ export function SettingItem({
   ripple = true,
   link,
   headerStyle,
+  iconStyle,
 }: SettingItemProps) {
   const [showAccordionItem, setShowAccordionItem] = useState(false);
   const handleClick = async () => {
@@ -96,7 +98,11 @@ export function SettingItem({
           className="ion-no-margin ion-margin-left-xxs"
           slot="start"
           size="24px"
-          src={icon}
+          src={icon || ''}
+          style={{
+            visibility: icon ? 'visible' : 'hidden',
+            ...iconStyle,
+          }}
         />
         <IonLabel
           className="ion-no-margin"

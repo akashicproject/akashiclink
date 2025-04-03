@@ -2,7 +2,7 @@ import { CapacitorCookies } from '@capacitor/core';
 import styled from '@emotion/styled';
 import { IonAlert, IonIcon } from '@ionic/react';
 import { checkmark, ellipse } from 'ionicons/icons';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { fetchNodesPing } from '../.. /../../utils/nitr0gen/nitr0gen.utils';
@@ -64,7 +64,7 @@ export function SettingsNetwork() {
   };
 
   const handleNodeSelect = (node: Node) => {
-    if (node.ping >= 500) {
+    if (node.ping === 0) {
       setUnreachableNode(node);
       setShowModal(true);
     } else {
@@ -116,7 +116,7 @@ export function SettingsNetwork() {
                     icon={ellipse}
                     style={{
                       color:
-                        node.ping >= 500
+                        node.ping === 0
                           ? 'var(--ion-color-warning-text)'
                           : node.ping >= 200
                             ? '#F7931A'
@@ -124,7 +124,7 @@ export function SettingsNetwork() {
                     }}
                   />
                   <span style={{ color: 'var(--ion-color-secondary-text)' }}>
-                    {node.ping >= 500 ? t('Unreachable') : `${node.ping}ms`}
+                    {node.ping === 0 ? t('Unreachable') : `${node.ping}ms`}
                   </span>
                 </PingStatus>
               }
@@ -134,6 +134,7 @@ export function SettingsNetwork() {
                 color: 'var(--ion-color-secondary-text)',
                 fontSize: '0.875rem',
               }}
+              iconStyle={{ color: 'var(--ion-color-primary-10)' }}
             />
           ))}
         </div>
