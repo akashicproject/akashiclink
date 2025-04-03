@@ -1,19 +1,21 @@
 import './common.css';
 
 import { IonCol, IonPage, IonRow } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 import { LoggedLayout } from '../components/layout/logged-layout';
 import { MainGrid } from '../components/layout/main-grid';
-import { MainTitle } from '../components/layout/main-title';
 
 export function SettingsVersion() {
+  const { t } = useTranslation();
+
   return (
     <IonPage>
       <LoggedLayout>
         <MainGrid>
           <IonRow>
-            <IonCol class="ion-center">
-              <MainTitle>Version Info</MainTitle>
+            <IonCol>
+              <h2>{t('VersionInfo')}</h2>
             </IonCol>
           </IonRow>
           <IonRow>

@@ -17,8 +17,7 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../../components/alert/alert';
-import { PurpleButton } from '../../components/buttons';
-import { MainTitle } from '../../components/layout/main-title';
+import { PurpleButton, TextButton } from '../../components/buttons';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { useLogout } from '../../components/logout';
 import { OtkBox } from '../../components/otk-box/otk-box';
@@ -83,52 +82,42 @@ export function CreateWallet() {
   /**
    * Countdown showing validity of activation code
    */
-  const [timer, setTimer] = useState(false);
+  const [timerReset, setTimerReset] = useState(0);
 
   /**
    * Activation request is sent -> email with activation code is sent to user
    * Page is saved - this way user can resume activation after switching
    * to check email which minimises the extension
    */
-  const RequestWalletAccountButton = (
-    <IonCol>
-      <PurpleButton
-        expand="block"
-        onClick={async () => {
-          if (!email) return;
-          const emailValid = validateEmail(email);
-          if (emailValid) {
-            try {
-              const response = await OwnersAPI.requestActivationCode({
-                activationType: ActivationRequestType.CreateWalletAccount,
-                lang: i18n.language as Language,
-                payload: { email },
-              });
+  async function requestWalletAccount() {
+    if (!email) return;
+    const emailValid = validateEmail(email);
+    if (emailValid) {
+      try {
+        const response = await OwnersAPI.requestActivationCode({
+          activationType: ActivationRequestType.CreateWalletAccount,
+          lang: i18n.language as Language,
+          payload: { email },
+        });
 
-              // Email already taken
-              if (!('email' in response)) {
-                setAlertRequest(errorAlertShell(t('EmailAlreadyUsed')));
-                return;
-              }
+        // Email already taken
+        if (!('email' in response)) {
+          setAlertRequest(errorAlertShell(t('EmailAlreadyUsed')));
+          return;
+        }
 
-              // Store the state - user will likely click away at this point to copy
-              // over the activation code
-              lastPageStorage.store(createWalletUrl, { email });
-              setView(CreateWalletView.ActivateAccount);
+        // Store the state - user will likely click away at this point to copy
+        // over the activation code
+        lastPageStorage.store(createWalletUrl, { email });
+        setView(CreateWalletView.ActivateAccount);
 
-              // Launch countdown while code is valid
-              setTimer(true);
-            } catch (e) {
-              setAlertRequest(errorAlertShell(t('GenericFailureMsg')));
-            }
-          } else setAlertRequest(errorAlertShell(t('InvalidEmail')));
-        }}
-        disabled={!email}
-      >
-        {t('SendCode')}
-      </PurpleButton>
-    </IonCol>
-  );
+        // Launch countdown while code is valid
+        setTimerReset(timerReset + 1);
+      } catch (e) {
+        setAlertRequest(errorAlertShell(t('GenericFailureMsg')));
+      }
+    } else setAlertRequest(errorAlertShell(t('InvalidEmail')));
+  }
 
   /**
    * Code in email is submitted to backend along with password to use
@@ -175,7 +164,6 @@ export function CreateWallet() {
         setAlertActivate(errorAlertShell(message));
       } finally {
         setCreatingAccount(false);
-        setTimer(false);
       }
     } else setAlertActivate(errorAlertShell(t('PasswordHelperText')));
   }
@@ -198,11 +186,13 @@ export function CreateWallet() {
 
   return (
     <PublicLayout>
-      <IonRow>
-        <IonCol>
-          <MainTitle>{t('CreateYourWallet')}</MainTitle>
-        </IonCol>
-      </IonRow>
+      {view !== CreateWalletView.AccountCreated && (
+        <IonRow>
+          <IonCol>
+            <h2>{t('CreateYourWallet')}</h2>
+          </IonCol>
+        </IonRow>
+      )}
       {view === CreateWalletView.RequestAccount && (
         <>
           <IonRow>
@@ -243,7 +233,15 @@ export function CreateWallet() {
         <>
           <IonRow>
             {ResetButton}
-            {RequestWalletAccountButton}
+            <IonCol>
+              <PurpleButton
+                expand="block"
+                onClick={requestWalletAccount}
+                disabled={!email}
+              >
+                {t('SendCode')}
+              </PurpleButton>
+            </IonCol>
           </IonRow>
           <IonRow>
             <AlertBox state={alertRequest} />
@@ -252,18 +250,22 @@ export function CreateWallet() {
       )}
       {view === CreateWalletView.ActivateAccount && (
         <>
-          <IonRow>{t('ConfirmEmailSent', { email: '' })}</IonRow>
+          <IonRow class="ion-text-center">
+            <h4>{t('ConfirmEmailSent', { email: '' })}</h4>
+          </IonRow>
           <IonRow>
             <IonCol class="ion-center">
-              {timer ? (
-                <ActivationTimer onComplete={() => setTimer(false)} />
-              ) : (
-                RequestWalletAccountButton
-              )}
+              <ActivationTimer resetTrigger={timerReset} />
             </IonCol>
           </IonRow>
           <IonRow>
-            <AlertBox state={alertRequest} />
+            <IonCol class="ion-center">
+              <TextButton onClick={requestWalletAccount}>
+                <h4>
+                  <u>{t('SendNewCode')}</u>
+                </h4>
+              </TextButton>
+            </IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
@@ -328,8 +330,8 @@ export function CreateWallet() {
       {view === CreateWalletView.AccountCreated && (
         <>
           <IonRow>
-            <IonCol class="ion-center">
-              <MainTitle>{t('WalletCreated')}</MainTitle>
+            <IonCol>
+              <h2>{t('WalletCreated')}</h2>
             </IonCol>
           </IonRow>
           <IonRow>{t('SaveKey')}</IonRow>
@@ -362,6 +364,9 @@ export function CreateWallet() {
           </IonRow>
         </>
       )}
+      <IonRow>
+        <AlertBox state={alertRequest} />
+      </IonRow>
     </PublicLayout>
   );
 }

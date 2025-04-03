@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { userConst } from '@helium-pay/backend';
 import {
   IonCol,
   IonInput,
@@ -8,11 +9,16 @@ import {
   IonText,
 } from '@ionic/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
+import { ActivationTimer } from '../components/activation/activation-timer';
 import { PurpleButton, WhiteButton } from '../components/buttons';
-import { CountdownDiv } from '../components/layout/countdown';
 import { LoggedLayout } from '../components/layout/logged-layout';
 import { MainGrid } from '../components/layout/main-grid';
+import {
+  StyledInput,
+  StyledInputErrorPrompt,
+} from '../components/styled-input';
 import { ResetPassword } from './Recovery/reset-password';
 
 const Message = styled.span({
@@ -31,7 +37,12 @@ export enum ResetEmailState {
 }
 
 export function Recover() {
+  const { t } = useTranslation();
   const [view, setView] = useState(ResetEmailState.SetEmail);
+
+  const [, setEmail] = useState<string>();
+  const validateEmail = (value: string) => !!value.match(userConst.emailRegex);
+  const [timerReset, setTimerReset] = useState(0);
 
   return (
     <LoggedLayout>
@@ -41,23 +52,32 @@ export function Recover() {
             <IonRow>
               <IonCol class="ion-center">
                 <IonText>
-                  <h2>Please enter your email</h2>
+                  <h2>{t('PleaseEnterYourEmail')}</h2>
                 </IonText>
               </IonCol>
             </IonRow>
             <IonRow>
               <IonCol>
-                <IonItem fill="outline">
-                  <IonLabel position="floating">Email</IonLabel>
-                  <IonInput placeholder="Please enter new backup email" />
-                </IonItem>
+                <StyledInput
+                  label="Email"
+                  type="email"
+                  placeholder={t('EnterYourEmail')}
+                  onIonInput={({ target: { value } }) => {
+                    setEmail(value as string);
+                  }}
+                  errorPrompt={StyledInputErrorPrompt.Email}
+                  validate={validateEmail}
+                />
               </IonCol>
             </IonRow>
             <IonRow>
               <IonCol>
                 <PurpleButton
                   expand="block"
-                  onClick={() => setView(ResetEmailState.SetCode)}
+                  onClick={() => {
+                    setTimerReset(timerReset + 1);
+                    setView(ResetEmailState.SetCode);
+                  }}
                 >
                   Send
                 </PurpleButton>
@@ -74,7 +94,7 @@ export function Recover() {
             </IonRow>
             <IonRow>
               <IonCol class="ion-center">
-                <CountdownDiv>60</CountdownDiv>
+                <ActivationTimer resetTrigger={timerReset} />
               </IonCol>
             </IonRow>
             <IonRow>

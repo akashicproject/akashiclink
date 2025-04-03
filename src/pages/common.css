@@ -52,14 +52,22 @@ h1 {
 
 h2 {
   font-weight: 700;
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 28px;
+  color: var(--ion-color-primary-10);
+  margin-bottom: 20px;
+  text-align: center !important;
 }
 
 h3 {
   font-weight: 700;
   font-size: 16px;
   font-family: 'Nunito Sans';
-  line-height: 24px;
   text-align: center !important;
+  color: var(--ion-color-primary-10);
   text-transform: none;
 }
 
@@ -67,8 +75,18 @@ h4 {
   font-weight: 700;
   font-size: 12px;
   font-family: 'Nunito Sans';
+  color: var(--ion-color-primary-10);
   line-height: 16px;
   text-transform: none;
+}
+
+h5 {
+  font-weight: 700;
+  font-size: 11px;
+  font-family: 'Nunito Sans';
+  color: var(--ion-color-primary-10);
+  text-transform: none;
+  margin: 0px;
 }
 
 /* nunito-sans-200 - latin */

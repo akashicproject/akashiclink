@@ -67,3 +67,10 @@ export const WhiteButton = styled(IonButton)({
 export const TabButton = styled(IonButton)({
   ...tabButtonCss,
 });
+
+/**
+ * Button is just underlined text
+ */
+export const TextButton = styled.button({
+  background: 'none',
+});

@@ -127,5 +127,8 @@
   "TransactionFee": "交易費",
   "showNativeCoinNeededMsg": "請確保你有足夠的{{coinSymbol}}以支付礦工費。",
   "insufficientBalance": "對不起，你沒有足夠的{{coinSymbol}}以支付矿工费。",
-  "invalidL2Address": "請提供正確的Layer 2接收地址。"
+  "invalidL2Address": "請提供正確的Layer 2接收地址。",
+  "SendNewCode": "發送新代碼",
+  "VersionInfo": "版本信息",
+  "KeyPairBackup": "密鑰對備份"
 }

@@ -32,7 +32,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
           <div style={{ flexGrow: 1 }}>
             <LoggedHeader />
           </div>
-          <div style={{ flexGrow: 2 }}>{children}</div>
+          <div style={{ flexGrow: 2, overflow: 'scroll' }}>{children}</div>
           <Footer />
         </div>
       </div>

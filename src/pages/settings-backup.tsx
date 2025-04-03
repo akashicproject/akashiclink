@@ -15,7 +15,6 @@ import { ConfirmLockPassword } from '../components/confirm-lock-password';
 import { DividerDiv } from '../components/layout/divider';
 import { LoggedLayout } from '../components/layout/logged-layout';
 import { MainGrid } from '../components/layout/main-grid';
-import { MainTitle } from '../components/layout/main-title';
 import { OtkBox } from '../components/otk-box/otk-box';
 import { OwnersAPI } from '../utils/api';
 
@@ -63,8 +62,8 @@ export function SettingsBackup() {
       {view === BackupKeyPairState.ViewKeyPair && (
         <MainGrid>
           <IonRow>
-            <IonCol class="ion-center">
-              <MainTitle>{t('ThisIsYourKeyPair')}</MainTitle>
+            <IonCol>
+              <h2>{t('ThisIsYourKeyPair')}</h2>
             </IonCol>
           </IonRow>
           <IonRow>

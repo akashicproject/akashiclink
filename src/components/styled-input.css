@@ -95,8 +95,8 @@ input[type='number'] {
   width: 100%;
   font-family: 'Nunito Sans', serif;
   color: #de3730;
-  font-size: 11px;
-  line-height: 13px;
+  font-size: 10px;
+  line-height: 10px;
   font-style: normal;
   display: flex;
   justify-content: center;
@@ -104,7 +104,7 @@ input[type='number'] {
   border-radius: 8px;
   border: 1px solid #de3730;
   padding: 0px 8px 0px 16px;
-  height: 22px;
+  height: 23px;
   margin-top: 2px;
 }
 

@@ -1,22 +1,12 @@
-import styled from '@emotion/styled';
-import { userConst } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { urls } from '../constants/urls';
+import { akashicPayPath } from '../routing/navigation-tree';
 import { PurpleButton, WhiteButton } from './buttons';
 import { MainGrid } from './layout/main-grid';
-import { MainTitle } from './layout/main-title';
 import { StyledInput } from './styled-input';
-
-const Message = styled.span({
-  fontWeight: 700,
-  fontSize: '24px',
-  lineHeight: '28px',
-  fontFamily: 'Nunito Sans',
-  textAlign: 'center',
-  color: 'var(--ion-color)',
-});
 
 /**
  * Initiates a confirmation procedure using supplied method
@@ -31,19 +21,16 @@ export function ConfirmLockPassword({
   const { t } = useTranslation();
   const [password, setPassword] = useState<string>();
 
-  const validatePassword = (value: string) =>
-    !!value.match(userConst.passwordRegex);
-
   return (
     <MainGrid>
       <IonRow>
-        <IonCol class="ion-center">
-          <MainTitle>KeyPair Backup</MainTitle>
+        <IonCol>
+          <h2>{t('KeyPairBackup')}</h2>
         </IonCol>
       </IonRow>
       <IonRow>
         <IonCol class="ion-center">
-          <Message>{t('PleaseEnterYourPassword')}</Message>
+          <h4>{t('PleaseEnterYourPassword')}</h4>
         </IonCol>
       </IonRow>
       <IonRow>
@@ -53,16 +40,21 @@ export function ConfirmLockPassword({
             type="password"
             placeholder={'Please confirm your password'}
             onIonInput={({ target: { value } }) => setPassword(value as string)}
-            validate={validatePassword}
           />
         </IonCol>
       </IonRow>
       <IonRow>
         <IonCol>
-          <WhiteButton>{t('Cancel')}</WhiteButton>
+          <WhiteButton
+            routerLink={akashicPayPath(urls.loggedFunction)}
+            expand="block"
+          >
+            {t('Cancel')}
+          </WhiteButton>
         </IonCol>
         <IonCol>
           <PurpleButton
+            expand="block"
             disabled={!password}
             onClick={() => password && setVal(password)}
           >

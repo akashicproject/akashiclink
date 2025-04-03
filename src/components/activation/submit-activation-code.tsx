@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { activationCodeRegex } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import { useState } from 'react';
@@ -9,15 +8,6 @@ import { AlertBox, errorAlertShell, formAlertResetState } from '../alert/alert';
 import { PurpleButton, WhiteButton } from '../buttons';
 import { MainGrid } from '../layout/main-grid';
 import { StyledInput, StyledInputErrorPrompt } from '../styled-input';
-
-const Message = styled.span({
-  fontWeight: 700,
-  fontSize: '24px',
-  lineHeight: '28px',
-  fontFamily: 'Nunito Sans',
-  textAlign: 'center',
-  color: 'var(--ion-color)',
-});
 
 /**
  * Component instructing user to supply a 2fa code, which is injected into the callback function
@@ -41,7 +31,7 @@ export function SubmitActivationCode({
     <MainGrid>
       <IonRow>
         <IonCol class="ion-center">
-          <Message>{t('Complete2FA')}</Message>
+          <h3 style={{ padding: 0, margin: 0 }}>{t('Complete2FA')}</h3>
         </IonCol>
       </IonRow>
       <IonRow>

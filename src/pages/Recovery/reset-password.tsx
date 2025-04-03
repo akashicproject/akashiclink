@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 
 import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
-import { MainTitle } from '../../components/layout/main-title';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { StyledInput } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
@@ -15,8 +14,8 @@ export function ResetPassword() {
     <PublicLayout>
       <MainGrid>
         <IonRow>
-          <IonCol class="ion-center">
-            <MainTitle>{t('SetYourLockPassword')}</MainTitle>
+          <IonCol>
+            <h2>{t('SetYourLockPassword')}</h2>
           </IonCol>
         </IonRow>
         <IonRow>

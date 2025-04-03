@@ -10,7 +10,13 @@ const ACTIVATION_CODE_EXPIRY_IN_MINUTES = 5;
  *
  * @param onComplete action to carry out once timer elapses
  */
-export function ActivationTimer(props: { onComplete: () => void }) {
+export function ActivationTimer({
+  resetTrigger,
+  ...props
+}: {
+  onComplete?: () => void;
+  resetTrigger?: number;
+}) {
   return (
     <CountdownCircleTimer
       isPlaying
@@ -21,13 +27,18 @@ export function ActivationTimer(props: { onComplete: () => void }) {
       size={50}
       strokeWidth={6}
       colors="#7444b6"
+      key={resetTrigger}
       {...props}
     >
       {({ remainingTime }) => {
         const minutes = Math.floor(remainingTime / 60);
         const seconds = String(remainingTime % 60).padStart(2, '0');
 
-        return `${minutes}:${seconds}`;
+        return (
+          <h5>
+            {minutes}:{seconds}
+          </h5>
+        );
       }}
     </CountdownCircleTimer>
   );

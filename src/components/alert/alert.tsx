@@ -71,11 +71,18 @@ export function AlertBox({ state }: { state: FormAlertState }) {
       style={{
         ...(state.visible && {
           border: '1px solid #de3730',
-          color: '#de3730',
         }),
       }}
     >
-      <h4 style={{ marginTop: '5px', marginBottom: '5px' }}>{state.message}</h4>
+      <h4
+        style={{
+          marginTop: '5px',
+          marginBottom: '5px',
+          color: 'var(--ion-color-danger)',
+        }}
+      >
+        {state.message}
+      </h4>
     </IonNote>
   );
 }
