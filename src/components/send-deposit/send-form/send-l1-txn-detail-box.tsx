@@ -46,6 +46,7 @@ export const SendL1TxnDetailBox = ({
     nativeCoinSymbol,
     chain,
     token,
+    delegatedFee,
   } = useFocusCurrencySymbolsAndBalances();
 
   // TODO: perform a more accurate checking to see if nativeCoinBalance is enough to pay gas fee
@@ -114,10 +115,11 @@ export const SendL1TxnDetailBox = ({
                   labelBold
                 />
               )}
-              <ListLabelValueItem
+              <ListLabelValueAmountItem
                 label={t('DelegatedGasFee')}
-                value={t('CalculateOnNextStep')}
-                labelBold
+                value={Big(delegatedFee ?? '0').toString()}
+                amount={amount}
+                fee={fee}
                 valueShorten
               />
               <ListLabelValueAmountItem
@@ -125,6 +127,7 @@ export const SendL1TxnDetailBox = ({
                 value={Big('0').add(amount).toString()}
                 amount={amount}
                 fee={fee}
+                valueShorten
               />
             </IonCol>
             <IonCol size={'4'} className={'ion-center'}>
