@@ -1,37 +1,12 @@
 import { Clipboard } from '@capacitor/clipboard';
-import styled from '@emotion/styled';
-import {
-  IonContent,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonPopover,
-} from '@ionic/react';
+import { IonContent, IonIcon, IonLabel, IonPopover } from '@ionic/react';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectTheme } from '../../redux/slices/preferenceSlice';
 import { themeType } from '../../theme/const';
-
-const BorderedBox = styled(IonItem)<{ compact: boolean }>(({ compact }) => ({
-  '--min-height': 'auto',
-  ['&::part(native)']: {
-    color: 'var(--ion-color-primary)',
-    '--border-color': '#7b757f',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderRadius: 8,
-    fontSize: '0.75rem',
-    '--inner-padding-end': '8px',
-    marginInlineStart: 0,
-    height: compact ? 32 : 'auto',
-  },
-  p: {
-    textWrap: 'wrap',
-    width: '100%',
-  },
-}));
+import { BorderedBox } from './box/border-box';
 
 export function CopyBox({
   compact = false,

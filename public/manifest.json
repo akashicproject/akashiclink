@@ -2,7 +2,7 @@
   "short_name": "AW",
   "name": "AkashicLink Staging",
   "description": "Your interface with the Akashic ecosystem",
-  "version": "0.0.31-(8)",
+  "version": "0.0.33",
   "releaseDate": "2024-01-30",
   "icons": {
     "16": "shared-assets/icons/APicon.png",
@@ -15,5 +15,25 @@
     "default_title": "AkashicLink Staging",
     "default_popup": "index.html"
   },
-  "permissions": []
+  "permissions": ["activeTab", "storage", "scripting", "tabs"],
+  "background": {
+    "service_worker": "serviceWorker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "js": ["content.js"],
+      "matches": ["http://*/*", "https://*/*"],
+      "run_at": "document_idle"
+    }
+  ],
+  "externally_connectable": {
+    "ids": ["*"],
+    "matches": [
+      "https://*.google.com/*",
+      "http://*/*",
+      "https://*/*",
+      "http://localhost:3000/*"
+    ]
+  }
 }

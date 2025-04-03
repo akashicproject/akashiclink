@@ -21,6 +21,7 @@ import { IonReactMemoryRouter } from '@ionic/react-router';
 import { useEffect } from 'react';
 
 import { VersionUpdateAlert } from './components/layout/version-update-alert';
+import { PopupTree } from './popup/popup-tree';
 import { useAppSelector } from './redux/app/hooks';
 import { selectTheme } from './redux/slices/preferenceSlice';
 import { history } from './routing/history';
@@ -37,19 +38,12 @@ const InitializeApp = () => {
 
   // Initialize theme
   const storedTheme = useAppSelector(selectTheme);
-  /**
-   * Add 'dark' to all elements on the page
-   */
   const toggleDarkTheme = (setDark: boolean) => {
     document.body.classList.toggle('dark', setDark);
     document.body.classList.toggle('light', !setDark);
   };
 
-  /**
-   * Respond to a new theme being set
-   */
   useEffect(() => {
-    // Theme is explicitly light or dark
     toggleDarkTheme(storedTheme === themeType.DARK);
   }, [storedTheme]);
 
@@ -61,10 +55,15 @@ const InitializeApp = () => {
 export default function App() {
   InitializeApp();
 
+  // check if webpage request, if yes skip app and render popup page tree
+  const query = new URLSearchParams(window.location.search);
+  const type = query.get('type');
+
   return (
     <IonApp>
       <IonReactMemoryRouter history={history}>
-        <NavigationTree />
+        {type === 'webPageRequest' && <PopupTree />}
+        {type !== 'webPageRequest' && <NavigationTree />}
       </IonReactMemoryRouter>
       {process.env.REACT_APP_SKIP_UPDATE_CHECK !== 'true' && (
         <VersionUpdateAlert />
