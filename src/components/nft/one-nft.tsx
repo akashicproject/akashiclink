@@ -43,18 +43,18 @@ export function OneNft(props: Props) {
       style={
         props.isBig
           ? {
-              ...props.style,
               width: '181px',
               height: '245px',
               padding: '16px',
               gap: '16px',
+              ...props.style,
             }
           : {
-              ...props.style,
-              width: '193px',
-              height: '254px',
+              width: '138px',
+              height: '190px',
               padding: '8px',
-              gap: '10px',
+              gap: '8px',
+              ...props.style,
             }
       }
       onClick={props.select}
