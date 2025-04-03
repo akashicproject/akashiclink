@@ -5,6 +5,7 @@
   width: 24px;
   height: 24px;
   right: -5px;
+  top: 38px;
 }
 
 .swiper-button-prev {
@@ -14,6 +15,7 @@
   width: 24px;
   height: 24px;
   left: -5px;
+  top: 38px;
 }
 
 .swiper-button-next::after {
@@ -27,4 +29,17 @@
 .swiper-slide {
   display: flex;
   justify-content: center;
+}
+
+.swiper-slide-active {
+  margin: auto -20px;
+}
+
+.swiper-slide-prev {
+  margin-left: 20px;
+}
+
+.swiper-wrapper {
+  display: flex;
+  align-items: center;
 }

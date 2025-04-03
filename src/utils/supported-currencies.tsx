@@ -104,13 +104,13 @@ const MAINNET_CURRENCIES: WalletCurrencyMetadata[] = [
   {
     symbol: 'USDT-ERC20',
     currency: makeWalletCurrency(CoinSymbol.Ethereum_Mainnet, 'USDT'),
-    logo: '/shared-assets/images/erc-usdt.png',
+    logo: '/shared-assets/images/usdt.png',
     icon: '/shared-assets/icons/eth_icon.png',
   },
   {
     symbol: 'USDT-TRC20',
     currency: makeWalletCurrency(CoinSymbol.Tron, 'USDT'),
-    logo: '/shared-assets/images/trc-usdt.png',
+    logo: '/shared-assets/images/usdt.png',
     icon: '/shared-assets/icons/trx_icon.png',
   },
 ];
@@ -143,13 +143,13 @@ const TESTNET_CURRENCIES: WalletCurrencyMetadata[] = [
   {
     symbol: 'tUSDT-ERC20',
     currency: makeWalletCurrency(CoinSymbol.Görli, 'USDT'),
-    logo: '/shared-assets/images/erc-usdt.png',
+    logo: '/shared-assets/images/usdt.png',
     icon: '/shared-assets/icons/eth_icon.png',
   },
   {
     symbol: 'tUSDT-TRC20',
     currency: makeWalletCurrency(CoinSymbol.Tron_Nile, 'USDT'),
-    logo: '/shared-assets/images/trc-usdt.png',
+    logo: '/shared-assets/images/usdt.png',
     icon: '/shared-assets/icons/trx_icon.png',
   },
 ];

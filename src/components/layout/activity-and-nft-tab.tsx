@@ -59,14 +59,14 @@ export const ActivityAndNftTab = () => {
     <div>
       <Tabs>
         <TabButton
-          style={{ width: '50%' }}
+          style={{ width: '50%', marginInline: '0' }}
           id={'activity'}
           onClick={() => setTab('activity')}
         >
           {t('Activity')}
         </TabButton>
         <TabButton
-          style={{ width: '50%' }}
+          style={{ width: '50%', marginInline: '0' }}
           id={'nft'}
           onClick={() => setTab('nft')}
         >

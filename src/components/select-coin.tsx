@@ -123,9 +123,10 @@ export function SelectCoin() {
    * - Update global state
    */
   const handleSlideChange = () => {
-    setSwiperIdx(swiperRef?.activeIndex ?? 0);
+    setSwiperIdx(swiperRef?.realIndex ?? 0);
+    console.log(swiperRef);
 
-    const wc = WALLET_CURRENCIES[swiperRef?.activeIndex ?? 0];
+    const wc = WALLET_CURRENCIES[swiperRef?.realIndex ?? 0];
     setFocusCurrency(wc);
 
     const conversionRate = findExchangeRate(wc);
@@ -144,23 +145,64 @@ export function SelectCoin() {
             onSlideChange={handleSlideChange}
             slidesPerView={3}
             centeredSlides={true}
-            spaceBetween={0}
+            // spaceBetween={0}
             navigation={{
               enabled: true,
             }}
+            style={{ position: 'relative' }}
+            loop={true}
           >
-            {WALLET_CURRENCIES.map(({ logo, symbol }, idx) => {
+            {WALLET_CURRENCIES.map(({ logo, symbol, currency }, idx) => {
               return (
-                <SwiperSlide key={symbol}>
+                <SwiperSlide
+                  key={symbol}
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                  }}
+                >
                   <IonImg
                     alt={''}
                     src={logo}
                     style={
                       swiperIdx == idx
-                        ? { width: '56px', height: '56px' }
-                        : { width: '32px', height: '32px', opacity: 0.2 }
+                        ? { height: '56px', width: '56px' }
+                        : {
+                            width: '32px',
+                            height: '32px',
+                            opacity: 0.2,
+                            filter: 'grayscale(100%)',
+                          }
                     }
                   />
+                  {currency[1] && (
+                    <IonImg
+                      src={
+                        WALLET_CURRENCIES.find(
+                          (wc) => wc.currency[0] === currency[0]
+                        )?.logo
+                      }
+                      style={
+                        swiperIdx == idx
+                          ? {
+                              height: '30px',
+                              position: 'absolute',
+                              top: 0,
+                              left: '56px',
+                            }
+                          : {
+                              width: '16px',
+                              height: '16px',
+                              opacity: 0.2,
+                              filter: 'grayscale(100%)',
+                              position: 'absolute',
+                              top: 0,
+                              left: '49px',
+                            }
+                      }
+                    />
+                  )}
                 </SwiperSlide>
               );
             })}

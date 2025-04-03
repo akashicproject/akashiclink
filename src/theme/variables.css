@@ -85,14 +85,14 @@ http://ionicframework.com/docs/theming/ */
   --ion-white-button-background: #f3f5f6;
 
   /** select **/
-  --ion-color-select: #c297ff;
+  --ion-color-select: #290056;
 
   /** header-background **/
   --ion-logged-header: #290056;
   --ion-slider: #c297ff;
 
   /** setting **/
-  --ion-settings-color: #4a454e;
+  --ion-settings-color: #290056;
 
   /** iamges for swiper **/
   --swiper-button-prev-background-image: url('/public/shared-assets/images/arrow-back.png');
@@ -118,6 +118,11 @@ ion-select::part(text) {
 ion-select::part(icon) {
   color: var(--ion-color-dark);
   opacity: 1;
+}
+
+ion-popover {
+  --width: calc(calc(calc(6 / var(--ion-grid-columns, 12)) * 100%) - 20px);
+  --max-width: calc(calc(calc(6 / var(--ion-grid-columns, 12)) * 100%) - 20px);
 }
 
 .select-interface-option {

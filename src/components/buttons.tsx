@@ -48,6 +48,7 @@ const tabButtonCss: CSSInterpolation = {
     background: 'transparent',
     boxShadow: 'none',
     borderBottom: '2px solid #CCC4CF',
+    borderRadius: '0',
     ...buttonTextBaseCss,
     [':active, :focus']: {
       borderBottom: '2px solid #C297FF',
