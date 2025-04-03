@@ -1,6 +1,4 @@
 import type {
-  IEstimateGasFee,
-  IEstimateGasFeeResponse,
   ILookForL2Address,
   ILookForL2AddressResponse,
   IPrepareL1TxnResponse,
@@ -32,20 +30,6 @@ export const OwnersAPI = {
     let requestUrl = `/nft/look-for-l2-address?to=${l2Check.to}`;
     if (l2Check.coinSymbol) requestUrl += `&coinSymbol=${l2Check.coinSymbol}`;
     const response = await axiosBase.get(requestUrl);
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-    return response.data;
-  },
-
-  estimateGasFee: async (
-    transactionData: IEstimateGasFee
-  ): Promise<IEstimateGasFeeResponse> => {
-    const response = await axiosBase.post(
-      `/key/estimate-gas-fee`,
-      JSON.stringify(transactionData)
-    );
     const { data, status } = response;
     if (status >= 400) {
       throw new Error(data.message);
