@@ -28,6 +28,7 @@
       "https://*.akashicpay.com/*",
       "https://*.staging-akashicpay.com/*",
       "https://*.akashicfx.com/*",
+      "https://*.testnet.akashicfx.com/*",
       "http://localhost:3000/*",
       "http://localhost:3001/*"
     ]
