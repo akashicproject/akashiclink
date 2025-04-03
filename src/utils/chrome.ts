@@ -10,6 +10,7 @@ export const EXTENSION_ERROR = {
   RECEIVING_END_DOES_NOT_EXIST:
     'Could not establish connection. Receiving end does not exist.', // chrome error string
   WC_SESSION_NOT_FOUND: 'WC_SESSION_NOT_FOUND',
+  COULD_NOT_READ_ADDRESS: 'COULD_NOT_READ_ADDRESS',
 };
 
 export const ETH_METHOD = {

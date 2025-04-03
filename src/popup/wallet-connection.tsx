@@ -73,7 +73,10 @@ export function WalletConnection() {
       console.warn('Failed to connect', e);
       responseToSite({
         method: ETH_METHOD.REQUEST_ACCOUNTS,
-        error: EXTENSION_ERROR.WC_SESSION_NOT_FOUND,
+        error:
+          activeAccountL1Address === ''
+            ? EXTENSION_ERROR.COULD_NOT_READ_ADDRESS
+            : EXTENSION_ERROR.WC_SESSION_NOT_FOUND,
       });
       window.removeEventListener('beforeunload', onPopupClosed);
       await closePopup();

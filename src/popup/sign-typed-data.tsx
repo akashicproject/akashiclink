@@ -158,14 +158,21 @@ export function SignTypedData() {
         },
       });
     } catch (e) {
-      await web3wallet?.respondSessionRequest({
-        topic,
-        response: {
-          id,
-          jsonrpc: '2.0',
-          error: getSdkError('INVALID_METHOD'),
-        },
-      });
+      try {
+        await web3wallet?.respondSessionRequest({
+          topic,
+          response: {
+            id,
+            jsonrpc: '2.0',
+            error: getSdkError('INVALID_METHOD'),
+          },
+        });
+      } finally {
+        responseToSite({
+          method: ETH_METHOD.SIGN_TYPED_DATA,
+          error: EXTENSION_ERROR.UNKNOWN,
+        });
+      }
     }
   };
   const rejectSessionRequest = async () => {
