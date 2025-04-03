@@ -90,7 +90,12 @@ export const ActivityAndNftTabComponent = ({
       <TabButton
         style={{ width: '50%', marginInline: '0' }}
         id={'nft'}
-        onClick={() => setNftTab(true)}
+        onClick={() => {
+          if (!fromNfts) {
+            history.push(akashicPayPath(urls.nfts));
+          }
+          setNftTab(true);
+        }}
         class={nftTab ? 'open' : ''}
       >
         NFT
