@@ -88,6 +88,7 @@ export const useSendL2Transaction = () => {
 export const useSendL1Transaction = () => {
   const nitr0genApi = new Nitr0genApi();
   const dispatch = useAppDispatch();
+  const valueOfAmountInUSDT = useValueOfAmountInUSDT();
 
   const trigger = async (
     signedTransactionData: ITransactionProposalClientSideOtk
@@ -99,17 +100,34 @@ export const useSendL1Transaction = () => {
         )
       ).$umid;
 
+      const hideSmallTransactions = await Preferences.get({
+        key: 'hide-small-balances',
+      });
+
       const { ownedIdentity } = signedTransactionData;
-      dispatch(
-        addLocalTransaction({
-          ...signedTransactionData,
-          status: TransactionStatus.PENDING,
-          date: new Date(),
-          layer: TransactionLayer.L1,
-          l2TxnHash,
-          senderIdentity: ownedIdentity,
-        })
+
+      const usdtValue = valueOfAmountInUSDT(
+        signedTransactionData.amount,
+        signedTransactionData.coinSymbol,
+        signedTransactionData.tokenSymbol
       );
+
+      // Only store locally if we are not hiding the transaction
+      if (
+        (hideSmallTransactions && usdtValue.gte(1)) ||
+        !hideSmallTransactions
+      ) {
+        dispatch(
+          addLocalTransaction({
+            ...signedTransactionData,
+            status: TransactionStatus.PENDING,
+            date: new Date(),
+            layer: TransactionLayer.L1,
+            l2TxnHash,
+            senderIdentity: ownedIdentity,
+          })
+        );
+      }
 
       return {
         isSuccess: true,
