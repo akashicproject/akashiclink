@@ -111,8 +111,8 @@ export class Nitr0genApi {
   public async createKey(otk: IKeyExtended, coinSymbol: CoinSymbol) {
     const tx = await this.keyCreateTransaction(
       otk,
-      NetworkDictionary[coinSymbol].nitr0gen,
-      coinSymbol
+      NetworkDictionary[coinSymbol].nitr0genSymbol,
+      NetworkDictionary[coinSymbol].nitr0genNetwork
     );
     const response = await this.post<
       ActiveLedgerResponse<IKeyCreationResponse>
@@ -168,7 +168,7 @@ export class Nitr0genApi {
     coinSymbol: CoinSymbol,
     signedTx: IBaseTransactionWithDbIndex
   ): Promise<INewNitr0genKey> {
-    const nitr0genCoin = NetworkDictionary[coinSymbol].nitr0gen;
+    const nitr0genCoin = NetworkDictionary[coinSymbol].nitr0genSymbol;
     if (nitr0genCoin === undefined) {
       throw new Error(
         `Key creation failed due to unsupported network: ${coinSymbol}`
@@ -298,7 +298,7 @@ export class Nitr0genApi {
   async keyCreateTransaction(
     otk: IKeyExtended,
     coinSymbol: string,
-    network: CoinSymbol
+    network: string
   ): Promise<IBaseTransactionWithDbIndex> {
     // Build Transaction
     const txBody: IBaseTransactionWithDbIndex = {

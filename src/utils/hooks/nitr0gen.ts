@@ -121,7 +121,7 @@ export const useActivateNewAccount = () => {
     for (const coinSymbol of allowedChains) {
       const signedTx = await nitr0genApi.keyCreateTransaction(
         { ...activateNewAccountData.otk, identity: otkIdentity },
-        NetworkDictionary[coinSymbol].nitr0gen,
+        NetworkDictionary[coinSymbol].nitr0genSymbol,
         coinSymbol
       );
       keysToCreate.push({ coinSymbol, signedTx });
