@@ -87,6 +87,7 @@ const AutoLockAccordion = ({
                 setAutoLockTime(item.value);
               }}
               width={'33.33%'}
+              mode="md"
             >
               <h5 className="ion-no-margin">{item.label}</h5>
             </SettingsRadio>

@@ -38,6 +38,7 @@ const LanguageRadio = ({
             value={item.locale}
             onClick={(_) => setSelectedLanguage(item.locale)}
             width={'100%'}
+            mode="md"
           >
             <h5 className="ion-no-margin">{item.title.toUpperCase()}</h5>
           </SettingsRadio>
