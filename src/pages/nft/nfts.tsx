@@ -2,7 +2,7 @@ import './ntf.css';
 
 import styled from '@emotion/styled';
 import type { INftResponse } from '@helium-pay/backend';
-import { IonIcon, IonSpinner } from '@ionic/react';
+import { IonIcon, IonRow, IonSpinner } from '@ionic/react';
 import { alertCircleOutline, arrowBack } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -79,21 +79,22 @@ export function Nfts() {
     <>
       <NftLayout background={false}>
         <StyledDiv>
-          <SquareWhiteButton
-            class="icon-button"
-            style={{
-              height: '40px',
-              width: '40px',
-            }}
-            onClick={() => history.push(akashicPayPath(urls.loggedFunction))}
-          >
-            <IonIcon
-              class="icon-button-icon"
-              slot="icon-only"
-              icon={arrowBack}
-            />
-          </SquareWhiteButton>
-
+          <IonRow style={{ justifyContent: 'start' }}>
+            <SquareWhiteButton
+              class="icon-button"
+              style={{
+                height: '40px',
+                width: '40px',
+              }}
+              onClick={() => history.push(akashicPayPath(urls.loggedFunction))}
+            >
+              <IonIcon
+                class="icon-button-icon"
+                slot="icon-only"
+                icon={arrowBack}
+              />
+            </SquareWhiteButton>
+          </IonRow>
           {isLoading ? (
             <NoNtfWrapper>
               <IonSpinner name="circular"></IonSpinner>
