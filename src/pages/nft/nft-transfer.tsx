@@ -32,6 +32,7 @@ import {
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 import { OwnersAPI } from '../../utils/api';
+import { useNftTransfer } from '../../utils/hooks/nitr0gen';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { displayLongText } from '../../utils/long-text';
@@ -103,6 +104,7 @@ export function NftTransfer() {
     SearchResult.NoInput
   );
   const { activeAccount } = useAccountStorage();
+  const { trigger: triggerNftTransfer } = useNftTransfer();
 
   const [alert, setAlert] = useState(formAlertResetState);
   const [loading, setLoading] = useState(false);
@@ -157,7 +159,7 @@ export function NftTransfer() {
       };
       const signedTx = await signTxBody(verifiedNft.txToSign, signerOtk);
 
-      const response = await OwnersAPI.nftTransferUsingClientSideOtk({
+      const response = await triggerNftTransfer({
         signedTx,
         nftName: currentNft.name,
         toAddress: toAddress,
@@ -166,8 +168,8 @@ export function NftTransfer() {
       const result = {
         sender: activeAccount?.identity,
         receiver: toAddress,
-        nftName: response.nftName,
-        acnsAlias: response.acnsAlias,
+        nftName: currentNft.name,
+        acnsAlias: currentNft.acns?.name || '',
         txHash: response.txHash,
       };
       history.push({

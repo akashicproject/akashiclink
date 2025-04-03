@@ -1,8 +1,12 @@
+import { datadogRum } from '@datadog/browser-rum';
 import {
   type ITransactionProposalClientSideOtk,
   type ITransactionSettledResponse,
   TransactionLayer,
   TransactionStatus,
+  type ITransferNftUsingClientSideOtk,
+  nftErrors,
+  type ITransferNftResponse,
 } from '@helium-pay/backend';
 
 import { useAppDispatch } from '../../redux/app/hooks';
@@ -60,6 +64,48 @@ export const useSendL2Transaction = () => {
         reason: error instanceof Error ? error.message : 'Unknown error',
       };
     }
+  };
+  return { trigger };
+};
+
+export const useNftTransfer = () => {
+  const nitr0genApi = new Nitr0genApi();
+
+  const trigger = async (
+    signedTransactionData: ITransferNftUsingClientSideOtk
+  ): Promise<
+    Omit<ITransferNftResponse, 'nftName' | 'ownerIdentity' | 'acnsAlias'>
+  > => {
+    const response = await nitr0genApi.sendSignedTx(
+      signedTransactionData.signedTx
+    );
+    nitr0genApi.checkForNitr0genError(response);
+
+    // Double-check nftStream and acnsStream
+    if (!response.$streams || !response.$streams.updated) {
+      const error = new Error(
+        `${nftErrors.nftTransferError}, $streams is empty`
+      );
+      datadogRum.addError(error);
+      throw error;
+    }
+    let updatedAcnsStreamId = null;
+    for (const streamUpdated of response.$streams.updated) {
+      if ('.acm' === streamUpdated.name) {
+        updatedAcnsStreamId = streamUpdated.id;
+      }
+    }
+    if (!updatedAcnsStreamId) {
+      const error = new Error(
+        `${nftErrors.nftTransferError}, updatedAcnsStreamId is empty`
+      );
+      datadogRum.addError(error);
+      throw error;
+    }
+
+    return {
+      txHash: response.$umid,
+    };
   };
   return { trigger };
 };

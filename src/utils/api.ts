@@ -12,8 +12,6 @@ import type {
   ITransactionSettledResponse,
   ITransactionVerifyResponse,
   ITransferNft,
-  ITransferNftResponse,
-  ITransferNftUsingClientSideOtk,
   IUpdateAcns,
   IUpdateAcnsResponse,
   IUpdateAcnsUsingClientSideOtk,
@@ -99,20 +97,6 @@ export const OwnersAPI = {
   ): Promise<IVerifyNftResponse> => {
     const response = await axiosBaseV1.post(
       `/nft/verify`,
-      JSON.stringify(payload)
-    );
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-    return response.data;
-  },
-
-  nftTransferUsingClientSideOtk: async (
-    payload: ITransferNftUsingClientSideOtk
-  ): Promise<ITransferNftResponse> => {
-    const response = await axiosBaseV1.post(
-      `/nft/transfer`,
       JSON.stringify(payload)
     );
     const { data, status } = response;
