@@ -11,10 +11,6 @@ import type {
   ITransactionProposal,
   ITransactionSettledResponse,
   ITransactionVerifyResponse,
-  IUpdateAcns,
-  IUpdateAcnsResponse,
-  IUpdateAcnsUsingClientSideOtk,
-  IVerifyUpdateAcnsResponse,
 } from '@helium-pay/backend';
 
 import { axiosBase, axiosBaseV1 } from './axios-helper';
@@ -83,34 +79,6 @@ export const OwnersAPI = {
     let requestUrl = `/nft/look-for-l2-address?to=${l2Check.to}`;
     if (l2Check.coinSymbol) requestUrl += `&coinSymbol=${l2Check.coinSymbol}`;
     const response = await axiosBase.get(requestUrl);
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-    return response.data;
-  },
-
-  verifyUpdateAcns: async (
-    payload: IUpdateAcns
-  ): Promise<IVerifyUpdateAcnsResponse> => {
-    const response = await axiosBaseV1.post(
-      `/nft/acns/verify`,
-      JSON.stringify(payload)
-    );
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-    return response.data;
-  },
-
-  updateAcnsUsingClientSideOtk: async (
-    payload: IUpdateAcnsUsingClientSideOtk
-  ): Promise<IUpdateAcnsResponse> => {
-    const response = await axiosBaseV1.post(
-      `/nft/acns`,
-      JSON.stringify(payload)
-    );
     const { data, status } = response;
     if (status >= 400) {
       throw new Error(data.message);

@@ -2,11 +2,12 @@ import { datadogRum } from '@datadog/browser-rum';
 import {
   type ITransactionProposalClientSideOtk,
   type ITransactionSettledResponse,
+  type ITransferNftResponse,
+  type ITransferNftUsingClientSideOtk,
+  type IUpdateAcnsUsingClientSideOtk,
+  nftErrors,
   TransactionLayer,
   TransactionStatus,
-  type ITransferNftUsingClientSideOtk,
-  nftErrors,
-  type ITransferNftResponse,
 } from '@helium-pay/backend';
 
 import { useAppDispatch } from '../../redux/app/hooks';
@@ -106,6 +107,31 @@ export const useNftTransfer = () => {
     return {
       txHash: response.$umid,
     };
+  };
+  return { trigger };
+};
+
+export const useUpdateAcns = () => {
+  const nitr0genApi = new Nitr0genApi();
+
+  const trigger = async (
+    signedTransactionData: IUpdateAcnsUsingClientSideOtk
+  ): Promise<{ txHash: string }> => {
+    try {
+      const response = await nitr0genApi.sendSignedTx(
+        signedTransactionData.signedTx
+      );
+      nitr0genApi.checkForNitr0genError(response);
+
+      return {
+        txHash: response.$umid,
+      };
+    } catch (err) {
+      const error =
+        err instanceof Error ? err : new Error(nftErrors.linkingAcnsFailed);
+      datadogRum.addError(error);
+      throw err;
+    }
   };
   return { trigger };
 };

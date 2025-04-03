@@ -96,11 +96,7 @@ export function Nft() {
           </IonRow>
 
           {currentNft && currentNft.acns && (
-            <AasListingSwitch
-              name={currentNft.acns.name}
-              aasValue={currentNft.acns?.value ?? ''}
-              setAlert={setAlert}
-            />
+            <AasListingSwitch aas={currentNft.acns} setAlert={setAlert} />
           )}
         </IonGrid>
       </NftWrapper>
