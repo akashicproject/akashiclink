@@ -3,9 +3,8 @@ import styled from '@emotion/styled';
 import { IonCol, IonRow, IonText } from '@ionic/react';
 import axios from 'axios';
 import { isEqual } from 'lodash';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 
 import {
   AlertBox,
@@ -20,13 +19,17 @@ import { SecretWords } from '../../components/wallet-setup/secret-words';
 import { urls } from '../../constants/urls';
 import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
 import {
+  onClear,
+  onClearOtk,
   onInputChange,
   selectCreateWalletForm,
   selectMaskedPassPhrase,
   selectOtk,
 } from '../../redux/slices/createWalletSlice';
-import { historyResetStackAndRedirect } from '../../routing/history';
-import { akashicPayPath } from '../../routing/navigation-tabs';
+import {
+  historyReplace,
+  historyResetStackAndRedirect,
+} from '../../routing/history';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { createAccountWithKeys } from './backend-interaction';
 
@@ -40,7 +43,6 @@ export const StyledSpan = styled.span({
 
 export function CreateWalletSecretConfirm() {
   const { t } = useTranslation();
-  const history = useHistory();
   const otk = useAppSelector(selectOtk);
   const createWalletForm = useAppSelector(selectCreateWalletForm);
   const maskedPassPhrase = useAppSelector(selectMaskedPassPhrase);
@@ -48,11 +50,23 @@ export function CreateWalletSecretConfirm() {
 
   const [alert, setAlert] = useState(formAlertResetState);
 
-  /** Tracking response from server after account is created */
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
   const { addLocalAccount, setActiveAccount, addLocalOtkAndCache } =
     useAccountStorage();
+
+  useEffect(() => {
+    // Redirect user to login if soft close during create wallet request
+    if (!isCreatingAccount && !otk && !alert.visible) {
+      historyResetStackAndRedirect(urls.akashicPay);
+    }
+    // losing Password in the previous step would never allow user to go forward again,
+    // redirect user back to login page
+    if (!createWalletForm.password || !createWalletForm.confirmPassword) {
+      dispatch(onClear());
+      historyResetStackAndRedirect(urls.akashicPay);
+    }
+  }, [otk, isCreatingAccount]);
 
   async function activateWalletAccount() {
     // Submit request and display "creating account loader"
@@ -68,14 +82,17 @@ export function CreateWalletSecretConfirm() {
       ) {
         throw new Error(t('InvalidSecretPhrase'));
       }
+
+      // losing Password would never allow user to go forward again, redirect user back to login page
       if (!otk || !createWalletForm.password) {
-        throw new Error('Something went wrong. Try again');
+        dispatch(onClear());
+        historyResetStackAndRedirect(urls.akashicPay);
+        return;
       }
       setIsCreatingAccount(true);
 
-      // TODO: When going to phase2 (i.e. v1 endpoints only or local otk only), enable this
-      // - Remove the 2FA step when creating account, go directly here. (email no longer needed)
-      // - Also remove "username" from LocalAccount, use "fullOtk" in newAccount and addLocalOtk below
+      // all checks are passed, immediately clear otk so otk is not reusable
+      dispatch(onClearOtk());
 
       const { otk: fullOtk, keysNotCreated } = await createAccountWithKeys(otk);
 
@@ -101,13 +118,12 @@ export function CreateWalletSecretConfirm() {
       let message = error.message || 'GenericFailureMsg';
       if (axios.isAxiosError(e)) message = e.response?.data?.message || message;
       setAlert(errorAlertShell(message));
-    } finally {
       setIsCreatingAccount(false);
     }
   }
 
   const onGoBack = () => {
-    history.replace(akashicPayPath(urls.createWalletSecretPhrase));
+    historyReplace(urls.createWalletSecretPhrase);
   };
 
   return (
@@ -115,8 +131,8 @@ export function CreateWalletSecretConfirm() {
       {isCreatingAccount && (
         <Spinner header={'CreatingYourWallet'} warning={'DoNotClose'} />
       )}
-      <MainGrid>
-        <IonRow>
+      <MainGrid style={{ padding: 0 }}>
+        <IonRow className={'ion-grid-column-gap-0'}>
           <IonCol size="12" style={{ textAlign: 'center' }}>
             <h2
               className={
@@ -143,7 +159,7 @@ export function CreateWalletSecretConfirm() {
             </IonText>
           </IonCol>
         </IonRow>
-        <IonRow>
+        <IonRow className={'ion-grid-row-gap-xxs'}>
           <IonCol size={'12'}>
             <SecretWords
               initialWords={maskedPassPhrase}

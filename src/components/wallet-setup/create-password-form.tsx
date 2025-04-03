@@ -61,7 +61,7 @@ export function CreatePasswordForm({
               {t('CreatePasswordInfo')}
             </p>
           </IonCol>
-          <IonRow className="ion-grid-row-gap-xs">
+          <IonRow className="w-100 ion-grid-row-gap-xs">
             <IonCol size="12">
               <StyledInput
                 label={t('Password')}

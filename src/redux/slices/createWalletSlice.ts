@@ -51,6 +51,12 @@ export const createWalletSlice = createAppSlice({
         };
       }
     ),
+    onClearOtk: create.reducer((state) => {
+      return {
+        ...state,
+        otk: null,
+      };
+    }),
     onClear: create.reducer(() => {
       return initialState;
     }),
@@ -99,7 +105,7 @@ export const createWalletSlice = createAppSlice({
 });
 
 // Action creators are generated for each case reducer function.
-export const { onInputChange, onClear, generateOtkAsync } =
+export const { onInputChange, onClearOtk, onClear, generateOtkAsync } =
   createWalletSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.

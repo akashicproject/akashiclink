@@ -1,7 +1,6 @@
 import { IonCol, IonRow, IonText } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 
 import {
   AlertBox,
@@ -19,15 +18,13 @@ import {
   selectError,
   selectOtk,
 } from '../../redux/slices/createWalletSlice';
-import type { LocationState } from '../../routing/history';
-import { akashicPayPath } from '../../routing/navigation-tabs';
+import { historyReplace } from '../../routing/history';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 
 export function CreateWalletSecret() {
   useIosScrollPasswordKeyboardIntoView();
   const { t } = useTranslation();
 
-  const history = useHistory<LocationState>();
   const otk = useAppSelector(selectOtk);
   const createWalletError = useAppSelector(selectError);
   const dispatch = useAppDispatch();
@@ -50,9 +47,7 @@ export function CreateWalletSecret() {
   }, [createWalletError, t]);
 
   const onConfirmSecret = () => {
-    history.replace({
-      pathname: akashicPayPath(urls.createWalletSecretPhraseConfirm),
-    });
+    historyReplace(urls.createWalletSecretPhraseConfirm);
   };
 
   return (
@@ -113,9 +108,7 @@ export function CreateWalletSecret() {
             <PurpleButton
               expand="block"
               disabled={isDisable}
-              onClick={() => {
-                onConfirmSecret();
-              }}
+              onClick={onConfirmSecret}
             >
               {t('Next')}
             </PurpleButton>

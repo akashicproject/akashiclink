@@ -24,7 +24,7 @@ const LoaderDiv = styled.div({
 export const Spinner = ({
   header,
   warning,
-  animationDuration = '30s',
+  animationDuration = 'auto',
 }: {
   header?: string;
   warning?: string;
@@ -42,6 +42,7 @@ export const Spinner = ({
     color: 'var(--ion-color-primary-10)',
     gap: '8px',
     alignItems: 'center',
+    justifyContent: 'center',
   });
   const StyledIonIcon = styled(IonIcon)`
     font-size: 24px;
@@ -78,9 +79,7 @@ export const Spinner = ({
       </div>
       {warning && (
         <StyledDiv>
-          <StyledIonIcon
-            src={'/shared-assets/images/alert.svg'}
-          ></StyledIonIcon>
+          <StyledIonIcon src={'/shared-assets/images/alert.svg'} />
           <span>{t(warning)}</span>
         </StyledDiv>
       )}

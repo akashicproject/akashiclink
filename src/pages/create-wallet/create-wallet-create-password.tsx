@@ -1,6 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { userConst } from '@helium-pay/backend';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   errorAlertShell,
@@ -64,6 +64,10 @@ export function CreateWalletPassword() {
       setAlert(errorAlertShell('PasswordHelperText'));
     }
   }
+
+  useEffect(() => {
+    dispatch(onClear());
+  }, []);
 
   const onClickCancel = () => {
     dispatch(onClear());
