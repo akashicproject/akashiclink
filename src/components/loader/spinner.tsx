@@ -23,14 +23,19 @@ const LoaderDiv = styled.div({
 export const Spinner = ({
   header,
   warning,
+  animationDuration = '5s',
 }: {
   header?: string;
   warning?: string;
+  animationDuration?: string;
 }) => {
   const [storedTheme] = useTheme();
   const { t } = useTranslation();
   return (
-    <LoaderDiv className="fade-in-image">
+    <LoaderDiv
+      className="fade-in-image"
+      style={{ animationDuration: animationDuration }}
+    >
       <div
         style={{
           display: 'flex',

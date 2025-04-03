@@ -38,7 +38,6 @@ import {
   NavigationPriority,
   ResetPageButton,
 } from '../../utils/last-page-storage';
-import { delay } from '../../utils/timer-function';
 
 enum CreateWalletView {
   RequestAccount = 'RequestAccount',
@@ -221,7 +220,6 @@ export function CreateWallet() {
           message = e.response?.data?.message || message;
         setAlertActivate(errorAlertShell(message));
       } finally {
-        await delay(2500);
         setCreatingAccount(false);
       }
     } else setAlertActivate(errorAlertShell(t('PasswordHelperText')));
@@ -249,7 +247,11 @@ export function CreateWallet() {
   return (
     <PublicLayout className="vertical-center">
       {creatingAccount && (
-        <Spinner header={'CreatingYourWallet'} warning={'DoNotClose'} />
+        <Spinner
+          header={'CreatingYourWallet'}
+          warning={'DoNotClose'}
+          animationDuration="50s"
+        />
       )}
       <MainGrid>
         {view === CreateWalletView.AccountCreated && (
