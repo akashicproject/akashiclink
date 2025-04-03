@@ -15,6 +15,7 @@ import { themeType } from '../../theme/const';
 import { formatAmount } from '../../utils/formatAmount';
 import { formatDate } from '../../utils/formatDate';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
+import { displayLongText } from '../../utils/long-text';
 import { Divider } from '../common/divider';
 import { useTheme } from '../providers/PreferenceProvider';
 
@@ -256,7 +257,7 @@ export function OneActivity({
                   marginBottom: '4px',
                 }}
               >
-                {transfer?.nft?.name}
+                {displayLongText(transfer?.nft?.account, 20)}
               </NftItem>
             </NftName>
             <NftImage
