@@ -6,6 +6,8 @@ import type {
   IImportWalletResponse,
   IKeyGeneration,
   IKeyGenerationResponse,
+  IL1TransactionSigned,
+  IL1TransactionSignResponse,
   ILoginUser,
   IMinimalUserResponse,
   IRegisterApiPassphrase,
@@ -15,8 +17,6 @@ import type {
   ITempShowOtkPrvResponse,
   ITransactionProposal,
   ITransactionSettledResponse,
-  ITransactionSigned,
-  ITransactionSignResponse,
   ITransactionVerifyResponse,
 } from '@helium-pay/backend';
 
@@ -113,7 +113,7 @@ export const OwnersAPI = {
   },
   signTransaction: async (
     transactionToSignData: ITransactionProposal[]
-  ): Promise<ITransactionSignResponse[]> => {
+  ): Promise<IL1TransactionSignResponse[]> => {
     const response = await axiosOwnerBase.post(
       `/key/sign`,
       JSON.stringify(transactionToSignData)
@@ -126,7 +126,7 @@ export const OwnersAPI = {
     return response.data;
   },
   sendTransaction: async (
-    signedTransactionData: ITransactionSigned[]
+    signedTransactionData: IL1TransactionSigned[]
   ): Promise<ITransactionSettledResponse[]> => {
     const response = await axiosOwnerBase.post(
       `/key/send`,
