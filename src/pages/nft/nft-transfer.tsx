@@ -338,17 +338,16 @@ export function NftTransfer() {
                 <PrimaryButton
                   expand="block"
                   disabled={!inputValue || !searched}
+                  isLoading={loading}
                   onClick={transferNft}
                 >
                   {t('Send')}
-                  {loading ? (
-                    <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
-                  ) : null}
                 </PrimaryButton>
               </IonCol>
               <IonCol>
                 <WhiteButton
                   expand="block"
+                  disabled={loading}
                   onClick={() =>
                     historyGoBackOrReplace(urls.nft, { nft: state })
                   }
