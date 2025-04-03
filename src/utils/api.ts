@@ -410,14 +410,6 @@ export const OwnersAPI = {
     return response.data;
   },
 
-  deleteAccount: async () => {
-    const response = await axiosBase.post(`/owner/me/delete`);
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-  },
-
   estimateGasFee: async (
     transactionData: IEstimateGasFee
   ): Promise<IEstimateGasFeeResponse> => {

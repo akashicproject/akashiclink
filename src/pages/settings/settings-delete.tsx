@@ -16,7 +16,6 @@ import { Spinner } from '../../components/loader/spinner';
 import { useLogout } from '../../components/logout';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 
 export function SettingsDelete() {
@@ -33,7 +32,6 @@ export function SettingsDelete() {
   const deleteAccount = async () => {
     try {
       setIsLoading(true);
-      await OwnersAPI.deleteAccount();
       if (activeAccount) {
         await removeLocalAccount(activeAccount);
         await clearActiveAccount();
