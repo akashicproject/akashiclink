@@ -20,8 +20,8 @@ export function formatAmount(amount: string | bigint): string {
 export function getPrecision(amount: string, feesPaid: string): number {
   return Math.min(
     Math.max(
-      amount.split('.')[1]?.length ?? 2,
-      feesPaid.split('.')[1]?.length ?? 0
+      amount.split('.')[1]?.replace(/0+$/, '').length ?? 2,
+      feesPaid.split('.')[1]?.replace(/0+$/, '').length ?? 0
     ),
     6
   );

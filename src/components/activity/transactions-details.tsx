@@ -37,8 +37,8 @@ const WithdrawDetails = ({
   const isL2 = currentTransfer.layer === TransactionLayer.L2;
 
   const precision = getPrecision(
-    currentTransfer?.amount.toString(),
-    currentTransfer?.feesPaid?.toString() ?? '0'
+    currentTransfer?.amount,
+    currentTransfer?.feesPaid ?? currentTransfer.internalFee?.withdraw ?? '0'
   );
 
   // Calculate total Amount
