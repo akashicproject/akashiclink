@@ -71,7 +71,6 @@
   "UnsupportedCoinError": "This coin is not yet supported",
   "TransactionTooSmall": "The requested transaction amount is too small or has to many decimal places",
   "ValidationError": "One of the submitted fields has an error, please check your inputs",
-  "GenericFailureMsg": "Your operation failed, please try again later.",
   "Copied": "Copied",
   "ErrorPageHeading": "Ops, something went wrong.",
   "ErrorPageDesc": "We are sorry about the inconvenience. Please contact our customer service, or",

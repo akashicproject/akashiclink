@@ -14,13 +14,13 @@ import {
   IonPopover,
   IonRow,
   IonText,
-  useIonRouter,
 } from '@ionic/react';
 import { copyOutline } from 'ionicons/icons';
 import { QRCodeSVG } from 'qrcode.react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { RouteComponentProps } from 'react-router';
+import { Redirect } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
 import { heliumPayPath } from '../../routing/navigation-tree';
@@ -40,8 +40,6 @@ export function LoggedDeposit({
   match: { params },
 }: RouteComponentProps<{ coinSymbol?: string }>) {
   const { t } = useTranslation();
-  const router = useIonRouter();
-  const [isError, setIsError] = useState(false);
 
   const { coinSymbol } = params;
 
@@ -79,13 +77,8 @@ export function LoggedDeposit({
     }, 1000);
   };
 
-  if (!isAddressesLoading && walletAddressDetail === undefined && !isError) {
-    // TODO: Figure out how to stop router pushing a bunch of pages to the history
-    // The "isError" currently prevents this, and unmount: true assures isError is set to false again
-    setIsError(true);
-    router.push(heliumPayPath(urls.error), 'forward', 'push', {
-      unmount: true,
-    });
+  if (!isAddressesLoading && walletAddressDetail === undefined) {
+    return <Redirect to={heliumPayPath(urls.error)} />;
   }
 
   return (
