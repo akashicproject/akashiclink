@@ -13,6 +13,7 @@ import type {
   IKeyGeneration,
   IKeyGenerationResponse,
   ILoginUser,
+  ILoginUserWithOtk,
   IMinimalUserResponse,
   IRegisterApiPassphrase,
   IRequestActivationCode,
@@ -63,7 +64,19 @@ export const OwnersAPI = {
     }
     return response.data;
   },
-
+  loginV1: async (
+    loginData: ILoginUserWithOtk
+  ): Promise<IMinimalUserResponse> => {
+    const response = await axiosBaseV1.post(
+      `/auth/login`,
+      JSON.stringify(loginData)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+    return response.data;
+  },
   login: async (loginData: ILoginUser): Promise<IMinimalUserResponse> => {
     const response = await axiosBase.post(
       `/auth/login`,
@@ -73,7 +86,6 @@ export const OwnersAPI = {
     if (status >= 400) {
       throw new Error(data.message);
     }
-
     return response.data;
   },
   confirmPassword: async (

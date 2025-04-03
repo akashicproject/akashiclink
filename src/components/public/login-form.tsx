@@ -21,7 +21,8 @@ import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { mutate } from 'swr';
-
+import React from 'react';
+import { signImportAuth } from '../../utils/otk-generation';
 /**
  * Form allowing user to login
  * - Dropdown box showing user the locally imported accounts
@@ -29,6 +30,7 @@ import { mutate } from 'swr';
  * - Upload button triggering login request and redirect is successfull
  */
 export function LoginForm() {
+  const {localOtks} = useAccountStorage();
   const history = useHistory();
   const { t } = useTranslation();
   const [alert, setAlert] = useState(formAlertResetState);
@@ -84,11 +86,19 @@ export function LoginForm() {
       setIsLoading(true);
       // await delay(5000);
       if (selectedAccount && password) {
-        await OwnersAPI.login({
-          username: selectedAccount.username,
-          password,
-        });
-
+        const localSelectedOtk = localOtks.find(otk=>otk.identity === selectedAccount.identity);
+        if(localSelectedOtk){
+          await OwnersAPI.loginV1({
+            identity: localSelectedOtk.identity!,
+            signedAuth: signImportAuth(localSelectedOtk.key.prv.pkcs8pem, localSelectedOtk.identity!),
+          });
+        } else {
+          // @TODO remove once #572 is addressed
+          await OwnersAPI.login({
+            username: selectedAccount.username,
+            password
+          }) 
+        }
         datadogRum.setUser({
           id: selectedAccount.username,
         });
