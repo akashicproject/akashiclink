@@ -19,7 +19,7 @@ const config: CapacitorConfig = {
     },
   },
   server:
-    process.env.IS_LIVE_RELOAD === 'true'
+    process.env.NODE_ENV === 'dev'
       ? {
           url: 'http://127.0.0.1:8100',
           cleartext: true,
