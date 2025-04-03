@@ -59,6 +59,7 @@ export const SecretPhraseImport = () => {
   const handleConfirmRecoveryPhrase = async () => {
     try {
       const privateKey = await restoreOtk(phrase.join(' '));
+      await lastPageStorage.clear();
       await lastPageStorage.store(
         urls.importAccountUrl,
         NavigationPriority.IMMEDIATE,
@@ -69,10 +70,15 @@ export const SecretPhraseImport = () => {
           passPhrase: phrase,
         }
       );
+
+      // Remove phrase state before leaving page
+      setPhrase([]);
+      setInitialWords([]);
+
       history.push({
         pathname: akashicPayPath(urls.importAccountUrl),
         state: {
-          view: View.SubmitSecretPhrase,
+          importView: View.SubmitSecretPhrase,
         },
       });
     } catch (err) {

@@ -23,6 +23,7 @@ import {
   StyledInputErrorPrompt,
 } from '../components/styled-input';
 import { urls } from '../constants/urls';
+import type { LocationState } from '../history';
 import { akashicPayPath } from '../routing/navigation-tree';
 import { OwnersAPI } from '../utils/api';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
@@ -41,16 +42,18 @@ export enum View {
   TwoFa,
 }
 export const importAccountUrl = 'import';
-type LocationViewProp = {
-  view: View;
-};
+
 export function ImportWallet() {
-  const history = useHistory<LocationViewProp>();
+  const history = useHistory<LocationState>();
   const { t, i18n } = useTranslation();
+
+  const stateView = history.location?.state?.importView ?? View.Submit;
 
   /**
    * Track user inputs
    */
+  const [view, setView] = useState(stateView);
+  const [initialView, setInitialView] = useState(stateView);
   const [privateKey, setPrivateKey] = useState<string>();
   const [email, setEmail] = useState<string>();
   const emailSentAlert = {
@@ -60,12 +63,7 @@ export function ImportWallet() {
   };
 
   const { addLocalAccount, setActiveAccount } = useAccountStorage();
-  const [view, setView] = useState(
-    history.location?.state?.view ? history.location.state.view : View.Submit
-  );
-  const [initialView, setInitialView] = useState(
-    history.location?.state?.view ? history.location.state.view : View.Submit
-  );
+
   const [alert, setAlert] = useState(formAlertResetState);
   const [alertPage2, setAlertPage2] = useState(emailSentAlert);
   const [timerReset, setTimerReset] = useState(0);
@@ -81,14 +79,16 @@ export function ImportWallet() {
       async () => {
         const { privateKey, email, view, initialView, passPhrase } =
           await lastPageStorage.getVars();
+        console.log(passPhrase);
         setPassPhrase(passPhrase || '');
-        setView(view || View.Submit);
-        setInitialView(initialView || View.Submit);
+        setView(view ?? stateView);
+        setInitialView(initialView ?? stateView);
         setEmail(email || '');
         setPrivateKey(privateKey || '');
       }
     );
-  }, []);
+    setView(stateView);
+  }, [stateView]);
   /**
    * Uploads user credentials in a request to import an
    * account
@@ -141,6 +141,15 @@ export function ImportWallet() {
         };
         addLocalAccount(importedAccount);
         setActiveAccount(importedAccount);
+
+        // Clear all states when finished
+        setPrivateKey(undefined);
+        setActivationCode(undefined);
+        setPassPhrase(undefined);
+        setEmail(undefined);
+        setTimerReset(timerReset + 1);
+        setView(View.Submit);
+        setInitialView(View.Submit);
         history.push(akashicPayPath(urls.importSuccess));
         localStorage.setItem('spinner', 'true');
       }
@@ -244,6 +253,7 @@ export function ImportWallet() {
               <StyledInput
                 label={t('KeyPair')}
                 type={'text'}
+                value={privateKey}
                 placeholder={t('EnterKeyPair')}
                 onIonInput={({ target: { value } }) => {
                   setPrivateKey(value as string);
@@ -320,6 +330,7 @@ export function ImportWallet() {
               <StyledInput
                 label={t('ActivationCode')}
                 placeholder={t('PleaseEnterCode')}
+                value={activationCode}
                 onIonInput={({ target: { value } }) => {
                   setActivationCode(value as string);
                 }}

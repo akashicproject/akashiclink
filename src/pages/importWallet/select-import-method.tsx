@@ -16,7 +16,7 @@ import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { themeType } from '../../theme/const';
 import { lastPageStorage } from '../../utils/last-page-storage';
-import { importAccountUrl } from '../import-wallet';
+import { importAccountUrl, View } from '../import-wallet';
 
 export const StyledSpan = styled.span({
   fontSize: '12px',
@@ -64,7 +64,9 @@ export const SelectImportMethod = () => {
             style={{ width: '100%' }}
             expand="block"
             onClick={() => {
-              history.push(akashicPayPath(importAccountUrl));
+              history.push(akashicPayPath(importAccountUrl), {
+                initalView: View.Submit,
+              });
             }}
           >
             {t('KeyPair')}

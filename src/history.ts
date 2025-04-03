@@ -1,6 +1,7 @@
 import type { ITransactionVerifyResponse } from '@helium-pay/backend';
 import { createMemoryHistory } from 'history';
 
+import type { View } from './pages/import-wallet';
 import type { TransferResultType } from './pages/nft/nft-transfer-result';
 
 export const history = createMemoryHistory();
@@ -30,4 +31,5 @@ export interface LocationState {
     confirmPassword: string;
     email: string;
   };
+  importView?: View;
 }
