@@ -153,18 +153,7 @@ export const OwnersAPI = {
     }
     return response.data;
   },
-  // TODO: Merge with above
-  checkL2AddressByAcns: async (
-    l2Check: ICheckL2Address
-  ): Promise<string | null> => {
-    const requestUrl = `/nft/acns/check-l2-address?to=${l2Check.to}`;
-    const response = await axiosOwnerBase.get(requestUrl);
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-    return response.data;
-  },
+
   changePassword: async (
     changePasswordData: IChangePassword
   ): Promise<void> => {

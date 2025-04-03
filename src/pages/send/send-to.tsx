@@ -231,9 +231,9 @@ export function SendTo() {
     } else {
       setL1AddressWhenL2('');
       // Check if anything found by Acns
-      const acnsResult = await OwnersAPI.checkL2AddressByAcns({ to: value });
-      if (acnsResult) {
-        setToAddress(acnsResult);
+      const acnsResult = await OwnersAPI.nftSearch({ searchValue: value });
+      if (acnsResult.value) {
+        setToAddress(acnsResult.value);
         setGasFree(true);
       } else {
         setShowNativeCoinNeeded(tokenSymbol !== undefined);
