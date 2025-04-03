@@ -1,6 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
-import type { IBaseTransactionWithDbIndex } from '@helium-pay/backend';
+import type { IBaseAcTransaction } from '@helium-pay/backend';
 import { type INft, L2Regex, nftErrors } from '@helium-pay/backend';
 import { IonCol, IonImg, IonRow, IonSpinner } from '@ionic/react';
 import { debounce } from 'lodash';
@@ -93,7 +93,7 @@ enum SearchResult {
 interface IVerifyNftResponse {
   nftOwnerIdentity: string;
   nftAcnsStreamId: string;
-  txToSign: IBaseTransactionWithDbIndex;
+  txToSign: IBaseAcTransaction;
 }
 
 const verifyNftTransaction = async (

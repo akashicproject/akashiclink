@@ -4,8 +4,8 @@ import { datadogRum } from '@datadog/browser-rum';
 import type {
   CoinSymbol,
   CurrencySymbol,
-  IBaseTransactionWithDbIndex,
-  ITerriTransaction,
+  IBaseAcTransaction,
+  ITerriAcTransaction,
 } from '@helium-pay/backend';
 import { keyError, NetworkDictionary, otherError } from '@helium-pay/backend';
 import axios from 'axios';
@@ -58,7 +58,7 @@ enum TestNetContracts {
 const Nitr0gen =
   process.env.REACT_APP_ENV === 'prod' ? ProductionContracts : TestNetContracts;
 
-export async function signTxBody<T extends IBaseTransactionWithDbIndex>(
+export async function signTxBody<T extends IBaseAcTransaction>(
   txBody: T,
   otk: IKeyExtended
 ): Promise<T> {
@@ -200,8 +200,8 @@ export class Nitr0genApi {
    */
   public async onboardOtkTransaction(
     otk: IKeyExtended
-  ): Promise<IBaseTransactionWithDbIndex> {
-    const txBody: IBaseTransactionWithDbIndex = {
+  ): Promise<IBaseAcTransaction> {
+    const txBody: IBaseAcTransaction = {
       $tx: {
         $namespace: Nitr0gen.Namespace,
         $contract: Nitr0gen.Onboard,
@@ -229,9 +229,9 @@ export class Nitr0genApi {
     otk: IKeyExtended,
     coinSymbol: string,
     network: string
-  ): Promise<IBaseTransactionWithDbIndex> {
+  ): Promise<IBaseAcTransaction> {
     // Build Transaction
-    const txBody: IBaseTransactionWithDbIndex = {
+    const txBody: IBaseAcTransaction = {
       $tx: {
         $namespace: Nitr0gen.Namespace,
         $contract: Nitr0gen.Create,
@@ -258,9 +258,9 @@ export class Nitr0genApi {
   async differentialConsensusTransaction(
     otk: IKeyExtended,
     key: IKeyCreationResponse
-  ): Promise<IBaseTransactionWithDbIndex> {
+  ): Promise<IBaseAcTransaction> {
     // Build Transaction
-    const txBody: IBaseTransactionWithDbIndex = {
+    const txBody: IBaseAcTransaction = {
       $tx: {
         $namespace: Nitr0gen.Namespace,
         $contract: Nitr0gen.DiffConsensus,
@@ -299,12 +299,12 @@ export class Nitr0genApi {
     feesEstimate: string,
     token?: CurrencySymbol,
     ethGasPrice?: string
-  ): Promise<IBaseTransactionWithDbIndex> {
+  ): Promise<IBaseAcTransaction> {
     const contractAddress = NetworkDictionary[network].tokens.find(
       (t) => t.symbol === token
     )?.contract;
 
-    const txBody: IBaseTransactionWithDbIndex = {
+    const txBody: IBaseAcTransaction = {
       $tx: {
         $namespace: Nitr0gen.Namespace,
         $contract: Nitr0gen.CryptoTransfer,
@@ -340,7 +340,7 @@ export class Nitr0genApi {
   async L2Transaction(
     otk: IKeyExtended,
     details: L2TxDetail
-  ): Promise<IBaseTransactionWithDbIndex> {
+  ): Promise<IBaseAcTransaction> {
     const $i = {
       owner: {
         $stream: otk.identity,
@@ -350,7 +350,7 @@ export class Nitr0genApi {
       },
     };
 
-    const txBody: IBaseTransactionWithDbIndex = {
+    const txBody: IBaseAcTransaction = {
       $tx: {
         $namespace: Nitr0gen.Namespace,
         $contract: Nitr0gen.CryptoTransfer,
@@ -382,8 +382,8 @@ export class Nitr0genApi {
     recordType: string,
     recordKey: string,
     value?: string
-  ): Promise<IBaseTransactionWithDbIndex> {
-    const txBody: IBaseTransactionWithDbIndex = {
+  ): Promise<IBaseAcTransaction> {
+    const txBody: IBaseAcTransaction = {
       $sigs: {},
       $tx: {
         $namespace: Nitr0gen.NFTNamespace,
@@ -412,7 +412,7 @@ export class Nitr0genApi {
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   public async sendSignedTx<ResponseT = any>(
-    signedTx: IBaseTransactionWithDbIndex | ITerriTransaction
+    signedTx: IBaseAcTransaction | ITerriAcTransaction
   ): Promise<ActiveLedgerResponse<ResponseT>> {
     return await this.post<ActiveLedgerResponse<ResponseT>>(signedTx);
   }
@@ -424,9 +424,9 @@ export class Nitr0genApi {
     otk: IKeyExtended,
     acnsStreamId: string,
     newOwnerIdentity: string
-  ): Promise<IBaseTransactionWithDbIndex> {
+  ): Promise<IBaseAcTransaction> {
     // Build Transaction
-    const txBody: IBaseTransactionWithDbIndex = {
+    const txBody: IBaseAcTransaction = {
       $tx: {
         $namespace: Nitr0gen.NFTNamespace,
         $contract: Nitr0gen.NFTTransfer,

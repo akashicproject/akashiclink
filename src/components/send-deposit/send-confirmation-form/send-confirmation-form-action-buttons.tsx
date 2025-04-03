@@ -1,6 +1,6 @@
 import type {
-  IBaseTransactionWithDbIndex,
-  ITerriTransaction,
+  IBaseAcTransaction,
+  ITerriAcTransaction,
 } from '@helium-pay/backend';
 import { otherError } from '@helium-pay/backend';
 import { IonAlert, IonCol, IonRow } from '@ionic/react';
@@ -121,13 +121,13 @@ export const SendConfirmationFormActionButtons = ({
       const response = isL2
         ? await triggerSendL2Transaction({
             ...txn,
-            signedTx: signedTxn as IBaseTransactionWithDbIndex,
+            signedTx: signedTxn as IBaseAcTransaction,
             initiatedToNonL2:
               txnsDetail.validatedAddressPair.initiatedToNonL2 ?? '',
           })
         : await triggerSendL1Transaction({
             ...txn,
-            signedTx: signedTxn as ITerriTransaction,
+            signedTx: signedTxn as ITerriAcTransaction,
           });
 
       if (!response.isSuccess) {

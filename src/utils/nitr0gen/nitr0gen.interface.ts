@@ -2,9 +2,9 @@
 import type {
   CoinSymbol,
   CurrencySymbol,
-  IBaseTransactionWithDbIndex,
+  IBaseAcTransaction,
   IInternalFee,
-  ITerriTransaction,
+  ITerriAcTransaction,
   ITransactionBase,
   TransactionLayer,
 } from '@helium-pay/backend';
@@ -86,7 +86,7 @@ export type ITransactionSettledResponse =
  */
 export interface ITransactionForSigning extends ITransactionBase {
   readonly internalFee?: IInternalFee;
-  readonly txToSign: IBaseTransactionWithDbIndex | ITerriTransaction;
+  readonly txToSign: IBaseAcTransaction | ITerriAcTransaction;
   readonly layer: TransactionLayer;
   // Presumably mandatory if layer-1... :/
   readonly feesEstimate?: string;

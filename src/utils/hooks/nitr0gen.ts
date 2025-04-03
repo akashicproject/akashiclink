@@ -1,6 +1,6 @@
 import { Preferences } from '@capacitor/preferences';
 import { datadogRum } from '@datadog/browser-rum';
-import type { IBaseTransactionWithDbIndex } from '@helium-pay/backend';
+import type { IBaseAcTransaction } from '@helium-pay/backend';
 import {
   type ITransactionProposalClientSideOtk,
   type ITransferNftResponse,
@@ -146,7 +146,7 @@ export const useNftTransfer = () => {
   const nitr0genApi = new Nitr0genApi();
 
   const trigger = async (
-    signedTx: IBaseTransactionWithDbIndex
+    signedTx: IBaseAcTransaction
   ): Promise<
     Omit<ITransferNftResponse, 'nftName' | 'ownerIdentity' | 'acnsAlias'>
   > => {
@@ -164,7 +164,7 @@ export const useUpdateAcns = () => {
   const nitr0genApi = new Nitr0genApi();
 
   const trigger = async (
-    signedTx: IBaseTransactionWithDbIndex
+    signedTx: IBaseAcTransaction
   ): Promise<{ txHash: string }> => {
     try {
       const response = await nitr0genApi.sendSignedTx(signedTx);
