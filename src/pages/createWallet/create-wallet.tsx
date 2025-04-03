@@ -128,7 +128,7 @@ export function CreateWallet() {
    * TODO: add helper text re password requirements and passwords not matching
    */
   async function activateWalletAccount() {
-    if (!(activationCode && password && confirmPassword)) return;
+    if (!(activationCode && password && confirmPassword && email)) return;
 
     if (
       validateConfirmPassword(confirmPassword) &&
@@ -143,6 +143,7 @@ export function CreateWallet() {
           password,
           confirmPassword,
           activationCode,
+          email,
           // TODO: add proper social recovery
           socialRecoveryEmail: 'test@mail.com',
         });

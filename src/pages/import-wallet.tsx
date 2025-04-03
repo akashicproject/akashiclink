@@ -53,10 +53,11 @@ export function ImportWallet() {
   }, []);
 
   async function submitTwoFa(activationCode: string) {
-    if (privateKey) {
+    if (privateKey && email) {
       const { username, identity } = await OwnersAPI.importAccount({
         activationCode,
-        privateKey: privateKey,
+        email,
+        privateKey,
       });
       lastPageStorage.clear();
 
