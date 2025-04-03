@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import type { INftResponse } from '@helium-pay/backend';
-import { isPlatform } from '@ionic/react';
+import { IonBackdrop, isPlatform } from '@ionic/react';
 import dayjs from 'dayjs';
 import { t } from 'i18next';
 import type { Dispatch, SetStateAction } from 'react';
@@ -11,7 +11,9 @@ import type { GridComponents } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
 import { urls } from '../../constants/urls';
+import { ActivityDetailComponent } from '../../pages/activity';
 import { akashicPayPath } from '../../routing/navigation-tree';
+import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { formatTransfers } from '../../utils/formatTransfers';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { useNftMe } from '../../utils/hooks/useNftMe';
@@ -96,6 +98,7 @@ export const ActivityAndNftTabComponent = ({
     </Tabs>
   );
 };
+
 export function ActivityAndNftTab() {
   const isMobile = isPlatform('mobile');
   const [transferParams] = useState({
@@ -119,76 +122,101 @@ export function ActivityAndNftTab() {
       },
     });
   };
-
+  const [currentTransfer, setCurrentTransfer] =
+    useState<ITransactionRecordForExtension>();
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <ActivityAndNftTabComponent
-        nftTab={nftTab}
-        setNftTab={setNftTab}
-        fromNfts={false}
-      />
-      <div
-        className="vertical"
-        style={{
-          height: isMobile ? '25vh' : '20vh',
-          margin: '5px',
-          overflow: 'auto',
-        }}
-      >
-        {!nftTab ? (
-          walletFormatTransfers
-            .slice(0, itemDisplayIndex - 1)
-            .map((transfer, index) => {
-              return (
-                <OneActivity
-                  key={transfer.id}
-                  transfer={transfer}
-                  style={
-                    index !== itemDisplayIndex - 1
-                      ? { height: '40px', margin: '10px auto 9px' }
-                      : { height: '40px', margin: '9px auto 5px' }
-                  }
-                  divider={index + 1 !== itemDisplayIndex - 1}
-                />
-              );
-            })
-        ) : nfts.length ? (
-          <Virtuoso
-            style={{ overflowY: 'unset', marginTop: '15px' }}
-            overscan={900}
-            totalCount={nfts.length}
-            data={nfts.slice(0, itemDisplayIndex - 1)}
-            components={{
-              Item: ItemContainer,
-              List: ListContainer,
-            }}
-            itemContent={(_index, nft) => (
-              <OneNft isBig={false} nft={nft} select={() => selectNft(nft)} />
-            )}
+      {isOpen ? (
+        <div style={{ height: '27vh' }}>
+          <IonBackdrop />
+          <ActivityDetailComponent
+            transfer={currentTransfer!}
+            setIsOpen={setIsOpen}
           />
-        ) : (
-          <></>
-        )}
-        <NoDataWrapper>
-          <NoDataDiv>
-            {nftTab && !nfts.length
-              ? t('DoNotOwnNfts')
-              : !walletFormatTransfers.length && !nftTab && t('NoActivity')}
-          </NoDataDiv>
-        </NoDataWrapper>
-      </div>
-      {(walletFormatTransfers.length >= itemDisplayIndex && !nftTab) ||
-      (nftTab && nfts.length > itemDisplayIndex) ? (
-        <SeeMore
-          style={{ position: isMobile ? 'relative' : 'fixed' }}
-          to={
-            nftTab ? akashicPayPath(urls.nfts) : akashicPayPath(urls.activity)
-          }
-        >
-          {t('SeeMore')}
-        </SeeMore>
+        </div>
       ) : (
-        <></>
+        <>
+          <ActivityAndNftTabComponent
+            nftTab={nftTab}
+            setNftTab={setNftTab}
+            fromNfts={false}
+          />
+          <div
+            className="vertical"
+            style={{
+              height: isMobile ? '25vh' : '20vh',
+              margin: '5px',
+              overflow: 'auto',
+            }}
+          >
+            {!nftTab &&
+              walletFormatTransfers
+                .slice(0, itemDisplayIndex - 1)
+                .map((transfer, index) => {
+                  return (
+                    <OneActivity
+                      key={transfer.id}
+                      transfer={transfer}
+                      style={
+                        index !== itemDisplayIndex - 1
+                          ? { height: '40px', margin: '10px auto 9px' }
+                          : { height: '40px', margin: '9px auto 5px' }
+                      }
+                      divider={index + 1 !== itemDisplayIndex - 1}
+                      showDetail={true}
+                      onClick={() => {
+                        setIsOpen(true);
+                        setCurrentTransfer(transfer);
+                      }}
+                    />
+                  );
+                })}
+            {nftTab && (
+              <Virtuoso
+                hidden={!nfts.length}
+                style={{ overflowY: 'unset', marginTop: '15px' }}
+                overscan={900}
+                totalCount={nfts.length}
+                data={nfts.slice(0, itemDisplayIndex - 1)}
+                components={{
+                  Item: ItemContainer,
+                  List: ListContainer,
+                }}
+                itemContent={(_index, nft) => (
+                  <OneNft
+                    isBig={false}
+                    nft={nft}
+                    select={() => selectNft(nft)}
+                  />
+                )}
+              />
+            )}
+            <NoDataWrapper>
+              <NoDataDiv>
+                {nftTab && !nfts.length
+                  ? t('DoNotOwnNfts')
+                  : !walletFormatTransfers.length && !nftTab && t('NoActivity')}
+              </NoDataDiv>
+            </NoDataWrapper>
+          </div>
+          {walletFormatTransfers.length >= itemDisplayIndex && !nftTab && (
+            <SeeMore
+              style={{ position: isMobile ? 'relative' : 'fixed' }}
+              to={akashicPayPath(urls.activity)}
+            >
+              {t('SeeMore')}
+            </SeeMore>
+          )}
+          {nftTab && nfts.length > itemDisplayIndex && (
+            <SeeMore
+              style={{ position: isMobile ? 'relative' : 'fixed' }}
+              to={akashicPayPath(urls.nfts)}
+            >
+              {t('SeeMore')}
+            </SeeMore>
+          )}
+        </>
       )}
     </>
   );

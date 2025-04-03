@@ -11,7 +11,9 @@ import {
   IonSpinner,
 } from '@ionic/react';
 import dayjs from 'dayjs';
+import { t } from 'i18next';
 import { alertCircleOutline, closeOutline } from 'ionicons/icons';
+import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Virtuoso } from 'react-virtuoso';
@@ -69,6 +71,33 @@ export const NoActivityText = styled.div({
   color: 'var(--ion-color-primary-10)',
 });
 
+export const ActivityDetailComponent = ({
+  transfer,
+  setIsOpen,
+}: {
+  transfer: ITransactionRecordForExtension;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
+  return (
+    <IonCard class="activity-card unselectable">
+      <IonCardTitle>
+        <div className="spread">
+          <Header>{t('ContractInteraction')}</Header>
+          <IonButtons slot="end">
+            <IonButton onClick={() => setIsOpen(false)}>
+              <IonIcon
+                class="icon-button-icon icon-dark"
+                slot="icon-only"
+                icon={closeOutline}
+              />
+            </IonButton>
+          </IonButtons>
+        </div>
+      </IonCardTitle>
+      <ActivityDetail currentTransfer={transfer} />
+    </IonCard>
+  );
+};
 export function Activity() {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
@@ -87,23 +116,10 @@ export function Activity() {
     <LoggedLayout>
       {isOpen && <IonBackdrop />}
       {isOpen && currentTransfer && (
-        <IonCard class="activity-card unselectable">
-          <IonCardTitle>
-            <div className="spread">
-              <Header>{t('ContractInteraction')}</Header>
-              <IonButtons slot="end">
-                <IonButton onClick={() => setIsOpen(false)}>
-                  <IonIcon
-                    class="icon-button-icon icon-dark"
-                    slot="icon-only"
-                    icon={closeOutline}
-                  />
-                </IonButton>
-              </IonButtons>
-            </div>
-          </IonCardTitle>
-          <ActivityDetail currentTransfer={currentTransfer} />
-        </IonCard>
+        <ActivityDetailComponent
+          transfer={currentTransfer}
+          setIsOpen={setIsOpen}
+        />
       )}
       {!isLoading ? (
         walletFormatTransfers.length ? (

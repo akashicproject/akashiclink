@@ -17,7 +17,6 @@ export const useTransfersMe = (params?: IClientTransactionRecord) => {
     ],
     fetcher
   );
-
   // Dates come from backend as string so need to transform them here
   // also, remove trailing zeros from amounts
   const dataWithDates = ((data || []) as ITransactionRecord[]).map((d) => ({
