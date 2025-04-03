@@ -64,7 +64,11 @@ export const LanguageDropdown = () => {
         ref={popover}
         isOpen={isOpen}
       >
-        <IonList lines="none" className="ion-padding-0">
+        <IonList
+          lines="none"
+          className="ion-padding-0"
+          style={{ backgroundColor: 'var(--ion-modal-background)' }}
+        >
           {LANGUAGE_LIST.map((item) => (
             <IonItem
               className={item.locale === globalLanguage ? 'ion-focused' : ''}
