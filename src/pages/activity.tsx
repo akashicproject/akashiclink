@@ -64,7 +64,7 @@ export function formatWalletTransfer(
       formatTransfers.push(walletUnpackedTransfer);
     }
   });
-  formatTransfers.sort((a, b) => +b.date - +a.date);
+  formatTransfers.sort((a, b) => b.date.getTime() - a.date.getTime());
   return formatTransfers;
 }
 

@@ -37,6 +37,10 @@ const TextContent = styled.div({
   color: '#290056',
 });
 
+const Link = styled.a({
+  color: '#290056',
+});
+
 const TextTitle = styled.div({
   fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
@@ -75,11 +79,13 @@ export const ActivityDetail: React.FC<{
       <DetailColumn>
         <TextTitle>{t('txHash')}</TextTitle>
         <TextContent>
-          {t('CopyTxHash')}
+          <Link href={currentTransfer?.txHashUrl}>
+            {displayLongText(currentTransfer?.txHash)}
+          </Link>
           <IonButton
             class="copy-button"
             onClick={() =>
-              navigator.clipboard.writeText(currentTransfer?.txHash ?? '')
+              navigator.clipboard.writeText(currentTransfer?.txHashUrl ?? '')
             }
           >
             <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />
@@ -89,7 +95,9 @@ export const ActivityDetail: React.FC<{
       <DetailColumn>
         <TextTitle>{t('From')}</TextTitle>
         <TextContent>
-          {displayLongText(currentTransfer?.senderAddressUrl)}
+          <Link href={currentTransfer?.senderAddressUrl}>
+            {displayLongText(currentTransfer?.senderAddressUrl)}
+          </Link>
           <IonButton
             class="copy-button"
             onClick={() =>
@@ -105,7 +113,9 @@ export const ActivityDetail: React.FC<{
       <DetailColumn>
         <TextTitle>{t('To')}</TextTitle>
         <TextContent>
-          {displayLongText(currentTransfer?.recipientAddressUrl)}
+          <Link href={currentTransfer?.recipientAddressUrl}>
+            {displayLongText(currentTransfer?.recipientAddressUrl)}
+          </Link>
           <IonButton
             class="copy-button"
             onClick={() =>

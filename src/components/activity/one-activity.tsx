@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
-import { TransactionLayer } from '@helium-pay/backend';
+import { TransactionLayer, TransactionStatus } from '@helium-pay/backend';
 import { IonIcon, IonImg } from '@ionic/react';
-import Big from 'big.js';
 import { chevronForwardOutline } from 'ionicons/icons';
 import type { CSSProperties, ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import type { WalletTransactionRecord } from '../../pages/activity';
 import { formatDate } from '../../utils/formatDate';
+import { displayLongCurrencyAmount } from '../../utils/long-amount';
 import { L2Icon } from '../../utils/supported-currencies';
 const OneTransfer = styled.div({
   display: 'flex',
@@ -131,9 +132,10 @@ export function OneActivity({
   style?: CSSProperties;
   showDetail?: boolean;
 }) {
-  const amount = Big(transfer.amount);
+  const { t } = useTranslation();
   const isL2 = transfer.layer === TransactionLayer.L2;
-
+  const transferType =
+    transfer.transferType === 'Deposit' ? t('Deposit') : t('Send');
   // HACK: Reduce chain names to a single word to fit small screen
   let label = transfer.chain;
   switch (label.split(' ').length) {
@@ -158,7 +160,11 @@ export function OneActivity({
     <OneTransfer key={transfer.id} onClick={onClick} style={style}>
       <ActivityWrapper>
         <TimeWrapper>
-          <Type>{transfer.transferType}</Type>
+          <Type>
+            {transfer.status === TransactionStatus.FAILED
+              ? `${transferType} - ${t('Failed')}`
+              : transferType}
+          </Type>
           <Time>{formatDate(new Date(transfer.date))}</Time>
         </TimeWrapper>
         <Chain style={iconStyle}>
@@ -170,9 +176,12 @@ export function OneActivity({
           {isL2 ? null : label}
         </Chain>
         {/* HACK: Reduce currency symbols to a single word to fit small screen */}
-        <Amount>{`${amount} ${
-          transfer.currency.displayName.split('-')[0]
-        }`}</Amount>
+        <Amount>
+          {displayLongCurrencyAmount(
+            transfer.amount,
+            transfer.currency.displayName.split('-')[0]
+          )}
+        </Amount>
         {showDetail ? <Icon icon={chevronForwardOutline} /> : null}
       </ActivityWrapper>
       {children}

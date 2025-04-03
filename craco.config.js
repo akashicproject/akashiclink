@@ -13,7 +13,7 @@ module.exports = {
   webpack: {
     configure: (webpackConfig) => ({
       ...webpackConfig,
-      ...(process.env.OPTIMISE === 'false'
+      ...(process.env.REACT_APP_OPTIMISE === 'false'
         ? {
             optimization: {
               minimize: false,

@@ -157,5 +157,13 @@ const TESTNET_CURRENCIES: WalletCurrencyMetadata[] = [
 /** All the currencies supported by the wallet */
 export const WALLET_CURRENCIES = [
   ...MAINNET_CURRENCIES,
-  ...(process.env.NODE_ENV !== 'production' ? TESTNET_CURRENCIES : []),
+  // OPTIMISE is used as a proxy for NODE_ENV when building the extension
+  // because of clashes with the BABEL library when trying to set NODE_ENV=development for local builds:
+  //
+  // - Running yarn build will set OPTIMISE=undefined (skipping testnets for production mode)
+  // - Running yarn build:dev will set OPTIMISE=false (adding testenets for dev mode)
+  ...(process.env.NODE_ENV !== 'production' ||
+  process.env.REACT_APP_OPTIMISE === 'false'
+    ? TESTNET_CURRENCIES
+    : []),
 ];
