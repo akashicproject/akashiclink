@@ -33,6 +33,5 @@ export const urls = {
   settingsInfo: 'settings-info',
   settingsVersion: 'settings-version',
   error: 'error',
-
   us2: 'us2',
 } as const;
