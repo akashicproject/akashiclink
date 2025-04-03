@@ -131,7 +131,7 @@ export class Nitr0genApi {
   protected createNitr0genUrl(port: 'general' | 'nft', path?: string): string {
     // TODO: Replace with user-stored selected node
     let NITR0_URL =
-      'http://18.169.142.11' +
+      'http://52.76.214.214' +
       ':' +
       (port === 'general' ? nitr0Config.generalPort : nitr0Config.nftPort);
 
