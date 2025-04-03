@@ -16,7 +16,7 @@ import { OwnersAPI } from '../../utils/api';
 import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemapAASToAddress';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
-import { signTxBody } from '../../utils/nitr0gen-api';
+import { signTxBody } from '../../utils/nitr0gen/nitr0gen-api';
 import type { FormAlertState } from '../common/alert/alert';
 import { errorAlertShell } from '../common/alert/alert';
 import { Toggle } from '../common/toggle/toggle';

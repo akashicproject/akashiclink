@@ -6,7 +6,7 @@ import { useAppSelector } from '../../redux/app/hooks';
 import { selectCacheOtk } from '../../redux/slices/accountSlice';
 import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
 import { OwnersAPI } from '../api';
-import { signTxBody } from '../nitr0gen-api';
+import { signTxBody } from '../nitr0gen/nitr0gen-api';
 import { unpackRequestErrorMessage } from '../unpack-request-error-message';
 
 export const useVerifyTxnAndSign = () => {

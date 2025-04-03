@@ -42,7 +42,7 @@ import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { displayLongText } from '../../utils/long-text';
-import { signTxBody } from '../../utils/nitr0gen-api';
+import { signTxBody } from '../../utils/nitr0gen/nitr0gen-api';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { NftWrapper } from './nft';
 import { NoNtfText, NoNtfWrapper } from './nfts';

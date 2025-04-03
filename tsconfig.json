@@ -5,6 +5,7 @@
     "module": "esnext",
     "jsx": "react-jsx",
     "lib": ["dom", "dom.iterable", "esnext"],
+    "baseUrl": "./",
     "paths": {
       "@helium-pay/backend": ["../../../apps/backend/src/index"],
       "@helium-pay/ui-lib": ["../../packages/ui-lib/src/index"],

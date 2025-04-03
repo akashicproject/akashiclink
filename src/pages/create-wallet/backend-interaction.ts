@@ -6,12 +6,13 @@ import type {
 } from '@helium-pay/backend';
 
 import { OwnersAPI } from '../../utils/api';
-import { Nitr0genApi, signTxBody } from '../../utils/nitr0gen-api';
+import { Nitr0genApi, signTxBody } from '../../utils/nitr0gen/nitr0gen-api';
 import type { FullOtk } from '../../utils/otk-generation';
 
 export async function createAccountWithKeys(
   otk: IKeyExtended
 ): Promise<{ otk: FullOtk; keysNotCreated: IKeysToCreate[] }> {
+  const nitr0gen = new Nitr0genApi();
   // 1. Request account-creation
   const createAccountResponse =
     await OwnersAPI.activateNewAccountWithClientSideOtk({
@@ -21,7 +22,7 @@ export async function createAccountWithKeys(
         type: otk.type,
         identity: '',
       },
-      otkOnboardTransaction: await Nitr0genApi.onboardOtk(otk),
+      otkOnboardTransaction: await nitr0gen.onboardOtkTransaction(otk),
     });
 
   const fullOtk = { ...otk, identity: createAccountResponse.identity };
