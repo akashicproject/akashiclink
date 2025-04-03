@@ -221,5 +221,9 @@
   "YouHaveOptionTo": "You now have the option to",
   "EmpoweringYourWealth": "Empowering Your Wealth",
   "IAgreeToTermsOfUse": "I agree to Akashic Wallet",
-  "TermsOfUse": "Terms Of Use"
+  "TermsOfUse": "Terms Of Use",
+  "AASLinkingFailed": "Unlinking your AAS is currently not available. You will need to wait for period of {{timeRemaining}} {{timeUnit}} before initiating the unlinking process.",
+  "hours": "hours",
+  "minutes": "minutes",
+  "seconds": "seconds"
 }

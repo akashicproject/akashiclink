@@ -34,6 +34,9 @@ export function Nft() {
 
   const { nfts } = useNftMe();
   const currentNft = nfts.find((nft) => nft.name === state?.nftName)!;
+  const [message, setCustomAlertMessage] = useState(
+    t('NSRecordWarning', { nftName: currentNft?.name || '' })
+  );
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = isPlatform('mobile');
 
@@ -73,7 +76,7 @@ export function Nft() {
       <CustomAlert
         state={{
           visible: isOpen,
-          message: t('NSRecordWarning', { nftName: currentNft?.name || '' }),
+          message: message!,
           success: false,
           onConfirm: () => {
             setIsOpen(false);
@@ -101,6 +104,8 @@ export function Nft() {
           <AasListingSwitch
             name={currentNft.acns!.name}
             aasValue={currentNft.acns?.value ?? ''}
+            customAlertHandle={setIsOpen}
+            customAlertMessage={setCustomAlertMessage}
           />
         ) : (
           <></>

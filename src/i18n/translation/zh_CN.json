@@ -221,5 +221,9 @@
   "YouHaveOptionTo": "您现在可以选择",
   "EmpoweringYourWealth": "赋能财富",
   "IAgreeToTermsOfUse": "我同意 Akashic 钱包的",
-  "TermsOfUse": "使用条款"
+  "TermsOfUse": "使用条款",
+  "AASLinkingFailed": "目前无法解除您的 AAS 的链接。您需要等待 {{timeRemaining}} {{timeUnit}}时间后才能启动解除链接程序。",
+  "hours": "時",
+  "minutes": "分",
+  "seconds": "秒"
 }

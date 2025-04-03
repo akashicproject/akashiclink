@@ -2,6 +2,7 @@ import './switch.css';
 
 import styled from '@emotion/styled';
 import { IonCol, IonRow } from '@ionic/react';
+import axios from 'axios';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -23,9 +24,13 @@ const StyledIonCol = styled(IonCol)`
 export const AasListingSwitch = ({
   name,
   aasValue,
+  customAlertHandle,
+  customAlertMessage,
 }: {
   name?: string;
   aasValue?: string;
+  customAlertHandle: React.Dispatch<React.SetStateAction<boolean>>;
+  customAlertMessage: React.Dispatch<React.SetStateAction<string | null>>;
 }) => {
   const { activeAccount } = useAccountStorage();
   const { mutate } = useNftMe();
@@ -41,11 +46,20 @@ export const AasListingSwitch = ({
           newValue: !isListed ? activeAccount!.identity : null,
         });
       }
-    } catch (err) {
-      setIsListed(!isListed);
-    } finally {
       await mutate();
       setIsListed(!isListed);
+    } catch (error) {
+      const errorMsg = axios.isAxiosError(error)
+        ? error?.response?.data?.message
+        : '';
+      customAlertMessage(
+        t('AASLinkingFailed', {
+          timeRemaining: errorMsg.split(' ')[0],
+          timeUnit: t(errorMsg.split(' ')[1]),
+        })
+      );
+      customAlertHandle(true);
+    } finally {
       setIsLoading(false);
     }
   };
