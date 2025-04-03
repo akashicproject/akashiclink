@@ -17,7 +17,10 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "paths": {
+      "@helium-pay/common-i18n": ["../../packages/common-i18n/src/index"]
+    }
   },
   "include": [
     "next-env.d.ts",
