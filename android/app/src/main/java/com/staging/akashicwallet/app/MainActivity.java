@@ -1,4 +1,4 @@
-package com.staging.akashicpay.akashicwallet;
+package com.staging.akashiclink.app;
 
 import com.getcapacitor.BridgeActivity;
 
