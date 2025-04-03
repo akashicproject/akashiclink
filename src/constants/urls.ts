@@ -14,6 +14,7 @@ export const urls = {
   nftTransfer: 'nft-transfer',
   nftTransferResult: 'nft-transfer-result',
   activity: 'activity',
+  smartScan: 'address-screening',
   recoverCode: 'recover-code',
   send: 'send',
   changePassword: 'change-password',
