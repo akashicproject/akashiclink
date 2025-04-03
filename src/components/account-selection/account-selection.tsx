@@ -79,7 +79,7 @@ export function AccountSelection({
           minHeight: size === 'lg' ? 40 : 32,
           minWidth: '0',
         }}
-        value={currentSelectedAccount?.identity ?? localAccounts?.[0].identity}
+        value={currentSelectedAccount?.identity ?? localAccounts?.[0]?.identity}
         onIonChange={onSelect}
         interface="popover"
         interfaceOptions={{
