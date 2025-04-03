@@ -16,7 +16,12 @@ import '../src/theme/variables.css';
 import '../src/theme/font.css';
 import '../src/theme/common.scss';
 
-import { mockGetExchangeRates, mockGetManifest } from '@helium-pay/api-mocks';
+import {
+  mockGetExchangeRates,
+  mockGetManifest,
+  mockGetMinigate,
+  mockGetMinigateNftImage,
+} from '@helium-pay/api-mocks';
 import { setupIonicReact } from '@ionic/react';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import type { Preview } from '@storybook/react';
@@ -51,6 +56,8 @@ const preview: Preview = {
       handlers: {
         exchangeRate: mockGetExchangeRates,
         manifest: mockGetManifest,
+        minigateNftImage: mockGetMinigateNftImage,
+        minigate: mockGetMinigate,
       },
     },
     actions: { argTypesRegex: '^on[A-Z].*' },
