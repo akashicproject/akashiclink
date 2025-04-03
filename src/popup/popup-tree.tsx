@@ -1,7 +1,7 @@
 import { Spinner } from '../components/common/loader/spinner';
 import { ETH_METHOD } from '../utils/chrome';
 import { useOwner } from '../utils/hooks/useOwner';
-import { PopupUnlockWallet } from './popup-unlock-wallet';
+import { PopupUnlockOrCreateAndImportWallet } from './popup-unlock-create-import-wallet';
 import { SignMessage } from './sign-message';
 import { SignTypedData } from './sign-typed-data';
 import { WalletConnection } from './wallet-connection';
@@ -18,7 +18,7 @@ export function PopupTree() {
   }
 
   if (!authenticated) {
-    return <PopupUnlockWallet />;
+    return <PopupUnlockOrCreateAndImportWallet />;
   }
 
   if (method === ETH_METHOD.REQUEST_ACCOUNTS) {

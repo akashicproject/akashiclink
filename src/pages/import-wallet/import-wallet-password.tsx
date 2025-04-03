@@ -22,7 +22,7 @@ import { useNftMe } from '../../utils/hooks/useNftMe';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useOwner } from '../../utils/hooks/useOwner';
 
-export function ImportWalletPassword() {
+export function ImportWalletPassword({ isPopup = false }) {
   useIosScrollPasswordKeyboardIntoView();
   const [isLoading, setIsLoading] = useState(false);
   /** Tracking user input */
@@ -73,9 +73,16 @@ export function ImportWalletPassword() {
       addLocalAccount({
         identity: otk.identity,
       });
+
       setActiveAccount({
         identity: otk.identity,
       });
+
+      if (isPopup) {
+        dispatch(onClear());
+        historyResetStackAndRedirect(urls.importWalletSuccessful);
+        return;
+      }
 
       await mutateOwner();
       await mutateMyTransfers();

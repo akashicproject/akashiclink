@@ -32,10 +32,12 @@ export function AccountSelection({
   currentSelectedAccount,
   onSelectAccount,
   size = 'lg',
+  isPopup = false,
 }: {
   currentSelectedAccount?: LocalAccount;
   onSelectAccount?: (selectedAccount: LocalAccount) => void;
   size?: 'md' | 'lg';
+  isPopup?: boolean;
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -96,7 +98,7 @@ export function AccountSelection({
               } - ${displayLongText(account.identity, 20)}`}
             </IonSelectOption>
           )),
-          ...ACCOUNT_OPERATION_OPTIONS.map((option, i) => (
+          ...(isPopup ? [] : ACCOUNT_OPERATION_OPTIONS).map((option, i) => (
             <IonSelectOption
               className={i === 0 || i === 2 ? 'option-divider-top' : ''}
               key={option.tKey}

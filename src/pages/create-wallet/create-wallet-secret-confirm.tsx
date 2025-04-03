@@ -42,7 +42,7 @@ export const StyledSpan = styled.span({
   lineHeight: '16px',
 });
 
-export function CreateWalletSecretConfirm() {
+export function CreateWalletSecretConfirm({ isPopup = false }) {
   const { t } = useTranslation();
   const otk = useAppSelector(selectOtk);
   const createWalletForm = useAppSelector(selectCreateWalletForm);
@@ -112,6 +112,11 @@ export function CreateWalletSecretConfirm() {
       addLocalAccount(newAccount);
       setAlert(formAlertResetState);
       setActiveAccount(newAccount);
+
+      if (isPopup) {
+        dispatch(onClear());
+      }
+
       historyResetStackAndRedirect(urls.createWalletSuccessful);
     } catch (e) {
       datadogRum.addError(e);

@@ -30,7 +30,7 @@ import { Spinner } from '../common/loader/spinner';
  * - Password box
  * - Upload button triggering login request and redirect is successfull
  */
-export function LoginForm() {
+export function LoginForm({ isPopup = false }) {
   const { getLocalOtkAndCache } = useAccountStorage();
   const { t } = useTranslation();
   const [alert, setAlert] = useState(formAlertResetState);
@@ -122,6 +122,7 @@ export function LoginForm() {
           <AccountSelection
             onSelectAccount={(a) => setActiveAccount(a)}
             currentSelectedAccount={activeAccount ?? localAccounts?.[0]}
+            isPopup={isPopup}
           />
         </IonCol>
         <IonCol size="12">

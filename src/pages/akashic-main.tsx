@@ -14,7 +14,7 @@ import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
  * - Logic to present user when import or login menues depending
  *   on whether this is first login with this device
  */
-export function AkashicPayMain() {
+export function AkashicPayMain({ isPopup = false }) {
   const isMobile = isPlatform('mobile');
   const { localAccounts } = useAccountStorage();
 
@@ -32,7 +32,11 @@ export function AkashicPayMain() {
         style={{ paddingTop: '48px' }}
         alt="welcome"
       />
-      {localAccounts.length ? <LoginForm /> : <CreateOrImportForm />}
+      {localAccounts.length ? (
+        <LoginForm isPopup={isPopup} />
+      ) : (
+        <CreateOrImportForm />
+      )}
     </PublicLayout>
   );
 }
