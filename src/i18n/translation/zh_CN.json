@@ -298,7 +298,12 @@
     "payoutCallbackUrl": "出款回调URL",
     "depositCallbackUrl": "存款回调URL",
     "pendingDepositCallbackUrl": "待出款回调URL",
-    "callbackId": "Callback Id"
+    "callbackId": "Callback Id",
+    "amountAndCurrency": "金额",
+    "fees": "费用",
+    "totalAmountAndCurrency": "Total Amount",
+    "chain": "链",
+    "toAddress": "发送至"
   },
   "SendBpByAlias": "无法透过 Akashic 地址发送商业帐户"
 }

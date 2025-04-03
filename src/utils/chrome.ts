@@ -26,6 +26,7 @@ export const TYPED_DATA_PRIMARY_TYPE = {
   BECOME_BP: 'BPContract',
   SETUP_CALLBACK_URL: 'SetupCallbackUrl',
   RETRY_CALLBACK: 'RetryCallback',
+  PAYOUT: 'Payout',
 };
 
 export const closePopup = async () => {

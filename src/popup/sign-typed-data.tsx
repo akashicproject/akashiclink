@@ -1,4 +1,9 @@
-import type { ICallbackUrls } from '@helium-pay/backend';
+import {
+  type CoinSymbol,
+  type CurrencySymbol,
+  type ICallbackUrls,
+  L2Regex,
+} from '@helium-pay/backend';
 import { IonCol, IonRow, IonSpinner } from '@ionic/react';
 import { getSdkError } from '@walletconnect/utils';
 import { type Web3WalletTypes } from '@walletconnect/web3wallet';
@@ -18,12 +23,17 @@ import {
   responseToSite,
   TYPED_DATA_PRIMARY_TYPE,
 } from '../utils/chrome';
+import {
+  useSendL1Transaction,
+  useSendL2Transaction,
+} from '../utils/hooks/nitr0gen';
 import type { BecomeBpToSign } from '../utils/hooks/useSignBecomeBpMessage';
 import { useSignBecomeBpMessage } from '../utils/hooks/useSignBecomeBpMessage';
 import type { RetryCallbackToSign } from '../utils/hooks/useSignRetryCallback';
 import { useSignRetryCallback } from '../utils/hooks/useSignRetryCallback';
 import type { SetCallbackUrlsToSign } from '../utils/hooks/useSignSetupCallbackUrl';
 import { useSignSetupCallbackUrl } from '../utils/hooks/useSignSetupCallbackUrl';
+import { useVerifyTxnAndSign } from '../utils/hooks/useVerifyTxnAndSign';
 import { useWeb3Wallet } from '../utils/web3wallet';
 
 export function SignTypedData() {
@@ -32,6 +42,8 @@ export function SignTypedData() {
   const searchParams = new URLSearchParams(window.location.search);
 
   const web3wallet = useWeb3Wallet();
+
+  const [isProcessingRequest, setIsProcessingRequest] = useState(false);
 
   const [requestContent, setRequestContent] = useState({
     id: 0,
@@ -46,6 +58,10 @@ export function SignTypedData() {
   const signBecomeBpMessage = useSignBecomeBpMessage();
   const signSetupCallbackUrl = useSignSetupCallbackUrl();
   const signRetryCallback = useSignRetryCallback();
+
+  const verifyTxnAndSign = useVerifyTxnAndSign();
+  const { trigger: triggerSendL2Transaction } = useSendL2Transaction();
+  const { trigger: triggerSendL1Transaction } = useSendL1Transaction();
 
   const onSessionRequest = useCallback(
     async (event: Web3WalletTypes.SessionRequest) => {
@@ -122,6 +138,51 @@ export function SignTypedData() {
           } as SetCallbackUrlsToSign);
           break;
         }
+        case TYPED_DATA_PRIMARY_TYPE.PAYOUT: {
+          // TODO: Fix all this casting
+          const res = await verifyTxnAndSign(
+            {
+              userInputToAddress: toSign.addressInput as string,
+              convertedToAddress: toSign.convertedToAddress as string,
+              acnsAlias: toSign.acnsAlias as string,
+            },
+            toSign.amount as string,
+            toSign.chain as CoinSymbol,
+            toSign.token as CurrencySymbol | undefined
+          );
+
+          if (typeof res === 'string') {
+            throw new Error(res);
+          }
+
+          const didUserInputL2Address = L2Regex.exec(
+            toSign.addressInput as string
+          );
+
+          const txn = res.txns[0];
+          const signedTx = res.signedTxns[0];
+
+          const response =
+            toSign.isL2 === 'true'
+              ? await triggerSendL2Transaction({
+                  ...txn,
+                  signedTx,
+                  initiatedToNonL2: !didUserInputL2Address
+                    ? (toSign.addressInput as string)
+                    : undefined,
+                })
+              : await triggerSendL1Transaction({
+                  ...txn,
+                  signedTx,
+                });
+
+          if (!response.isSuccess) {
+            throw new Error(response.reason);
+          }
+
+          signedMsg = `0x${response.txHash}`;
+          break;
+        }
         default:
           throw new Error('Unreachable');
       }
@@ -168,8 +229,10 @@ export function SignTypedData() {
   }, []);
 
   const onClickSign = async () => {
+    setIsProcessingRequest(true);
     window.removeEventListener('beforeunload', onPopupClosed);
     await acceptSessionRequest();
+    setIsProcessingRequest(false);
     await closePopup();
   };
 
@@ -247,7 +310,7 @@ export function SignTypedData() {
         <IonCol size={'6'}>
           <PrimaryButton
             expand="block"
-            disabled={isWaitingRequestContent}
+            disabled={isWaitingRequestContent || isProcessingRequest}
             onClick={onClickReject}
           >
             {t('Deny')}
@@ -256,7 +319,7 @@ export function SignTypedData() {
         <IonCol size={'6'}>
           <PrimaryButton
             expand="block"
-            disabled={isWaitingRequestContent}
+            disabled={isWaitingRequestContent || isProcessingRequest}
             onClick={onClickSign}
           >
             {t('Confirm')}

@@ -298,7 +298,12 @@
     "payoutCallbackUrl": "Payout Callback Url",
     "depositCallbackUrl": "Deposit Callback Url",
     "pendingDepositCallbackUrl": "Pending Deposit Callback Url",
-    "callbackId": "Callback Id"
+    "callbackId": "Callback Id",
+    "amountAndCurrency": "Amount",
+    "fees": "Fee",
+    "totalAmountAndCurrency": "Total Amount",
+    "chain": "Network",
+    "toAddress": "Send to"
   },
   "SendBpByAlias": "Cannot send to business account by Akashic Alias"
 }

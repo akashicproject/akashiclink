@@ -1,4 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
+import type { CoinSymbol, CurrencySymbol } from '@helium-pay/backend';
 import {
   type ITransactionProposal,
   type ITransactionVerifyResponse,
@@ -26,7 +27,12 @@ export const useVerifyTxnAndSign = () => {
   const { data: account } = useAccountMe();
   const { cacheOtk } = useAccountStorage();
 
-  return async (validatedAddressPair: ValidatedAddressPair, amount: string) => {
+  return async (
+    validatedAddressPair: ValidatedAddressPair,
+    amount: string,
+    coinSymbol: CoinSymbol = chain,
+    tokenSymbol: CurrencySymbol | undefined = token
+  ) => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
     const nitr0genApi = new Nitr0genApi();
 
@@ -45,8 +51,8 @@ export const useVerifyTxnAndSign = () => {
           toAddress: validatedAddressPair.convertedToAddress,
           // Backend accepts "normal" units, so we don't convert
           amount,
-          coinSymbol: chain,
-          tokenSymbol: token,
+          coinSymbol,
+          tokenSymbol,
         };
         if (activeAccount.identity === l2TransactionData.toAddress)
           throw new Error(keyError.noSelfSend);
@@ -63,8 +69,8 @@ export const useVerifyTxnAndSign = () => {
             internalFee: {
               withdraw: calculateInternalWithdrawalFee(
                 exchangeRates,
-                chain,
-                token
+                coinSymbol,
+                tokenSymbol
               ),
             },
             layer: TransactionLayer.L2,
@@ -84,8 +90,8 @@ export const useVerifyTxnAndSign = () => {
         toAddress: validatedAddressPair.convertedToAddress,
         // Backend accepts "normal" units, so we don't convert
         amount,
-        coinSymbol: chain,
-        tokenSymbol: token,
+        coinSymbol,
+        tokenSymbol,
       };
 
       const {
@@ -101,19 +107,19 @@ export const useVerifyTxnAndSign = () => {
               fromLedgerId: key.ledgerId,
               toAddress: validatedAddressPair.convertedToAddress,
               amount: key.transferAmount,
-              coinSymbol: chain,
-              tokenSymbol: token,
+              coinSymbol,
+              tokenSymbol,
               feesEstimate,
               layer: TransactionLayer.L1,
               txToSign: await nitr0genApi.L2ToL1SignTransaction(
                 cacheOtk,
                 key.ledgerId,
-                chain,
+                coinSymbol,
                 // AC needs smallest units, so we convert
-                convertToDecimals(key.transferAmount, chain, token),
+                convertToDecimals(key.transferAmount, coinSymbol, tokenSymbol),
                 validatedAddressPair.convertedToAddress,
                 feesEstimate,
-                token
+                tokenSymbol
               ),
             } as ITransactionVerifyResponse)
         )
