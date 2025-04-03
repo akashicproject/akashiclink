@@ -105,7 +105,7 @@ export function LoginForm() {
       <CustomAlert state={alert} />
       <h1 className="ion-justify-content-center">{t('WelcomeBack')}</h1>
       <h3 className="ion-justify-content-center">
-        {t('YourMostReliableWallet')}
+        {t('EmpoweringYourWealth')}
       </h3>
       <AccountSelection
         onNewAccountClick={(a) => setSelectedAccount(a)}
