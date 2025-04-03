@@ -135,29 +135,28 @@ export function NftTransfer() {
   };
 
   const transferNft = async () => {
-    await mutate(async () => {
-      const payload = {
-        nftName: currentNft.name,
-        toL2Address: toAddress,
+    const payload = {
+      nftName: currentNft.name,
+      toL2Address: toAddress,
+    };
+    setLoading(true);
+    try {
+      const response = await OwnersAPI.nftTransfer(payload);
+      const result = {
+        sender: owner.ownerIdentity,
+        receiver: toAddress,
+        nftName: response.nftName,
+        acnsAlias: response.acnsAlias,
+        txHash: response.txHash,
       };
-      setLoading(true);
-      try {
-        const response = await OwnersAPI.nftTransfer(payload);
-        const result = {
-          sender: owner.ownerIdentity,
-          receiver: toAddress,
-          nftName: response.nftName,
-          acnsAlias: response.acnsAlias,
-          txHash: response.txHash,
-        };
-        setTransferResult(result);
-        setPageView(TransferView.Result);
-      } catch (error) {
-        setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
-      } finally {
-        setLoading(false);
-      }
-    });
+      setTransferResult(result);
+      setPageView(TransferView.Result);
+    } catch (error) {
+      setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+    } finally {
+      await mutate();
+      setLoading(false);
+    }
   };
 
   const debouncedSearchHandler = useMemo(

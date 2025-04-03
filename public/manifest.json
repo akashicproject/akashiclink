@@ -2,8 +2,8 @@
   "short_name": "AW",
   "name": "Akashic Wallet Staging",
   "description": "Your interface with the nitr0gen ecosystem",
-  "version": "0.0.1-(5)",
-  "releaseDate": "2023-11-14",
+  "version": "0.0.6-(37)",
+  "releaseDate": "2023-11-15",
   "icons": {
     "16": "shared-assets/icons/APicon.png",
     "48": "shared-assets/icons/APicon.png",

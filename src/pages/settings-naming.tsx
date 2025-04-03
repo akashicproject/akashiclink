@@ -168,39 +168,37 @@ export function SettingsNaming() {
   const [storedTheme] = useTheme();
 
   const removeAcns = async (name: string) => {
-    await mutate(async () => {
-      setLoading(true);
-      try {
-        await OwnersAPI.updateAcns({
-          name: name,
-          newValue: null,
-        });
-        setIsConfirmModel(false);
-        setIsResultModel(true);
-      } catch (error) {
-        setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
-      } finally {
-        setLoading(false);
-      }
-    });
+    setLoading(true);
+    try {
+      await OwnersAPI.updateAcns({
+        name: name,
+        newValue: null,
+      });
+      setIsConfirmModel(false);
+      setIsResultModel(true);
+    } catch (error) {
+      setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+    } finally {
+      await mutate();
+      setLoading(false);
+    }
   };
 
   const confirmUpdate = async () => {
-    await mutate(async () => {
-      setLoading(true);
-      try {
-        await OwnersAPI.updateAcns({
-          name: selectedName,
-          newValue: newValue,
-        });
-        setView(View.list);
-        setShowEditToast(true);
-      } catch (error) {
-        setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
-      } finally {
-        setLoading(false);
-      }
-    });
+    setLoading(true);
+    try {
+      await OwnersAPI.updateAcns({
+        name: selectedName,
+        newValue: newValue,
+      });
+      setView(View.list);
+      setShowEditToast(true);
+    } catch (error) {
+      setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+    } finally {
+      await mutate();
+      setLoading(false);
+    }
   };
 
   const updateAcns = (acns: IAcnsResponse) => {
