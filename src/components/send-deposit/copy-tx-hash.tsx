@@ -11,6 +11,9 @@ import {
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectTheme } from '../../redux/slices/preferenceSlice';
+import { themeType } from '../../theme/const';
 import { displayLongText } from '../../utils/long-text';
 
 export const ListCopyTxHashItem = ({
@@ -25,6 +28,7 @@ export const ListCopyTxHashItem = ({
   color?: string;
 }) => {
   const { t } = useTranslation();
+  const storedTheme = useAppSelector(selectTheme);
   const popover = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const copyData = async (data: string, e: never) => {
@@ -81,7 +85,11 @@ export const ListCopyTxHashItem = ({
             slot="icon-only"
             className="copy-icon"
             src={`/shared-assets/images/copy-icon-${
-              suffix === 'AS' ? 'gray' : 'white'
+              suffix === 'AS'
+                ? 'gray'
+                : storedTheme === themeType.DARK
+                  ? 'white'
+                  : 'blue'
             }.svg`}
           />
         </div>
