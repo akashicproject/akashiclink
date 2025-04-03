@@ -1,29 +1,20 @@
 import './akashic-main.css';
 import './common.css';
 
-import {
-  IonCol,
-  IonContent,
-  IonGrid,
-  IonImg,
-  IonPage,
-  IonRow,
-  isPlatform,
-} from '@ionic/react';
+import { IonCol, IonImg, IonRow, isPlatform } from '@ionic/react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import { PurpleButton, WhiteButton } from '../components/buttons';
-import { Footer } from '../components/layout/footer';
-import { LoggedHeader } from '../components/layout/logged-header';
+import { PublicLayout } from '../components/layout/public-layout';
+import { LoginForm } from '../components/public/login-form';
 import { ContentText } from '../components/text/context-text';
 import { urls } from '../constants/urls';
 import { akashicPayPath } from '../routing/navigation-tree';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useOwner } from '../utils/hooks/useOwner';
 import { lastPageStorage } from '../utils/last-page-storage';
-import { Login } from './login';
 
 /**
  * First page seen by user when navigating to app
@@ -60,49 +51,52 @@ export function AkashicPayMain() {
   );
 
   return (
-    <IonPage>
-      <IonContent>
-        <IonGrid class="main-wrapper">
-          <LoggedHeader loggedIn={false} />
-          <IonRow>
-            <IonCol class="ion-center">
-              <IonImg class={isMobile ? 'main-img' : 'main-img-web'} alt={''} />
-            </IonCol>
-          </IonRow>
-          {localAccounts.length ? (
-            <Login />
-          ) : (
-            <>
-              <IonRow style={{ marginTop: '10px' }}>
-                <IonCol class="ion-center">
-                  <ContentText>{t('BestWayToInvestYourMoney')}</ContentText>
-                </IonCol>
-              </IonRow>
-              <IonRow style={{ marginTop: '8px' }}>
-                <IonCol>
-                  <PurpleButton
-                    routerLink={akashicPayPath(urls.createWalletUrl)}
-                    expand="block"
-                  >
-                    <span>{t('CreateWallet')}</span>
-                  </PurpleButton>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <WhiteButton
-                    routerLink={akashicPayPath(urls.importAccountUrl)}
-                    expand="block"
-                  >
-                    {t('ImportWallet')}
-                  </WhiteButton>
-                </IonCol>
-              </IonRow>
-            </>
-          )}
-        </IonGrid>
-      </IonContent>
-      <Footer />
-    </IonPage>
+    <PublicLayout>
+      <IonRow>
+        <IonCol class="ion-center">
+          <IonImg
+            class={
+              // Large icon on mobile or when account has not been imported locally
+              isMobile || !localAccounts.length ? 'main-img' : 'main-img-web'
+            }
+            alt=""
+          />
+        </IonCol>
+      </IonRow>
+      {
+        // Login form only displayed if local account has been imported
+        localAccounts.length ? (
+          <LoginForm />
+        ) : (
+          <>
+            <IonRow style={{ marginTop: '10px' }}>
+              <IonCol class="ion-center">
+                <ContentText>{t('BestWayToInvestYourMoney')}</ContentText>
+              </IonCol>
+            </IonRow>
+            <IonRow style={{ marginTop: '8px' }}>
+              <IonCol>
+                <PurpleButton
+                  routerLink={akashicPayPath(urls.createWalletUrl)}
+                  expand="block"
+                >
+                  <span>{t('CreateWallet')}</span>
+                </PurpleButton>
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                <WhiteButton
+                  routerLink={akashicPayPath(urls.importAccountUrl)}
+                  expand="block"
+                >
+                  {t('ImportWallet')}
+                </WhiteButton>
+              </IonCol>
+            </IonRow>
+          </>
+        )
+      }
+    </PublicLayout>
   );
 }

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { MainTitle } from '../../components/layout/main-title';
-import { MainLayout } from '../../components/layout/mainLayout';
+import { PublicLayout } from '../../components/layout/public-layout';
 import { StyledInput } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
@@ -14,7 +14,7 @@ export const recoveryUrl = 'recovery';
 export function Recovery() {
   const { t } = useTranslation();
   return (
-    <MainLayout>
+    <PublicLayout>
       <MainGrid>
         <IonRow>
           <IonCol class="ion-center">
@@ -41,6 +41,6 @@ export function Recovery() {
           </IonCol>
         </IonRow>
       </MainGrid>
-    </MainLayout>
+    </PublicLayout>
   );
 }

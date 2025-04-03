@@ -10,7 +10,6 @@ import { ImportWallet } from '../pages/import-wallet';
 import { Dashboard } from '../pages/logged/dashboard';
 import { DepositPage } from '../pages/logged/deposit-page';
 import { LoggedCreate } from '../pages/logged/logged-create';
-import { Login } from '../pages/login';
 import { Recover } from '../pages/recover';
 import { RecoverCode } from '../pages/recover-code';
 import { Recovery } from '../pages/Recovery/recovery';
@@ -87,7 +86,6 @@ export function NavigationTree() {
       {hpSubtree.registerPage(Recovery, urls.recoveryUrl)}
       {hpSubtree.registerPage(ResetPassword, urls.resetPassword)}
       {hpSubtree.registerPage(Verification, urls.verification)}
-      {hpSubtree.registerPage(Login, urls.loginUrl)}
       {hpSubtree.registerPage(ImportWallet, urls.importAccountUrl)}
       {hpSubtree.registerPage(Dashboard, urls.loggedFunction)}
       {hpSubtree.registerPage(LoggedCreate, urls.loggedCreate)}

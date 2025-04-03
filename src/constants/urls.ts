@@ -1,6 +1,5 @@
 import { createWalletUrl } from '../pages/createWallet/create-wallet';
 import { importAccountUrl } from '../pages/import-wallet';
-import { loginUrl } from '../pages/login';
 import { recoveryUrl } from '../pages/Recovery/recovery';
 
 export const urls = {
@@ -10,7 +9,6 @@ export const urls = {
   recoveryUrl,
   resetPassword: 'reset-password',
   verification: 'verification',
-  loginUrl,
   importAccountUrl,
   welcome: 'welcome',
   loggedFunction: 'logged-function',

@@ -20,11 +20,10 @@ export function Footer() {
       <IonFooter
         className="ion-no-border"
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '80px',
+          textAlign: 'center',
           background: 'var(--ion-background-color)',
+          position: 'sticky',
+          bottom: 0,
         }}
       >
         <FooterText>

@@ -14,12 +14,10 @@ import {
   formAlertResetState,
 } from '../components/alert/alert';
 import { PurpleButton } from '../components/buttons';
-import { MainGrid } from '../components/layout/main-grid';
 import { MainTitle } from '../components/layout/main-title';
-import { MainLayout } from '../components/layout/mainLayout';
+import { PublicLayout } from '../components/layout/public-layout';
 import { useLogout } from '../components/logout';
 import { StyledInput } from '../components/styled-input';
-import { ContentText } from '../components/text/context-text';
 import { OwnersAPI } from '../utils/api';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { lastPageStorage, ResetPageButton } from '../utils/last-page-storage';
@@ -141,79 +139,83 @@ export function ImportWallet() {
   );
 
   return (
-    <MainLayout>
-      <MainGrid>
-        <IonRow>
-          <IonCol class="ion-center">
-            <MainTitle>{t('ImportWallet')}</MainTitle>
-          </IonCol>
-        </IonRow>
-        {view === View.Submit && (
-          <>
-            <IonRow>
-              <IonCol class="ion-center">
-                <ContentText>{t('EnterKeyPair')}</ContentText>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <StyledInput
-                  label={t('KeyPair')}
-                  type={'text'}
-                  placeholder={t('EnterKeyPair')}
-                  onIonInput={({ target: { value } }) => {
-                    setPrivateKey(value as string);
-                    setAlert(formAlertResetState);
-                  }}
-                />
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              {ResetButton}
-              {RequestImportAccountButton}
-            </IonRow>
-            <IonRow>
-              <AlertBox state={alert} />
-            </IonRow>
-          </>
-        )}
-        {view === View.TwoFa && (
-          <>
-            <IonRow>
-              <IonCol>
-                <StyledInput
-                  label="Email"
-                  type="email"
-                  placeholder=""
-                  disabled={true}
-                  value={email}
-                />
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol class="ion-center">
-                {timer ? (
-                  <ActivationTimer onComplete={() => setTimer(false)} />
-                ) : (
-                  RequestImportAccountButton
-                )}
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <SubmitActivationCode
-                  onClose={() => {
-                    lastPageStorage.clear();
-                    setView(View.Submit);
-                    history.push('/');
-                  }}
-                  submitWithActivationCode={submitTwoFa}
-                />
-              </IonCol>
-            </IonRow>
-          </>
-        )}
-      </MainGrid>
-    </MainLayout>
+    <PublicLayout>
+      <IonRow>
+        <IonCol>
+          <MainTitle>{t('ImportWallet')}</MainTitle>
+        </IonCol>
+      </IonRow>
+      {view === View.Submit && (
+        <>
+          <IonRow>
+            <IonCol>
+              <h3
+                style={{
+                  color: 'var(--ion-color-primary-10)',
+                }}
+              >
+                {t('EnterKeyPair')}
+              </h3>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <StyledInput
+                label={t('KeyPair')}
+                type={'text'}
+                placeholder={t('EnterKeyPair')}
+                onIonInput={({ target: { value } }) => {
+                  setPrivateKey(value as string);
+                  setAlert(formAlertResetState);
+                }}
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            {ResetButton}
+            {RequestImportAccountButton}
+          </IonRow>
+          <IonRow>
+            <AlertBox state={alert} />
+          </IonRow>
+        </>
+      )}
+      {view === View.TwoFa && (
+        <>
+          <IonRow>
+            <IonCol>
+              <StyledInput
+                label="Email"
+                type="email"
+                placeholder=""
+                disabled={true}
+                value={email}
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol class="ion-center">
+              {timer ? (
+                <ActivationTimer onComplete={() => setTimer(false)} />
+              ) : (
+                RequestImportAccountButton
+              )}
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <SubmitActivationCode
+                onClose={() => {
+                  lastPageStorage.clear();
+                  setView(View.Submit);
+                  history.push('/');
+                }}
+                submitWithActivationCode={submitTwoFa}
+              />
+            </IonCol>
+          </IonRow>
+        </>
+      )}
+    </PublicLayout>
   );
 }

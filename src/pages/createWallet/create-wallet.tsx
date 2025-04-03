@@ -18,16 +18,14 @@ import {
   formAlertResetState,
 } from '../../components/alert/alert';
 import { PurpleButton } from '../../components/buttons';
-import { MainGrid } from '../../components/layout/main-grid';
 import { MainTitle } from '../../components/layout/main-title';
-import { MainLayout } from '../../components/layout/mainLayout';
+import { PublicLayout } from '../../components/layout/public-layout';
 import { useLogout } from '../../components/logout';
 import { OtkBox } from '../../components/otk-box/otk-box';
 import {
   StyledInput,
   StyledInputErrorPrompt,
 } from '../../components/styled-input';
-import { ContentText } from '../../components/text/context-text';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import {
@@ -199,167 +197,171 @@ export function CreateWallet() {
   );
 
   return (
-    <MainLayout>
-      <MainGrid>
-        <IonRow>
-          <IonCol class="ion-center">
-            <MainTitle>{t('CreateYourWallet')}</MainTitle>
-          </IonCol>
-        </IonRow>
-        {view === CreateWalletView.RequestAccount && (
-          <>
-            <IonRow>
-              <IonCol class="ion-center">
-                <ContentText>{t('EnterEmailToCreateAccount')}</ContentText>
-              </IonCol>
-            </IonRow>
-          </>
-        )}
-        {(view === CreateWalletView.RequestAccount ||
-          view === CreateWalletView.ActivateAccount) && (
-          <>
-            <IonRow>
-              <IonCol>
-                <StyledInput
-                  label="Email"
-                  type="email"
-                  placeholder={email || t('EnterYourEmail')}
-                  onIonInput={({ target: { value } }) => {
-                    setEmail(value as string);
-                    setAlertRequest(formAlertResetState);
-                  }}
-                  errorPrompt={StyledInputErrorPrompt.Email}
-                  validate={validateEmail}
-                />
-              </IonCol>
-            </IonRow>
-          </>
-        )}
-        {creatingAccount && <CreatingWallet />}
-        {view === CreateWalletView.RequestAccount && (
-          <>
-            <IonRow>
-              {ResetButton}
-              {RequestWalletAccountButton}
-            </IonRow>
-            <IonRow>
-              <AlertBox state={alertRequest} />
-            </IonRow>
-          </>
-        )}
-        {view === CreateWalletView.ActivateAccount && (
-          <>
-            <IonRow>{t('ConfirmEmailSent', { email: '' })}</IonRow>
-            <IonRow>
-              <IonCol class="ion-center">
-                {timer ? (
-                  <ActivationTimer onComplete={() => setTimer(false)} />
-                ) : (
-                  RequestWalletAccountButton
-                )}
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <AlertBox state={alertRequest} />
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <StyledInput
-                  label={t('VerificationCode')}
-                  type={'text'}
-                  placeholder={t('EnterTheCodeSent')}
-                  onIonInput={({ target: { value } }) => {
-                    setActivationCode(value as string);
-                    setAlertActivate(formAlertResetState);
-                  }}
-                  errorPrompt={StyledInputErrorPrompt.ActivationCode}
-                  validate={validateActivationCode}
-                />
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <StyledInput
-                  label={'Password'}
-                  placeholder={t('EnterPassword')}
-                  type="password"
-                  onIonInput={({ target: { value } }) =>
-                    setPassword(value as string)
-                  }
-                  errorPrompt={StyledInputErrorPrompt.Password}
-                  validate={validatePassword}
-                />
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <StyledInput
-                  label={'Confirm password'}
-                  type="password"
-                  placeholder={t('ConfirmPassword')}
-                  onIonInput={({ target: { value } }) =>
-                    setConfirmPassword(value as string)
-                  }
-                  errorPrompt={StyledInputErrorPrompt.ConfirmPassword}
-                  validate={validateConfirmPassword}
-                />
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              {ResetButton}
-              <IonCol>
-                <PurpleButton
-                  expand="block"
-                  onClick={activateWalletAccount}
-                  disabled={!password || !confirmPassword || !activationCode}
-                >
-                  {t('Confirm')}
-                </PurpleButton>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <AlertBox state={alertActivate} />
-            </IonRow>
-          </>
-        )}
-        {view === CreateWalletView.AccountCreated && (
-          <>
-            <IonRow>
-              <IonCol class="ion-center">
-                <MainTitle>{t('WalletCreated')}</MainTitle>
-              </IonCol>
-            </IonRow>
-            <IonRow>{t('SaveKey')}</IonRow>
-            <IonRow class="ion-justify-content-center">
-              <IonCol>
-                <IonLabel position="stacked">{t('PublicAddress')}</IonLabel>
-                <OtkBox text={newAccount?.identity} withCopy={false} />
-              </IonCol>
-            </IonRow>
-            <IonRow class="ion-justify-content-center">
-              <IonCol>
-                <IonLabel position="stacked">{t('PrivateKey')}</IonLabel>
-                <OtkBox text={newAccount?.privateKey} />
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <PurpleButton
-                  expand="block"
-                  onClick={() => {
-                    setView(CreateWalletView.RequestAccount);
-                    logout().then(() => {
-                      isPlatform('mobile') && location.reload();
-                    });
-                  }}
-                >
-                  {t('Continue')}
-                </PurpleButton>
-              </IonCol>
-            </IonRow>
-          </>
-        )}
-      </MainGrid>
-    </MainLayout>
+    <PublicLayout>
+      <IonRow>
+        <IonCol>
+          <MainTitle>{t('CreateYourWallet')}</MainTitle>
+        </IonCol>
+      </IonRow>
+      {view === CreateWalletView.RequestAccount && (
+        <>
+          <IonRow>
+            <IonCol>
+              <h3
+                style={{
+                  color: 'var(--ion-color-primary-10)',
+                }}
+              >
+                {t('EnterEmailToCreateAccount')}
+              </h3>
+            </IonCol>
+          </IonRow>
+        </>
+      )}
+      {(view === CreateWalletView.RequestAccount ||
+        view === CreateWalletView.ActivateAccount) && (
+        <>
+          <IonRow>
+            <IonCol>
+              <StyledInput
+                label="Email"
+                type="email"
+                placeholder={email || t('EnterYourEmail')}
+                onIonInput={({ target: { value } }) => {
+                  setEmail(value as string);
+                  setAlertRequest(formAlertResetState);
+                }}
+                errorPrompt={StyledInputErrorPrompt.Email}
+                validate={validateEmail}
+              />
+            </IonCol>
+          </IonRow>
+        </>
+      )}
+      {creatingAccount && <CreatingWallet />}
+      {view === CreateWalletView.RequestAccount && (
+        <>
+          <IonRow>
+            {ResetButton}
+            {RequestWalletAccountButton}
+          </IonRow>
+          <IonRow>
+            <AlertBox state={alertRequest} />
+          </IonRow>
+        </>
+      )}
+      {view === CreateWalletView.ActivateAccount && (
+        <>
+          <IonRow>{t('ConfirmEmailSent', { email: '' })}</IonRow>
+          <IonRow>
+            <IonCol class="ion-center">
+              {timer ? (
+                <ActivationTimer onComplete={() => setTimer(false)} />
+              ) : (
+                RequestWalletAccountButton
+              )}
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <AlertBox state={alertRequest} />
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <StyledInput
+                label={t('VerificationCode')}
+                type={'text'}
+                placeholder={t('EnterTheCodeSent')}
+                onIonInput={({ target: { value } }) => {
+                  setActivationCode(value as string);
+                  setAlertActivate(formAlertResetState);
+                }}
+                errorPrompt={StyledInputErrorPrompt.ActivationCode}
+                validate={validateActivationCode}
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <StyledInput
+                label={'Password'}
+                placeholder={t('EnterPassword')}
+                type="password"
+                onIonInput={({ target: { value } }) =>
+                  setPassword(value as string)
+                }
+                errorPrompt={StyledInputErrorPrompt.Password}
+                validate={validatePassword}
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <StyledInput
+                label={'Confirm password'}
+                type="password"
+                placeholder={t('ConfirmPassword')}
+                onIonInput={({ target: { value } }) =>
+                  setConfirmPassword(value as string)
+                }
+                errorPrompt={StyledInputErrorPrompt.ConfirmPassword}
+                validate={validateConfirmPassword}
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            {ResetButton}
+            <IonCol>
+              <PurpleButton
+                expand="block"
+                onClick={activateWalletAccount}
+                disabled={!password || !confirmPassword || !activationCode}
+              >
+                {t('Confirm')}
+              </PurpleButton>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <AlertBox state={alertActivate} />
+          </IonRow>
+        </>
+      )}
+      {view === CreateWalletView.AccountCreated && (
+        <>
+          <IonRow>
+            <IonCol class="ion-center">
+              <MainTitle>{t('WalletCreated')}</MainTitle>
+            </IonCol>
+          </IonRow>
+          <IonRow>{t('SaveKey')}</IonRow>
+          <IonRow class="ion-justify-content-center">
+            <IonCol>
+              <IonLabel position="stacked">{t('PublicAddress')}</IonLabel>
+              <OtkBox text={newAccount?.identity} withCopy={false} />
+            </IonCol>
+          </IonRow>
+          <IonRow class="ion-justify-content-center">
+            <IonCol>
+              <IonLabel position="stacked">{t('PrivateKey')}</IonLabel>
+              <OtkBox text={newAccount?.privateKey} />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <PurpleButton
+                expand="block"
+                onClick={() => {
+                  setView(CreateWalletView.RequestAccount);
+                  logout().then(() => {
+                    isPlatform('mobile') && location.reload();
+                  });
+                }}
+              >
+                {t('Continue')}
+              </PurpleButton>
+            </IonCol>
+          </IonRow>
+        </>
+      )}
+    </PublicLayout>
   );
 }
