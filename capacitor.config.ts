@@ -18,15 +18,21 @@ const config: CapacitorConfig = {
       // resizeOnFullScreen: true,
     },
   },
-  server: {
-    allowNavigation: ['api.akashicpay.com', 'api.staging-akashicpay.com'],
-    ...(process.env.PLATFORM === 'ios' && {
-      hostname:
-        process.env.FLAVORS === 'staging'
-          ? 'api.staging-akashicpay.com'
-          : 'api.akashicpay.com',
-    }),
-  },
+  server:
+    process.env.NODE_ENV === 'dev'
+      ? {
+          url: 'http://127.0.0.1:8100',
+          cleartext: true,
+        }
+      : {
+          allowNavigation: ['api.akashicpay.com', 'api.staging-akashicpay.com'],
+          ...(process.env.PLATFORM === 'ios' && {
+            hostname:
+              process.env.FLAVORS === 'staging'
+                ? 'api.staging-akashicpay.com'
+                : 'api.akashicpay.com',
+          }),
+        },
 };
 
 // eslint-disable-next-line import/no-default-export
