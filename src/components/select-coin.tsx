@@ -121,7 +121,8 @@ export function SelectCoin() {
   useEffect(
     () => {
       if (!swiperRef || swiperRef.destroyed) return;
-      swiperRef.slideTo(swiperIdx);
+      swiperRef.slidePrev();
+      swiperRef.slideToLoop(swiperIdx);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [swiperRef]
@@ -134,7 +135,6 @@ export function SelectCoin() {
    */
   const handleSlideChange = () => {
     setSwiperIdx(swiperRef?.realIndex ?? 0);
-    console.log(swiperRef);
 
     const wc = WALLET_CURRENCIES[swiperRef?.realIndex ?? 0];
     setFocusCurrency(wc);
