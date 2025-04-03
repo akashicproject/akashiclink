@@ -29,7 +29,7 @@ export function ConfirmLockPassword({
         </IonCol>
       </IonRow>
       <IonRow>
-        <IonCol class="ion-center">
+        <IonCol>
           <h4>{t('PleaseEnterYourPassword')}</h4>
         </IonCol>
       </IonRow>

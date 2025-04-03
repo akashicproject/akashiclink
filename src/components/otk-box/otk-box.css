@@ -1,3 +1,5 @@
 ion-item {
   --ion-item-background: transparent;
+  margin: 0;
+  padding: 0;
 }

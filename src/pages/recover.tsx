@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { userConst } from '@helium-pay/backend';
 import {
   IonCol,
@@ -20,15 +19,6 @@ import {
   StyledInputErrorPrompt,
 } from '../components/styled-input';
 import { ResetPassword } from './Recovery/reset-password';
-
-const Message = styled.span({
-  fontWeight: 700,
-  fontSize: '24px',
-  lineHeight: '28px',
-  fontFamily: 'Nunito Sans',
-  textAlign: 'center',
-  color: 'var(--ion-color)',
-});
 
 export enum ResetEmailState {
   SetEmail,
@@ -88,8 +78,8 @@ export function Recover() {
         {view === ResetEmailState.SetCode && (
           <>
             <IonRow>
-              <IonCol class="ion-center">
-                <Message>Verification Code Sent</Message>
+              <IonCol>
+                <h2>{t('PleaseEnterCode')}</h2>
               </IonCol>
             </IonRow>
             <IonRow>
@@ -100,8 +90,8 @@ export function Recover() {
             <IonRow>
               <IonCol>
                 <IonItem fill="outline">
-                  <IonLabel position="floating">Code</IonLabel>
-                  <IonInput placeholder="Please enter code sent" />
+                  <IonLabel position="floating">{t('ActivationCode')}</IonLabel>
+                  <IonInput placeholder={t('PleaseEnterCode') || ''} />
                 </IonItem>
               </IonCol>
             </IonRow>
@@ -110,11 +100,11 @@ export function Recover() {
                 <PurpleButton
                   onClick={() => setView(ResetEmailState.NewLockPassword)}
                 >
-                  Confirm
+                  {t('Confirm')}
                 </PurpleButton>
               </IonCol>
               <IonCol>
-                <WhiteButton>Skip Backup</WhiteButton>
+                <WhiteButton>{t('Cancel')}</WhiteButton>
               </IonCol>
             </IonRow>
           </>

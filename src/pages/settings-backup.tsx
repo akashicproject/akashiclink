@@ -73,7 +73,7 @@ export function SettingsBackup() {
           </IonRow>
           <IonRow>
             <IonCol>
-              <OtkBox text={keyPair} />
+              <OtkBox label="" text={keyPair} />
             </IonCol>
           </IonRow>
           <IonRow>

@@ -41,6 +41,7 @@ ion-popover.copied-popover {
 
 ion-label {
   font-size: 14px;
+  font-weight: 500;
 }
 
 h1 {
@@ -73,20 +74,22 @@ h3 {
 
 h4 {
   font-weight: 700;
-  font-size: 12px;
+  font-size: 14px;
   font-family: 'Nunito Sans';
   color: var(--ion-color-primary-10);
   line-height: 16px;
   text-transform: none;
+  text-align: center !important;
 }
 
 h5 {
   font-weight: 700;
-  font-size: 11px;
+  font-size: 12px;
   font-family: 'Nunito Sans';
   color: var(--ion-color-primary-10);
   text-transform: none;
   margin: 0px;
+  text-align: center !important;
 }
 
 /* nunito-sans-200 - latin */
