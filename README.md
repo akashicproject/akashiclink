@@ -1,6 +1,31 @@
 # Akashic Wallet
 
-> Mobile app + browser extension
+> Mobile apps + Chrome extension
+
+### Wallet Container Diagram
+
+```mermaid
+graph LR
+  linkStyle default fill:#ffffff
+
+  subgraph diagram [Akashic System - Akashic Wallet - Components]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    subgraph 7 [Akashic Wallet]
+      style 7 fill:#ffffff,stroke:#2e6295,color:#2e6295
+
+      11("<div style='font-weight: bold'>Chrome Extension</div><div style='font-size: 70%; margin-top: 0px'>[Component]</div>")
+      style 11 fill:#85bbf0,stroke:#5d82a8,color:#000000
+      12("<div style='font-weight: bold'>Android</div><div style='font-size: 70%; margin-top: 0px'>[Component]</div>")
+      style 12 fill:#85bbf0,stroke:#5d82a8,color:#000000
+      13("<div style='font-weight: bold'>iOS</div><div style='font-size: 70%; margin-top: 0px'>[Component]</div>")
+      style 13 fill:#85bbf0,stroke:#5d82a8,color:#000000
+      14("<div style='font-weight: bold'>Web Preview (dev-only)</div><div style='font-size: 70%; margin-top: 0px'>[Component]</div>")
+      style 14 fill:#85bbf0,stroke:#5d82a8,color:#000000
+    end
+
+  end
+```
 
 ## Warnings
 
@@ -141,3 +166,9 @@ Example below will apply the styles to any `<IonSelect>` and `<IonList>` that ar
   }
 }
 ```
+
+## Images
+
+All UI images should be put in the global [shared assets folder](../../static/assets/).
+They will be automatically synced into the local [shared assets folders](./public//shared-assets/)
+making them available throughout the monorepo.
