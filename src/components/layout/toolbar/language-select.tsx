@@ -77,7 +77,7 @@ export const LanguageDropdown = () => {
               detail={false}
               onClick={(_) => setGlobalLanguage(item.locale)}
             >
-              {item.title.toUpperCase()}
+              {item.title}
             </IonItem>
           ))}
         </IonList>
