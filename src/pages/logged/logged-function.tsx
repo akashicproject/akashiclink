@@ -2,7 +2,7 @@ import './logged.css';
 
 import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { arrowDownOutline, arrowForwardOutline } from 'ionicons/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { PurpleButton, WhiteButton } from '../../components/buttons';
