@@ -147,6 +147,8 @@ export function NftTransfer() {
           sender: owner.ownerIdentity,
           receiver: toAddress,
           nftName: response.nftName,
+          acnsAlias: response.acnsAlias,
+          txHash: response.txHash,
         };
         setTransferResult(result);
         setPageView(TransferView.Result);
@@ -268,6 +270,7 @@ export function NftTransfer() {
         <NftTransferResult
           transaction={transferResult}
           errorMsg={errorMsgs.NoError}
+          isMobile={isMobile}
         />
       )}
     </>
