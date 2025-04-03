@@ -1,6 +1,9 @@
 import './activity.scss';
 
 import styled from '@emotion/styled';
+import type { ITransactionRecord } from '@helium-pay/backend';
+import type { ITransactionRecordForTable } from '@helium-pay/owners/src/components/tables/formatter';
+import { transferToTableFormat } from '@helium-pay/owners/src/components/tables/formatter';
 import {
   IonBackdrop,
   IonButton,
@@ -20,10 +23,9 @@ import { ActivityDetail } from '../components/activity/activity-detail';
 import { OneActivity } from '../components/activity/one-activity';
 import { LoggedLayout } from '../components/layout/logged-layout';
 import { urls } from '../constants/urls';
-import type { ITransactionRecordForExtension } from '../utils/formatTransfers';
-import { formatTransfers } from '../utils/formatTransfers';
 import { useTransfersMe } from '../utils/hooks/useTransfersMe';
 import { lastPageStorage } from '../utils/last-page-storage';
+import { WALLET_CURRENCIES } from '../utils/supported-currencies';
 
 export const Divider = styled.div({
   boxSizing: 'border-box',
@@ -32,11 +34,42 @@ export const Divider = styled.div({
   width: '100%',
 });
 
+export interface WalletTransactionRecord extends ITransactionRecordForTable {
+  icon: string;
+}
+
+/**
+ * Formats a transfer record fetched from backend to wallet format
+ *
+ * @param transfers fetched from backend
+ */
+
+export function formatWalletTransfer(
+  transfers: ITransactionRecord[]
+): WalletTransactionRecord[] {
+  const formatTransfers: WalletTransactionRecord[] = [];
+  transfers.forEach((transfer, id) => {
+    const unpackedTransfer = transferToTableFormat(transfer, id);
+    const walletSupportedCurrency = WALLET_CURRENCIES.find(
+      ({ currency: { chain } }) => chain === transfer.coinSymbol
+    );
+    if (unpackedTransfer !== undefined && walletSupportedCurrency) {
+      const walletUnpackedTransfer = {
+        icon: walletSupportedCurrency.icon,
+        ...unpackedTransfer,
+      };
+      formatTransfers.push(walletUnpackedTransfer);
+    }
+  });
+  formatTransfers.sort((a, b) => b.date.getTime() - a.date.getTime());
+  return formatTransfers;
+}
+
 export function Activity() {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [currentTransfer, setCurrentTransfer] =
-    useState<ITransactionRecordForExtension>();
+    useState<WalletTransactionRecord>();
   useEffect(() => {
     lastPageStorage.store(urls.activity);
   }, []);
@@ -46,7 +79,7 @@ export function Activity() {
     endDate: dayjs().toDate(),
   });
   const { transfers } = useTransfersMe(transferParams);
-  const walletFormatTransfers = formatTransfers(transfers);
+  const walletFormatTransfers = formatWalletTransfer(transfers);
 
   return (
     <LoggedLayout>

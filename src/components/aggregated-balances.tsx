@@ -1,6 +1,6 @@
 import { IonButton, IonCard, IonCol, IonGrid, IonRow } from '@ionic/react';
 
-import type { UserWallet } from '../constants/wallets';
+import type { UserWallet } from '../utils/supported-currencies';
 
 export function AggregatedBalances({
   keyWallets,

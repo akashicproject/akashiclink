@@ -12,14 +12,14 @@ import { useEffect, useState } from 'react';
 import SwiperCore, { Navigation, Virtual } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import type { IWalletCurrency } from '../constants/currencies';
-import {
-  compareWalletCurrencies,
-  SUPPORTED_CURRENCIES_FOR_EXTENSION,
-} from '../constants/currencies';
 import { limitDecimalPlaces } from '../utils/conversions';
 import { useAggregatedBalances } from '../utils/hooks/useAggregatedBalances';
 import { useExchangeRates } from '../utils/hooks/useExchangeRates';
+import type { WalletCurrency } from '../utils/supported-currencies';
+import {
+  compareWalletCurrency,
+  WALLET_CURRENCIES,
+} from '../utils/supported-currencies';
 import { useFocusCurrency, useTheme } from './PreferenceProvider';
 
 // install Virtual module
@@ -44,9 +44,9 @@ const BalanceText = styled.h4({
  * is at least 2 x `slidesPerView` in order for the looping to occur properly,
  * hence we just duplicate the size to ensure this is always the case
  */
-const CURRENCIES_FOR_SWIPER = [
-  ...SUPPORTED_CURRENCIES_FOR_EXTENSION.list,
-  ...SUPPORTED_CURRENCIES_FOR_EXTENSION.list,
+const WALLET_CURRENCIES_FOR_SWIPER = [
+  ...WALLET_CURRENCIES,
+  ...WALLET_CURRENCIES,
 ];
 
 export function SelectCoin() {
@@ -62,7 +62,7 @@ export function SelectCoin() {
   const { keys: exchangeRates, length: exchangeRateLength } =
     useExchangeRates();
 
-  const findExchangeRate = ({ chain, token }: IWalletCurrency) =>
+  const findExchangeRate = ({ chain, token }: WalletCurrency) =>
     exchangeRates.find(
       (ex) => !token && ex.coinSymbol === (TEST_TO_MAIN.get(chain) || chain)
     )?.price || 1;
@@ -87,8 +87,8 @@ export function SelectCoin() {
    */
   const [swiperRef, setSwiperRef] = useState<SwiperCore>();
   const [swiperIdx, setSwiperIdx] = useState<number>(
-    CURRENCIES_FOR_SWIPER.findIndex(({ walletCurrency }) =>
-      compareWalletCurrencies(walletCurrency, focusCurrency)
+    WALLET_CURRENCIES_FOR_SWIPER.findIndex(({ currency }) =>
+      compareWalletCurrency(currency, focusCurrency)
     )
   );
 
@@ -114,7 +114,7 @@ export function SelectCoin() {
 
     const newIndex = swiperRef.realIndex;
     setSwiperIdx(newIndex);
-    const wc = CURRENCIES_FOR_SWIPER[newIndex].walletCurrency;
+    const wc = WALLET_CURRENCIES_FOR_SWIPER[newIndex].currency;
     setFocusCurrency && setFocusCurrency(wc);
 
     const conversionRate = findExchangeRate(wc);
@@ -122,35 +122,33 @@ export function SelectCoin() {
     setFocusCurrencyUSDTBalance(Big(conversionRate).times(bigCurrency));
   };
 
-  const getIcon = (
-    currencyIcon: string | undefined,
-    darkCurrencyIcon: string | undefined,
-    greyCurrencyIcon: string | undefined,
+  // select the relevant icon path
+  const currentLogo = (
+    logo: string | undefined,
+    darkLogo: string | undefined,
+    greyLogo: string | undefined,
     idx: number
   ) => {
-    if (swiperIdx !== idx && greyCurrencyIcon !== undefined) {
-      return greyCurrencyIcon;
-    } else if (storedTheme === 'dark' && darkCurrencyIcon !== undefined) {
-      return darkCurrencyIcon;
+    if (swiperIdx !== idx && greyLogo !== undefined) {
+      return greyLogo;
+    } else if (storedTheme === 'dark' && darkLogo !== undefined) {
+      return darkLogo;
     } else {
-      return currencyIcon;
+      return logo;
     }
   };
 
   // Lookup USDT icon
-  const usdtChainIcon = (wc: IWalletCurrency, idx: number) => {
-    const chain = CURRENCIES_FOR_SWIPER.find(
-      ({ walletCurrency: { chain } }) => chain === wc.chain
+  const usdtChainIcon = (wc: WalletCurrency, idx: number) => {
+    const chain = WALLET_CURRENCIES_FOR_SWIPER.find(
+      ({ currency: { chain } }) => chain === wc.chain
     );
-    if (swiperIdx !== idx && chain?.greyCurrencyIcon !== undefined) {
-      return chain.greyCurrencyIcon;
-    } else if (
-      storedTheme === 'dark' &&
-      chain?.darkCurrencyIcon !== undefined
-    ) {
-      return chain.darkCurrencyIcon;
+    if (swiperIdx !== idx && chain?.greyLogo !== undefined) {
+      return chain.greyLogo;
+    } else if (storedTheme === 'dark' && chain?.darkLogo !== undefined) {
+      return chain.darkLogo;
     } else {
-      return chain?.currencyIcon;
+      return chain?.logo;
     }
   };
 
@@ -178,16 +176,8 @@ export function SelectCoin() {
               }, 1000);
             }}
           >
-            {CURRENCIES_FOR_SWIPER.map(
-              (
-                {
-                  currencyIcon,
-                  darkCurrencyIcon,
-                  greyCurrencyIcon,
-                  walletCurrency,
-                },
-                idx
-              ) => {
+            {WALLET_CURRENCIES_FOR_SWIPER.map(
+              ({ logo, darkLogo, greyLogo, currency }, idx) => {
                 return (
                   <SwiperSlide
                     className="unselectable"
@@ -200,12 +190,7 @@ export function SelectCoin() {
                   >
                     <IonImg
                       alt={''}
-                      src={getIcon(
-                        currencyIcon,
-                        darkCurrencyIcon,
-                        greyCurrencyIcon,
-                        idx
-                      )}
+                      src={currentLogo(logo, darkLogo, greyLogo, idx)}
                       style={
                         swiperIdx === idx
                           ? { height: '56px', width: '56px' }
@@ -215,9 +200,9 @@ export function SelectCoin() {
                             }
                       }
                     />
-                    {walletCurrency.token && (
+                    {currency.token && (
                       <IonImg
-                        src={usdtChainIcon(walletCurrency, idx)}
+                        src={usdtChainIcon(currency, idx)}
                         style={
                           swiperIdx === idx
                             ? {

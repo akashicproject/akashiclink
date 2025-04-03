@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { Link, useHistory } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
+import { formatWalletTransfer } from '../../pages/activity';
 import { akashicPayPath } from '../../routing/navigation-tree';
-import { formatTransfers } from '../../utils/formatTransfers';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { OneActivity } from '../activity/one-activity';
 import { TabButton } from '../buttons';
@@ -52,7 +52,7 @@ export const ActivityAndNftTab = () => {
     endDate: dayjs().toDate(),
   });
   const { transfers } = useTransfersMe(transferParams);
-  const walletFormatTransfers = formatTransfers(transfers);
+  const walletFormatTransfers = formatWalletTransfer(transfers);
 
   return (
     <>

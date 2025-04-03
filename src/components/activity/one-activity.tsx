@@ -9,12 +9,12 @@ import { chevronForwardOutline } from 'ionicons/icons';
 import type { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import type { WalletTransactionRecord } from '../../pages/activity';
 import { Divider } from '../../pages/activity';
 import { limitDecimalPlaces } from '../../utils/conversions';
 import { formatDate } from '../../utils/formatDate';
-import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { displayLongCurrencyAmount } from '../../utils/long-amount';
-
+import { L2Icon } from '../../utils/supported-currencies';
 const OneTransfer = styled.div<{ hover: boolean }>((props) => ({
   display: 'flex',
   justifyContent: 'center',
@@ -25,8 +25,6 @@ const OneTransfer = styled.div<{ hover: boolean }>((props) => ({
     background: props.hover ? 'rgba(103, 80, 164, 0.14)' : 'transparent',
   },
 }));
-
-const L2Icon = '/shared-assets/images/PayLogo-all-white.svg';
 
 const ActivityWrapper = styled.div({
   display: 'flex',
@@ -127,7 +125,7 @@ export function OneActivity({
   hasHoverEffect,
   divider,
 }: {
-  transfer: ITransactionRecordForExtension;
+  transfer: WalletTransactionRecord;
   onClick?: () => void;
   style?: CSSProperties;
   showDetail?: boolean;
@@ -181,7 +179,7 @@ export function OneActivity({
           <Chain style={iconStyle}>
             <IonImg
               alt=""
-              src={isL2 ? L2Icon : transfer.networkIcon}
+              src={isL2 ? L2Icon : transfer.icon}
               style={{ height: isL2 ? '20px' : '12px' }}
             />
             {isL2 ? null : label}

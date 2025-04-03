@@ -3,10 +3,10 @@ import './send.css';
 import styled from '@emotion/styled';
 import {
   type ITransactionVerifyResponse as VerifiedTransaction,
-  L2Regex,
   NetworkDictionary,
   TEST_TO_MAIN,
 } from '@helium-pay/backend';
+import { L2Regex } from '@helium-pay/owners/src/constants/currencies';
 import { IonCol, IonImg, IonRow, IonSpinner, useIonRouter } from '@ionic/react';
 import Big from 'big.js';
 import { useEffect, useState } from 'react';
@@ -24,7 +24,6 @@ import {
   StyledInput,
   StyledInputErrorPrompt,
 } from '../../components/styled-input';
-import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
@@ -35,6 +34,7 @@ import { useKeyMe } from '../../utils/hooks/useKeyMe';
 import { calculateInternalWithdrawalFee } from '../../utils/internal-fee';
 import { lastPageStorage } from '../../utils/last-page-storage';
 import { displayLongText } from '../../utils/long-text';
+import { lookupWalletCurrency } from '../../utils/supported-currencies';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { SendConfirm } from './send-confirm';
 import { SendMain } from './send-main';
@@ -162,9 +162,8 @@ export function SendTo() {
   }, []);
 
   // Find specified currency or default to the first one
-  const currentWalletMetadata =
-    SUPPORTED_CURRENCIES_FOR_EXTENSION.lookup(currency);
-  const { chain, token } = currentWalletMetadata.walletCurrency;
+  const currentWalletMetadata = lookupWalletCurrency(currency);
+  const { chain, token } = currentWalletMetadata.currency;
   const currentWallet = userWallets.filter((wallet) => {
     return wallet.coinSymbol === chain;
   })[0];
@@ -339,12 +338,12 @@ export function SendTo() {
               <CurrencyWrapper>
                 <IonImg
                   alt={''}
-                  src={currentWalletMetadata.currencyIcon}
+                  src={currentWalletMetadata.logo}
                   style={{ width: '40px', height: '40px' }}
                 />
                 <BalanceText>
-                  {aggregatedBalances.get(currentWalletMetadata.walletCurrency)}{' '}
-                  {currentWalletMetadata.walletCurrency.displayName}
+                  {aggregatedBalances.get(currentWalletMetadata.currency)}{' '}
+                  {currentWalletMetadata.currency.displayName}
                 </BalanceText>
               </CurrencyWrapper>
             </IonCol>

@@ -10,10 +10,10 @@ import { useTranslation } from 'react-i18next';
 
 import { OtkBox } from '../../components/otk-box/otk-box';
 import { useFocusCurrency } from '../../components/PreferenceProvider';
-import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { urls } from '../../constants/urls';
 import { useLargestBalanceKeys } from '../../utils/hooks/useLargestBalanceKeys';
 import { lastPageStorage } from '../../utils/last-page-storage';
+import { lookupWalletCurrency } from '../../utils/supported-currencies';
 import { LoggedMain } from './logged-main';
 
 const CoinWrapper = styled.div({
@@ -34,8 +34,7 @@ export function DepositPage() {
   }, []);
 
   // Find specified currency or default to the first one
-  const currentWalletMetadata =
-    SUPPORTED_CURRENCIES_FOR_EXTENSION.lookup(currency);
+  const currentWalletMetadata = lookupWalletCurrency(currency);
 
   const { keys: addresses, isLoading: isAddressesLoading } =
     useLargestBalanceKeys({
@@ -45,7 +44,7 @@ export function DepositPage() {
   const walletAddressDetail = addresses?.find(
     (address) =>
       address.coinSymbol.toLowerCase() ===
-      currentWalletMetadata.walletCurrency.chain.toLowerCase()
+      currentWalletMetadata.currency.chain.toLowerCase()
   );
 
   const walletAddress = walletAddressDetail?.address ?? '-';
@@ -64,14 +63,12 @@ export function DepositPage() {
               {walletAddressDetail?.coinSymbol && (
                 <IonImg
                   alt={''}
-                  src={currentWalletMetadata.currencyIcon}
+                  src={currentWalletMetadata.logo}
                   style={{ height: '30px' }}
                 />
               )}
               <IonText>
-                <h3>
-                  {currentWalletMetadata.walletCurrency.displayName ?? '-'}
-                </h3>
+                <h3>{currentWalletMetadata.currency.displayName ?? '-'}</h3>
               </IonText>
             </CoinWrapper>
           </IonCol>
