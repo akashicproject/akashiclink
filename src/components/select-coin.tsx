@@ -6,7 +6,7 @@ import './selection-coin.css';
 
 import styled from '@emotion/styled';
 import { TEST_TO_MAIN } from '@helium-pay/backend';
-import { IonCol, IonImg, IonRow } from '@ionic/react';
+import { IonCol, IonRow } from '@ionic/react';
 import Big from 'big.js';
 import { useEffect, useState } from 'react';
 import SwiperCore, { Navigation, Virtual } from 'swiper';

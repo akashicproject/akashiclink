@@ -1,6 +1,6 @@
+import { datadogRum } from '@datadog/browser-rum';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { datadogRum } from '@datadog/browser-rum';
 
 import App from './App';
 import { initialiseTranslationLibrary } from './i18n/i18n';
