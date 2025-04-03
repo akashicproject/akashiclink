@@ -71,7 +71,7 @@ export function createNavigationSubtree(
 }
 
 const hpSubtree = createNavigationSubtree(urls.akashicPay, 'AkashicPay Chain');
-export const { createPath: akashicPayPath } = hpSubtree;
+export const { createPath: akashicPayPath, root: akashicPayRoot } = hpSubtree;
 
 const us2Subtree = createNavigationSubtree(urls.us2, 'Square (US²)');
 export const { createPath: us2Path } = us2Subtree;
@@ -113,6 +113,7 @@ export function NavigationTree() {
       {/* Default redirect */}
       {/* https://github.com/ionic-team/ionic-framework/issues/24855 */}
       <Redirect to={hpSubtree.root} />
+      <Redirect exact from="/" to={hpSubtree.root} />
     </IonRouterOutlet>
   );
 }

@@ -4,6 +4,7 @@ import type { ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { WhiteButton } from '../components/buttons';
+import type { Url } from '../constants/urls';
 import { urls } from '../constants/urls';
 
 const LastPageStorage = 'last-page';
@@ -12,14 +13,29 @@ const LastPageVarsStorage = 'last-page-vars';
 const expiredTime = 3 * 60 * 1000;
 
 /**
- * Store and retrieve the last page user was on before clicking
- * "outside" the extension which automatically minimises it.
+ * NavigationPriority indicates if the last page user was on, should be redirected
+ * to immediately, or await until authentication (valid cookie) has passed
+ *
+ * e.g. CreatingAccount page should always take priority, irrespective of login status
+ * e.g. The dashboard showing user information, should only be redirect to after authentication has passed
+ */
+export enum NavigationPriority {
+  IMMEDIATE = 'IMMEDIATE',
+  AWAIT_AUTHENTICATION = 'AWAIT_AUTHENTICATION',
+}
+
+/**
+ * Store and retrieve the last page user was on
+ * This data is used when user returns to a session
+ *
  * @param lastPage url to redirect to when user clicks back into application
  * @param lastPageVars to load in the context of the redirected page
+ * @param navigationPriority see `NavigationPriority`
  */
 export const lastPageStorage = {
   store: async (
-    lastPage: typeof urls[keyof typeof urls],
+    lastPage: Url,
+    navigationPriority: NavigationPriority = NavigationPriority.AWAIT_AUTHENTICATION,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     lastPageVars: any = {}
   ): Promise<void> => {
@@ -27,6 +43,7 @@ export const lastPageStorage = {
     const lastPageObj = {
       url: lastPage,
       expiredTime: expiry,
+      navigationPriority,
     };
     await Preferences.set({
       key: LastPageStorage,
@@ -41,7 +58,10 @@ export const lastPageStorage = {
     await Preferences.remove({ key: LastPageStorage });
     await Preferences.remove({ key: LastPageVarsStorage });
   },
-  get: async (): Promise<string | null> => {
+  get: async (): Promise<{
+    lastPageUrl: typeof urls[keyof typeof urls];
+    navigationPriority: NavigationPriority;
+  } | null> => {
     const { value } = await Preferences.get({ key: LastPageStorage });
     const lastPageObj = JSON.parse(value || '{}');
     if (Object.keys(lastPageObj).length === 0) {
@@ -51,9 +71,16 @@ export const lastPageStorage = {
     const expiry = new Date(lastPageObj.expiredTime);
     if (now > expiry) {
       await Preferences.remove({ key: LastPageStorage });
-      return urls.akashicPay;
+      await Preferences.remove({ key: LastPageVarsStorage });
+      return {
+        lastPageUrl: urls.akashicPay,
+        navigationPriority: NavigationPriority.AWAIT_AUTHENTICATION,
+      };
     }
-    return lastPageObj.url;
+    return {
+      lastPageUrl: lastPageObj.url,
+      navigationPriority: lastPageObj.navigationPriority,
+    };
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getVars: async (): Promise<any> => {
@@ -61,6 +88,25 @@ export const lastPageStorage = {
     return JSON.parse(value || '{}');
   },
 };
+
+/**
+ * Call this method in useEffect, to store the current page in memory
+ *
+ * @param currentPageUrl to store
+ * @param navigationPriority when resuming session
+ * @param onResume - callback if current page is already in memory
+ */
+export async function cacheCurrentPage(
+  currentPageUrl: Url,
+  navigationPriority?: NavigationPriority,
+  onResume?: () => Promise<void>
+) {
+  const lastPage = await lastPageStorage.get();
+
+  if (lastPage && lastPage.lastPageUrl === currentPageUrl && onResume)
+    onResume();
+  else lastPageStorage.store(currentPageUrl, navigationPriority);
+}
 
 /**
  * Button drops all local storage variables - they keep track

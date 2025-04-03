@@ -12,7 +12,7 @@ import { OtkBox } from '../../components/otk-box/otk-box';
 import { useFocusCurrency } from '../../components/PreferenceProvider';
 import { urls } from '../../constants/urls';
 import { useLargestBalanceKeys } from '../../utils/hooks/useLargestBalanceKeys';
-import { lastPageStorage } from '../../utils/last-page-storage';
+import { cacheCurrentPage } from '../../utils/last-page-storage';
 import { lookupWalletCurrency } from '../../utils/supported-currencies';
 import { LoggedMain } from './logged-main';
 
@@ -28,9 +28,8 @@ export function DepositPage() {
   const { t } = useTranslation();
   const [currency] = useFocusCurrency();
 
-  // store current page to main logged page if reopen
   useEffect(() => {
-    lastPageStorage.store(urls.loggedDeposit);
+    cacheCurrentPage(urls.loggedDeposit);
   }, []);
 
   // Find specified currency or default to the first one

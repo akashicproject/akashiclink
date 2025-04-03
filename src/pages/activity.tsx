@@ -24,7 +24,7 @@ import { OneActivity } from '../components/activity/one-activity';
 import { LoggedLayout } from '../components/layout/logged-layout';
 import { urls } from '../constants/urls';
 import { useTransfersMe } from '../utils/hooks/useTransfersMe';
-import { lastPageStorage } from '../utils/last-page-storage';
+import { cacheCurrentPage } from '../utils/last-page-storage';
 import { WALLET_CURRENCIES } from '../utils/supported-currencies';
 
 export const Divider = styled.div({
@@ -71,7 +71,7 @@ export function Activity() {
   const [currentTransfer, setCurrentTransfer] =
     useState<WalletTransactionRecord>();
   useEffect(() => {
-    lastPageStorage.store(urls.activity);
+    cacheCurrentPage(urls.activity);
   }, []);
 
   const [transferParams, _] = useState({

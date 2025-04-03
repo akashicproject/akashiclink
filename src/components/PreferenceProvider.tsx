@@ -67,13 +67,6 @@ export const PreferenceProvider = ({ children }: { children: ReactNode }) => {
   const [activeAccount, setActiveAccount] =
     useLocalStorage<LocalAccount | null>('session-account', null);
 
-  console.log('app', {
-    storedTheme,
-    focusCurrency: focusCurrency.displayName,
-    localAccounts,
-    activeAccount,
-  });
-
   return (
     <ThemeContext.Provider
       value={{ theme: storedTheme, setTheme: setStoredTheme }}

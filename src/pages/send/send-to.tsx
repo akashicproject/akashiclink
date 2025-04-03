@@ -33,7 +33,7 @@ import { useAggregatedBalances } from '../../utils/hooks/useAggregatedBalances';
 import { useExchangeRates } from '../../utils/hooks/useExchangeRates';
 import { useKeyMe } from '../../utils/hooks/useKeyMe';
 import { calculateInternalWithdrawalFee } from '../../utils/internal-fee';
-import { lastPageStorage } from '../../utils/last-page-storage';
+import { cacheCurrentPage } from '../../utils/last-page-storage';
 import { displayLongText } from '../../utils/long-text';
 import { lookupWalletCurrency } from '../../utils/supported-currencies';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
@@ -157,9 +157,8 @@ export function SendTo() {
   const { keys: exchangeRates } = useExchangeRates();
   const [currency] = useFocusCurrency();
 
-  // store current page to main logged page if reopen
   useEffect(() => {
-    lastPageStorage.store(urls.sendTo);
+    cacheCurrentPage(urls.sendTo);
   }, []);
 
   // Find specified currency or default to the first one

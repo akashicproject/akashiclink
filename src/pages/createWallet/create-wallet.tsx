@@ -29,7 +29,9 @@ import {
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import {
+  cacheCurrentPage,
   lastPageStorage,
+  NavigationPriority,
   ResetPageButton,
 } from '../../utils/last-page-storage';
 import { CreatingWallet } from './creating-wallet';
@@ -47,20 +49,18 @@ export function CreateWallet() {
   const history = useHistory();
   const logout = useLogout();
 
-  /**
-   * Resume a creating wallet session
-   */
   useEffect(() => {
-    const loadPage = async () => {
-      const lastPage = await lastPageStorage.get();
-
-      if (lastPage === createWalletUrl) {
+    cacheCurrentPage(
+      createWalletUrl,
+      NavigationPriority.IMMEDIATE,
+      async () => {
         const { email } = await lastPageStorage.getVars();
-        setEmail(email);
-        setView(CreateWalletView.ActivateAccount);
+        if (email) {
+          setEmail(email);
+          setView(CreateWalletView.ActivateAccount);
+        }
       }
-    };
-    loadPage();
+    );
   }, []);
 
   const [view, setView] = useState(CreateWalletView.RequestAccount);
@@ -120,7 +120,9 @@ export function CreateWallet() {
 
         // Store the state - user will likely click away at this point to copy
         // over the activation code
-        lastPageStorage.store(createWalletUrl, { email });
+        lastPageStorage.store(createWalletUrl, NavigationPriority.IMMEDIATE, {
+          email,
+        });
         setView(CreateWalletView.ActivateAccount);
 
         // Launch countdown while code is valid

@@ -8,7 +8,6 @@ import {
 } from '@ionic/react';
 import { type ReactNode, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
@@ -44,7 +43,6 @@ export function LoggedLayout({
   const isMobile = isPlatform('mobile');
   const ChainDivMarginBottom = isMobile ? '32px' : '0px';
 
-  const history = useHistory();
   const loginCheck = useOwner(true);
 
   /** If user auth has expired, redirect to login page */
@@ -53,7 +51,6 @@ export function LoggedLayout({
       const callLogout = async () => {
         if (!loginCheck.isLoading && !loginCheck.authenticated) {
           await lastPageStorage.clear();
-          history.push(akashicPayPath(''));
         }
       };
       callLogout();

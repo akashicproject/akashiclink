@@ -12,7 +12,10 @@ import { urls } from '../constants/urls';
 import { akashicPayPath } from '../routing/navigation-tree';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useOwner } from '../utils/hooks/useOwner';
-import { lastPageStorage } from '../utils/last-page-storage';
+import {
+  lastPageStorage,
+  NavigationPriority,
+} from '../utils/last-page-storage';
 
 /**
  * First page seen by user when navigating to app
@@ -28,24 +31,32 @@ export function AkashicPayMain() {
   const history = useHistory();
   const loginCheck = useOwner(true);
 
-  /** Redirect to last page user was on */
-  useEffect(
-    () => {
-      const loadPage = async () => {
-        const lastPage = await lastPageStorage.get();
-        if (lastPage) history.push(akashicPayPath(lastPage));
-      };
-      loadPage();
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  /**
+   * Check if there is a forced page to redirect to
+   */
+  useEffect(() => {
+    const loadPage = async () => {
+      const lastPage = await lastPageStorage.get();
+      if (
+        lastPage &&
+        lastPage.navigationPriority === NavigationPriority.IMMEDIATE
+      )
+        history.push(akashicPayPath(lastPage.lastPageUrl));
+    };
+    loadPage();
+  }, []);
 
-  /** If user is logged in, redirect to main dashboard */
+  /**
+   * For all other redirects, await until user has passed authentication
+   */
   useEffect(
     () => {
       if (!loginCheck.isLoading && loginCheck.authenticated)
-        history.push(akashicPayPath(urls.loggedFunction));
+        lastPageStorage.get().then((lastPage) => {
+          lastPage
+            ? history.push(akashicPayPath(lastPage.lastPageUrl))
+            : history.push(akashicPayPath(urls.loggedFunction));
+        });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [loginCheck.isLoading]

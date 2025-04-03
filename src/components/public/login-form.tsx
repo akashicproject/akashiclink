@@ -30,9 +30,15 @@ export function LoginForm() {
   const { t } = useTranslation();
   const [alert, setAlert] = useState(formAlertResetState);
 
-  const { activeAccount, setActiveAccount } = useAccountStorage();
+  const { localAccounts, activeAccount, setActiveAccount } =
+    useAccountStorage();
   const [selectedAccount, setSelectedAccount] = useState<LocalAccount>();
   const [password, setPassword] = useState<string>();
+
+  useEffect(() => {
+    if (!selectedAccount && localAccounts.length)
+      setSelectedAccount(localAccounts[0]);
+  });
 
   /**
    * Ensures that selectedAccount in the dropdown menu matches the activeAccount

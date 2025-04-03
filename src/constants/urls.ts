@@ -2,6 +2,7 @@ import { createWalletUrl } from '../pages/createWallet/create-wallet';
 import { importAccountUrl } from '../pages/import-wallet';
 import { recoveryUrl } from '../pages/Recovery/recovery';
 
+export type Url = typeof urls[keyof typeof urls];
 export const urls = {
   akashicPay: 'akashic',
   beforeCreateWallet: 'before-create-wallet',

@@ -9,15 +9,20 @@ import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { SelectCoin } from '../../components/select-coin';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
-import { lastPageStorage } from '../../utils/last-page-storage';
+import {
+  cacheCurrentPage,
+  NavigationPriority,
+} from '../../utils/last-page-storage';
 import { LoggedMain } from './logged-main';
 
 export function Dashboard() {
   const { t } = useTranslation();
 
-  // store current page to main logged page if reopen
   useEffect(() => {
-    lastPageStorage.store(urls.loggedFunction);
+    cacheCurrentPage(
+      urls.loggedFunction,
+      NavigationPriority.AWAIT_AUTHENTICATION
+    );
   }, []);
 
   return (

@@ -24,7 +24,12 @@ import {
 } from '../components/styled-input';
 import { OwnersAPI } from '../utils/api';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
-import { lastPageStorage, ResetPageButton } from '../utils/last-page-storage';
+import {
+  cacheCurrentPage,
+  lastPageStorage,
+  NavigationPriority,
+  ResetPageButton,
+} from '../utils/last-page-storage';
 import { unpackRequestErrorMessage } from '../utils/unpack-request-error-message';
 
 enum View {
@@ -60,17 +65,16 @@ export function ImportWallet() {
     !!value.match(activationCodeRegex);
 
   useEffect(() => {
-    const loadPage = async () => {
-      const lastPage = await lastPageStorage.get();
-
-      if (lastPage === importAccountUrl) {
+    cacheCurrentPage(
+      importAccountUrl,
+      NavigationPriority.IMMEDIATE,
+      async () => {
         const { privateKey, email } = await lastPageStorage.getVars();
         setPrivateKey(privateKey);
         setEmail(email);
         setView(View.TwoFa);
       }
-    };
-    loadPage();
+    );
   }, []);
 
   /**
@@ -95,7 +99,7 @@ export function ImportWallet() {
         setTimerReset(timerReset + 1);
         setAlertPage2(emailSentAlert);
         // TODO: reword logic to avoid storing private key in plain text open format
-        lastPageStorage.store(importAccountUrl, {
+        lastPageStorage.store(importAccountUrl, NavigationPriority.IMMEDIATE, {
           privateKey,
           email,
         });
