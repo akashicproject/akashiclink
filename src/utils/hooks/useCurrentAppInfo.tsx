@@ -8,26 +8,34 @@ export const useCurrentAppInfo = () => {
   const [appInfo, setAppInfo] = useState<AppInfo>();
 
   useEffect(() => {
-    const xhr = new XMLHttpRequest();
-    xhr.overrideMimeType('application/json');
-    xhr.open('GET', '/manifest.json', true);
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        try {
-          const manifestData = JSON.parse(xhr.responseText);
-          setVersion(manifestData.version);
-        } catch (error) {
-          datadogRum.addError(error);
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.overrideMimeType('application/json');
+      xhr.open('GET', '/manifest.json', true);
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          try {
+            const manifestData = JSON.parse(xhr.responseText);
+            setVersion(manifestData.version);
+          } catch (error) {
+            datadogRum.addError(error);
+          }
         }
-      }
-    };
-    xhr.send(null);
+      };
+      xhr.send(null);
+    } catch (e) {
+      console.warn(e);
+    }
   }, []);
 
   useEffect(() => {
     const getAppInfo = async () => {
-      const appInfo = await App.getInfo();
-      setAppInfo(appInfo);
+      try {
+        const appInfo = await App.getInfo();
+        setAppInfo(appInfo);
+      } catch (e) {
+        console.warn(e);
+      }
     };
 
     getAppInfo();

@@ -1,4 +1,4 @@
-export const LAST_PAGE_LOCATION = 'lastLocation';
+export const LAST_HISTORY_ENTRIES = 'lastHistoryEntries';
 
 // How often, in ms, nfts, balances, and transfers are automatically polled from backend
 export const REFRESH_INTERVAL = 5 * 1000; // 5 seconds

@@ -1,7 +1,10 @@
+import { Preferences } from '@capacitor/preferences';
 import styled from '@emotion/styled';
 import { IonPage } from '@ionic/react';
-import { type ReactNode } from 'react';
+import { type ReactNode, useEffect } from 'react';
 
+import { LAST_HISTORY_ENTRIES } from '../../constants';
+import { history } from '../../routing/history';
 import { Footer } from '../layout/footer';
 import { PublicHeader } from '../layout/public-header';
 
@@ -26,6 +29,17 @@ export function PublicLayout({
   children: ReactNode;
   contentStyle?: React.CSSProperties;
 }) {
+  useEffect(() => {
+    const updateLastLocation = async () => {
+      await Preferences.set({
+        key: LAST_HISTORY_ENTRIES,
+        value: JSON.stringify(history.entries),
+      });
+    };
+
+    updateLastLocation();
+  }, [history.entries]);
+
   return (
     <IonPage>
       <StyledLayout className="vertical public-layout">

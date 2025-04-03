@@ -1,10 +1,9 @@
 import { Preferences } from '@capacitor/preferences';
 import axios from 'axios';
 
-import { LAST_PAGE_LOCATION } from '../constants';
+import { LAST_HISTORY_ENTRIES } from '../constants';
 import { urls } from '../constants/urls';
-import { history } from '../routing/history';
-import { akashicPayPath } from '../routing/navigation-tabs';
+import { history, historyResetStackAndRedirect } from '../routing/history';
 
 const createAxiosInstance = (baseURL: string | undefined) => {
   return axios.create({
@@ -39,9 +38,9 @@ axiosBase.interceptors.response.use(
         return;
 
       await Preferences.remove({
-        key: LAST_PAGE_LOCATION,
+        key: LAST_HISTORY_ENTRIES,
       });
-      history.replace(akashicPayPath(urls.akashicPay));
+      historyResetStackAndRedirect(urls.akashicPay);
     } else {
       return Promise.reject(error);
     }

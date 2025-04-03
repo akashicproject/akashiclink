@@ -10,8 +10,9 @@ import {
 import { type ReactNode, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { LAST_PAGE_LOCATION } from '../../constants';
+import { LAST_HISTORY_ENTRIES } from '../../constants';
 import { urls } from '../../constants/urls';
+import { history } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useOwner } from '../../utils/hooks/useOwner';
 import { Spinner } from '../common/loader/spinner';
@@ -57,16 +58,23 @@ export function DashboardLayout({
 
   /** If user auth has expired, redirect to login page */
   useEffect(() => {
-    const removeLastLocation = async () => {
-      await Preferences.remove({
-        key: LAST_PAGE_LOCATION,
-      });
+    const updateLastLocation = async () => {
+      if (!authenticated) {
+        await Preferences.remove({
+          key: LAST_HISTORY_ENTRIES,
+        });
+      } else {
+        await Preferences.set({
+          key: LAST_HISTORY_ENTRIES,
+          value: JSON.stringify(history.entries),
+        });
+      }
     };
 
-    if (!isLoading && !authenticated) {
-      removeLastLocation();
+    if (!isLoading) {
+      updateLastLocation();
     }
-  }, [isLoading, authenticated]);
+  }, [isLoading, authenticated, history]);
 
   if (isLoading) return <Spinner />;
 

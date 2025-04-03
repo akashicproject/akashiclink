@@ -1,4 +1,5 @@
 import type { IBaseTransaction } from '@activeledger/sdk-bip39';
+import { Preferences } from '@capacitor/preferences';
 import type {
   IL1ClientSideOtkTransactionBase,
   ITerriTransaction,
@@ -11,6 +12,7 @@ import type {
   SendConfirmationTxnFinal,
   ValidatedAddressPair,
 } from '../components/send-deposit/send-form/types';
+import { LAST_HISTORY_ENTRIES } from '../constants';
 import type { Url } from '../constants/urls';
 import { urls } from '../constants/urls';
 import type { TransferResultType } from '../pages/nft/nft-transfer-result';
@@ -52,7 +54,7 @@ export interface LocationState {
   };
 }
 
-export const historyResetStackAndRedirect = (
+export const historyResetStackAndRedirect = async (
   url: Url = urls.dashboard,
   state?: Record<string, unknown>
 ) => {
@@ -60,13 +62,51 @@ export const historyResetStackAndRedirect = (
   history.length = 1;
   history.index = 0;
   history.replace(akashicPayPath(url), state);
+  // set Preferences AFTER history is mutated
+  await Preferences.set({
+    key: LAST_HISTORY_ENTRIES,
+    value: JSON.stringify(history.entries),
+  });
 };
 
-export const historyGoBackOrReplace = (
+export const historyGoBackOrReplace = async (
   url: Url = urls.dashboard,
   state?: Record<string, unknown>
 ) => {
-  history.length > 1
-    ? history.goBack()
-    : history.replace(akashicPayPath(url), state);
+  if (history.length > 1) {
+    history.goBack();
+    history.entries.pop();
+    history.length--;
+  } else {
+    history.replace(akashicPayPath(url), state);
+  }
+  // set Preferences AFTER history is mutated
+  await Preferences.set({
+    key: LAST_HISTORY_ENTRIES,
+    value: JSON.stringify(history.entries),
+  });
+};
+
+export const historyGo = async (
+  url: Url = urls.dashboard,
+  state?: Record<string, unknown>
+) => {
+  history.push(akashicPayPath(url), state);
+  // set Preferences AFTER history is mutated
+  await Preferences.set({
+    key: LAST_HISTORY_ENTRIES,
+    value: JSON.stringify(history.entries),
+  });
+};
+
+export const historyReplace = async (
+  url: Url = urls.dashboard,
+  state?: Record<string, unknown>
+) => {
+  history.replace(akashicPayPath(url), state);
+  // set Preferences AFTER history is mutated
+  await Preferences.set({
+    key: LAST_HISTORY_ENTRIES,
+    value: JSON.stringify(history.entries),
+  });
 };

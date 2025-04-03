@@ -16,16 +16,11 @@ import './theme/variables.css';
 import './theme/font.css';
 import './theme/common.scss';
 
-import { Preferences } from '@capacitor/preferences';
 import { IonApp, setupIonicReact } from '@ionic/react';
 import { IonReactMemoryRouter } from '@ionic/react-router';
-import { useEffect } from 'react';
 
 import { VersionUpdateAlert } from './components/layout/version-update-alert';
 import { PreferenceProvider } from './components/providers/PreferenceProvider';
-import { LAST_PAGE_LOCATION } from './constants';
-import { useAppSelector } from './redux/app/hooks';
-import type { RootState } from './redux/app/store';
 import { history } from './routing/history';
 import { NavigationTree } from './routing/navigation-tree';
 import { useSetGlobalLanguage } from './utils/hooks/useSetGlobalLanguage';
@@ -34,24 +29,6 @@ setupIonicReact();
 
 // eslint-disable-next-line import/no-default-export
 export default function App() {
-  const lastLocation = useAppSelector(
-    (state: RootState) => state?.router?.location
-  );
-  useEffect(() => {
-    const cacheLastLocation = async () => {
-      // below indicates an event of opening a soft closed app
-      if (lastLocation && lastLocation.pathname !== history.location.pathname) {
-        // saving the last location to the local storage
-        // so that akashic-main.tsx can redirect to it
-        await Preferences.set({
-          key: LAST_PAGE_LOCATION,
-          value: JSON.stringify(lastLocation),
-        });
-      }
-    };
-    cacheLastLocation();
-  }, [lastLocation.pathname]);
-
   useSetGlobalLanguage();
 
   return (

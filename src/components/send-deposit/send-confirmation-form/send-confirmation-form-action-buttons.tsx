@@ -12,9 +12,9 @@ import { urls } from '../../../constants/urls';
 import type { LocationState } from '../../../routing/history';
 import {
   historyGoBackOrReplace,
+  historyReplace,
   historyResetStackAndRedirect,
 } from '../../../routing/history';
-import { akashicPayPath } from '../../../routing/navigation-tabs';
 import { OwnersAPI } from '../../../utils/api';
 import { useInterval } from '../../../utils/hooks/useInterval';
 import { useVerifyTxnAndSign } from '../../../utils/hooks/useVerifyTxnAndSign';
@@ -138,15 +138,12 @@ export const SendConfirmationFormActionButtons = ({
         feesEstimate: res.feesEstimate,
       });
       if (history.location.state.sendConfirm) {
-        history.push({
-          pathname: akashicPayPath(urls.sendConfirm),
-          state: {
-            sendConfirm: {
-              ...history.location.state.sendConfirm,
-              txnFinal: {
-                txHash: res.txHash,
-                feesEstimate: res.feesEstimate,
-              },
+        historyReplace(urls.sendConfirm, {
+          sendConfirm: {
+            ...history.location.state.sendConfirm,
+            txnFinal: {
+              txHash: res.txHash,
+              feesEstimate: res.feesEstimate,
             },
           },
         });

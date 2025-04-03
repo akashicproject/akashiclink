@@ -124,7 +124,7 @@ export function AccountSelection({
                       account.identity,
                       20
                     )}`
-                  : `${displayLongText(account.identity, 16)}`}
+                  : `${displayLongText(account.identity, 18, false, true)}`}
               </IonSelectOption>
             );
           }),

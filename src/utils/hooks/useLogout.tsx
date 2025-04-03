@@ -2,7 +2,7 @@ import { Preferences } from '@capacitor/preferences';
 import { useContext } from 'react';
 
 import { CacheOtkContext } from '../../components/providers/PreferenceProvider';
-import { LAST_PAGE_LOCATION } from '../../constants';
+import { LAST_HISTORY_ENTRIES } from '../../constants';
 import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
 import { axiosBase } from '../axios-helper';
@@ -10,9 +10,6 @@ import { useBalancesMe } from './useBalancesMe';
 import { useOwner } from './useOwner';
 import { useTransfersMe } from './useTransfersMe';
 
-/**
- * Hook that logs user out and clears all session settings
- */
 export function useLogout(callLogout = true) {
   const { mutateOwner } = useOwner();
   const { mutateBalancesMe } = useBalancesMe();
@@ -32,7 +29,7 @@ export function useLogout(callLogout = true) {
     // Clear session variables
     setCacheOtk(null);
     await Preferences.remove({
-      key: LAST_PAGE_LOCATION,
+      key: LAST_HISTORY_ENTRIES,
     });
 
     // Trigger refresh of login status

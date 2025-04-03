@@ -1,6 +1,11 @@
-import { IonRouterOutlet } from '@ionic/react';
+import { Preferences } from '@capacitor/preferences';
+import { IonRouterOutlet, isPlatform } from '@ionic/react';
+import type { Location } from 'history';
+import { useEffect, useState } from 'react';
 import { Redirect } from 'react-router';
 
+import { Spinner } from '../components/common/loader/spinner';
+import { LAST_HISTORY_ENTRIES } from '../constants';
 import { urls } from '../constants/urls';
 import { Activity } from '../pages/activity/activity';
 import { ActivityDetails } from '../pages/activity-details';
@@ -40,15 +45,70 @@ import { SettingsGeneral } from '../pages/settings/settings-general';
 import { SettingsNaming } from '../pages/settings/settings-naming';
 import { SettingsSecurity } from '../pages/settings/settings-security';
 import { SettingsVersion } from '../pages/settings/settings-version';
-import { Us2Main } from '../pages/us2-main';
-import { AkashicTab, Us2Tab } from './navigation-tabs';
+import { useAppDispatch, useAppSelector } from '../redux/app/hooks';
+import type { RootState } from '../redux/app/store';
+import { onClear as onClearCreate } from '../redux/slices/createWalletSlice';
+import { onClear as onClearImport } from '../redux/slices/importWalletSlice';
+import { onClear as onClearMigrate } from '../redux/slices/migrateWalletSlice';
+import { useLogout } from '../utils/hooks/useLogout';
+import { history } from './history';
+import { AkashicTab } from './navigation-tabs';
 
-/**
- * Definition of all the routing in the app
- */
 export function NavigationTree() {
+  const reduxLastLocation = useAppSelector(
+    (state: RootState) => state?.router?.location
+  );
+  const logout = useLogout();
+  const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const redirectToLastLocation = async () => {
+      if (
+        !reduxLastLocation ||
+        reduxLastLocation.pathname === history.location.pathname
+      ) {
+        setIsLoading(false);
+        return;
+      }
+
+      if (isPlatform('ios') || isPlatform('android')) {
+        dispatch(onClearCreate());
+        dispatch(onClearImport());
+        dispatch(onClearMigrate());
+        await logout();
+        setIsLoading(false);
+        return;
+      }
+
+      // Saved history stack
+      const lastHistoryJson = await Preferences.get({
+        key: LAST_HISTORY_ENTRIES,
+      });
+      const lastHistory = JSON.parse(lastHistoryJson?.value || '{}');
+
+      // rebuild history entries completely if stack is saved before
+      if (Array.isArray(lastHistory) && lastHistory.length > 0) {
+        history.entries = [];
+        history.index = -1;
+        history.length = 0;
+        lastHistory.forEach((entry: Location) => {
+          history.push(entry.pathname, entry.state);
+        });
+      }
+
+      // Remove the last-location as history is now reset
+      await Preferences.remove({ key: LAST_HISTORY_ENTRIES });
+
+      setIsLoading(false);
+    };
+    setTimeout(redirectToLastLocation, 1000);
+  }, []);
+
+  if (isLoading) return <Spinner />;
+
   return (
-    <IonRouterOutlet animated={false}>
+    <IonRouterOutlet ionPage animated={false}>
       {/* AkashicPay tree - default so redirect at bottom */}
       {AkashicTab.registerPage(AkashicPayMain)}
       {AkashicTab.registerPage(AkashicPayMain, urls.akashicPay)}
@@ -129,7 +189,7 @@ export function NavigationTree() {
         urls.migrateWalletComplete
       )}
       {/* US² tree */}
-      {Us2Tab.registerPage(Us2Main)}
+      {/* {Us2Tab.registerPage(Us2Main)} */}
       {/* Default redirect */}
       {/* https://github.com/ionic-team/ionic-framework/issues/24855 */}
       <Redirect to={AkashicTab.root} />
