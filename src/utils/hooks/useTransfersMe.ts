@@ -27,7 +27,7 @@ export const useTransfersMe = (params?: IClientTransactionRecord) => {
    * Request that 401s (auth cookie expired or not set) should chuck user
    * out to the landing page screen
    */
-  if (error.response.status === 401) {
+  if (error && error.status === 401) {
     Preferences.remove({
       key: LAST_PAGE_LOCATION,
     });
