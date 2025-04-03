@@ -9,12 +9,14 @@ import { LoggedLayout } from '../../components/layout/logged-layout';
 export function LoggedMain({
   children,
   loading = false,
+  isRefresh = false,
 }: {
   children: ReactNode;
   loading?: boolean;
+  isRefresh?: boolean;
 }) {
   return (
-    <LoggedLayout>
+    <LoggedLayout isRefresh={isRefresh}>
       {loading && (
         <IonGrid>
           <IonRow class="ion-justify-content-center ion-margin-vertical">

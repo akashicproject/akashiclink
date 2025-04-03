@@ -29,8 +29,10 @@ const TIMEOUT = 5 * 60;
 
 export function LoggedToolbar({
   backButtonUrl = urls.loggedFunction,
+  isRefresh = false,
 }: {
   backButtonUrl?: string;
+  isRefresh?: boolean;
 }) {
   const logout = useLogout();
   const history = useHistory();
@@ -96,7 +98,6 @@ export function LoggedToolbar({
             <HorizontalDivider />
           </>
         )}
-
         {pending ? (
           <IonCol size="1">
             <IonSpinner />
@@ -122,6 +123,24 @@ export function LoggedToolbar({
             />
           </IonCol>
         )}
+        <IonCol size="auto" hidden={!isRefresh}>
+          <SquareWhiteButton
+            class="icon-button"
+            onClick={() => {
+              location.reload();
+            }}
+          >
+            <IonIcon
+              slot="icon-only"
+              class="icon-button-icons"
+              src={`/shared-assets/images/${
+                storedTheme === themeType.DARK
+                  ? 'refresh-dark.svg'
+                  : 'refresh-light.svg'
+              }`}
+            />
+          </SquareWhiteButton>
+        </IonCol>
         <IonCol size="auto">
           <SettingsPopover />
         </IonCol>

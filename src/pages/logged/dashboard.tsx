@@ -26,7 +26,7 @@ export function Dashboard() {
   }, []);
 
   return (
-    <LoggedMain>
+    <LoggedMain isRefresh={true}>
       <IonGrid style={{ width: '264px' }}>
         <SelectCoin />
         <IonRow>

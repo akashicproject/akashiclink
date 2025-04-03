@@ -35,9 +35,11 @@ export const ChainDiv = styled(IonRouterLink)({
 export function LoggedLayout({
   children,
   footer,
+  isRefresh = false,
 }: {
   children: ReactNode;
   footer?: ReactNode;
+  isRefresh?: boolean;
 }) {
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
@@ -69,7 +71,7 @@ export function LoggedLayout({
         >
           {t('AkashicChain')}
         </ChainDiv>
-        <LoggedToolbar />
+        <LoggedToolbar isRefresh={isRefresh} />
         {children}
       </IonContent>
       {footer && <IonFooter class={'ion-no-border'}>{footer}</IonFooter>}
