@@ -156,7 +156,7 @@
   "KeyPairBackup": "KeyPair Backup",
   "DoNotOwnNfts": "You currently do not own any NFTs",
   "Transfer": "Transfer",
-  "NSRecordWarning": "{{nftName}} has already been AA-Linked, therefore it is not possible to transfer this NFT. Please unlink first and proceed to transfer.",
+  "NSRecordWarning": "Please disconnect your Alias \"{{nftName}}\" from your Akashic Chain address in order to initiate the transfer.",
   "GoNSSettings": "Go to NS Settings",
   "PleaseInputToSearch": "Please input Akashic Chain Address for transfer.",
   "NoSearchResult": "No Search Result",

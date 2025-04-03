@@ -31,18 +31,20 @@ import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectCacheOtk } from '../../redux/slices/accountSlice';
+import { selectTheme } from '../../redux/slices/preferenceSlice';
 import {
   type LocationState,
   historyGoBackOrReplace,
 } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
+import { themeType } from '../../theme/const';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { displayLongText } from '../../utils/long-text';
 import { signTxBody } from '../../utils/nitr0gen-api';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
-import { NftContainer, NftWrapper } from './nft';
+import { NftWrapper } from './nft';
 import { NoNtfText, NoNtfWrapper } from './nfts';
 
 const SendWrapper = styled.div({
@@ -80,7 +82,11 @@ const AddressBox = styled.div({
   color: 'var(--ion-color-primary-10)',
   border: '1px solid #958e99',
 });
-
+export const NftContainer = styled.div`
+  width: 180px;
+  position: relative;
+  margin: 0 auto;
+`;
 enum SearchResult {
   Layer2 = 'Layer2',
   AcnsName = 'AcnsName',
@@ -108,6 +114,8 @@ export function NftTransfer() {
   const [alert, setAlert] = useState(formAlertResetState);
   const [loading, setLoading] = useState(false);
   const cacheOtk = useAppSelector(selectCacheOtk);
+  const storedTheme = useAppSelector(selectTheme);
+  const isDarkMode = storedTheme === themeType.DARK;
 
   // input username to address
   // TODO: we need to add more check constraint in the future, like l2 address start with "AS"
@@ -217,13 +225,18 @@ export function NftTransfer() {
           <NftWrapper>
             <IonRow className="w-100">
               <NftContainer>
-                <OneNft nft={currentNft} isBig={true} />
+                <OneNft
+                  nft={currentNft}
+                  isBig={false}
+                  isAASDarkStyle={!isDarkMode}
+                />
               </NftContainer>
             </IonRow>
             <IonRow>
               <IonCol class="ion-center">
                 <SendWrapper style={{ gap: isMobile ? '24px' : '16px' }}>
                   <StyledInput
+                    className={'ion-text-size-sm'}
                     isHorizontal={true}
                     label={t('SendTo')}
                     placeholder={t('EnterAddress')}

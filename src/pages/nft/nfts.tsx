@@ -2,7 +2,14 @@ import './ntf.scss';
 
 import styled from '@emotion/styled';
 import type { INftResponse } from '@helium-pay/backend';
-import { IonCol, IonGrid, IonIcon, IonRow, IonSpinner } from '@ionic/react';
+import {
+  IonCol,
+  IonGrid,
+  IonIcon,
+  IonRow,
+  IonSpinner,
+  isPlatform,
+} from '@ionic/react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -23,11 +30,15 @@ export const NoNtfWrapper = styled(IonCol)({
   position: 'relative',
 });
 
-const StyledNftWrapper = styled.div`
-  height: 220px;
-  width: 148px;
-  margin: 16px 8px;
-`;
+const StyledNftWrapper = styled.div({
+  height: '408px',
+  width: '328px',
+  margin: '16px 8px',
+  ['&:last-child ']: {
+    marginBottom: '40px',
+  },
+});
+
 export const NoNtfText = styled(IonRow)({
   fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
@@ -39,12 +50,12 @@ export const NoNtfText = styled(IonRow)({
 
 const ListContainer = styled.div({
   display: 'flex',
+  flexDirection: 'column',
   flexWrap: 'wrap',
   alignContent: 'center',
   position: 'absolute',
-  justifyContent: 'space-between',
+  justifyContent: 'space-evenly',
   width: '100%',
-  padding: '0px 12px',
 }) as GridComponents['List'];
 
 export function Nfts() {
@@ -58,6 +69,7 @@ export function Nfts() {
     if (!a.acns?.value && b.acns?.value) return 1;
     return 0;
   });
+  const isMobile = isPlatform('mobile');
 
   const selectNft = (nft: INftResponse) => {
     history.push({
@@ -88,7 +100,7 @@ export function Nfts() {
       {!isLoading && nfts.length > 0 && (
         <Virtuoso
           style={{
-            height: '70vh',
+            height: isMobile ? '80vh' : '100vh',
             width: '100%',
           }}
           overscan={900}
@@ -100,7 +112,7 @@ export function Nfts() {
           }}
           itemContent={(_index, nft) => (
             <OneNft
-              isBig={false}
+              isBig={true}
               nft={nft}
               select={() => selectNft(nft)}
               isAASDarkStyle={!isDarkMode}

@@ -14,6 +14,7 @@ interface Props {
   style?: React.CSSProperties;
   isBig?: boolean;
   isAASDarkStyle?: boolean;
+  isAASBackgroundDark?: boolean;
 }
 
 const AccountNameWrapper = styled.div`
@@ -22,19 +23,28 @@ const AccountNameWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 8px 0px;
+  padding-top: 16px;
+  padding-bottom: 8px;
 `;
-const NtfWrapper = styled.div<{ isAASLinked: boolean }>((props) => ({
+const NtfWrapper = styled.div<{
+  isAASLinked: boolean;
+  isAASDarkStyle?: boolean;
+  isBig?: boolean;
+}>((props) => ({
   height: '100%',
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
+  alignItems: 'stretch',
   padding: '8px',
-  borderRadius: '8px',
-  borderTopRightRadius: props.isAASLinked ? '0px' : '8px',
+  borderRadius: props.isBig ? '24px' : '8px',
+  borderTopRightRadius: props.isAASLinked
+    ? '0px'
+    : props.isBig
+    ? '24px'
+    : '8px',
   marginTop: props.isAASLinked ? '0px' : '20px',
-  background: '#FFF',
+  background: props.isAASDarkStyle ? '#FFF' : '#2C2C2C',
   boxShadow: '6px 6px 20px rgba(0,0,0,0.10000000149011612)',
 }));
 
@@ -57,20 +67,18 @@ const NftName = styled.div({
   textAlign: 'center',
   lineHeight: '16px',
   cursor: 'pointer',
+  paddingBottom: '8px',
 });
 
-const AASListTag = styled.div<{
-  isAASDarkStyle?: boolean;
-  isBig?: boolean;
-}>((props) => ({
+const AASListTag = styled.div({
   color: 'var(--ion-color-primary-dark)',
-  background: props.isAASDarkStyle ? '#290056' : '#C297FF',
+  background: '#C297FF',
   borderTopLeftRadius: '8px',
   borderTopRightRadius: '8px',
   float: 'right',
   maxWidth: '80%',
   padding: '4px 20px',
-}));
+});
 export function OneNft(props: Props) {
   const handleCopy = async (accountName: string) => {
     await Clipboard.write({
@@ -87,10 +95,14 @@ export function OneNft(props: Props) {
     <OneNFTContainer>
       {props.nft?.acns?.value && (
         <div style={{ width: '100%' }}>
-          <AASListTag isAASDarkStyle={props.isAASDarkStyle} isBig={props.isBig}>
+          <AASListTag>
             <h5
-              className="ion-no-margin ion-text-size-xxs"
-              style={props.isAASDarkStyle ? { color: '#FFFFFF' } : {}}
+              className="ion-no-margin .ion-text-size-sm"
+              style={
+                props.isAASDarkStyle
+                  ? { color: '#FFFFFF' }
+                  : { color: '#202020' }
+              }
             >
               {t('AALinked')}
             </h5>
@@ -101,21 +113,29 @@ export function OneNft(props: Props) {
         isAASLinked={!!props.nft?.acns?.value}
         style={props.style}
         onClick={props.select}
+        isAASDarkStyle={props.isAASDarkStyle}
+        isBig={props.isBig}
       >
         <IonImg
           alt={props.nft?.description}
           src={props.nft?.image}
           class={
-            'nft-img-size ' + props.isBig ? 'nft-image-big' : 'nft-image-small'
+            props.isBig
+              ? 'nft-image-big nft-img-size'
+              : 'nft-image-small nft-img-size'
           }
         />
         <AccountNameWrapper>
           <h5
-            style={{ color: 'var(--ion-color-primary-dark)' }}
+            style={{
+              color: props.isAASDarkStyle
+                ? 'var(--ion-color-primary-dark)'
+                : '#ffffff',
+            }}
             title={props.nft?.account}
-            className={'ion-no-margin'}
+            className={'ion-no-margin ion-text-size-sm'}
           >
-            {displayLongText(props.nft?.account, props.isBig ? 16 : 12)}
+            {displayLongText(props.nft?.account, 32)}
           </h5>
           <IonIcon
             slot="icon-only"
@@ -125,7 +145,11 @@ export function OneNft(props: Props) {
               width: '20px',
               height: '20px',
             }}
-            src={`/shared-assets/images/copy-icon-only-dark.svg`}
+            src={`/shared-assets/images/${
+              props.isAASDarkStyle
+                ? `copy-icon-only-dark.svg`
+                : `copy-icon-white.svg`
+            }`}
             onClick={async (e) => {
               e.stopPropagation();
               handleCopy(props.nft?.account);
@@ -145,10 +169,12 @@ export function OneNft(props: Props) {
         <IonRow>
           <NftName
             style={{
-              color: '#7B757F',
+              color: '#958E99',
               fontWeight: '700',
-              fontSize: '12px',
+              width: '100%',
+              background: props.isAASDarkStyle ? '#FFF' : '#2C2C2C',
             }}
+            className={'ion-text-size-xs'}
           >
             {displayLongText(props.nft?.name, 16)}
           </NftName>

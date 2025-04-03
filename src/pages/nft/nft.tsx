@@ -16,8 +16,11 @@ import { AasListingSwitch } from '../../components/nft/aas-listing-switch';
 import { OneNft } from '../../components/nft/one-nft';
 import { NftLayout } from '../../components/page-layout/nft-layout';
 import { urls } from '../../constants/urls';
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectTheme } from '../../redux/slices/preferenceSlice';
 import type { LocationState } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
+import { themeType } from '../../theme/const';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 
 export const NftWrapper = styled.div({
@@ -37,10 +40,9 @@ export const NftWrapper = styled.div({
 });
 
 export const NftContainer = styled.div`
-  width: 180px;
-  position: relative;
-  margin: 0 auto;
-`;
+  position: 'relative',
+  margin: 0 auto`;
+
 export function Nft() {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
@@ -48,6 +50,8 @@ export function Nft() {
   const [alert, setAlert] = useState(formAlertResetState);
   const { nfts } = useNftMe();
   const currentNft = nfts.find((nft) => nft.name === state?.nftName) ?? nfts[0];
+  const storedTheme = useAppSelector(selectTheme);
+  const isDarkMode = storedTheme === themeType.DARK;
 
   const transferNft = () => {
     if (currentNft?.acns?.value !== null) {
@@ -74,12 +78,18 @@ export function Nft() {
       <NftWrapper>
         <IonGrid fixed={true}>
           <IonRow>
-            <NftContainer>
-              <OneNft nft={currentNft} isBig={true} />
-            </NftContainer>
+            <IonCol size="10" offset="1">
+              <NftContainer>
+                <OneNft
+                  nft={currentNft}
+                  isBig={true}
+                  isAASDarkStyle={!isDarkMode}
+                />
+              </NftContainer>
+            </IonCol>
           </IonRow>
-          <IonRow className="ion-margin">
-            <IonCol size="8" offset="2">
+          <IonRow className="ion-margin-top-xs ion-margin-bottom-xxs">
+            <IonCol size="10" offset="1">
               <PurpleButton expand="block" onClick={transferNft}>
                 {t('Transfer')}
               </PurpleButton>

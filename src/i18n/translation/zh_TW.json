@@ -156,7 +156,7 @@
   "KeyPairBackup": "密鑰對備份",
   "DoNotOwnNfts": "現在不擁有任何NFT",
   "Transfer": "轉賬",
-  "NSRecordWarning": "{{nftName}}已被 AA-綁定，因此無法轉移此 NFT。請先解除綁定，然後繼續轉帳。",
+  "NSRecordWarning": "請將您的域名 \"{{nftName}}\" 從 Akashic Chain 地址中斷，以便啟動傳輸。",
   "GoNSSettings": "到NS設置",
   "PleaseInputToSearch": "請輸入Akashic地址進行轉賬。",
   "NoSearchResult": "無搜索結果",
