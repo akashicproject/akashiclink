@@ -4,46 +4,38 @@ import {
   TransactionStatus,
   TransactionType,
 } from '@helium-pay/backend';
-import { IonIcon, IonImg } from '@ionic/react';
-import { chevronForwardOutline } from 'ionicons/icons';
+import { IonImg } from '@ionic/react';
 import type { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Divider } from '../../pages/activity';
+import { themeType } from '../../theme/const';
 import { limitDecimalPlaces } from '../../utils/conversions';
 import { formatDate } from '../../utils/formatDate';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { displayLongCurrencyAmount } from '../../utils/long-amount';
-
-const OneTransfer = styled.div<{ hover: boolean }>((props) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  gap: '16px',
-  cursor: props.hover ? 'pointer' : 'auto',
-  transition: 'background ease-in-out 0.3s',
-  '&:hover': {
-    background: props.hover ? 'rgba(103, 80, 164, 0.14)' : 'transparent',
-  },
-}));
+import { useTheme } from '../PreferenceProvider';
 
 const L2Icon = '/shared-assets/images/PayLogo-all-white.svg';
 
-const ActivityWrapper = styled.div({
+const ActivityWrapper = styled.div<{ hover: boolean }>((props) => ({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-around',
   alignItems: 'center',
-  padding: '12px 0',
   // Gap between the elements
-  gap: '4px',
-});
+  gap: '8px',
+  '&:hover': {
+    background: props.hover ? 'rgba(103, 80, 164, 0.14)' : 'transparent',
+  },
+}));
 
 const TimeWrapper = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
   padding: 0,
-  width: '122px',
+  width: 'calc(308px/3)',
   height: '40px',
   fontSize: '10px',
   lineHeight: '16px',
@@ -52,6 +44,7 @@ const TimeWrapper = styled.div({
 });
 
 const Type = styled.div({
+  fontSize: '8px',
   boxSizing: 'border-box',
   display: 'flex',
   flexDirection: 'row',
@@ -59,7 +52,7 @@ const Type = styled.div({
   justifyContent: 'center',
   padding: '3px 8px',
   gap: '45px',
-  width: '122px',
+  width: '100%',
   height: '23px',
   border: '1px solid #958E99',
   borderRadius: '8px 8px 0px 0px',
@@ -67,11 +60,13 @@ const Type = styled.div({
 
 const Time = styled.div({
   boxSizing: 'border-box',
-  width: '122px',
+  width: '100%',
   textAlign: 'center',
   height: '18px',
   border: '1px solid #958E99',
+  borderTop: '0px',
   borderRadius: '0px 0px 8px 8px',
+  fontSize: '8px',
 });
 
 const Chain = styled.div({
@@ -81,7 +76,7 @@ const Chain = styled.div({
   alignItems: 'center',
   padding: '0px',
   gap: '12px',
-  width: '120px',
+  width: 'calc(308px/3)',
   height: '40px',
   borderRadius: '8px',
   fontSize: '14px',
@@ -99,7 +94,7 @@ const Amount = styled.div({
   justifyContent: 'center',
   overflow: 'hidden',
   padding: '4px 12px',
-  width: '104px',
+  width: 'calc(308px/3)',
   height: '40px',
   fontSize: '10px',
   fontWeight: 700,
@@ -116,7 +111,7 @@ const NftItem = styled.div({
   justifyContent: 'center',
   overflow: 'hidden',
   padding: '4px 12px',
-  width: '56px',
+  width: '50%',
   height: '40px',
   fontSize: '10px',
   fontWeight: 700,
@@ -132,16 +127,11 @@ const NftImage = styled.div({
   alignItems: 'center',
   justifyContent: 'center',
   overflow: 'hidden',
-  width: '40px',
+  width: '50%',
   height: '40px',
   fontSize: '10px',
   fontWeight: 700,
   color: 'var(--ion-color-primary-10)',
-});
-
-const Icon = styled(IonIcon)({
-  padding: '0',
-  margin: '0',
 });
 
 /**
@@ -171,6 +161,7 @@ export function OneActivity({
   const { t } = useTranslation();
   const isL2 = transfer.layer === TransactionLayer.L2;
   const isNft = !!transfer?.nft;
+  const [storedTheme] = useTheme();
   const transferType =
     transfer.transferType === TransactionType.DEPOSIT
       ? t('Deposit')
@@ -193,55 +184,77 @@ export function OneActivity({
    */
   const iconStyle = {
     gap: isL2 ? '0px' : showDetail ? '8px' : '12px',
-    background: isL2 || isNft ? '#290056' : '#7444B6',
+    background:
+      isL2 || isNft
+        ? storedTheme === themeType.DARK
+          ? '#C297FF'
+          : '#290056'
+        : '#7444B6',
   };
 
   return (
     <>
-      <OneTransfer
+      <ActivityWrapper
         key={transfer.id}
         onClick={onClick}
         style={style}
-        hover={hasHoverEffect as boolean}
+        hover={hasHoverEffect || false}
       >
-        <ActivityWrapper>
-          <TimeWrapper>
-            <Type>
-              {transfer.status === TransactionStatus.FAILED
-                ? `${transferType} - ${t('Failed')}`
-                : transferType}
-            </Type>
-            <Time>{formatDate(new Date(transfer.date))}</Time>
-          </TimeWrapper>
-          <Chain style={iconStyle}>
-            <IonImg
-              alt=""
-              src={isL2 || isNft ? L2Icon : transfer.networkIcon}
-              style={{ height: isL2 || isNft ? '20px' : '12px' }}
-            />
-            {isL2 || isNft ? null : label}
-          </Chain>
+        <TimeWrapper>
+          <Type>
+            {transfer.status === TransactionStatus.FAILED
+              ? `${transferType} - ${t('Failed')}`
+              : transferType}
+          </Type>
+          <Time>{formatDate(new Date(transfer.date))}</Time>
+        </TimeWrapper>
+        <Chain style={iconStyle}>
+          <IonImg
+            alt=""
+            src={isL2 || isNft ? L2Icon : transfer.networkIcon}
+            style={{ height: isL2 || isNft ? '20px' : '12px' }}
+          />
+          {isL2 || isNft ? null : label}
+        </Chain>
 
-          {isNft ? (
-            <>
-              <NftItem>NFT</NftItem>
-              <NftImage>
-                <IonImg src={transfer?.nft?.image}></IonImg>
-              </NftImage>
-            </>
-          ) : (
-            <Amount>
-              {/* HACK: Reduce currency symbols to a single word to fit small screen */}
-              {displayLongCurrencyAmount(
-                limitDecimalPlaces(transfer.amount || '0'),
-                transfer?.currency?.displayName?.split('-')[0] || ''
-              )}
-            </Amount>
-          )}
-          {showDetail ? <Icon icon={chevronForwardOutline} /> : null}
-        </ActivityWrapper>
-      </OneTransfer>
-      {divider && <Divider />}
+        {isNft ? (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              width: 'calc(308px/3)',
+              gap: '8px',
+              justifyContent: 'space-between',
+            }}
+          >
+            <NftItem>NFT</NftItem>
+            <NftImage
+              style={{
+                height: '40px',
+                width: '40px',
+              }}
+            >
+              <IonImg src={transfer?.nft?.image}></IonImg>
+            </NftImage>
+          </div>
+        ) : (
+          <Amount>
+            {/* HACK: Reduce currency symbols to a single word to fit small screen */}
+            {displayLongCurrencyAmount(
+              limitDecimalPlaces(transfer.amount || '0'),
+              transfer?.currency?.displayName?.split('-')[0] || ''
+            )}
+          </Amount>
+        )}
+      </ActivityWrapper>
+      {divider && (
+        <Divider
+          style={{ margin: '8px 0px' }}
+          borderColor={storedTheme === themeType.DARK ? '#2F2F2F' : '#D9D9D9'}
+          height={'1px'}
+          borderWidth={'0.5px'}
+        />
+      )}
     </>
   );
 }

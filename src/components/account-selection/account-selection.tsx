@@ -95,15 +95,14 @@ export function AccountSelection({
       style={{
         display: 'flex',
         flexDirection: 'row',
-        height: '40px',
+        gap: '8px',
         justifyContent: 'space-between',
-        gap: '15px',
         width: '100%',
         ...style,
       }}
     >
       <IonSelect
-        style={{ flexGrow: 1 }}
+        style={{ flexGrow: 1, padding: '8px 8px 8px 16px' }}
         value={selectedAccount}
         onIonChange={({ detail: { value } }) => {
           if (value === DropdownOptions.CreateAccount) {

@@ -3,7 +3,7 @@ import './ntf.css';
 import styled from '@emotion/styled';
 import { IonCol, IonIcon, IonRow, isPlatform } from '@ionic/react';
 import { arrowBack } from 'ionicons/icons';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 

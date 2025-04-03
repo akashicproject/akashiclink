@@ -3,7 +3,6 @@ import './nft-layout.scss';
 import styled from '@emotion/styled';
 import { IonCol, IonContent, IonPage, IonRow } from '@ionic/react';
 import type { ReactNode } from 'react';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';

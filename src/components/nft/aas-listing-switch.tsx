@@ -2,7 +2,7 @@ import './switch.css';
 
 import styled from '@emotion/styled';
 import { IonCol, IonRow } from '@ionic/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { OwnersAPI } from '../../utils/api';

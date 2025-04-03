@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { IonCol, IonGrid, IonIcon, IonRow, isPlatform } from '@ionic/react';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -13,11 +12,6 @@ import { useLogout } from '../logout';
 import { useTheme } from '../PreferenceProvider';
 import { SettingsPopover } from '../settings/settings-popover';
 
-const HorizontalDivider = styled.div({
-  border: '2px solid #D9D9D9',
-  margin: '5px',
-  height: '40px',
-});
 // In seconds
 const TIMEOUT = 5 * 60;
 
@@ -68,11 +62,21 @@ export function LoggedToolbar({
   }, []);
 
   return (
-    <IonGrid fixed>
-      <IonRow class="ion-justify-content-center">
+    <IonGrid
+      className="ion-no-padding"
+      style={{ padding: '16px 24px 0px', height: 'auto' }}
+      fixed
+    >
+      <IonRow style={{ gap: '8px' }}>
         {isDashboard ? null : (
           <>
-            <IonCol size="auto">
+            <IonCol
+              className="ion-no-padding"
+              size="auto"
+              style={{
+                width: '10%',
+              }}
+            >
               <SquareWhiteButton
                 class="icon-button"
                 onClick={() => history.push(backButtonUrl)}
@@ -88,10 +92,14 @@ export function LoggedToolbar({
                 />
               </SquareWhiteButton>
             </IonCol>
-            <HorizontalDivider />
           </>
         )}
-        <IonCol size="8">
+        <IonCol
+          className="ion-no-padding"
+          style={{
+            width: '71%',
+          }}
+        >
           <AccountSelection
             showCopyButton={true}
             onNewAccountClick={async (selectedAccount) => {
@@ -101,7 +109,7 @@ export function LoggedToolbar({
             }}
           />
         </IonCol>
-        <IonCol size="auto" hidden={!isRefresh}>
+        <IonCol className="ion-no-padding" hidden={!isRefresh} size="auto">
           <SquareWhiteButton
             class="icon-button"
             id="refresh-button"
@@ -124,7 +132,12 @@ export function LoggedToolbar({
             />
           </SquareWhiteButton>
         </IonCol>
-        <IonCol size="auto">
+        <IonCol
+          className="ion-no-padding"
+          style={{
+            width: '10%',
+          }}
+        >
           <SettingsPopover />
         </IonCol>
       </IonRow>

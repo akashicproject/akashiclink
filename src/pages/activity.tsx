@@ -16,6 +16,7 @@ import { alertCircleOutline, closeOutline } from 'ionicons/icons';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { GridComponents } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
 import { ActivityDetail } from '../components/activity/activity-detail';
@@ -29,12 +30,23 @@ import { useNftTransfersMe } from '../utils/hooks/useNftTransfersMe';
 import { useTransfersMe } from '../utils/hooks/useTransfersMe';
 import { cacheCurrentPage } from '../utils/last-page-storage';
 
-export const Divider = styled.div({
+export const Divider = styled.div<{
+  borderColor?: string;
+  height?: string;
+  borderWidth?: string;
+}>((props) => ({
   boxSizing: 'border-box',
-  height: '2px',
-  border: '1px solid #D9D9D9',
+  height: `${props.height || '2px'}`,
+  border: `${props.borderWidth || '1px'} solid ${
+    props.borderColor || '#D9D9D9'
+  }`,
   width: '100%',
-});
+}));
+
+const ListContainer = styled.div({
+  paddingLeft: '8px',
+  paddingRight: '8px',
+}) as GridComponents['List'];
 
 // @TODO can be used when we add text.
 // export const NoActivityWrapper = styled.div({
@@ -168,10 +180,13 @@ export function Activity() {
         walletFormatTransfers.length ? (
           <Virtuoso
             style={{
-              minHeight: '450px',
-              width: '100%',
+              margin: '20px 0px',
+              minHeight: '64vh',
             }}
             data={walletFormatTransfers}
+            components={{
+              List: ListContainer,
+            }}
             itemContent={(index, transfer) => (
               <OneActivity
                 transfer={transfer}

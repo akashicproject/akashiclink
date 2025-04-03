@@ -156,8 +156,8 @@ export function SelectCoin() {
 
   return (
     <>
-      <IonRow style={{ marginTop: '8px' }}>
-        <IonCol class="ion-center">
+      <IonRow>
+        <IonCol class="ion-center ion-no-padding">
           <Swiper
             onSwiper={setSwiperRef}
             onSlideChange={handleSlideChange}

@@ -27,7 +27,14 @@ export function Dashboard() {
 
   return (
     <LoggedMain isRefresh={true}>
-      <IonGrid style={{ width: '264px' }}>
+      <IonGrid
+        style={{
+          width: '100%',
+          height: '40vh',
+          margin: '0px',
+          padding: '32px 47px',
+        }}
+      >
         <SelectCoin />
         <IonRow>
           <IonCol>

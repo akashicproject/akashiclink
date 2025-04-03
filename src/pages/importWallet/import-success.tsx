@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { IonImg, IonRow } from '@ionic/react';
-import React, { useEffect } from 'react';
+import { IonCol, IonImg, IonRow } from '@ionic/react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -30,38 +30,45 @@ export const ImportSuccess = () => {
   }, []);
 
   return (
-    <PublicLayout contentStyle={{ padding: '0 30px' }}>
-      <MainGrid style={{ gap: '40px', padding: '112px 30px' }}>
-        <IonRow style={{ justifyContent: 'center' }}>
-          <IonImg
-            alt={''}
-            src={'/shared-assets/images/right.png'}
-            style={{ width: '40px', height: '40px' }}
-          />
-          <div style={{ width: '100%', textAlign: 'center' }}>
-            <h4>{t('ImportSuccessful')}</h4>
-          </div>
-        </IonRow>
-        <IonRow>
-          <div
-            className="w-100"
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '16px',
-              textAlign: 'center',
-            }}
-          >
-            <PurpleButton
-              onClick={async () => {
-                await lastPageStorage.clear();
-                history.push(akashicPayPath(urls.akashicPay));
+    <PublicLayout contentStyle={{ padding: '0 30px', height: '100%' }}>
+      <MainGrid style={{ gap: '40px', padding: '112px 30px', height: '100%' }}>
+        <IonCol
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+          }}
+        >
+          <IonRow style={{ justifyContent: 'center' }}>
+            <IonImg
+              alt={''}
+              src={'/shared-assets/images/right.png'}
+              style={{ width: '40px', height: '40px' }}
+            />
+            <div style={{ width: '100%', textAlign: 'center' }}>
+              <h4>{t('ImportSuccessful')}</h4>
+            </div>
+          </IonRow>
+          <IonRow>
+            <div
+              className="w-100"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px',
+                textAlign: 'center',
               }}
             >
-              {t('Confirm')}
-            </PurpleButton>
-            {/** TODO: Re-enable with different flow at later stage */}
-            {/* <Divider/>>
+              <PurpleButton
+                onClick={async () => {
+                  await lastPageStorage.clear();
+                  history.push(akashicPayPath(urls.akashicPay));
+                }}
+              >
+                {t('Confirm')}
+              </PurpleButton>
+              {/** TODO: Re-enable with different flow at later stage */}
+              {/* <Divider/>>
             <StyledSpan>{t('YouHaveOptionTo')}</StyledSpan>
             <WhiteButton
               onClick={() => {
@@ -70,8 +77,9 @@ export const ImportSuccess = () => {
             >
               {t('ChangePassword')}
             </WhiteButton> */}
-          </div>
-        </IonRow>
+            </div>
+          </IonRow>
+        </IonCol>
       </MainGrid>
     </PublicLayout>
   );

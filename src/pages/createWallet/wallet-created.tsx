@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { IonImg, IonRow } from '@ionic/react';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
