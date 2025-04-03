@@ -36,7 +36,7 @@ export function MigrateWalletSecret() {
   const history = useHistory();
   const otk = useAppSelector(selectOtk);
   const dispatch = useAppDispatch();
-
+  const [isDisable, setIsDisable] = useState(true);
   const [alert, setAlert] = useState(formAlertResetState);
   const migrateWalletError = useAppSelector(selectError);
 
@@ -99,17 +99,23 @@ export function MigrateWalletSecret() {
               </IonText>
             </IonRow>
             <IonRow style={{ marginTop: '16px' }}>
-              {otk?.phrase && (
-                <SecretWords
-                  initialWords={otk.phrase.split(' ')}
-                  withAction={true}
-                />
-              )}
+              <IonCol size="12" className="ion-no-margin">
+                {otk?.phrase && (
+                  <SecretWords
+                    initialWords={otk.phrase.split(' ')}
+                    withAction={true}
+                    onHiddenChange={(isSecretPhraseHidden) => {
+                      setIsDisable(isSecretPhraseHidden);
+                    }}
+                  />
+                )}
+              </IonCol>
             </IonRow>
             <IonRow style={{ justifyContent: 'center' }}>
               <PurpleButton
                 style={{ width: '149px' }}
                 expand="block"
+                disabled={isDisable}
                 onClick={() => {
                   confirmSecret();
                 }}

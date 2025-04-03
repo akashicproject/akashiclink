@@ -1,4 +1,5 @@
 import { IonCol, IonRow, IonText } from '@ionic/react';
+import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -21,7 +22,10 @@ import {
   selectError,
   selectOtk,
 } from '../../slices/createWalletSlice';
-import { useIosScrollPasswordKeyboardIntoView } from '../../utils/scroll-when-password-keyboard';
+import {
+  scrollWhenPasswordKeyboard,
+  useIosScrollPasswordKeyboardIntoView,
+} from '../../utils/scroll-when-password-keyboard';
 
 export function CreateWalletSecret() {
   useIosScrollPasswordKeyboardIntoView();
@@ -33,6 +37,11 @@ export function CreateWalletSecret() {
   const dispatch = useAppDispatch();
 
   const [alert, setAlert] = useState(formAlertResetState);
+
+  /** Scrolling on IOS */
+  const { isOpen } = useKeyboardState();
+  const [isDisable, setIsDisable] = useState(true);
+  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   useEffect(() => {
     if (!otk) {
@@ -93,6 +102,9 @@ export function CreateWalletSecret() {
               <SecretWords
                 initialWords={otk.phrase.split(' ')}
                 withAction={true}
+                onHiddenChange={(isSecretPhraseHidden: boolean) => {
+                  setIsDisable(isSecretPhraseHidden);
+                }}
               />
             )}
           </IonCol>
@@ -106,7 +118,13 @@ export function CreateWalletSecret() {
         )}
         <IonRow className={'ion-justify-content-center'}>
           <IonCol size="6">
-            <PurpleButton expand="block" onClick={onConfirmSecret}>
+            <PurpleButton
+              expand="block"
+              disabled={isDisable}
+              onClick={() => {
+                onConfirmSecret();
+              }}
+            >
               {t('Next')}
             </PurpleButton>
           </IonCol>

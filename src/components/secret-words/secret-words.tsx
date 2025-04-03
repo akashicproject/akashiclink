@@ -19,7 +19,7 @@ const WordCol = styled(IonCol)`
 `;
 
 const WordItem = styled.div`
-  height: 40px;
+  height: 32px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -48,6 +48,7 @@ const WordInput = styled(IonInput)<WordInputProps>`
   margin-left: 8px;
   min-height: 24px !important;
   opacity: unset !important;
+  --highlight-color-focused: none;
   input {
     height: 24px;
     padding: 8px !important;
@@ -83,6 +84,7 @@ const MaskBlurContainer = styled.div<MaskContainerProps>`
 const MaskLabelContainer = styled.div`
   position: absolute;
   display: flex;
+  gap: 4px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -93,18 +95,27 @@ const MaskLabelContainer = styled.div`
     font-weight: 700;
     font-size: 10px;
   }
+  z-index: 1;
 `;
 
 const StyledIonIcon = styled(IonIcon)`
   font-size: 12px;
   height: 20px;
   width: 20px;
-  margin-right: 4px;
 `;
 
+const CopyClipBoardLabel = styled(IonLabel)`
+  color: var(--ion-color-primary);
+  font-weight: 700;
+  font-size: 10px;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  gap: 4px;
+`;
 const CopyActionButton = styled.div`
   display: flex;
-  justify-content: end;
+  justify-content: center;
   width: 100%;
   height: 100%;
 `;
@@ -121,12 +132,14 @@ export function SecretWords({
   withAction,
   inputVisibility = false,
   disableInput = true,
+  onHiddenChange,
 }: {
   initialWords: string[];
   onChange?: (words: string[]) => void;
   withAction?: boolean;
   inputVisibility?: boolean;
   disableInput?: boolean;
+  onHiddenChange?: (isSecretPhraseHidden: boolean) => void;
 }) {
   const { t } = useTranslation();
   const [words, setWords] = useState(initialWords);
@@ -180,6 +193,7 @@ export function SecretWords({
   };
 
   const onHiddenBtnClick = () => {
+    onHiddenChange && onHiddenChange(!isHidden);
     setIsHidden(!isHidden);
   };
 
@@ -187,12 +201,20 @@ export function SecretWords({
     <>
       <MaskContainer isHidden={isHidden}>
         {isHidden && (
-          <MaskLabelContainer>
+          <MaskLabelContainer onClick={onHiddenBtnClick}>
             <IonIcon
               src={`/shared-assets/images/visibility.svg`}
               style={{ height: '20px', width: '20px' }}
             ></IonIcon>
-            <IonLabel>{t('MakeSureNoBodyIsLooking')}</IonLabel>
+            <IonLabel className="ion-text-size-xs">
+              {t('MakeSureNoBodyIsLooking')}
+            </IonLabel>
+            <IonLabel
+              className="ion-text-size-xs"
+              style={{ cursor: 'pointer' }}
+            >
+              {t('PressToReveal')}
+            </IonLabel>
           </MaskLabelContainer>
         )}
         <MaskBlurContainer isHidden={isHidden}>
@@ -240,47 +262,32 @@ export function SecretWords({
         </MaskBlurContainer>
       </MaskContainer>
       {withAction && (
-        <IonGrid style={{ padding: '0px' }}>
-          <IonRow class="ion-justify-content-between">
-            <IonCol size={'6'}>
-              <ActionButton fill="clear" onClick={onHiddenBtnClick}>
+        <IonRow className="ion-margin">
+          <IonCol size={'6'}>
+            <CopyActionButton>
+              <CopyClipBoardLabel
+                className="ion-no-margin"
+                onClick={handleCopy}
+              >
                 <StyledIonIcon
-                  src={`/shared-assets/images/visibility-${
-                    isHidden ? 'off-color' : 'on'
-                  }.svg`}
-                  style={{
-                    height: '20px',
-                    width: '20px',
-                    marginRight: '4px',
-                  }}
+                  slot="icon-only"
+                  src={`/shared-assets/images/copy-icon-secret-white.svg`}
                 />
-
-                {isHidden ? t('RevealRecoveryPhase') : t('HideRecoveryPhase')}
-              </ActionButton>
-            </IonCol>
-            <IonCol size={'6'}>
-              <CopyActionButton>
-                <ActionButton fill="clear" onClick={handleCopy}>
-                  <StyledIonIcon
-                    slot="icon-only"
-                    src={`/shared-assets/images/copy-icon-secret-white.svg`}
-                  />
-                  {t('CopyToClipboard')}
-                </ActionButton>
-                <IonPopover
-                  side="top"
-                  alignment="center"
-                  ref={popover}
-                  isOpen={popoverOpen}
-                  className={'copied-popover'}
-                  onDidDismiss={() => setPopoverOpen(false)}
-                >
-                  <IonContent class="ion-padding">{t('Copied')}</IonContent>
-                </IonPopover>
-              </CopyActionButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+                {t('CopyToClipboard')}
+              </CopyClipBoardLabel>
+              <IonPopover
+                side="top"
+                alignment="center"
+                ref={popover}
+                isOpen={popoverOpen}
+                className={'copied-popover'}
+                onDidDismiss={() => setPopoverOpen(false)}
+              >
+                <IonContent class="ion-padding">{t('Copied')}</IonContent>
+              </IonPopover>
+            </CopyActionButton>
+          </IonCol>
+        </IonRow>
       )}
     </>
   );

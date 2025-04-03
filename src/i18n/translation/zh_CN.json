@@ -246,5 +246,6 @@
   "UpdateNoticeBullet3": "AAkashic 钱包不会存储或收集您的密钥对、12 个密语或密码。",
   "WalletMigrationSuccessful": "成功创建 12 个字的恢复密语",
   "InvalidSecretPhrase": "无效密语",
+  "PressToReveal": "按下显示",
   "AlreadyMigratedPleaseReImport": "钱包已迁移，请删除您的帐户并使用新的恢复方法导入"
 }
