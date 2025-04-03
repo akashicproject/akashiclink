@@ -10,6 +10,7 @@ ion-select {
   &::part(text) {
     @extend %heading-shared;
     font-size: 14px;
+    font-family: 'Nunito Sans';
   }
 
   /** Dropdown arrow on the right side of the menu */

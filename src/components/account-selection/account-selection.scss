@@ -8,6 +8,7 @@
   ion-select-popover {
     border: 1px solid var(--ion-select-border) !important;
     border-radius: 4px;
+    padding-right: 1px;
   }
 
   /*
@@ -16,7 +17,17 @@
    */
   ion-list {
     border-radius: 3px;
-    max-height: 120px;
+    max-height: 160px;
     overflow: scroll;
+  }
+
+  ion-item {
+    min-height: 32px;
+    height: 32px;
+  }
+
+  ion-item::part(native) {
+    min-height: 32px;
+    height: 32px;
   }
 }
