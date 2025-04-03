@@ -31,17 +31,15 @@ import {
 export const nitr0genNativeCoin = '#native';
 
 enum ProductionContracts {
-  Namespace = 'notabox.keys',
-  Create = 'c278818b9f10d5f18381a711827e344d583f7ecf446cdfb4b92016b308838a72@3.0.6', // Only supports trx, eth, bnb + testnets
-  CryptoTransfer = 'a48df2fd31400a9b69d9b8bdb699618faed2999ca08c559695a4b74597d3e895@3.0.5',
-  DiffConsensus = 'a9711259f9c0322c6eb1cca4c0baf1b460266be79c5c0f78cf1602a8476e0744@3.0.1',
-  Onboard = 'df9e4e242c58cc6a03ca1679f007c7a04cad72c97fdb74bdfe9a4e1688077a79@1.5.0',
-  NFTNamespace = 'candypig',
-  NFTTransfer = '52e8ec2faef459da41fc4ed669644b4f07639bfdd871081763517e92973d3623@1.0.5',
-  // Prod-contract has a 72 hr time restriction on re-linking AAS. The other
-  // contract is equivalent but has only 60s for easy testing
-  NFTAcnsRecord = '29a20530ecc5f835ceb55bb1f27a329f5ac8126f53630ce79535675af0f2f184@1.0.2',
-  NFTAcnsRecordTesting = 'c7030a072163854c0c3890318694f8fa8f271ba2675554370d2029ad054cfe18@1.0.1',
+  Namespace = 'akashic',
+  Create = '66512ecab1c265acf27008de29bc3b6f474af1d4b723216b1635b5f75693372e@1.0.0', // Only supports trx, eth, bnb + testnets
+  CryptoTransfer = '7c0f535721d70d0c0cc6ab8cd19bb51195e9e52098c896def975410dea9b964f@1.0.0',
+  DiffConsensus = '8667534942f5468f65c0505672389834483c1185722a571a286430d321990b3a@1.0.0',
+  Onboard = 'e9dd831155c0c2ac80360377412c044d8ad82535f9e919a2b1a03fd1f74f9d37@1.0.0',
+  NFTNamespace = 'nft',
+  NFTTransfer = '476d6fca10148634004b19ef1604f5d89bff562532a5fa454cd58bae09ab64e5@1.0.0',
+  NFTAcnsRecord = '9d9db88cdae6f1083b9462eb7c33dd8620e54d5ed5f8714cf05447ca0fca8731@1.0.0',
+  NFTAcnsRecordTesting = 'DNE',
 }
 
 enum TestNetContracts {
@@ -52,6 +50,8 @@ enum TestNetContracts {
   Onboard = 'b089a212ac22f57e2bef7d8a7f25702ebda98173939be2eba1ac0c2523d77383@5.0.4',
   NFTNamespace = 'candypig',
   NFTTransfer = '9c6ce3ed0c1e669471cd72ad9a81ea6ad13b6c3ba18b3ca05281fa721903f0e0@1.0.8',
+  // The "Testing" contract has a 60s cooldown on Alias-linking (vs 72hrs for
+  // real contract)
   NFTAcnsRecord = '4efd09f16b5c50ac95aeddcd36852d52eca0cf59e46dda39607e872b298dbefb@1.0.5',
   NFTAcnsRecordTesting = '48192d7629e1b42772b9a4b87974e24c7d7c7225346e7dc9cbe74acb311a29db@1.0.2',
 }
