@@ -1,6 +1,8 @@
-import { IonButton, IonIcon } from '@ionic/react';
-import { closeCircleOutline } from 'ionicons/icons';
+import type { IonButton } from '@ionic/react';
+import type { ComponentProps } from 'react';
+import { useTranslation } from 'react-i18next';
 
+import { WhiteButton } from '../components/buttons';
 import { urls } from '../constants/urls';
 
 const LastPageStorage = 'last-page';
@@ -52,16 +54,28 @@ export const lastPageStorage = {
     JSON.parse(localStorage.getItem(LastPageVarsStorage) || '{}'),
 };
 
-export function ResetPageButton({ callback }: { callback?: () => void }) {
+/**
+ * Button drops all local storage variables - they keep track
+ * of a users progress through a "flow" such as creating an account
+ *
+ * @param callback to trigger alongside the clearing operation
+ */
+export function ResetPageButton({
+  callback,
+  ...props
+}: { callback?: () => void } & ComponentProps<typeof IonButton>) {
+  const { t } = useTranslation();
+
   return (
-    <IonButton
+    <WhiteButton
+      {...props}
       fill="clear"
       onClick={() => {
         lastPageStorage.clear();
         if (callback) callback();
       }}
     >
-      <IonIcon icon={closeCircleOutline} />
-    </IonButton>
+      {t('Cancel')}
+    </WhiteButton>
   );
 }

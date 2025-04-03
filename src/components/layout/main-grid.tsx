@@ -1,12 +1,15 @@
 import './layout.css';
 
 import { IonGrid } from '@ionic/react';
-import type { ReactNode } from 'react';
+import type { ComponentProps } from 'react';
 
-export const MainGrid: React.FC<{ children: ReactNode }> = ({ children }) => {
+export function MainGrid({
+  children,
+  ...props
+}: ComponentProps<typeof IonGrid>) {
   return (
-    <IonGrid fixed class={'middle'}>
+    <IonGrid {...props} fixed class="middle">
       {children}
     </IonGrid>
   );
-};
+}

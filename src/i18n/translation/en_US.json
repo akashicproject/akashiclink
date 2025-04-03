@@ -23,6 +23,7 @@
   "EnterYourEmail": "Enter your email",
   "Email": "Email",
   "Send": "Send",
+  "SendCode": "Send a Code",
   "Deposit": "Deposit",
   "VerificationCode": "Verification Code",
   "EnterTheCodeSent": "Enter the code sent",
@@ -91,7 +92,7 @@
   "Coin": "Coin",
   "EsTGasFee": "Est. Gas Fee",
   "PrivateKey": "Private key",
-  "ConfirmEmailSent": "An activation link has been sent - please check {{email}} to complete the update",
+  "ConfirmEmailSent": "An activation link has been sent - please check {{email}} to complete the update.",
   "GenericFailureMsg": "Your operation failed, please try again later.",
   "InvalidEmail": "Please enter a valid email address",
   "PasswordHelperText": "Password must be at least 10 characters long, contain 1 capital letter and 1 number",
@@ -107,5 +108,7 @@
   "ActivationCodeText": "Activation code format is wrong",
   "InvalidInput": "Invalid Input",
   "Complete2FA": "Please complete 2FA",
-  "SeeMore": "See More"
+  "SeeMore": "See More",
+  "EnterEmailToCreateAccount": "Enter your email to register and receive your verification code.",
+  "EmailAlreadyUsed": "This email is already associated with an account - please use a different email"
 }

@@ -2,7 +2,13 @@ import type {
   IonToggleCustomEvent,
   ToggleChangeEventDetail,
 } from '@ionic/core';
-import { IonHeader, IonImg, IonRouterLink, IonToggle } from '@ionic/react';
+import {
+  IonHeader,
+  IonImg,
+  IonRouterLink,
+  IonToggle,
+  isPlatform,
+} from '@ionic/react';
 import { useEffect, useState } from 'react';
 
 import { urls } from '../../constants/urls';
@@ -10,13 +16,14 @@ import { akashicPayPath } from '../../routing/navigation-tree';
 import type { ThemeType } from '../../theme/const';
 import { themeType } from '../../theme/const';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
+import { LanguageDropdown } from './language-select';
 
 export function LoggedHeader(props: { loggedIn?: boolean }) {
   const [storedTheme, setStoredTheme] = useLocalStorage(
     'theme',
     themeType.SYSTEM as ThemeType
   );
-
+  const isMobile = isPlatform('mobile');
   const [isDarkMode, setIsDarkMode] = useState(storedTheme === themeType.DARK);
 
   const toggleDarkTheme = (shouldAdd: boolean) => {
@@ -37,7 +44,7 @@ export function LoggedHeader(props: { loggedIn?: boolean }) {
       toggleDarkTheme(mediaQuery.matches);
       setIsDarkMode(mediaQuery.matches);
     });
-  }, []);
+  }, [storedTheme]);
 
   // TODO: Can this be only triggered by user click but not value changing?
   const handleToggleTheme = (
@@ -55,13 +62,12 @@ export function LoggedHeader(props: { loggedIn?: boolean }) {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
         background: props.loggedIn ? '#290056' : '#F3F5F6',
-        gap: '160px',
-        height: '72px',
-        padding: '0% 0%',
+        justifyContent: 'space-between',
+        height: isMobile ? '72px' : '40px',
       }}
     >
+      <LanguageDropdown />
       <IonRouterLink routerLink={akashicPayPath(urls.loggedFunction)}>
         <IonImg
           alt={''}

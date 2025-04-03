@@ -23,6 +23,7 @@
   "EnterYourEmail": "输入你的电子邮箱",
   "Email": "电子邮箱",
   "Send": "发送",
+  "SendCode": "发送代码",
   "Deposit": "存储",
   "VerificationCode": "验证码",
   "EnterTheCodeSent": "输入验证码",
@@ -107,5 +108,7 @@
   "AmountHelpText": "必须是正数",
   "InvalidInput": "输入无效",
   "Complete2FA": "请完成双重认证",
-  "SeeMore": "查看更多"
+  "SeeMore": "查看更多",
+  "EnterEmailToCreateAccount": "请输入您的电子邮箱地址接收验证码。",
+  "EmailAlreadyUsed": "该电子邮件已与一个账户关联 - 请使用其他电子邮件"
 }

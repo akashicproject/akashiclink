@@ -12,13 +12,10 @@ import { caretBackOutline, settingsOutline } from 'ionicons/icons';
 import type { MouseEventHandler, ReactNode } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
-import { OwnersAPI } from '../../utils/api';
-import { useOwner } from '../../utils/hooks/useOwner';
-import { lastPageStorage } from '../../utils/last-page-storage';
+import { useLogout } from '../logout';
 
 /** Styling the display text */
 function SettingsText({ text, id }: { text: string; id?: string }) {
@@ -71,8 +68,8 @@ function SettingsList(props: { children: ReactNode }) {
 export function SettingsPopover() {
   const [focus, _] = useState<string>();
   const { t, i18n } = useTranslation();
-  const history = useHistory();
-  const { mutate } = useOwner();
+
+  const logout = useLogout();
 
   /** Grouping of the settings in the popover menu
    * @param displayText
@@ -166,19 +163,6 @@ export function SettingsPopover() {
       i18n.changeLanguage(event.target.id);
     }
   };
-
-  async function logout() {
-    try {
-      await OwnersAPI.logout();
-    } catch {
-      console.log('Account already logged out');
-    } finally {
-      // Trigger refresh of login status
-      await mutate();
-      lastPageStorage.clear();
-      history.push('/');
-    }
-  }
 
   return (
     <>

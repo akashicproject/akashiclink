@@ -1,0 +1,20 @@
+ion-select::part(placeholder),
+ion-select::part(icon),
+ion-select::part(text) {
+  color: var(--ion-color-light);
+  --placeholder-opacity: 1;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+ion-button {
+  --padding-start: 0 !important;
+  --padding-end: 0 !important;
+  --padding-top: 0 !important;
+  --padding-bottom: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  color: var(--ion-color-light);
+}

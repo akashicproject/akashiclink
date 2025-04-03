@@ -9,6 +9,8 @@ import { StyledInput } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
 
+export const recoveryUrl = 'recovery';
+
 export function Recovery() {
   const { t } = useTranslation();
   return (

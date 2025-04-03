@@ -92,20 +92,9 @@ export function StyledInput({
           }}
           {...props}
         ></IonInput>
-        {!inputValid && !isHorizontal ? (
-          <IonNote class="help-text">{helpText}</IonNote>
-        ) : null}
       </IonItem>
-      {isHorizontal && (
-        <IonNote
-          class={
-            inputValid
-              ? 'help-text-horizontal-placeholder'
-              : 'help-text-horizontal'
-          }
-        >
-          {inputValid ? ' ' : helpText}
-        </IonNote>
+      {!inputValid && (
+        <IonNote class="help-text-horizontal">{helpText}</IonNote>
       )}
     </>
   );

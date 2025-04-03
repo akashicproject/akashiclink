@@ -25,7 +25,6 @@ import { SettingsLanguage } from '../pages/settings-language';
 import { SettingsNaming } from '../pages/settings-naming';
 import { SettingsVersion } from '../pages/settings-version';
 import { Us2Main } from '../pages/us2-main';
-import { Welcome } from '../pages/welcome';
 
 /**
  * Tabs will be used to split the wallet up in 2+ parallel and non-interacting trees:
@@ -85,12 +84,11 @@ export function NavigationTree() {
       {/* AkashicPay tree - default so redirect at bottom */}
       {hpSubtree.registerPage(AkashicPayMain)}
       {hpSubtree.registerPage(CreateWallet, urls.createWalletUrl)}
-      {hpSubtree.registerPage(Recovery, urls.recovery)}
+      {hpSubtree.registerPage(Recovery, urls.recoveryUrl)}
       {hpSubtree.registerPage(ResetPassword, urls.resetPassword)}
       {hpSubtree.registerPage(Verification, urls.verification)}
       {hpSubtree.registerPage(Login, urls.loginUrl)}
       {hpSubtree.registerPage(ImportWallet, urls.importAccountUrl)}
-      {hpSubtree.registerPage(Welcome, urls.welcome)}
       {hpSubtree.registerPage(Dashboard, urls.loggedFunction)}
       {hpSubtree.registerPage(LoggedCreate, urls.loggedCreate)}
       {hpSubtree.registerPage(DepositPage, urls.loggedDeposit)}

@@ -1,7 +1,6 @@
 import './akashic-main.css';
 import './common.css';
 
-import styled from '@emotion/styled';
 import {
   IonCol,
   IonContent,
@@ -17,24 +16,25 @@ import { useHistory } from 'react-router-dom';
 
 import { PurpleButton, WhiteButton } from '../components/buttons';
 import { Footer } from '../components/layout/footer';
+import { ContentText } from '../components/text/context-text';
 import { urls } from '../constants/urls';
 import { akashicPayPath } from '../routing/navigation-tree';
+import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useOwner } from '../utils/hooks/useOwner';
 import { lastPageStorage } from '../utils/last-page-storage';
-import { getLocalAccounts } from '../utils/local-account-storage';
+import { Login } from './login';
 
-const ContentText = styled.span({
-  fontWeight: 700,
-  fontSize: '16px',
-  lineHeight: '24px',
-  fontFamily: 'Nunito Sans',
-  color: '#290056',
-});
-
+/**
+ * First page seen by user when navigating to app
+ * or opening extension.
+ * - Logic to automatically restore previous session view
+ * - Logic to present user when import or login menues depending
+ *   on whether this is first login with this device
+ */
 export function AkashicPayMain() {
   const { t } = useTranslation();
-  const availableAccounts = getLocalAccounts();
   const isMobile = isPlatform('mobile');
+  const { localAccounts } = useAccountStorage();
   const history = useHistory();
   const loginCheck = useOwner(true);
 
@@ -72,58 +72,36 @@ export function AkashicPayMain() {
               />
             </IonCol>
           </IonRow>
-          <IonRow
-            style={
-              availableAccounts.length
-                ? { marginTop: '5px' }
-                : { marginTop: '20px' }
-            }
-          >
-            <IonCol class="ion-center">
-              <ContentText>Best way to invest Your Money!</ContentText>
-            </IonCol>
-          </IonRow>
-          <IonRow style={{ marginTop: '5px' }}>
-            <IonCol>
-              <PurpleButton
-                routerLink={akashicPayPath(urls.createWalletUrl)}
-                expand="block"
-              >
-                <span>{t('CreateWallet')}</span>
-              </PurpleButton>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <PurpleButton
-                routerLink={akashicPayPath(urls.importAccountUrl)}
-                expand="block"
-              >
-                {t('ImportWallet')}
-              </PurpleButton>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <WhiteButton
-                routerLink={akashicPayPath(urls.recover)}
-                expand="block"
-              >
-                {t('Recovery')}
-              </WhiteButton>
-            </IonCol>
-          </IonRow>
-          {!!availableAccounts.length && (
-            <IonRow>
-              <IonCol>
-                <PurpleButton
-                  routerLink={akashicPayPath(urls.loginUrl)}
-                  expand="block"
-                >
-                  {t('Login')}
-                </PurpleButton>
-              </IonCol>
-            </IonRow>
+          {localAccounts.length ? (
+            <Login />
+          ) : (
+            <>
+              <IonRow style={{ marginTop: '40px' }}>
+                <IonCol class="ion-center">
+                  <ContentText>Best way to invest Your Money!</ContentText>
+                </IonCol>
+              </IonRow>
+              <IonRow style={{ marginTop: '8px' }}>
+                <IonCol>
+                  <PurpleButton
+                    routerLink={akashicPayPath(urls.createWalletUrl)}
+                    expand="block"
+                  >
+                    <span>{t('CreateWallet')}</span>
+                  </PurpleButton>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <WhiteButton
+                    routerLink={akashicPayPath(urls.importAccountUrl)}
+                    expand="block"
+                  >
+                    {t('ImportWallet')}
+                  </WhiteButton>
+                </IonCol>
+              </IonRow>
+            </>
           )}
         </IonGrid>
       </IonContent>

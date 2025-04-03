@@ -1,35 +1,45 @@
-import {
-  IonCol,
-  IonGrid,
-  IonRow,
-  IonSelect,
-  IonSelectOption,
-} from '@ionic/react';
+import { IonCol, IonGrid, IonRow, IonSpinner, isPlatform } from '@ionic/react';
 import { useState } from 'react';
 
-import { aggregatedWalletBalances } from '../../constants/dummy-data';
+import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { AccountSelection } from '../account-selection/account-selection';
+import { useLogout } from '../logout';
 import { SettingsPopover } from '../settings/settings-popover';
 
 export function LoggedToolbar() {
-  const keys = Object.keys(aggregatedWalletBalances);
-  const [key, setKey] = useState(keys.length > 0 ? keys[0] : undefined);
+  const logout = useLogout();
+
+  const { setActiveAccount } = useAccountStorage();
+  // const [logoutTrigger, setLogoutTrigger] = useState<LocalAccount>();
+  const [pending, setPending] = useState(false);
 
   return (
     <IonGrid fixed>
       <IonRow class="ion-justify-content-around">
-        <IonCol size="6">
-          <IonSelect
-            value={key}
-            onIonChange={({ detail: { value: key } }) => setKey(key)}
-            interface="popover"
-          >
-            {keys.map((k) => (
-              <IonSelectOption key={k} value={k} class="menu-text">
-                {k}
-              </IonSelectOption>
-            ))}
-          </IonSelect>
-        </IonCol>
+        {pending ? (
+          <IonCol size="1">
+            <IonSpinner></IonSpinner>
+          </IonCol>
+        ) : (
+          <IonCol size="6">
+            <AccountSelection
+              onClickCallback={(selectedAccount) => {
+                setPending(true);
+                setActiveAccount(selectedAccount);
+                // This sequence ensures that the activeAccount
+                // has time to update before logout occurs
+                // This ensures that the selected account
+                // is filled in for login
+                setTimeout(() => {
+                  setPending(false);
+                  logout().then(
+                    () => isPlatform('mobile') && location.reload()
+                  );
+                }, 500);
+              }}
+            />
+          </IonCol>
+        )}
         <IonCol size="auto">
           <SettingsPopover />
         </IonCol>

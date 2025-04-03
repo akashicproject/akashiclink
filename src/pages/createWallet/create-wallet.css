@@ -16,3 +16,8 @@
   font-size: 14px;
   font-weight: 700;
 }
+
+ion-backdrop {
+  opacity: 0.95;
+  background: var(--ion-background-color);
+}

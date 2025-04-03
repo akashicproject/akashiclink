@@ -1,22 +1,15 @@
 import './create-wallet.css';
 
-import styled from '@emotion/styled';
-import { IonCol, IonProgressBar, IonRow } from '@ionic/react';
+import { IonBackdrop, IonCol, IonProgressBar, IonRow } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { MainGrid } from '../../components/layout/main-grid';
-
-const ContentText = styled.span({
-  fontWeight: 700,
-  fontSize: '14px',
-  lineHeight: '20px',
-  fontFamily: 'Nunito Sans',
-  color: '#290056',
-});
+import { ContentText } from '../../components/text/context-text';
 
 /**
- * Progress bar to show user creation process
+ * Popover to hover over the creationg content
+ * during account creation the the backend
  */
 export function CreatingWallet() {
   const { t } = useTranslation();
@@ -36,21 +29,29 @@ export function CreatingWallet() {
   }, []);
 
   return (
-    <MainGrid>
-      <IonRow>
-        <IonCol>
-          <IonProgressBar
-            value={progress}
-            color="primary"
-            class="progress-bar"
-          ></IonProgressBar>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol class="ion-center">
-          <ContentText>{t('CreatingYourWallet')}</ContentText>
-        </IonCol>
-      </IonRow>
-    </MainGrid>
+    <>
+      <IonBackdrop />
+      <MainGrid
+        style={{
+          // Places it above the popover
+          zIndex: 100,
+        }}
+      >
+        <IonRow>
+          <IonCol>
+            <IonProgressBar
+              value={progress}
+              color="primary"
+              class="progress-bar"
+            ></IonProgressBar>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol class="ion-center">
+            <ContentText>{t('CreatingYourWallet')}</ContentText>
+          </IonCol>
+        </IonRow>
+      </MainGrid>
+    </>
   );
 }

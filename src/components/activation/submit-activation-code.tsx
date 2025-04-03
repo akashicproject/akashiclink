@@ -4,6 +4,8 @@ import { IonCol, IonRow } from '@ionic/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
+import { AlertBox, errorAlertShell, formAlertResetState } from '../alert/alert';
 import { PurpleButton, WhiteButton } from '../buttons';
 import { MainGrid } from '../layout/main-grid';
 import { StyledInput, StyledInputErrorPrompt } from '../styled-input';
@@ -30,6 +32,7 @@ export function SubmitActivationCode({
 }) {
   const { t } = useTranslation();
   const [activationCode, setActivationCode] = useState<string>();
+  const [alert, setAlert] = useState(formAlertResetState);
 
   const validateActivationCode = (value: string) =>
     !!value.match(activationCodeRegex);
@@ -46,17 +49,19 @@ export function SubmitActivationCode({
           <StyledInput
             label={t('ActivationCode')}
             placeholder={t('PleaseEnterCode')}
-            onIonInput={({ target: { value } }) =>
-              setActivationCode(value as string)
-            }
+            onIonInput={({ target: { value } }) => {
+              setActivationCode(value as string);
+              setAlert(formAlertResetState);
+            }}
             errorPrompt={StyledInputErrorPrompt.ActivationCode}
             validate={validateActivationCode}
           />
         </IonCol>
       </IonRow>
       <IonRow>
-        <IonCol class="ion-center">
+        <IonCol>
           <WhiteButton
+            expand="block"
             onClick={() => {
               setActivationCode(undefined);
               onClose();
@@ -65,16 +70,25 @@ export function SubmitActivationCode({
             {t('Cancel')}
           </WhiteButton>
         </IonCol>
-        <IonCol class="ion-center">
+        <IonCol>
           <PurpleButton
-            disabled={!activationCode}
+            expand="block"
+            disabled={!activationCode || alert.visible}
             onClick={async () => {
-              activationCode && submitWithActivationCode(activationCode);
+              try {
+                activationCode &&
+                  (await submitWithActivationCode(activationCode));
+              } catch (error) {
+                setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+              }
             }}
           >
             {t('Confirm')}
           </PurpleButton>
         </IonCol>
+      </IonRow>
+      <IonRow>
+        <AlertBox state={alert} />
       </IonRow>
     </MainGrid>
   );

@@ -47,11 +47,11 @@ const BalanceText = styled.div({
   color: '#290056',
 });
 
-interface Props {
+interface SelectCoinProps {
   changeCurrency: (wc: string) => void;
 }
 
-export function SelectCoin(props: Props) {
+export function SelectCoin({ changeCurrency }: SelectCoinProps) {
   const aggregatedBalances = useAggregatedBalances();
   const { keys: exchangeRates } = useExchangeRates();
 
@@ -64,8 +64,8 @@ export function SelectCoin(props: Props) {
   const [selectedCurrencyUSDT, setSelectedCurrencyUSDT] = useState<Big>();
 
   useEffect(() => {
-    props.changeCurrency(WALLET_CURRENCIES[0].symbol);
-  }, []);
+    changeCurrency(WALLET_CURRENCIES[0].symbol);
+  }, [changeCurrency]);
 
   /** Handling choosing another currency and convert to USDT */
   const handleSlideChange = () => {
@@ -83,7 +83,7 @@ export function SelectCoin(props: Props) {
     const bigCurrency = Big(aggregatedBalances.get(wc.currency) || 0);
 
     setSelectedCurrencyUSDT(Big(conversionRate).times(bigCurrency));
-    props.changeCurrency(wc.symbol);
+    changeCurrency(wc.symbol);
   };
 
   useEffect(() => {

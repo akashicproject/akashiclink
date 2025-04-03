@@ -2,6 +2,16 @@
 
 > Mobile app + browser extension
 
+## Warnings
+
+- Chrome extension does not support page reloads - whenever added a reload, perform a platform check as so:
+
+```ts
+import { isPlatform } from '@ionic/react';
+...
+isPlatform('mobile') && location.reload();
+```
+
 ## Installation
 
 1. Install all packages and setup .env file

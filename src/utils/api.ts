@@ -10,6 +10,7 @@ import type {
   IMinimalUserResponse,
   IRegisterApiPassphrase,
   IRequestActivationCode,
+  IRequestActivationCodeResponse,
   ITempShowOtkPrv,
   ITempShowOtkPrvResponse,
   ITransactionProposal,
@@ -17,7 +18,6 @@ import type {
   ITransactionSigned,
   ITransactionSignResponse,
   ITransactionVerifyResponse,
-  ITwoFaLogin,
 } from '@helium-pay/backend';
 
 import { axiosBasePublic, axiosOwnerBase } from './axios-helper';
@@ -70,20 +70,6 @@ export const OwnersAPI = {
     if (status >= 400) {
       throw new Error(data.message);
     }
-  },
-  login2fa: async (
-    login2faData: ITwoFaLogin
-  ): Promise<IMinimalUserResponse> => {
-    const response = await axiosBasePublic.post(
-      `/auth/2fa`,
-      JSON.stringify(login2faData)
-    );
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-
-    return response.data;
   },
   registerApiPassphrase: async (
     registerData: IRegisterApiPassphrase
@@ -168,7 +154,7 @@ export const OwnersAPI = {
 
   requestActivationCode: async function (
     payload: IRequestActivationCode
-  ): Promise<void> {
+  ): Promise<IRequestActivationCodeResponse> {
     const response = await axiosOwnerBase.post(
       `/auth/request-2fa-activation`,
       JSON.stringify(payload)
@@ -177,6 +163,8 @@ export const OwnersAPI = {
     if (status >= 400) {
       throw new Error(data.message);
     }
+
+    return response.data;
   },
 
   activateNewAccount: async (

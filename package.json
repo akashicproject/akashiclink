@@ -28,6 +28,7 @@
     "i18next": "22.4.15",
     "ionicons": "6.1.3",
     "qrcode.react": "3.1.0",
+    "react-countdown-circle-timer": "3.2.1",
     "react-i18next": "12.2.2",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",

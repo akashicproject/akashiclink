@@ -98,6 +98,17 @@ ion-select::part(icon) {
   opacity: 1;
 }
 
+.select-interface-option {
+  color: var(--ion-color-dark);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.select-interface-option .my-custom-interface {
+  color: red;
+}
+
 /*
    * Dark Colors
    * -------------------------------------------

@@ -2,33 +2,25 @@ import './common.css';
 import './akashic-main.css';
 
 import styled from '@emotion/styled';
-import {
-  IonCol,
-  IonContent,
-  IonGrid,
-  IonItem,
-  IonPage,
-  IonRow,
-  IonSelect,
-  IonSelectOption,
-  IonText,
-  useIonRouter,
-} from '@ionic/react';
+import { IonCol, IonGrid, IonRow, IonText, isPlatform } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 
+import { AccountSelection } from '../components/account-selection/account-selection';
 import {
   Alert,
   errorAlertShell,
   formAlertResetState,
 } from '../components/alert/alert';
 import { PurpleButton } from '../components/buttons';
-import { Footer } from '../components/layout/footer';
 import { StyledInput } from '../components/styled-input';
+import { ContentText } from '../components/text/context-text';
 import { urls } from '../constants/urls';
 import { akashicPayPath } from '../routing/navigation-tree';
 import { OwnersAPI } from '../utils/api';
-import { getLocalAccounts } from '../utils/local-account-storage';
+import type { LocalAccount } from '../utils/hooks/useLocalAccounts';
+import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { unpackRequestErrorMessage } from '../utils/unpack-request-error-message';
 
 const HelpLink = styled.a({
@@ -38,19 +30,24 @@ const HelpLink = styled.a({
 export const loginUrl = 'login';
 
 export function Login() {
-  const router = useIonRouter();
+  const history = useHistory();
   const { t } = useTranslation();
-
-  const availableAccounts = getLocalAccounts();
-  const [selectedIdentity, setSelectedIdentity] = useState('');
-  const [password, setPassword] = useState<string>();
   const [alert, setAlert] = useState(formAlertResetState);
 
+  const { activeAccount, setActiveAccount } = useAccountStorage();
+  const [selectedAccount, setSelectedAccount] = useState<LocalAccount>();
+  const [password, setPassword] = useState<string>();
+
+  /**
+   * Ensures that selectedAccount in the dropdown menu matches the activeAccount
+   */
   useEffect(() => {
-    // Select first account
-    if (availableAccounts.length)
-      setSelectedIdentity(availableAccounts[0].identity);
-  }, []);
+    setTimeout(() => {
+      if (activeAccount && selectedAccount && activeAccount !== selectedAccount)
+        isPlatform('mobile') && location.reload();
+    }, 500);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeAccount, window.location.pathname]);
 
   /**
    * Perform login - if 201 is returned, attempt to fetch some data:
@@ -59,15 +56,14 @@ export function Login() {
    */
   const login = async () => {
     try {
-      const selectedAccount = availableAccounts.find(
-        (account) => account.identity === selectedIdentity
-      );
       if (selectedAccount && password) {
         await OwnersAPI.login({
           username: selectedAccount.username,
           password,
         });
-        router.push(akashicPayPath(urls.loggedFunction));
+        // Set the login account
+        setActiveAccount(selectedAccount);
+        history.push(akashicPayPath(urls.loggedFunction));
       }
     } catch (error) {
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
@@ -75,75 +71,57 @@ export function Login() {
   };
 
   return (
-    <IonPage>
-      <IonContent>
-        <Alert state={alert} />
-        <IonGrid class="main-wrapper">
-          <IonRow>
-            <IonCol>
-              <IonText color="dark">
-                <h1>{t('WelcomeBack')}</h1>
-              </IonText>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonItem class="select-item-account" lines="none">
-                <IonSelect
-                  value={selectedIdentity}
-                  onIonChange={({ detail: { value } }) => {
-                    setSelectedIdentity(value);
-                  }}
-                  interface="popover"
-                >
-                  {availableAccounts.map((account) => {
-                    return (
-                      <IonSelectOption
-                        key={account.identity}
-                        value={account.identity}
-                        class="menu-text"
-                      >
-                        {account.identity}
-                      </IonSelectOption>
-                    );
-                  })}
-                </IonSelect>
-              </IonItem>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <StyledInput
-                label={t('Password')}
-                type={'password'}
-                placeholder={t('PleaseEnterYourPassword')}
-                onIonInput={({ target: { value } }) =>
-                  setPassword(value as string)
-                }
-              />
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <PurpleButton onClick={login} expand="block" disabled={!password}>
-                {t('Unlock')}
-              </PurpleButton>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonText>
-                <h3>
-                  <HelpLink href="www.bing.com">
-                    {t('ForgotYourPassword')}
-                  </HelpLink>
-                </h3>
-              </IonText>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      </IonContent>
-      <Footer />
-    </IonPage>
+    <>
+      <Alert state={alert} />
+      <IonGrid class="main-wrapper">
+        <IonRow>
+          <IonCol>
+            <IonText color="dark">
+              <h1>{t('WelcomeBack')}</h1>
+            </IonText>
+          </IonCol>
+        </IonRow>
+        <IonRow style={{ marginTop: '-5px' }}>
+          <IonCol class="ion-center">
+            <ContentText>{t('YourMostReliableWallet')}</ContentText>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <AccountSelection changeSelection={(a) => setSelectedAccount(a)} />
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <StyledInput
+              label={t('Password')}
+              type={'password'}
+              placeholder={t('PleaseEnterYourPassword')}
+              onIonInput={({ target: { value } }) =>
+                setPassword(value as string)
+              }
+            />
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <PurpleButton onClick={login} expand="block" disabled={!password}>
+              {t('Unlock')}
+            </PurpleButton>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonText>
+              <h3>
+                <HelpLink href="https://akashicpay.com">
+                  {t('ForgotYourPassword')}
+                </HelpLink>
+              </h3>
+            </IonText>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </>
   );
 }

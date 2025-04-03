@@ -1,6 +1,7 @@
 import './alert.css';
+import '../../pages/common.css';
 
-import { IonAlert } from '@ionic/react';
+import { IonAlert, IonNote } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -34,7 +35,7 @@ export const formAlertResetState: FormAlertState = {
 };
 
 /**
- * Alert featuring
+ * Popup alert featuring
  * - title
  * - message
  * - visibility state
@@ -56,5 +57,25 @@ export function Alert({ state: externalState }: { state: FormAlertState }) {
       buttons={['OK']}
       onDidDismiss={() => setState(formAlertResetState)}
     />
+  );
+}
+
+/**
+ * Boxed Alert featuring
+ * - message
+ * - visibility state
+ */
+export function AlertBox({ state }: { state: FormAlertState }) {
+  return (
+    <IonNote
+      style={{
+        ...(state.visible && {
+          border: '1px solid #de3730',
+          color: '#de3730',
+        }),
+      }}
+    >
+      <h4 style={{ marginTop: '5px', marginBottom: '5px' }}>{state.message}</h4>
+    </IonNote>
   );
 }
