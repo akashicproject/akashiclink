@@ -19,16 +19,9 @@ platform :android do
   end
 
   lane :getNextVersionCode do
-    begin
-      previous_version_code = google_play_track_version_codes(
-        package_name: ENV['PACKAGE_NAME'],
-        track: "internal",
-      )[0]
+    previous_version_code = ENV['BUILD_VERSION'].to_i - 1
 
-      previous_version_code + 1
-    rescue => exception
-      1
-    end
+    previous_version_code.to_i + 1
   end
 
   lane :getNextReleaseName do
