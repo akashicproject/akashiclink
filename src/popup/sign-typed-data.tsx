@@ -91,6 +91,7 @@ export function SignTypedData() {
     await closePopup();
   }, []);
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   const acceptSessionRequest = async () => {
     const { topic, id, primaryType, toSign } = requestContent;
 
