@@ -43,7 +43,7 @@ const SendWrapper = styled.div({
   flexDirection: 'column',
   alignItems: 'center',
   padding: 0,
-  minHeight: '156px',
+  margin: '24px',
   width: '270px',
 });
 
@@ -72,24 +72,6 @@ const AddressBox = styled.div({
   lineHeight: '16px',
   color: '#290056',
   border: '1px solid #958e99',
-});
-
-const FeeMarker = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'center',
-  alignItems: 'center',
-  padding: '6px 16px',
-  gap: '8px',
-  width: '270px',
-  height: '28px',
-  borderRadius: '8px',
-  fontFamily: 'Nunito Sans',
-  fontWeight: '400',
-  fontSize: '10px',
-  lineHeight: '16px',
-  border: '1px solid #958E99',
-  color: 'var(--ion-color-primary-10)',
 });
 
 /** Corresponds to steps taken by user as they make a nft transfer */
@@ -212,7 +194,7 @@ export function NftTransfer() {
                   <OneNft nft={currentNft} />
                 </IonCol>
               </IonRow>
-              <IonRow style={{ marginTop: isMobile ? '40px' : '20px' }}>
+              <IonRow>
                 <IonCol class="ion-center">
                   <SendWrapper style={{ gap: isMobile ? '24px' : '16px' }}>
                     <StyledInput
@@ -226,8 +208,8 @@ export function NftTransfer() {
                         setInputValue(value as string);
                       }}
                     />
-                    <AddressWrapper>
-                      {inputValue && (
+                    {inputValue && (
+                      <AddressWrapper>
                         <AddressBox>
                           {searchedResultType === SearchResult.AcnsName &&
                             `${inputValue} = ${displayLongText(toAddress)}`}
@@ -236,8 +218,7 @@ export function NftTransfer() {
                           {searchedResultType === SearchResult.NoResult &&
                             t('NoSearchResult')}
                         </AddressBox>
-                      )}
-                      {!inputValue ? null : (
+
                         <IonImg
                           alt={''}
                           src={
@@ -247,16 +228,14 @@ export function NftTransfer() {
                           }
                           style={{ width: '40px', height: '40px' }}
                         />
-                      )}
-                    </AddressWrapper>
-                    <FeeMarker>{t('Fee')}: 0.001ETH</FeeMarker>
+                      </AddressWrapper>
+                    )}
                   </SendWrapper>
                 </IonCol>
               </IonRow>
               <IonRow
                 class="ion-justify-content-between"
                 style={{
-                  marginTop: isMobile ? '40px' : '10px',
                   width: '280px',
                 }}
               >
