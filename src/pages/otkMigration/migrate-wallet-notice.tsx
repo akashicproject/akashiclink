@@ -1,5 +1,4 @@
-import styled from '@emotion/styled';
-import { IonCol, IonRow } from '@ionic/react';
+import { IonCol, IonRow, IonText } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,13 +16,6 @@ import {
 import { generateOTK } from '../../utils/otk-generation';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 
-export const StyledSpan = styled.span({
-  fontSize: '12px',
-  fontWeight: '400',
-  color: 'var(--ion-color-primary-10)',
-  marginTop: '4px',
-  lineHeight: '16px',
-});
 export function MigrateWalletNotice() {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
@@ -64,49 +56,48 @@ export function MigrateWalletNotice() {
   return (
     <PublicLayout contentStyle={{ padding: '24px 30px' }}>
       <MainGrid style={{ gap: '12px', padding: '0' }}>
-        <IonRow>
-          <IonCol size="12" style={{ textAlign: 'center' }}>
-            <IonRow style={{ justifyContent: 'center' }}>
-              <h1>{t('WelcomeBack')}</h1>
-            </IonRow>
-            <IonRow>
-              <h2
-                style={{
-                  margin: '0 auto',
-                }}
-              >
-                {t('UpdateNoticeImportant')}
-              </h2>
-            </IonRow>
-            <IonRow>
-              <StyledSpan style={{ textAlign: 'center' }}>
-                {t('UpdateNoticeMain')}
-              </StyledSpan>
-            </IonRow>
-            <IonRow style={{ justifyContent: 'center', marginTop: '20px' }}>
-              <h3>{t('UpdateNoticeIncludes')}</h3>
-            </IonRow>
+        <IonRow className={'ion-text-align-center ion-center'}>
+          <IonCol size="12">
+            <h1 className={'ion-text-size-xxl ion-margin-0'}>
+              {t('WelcomeBack')}
+            </h1>
+            <h2 className={'ion-text-size-xl ion-margin-0'}>
+              {t('UpdateNoticeImportant')}
+            </h2>
+          </IonCol>
+          <IonCol size="12">
+            <IonText
+              className={'ion-text-align-center ion-text-size-xs'}
+              color={'dark'}
+            >
+              <p>{t('UpdateNoticeMain')}</p>
+            </IonText>
           </IonCol>
         </IonRow>
-        <IonRow style={{ padding: '0 5px' }}>
-          <IonCol>
-            <IonRow style={{ textAlign: 'left', gap: '10px' }}>
-              <li>{t('UpdateNoticeBullet1')}</li>
-              <li>{t('UpdateNoticeBullet2')}</li>
-              <li>{t('UpdateNoticeBullet3')}</li>
-            </IonRow>
-
-            <IonRow style={{ justifyContent: 'center', margin: '20px 0' }}>
-              <PurpleButton
-                style={{ width: '149px' }}
-                expand="block"
-                onClick={() => {
-                  nextPage();
-                }}
-              >
-                {t('Confirm')}
-              </PurpleButton>
-            </IonRow>
+        <IonRow className={'ion-center'} style={{ padding: '0 4px' }}>
+          <IonCol
+            size="12"
+            className={'ion-padding-horizontal ion-text-align-left'}
+          >
+            <h3>{t('UpdateNoticeIncludes')}</h3>
+            <IonText className={'ion-text-size-xs'} color={'dark'}>
+              <ul>
+                <li>{t('UpdateNoticeBullet1')}</li>
+                <li>{t('UpdateNoticeBullet2')}</li>
+                <li>{t('UpdateNoticeBullet3')}</li>
+              </ul>
+            </IonText>
+          </IonCol>
+          <IonCol className={'ion-center ion-margin-top-xl'}>
+            <PurpleButton
+              style={{ width: '149px' }}
+              expand="block"
+              onClick={() => {
+                nextPage();
+              }}
+            >
+              {t('Confirm')}
+            </PurpleButton>
           </IonCol>
         </IonRow>
       </MainGrid>

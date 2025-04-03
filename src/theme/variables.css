@@ -3,6 +3,8 @@ http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
 :root {
+  --ion-text-color: #290056;
+
   /** primary **/
   --ion-color-primary: #8a5bcd;
   --ion-color-primary-rgb: 34, 36, 40;
@@ -103,7 +105,7 @@ http://ionicframework.com/docs/theming/ */
   --settings-popup-background-color: #fff;
   --settings-popup-background-focused: rgba(103, 80, 164, 0.12);
 
-  /** iamges for swiper **/
+  /** images for swiper **/
   --swiper-button-prev-background-image: url('/public/shared-assets/images/arrow-back.png');
   --swiper-button-next-background-image: url('/public/shared-assets/images/arrow-forward.png');
 

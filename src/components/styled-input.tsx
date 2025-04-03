@@ -80,7 +80,7 @@ export function StyledInput({
         </IonLabel>
       ) : null}
       <IonInput
-        className={!inputValid && !isHorizontal ? 'input-fail' : 'null'}
+        className={!inputValid && !isHorizontal ? 'input-fail' : ''}
         onIonInput={(event) => {
           onIonInput && onIonInput(event);
           validateInput(event);
@@ -90,7 +90,7 @@ export function StyledInput({
         }
         {...props}
       ></IonInput>
-      <IonNote slot="error">{!inputValid ? helpText : ' '}</IonNote>
+      {!inputValid && <IonNote slot="error">{helpText}</IonNote>}
     </IonItem>
   );
 }

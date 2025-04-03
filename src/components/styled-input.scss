@@ -35,7 +35,7 @@
 
 .styled-input {
   @extend %styled-input-shared;
-  --min-height: 64px;
+  --min-height: 40px;
   --background: transparent;
   --box-shadow: none;
 
@@ -52,9 +52,8 @@
   }
 
   ion-input {
-    --padding-start: 16px !important;
-    --padding-top: 6px;
-    --padding-bottom: 6px;
+    --padding-top: 2px;
+    --padding-bottom: 2px;
 
     min-height: 40px;
     max-height: 40px;

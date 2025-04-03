@@ -3,6 +3,7 @@ import './language-select.scss';
 import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
 import { IonButton, IonIcon, IonItem, IonList, IonPopover } from '@ionic/react';
 import { caretDownOutline, globeOutline } from 'ionicons/icons';
+import type { SyntheticEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -30,8 +31,7 @@ export const LanguageDropdown = () => {
     i18n.changeLanguage(selectedLanguage);
   }, [selectedLanguage, i18n]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const openPopover = (e: any) => {
+  const openPopover = (e: SyntheticEvent) => {
     popover.current!.event = e;
     setIsOpen(!isOpen);
   };
@@ -44,8 +44,12 @@ export const LanguageDropdown = () => {
           openPopover(e);
         }}
       >
-        <IonIcon slot="icon-only" icon={globeOutline} />
-        <IonIcon slot="end" icon={caretDownOutline} />
+        <IonIcon
+          style={{ fontSize: 24 }}
+          slot="icon-only"
+          icon={globeOutline}
+        />
+        <IonIcon style={{ fontSize: 14 }} slot="end" icon={caretDownOutline} />
       </IonButton>
       <IonPopover
         side="bottom"

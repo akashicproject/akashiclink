@@ -85,3 +85,16 @@ ion-content {
 ion-footer > * {
   padding-bottom: var(--ion-safe-area-bottom, 0);
 }
+
+/*  margin & padding */
+.ion-margin-top-lg {
+  margin-top: 24px;
+}
+
+.ion-margin-top-xl {
+  margin-top: 32px;
+}
+
+.ion-margin-0 {
+  margin: 0;
+}

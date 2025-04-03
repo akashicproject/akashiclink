@@ -1,0 +1,5 @@
+@use 'typography';
+
+ion-checkbox {
+  @extend %text-shared;
+}

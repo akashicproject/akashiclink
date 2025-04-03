@@ -138,24 +138,20 @@ export function LoginForm() {
       <h3 className="ion-justify-content-center">
         {t('EmpoweringYourWealth')}
       </h3>
-      <AccountSelection
-        onNewAccountClick={(a) => setSelectedAccount(a)}
-        style={{ marginTop: '24px' }}
-      />
-      <IonRow>
-        <IonCol>
+      <IonRow className={'ion-grid-gap-md ion-margin-top-lg'}>
+        <IonCol size="12">
+          <AccountSelection onNewAccountClick={(a) => setSelectedAccount(a)} />
+        </IonCol>
+        <IonCol size="12">
           <StyledInput
-            label={t('Password')}
             type={'password'}
-            placeholder={t('PleaseEnterYourPassword')}
+            placeholder={t('Password')}
             onIonInput={({ target: { value } }) => setPassword(value as string)}
             submitOnEnter={login}
             enterkeyhint="go"
           />
         </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
+        <IonCol size="12">
           <PurpleButton
             onClick={login}
             style={{ width: '100%' }}

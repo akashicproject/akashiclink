@@ -1,0 +1,65 @@
+import React, { useState } from 'react';
+import { IonCheckbox, IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
+import { PurpleButton, WhiteButton } from '../buttons';
+import { akashicPayPath } from '../../routing/navigation-tabs';
+import { urls } from '../../constants/urls';
+import { useTranslation } from 'react-i18next';
+
+const CreateOrImportForm = () => {
+  const { t } = useTranslation();
+  const [checked, setChecked] = useState(false);
+
+  return (
+    <IonGrid>
+      <IonRow className="ion-grid-gap-xs">
+        <IonCol size="12">
+          <h3 className="ion-justify-content-center ion-margin-bottom">
+            {t('EmpoweringYourWealth')}
+          </h3>
+        </IonCol>
+        <IonCol size="12" className="ion-center">
+          <IonCheckbox
+            onIonChange={() => {
+              setChecked(!checked);
+            }}
+            className="ion-text-size-sm"
+            labelPlacement={'end'}
+          >
+            {`${t('IAgreeToTermsOfUse')} `}
+            <a
+              rel="noreferrer"
+              href="https://akashic-1.gitbook.io/akashicwallet/terms-of-use"
+              target={'_blank'}
+              style={{
+                color: '#7444B6',
+                textDecoration: 'none',
+              }}
+            >
+              {t('TermsOfUse')}
+            </a>
+          </IonCheckbox>
+        </IonCol>
+        <IonCol size="12">
+          <PurpleButton
+            disabled={!checked}
+            routerLink={akashicPayPath(urls.createWalletPassword)}
+            expand="block"
+          >
+            {t('CreateYourWallet')}
+          </PurpleButton>
+        </IonCol>
+        <IonCol>
+          <WhiteButton
+            disabled={!checked}
+            routerLink={akashicPayPath(urls.selectImportMethod)}
+            expand="block"
+          >
+            {t('ImportWallet')}
+          </WhiteButton>
+        </IonCol>
+      </IonRow>
+    </IonGrid>
+  );
+};
+
+export default CreateOrImportForm;
