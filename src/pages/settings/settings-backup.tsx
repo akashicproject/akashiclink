@@ -1,6 +1,7 @@
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 
 import { AlertBox } from '../../components/common/alert/alert';
 import { CopyBox } from '../../components/common/copy-box';
@@ -19,6 +20,7 @@ export enum BackupKeyPairState {
 
 export function SettingsBackup() {
   const { t } = useTranslation();
+  const history = useHistory();
 
   const [view, setView] = useState(BackupKeyPairState.ConfirmPassword);
   const [keyPair, setKeyPair] = useState('');
@@ -27,6 +29,10 @@ export function SettingsBackup() {
     setKeyPair(otk.key.prv.pkcs8pem);
     setView(BackupKeyPairState.ViewKeyPair);
   };
+
+  useEffect(() => {
+    setView(BackupKeyPairState.ConfirmPassword);
+  }, [history.location]);
 
   return (
     <DashboardLayout showSwitchAccountBar>
