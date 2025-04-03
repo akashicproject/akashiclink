@@ -102,7 +102,8 @@ export async function signTxBody<T extends IBaseAcTransaction>(
 /** Modifies the tx in-place and also returns the modified tx */
 function addExpireToTxBody<T extends IBaseAcTransaction>(txBody: T): T {
   // 1 Min expiry, should be plenty
-  txBody.$tx.$expire = new Date(Date.now() + 60 * 1000).toISOString();
+  if (!txBody.$tx.$expire)
+    txBody.$tx.$expire = new Date(Date.now() + 60 * 1000).toISOString();
 
   return txBody;
 }
