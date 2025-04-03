@@ -61,6 +61,7 @@ export const SendAmountInputAndDetail = ({
     nativeCoinBalance,
     nativeCoinSymbol,
     chain,
+    delegatedFee,
   } = useFocusCurrencySymbolsAndBalances();
 
   const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
@@ -112,7 +113,7 @@ export const SendAmountInputAndDetail = ({
     setAlert(formAlertResetState);
     setAmount(
       Big(currencyBalance)
-        .sub(isL2 ? calculateL2Fee() : '0')
+        .sub(isL2 ? calculateL2Fee() : delegatedFee)
         .toString()
     );
   };
