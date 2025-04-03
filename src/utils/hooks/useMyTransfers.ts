@@ -13,6 +13,11 @@ import buildURL from 'axios/unsafe/helpers/buildURL';
 import useSWR from 'swr';
 
 import { REFRESH_INTERVAL } from '../../constants';
+import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
+import {
+  removeLocalTransactionByL2TxnHash,
+  selectLocalTransactions,
+} from '../../redux/slices/localTransactionSlice';
 import fetcher from '../ownerFetcher';
 import { useAccountStorage } from './useLocalAccounts';
 
@@ -30,6 +35,8 @@ const transferMeFetcher = async (path: string, config?: AxiosRequestConfig) => {
 
 export const useMyTransfers = (params?: IClientTransactionRecord) => {
   const { activeAccount } = useAccountStorage();
+  const dispatch = useAppDispatch();
+  const localTransactions = useAppSelector(selectLocalTransactions);
   const {
     data,
     mutate: mutateMyTransfers,
@@ -73,8 +80,29 @@ export const useMyTransfers = (params?: IClientTransactionRecord) => {
       }),
   }));
 
+  // Remove duplicate local transactions
+  const transactionL2Hashes = transformedTransfers.map((t) => t.l2TxnHash);
+  const duplicatedLocalTransactionHashes = localTransactions
+    .filter((t) => transactionL2Hashes.includes(t.l2TxnHash))
+    .map((t) => t.l2TxnHash);
+  for (const duplicatedLocalTransactionHash of duplicatedLocalTransactionHashes) {
+    if (duplicatedLocalTransactionHash) {
+      dispatch(
+        removeLocalTransactionByL2TxnHash(duplicatedLocalTransactionHash)
+      );
+    }
+  }
+
+  // Add local transactions
+  const withLocalTransactions = [
+    ...localTransactions.filter(
+      (t) => !duplicatedLocalTransactionHashes.includes(t.l2TxnHash)
+    ),
+    ...transformedTransfers,
+  ];
+
   return {
-    transfers: transformedTransfers,
+    transfers: withLocalTransactions,
     mutateMyTransfers,
     ...response,
   };

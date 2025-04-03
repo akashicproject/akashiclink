@@ -5,6 +5,7 @@ import { combineReducers } from 'redux';
 import { accountSlice } from '../slices/accountSlice';
 import { createWalletSlice } from '../slices/createWalletSlice';
 import { importWalletSlice } from '../slices/importWalletSlice';
+import { localTransactionSlice } from '../slices/localTransactionSlice';
 import { preferenceSlice } from '../slices/preferenceSlice';
 
 // use `combineReducers` instead of `combineSlices`
@@ -16,6 +17,7 @@ const createRootReducer = (history: History) =>
     importWalletSlice: importWalletSlice.reducer,
     preferenceSlice: preferenceSlice.reducer,
     accountSlice: accountSlice.reducer,
+    localTransactionSlice: localTransactionSlice.reducer,
   });
 
 // eslint-disable-next-line import/no-default-export
