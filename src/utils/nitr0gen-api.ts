@@ -5,20 +5,14 @@ import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import type { CoinSymbol } from '@helium-pay/backend';
 import { NetworkDictionary } from '@helium-pay/backend';
 
-export interface Nitr0CryptoKey {
+/**
+ * basic info about a key created on Nitr0gen
+ */
+export interface Nitr0genCreatedKey {
   ledgerId: string;
   address: string;
   coinSymbol: CoinSymbol;
   hashes?: string[];
-  chainData?: unknown;
-  nonceDiff?: number; // added for the purposes of nonce tracking
-}
-/**
- * Used to transform gateway schema into the above format
- */
-export interface Nitr0GatewayCryptoKey extends Nitr0CryptoKey {
-  id?: string;
-  nId?: string;
 }
 
 enum Nitr0gen {
@@ -89,7 +83,7 @@ export const Nitr0genApi = {
    * Transaction to do a diffcon-check (checks that all parts are across the nodes ok) for a created key
    */
   async differentialConsensusTransaction(
-    key: Nitr0GatewayCryptoKey,
+    key: Nitr0genCreatedKey,
     otk: IKeyExtended
   ): Promise<string> {
     // Build Transaction
