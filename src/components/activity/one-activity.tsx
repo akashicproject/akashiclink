@@ -31,6 +31,10 @@ const ActivityWrapper = styled.div<{ hover: boolean }>((props) => ({
     background: props.hover ? 'rgba(103, 80, 164, 0.14)' : 'transparent',
   },
   padding: '4px 8px',
+  cursor: 'pointer',
+  ['&:active, &:focus, &:hover']: {
+    background: 'rgba(89, 89, 146, 0.08)',
+  },
 }));
 
 const TransactionStatusWrapper = styled.div({

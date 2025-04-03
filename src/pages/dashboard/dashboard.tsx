@@ -4,7 +4,7 @@ import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { arrowDownOutline, arrowForwardOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 
-import { PurpleButton, WhiteButton } from '../../components/common/buttons';
+import { PrimaryButton, WhiteButton } from '../../components/common/buttons';
 import { LayoutWithActivityTab } from '../../components/page-layout/layout-with-activity-tab';
 import { SelectCoin } from '../../components/send-deposit/select-coin';
 import { urls } from '../../constants/urls';
@@ -26,13 +26,13 @@ export function Dashboard() {
         <SelectCoin />
         <IonRow className={'ion-grid-row-gap-xs'}>
           <IonCol size={'6'}>
-            <PurpleButton
+            <PrimaryButton
               expand="block"
               routerLink={akashicPayPath(urls.sendTo)}
             >
               {t('Send')}
               <IonIcon slot="end" icon={arrowForwardOutline}></IonIcon>
-            </PurpleButton>
+            </PrimaryButton>
           </IonCol>
           <IonCol size={'6'}>
             <WhiteButton

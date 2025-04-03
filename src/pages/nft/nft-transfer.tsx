@@ -1,15 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
 import { L2Regex } from '@helium-pay/backend';
-import {
-  IonCol,
-  IonIcon,
-  IonImg,
-  IonRow,
-  IonSpinner,
-  isPlatform,
-} from '@ionic/react';
-import { alertCircleOutline } from 'ionicons/icons';
+import { IonCol, IonImg, IonRow, IonSpinner, isPlatform } from '@ionic/react';
 import { debounce } from 'lodash';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +12,8 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../../components/common/alert/alert';
-import { PurpleButton, WhiteButton } from '../../components/common/buttons';
+import { PrimaryButton, WhiteButton } from '../../components/common/buttons';
+import { AlertIcon } from '../../components/common/icons/alert-icon';
 import {
   StyledInput,
   StyledInputErrorPrompt,
@@ -211,7 +204,7 @@ export function NftTransfer() {
           </NoNtfWrapper>
         ) : nfts.length === 0 ? (
           <NoNtfWrapper>
-            <IonIcon icon={alertCircleOutline} className="alert-icon" />
+            <AlertIcon />
             <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
           </NoNtfWrapper>
         ) : (
@@ -276,7 +269,7 @@ export function NftTransfer() {
               }}
             >
               <IonCol>
-                <PurpleButton
+                <PrimaryButton
                   expand="block"
                   disabled={!inputValue || !searched}
                   onClick={transferNft}
@@ -285,7 +278,7 @@ export function NftTransfer() {
                   {loading ? (
                     <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
                   ) : null}
-                </PurpleButton>
+                </PrimaryButton>
               </IonCol>
               <IonCol>
                 <WhiteButton

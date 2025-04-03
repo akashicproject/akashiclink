@@ -26,16 +26,20 @@ export function ThemeSelect() {
       currentState={isDarkMode ? 'active' : 'inActive'}
       containerStyle={{ alignSelf: 'base-line' }}
       sliderStyle={{
-        backgroundColor: isDarkMode
-          ? 'var(--ion-color-primary)'
-          : 'var(--ion-color-primary-70)',
+        backgroundColor: 'var(--toggle-theme-background)',
       }}
       switchStyle={{ width: '60px' }}
       firstIcon={
-        <IonIcon style={{ left: '1px', color: '#290056' }} icon={sunny} />
+        <IonIcon
+          style={{ left: '1px', color: 'var(--toggle-theme-text)' }}
+          icon={sunny}
+        />
       }
       secondIcon={
-        <IonIcon style={{ right: '1px', color: '#290056' }} icon={moon} />
+        <IonIcon
+          style={{ right: '1px', color: 'var(--toggle-theme-text)' }}
+          icon={moon}
+        />
       }
     />
   );

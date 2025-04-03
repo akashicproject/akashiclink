@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useCurrentAppInfo } from '../../utils/hooks/useCurrentAppInfo';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { getImageIconUrl } from '../../utils/url-utils';
-import { PurpleButton, WhiteButton } from '../common/buttons';
+import { PrimaryButton, WhiteButton } from '../common/buttons';
 import { ForwardArrow } from './forward-arrow';
 import type { SettingItemProps } from './setting-item';
 import { SettingItem } from './setting-item';
@@ -84,7 +84,7 @@ function UpdateModal({
         >
           {!isMoreInfo ? t('MoreInfo') : t('LessInfo')}
         </IonButton>
-        <PurpleButton
+        <PrimaryButton
           style={{ width: '100%', marginTop: '24px' }}
           onClick={async () => {
             setIsOpen(false);
@@ -94,7 +94,7 @@ function UpdateModal({
           }}
         >
           {t('UpdateNow')}
-        </PurpleButton>
+        </PrimaryButton>
       </div>
     </IonModal>
   );

@@ -11,7 +11,7 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../common/alert/alert';
-import { PurpleButton } from '../common/buttons';
+import { PrimaryButton } from '../common/buttons';
 import { StyledInput } from '../common/input/styled-input';
 import { SettingsWrapper } from './base-components';
 
@@ -79,13 +79,13 @@ export function ConfirmLockPassword({
           )}
         </IonRow>
       </IonGrid>
-      <PurpleButton
+      <PrimaryButton
         expand="block"
         disabled={!password}
         onClick={handleOnConfirm}
       >
         {t('Confirm')}
-      </PurpleButton>
+      </PrimaryButton>
     </SettingsWrapper>
   );
 }

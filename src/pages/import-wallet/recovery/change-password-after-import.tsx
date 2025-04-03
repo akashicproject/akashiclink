@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import {
-  PurpleButton,
+  PrimaryButton,
   SquareWhiteButton,
 } from '../../../components/common/buttons';
 import { StyledInput } from '../../../components/common/input/styled-input';
@@ -66,7 +66,7 @@ export function ChangePasswordAfterImport() {
         </IonRow>
         <IonRow>
           <IonCol>
-            <PurpleButton expand="block">{t('Confirm')}</PurpleButton>
+            <PrimaryButton expand="block">{t('Confirm')}</PrimaryButton>
           </IonCol>
         </IonRow>
       </MainGrid>

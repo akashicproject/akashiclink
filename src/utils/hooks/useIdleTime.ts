@@ -22,7 +22,7 @@ export function useIdleTime() {
       const newVal = Date.now() + autoLockTime * 60 * 1000;
       await setAutoLockBy(newVal);
       // Also saving this to chrome extension for direct access
-      await chrome.storage.local.set({ [AUTOLOCKBY_STORAGE_KEY]: newVal });
+      await chrome?.storage?.local?.set({ [AUTOLOCKBY_STORAGE_KEY]: newVal });
     },
   });
   useEffect(() => {

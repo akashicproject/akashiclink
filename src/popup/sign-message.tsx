@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { hexToString } from 'viem';
 
 import { BorderedBox } from '../components/common/box/border-box';
-import { PurpleButton } from '../components/common/buttons';
+import { PrimaryButton } from '../components/common/buttons';
 import { List } from '../components/common/list/list';
 import { ListVerticalLabelValueItem } from '../components/common/list/list-vertical-label-value-item';
 import { PopupLayout } from '../components/page-layout/popup-layout';
@@ -183,22 +183,22 @@ export function SignMessage() {
       </IonRow>
       <IonRow className={'ion-margin-top-auto'}>
         <IonCol size={'6'}>
-          <PurpleButton
+          <PrimaryButton
             expand="block"
             disabled={requestContent.message === ''}
             onClick={onClickReject}
           >
             Reject
-          </PurpleButton>
+          </PrimaryButton>
         </IonCol>
         <IonCol size={'6'}>
-          <PurpleButton
+          <PrimaryButton
             expand="block"
             disabled={requestContent.message === ''}
             onClick={onClickSign}
           >
             Accept
-          </PurpleButton>
+          </PrimaryButton>
         </IonCol>
       </IonRow>
     </PopupLayout>

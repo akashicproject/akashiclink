@@ -9,7 +9,7 @@ import type { ImportWalletForm } from '../../redux/slices/importWalletSlice';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import type { FormAlertState } from '../common/alert/alert';
 import { AlertBox } from '../common/alert/alert';
-import { PurpleButton, WhiteButton } from '../common/buttons';
+import { PrimaryButton, WhiteButton } from '../common/buttons';
 import {
   StyledInput,
   StyledInputErrorPrompt,
@@ -119,7 +119,7 @@ export function CreatePasswordForm({
             </IonCol>
           )}
           <IonCol size="6">
-            <PurpleButton
+            <PrimaryButton
               expand="block"
               onClick={onSubmit}
               disabled={
@@ -131,7 +131,7 @@ export function CreatePasswordForm({
               isLoading={isLoading}
             >
               {t('Confirm')}
-            </PurpleButton>
+            </PrimaryButton>
           </IonCol>
           <IonCol size="6">
             <WhiteButton

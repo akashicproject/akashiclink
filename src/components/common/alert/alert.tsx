@@ -5,7 +5,6 @@ import {
   IonButton,
   IonButtons,
   IonIcon,
-  IonImg,
   IonModal,
   IonNote,
   IonText,
@@ -15,7 +14,7 @@ import { closeOutline } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { PurpleButton } from '../buttons';
+import { PrimaryButton } from '../buttons';
 
 /**
  * @param success for green, red otherwise
@@ -134,9 +133,8 @@ export function CustomAlert({ state }: { state: CustomAlertState }) {
         </IonButtons>
       </IonToolbar>
       <div className="warning">
-        <IonImg
-          alt={''}
-          src={'/shared-assets/images/error-outline.png'}
+        <IonIcon
+          src={'/shared-assets/images/error-outline.svg'}
           style={{ width: '48px', height: '48px' }}
         />
         <IonText className="warning-text">
@@ -144,9 +142,9 @@ export function CustomAlert({ state }: { state: CustomAlertState }) {
           {t(state.message, state.messageProps)}
         </IonText>
         {state.onConfirm && (
-          <PurpleButton onClick={state.onConfirm} style={{ width: '160px' }}>
+          <PrimaryButton onClick={state.onConfirm} style={{ width: '160px' }}>
             {state.confirmButtonMessage ?? t('Confirm')}
-          </PurpleButton>
+          </PrimaryButton>
         )}
       </div>
     </IonModal>

@@ -3,7 +3,7 @@ import { IonCol, IonGrid, IonRow, isPlatform } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
-import { PurpleButton } from '../../components/common/buttons';
+import { PrimaryButton } from '../../components/common/buttons';
 import { Divider } from '../../components/common/divider';
 import { ErrorIconWithTitle } from '../../components/common/state-icon-with-title/error-icon-with-title';
 import { SuccessfulIconWithTitle } from '../../components/common/state-icon-with-title/successful-icon-with-title';
@@ -128,9 +128,9 @@ export function NftTransferResult() {
         )}
         <IonRow className="ion-center">
           <IonCol size={'6'}>
-            <PurpleButton expand="block" onClick={onFinish}>
+            <PrimaryButton expand="block" onClick={onFinish}>
               {t('Ok')}
-            </PurpleButton>
+            </PrimaryButton>
           </IonCol>
         </IonRow>
       </IonGrid>

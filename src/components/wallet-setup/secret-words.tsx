@@ -41,7 +41,9 @@ type WordInputProps = {
 const WordInput = styled(IonInput)<WordInputProps>`
   border-radius: 8px;
   border: ${(props) =>
-    props.fillable ? '2px solid #c297ff' : '1px solid #7B757F'};
+    props.fillable
+      ? '2px solid var(--ion-color-primary-70)'
+      : '1px solid #7B757F'};
   font-size: 0.625rem;
   text-align: center;
   color: var(--ion-color-primary-10);

@@ -18,7 +18,7 @@ export const ChainDiv = styled.div({
   alignItems: 'center',
   justifyContent: 'center',
   padding: '8px 12px',
-  borderBottom: '2px solid #C297FF',
+  borderBottom: '2px solid var(--ion-color-primary-70)',
   cursor: 'pointer',
 });
 

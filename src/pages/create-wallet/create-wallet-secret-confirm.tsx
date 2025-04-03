@@ -11,7 +11,7 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../../components/common/alert/alert';
-import { PurpleButton, WhiteButton } from '../../components/common/buttons';
+import { PrimaryButton, WhiteButton } from '../../components/common/buttons';
 import { Spinner } from '../../components/common/loader/spinner';
 import { ContactSupportText } from '../../components/common/text/contact-support-text';
 import { MainGrid } from '../../components/layout/main-grid';
@@ -184,12 +184,12 @@ export function CreateWalletSecretConfirm({ isPopup = false }) {
         )}
         <IonRow>
           <IonCol size="6">
-            <PurpleButton
+            <PrimaryButton
               expand="block"
               onClick={() => activateWalletAccount()}
             >
               {t('Confirm')}
-            </PurpleButton>
+            </PrimaryButton>
           </IonCol>
           <IonCol size="6">
             <WhiteButton expand="block" fill="clear" onClick={onGoBack}>

@@ -1,8 +1,7 @@
 import './activity.scss';
 
 import styled from '@emotion/styled';
-import { IonIcon, IonSpinner } from '@ionic/react';
-import { alertCircleOutline } from 'ionicons/icons';
+import { IonSpinner } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import type { GridComponents } from 'react-virtuoso';
@@ -10,6 +9,7 @@ import { Virtuoso } from 'react-virtuoso';
 
 import { OneActivity } from '../../components/activity/one-activity';
 import { Divider } from '../../components/common/divider';
+import { AlertIcon } from '../../components/common/icons/alert-icon';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 import { urls } from '../../constants/urls';
 import { useAppSelector } from '../../redux/app/hooks';
@@ -102,7 +102,7 @@ export function Activity() {
           <Virtuoso
             style={{
               margin: '8px 0px',
-              minHeight: 'calc(100vh - 240px - var(--ion-safe-area-bottom)',
+              minHeight: 'calc(100vh - 200px - var(--ion-safe-area-bottom)',
             }}
             data={walletFormatTransfers}
             components={{
@@ -129,7 +129,7 @@ export function Activity() {
           />
         ) : (
           <NoActivityWrapper>
-            <IonIcon icon={alertCircleOutline} className="alert-icon" />
+            <AlertIcon />
             <NoActivityText>{t('NoActivity')}</NoActivityText>
           </NoActivityWrapper>
         )

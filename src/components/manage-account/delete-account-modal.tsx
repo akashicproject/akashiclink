@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useLogout } from '../../utils/hooks/useLogout';
-import { OutlineButton, PurpleButton } from '../common/buttons';
+import { OutlineButton, PrimaryButton } from '../common/buttons';
 import { AccountListItem } from './account-list-item';
 
 export const DeleteAccountModal = ({
@@ -100,9 +100,9 @@ export const DeleteAccountModal = ({
             'w-100 ion-display-flex ion-flex-direction-column ion-gap-sm'
           }
         >
-          <PurpleButton className={'w-100'} onClick={onConfirm} expand="block">
+          <PrimaryButton className={'w-100'} onClick={onConfirm} expand="block">
             {t('RemoveAccount')}
-          </PurpleButton>
+          </PrimaryButton>
           <OutlineButton className={'w-100'} expand="block" onClick={onCancel}>
             {t('Cancel')}
           </OutlineButton>

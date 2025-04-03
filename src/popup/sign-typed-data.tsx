@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { BorderedBox } from '../components/common/box/border-box';
-import { PurpleButton } from '../components/common/buttons';
+import { PrimaryButton } from '../components/common/buttons';
 import { List } from '../components/common/list/list';
 import { ListVerticalLabelValueItem } from '../components/common/list/list-vertical-label-value-item';
 import { PopupLayout } from '../components/page-layout/popup-layout';
@@ -188,22 +188,22 @@ export function SignTypedData() {
       </IonRow>
       <IonRow className={'ion-margin-top-auto'}>
         <IonCol size={'6'}>
-          <PurpleButton
+          <PrimaryButton
             expand="block"
             disabled={requestContent.method === ''}
             onClick={onClickReject}
           >
             {t('Deny')}
-          </PurpleButton>
+          </PrimaryButton>
         </IonCol>
         <IonCol size={'6'}>
-          <PurpleButton
+          <PrimaryButton
             expand="block"
             disabled={requestContent.method === ''}
             onClick={onClickSign}
           >
             {t('Confirm')}
-          </PurpleButton>
+          </PrimaryButton>
         </IonCol>
       </IonRow>
     </PopupLayout>

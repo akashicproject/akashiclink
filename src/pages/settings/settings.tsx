@@ -18,9 +18,11 @@ import { urls } from '../../constants/urls';
 import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
 import {
   selectAutoLockTime,
+  selectTheme,
   setAutoLockTime,
 } from '../../redux/slices/preferenceSlice';
 import { akashicPayPath } from '../../routing/navigation-tabs';
+import { themeType } from '../../theme/const';
 import { useCurrentAppInfo } from '../../utils/hooks/useCurrentAppInfo';
 import { getImageIconUrl } from '../../utils/url-utils';
 
@@ -114,6 +116,8 @@ export function Settings() {
       }
     }) || autoLockTimeMap[0]
   );
+  const storedTheme = useAppSelector(selectTheme);
+
   const menuItems: SettingItemProps[] = [
     {
       header: t('General'),
@@ -131,7 +135,7 @@ export function Settings() {
     },
     {
       header: t('AutoLock'),
-      iconUrl: getImageIconUrl('lock.svg'),
+      iconUrl: getImageIconUrl('lock-light.svg'),
       endComponent: <AutoLockTextCaret autoLockTime={autoLock.label} />,
       isAccordion: true,
       children: (
@@ -154,7 +158,11 @@ export function Settings() {
           style={{ marginLeft: '8px' }}
           className="ion-no-margin"
           size="45px"
-          src={getImageIconUrl('speech-bubbles.svg')}
+          src={getImageIconUrl(
+            storedTheme === themeType.DARK
+              ? 'speech-bubbles-dark.svg'
+              : 'speech-bubbles.svg'
+          )}
         />
       ),
     },

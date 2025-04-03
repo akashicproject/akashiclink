@@ -1,5 +1,3 @@
-import './aas-listing-switch.scss';
-
 import styled from '@emotion/styled';
 import {
   type IUpdateAcns,
@@ -116,13 +114,12 @@ export const AasListingSwitch = ({
           {t('unlinkNftWarning')}
         </p>
       </div>
-      <div className="toggle-wrapper">
-        <Toggle
-          isLoading={isLoading}
-          onClickHandler={updateAASList}
-          currentState={isListed ? 'active' : 'inActive'}
-        />
-      </div>
+      <Toggle
+        switchStyle={{ width: '60px' }}
+        isLoading={isLoading}
+        onClickHandler={updateAASList}
+        currentState={isListed ? 'active' : 'inActive'}
+      />
     </AASListSwitchContainer>
   );
 };

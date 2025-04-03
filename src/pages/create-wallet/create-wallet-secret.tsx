@@ -7,7 +7,7 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../../components/common/alert/alert';
-import { PurpleButton } from '../../components/common/buttons';
+import { PrimaryButton } from '../../components/common/buttons';
 import { ContactSupportText } from '../../components/common/text/contact-support-text';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/page-layout/public-layout';
@@ -106,13 +106,13 @@ export function CreateWalletSecret() {
         )}
         <IonRow className={'ion-justify-content-center ion-grid-row-gap-xxs'}>
           <IonCol size="6">
-            <PurpleButton
+            <PrimaryButton
               expand="block"
               disabled={isDisable}
               onClick={onConfirmSecret}
             >
               {t('Next')}
-            </PurpleButton>
+            </PrimaryButton>
           </IonCol>
         </IonRow>
         <ContactSupportText />

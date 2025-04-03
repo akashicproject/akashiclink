@@ -13,7 +13,7 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../../common/alert/alert';
-import { PurpleButton, WhiteButton } from '../../common/buttons';
+import { PrimaryButton, WhiteButton } from '../../common/buttons';
 import type { ValidatedAddressPair } from './types';
 
 type SendFormActionButtonsProps = {
@@ -86,7 +86,7 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
       )}
       <IonRow>
         <IonCol size={'6'}>
-          <PurpleButton
+          <PrimaryButton
             expand="block"
             className={'w-100'}
             onClick={onConfirm}
@@ -94,7 +94,7 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
             isLoading={isLoading}
           >
             {t('Next')}
-          </PurpleButton>
+          </PrimaryButton>
         </IonCol>
         <IonCol size={'6'}>
           <WhiteButton

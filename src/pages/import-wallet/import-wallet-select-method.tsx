@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import {
-  PurpleButton,
+  PrimaryButton,
   SquareWhiteButton,
   WhiteButton,
 } from '../../components/common/buttons';
@@ -58,9 +58,9 @@ export const ImportWalletSelectMethod = () => {
           <IonCol size="12" style={{ textAlign: 'center' }}>
             <IonRow className={'ion-grid-row-gap-xs'}>
               <IonCol size="12" style={{ textAlign: 'center' }}>
-                <PurpleButton expand="block" onClick={onSelect12Words}>
+                <PrimaryButton expand="block" onClick={onSelect12Words}>
                   {t('12Words')}
-                </PurpleButton>
+                </PrimaryButton>
               </IonCol>
               <IonCol size="12" style={{ textAlign: 'center' }}>
                 <WhiteButton

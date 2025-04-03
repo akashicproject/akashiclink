@@ -1,5 +1,3 @@
-import './ntf.scss';
-
 import styled from '@emotion/styled';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useState } from 'react';
@@ -11,7 +9,7 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../../components/common/alert/alert';
-import { PurpleButton } from '../../components/common/buttons';
+import { PrimaryButton } from '../../components/common/buttons';
 import { AasListingSwitch } from '../../components/nft/aas-listing-switch';
 import { OneNft } from '../../components/nft/one-nft';
 import { NftLayout } from '../../components/page-layout/nft-layout';
@@ -39,9 +37,10 @@ export const NftWrapper = styled.div({
   )`,
 });
 
-export const NftContainer = styled.div`
+export const NftContainer = styled.div({
   position: 'relative',
-  margin: 0 auto`;
+  margin: '0 auto',
+});
 
 export function Nft() {
   const { t } = useTranslation();
@@ -90,9 +89,9 @@ export function Nft() {
           </IonRow>
           <IonRow className="ion-margin-top-xs ion-margin-bottom-xxs">
             <IonCol size="10" offset="1">
-              <PurpleButton expand="block" onClick={transferNft}>
+              <PrimaryButton expand="block" onClick={transferNft}>
                 {t('Transfer')}
-              </PurpleButton>
+              </PrimaryButton>
             </IonCol>
           </IonRow>
 

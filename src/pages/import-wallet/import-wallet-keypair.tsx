@@ -7,7 +7,7 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../../components/common/alert/alert';
-import { PurpleButton, WhiteButton } from '../../components/common/buttons';
+import { PrimaryButton, WhiteButton } from '../../components/common/buttons';
 import { StyledInput } from '../../components/common/input/styled-input';
 import { PublicLayout } from '../../components/page-layout/public-layout';
 import { urls } from '../../constants/urls';
@@ -89,14 +89,14 @@ export function ImportWalletKeypair() {
           </IonCol>
         )}
         <IonCol size="6">
-          <PurpleButton
+          <PrimaryButton
             disabled={!!importWalletError || !importWalletForm.privateKey}
             onClick={onRequestImport}
             expand="block"
             isLoading={isLoading}
           >
             {t('Confirm')}
-          </PurpleButton>
+          </PrimaryButton>
         </IonCol>
         <IonCol size="6">
           <WhiteButton expand="block" fill="clear" onClick={onCancel}>

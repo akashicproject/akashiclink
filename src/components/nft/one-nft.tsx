@@ -1,5 +1,3 @@
-import './one-nft.scss';
-
 import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import type { INft } from '@helium-pay/backend';
@@ -49,6 +47,9 @@ const NtfWrapper = styled.div<{
     ? 'var(--ion-modal-nft)'
     : 'var(--ion-modal-background)',
   boxShadow: '6px 6px 20px rgba(0,0,0,0.10000000149011612)',
+  ['& ion-img::part(image)']: {
+    borderRadius: props.isBig ? '20px' : '10px',
+  },
 }));
 
 const OneNFTContainer = styled.div({
@@ -103,7 +104,7 @@ export function OneNft(props: Props) {
               className="ion-no-margin .ion-text-size-sm"
               style={
                 props.isAASDarkStyle
-                  ? { color: '#FFFFFF' }
+                  ? { color: 'var(--ion-color-white)' }
                   : { color: '#202020' }
               }
             >

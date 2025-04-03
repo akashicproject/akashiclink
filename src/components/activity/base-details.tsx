@@ -59,7 +59,7 @@ export function BaseDetails({
             {statusString(currentTransfer.status)}
           </h4>
           <IonImg
-            src={`/shared-assets/images/${currentTransfer.status.toLocaleLowerCase()}.png`}
+            src={`/shared-assets/images/${currentTransfer.status?.toLocaleLowerCase()}.png`}
             style={{ width: '16px', height: '16px' }}
           />
         </div>

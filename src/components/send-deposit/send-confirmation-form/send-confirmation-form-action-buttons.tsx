@@ -27,7 +27,7 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../../common/alert/alert';
-import { PurpleButton, WhiteButton } from '../../common/buttons';
+import { PrimaryButton, WhiteButton } from '../../common/buttons';
 import type {
   SendConfirmationTxnFinal,
   SendConfirmationTxnsDetail,
@@ -210,13 +210,13 @@ export const SendConfirmationFormActionButtons = ({
       {!txnFinal && (
         <IonRow>
           <IonCol size={'6'}>
-            <PurpleButton
+            <PrimaryButton
               isLoading={isLoading}
               onClick={onConfirm}
               expand="block"
             >
               {t('Confirm')}
-            </PurpleButton>
+            </PrimaryButton>
           </IonCol>
           <IonCol size={'6'}>
             <WhiteButton disabled={isLoading} onClick={onCancel} expand="block">
@@ -228,9 +228,9 @@ export const SendConfirmationFormActionButtons = ({
       {txnFinal && (
         <IonRow>
           <IonCol size={'12'}>
-            <PurpleButton onClick={onFinish} expand="block">
+            <PrimaryButton onClick={onFinish} expand="block">
               {t('OK')}
-            </PurpleButton>
+            </PrimaryButton>
           </IonCol>
         </IonRow>
       )}

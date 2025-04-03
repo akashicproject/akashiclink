@@ -9,7 +9,7 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../../../components/common/alert/alert';
-import { PurpleButton, WhiteButton } from '../../../components/common/buttons';
+import { PrimaryButton, WhiteButton } from '../../../components/common/buttons';
 import {
   StyledInput,
   StyledInputErrorPrompt,
@@ -218,13 +218,13 @@ export function ChangePassword() {
               </WhiteButton>
             </IonCol>
             <IonCol size="6">
-              <PurpleButton
+              <PrimaryButton
                 expand="block"
                 onClick={changePassword}
                 disabled={!allowedToChange}
               >
                 {t('Confirm')}
-              </PurpleButton>
+              </PrimaryButton>
             </IonCol>
           </IonRow>
         </MainGrid>

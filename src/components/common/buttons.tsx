@@ -24,18 +24,14 @@ const buttonTextBaseCss: CSSInterpolation = {
   fontSize: '14px',
   lineHeight: '20px',
   textTransform: 'none',
-  transition: 'all ease-in-out 0.3s',
-  [':hover']: {
-    background: 'rgba(103, 80, 164, 0.14)',
-  },
 };
 
 const whiteButtonBase: CSSInterpolation = {
   background: 'var(--ion-button-background)',
-  borderColor: '#7B757F',
+  borderColor: '#74777D',
   color: 'var(--ion-white-button-text)',
-  [':active, :focus']: {
-    background: 'rgba(103, 80, 164, 0.08)',
+  ['&:active, &:focus, &:hover']: {
+    background: 'rgba(89, 89, 146, 0.08)',
   },
 };
 
@@ -47,13 +43,6 @@ const whiteButtonCss: CSSInterpolation = {
   },
 };
 
-const tabButtonEffectsCss: CSSInterpolation = {
-  [':active, :focus, :hover']: {
-    borderBottom: '2px solid #C297FF',
-    background: 'transparent',
-  },
-};
-
 const tabButtonCss: CSSInterpolation = {
   ['&::part(native)']: {
     color: 'var(--ion-color-primary-10)',
@@ -62,40 +51,35 @@ const tabButtonCss: CSSInterpolation = {
     borderBottom: '2px solid #CCC4CF',
     borderRadius: '0',
     ...buttonTextBaseCss,
-    ...tabButtonEffectsCss,
+  },
+  ['&:active, &:focus, &:hover']: {
+    background: 'rgba(89, 89, 146, 0.08)',
   },
   ['&.open::part(native)']: {
-    borderBottom: '2px solid #C297FF',
+    borderBottom: '2px solid #A2A2FF',
     background: 'transparent',
   },
 };
 
-const PurpleButtonCSS = styled(IonButton)<{ disabled?: boolean }>`
+const PrimaryButtonCSS = styled(IonButton)<{ disabled?: boolean }>`
   &::part(native) {
-    ${(props) =>
-      props.disabled
-        ? `
-        background: var(--ion-disabled-button-background);
-        color: var(--ion-button-text); 
-        `
-        : `
-        background: var(--ion-color-primary);
-        color: var(--ion-color-on-primary);
-        `}
     ${buttonBaseCss}
     ${buttonTextBaseCss}
+    &:hover {
+      box-shadow: 0px 3px 2px 0px rgba(0, 0, 0, 0.3);
+    }
   }
 `;
 
-export const PurpleButton = (
+export const PrimaryButton = (
   props: IonButtonProps & { isLoading?: boolean; disabled?: boolean }
 ) => (
-  <PurpleButtonCSS disabled={props.isLoading ?? props.disabled} {...props}>
+  <PrimaryButtonCSS disabled={props.isLoading ?? props.disabled} {...props}>
     {props.children}
     {props.isLoading && (
       <IonSpinner className={'ion-margin-start'} slot="end" name="circular" />
     )}
-  </PurpleButtonCSS>
+  </PrimaryButtonCSS>
 );
 
 export const WhiteButton = styled(IonButton)<{ disabled?: boolean }>`
@@ -103,12 +87,8 @@ export const WhiteButton = styled(IonButton)<{ disabled?: boolean }>`
   &::part(native) {
     ${(props) =>
       props.disabled
-        ? `
-        color: var(--ion-white-button-text);
-        `
-        : `
-        color: var(--ion-color-primary);
-        `}
+        ? 'color: var(--ion-white-button-text);'
+        : 'color: var(--ion-color-primary);'}
   }
 `;
 

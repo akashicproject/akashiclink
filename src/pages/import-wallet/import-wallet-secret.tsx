@@ -7,7 +7,7 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../../components/common/alert/alert';
-import { PurpleButton, WhiteButton } from '../../components/common/buttons';
+import { PrimaryButton, WhiteButton } from '../../components/common/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/page-layout/public-layout';
 import { SecretWords } from '../../components/wallet-setup/secret-words';
@@ -35,7 +35,7 @@ const StyledDiv = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
-  border: 2px solid #c297ff;
+  border: 2px solid var(--ion-color-primary-70);
   border-radius: 8px;
   width: 100%;
   text-align: center;
@@ -177,14 +177,14 @@ export const ImportWalletSecret = () => {
         )}
         <IonRow className="ion-grid-column-gap-lg">
           <IonCol size="6">
-            <PurpleButton
+            <PrimaryButton
               expand="block"
               disabled={!isAllFilled || alert.visible}
               onClick={onConfirmRecoveryPhrase}
               isLoading={isLoading}
             >
               {t('Confirm')}
-            </PurpleButton>
+            </PrimaryButton>
           </IonCol>
           <IonCol size="6">
             <WhiteButton expand="block" onClick={onCancel}>

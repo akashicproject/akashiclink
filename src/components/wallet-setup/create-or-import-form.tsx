@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import { PurpleButton, WhiteButton } from '../common/buttons';
+import { PrimaryButton, WhiteButton } from '../common/buttons';
 
 export const CreateOrImportForm = () => {
   const { t } = useTranslation();
@@ -48,13 +48,13 @@ export const CreateOrImportForm = () => {
       </IonRow>
       <IonRow className="ion-grid-gap-xs">
         <IonCol size="12">
-          <PurpleButton
+          <PrimaryButton
             disabled={!checked}
             routerLink={akashicPayPath(urls.createWalletPassword)}
             expand="block"
           >
             {t('CreateYourWallet')}
-          </PurpleButton>
+          </PrimaryButton>
         </IonCol>
         <IonCol>
           <WhiteButton

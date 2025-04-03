@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { IonCol, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
-import { PurpleButton } from '../../components/common/buttons';
+import { PrimaryButton } from '../../components/common/buttons';
 import { SuccessfulIconWithTitle } from '../../components/common/state-icon-with-title/successful-icon-with-title';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/page-layout/public-layout';
@@ -84,9 +84,9 @@ export const CreateWalletSuccessful = () => {
         </IonRow>
         <IonRow className={'ion-center'}>
           <IonCol size={'6'}>
-            <PurpleButton expand="block" onClick={handleOnConfirm}>
+            <PrimaryButton expand="block" onClick={handleOnConfirm}>
               {t('GotIt')}
-            </PurpleButton>
+            </PrimaryButton>
           </IonCol>
         </IonRow>
       </MainGrid>

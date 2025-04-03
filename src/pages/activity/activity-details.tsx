@@ -70,7 +70,7 @@ const IconBackground = styled.div((props: { backgroundColor: string }) => ({
 const ActivityContainer = styled.div({
   position: 'relative',
   margin: '0 auto',
-  padding: '16px 24px',
+  padding: '4px 24px',
 });
 export const ActivityDetails = () => {
   const history = useHistory<LocationState>();

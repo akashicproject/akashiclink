@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { IonCol, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
-import { PurpleButton } from '../../components/common/buttons';
+import { PrimaryButton } from '../../components/common/buttons';
 import { SuccessfulIconWithTitle } from '../../components/common/state-icon-with-title/successful-icon-with-title';
 import { ContactSupportText } from '../../components/common/text/contact-support-text';
 import { MainGrid } from '../../components/layout/main-grid';
@@ -44,9 +44,9 @@ export const ImportWalletSuccessful = () => {
             <SuccessfulIconWithTitle title={t('ImportSuccessful')} />
           </IonCol>
           <IonCol size={'6'}>
-            <PurpleButton expand="block" onClick={handleOnConfirm}>
+            <PrimaryButton expand="block" onClick={handleOnConfirm}>
               {t('Confirm')}
-            </PurpleButton>
+            </PrimaryButton>
             {/** TODO: Re-enable with different flow at later stage */}
             {/* <Divider/>>
             <StyledSpan>{t('YouHaveOptionTo')}</StyledSpan>

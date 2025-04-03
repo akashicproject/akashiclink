@@ -20,7 +20,7 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../common/alert/alert';
-import { PurpleButton } from '../common/buttons';
+import { PrimaryButton } from '../common/buttons';
 import { StyledInput } from '../common/input/styled-input';
 import { Spinner } from '../common/loader/spinner';
 
@@ -136,14 +136,14 @@ export function LoginForm({ isPopup = false }) {
           />
         </IonCol>
         <IonCol size="12">
-          <PurpleButton
+          <PrimaryButton
             onClick={onClickLogin}
             style={{ width: '100%' }}
             expand="block"
             disabled={!password}
           >
             {t('Unlock')}
-          </PurpleButton>
+          </PrimaryButton>
         </IonCol>
       </IonRow>
       {/* TODO: re-enable once password recovery loop is implemented */}

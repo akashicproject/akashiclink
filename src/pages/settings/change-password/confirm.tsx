@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { PurpleButton } from '../../../components/common/buttons';
+import { PrimaryButton } from '../../../components/common/buttons';
 import { SuccessfulIconWithTitle } from '../../../components/common/state-icon-with-title/successful-icon-with-title';
 import { DashboardLayout } from '../../../components/page-layout/dashboard-layout';
 import { SettingsWrapper } from '../../../components/settings/base-components';
@@ -19,9 +19,9 @@ export function ChangePasswordConfirm() {
         <div className="ion-margin-bottom w-100">
           <SuccessfulIconWithTitle title={t('PasswordChangeSuccess')} />
         </div>
-        <PurpleButton className="w-100" expand="block" onClick={logout}>
+        <PrimaryButton className="w-100" expand="block" onClick={logout}>
           {t('Confirm')}
-        </PurpleButton>
+        </PrimaryButton>
       </SettingsWrapper>
     </DashboardLayout>
   );

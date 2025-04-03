@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { sepolia } from 'viem/chains';
 
 import { BorderedBox } from '../components/common/box/border-box';
-import { PurpleButton } from '../components/common/buttons';
+import { PrimaryButton } from '../components/common/buttons';
 import { AccountListItem } from '../components/manage-account/account-list-item';
 import { PopupLayout } from '../components/page-layout/popup-layout';
 import {
@@ -215,22 +215,22 @@ export function WalletConnection() {
         <IonCol size={'12'}>
           <IonRow>
             <IonCol size={'6'}>
-              <PurpleButton
+              <PrimaryButton
                 expand="block"
                 onClick={onClickRejectConnect}
                 disabled={!sessionProposalId}
               >
                 {t('Deny')}
-              </PurpleButton>
+              </PrimaryButton>
             </IonCol>
             <IonCol size={'6'}>
-              <PurpleButton
+              <PrimaryButton
                 expand="block"
                 onClick={onClickApproveConnect}
                 disabled={!sessionProposalId}
               >
                 {t('Confirm')}
-              </PurpleButton>
+              </PrimaryButton>
             </IonCol>
           </IonRow>
         </IonCol>

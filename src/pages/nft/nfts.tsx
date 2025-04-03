@@ -1,21 +1,12 @@
-import './ntf.scss';
-
 import styled from '@emotion/styled';
 import type { INft } from '@helium-pay/backend';
-import {
-  IonCol,
-  IonGrid,
-  IonIcon,
-  IonRow,
-  IonSpinner,
-  isPlatform,
-} from '@ionic/react';
-import { alertCircleOutline } from 'ionicons/icons';
+import { IonCol, IonGrid, IonRow, IonSpinner } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import type { GridComponents } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
+import { AlertIcon } from '../../components/common/icons/alert-icon';
 import { OneNft } from '../../components/nft/one-nft';
 import { NftLayout } from '../../components/page-layout/nft-layout';
 import { urls } from '../../constants/urls';
@@ -34,7 +25,7 @@ const StyledNftWrapper = styled.div({
   height: '408px',
   width: '328px',
   margin: '16px 8px',
-  ['&:last-child ']: {
+  ['&:last-child']: {
     marginBottom: '40px',
   },
 });
@@ -69,7 +60,6 @@ export function Nfts() {
     if (!a.acns?.value && b.acns?.value) return 1;
     return 0;
   });
-  const isMobile = isPlatform('mobile');
 
   const selectNft = (nft: INft) => {
     history.push({
@@ -90,7 +80,7 @@ export function Nfts() {
           <IonRow className="ion-justify-content-center">
             <IonCol className="ion-center">
               <div>
-                <IonIcon icon={alertCircleOutline} className="alert-icon" />
+                <AlertIcon />
                 <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
               </div>
             </IonCol>
@@ -100,7 +90,7 @@ export function Nfts() {
       {!isLoading && nfts.length > 0 && (
         <Virtuoso
           style={{
-            height: isMobile ? '80vh' : '100vh',
+            minHeight: 'calc(100vh - 100px - var(--ion-safe-area-bottom)',
             width: '100%',
           }}
           overscan={900}

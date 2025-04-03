@@ -1,7 +1,7 @@
 import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
-import { PurpleButton } from '../components/common/buttons';
+import { PrimaryButton } from '../components/common/buttons';
 import { DashboardLayout } from '../components/page-layout/dashboard-layout';
 import { historyResetStackAndRedirect } from '../routing/history';
 
@@ -27,9 +27,9 @@ export const ErrorPage = () => {
             </IonText>
           </IonCol>
           <IonCol size="12" className="ion-text-center">
-            <PurpleButton onClick={onClick}>
+            <PrimaryButton onClick={onClick}>
               {t('ErrorPageBackButton')}
-            </PurpleButton>
+            </PrimaryButton>
           </IonCol>
         </IonRow>
       </IonGrid>
