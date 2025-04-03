@@ -29,8 +29,8 @@ function SettingsList(props: { children: ReactNode; isSubmenu?: boolean }) {
       class="settings-list"
       lines="none"
       style={{
-        // Style corners depending on depth of setting
-        borderRadius: props.isSubmenu ? '4px 0px 0px 4px' : '4px',
+        // Style margin depending on depth of setting
+        marginRight: props.isSubmenu ? '0' : '1px',
       }}
     >
       {props.children}
