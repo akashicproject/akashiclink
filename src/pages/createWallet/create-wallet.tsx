@@ -30,6 +30,7 @@ import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { useOwner } from '../../utils/hooks/useOwner';
 import {
   cacheCurrentPage,
   lastPageStorage,
@@ -50,6 +51,7 @@ export function CreateWallet() {
   const { i18n, t } = useTranslation();
   const history = useHistory();
   const logout = useLogout();
+  const loginCheck = useOwner(true);
 
   useEffect(() => {
     cacheCurrentPage(
@@ -197,8 +199,12 @@ export function CreateWallet() {
       <ResetPageButton
         expand="block"
         callback={() => {
+          if (!loginCheck.isLoading && !loginCheck.authenticated) {
+            history.push(akashicPayPath(urls.akashicPay));
+          } else {
+            history.push(akashicPayPath(urls.loggedFunction));
+          }
           setView(CreateWalletView.RequestAccount);
-          history.push(akashicPayPath(urls.loggedFunction));
           isPlatform('mobile') && location.reload();
         }}
       />

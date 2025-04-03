@@ -27,7 +27,11 @@ const HorizontalDivider = styled.div({
 // In seconds
 const TIMEOUT = 5 * 60;
 
-export function LoggedToolbar() {
+export function LoggedToolbar({
+  backButtonUrl = urls.loggedFunction,
+}: {
+  backButtonUrl?: string;
+}) {
   const logout = useLogout();
   const history = useHistory();
   const isDashboard =
@@ -76,7 +80,7 @@ export function LoggedToolbar() {
             <IonCol size="auto">
               <SquareWhiteButton
                 class="icon-button"
-                onClick={() => history.goBack()}
+                onClick={() => history.push(backButtonUrl)}
               >
                 <IonIcon
                   class="icon-button-icon"

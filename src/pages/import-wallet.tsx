@@ -72,9 +72,13 @@ export function ImportWallet() {
       NavigationPriority.IMMEDIATE,
       async () => {
         const { privateKey, email } = await lastPageStorage.getVars();
-        setPrivateKey(privateKey);
-        setEmail(email);
-        setView(View.TwoFa);
+        if (!privateKey || !email) {
+          setView(View.Submit);
+        } else {
+          setPrivateKey(privateKey);
+          setEmail(email);
+          setView(View.TwoFa);
+        }
       }
     );
   }, []);
