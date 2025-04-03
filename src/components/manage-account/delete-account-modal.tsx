@@ -2,7 +2,6 @@ import {
   IonButton,
   IonButtons,
   IonIcon,
-  IonImg,
   IonModal,
   IonText,
   IonToolbar,
@@ -72,9 +71,8 @@ export const DeleteAccountModal = ({
           'warning ion-display-flex ion-flex-direction-column ion-gap-lg'
         }
       >
-        <IonImg
-          alt={''}
-          src={'/shared-assets/images/error-outline.png'}
+        <IonIcon
+          src={'/shared-assets/images/error-outline.svg'}
           style={{ width: '48px', height: '48px' }}
         />
         <div

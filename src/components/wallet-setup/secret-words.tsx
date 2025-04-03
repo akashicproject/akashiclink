@@ -10,7 +10,7 @@ import {
   IonPopover,
   IonRow,
 } from '@ionic/react';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const WordCol = styled(IonCol)`
@@ -197,7 +197,7 @@ export function SecretWords({
         {isHidden && (
           <MaskLabelContainer onClick={onHiddenBtnClick}>
             <IonIcon
-              src={`/shared-assets/images/visibility.svg`}
+              src={`/shared-assets/images/visibility-on.svg`}
               style={{ height: '20px', width: '20px' }}
             ></IonIcon>
             <IonLabel className="ion-text-size-xxs">
