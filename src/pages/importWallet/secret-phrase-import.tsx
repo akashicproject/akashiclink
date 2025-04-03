@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { IonIcon, IonRow } from '@ionic/react';
+import { IonIcon, IonRow, IonText } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -70,7 +70,10 @@ export const SecretPhraseImport = () => {
   };
 
   return (
-    <PublicLayout contentStyle={{ padding: '0 10px' }}>
+    <PublicLayout
+      className="vertical-center"
+      contentStyle={{ padding: '0 10px' }}
+    >
       <MainGrid style={{ gap: '15px', padding: '0px 15px' }}>
         <IonRow style={{ justifyContent: 'center' }}>
           <h2
@@ -124,7 +127,11 @@ export const SecretPhraseImport = () => {
               src="shared-assets/images/alert.svg"
               style={{ fontSize: '13px' }}
             />
-            {t('PasteYourSecretPhrase')}
+            <IonText>
+              <h5 className="ion-no-margin ion-text-size-xxs">
+                {t('PasteYourSecretPhrase')}
+              </h5>
+            </IonText>
           </StyledDiv>
           <StyledDiv
             color="#DE3730"
