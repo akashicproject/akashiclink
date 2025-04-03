@@ -1,10 +1,10 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import styled from '@emotion/styled';
+import { TransactionLayer } from '@helium-pay/backend';
 import { IonImg } from '@ionic/react';
 import { t } from 'i18next';
 import { useHistory } from 'react-router-dom';
 
-import { TransactionLayer } from '../../../../backend';
 import { NftDetail } from '../../components/activity/nft-details';
 import { TransactionDetails } from '../../components/activity/transactions-details';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
