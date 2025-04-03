@@ -2,7 +2,7 @@
  * Single font for the whole app
  */
 * {
-  font-family: 'Nunito Sans';
+  font-family: 'Nunito Sans', serif;
 }
 
 /**
@@ -12,10 +12,17 @@
  * - default colour
  */
 %heading-shared {
+  font-family: 'Nunito Sans', serif;
   text-align: center;
   font-weight: 700;
   color: var(--ion-color-primary-10);
   text-transform: none;
+}
+
+%text-shared {
+  font-family: 'Nunito Sans', serif;
+  text-align: start;
+  color: var(--ion-color-primary-10);
 }
 
 h1 {
@@ -27,9 +34,10 @@ h1 {
 
 h2 {
   @extend %heading-shared;
-  font-size: 24px;
-  line-height: 28px;
-  margin-bottom: 20px;
+  font-size: 1.25rem;
+  line-height: 1.4;
+  margin-bottom: 4px;
+  margin-top: 0;
 }
 
 h3 {
@@ -58,10 +66,12 @@ h6 {
   margin: 0;
 }
 
-%text-shared {
-  text-align: start;
-  font-weight: 700;
-  color: var(--ion-color-primary-10);
+p {
+  @extend %text-shared;
+  font-size: 0.75rem; // 12px
+  line-height: 16px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 ul {
@@ -124,4 +134,8 @@ ion-label {
 
 .ion-text-align-right {
   text-align: right;
+}
+
+.ion-text-bold {
+  font-weight: 700;
 }

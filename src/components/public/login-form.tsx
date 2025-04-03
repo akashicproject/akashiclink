@@ -22,7 +22,7 @@ import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
 import { useNftMe } from '../../utils/hooks/useNftMe';
-import { resetHistoryStackAndRedirect } from "../../history";
+import { historyResetStackAndRedirect } from "../../history";
 
 /**
  * Form allowing user to login
@@ -100,7 +100,7 @@ export function LoginForm() {
       } else {
         // @TODO remove once old accounts no longer supported
         // Redirect to Migration-Flow
-        resetHistoryStackAndRedirect(urls.migrateWalletNotice, {
+        historyResetStackAndRedirect(urls.migrateWalletNotice, {
           migrateWallet: {
             username: selectedAccount.username,
             oldPassword: password,
@@ -121,7 +121,7 @@ export function LoginForm() {
       await mutateNftMe();
       setSelectedAccount(undefined);
       setPassword('');
-      resetHistoryStackAndRedirect()
+      historyResetStackAndRedirect()
     } catch (error) {
       datadogRum.addError(error);
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
@@ -135,8 +135,8 @@ export function LoginForm() {
   return (
     <>
       <CustomAlert state={alert} />
-      <h1 className="ion-justify-content-center">{t('WelcomeBack')}</h1>
-      <h3 className="ion-justify-content-center">
+      <h1 className="ion-justify-content-center ion-margin-top-lg ion-margin-bottom-xs">{t('WelcomeBack')}</h1>
+      <h3 className="ion-justify-content-center ion-margin-top-0">
         {t('EmpoweringYourWealth')}
       </h3>
       <IonRow className={'ion-grid-gap-md ion-margin-top-lg'}>

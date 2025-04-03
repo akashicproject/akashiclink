@@ -1,9 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { userConst } from '@helium-pay/backend';
-import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
@@ -12,30 +10,31 @@ import {
 } from '../../components/alert/alert';
 import { CreatePasswordForm } from '../../components/public/create-password-form';
 import { urls } from '../../constants/urls';
-import type { LocationState } from '../../history';
-import { akashicPayPath } from '../../routing/navigation-tabs';
 import {
+  historyGoBackOrReplace,
+  historyResetStackAndRedirect,
+} from '../../history';
+import {
+  onClear,
   onInputChange,
   selectCreateWalletForm,
 } from '../../slices/createWalletSlice';
-import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
+import { useOwner } from '../../utils/hooks/useOwner';
+import { useIosScrollPasswordKeyboardIntoView } from '../../utils/scroll-when-password-keyboard';
 
 export function CreateWalletPassword() {
+  useIosScrollPasswordKeyboardIntoView();
   const { t } = useTranslation();
-  const history = useHistory<LocationState>();
   const createWalletForm = useAppSelector(selectCreateWalletForm);
   const dispatch = useAppDispatch();
   const [alert, setAlert] = useState(formAlertResetState);
+  const { authenticated } = useOwner();
 
   /** Tracking user input */
   const validatePassword = (value: string) =>
     !!value.match(userConst.passwordRegex);
   const validateConfirmPassword = (value: string) =>
     createWalletForm.password === value;
-
-  /** Scrolling on IOS */
-  const { isOpen } = useKeyboardState();
-  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   /**
    * Validates Password, creates OTK and sends on to OTK-confirmation (Create)
@@ -58,9 +57,7 @@ export function CreateWalletPassword() {
     if (isPasswordValid) {
       try {
         setAlert(formAlertResetState);
-        history.replace({
-          pathname: akashicPayPath(urls.createWalletSecretPhrase),
-        });
+        historyResetStackAndRedirect(urls.createWalletSecretPhrase);
       } catch (e) {
         datadogRum.addError(e);
         setAlert(errorAlertShell(t('GenericFailureMsg')));
@@ -70,19 +67,18 @@ export function CreateWalletPassword() {
     }
   }
 
+  const onClickCancel = () => {
+    dispatch(onClear());
+    historyGoBackOrReplace(
+      authenticated ? urls.loggedFunction : urls.akashicPay
+    );
+  };
+
   return (
     <CreatePasswordForm
       form={createWalletForm}
       onInputChange={onInputChange}
-      onCancel={() => {
-        dispatch(
-          onInputChange({
-            password: '',
-            confirmPassword: '',
-          })
-        );
-        history.goBack();
-      }}
+      onCancel={onClickCancel}
       onSubmit={confirmPasswordAndCreateOtk}
       alert={alert}
     />

@@ -3,7 +3,6 @@ $image: var(--main-image);
 .welcome-img {
   content: $image;
   width: 140px;
-  margin-top: 40px;
 }
 
 /** Small version used when space is limited */

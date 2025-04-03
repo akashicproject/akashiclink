@@ -1,10 +1,9 @@
 import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { REFRESH_BUTTON_DISABLED_TIME } from '../../constants';
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tabs';
+import { historyGoBackOrReplace } from '../../history';
 import { themeType } from '../../theme/const';
 import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
@@ -31,11 +30,14 @@ export function LoggedToolbar({
   const { mutateBalancesMe } = useBalancesMe();
   const { mutateNftMe } = useNftMe();
   const logout = useLogout();
-  const history = useHistory();
   const [storedTheme] = useTheme();
   const [refreshDisabled, setRefreshDisabled] = useState(false);
 
   const { setActiveAccount } = useAccountStorage();
+
+  const onClickBackButton = () => {
+    historyGoBackOrReplace(urls.loggedFunction);
+  };
 
   return (
     <IonGrid
@@ -45,34 +47,28 @@ export function LoggedToolbar({
     >
       <IonRow style={{ gap: '8px' }}>
         {showBackButton && (
-          <>
-            <IonCol
-              className="ion-no-padding"
-              size="auto"
-              style={{
-                width: '10%',
-              }}
+          <IonCol
+            className="ion-no-padding"
+            size="auto"
+            style={{
+              width: '10%',
+            }}
+          >
+            <SquareWhiteButton
+              className="icon-button"
+              onClick={onClickBackButton}
             >
-              <SquareWhiteButton
-                className="icon-button"
-                onClick={() =>
-                  history.length > 1
-                    ? history.goBack()
-                    : history.replace(akashicPayPath(urls.loggedFunction))
-                }
-              >
-                <IonIcon
-                  className="icon-button-icon"
-                  slot="icon-only"
-                  src={`/shared-assets/images/${
-                    storedTheme === themeType.DARK
-                      ? 'back-arrow-white.svg'
-                      : 'back-arrow-purple.svg'
-                  }`}
-                />
-              </SquareWhiteButton>
-            </IonCol>
-          </>
+              <IonIcon
+                className="icon-button-icon"
+                slot="icon-only"
+                src={`/shared-assets/images/${
+                  storedTheme === themeType.DARK
+                    ? 'back-arrow-white.svg'
+                    : 'back-arrow-purple.svg'
+                }`}
+              />
+            </SquareWhiteButton>
+          </IonCol>
         )}
         <IonCol
           className="ion-no-padding"

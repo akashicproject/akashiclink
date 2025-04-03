@@ -1,11 +1,9 @@
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
 import { userConst } from '@helium-pay/backend';
-import { IonCheckbox, IonCol, IonRow, IonSpinner } from '@ionic/react';
-import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import { useEffect, useState } from 'react';
+import { IonCheckbox, IonCol, IonRow } from '@ionic/react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
@@ -21,7 +19,7 @@ import {
   StyledInputErrorPrompt,
 } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
-import { resetHistoryStackAndRedirect } from '../../history';
+import { historyResetStackAndRedirect } from '../../history';
 import {
   onInputChange,
   selectMigrateWalletForm,
@@ -32,7 +30,7 @@ import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import type { FullOtk } from '../../utils/otk-generation';
 import { signImportAuth } from '../../utils/otk-generation';
-import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
+import { useIosScrollPasswordKeyboardIntoView } from '../../utils/scroll-when-password-keyboard';
 
 export const CreatePasswordInfo = styled.p({
   fontWeight: '400',
@@ -40,8 +38,8 @@ export const CreatePasswordInfo = styled.p({
 });
 
 export function MigrateWalletCreatePassword() {
+  useIosScrollPasswordKeyboardIntoView();
   const { t } = useTranslation();
-  const history = useHistory();
   const migrateWalletForm = useAppSelector(selectMigrateWalletForm);
   const otk = useAppSelector(selectOtk);
   const username = useAppSelector(selectUsername);
@@ -54,18 +52,12 @@ export function MigrateWalletCreatePassword() {
   const validateConfirmPassword = (value: string) =>
     migrateWalletForm.password === value;
 
-  /** Scrolling on IOS */
-  const { isOpen } = useKeyboardState();
-  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
-
   const [alert, setAlert] = useState(formAlertResetState);
 
   const { addLocalAccount, setActiveAccount, addLocalOtkAndCache } =
     useAccountStorage();
 
-  /**
-   * Validates Password and migrates from BE-otk to FE-otk
-   */
+  /** Validates Password and migrates from BE-otk to FE-otk **/
   async function confirmPasswordAndMigrateOtk() {
     if (
       !(
@@ -112,7 +104,7 @@ export function MigrateWalletCreatePassword() {
           signedAuth: signImportAuth(otk!.key.prv.pkcs8pem, identity),
         });
         setIsLoading(false);
-        resetHistoryStackAndRedirect(urls.migrateWalletComplete);
+        historyResetStackAndRedirect(urls.migrateWalletComplete);
       } catch (e) {
         datadogRum.addError(e);
         setIsLoading(false);

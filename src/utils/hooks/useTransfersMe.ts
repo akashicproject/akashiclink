@@ -1,4 +1,3 @@
-import { Preferences } from '@capacitor/preferences';
 import type {
   IClientTransactionRecord,
   ITransactionRecord,
@@ -7,9 +6,7 @@ import { TransactionResult, TransactionStatus } from '@helium-pay/backend';
 import buildURL from 'axios/unsafe/helpers/buildURL';
 import useSWR from 'swr';
 
-import { LAST_PAGE_LOCATION, REFRESH_INTERVAL } from '../../constants';
-import { urls } from '../../constants/urls';
-import { resetHistoryStackAndRedirect } from '../../history';
+import { REFRESH_INTERVAL } from '../../constants';
 import fetcher from '../ownerFetcher';
 import { useOwner } from './useOwner';
 
@@ -22,17 +19,6 @@ export const useTransfersMe = (params?: IClientTransactionRecord) => {
       refreshInterval: REFRESH_INTERVAL,
     }
   );
-
-  /**
-   * Request that 401s (auth cookie expired or not set) should chuck user
-   * out to the landing page screen
-   */
-  if (error && error.status === 401) {
-    Preferences.remove({
-      key: LAST_PAGE_LOCATION,
-    });
-    resetHistoryStackAndRedirect(urls.akashicPay);
-  }
 
   // Dates come from backend as string so need to transform them here
   // also, remove trailing zeros from amounts

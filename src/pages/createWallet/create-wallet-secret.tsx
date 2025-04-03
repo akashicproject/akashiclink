@@ -1,6 +1,5 @@
 import { IonCol, IonRow, IonText } from '@ionic/react';
-import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -22,9 +21,10 @@ import {
   selectError,
   selectOtk,
 } from '../../slices/createWalletSlice';
-import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
+import { useIosScrollPasswordKeyboardIntoView } from '../../utils/scroll-when-password-keyboard';
 
 export function CreateWalletSecret() {
+  useIosScrollPasswordKeyboardIntoView();
   const { t } = useTranslation();
 
   const history = useHistory<LocationState>();
@@ -33,10 +33,6 @@ export function CreateWalletSecret() {
   const dispatch = useAppDispatch();
 
   const [alert, setAlert] = useState(formAlertResetState);
-
-  /** Scrolling on IOS */
-  const { isOpen } = useKeyboardState();
-  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   useEffect(() => {
     if (!otk) {
@@ -60,13 +56,13 @@ export function CreateWalletSecret() {
 
   return (
     <PublicLayout className="vertical-center">
-      <MainGrid style={{ gap: '24px', padding: '0' }}>
+      <MainGrid className={'ion-grid-gap-xs'}>
         <IonRow>
           <IonCol size="12">
             <IonText className={'ion-text-size-xs'} color={'dark'}>
               <h2
                 className={
-                  'ion-text-align-center ion-text-size-xl ion-margin-bottom-xxs'
+                  'ion-text-align-center ion-text-size-xl ion-margin-bottom-xxs ion-margin-top-0'
                 }
               >
                 {t('WriteSecretRecoveryPhrase')}
@@ -83,9 +79,11 @@ export function CreateWalletSecret() {
               <h3 className={'ion-text-align-left ion-margin-0'}>
                 {t('Important')}
               </h3>
-              <b className={'ion-margin-top-xxs'}>
+              <p
+                className={'ion-margin-top-xxs ion-text-bold ion-text-size-xxs'}
+              >
                 {t('SaveBackUpSecureLocation')}
-              </b>
+              </p>
             </IonText>
           </IonCol>
         </IonRow>

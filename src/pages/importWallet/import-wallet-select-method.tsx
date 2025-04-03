@@ -12,6 +12,7 @@ import {
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
+import { historyGoBackOrReplace } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useOwner } from '../../utils/hooks/useOwner';
 
@@ -21,15 +22,9 @@ export const ImportWalletSelectMethod = () => {
   const { authenticated } = useOwner();
 
   const onBackButton = () => {
-    if (history.length > 1) {
-      history.goBack();
-    } else {
-      history.replace(
-        authenticated
-          ? akashicPayPath(urls.loggedFunction)
-          : akashicPayPath(urls.akashicPay)
-      );
-    }
+    historyGoBackOrReplace(
+      authenticated ? urls.loggedFunction : urls.akashicPay
+    );
   };
   const onSelectKeyPair = () => {
     history.push(akashicPayPath(urls.importWalletKeypair));
@@ -50,7 +45,9 @@ export const ImportWalletSelectMethod = () => {
       <MainGrid style={{ padding: '120px 16px' }}>
         <IonRow className={'ion-grid-row-gap-md'}>
           <IonCol size="12" style={{ textAlign: 'center' }}>
-            <h2 className={'ion-margin-bottom-xxs'}>{t('ImportWallet')}</h2>
+            <h2 className={'ion-margin-bottom-xxs ion-margin-top-0'}>
+              {t('ImportWallet')}
+            </h2>
             <IonText
               className={
                 'ion-text-align-center ion-text-size-xs ion-margin-bottom-lg'
@@ -61,20 +58,12 @@ export const ImportWalletSelectMethod = () => {
             </IonText>
           </IonCol>
           <IonCol size="12" style={{ textAlign: 'center' }}>
-            <PurpleButton
-              style={{ width: '100%' }}
-              expand="block"
-              onClick={onSelect12Words}
-            >
+            <PurpleButton expand="block" onClick={onSelect12Words}>
               {t('12Words')}
             </PurpleButton>
           </IonCol>
           <IonCol size="12" style={{ textAlign: 'center' }}>
-            <WhiteButton
-              style={{ width: '100%' }}
-              fill="clear"
-              onClick={onSelectKeyPair}
-            >
+            <WhiteButton expand="block" fill="clear" onClick={onSelectKeyPair}>
               {t('KeyPair')}
             </WhiteButton>
           </IonCol>

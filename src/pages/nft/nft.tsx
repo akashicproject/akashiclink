@@ -14,6 +14,7 @@ import { AasListingSwitch } from '../../components/nft/aas-listing-switch';
 import { OneNft } from '../../components/nft/one-nft';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
+import { historyGoBackOrReplace } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 
@@ -50,6 +51,11 @@ export function Nft() {
       state: history.location.state,
     });
   };
+
+  const onClickBackButton = () => {
+    historyGoBackOrReplace();
+  };
+
   return (
     <NftLayout>
       <SquareWhiteButton
@@ -64,11 +70,7 @@ export function Nft() {
           backgroundColor: 'transparent',
           borderColor: 'white',
         }}
-        onClick={() =>
-          history.length > 1
-            ? history.goBack()
-            : history.replace(akashicPayPath(urls.loggedFunction))
-        }
+        onClick={onClickBackButton}
       >
         <IonIcon
           style={{ color: 'white' }}
@@ -80,7 +82,7 @@ export function Nft() {
       <CustomAlert
         state={{
           visible: isOpen,
-          message: message!,
+          message: message,
           success: false,
           onConfirm: () => {
             setIsOpen(false);
@@ -106,7 +108,7 @@ export function Nft() {
         </IonRow>
         {currentNft && currentNft.acns ? (
           <AasListingSwitch
-            name={currentNft.acns!.name}
+            name={currentNft.acns?.name ?? ''}
             aasValue={currentNft.acns?.value ?? ''}
             customAlertHandle={setIsOpen}
             customAlertMessage={setCustomAlertMessage}

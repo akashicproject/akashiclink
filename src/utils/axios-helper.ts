@@ -30,8 +30,9 @@ axiosBase.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (401 === error.response.status) {
-      // Skip if already on root page
-      if (history.location.pathname.match(/^\/$|\/akashic$/)) return;
+      // Skip if already on root page or manage-account page
+      if (history.location.pathname.match(/^\/$|\/(?:akashic|manage-account)$/))
+        return;
 
       await Preferences.remove({
         key: LAST_PAGE_LOCATION,

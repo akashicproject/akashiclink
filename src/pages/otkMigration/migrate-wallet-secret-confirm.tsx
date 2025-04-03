@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { IonCol, IonRow } from '@ionic/react';
+import { IonCol, IonRow, IonText } from '@ionic/react';
 import { isEqual } from 'lodash';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -81,10 +81,20 @@ export function MigrateWalletSecretConfirm() {
         <IonRow>
           <IonCol>
             <IonRow style={{ textAlign: 'left' }}>
-              <h3 style={{ margin: '0' }}>{t('Important')}</h3>
-              <StyledSpan style={{ textAlign: 'justify' }}>
-                {t('SaveBackUpSecureLocation')}
-              </StyledSpan>
+              <IonCol size={'12'}>
+                <IonText className={'ion-text-size-xs'} color={'dark'}>
+                  <h3 className={'ion-text-align-left ion-margin-0'}>
+                    {t('Important')}
+                  </h3>
+                  <p
+                    className={
+                      'ion-margin-top-xxs ion-text-bold ion-text-size-xxs'
+                    }
+                  >
+                    {t('SaveBackUpSecureLocation')}
+                  </p>
+                </IonText>
+              </IonCol>
             </IonRow>
             <IonRow style={{ marginTop: '16px' }}>
               <SecretWords

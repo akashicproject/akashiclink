@@ -1,47 +1,51 @@
 .ion-grid-gap-lg {
-  gap: 1.125rem; // 18px
+  gap: 18px;
 }
 
 .ion-grid-gap,
 .ion-grid-gap-md {
-  gap: 1rem; // 16px
+  gap: 16px;
 }
 
 .ion-grid-gap-sm {
-  gap: 0.875rem; // 14px
+  gap: 14px;
 }
 
 .ion-grid-gap-xs {
-  gap: 0.75rem; // 12px
-}
-
-.ion-grid-row-gap-lg {
-  row-gap: 1.125rem; // 18px
-}
-
-.ion-grid-row-gap-xl {
-  row-gap: 1.5rem; // 24px
-}
-
-.ion-grid-row-gap-xxl {
-  row-gap: 2rem; // 32px
+  gap: 12px;
 }
 
 .ion-grid-row-gap-xxxl {
-  row-gap: 2.5rem; // 40px
+  row-gap: 40px;
+}
+
+.ion-grid-row-gap-xxl {
+  row-gap: 32px;
+}
+
+.ion-grid-row-gap-xl {
+  row-gap: 24px;
+}
+
+.ion-grid-row-gap-lg {
+  row-gap: 18px;
 }
 
 .ion-grid-row-gap,
 .ion-grid-row-gap-md {
-  row-gap: 1rem; // 16px
+  row-gap: 16px;
 }
 
 .ion-grid-row-gap-sm {
-  row-gap: 0.875rem; // 14px
+  row-gap: 14px;
 }
 
 .ion-grid-row-gap-xs {
-  row-gap: 0.75rem; // 12px
+  row-gap: 8px;
+}
+
+.ion-grid-row-gap-xxs {
+  row-gap: 4px;
 }
 
 .ion-grid-column-gap-xs {

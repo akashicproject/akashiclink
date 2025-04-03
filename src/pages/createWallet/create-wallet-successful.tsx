@@ -6,7 +6,7 @@ import { useAppDispatch } from '../../app/hooks';
 import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
-import { resetHistoryStackAndRedirect } from '../../history';
+import { historyResetStackAndRedirect } from '../../history';
 import { onClear } from '../../slices/createWalletSlice';
 import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
 import { useNftMe } from '../../utils/hooks/useNftMe';
@@ -40,7 +40,7 @@ export const CreateWalletSuccessful = () => {
     await mutateBalancesMe();
     await mutateNftMe();
     // creation flow is finished, completely reset router history
-    resetHistoryStackAndRedirect();
+    historyResetStackAndRedirect();
   };
 
   return (

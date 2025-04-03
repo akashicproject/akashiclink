@@ -1,5 +1,4 @@
 import { IonCol, IonRow, IonText } from '@ionic/react';
-import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -17,9 +16,10 @@ import {
   selectMigrateWalletForm,
   setUsername,
 } from '../../slices/migrateWalletSlice';
-import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
+import { useIosScrollPasswordKeyboardIntoView } from '../../utils/scroll-when-password-keyboard';
 
 export function MigrateWalletNotice() {
+  useIosScrollPasswordKeyboardIntoView();
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
   const migrateWalletForm = useAppSelector(selectMigrateWalletForm);
@@ -37,10 +37,6 @@ export function MigrateWalletNotice() {
       );
     }
   }, [history.location.state]);
-
-  /** Scrolling on IOS */
-  const { isOpen } = useKeyboardState();
-  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   const nextPage = async () => {
     // Because we might have been pushed to migration from import-flow, clear the import-state here

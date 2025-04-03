@@ -8,11 +8,10 @@ import type {
 } from '@helium-pay/backend';
 import { userConst } from '@helium-pay/backend';
 import { IonCol, IonIcon, IonRow, IonSpinner } from '@ionic/react';
-import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import axios from 'axios';
 import Big from 'big.js';
 import { arrowForwardCircleOutline } from 'ionicons/icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
@@ -28,7 +27,7 @@ import type { LocationState } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { OwnersAPI } from '../../utils/api';
 import { displayLongText } from '../../utils/long-text';
-import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
+import { useIosScrollPasswordKeyboardIntoView } from '../../utils/scroll-when-password-keyboard';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { SendMain } from './send-main';
 
@@ -74,15 +73,12 @@ const TextContent = styled.div({
 });
 
 export function SendConfirm() {
+  useIosScrollPasswordKeyboardIntoView();
   const { t } = useTranslation();
   const [alert, setAlert] = useState(formAlertResetState);
   const [loading, setLoading] = useState(false);
   const history = useHistory<LocationState>();
   const state = history.location.state?.sendConfirm;
-
-  /** Scrolling on IOS */
-  const { isOpen } = useKeyboardState();
-  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   let totalAmount = Big(0);
 

@@ -6,7 +6,7 @@ import { useAppDispatch } from '../../app/hooks';
 import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
-import { resetHistoryStackAndRedirect } from '../../history';
+import { historyResetStackAndRedirect } from '../../history';
 import { onClear } from '../../slices/migrateWalletSlice';
 import { useOwner } from '../../utils/hooks/useOwner';
 import { StyledSpan } from './migrate-wallet-secret';
@@ -29,7 +29,7 @@ export const MigrateWalletSuccessful = () => {
     dispatch(onClear());
     await mutateOwner();
     // migration flow is finished, completely reset router history
-    resetHistoryStackAndRedirect();
+    historyResetStackAndRedirect();
   };
 
   return (

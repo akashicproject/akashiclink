@@ -43,7 +43,7 @@ export interface LocationState {
   };
 }
 
-export const resetHistoryStackAndRedirect = (
+export const historyResetStackAndRedirect = (
   url: Url = urls.loggedFunction,
   state?: Record<string, unknown>
 ) => {
@@ -51,4 +51,13 @@ export const resetHistoryStackAndRedirect = (
   history.length = 1;
   history.index = 0;
   history.replace(akashicPayPath(url), state);
+};
+
+export const historyGoBackOrReplace = (
+  url: Url = urls.loggedFunction,
+  state?: Record<string, unknown>
+) => {
+  history.length > 1
+    ? history.goBack()
+    : history.replace(akashicPayPath(url), state);
 };

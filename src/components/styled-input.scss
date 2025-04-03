@@ -39,16 +39,14 @@
   --background: transparent;
   --box-shadow: none;
 
-  ion-label {
-    font-size: 0.75rem;
+  ion-label.label-stacked {
+    font-size: 0.625rem;
     font-family: 'Nunito Sans', serif;
-    color: var(--ion-color-primary-10) !important;
+    font-weight: 700;
+    color: var(--ion-color-primary-10);
 
-    line-height: 16px !important;
-    height: 16px !important;
-    min-height: 16px;
-
-    margin-bottom: 8px !important;
+    margin-bottom: 4px;
+    margin-top: 0;
     padding: 0;
   }
 
@@ -56,10 +54,10 @@
     --padding-top: 2px;
     --padding-bottom: 2px;
 
+    font-size: 0.75rem;
+
     min-height: 40px;
     max-height: 40px;
-
-    font-size: 14px;
 
     border: 1px solid #958e99;
     border-radius: 8px;

@@ -2,6 +2,7 @@
 
 ion-checkbox {
   @extend %text-shared;
+  font-weight: 700;
   &::part(label) {
     @extend %heading-shared;
     font-size: 0.75rem;

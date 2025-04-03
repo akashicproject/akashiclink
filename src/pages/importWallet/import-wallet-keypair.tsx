@@ -1,4 +1,4 @@
-import { IonCol, IonIcon, IonRow, IonSpinner, IonText } from '@ionic/react';
+import { IonCol, IonRow, IonText } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -14,7 +14,7 @@ import { PublicLayout } from '../../components/layout/public-layout';
 import { StyledInput } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
-import { akashicPayPath } from '../../routing/navigation-tabs';
+import { historyGoBackOrReplace } from '../../history';
 import {
   onClear,
   onInputChange,
@@ -51,9 +51,7 @@ export function ImportWalletKeypair() {
 
   const onCancel = () => {
     dispatch(onClear());
-    history.length > 1
-      ? history.goBack()
-      : history.replace(akashicPayPath(urls.importWalletSelectMethod));
+    historyGoBackOrReplace(urls.importWalletSelectMethod);
   };
 
   return (

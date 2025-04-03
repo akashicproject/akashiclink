@@ -1,6 +1,5 @@
-import { IonCol, IonRow, IonSpinner } from '@ionic/react';
-import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import React, { useEffect, useState } from 'react';
+import { IonCol, IonRow } from '@ionic/react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -25,19 +24,17 @@ import {
   selectUsername,
 } from '../../slices/migrateWalletSlice';
 import { OwnersAPI } from '../../utils/api';
-import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
+import { useIosScrollPasswordKeyboardIntoView } from '../../utils/scroll-when-password-keyboard';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 
 export function MigrateWalletOldPassword() {
+  useIosScrollPasswordKeyboardIntoView();
   const { t } = useTranslation();
   const history = useHistory();
   const migrateWalletForm = useAppSelector(selectMigrateWalletForm);
   const username = useAppSelector(selectUsername);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  /** Scrolling on IOS */
-  const { isOpen } = useKeyboardState();
-  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   const [alert, setAlert] = useState(formAlertResetState);
 

@@ -23,7 +23,7 @@ export function PublicLayout({
     <IonPage>
       <div className="vertical public-layout">
         <LoggedHeader />
-        <div className={`content ${className}`} style={contentStyle}>
+        <div className={`content ${className ?? ''}`} style={contentStyle}>
           {children}
         </div>
         <div className="footer">

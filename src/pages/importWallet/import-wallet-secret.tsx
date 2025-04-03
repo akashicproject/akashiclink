@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { IonCol, IonIcon, IonRow, IonText } from '@ionic/react';
-import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -15,7 +14,7 @@ import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { SecretWords } from '../../components/secret-words/secret-words';
 import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tabs';
+import { historyGoBackOrReplace } from '../../history';
 import {
   onClear,
   onInputChange,
@@ -24,7 +23,7 @@ import {
   selectImportWalletForm,
 } from '../../slices/importWalletSlice';
 import { validateSecretPhrase } from '../../utils/otk-generation';
-import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
+import { useIosScrollPasswordKeyboardIntoView } from '../../utils/scroll-when-password-keyboard';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 
 const StyledSpan = styled.span({
@@ -43,6 +42,7 @@ const StyledDiv = styled.div`
   text-align: center;
 `;
 export const ImportWalletSecret = () => {
+  useIosScrollPasswordKeyboardIntoView();
   const history = useHistory();
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -51,10 +51,6 @@ export const ImportWalletSecret = () => {
 
   const [alert, setAlert] = useState(formAlertResetState);
   const [isLoading, setIsLoading] = useState(false);
-
-  /** Scrolling on IOS */
-  const { isOpen } = useKeyboardState();
-  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   const isAllFilled = importWalletForm.passPhrase?.every(
     (phrase) => phrase !== ''
@@ -106,9 +102,7 @@ export const ImportWalletSecret = () => {
 
   const onCancel = () => {
     dispatch(onClear());
-    history.length > 1
-      ? history.goBack()
-      : history.replace(akashicPayPath(urls.importWalletSelectMethod));
+    historyGoBackOrReplace(urls.importWalletSelectMethod);
   };
 
   return (
@@ -116,21 +110,24 @@ export const ImportWalletSecret = () => {
       <MainGrid className={'ion-grid-row-gap-md'}>
         <IonRow>
           <IonCol size="12">
-            <h2>{t('AccessWalletWithRecoveryPhrase')}</h2>
-            <StyledSpan>
-              {t('AkashicWalletCannotRecoverYourPassword')}{' '}
-              <a
-                href="https://akashic-1.gitbook.io/akashicwallet/"
-                target={'_blank'}
-                style={{
-                  textDecoration: 'none',
-                  color: 'var(--ion-color-primary-10)',
-                }}
-                rel="noreferrer"
-              >
-                {t('LearnMore')}
-              </a>
-            </StyledSpan>
+            <IonText>
+              <h2 className={'ion-margin-top-0'}>
+                {t('AccessWalletWithRecoveryPhrase')}
+              </h2>
+              <p className={'ion-text-align-center'}>
+                {t('AkashicWalletCannotRecoverYourPassword')}{' '}
+                <a
+                  href="https://akashic-1.gitbook.io/akashicwallet/"
+                  target={'_blank'}
+                  style={{
+                    textDecoration: 'none',
+                  }}
+                  rel="noreferrer"
+                >
+                  {t('LearnMore')}
+                </a>
+              </p>
+            </IonText>
           </IonCol>
         </IonRow>
         <IonRow style={{ justifyContent: 'center' }}>

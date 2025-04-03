@@ -1,3 +1,6 @@
+import { useKeyboardState } from '@ionic/react-hooks/keyboard';
+import { useEffect } from 'react';
+
 /**
  * IOS has an issue with the password keyboard that hides some of the content when it
  * pops up.
@@ -10,7 +13,7 @@ export function scrollWhenPasswordKeyboard(
   document: Document
 ) {
   if (keyboardOpen) {
-    document.activeElement!.scrollIntoView({ behavior: 'smooth' });
+    document.activeElement?.scrollIntoView({ behavior: 'smooth' });
   } else {
     window.scrollTo({
       top: 0,
@@ -18,3 +21,9 @@ export function scrollWhenPasswordKeyboard(
     });
   }
 }
+
+/** Scrolling on IOS */
+export const useIosScrollPasswordKeyboardIntoView = () => {
+  const { isOpen } = useKeyboardState();
+  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
+};

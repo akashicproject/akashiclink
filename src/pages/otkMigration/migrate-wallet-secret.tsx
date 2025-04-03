@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
-import { IonCol, IonRow } from '@ionic/react';
-import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import React, { useEffect, useState } from 'react';
+import { IonCol, IonRow, IonText } from '@ionic/react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -22,7 +21,7 @@ import {
   selectError,
   selectOtk,
 } from '../../slices/migrateWalletSlice';
-import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
+import { useIosScrollPasswordKeyboardIntoView } from '../../utils/scroll-when-password-keyboard';
 
 export const StyledSpan = styled.span({
   fontSize: '12px',
@@ -32,6 +31,7 @@ export const StyledSpan = styled.span({
   lineHeight: '16px',
 });
 export function MigrateWalletSecret() {
+  useIosScrollPasswordKeyboardIntoView();
   const { t } = useTranslation();
   const history = useHistory();
   const otk = useAppSelector(selectOtk);
@@ -39,10 +39,6 @@ export function MigrateWalletSecret() {
 
   const [alert, setAlert] = useState(formAlertResetState);
   const migrateWalletError = useAppSelector(selectError);
-
-  /** Scrolling on IOS */
-  const { isOpen } = useKeyboardState();
-  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   useEffect(() => {
     if (!otk) {
@@ -89,10 +85,18 @@ export function MigrateWalletSecret() {
         <IonRow>
           <IonCol>
             <IonRow style={{ textAlign: 'left' }}>
-              <h3 style={{ margin: '0' }}>{t('Important')}</h3>
-              <StyledSpan style={{ textAlign: 'justify' }}>
-                {t('SaveBackUpSecureLocation')}
-              </StyledSpan>
+              <IonText className={'ion-text-size-xs'} color={'dark'}>
+                <h3 className={'ion-text-align-left ion-margin-0'}>
+                  {t('Important')}
+                </h3>
+                <p
+                  className={
+                    'ion-margin-top-xxs ion-text-bold ion-text-size-xxs'
+                  }
+                >
+                  {t('SaveBackUpSecureLocation')}
+                </p>
+              </IonText>
             </IonRow>
             <IonRow style={{ marginTop: '16px' }}>
               {otk?.phrase && (

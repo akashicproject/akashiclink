@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { IonCol, IonRow, IonText } from '@ionic/react';
 import axios from 'axios';
 import { isEqual } from 'lodash';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -19,7 +19,7 @@ import { PublicLayout } from '../../components/layout/public-layout';
 import { Spinner } from '../../components/loader/spinner';
 import { SecretWords } from '../../components/secret-words/secret-words';
 import { urls } from '../../constants/urls';
-import { resetHistoryStackAndRedirect } from '../../history';
+import { historyResetStackAndRedirect } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import {
   onInputChange,
@@ -92,7 +92,7 @@ export function CreateWalletSecretConfirm() {
       addLocalAccount(newAccount);
       setAlert(formAlertResetState);
       setActiveAccount(newAccount);
-      resetHistoryStackAndRedirect(urls.createWalletSuccessful);
+      historyResetStackAndRedirect(urls.createWalletSuccessful);
     } catch (e) {
       datadogRum.addError(e);
       const error = e as Error;
@@ -135,9 +135,11 @@ export function CreateWalletSecretConfirm() {
               <h3 className={'ion-text-align-left ion-margin-0'}>
                 {t('Important')}
               </h3>
-              <b className={'ion-margin-top-xxs'}>
+              <p
+                className={'ion-margin-top-xxs ion-text-bold ion-text-size-xxs'}
+              >
                 {t('SaveBackUpSecureLocation')}
-              </b>
+              </p>
             </IonText>
           </IonCol>
         </IonRow>

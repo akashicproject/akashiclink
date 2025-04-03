@@ -6,7 +6,7 @@ import { isAxiosError } from 'axios';
 
 import { createAppSlice } from '../app/createAppSlice';
 import { urls } from '../constants/urls';
-import { resetHistoryStackAndRedirect } from '../history';
+import { historyResetStackAndRedirect } from '../history';
 import { OwnersAPI } from '../utils/api';
 import type { FullOtk } from '../utils/otk-generation';
 import {
@@ -80,10 +80,10 @@ export const importWalletSlice = createAppSlice({
           ),
         });
         if (identity) {
-          resetHistoryStackAndRedirect(urls.importWalletPassword);
+          historyResetStackAndRedirect(urls.importWalletPassword);
           return { ...reconstructedOtk, identity };
         } else if (username) {
-          resetHistoryStackAndRedirect(urls.migrateWalletNotice, {
+          historyResetStackAndRedirect(urls.migrateWalletNotice, {
             migrateWallet: {
               username,
             },
@@ -135,11 +135,11 @@ export const importWalletSlice = createAppSlice({
         }
         // The value we return becomes the `fulfilled` action payload
         if (identity) {
-          resetHistoryStackAndRedirect(urls.importWalletPassword);
+          historyResetStackAndRedirect(urls.importWalletPassword);
           return { ...otk, identity };
         } else if (username) {
           // reset history and force user to migrate wallet
-          resetHistoryStackAndRedirect(urls.migrateWalletNotice, {
+          historyResetStackAndRedirect(urls.migrateWalletNotice, {
             migrateWallet: {
               username,
             },

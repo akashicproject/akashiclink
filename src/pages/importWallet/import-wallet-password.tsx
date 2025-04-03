@@ -1,14 +1,13 @@
 import { userConst } from '@helium-pay/backend';
-import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { CreatePasswordForm } from '../../components/public/create-password-form';
 import { urls } from '../../constants/urls';
-import type { LocationState } from '../../history';
-import { resetHistoryStackAndRedirect } from '../../history';
-import { akashicPayPath } from '../../routing/navigation-tabs';
+import {
+  historyGoBackOrReplace,
+  historyResetStackAndRedirect,
+} from '../../history';
 import {
   onInputChange,
   selectImportWalletForm,
@@ -20,10 +19,10 @@ import { useNftMe } from '../../utils/hooks/useNftMe';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useOwner } from '../../utils/hooks/useOwner';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
-import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
+import { useIosScrollPasswordKeyboardIntoView } from '../../utils/scroll-when-password-keyboard';
 
 export function ImportWalletPassword() {
-  const history = useHistory<LocationState>();
+  useIosScrollPasswordKeyboardIntoView();
   const [isLoading, setIsLoading] = useState(false);
   /** Tracking user input */
   const validatePassword = (value: string) =>
@@ -40,10 +39,6 @@ export function ImportWalletPassword() {
   const { mutateNftTransfersMe } = useNftTransfersMe();
   const { mutateBalancesMe } = useBalancesMe();
   const { mutateNftMe } = useNftMe();
-
-  /** Scrolling on IOS */
-  const { isOpen } = useKeyboardState();
-  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   /**
    * Validates Password, creates OTK and sends on to OTK-confirmation (Create)
@@ -82,26 +77,26 @@ export function ImportWalletPassword() {
       await mutateBalancesMe();
       await mutateNftMe();
       setIsLoading(false);
-      resetHistoryStackAndRedirect(urls.importWalletSuccessful);
+      historyResetStackAndRedirect(urls.importWalletSuccessful);
     }
   }
+
+  const onClickCancel = () => {
+    dispatch(
+      onInputChange({
+        password: '',
+        confirmPassword: '',
+      })
+    );
+    historyGoBackOrReplace(urls.akashicPay);
+  };
 
   return (
     <CreatePasswordForm
       form={importWalletForm}
-      onInputChange={onInputChange}
-      onCancel={() => {
-        dispatch(
-          onInputChange({
-            password: '',
-            confirmPassword: '',
-          })
-        );
-        history.length > 1
-          ? history.goBack()
-          : history.replace(akashicPayPath(urls.akashicPay));
-      }}
       isLoading={isLoading}
+      onInputChange={onInputChange}
+      onCancel={onClickCancel}
       onSubmit={confirmPasswordAndCreateOtk}
     />
   );

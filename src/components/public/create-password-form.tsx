@@ -1,8 +1,5 @@
-import styled from '@emotion/styled';
 import { userConst } from '@helium-pay/backend';
-import { IonCheckbox, IonCol, IonRow, IonSpinner } from '@ionic/react';
-import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import { useEffect } from 'react';
+import { IonCheckbox, IonCol, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
 import { AlertBox, FormAlertState } from '../../components/alert/alert';
@@ -13,15 +10,9 @@ import {
   StyledInput,
   StyledInputErrorPrompt,
 } from '../../components/styled-input';
-import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
+import { useIosScrollPasswordKeyboardIntoView } from '../../utils/scroll-when-password-keyboard';
 import { useAppDispatch } from '../../app/hooks';
 import { CreateWalletForm } from '../../slices/createWalletSlice';
-import React from 'react';
-
-export const CreatePasswordInfo = styled.p({
-  fontWeight: '400',
-  color: 'var(--ion-color-primary-10)',
-});
 
 export function CreatePasswordForm({
   form,
@@ -29,7 +20,7 @@ export function CreatePasswordForm({
   onCancel,
   onSubmit,
   alert,
-  isLoading = false
+  isLoading = false,
 }: {
   form: CreateWalletForm;
   onInputChange: Function;
@@ -38,6 +29,7 @@ export function CreatePasswordForm({
   alert?: FormAlertState;
   isLoading?: boolean;
 }) {
+  useIosScrollPasswordKeyboardIntoView();
   const { t } = useTranslation();
 
   /** Tracking user input */
@@ -46,55 +38,55 @@ export function CreatePasswordForm({
   const dispatch = useAppDispatch();
   const validateConfirmPassword = (value: string) => form.password === value;
 
-  /** Scrolling on IOS */
-  const { isOpen } = useKeyboardState();
-  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
-
   return (
     <PublicLayout className="vertical-center">
       <MainGrid>
         <IonRow className="ion-grid-row-gap-lg">
           <IonCol size="12">
             <h2 className={'ion-margin-bottom-xxs'}>{t('CreatePassword')}</h2>
-            <CreatePasswordInfo
+            <p
               className={'ion-margin-0 ion-text-align-center ion-text-size-xs'}
             >
               {t('CreatePasswordInfo')}
-            </CreatePasswordInfo>
+            </p>
           </IonCol>
-          <IonCol size="12">
-            <StyledInput
-              label={t('Password')}
-              placeholder={t('EnterPassword')}
-              type="password"
-              onIonInput={({ target: { value } }) =>
-                dispatch(
-                  onInputChange({
-                    password: String(value),
-                  })
-                )
-              }
-              value={form.password}
-              errorPrompt={StyledInputErrorPrompt.Password}
-              validate={validatePassword}
-            />
-            <StyledInput
-              label={t('ConfirmPassword')}
-              type="password"
-              placeholder={t('ConfirmPassword')}
-              onIonInput={({ target: { value } }) =>
-                dispatch(
-                  onInputChange({
-                    confirmPassword: String(value),
-                  })
-                )
-              }
-              value={form.confirmPassword}
-              errorPrompt={StyledInputErrorPrompt.ConfirmPassword}
-              validate={validateConfirmPassword}
-              submitOnEnter={onSubmit}
-            />
-          </IonCol>
+          <IonRow className="ion-grid-row-gap-xs">
+            <IonCol size="12">
+              <StyledInput
+                label={t('Password')}
+                placeholder={t('EnterPassword')}
+                type="password"
+                onIonInput={({ target: { value } }) =>
+                  dispatch(
+                    onInputChange({
+                      password: String(value),
+                    })
+                  )
+                }
+                value={form.password}
+                errorPrompt={StyledInputErrorPrompt.Password}
+                validate={validatePassword}
+              />
+            </IonCol>
+            <IonCol size="12">
+              <StyledInput
+                label={t('ConfirmPassword')}
+                type="password"
+                placeholder={t('ConfirmPassword')}
+                onIonInput={({ target: { value } }) =>
+                  dispatch(
+                    onInputChange({
+                      confirmPassword: String(value),
+                    })
+                  )
+                }
+                value={form.confirmPassword}
+                errorPrompt={StyledInputErrorPrompt.ConfirmPassword}
+                validate={validateConfirmPassword}
+                submitOnEnter={onSubmit}
+              />
+            </IonCol>
+          </IonRow>
           <IonCol size="12" className={'ion-center'}>
             <IonCheckbox
               checked={form.checked}
@@ -128,7 +120,12 @@ export function CreatePasswordForm({
             </PurpleButton>
           </IonCol>
           <IonCol size="6">
-            <WhiteButton expand="block" fill="clear" onClick={onCancel}>
+            <WhiteButton
+              disabled={isLoading}
+              expand="block"
+              fill="clear"
+              onClick={onCancel}
+            >
               {t('Cancel')}
             </WhiteButton>
           </IonCol>
