@@ -2,9 +2,7 @@ import './activity.scss';
 
 import styled from '@emotion/styled';
 import { IonIcon, IonSpinner } from '@ionic/react';
-import dayjs from 'dayjs';
 import { alertCircleOutline } from 'ionicons/icons';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import type { GridComponents } from 'react-virtuoso';
@@ -62,12 +60,7 @@ export function Activity() {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
   const storedTheme = useAppSelector(selectTheme);
-  const [transferParams] = useState({
-    startDate: dayjs().subtract(1, 'month').toDate(),
-  });
-  const { transfers, isLoading } = useTransfersMe({
-    ...transferParams,
-  });
+  const { transfers, isLoading } = useTransfersMe();
   const { transfers: nftTransfers, isLoading: isLoadingNft } =
     useNftTransfersMe();
   const walletFormatTransfers = formatMergeAndSortNftAndCryptoTransfers(
