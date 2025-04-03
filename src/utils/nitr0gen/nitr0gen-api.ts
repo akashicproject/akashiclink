@@ -13,6 +13,7 @@ import { keyError, NetworkDictionary, otherError } from '@helium-pay/backend';
 import axios from 'axios';
 
 import { convertToFromASPrefix } from '../convert-as-prefix';
+import { getManifestJson } from '../hooks/useCurrentAppInfo';
 import type {
   ActiveLedgerResponse,
   IKeyCreationResponse,
@@ -165,9 +166,16 @@ export class Nitr0genApi {
     try {
       const requestFunction = method === 'post' ? axios.post : axios.get;
 
-      const appInfo = await App.getInfo();
+      let version;
+      try {
+        const appInfo = await App.getInfo();
+        version = appInfo.version;
+      } catch (e) {
+        const manifestData = await getManifestJson();
+        version = manifestData.version;
+      }
       const headers = {
-        'Ap-Version': appInfo.version,
+        'Ap-Version': version,
         'Ap-Client': Capacitor.getPlatform(),
       };
 
