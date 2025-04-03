@@ -10,12 +10,9 @@ import type {
   IEstimateGasFeeResponse,
   IImportWallet,
   IImportWalletResponse,
-  IKeyGeneration,
-  IKeyGenerationResponse,
   ILoginUser,
   ILoginUserWithOtk,
   IMinimalUserResponse,
-  IRegisterApiPassphrase,
   IRequestActivationCode,
   IRequestActivationCodeResponse,
   ISearchAcnsResponse,
@@ -94,32 +91,6 @@ export const OwnersAPI = {
     const response = await axiosBase.post(
       `/auth/confirm-password`,
       JSON.stringify(loginData)
-    );
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-
-    return response.data;
-  },
-  registerApiPassphrase: async (
-    registerData: IRegisterApiPassphrase
-  ): Promise<void> => {
-    const response = await axiosBase.post(
-      `/auth/register-api`,
-      JSON.stringify(registerData)
-    );
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-  },
-  generateKey: async (
-    keyGenerationData: IKeyGeneration
-  ): Promise<IKeyGenerationResponse> => {
-    const response = await axiosBase.post(
-      `/key`,
-      JSON.stringify(keyGenerationData)
     );
     const { data, status } = response;
     if (status >= 400) {
