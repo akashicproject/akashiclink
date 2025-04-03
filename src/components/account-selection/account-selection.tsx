@@ -1,6 +1,9 @@
 import './account-selection.scss';
+import '../../pages/logged/logged.css';
 
-import { IonSelect, IonSelectOption } from '@ionic/react';
+import { Clipboard } from '@capacitor/clipboard';
+import { IonButton, IonIcon, IonSelect, IonSelectOption } from '@ionic/react';
+import { copyOutline } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -27,9 +30,11 @@ enum DropdownOptions {
 export function AccountSelection({
   onClickCallback,
   changeSelection,
+  isCopyButton,
 }: {
   onClickCallback?: (selectedAccount: LocalAccount) => void;
   changeSelection?: (selectedAccount: LocalAccount) => void;
+  isCopyButton?: boolean;
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -56,55 +61,81 @@ export function AccountSelection({
   }, [activeAccount, localAccounts]);
 
   return (
-    <IonSelect
-      value={selectedAccount}
-      onIonChange={({ detail: { value } }) => {
-        setSelectedAccount(value);
-
-        // Handle button clicks
-        if (value === DropdownOptions.CreateAccount) {
-          history.push(akashicPayPath(urls.createWalletUrl));
-          return;
-        }
-        if (value === DropdownOptions.ImportAccount) {
-          history.push(akashicPayPath(urls.importAccountUrl));
-          return;
-        }
-
-        // Skip the callbacks until account selection is amde
-        if (selectedAccount && onClickCallback) onClickCallback(value);
-
-        // Handle selection
-        if (changeSelection) changeSelection(value);
-      }}
-      interface="popover"
-      interfaceOptions={{
-        htmlAttributes: {
-          className: 'account-selection',
-        },
-        side: 'bottom',
-        size: 'cover',
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '15px',
+        width: '100%',
       }}
     >
-      {[
-        ...localAccounts.map((account) => (
-          <IonSelectOption key={account.username} value={account}>
-            {account.identity}
-          </IonSelectOption>
-        )),
-        <IonSelectOption
-          key={DropdownOptions.CreateAccount}
-          value={DropdownOptions.CreateAccount}
+      <IonSelect
+        style={{ maxWidth: isCopyButton ? '190px' : null }}
+        value={selectedAccount}
+        onIonChange={({ detail: { value } }) => {
+          setSelectedAccount(value);
+
+          // Handle button clicks
+          if (value === DropdownOptions.CreateAccount) {
+            history.push(akashicPayPath(urls.createWalletUrl));
+            return;
+          }
+          if (value === DropdownOptions.ImportAccount) {
+            history.push(akashicPayPath(urls.importAccountUrl));
+            return;
+          }
+
+          // Skip the callbacks until account selection is made
+          if (selectedAccount && onClickCallback) onClickCallback(value);
+
+          // Handle selection
+          if (changeSelection) changeSelection(value);
+        }}
+        interface="popover"
+        interfaceOptions={{
+          htmlAttributes: {
+            className: 'account-selection',
+          },
+          side: 'bottom',
+          size: 'cover',
+        }}
+      >
+        {[
+          ...localAccounts.map((account) => (
+            <IonSelectOption key={account.username} value={account}>
+              {account.identity}
+            </IonSelectOption>
+          )),
+          <IonSelectOption
+            key={DropdownOptions.CreateAccount}
+            value={DropdownOptions.CreateAccount}
+          >
+            {t('CreateWallet')}
+          </IonSelectOption>,
+          <IonSelectOption
+            key={DropdownOptions.ImportAccount}
+            value={DropdownOptions.ImportAccount}
+          >
+            {t('ImportWallet')}
+          </IonSelectOption>,
+        ]}
+      </IonSelect>
+      {isCopyButton ? (
+        <IonButton
+          class="icon-button"
+          onClick={async () =>
+            await Clipboard.write({
+              string: selectedAccount?.identity ?? '',
+            })
+          }
         >
-          {t('CreateWallet')}
-        </IonSelectOption>,
-        <IonSelectOption
-          key={DropdownOptions.ImportAccount}
-          value={DropdownOptions.ImportAccount}
-        >
-          {t('ImportWallet')}
-        </IonSelectOption>,
-      ]}
-    </IonSelect>
+          <IonIcon
+            slot="icon-only"
+            class="icon-button-icon"
+            icon={copyOutline}
+          />
+        </IonButton>
+      ) : null}
+    </div>
   );
 }
