@@ -309,7 +309,9 @@
     "fees": "费用",
     "totalAmountAndCurrency": "Total Amount",
     "chain": "链",
-    "toAddress": "发送至"
+    "toAddress": "发送至",
+    "ip": "IP",
+    "remark": "备注"
   },
   "SendBpByAlias": "无法透过 Akashic 地址发送商业帐户"
 }

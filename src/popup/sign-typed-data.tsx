@@ -33,10 +33,14 @@ import {
   type GetCallbackUrlsToSign,
   useSignGetCallbackUrl,
 } from '../utils/hooks/useSignGetCallbackUrl';
+import type { GetWhitelistIpsToSign } from '../utils/hooks/useSignGetWhitelistIps';
+import { useSignGetWhitelistIps } from '../utils/hooks/useSignGetWhitelistIps';
 import type { RetryCallbackToSign } from '../utils/hooks/useSignRetryCallback';
 import { useSignRetryCallback } from '../utils/hooks/useSignRetryCallback';
 import type { SetCallbackUrlsToSign } from '../utils/hooks/useSignSetupCallbackUrl';
 import { useSignSetupCallbackUrl } from '../utils/hooks/useSignSetupCallbackUrl';
+import type { SetWhitelistIpsToSign } from '../utils/hooks/useSignSetWhitelistIps';
+import { useSignSetWhitelistIps } from '../utils/hooks/useSignSetWhitelistIps';
 import { useVerifyTxnAndSign } from '../utils/hooks/useVerifyTxnAndSign';
 import { useWeb3Wallet } from '../utils/web3wallet';
 
@@ -54,7 +58,10 @@ export function SignTypedData() {
     method: '',
     topic: '',
     primaryType: '',
-    message: {} as Record<string, string>,
+    message: {} as Record<
+      string,
+      string | Record<string, string> | Record<string, string>[]
+    >,
     toSign: {} as Record<string, unknown>,
     response: {},
   });
@@ -63,6 +70,8 @@ export function SignTypedData() {
   const signSetupCallbackUrl = useSignSetupCallbackUrl();
   const signGetCallbackUrl = useSignGetCallbackUrl();
   const signRetryCallback = useSignRetryCallback();
+  const signSetWhitelistIps = useSignSetWhitelistIps();
+  const signGetWhitelistIps = useSignGetWhitelistIps();
 
   const verifyTxnAndSign = useVerifyTxnAndSign();
   const { trigger: triggerSendL2Transaction } = useSendL2Transaction();
@@ -151,6 +160,21 @@ export function SignTypedData() {
             identity: toSign.identity,
             expires: Number(toSign.expires),
           } as GetCallbackUrlsToSign);
+          break;
+        }
+        case TYPED_DATA_PRIMARY_TYPE.SET_WHITELIST_IPS: {
+          signedMsg = await signSetWhitelistIps({
+            identity: toSign.identity,
+            expires: Number(toSign.expires),
+            whitelistIps: toSign.whitelistIps,
+          } as SetWhitelistIpsToSign);
+          break;
+        }
+        case TYPED_DATA_PRIMARY_TYPE.GET_WHITELIST_IPS: {
+          signedMsg = await signGetWhitelistIps({
+            identity: toSign.identity,
+            expires: Number(toSign.expires),
+          } as GetWhitelistIpsToSign);
           break;
         }
         case TYPED_DATA_PRIMARY_TYPE.PAYOUT: {
@@ -319,13 +343,43 @@ export function SignTypedData() {
             />
           )}
           <List lines={'none'}>
-            {Object.entries(requestContent?.message).map(([key, value]) => (
-              <ListVerticalLabelValueItem
-                key={key}
-                label={t(`Popup.${key}`)}
-                value={value ?? '-'}
-              />
-            ))}
+            {Object.entries(requestContent?.message).map(([key, value]) => {
+              if (Array.isArray(value)) {
+                return value.map((v) =>
+                  Object.entries(v).map(([key, value]) => {
+                    if (value) {
+                      return (
+                        <ListVerticalLabelValueItem
+                          key={key}
+                          label={t(`Popup.${key}`)}
+                          value={value ?? '-'}
+                        />
+                      );
+                    }
+                  })
+                );
+              } else if (typeof value === 'object') {
+                return Object.entries(value).map(([key, value]) => {
+                  if (value) {
+                    return (
+                      <ListVerticalLabelValueItem
+                        key={key}
+                        label={t(`Popup.${key}`)}
+                        value={value ?? '-'}
+                      />
+                    );
+                  }
+                });
+              } else if (value !== '') {
+                return (
+                  <ListVerticalLabelValueItem
+                    key={key}
+                    label={t(`Popup.${key}`)}
+                    value={value ?? '-'}
+                  />
+                );
+              }
+            })}
           </List>
         </IonCol>
       </IonRow>

@@ -309,7 +309,9 @@
     "fees": "Fee",
     "totalAmountAndCurrency": "Total Amount",
     "chain": "Network",
-    "toAddress": "Send to"
+    "toAddress": "Send to",
+    "ip": "IP",
+    "remark": "Remark"
   },
   "SendBpByAlias": "Cannot send to business account by Akashic Alias"
 }

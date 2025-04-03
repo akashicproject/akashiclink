@@ -29,6 +29,8 @@ export const TYPED_DATA_PRIMARY_TYPE = {
   RETRY_CALLBACK: 'RetryCallback',
   PAYOUT: 'Payout',
   GET_CALLBACK_URL: 'GetCallbackUrl',
+  SET_WHITELIST_IPS: 'SetWhitelistIps',
+  GET_WHITELIST_IPS: 'GetWhitelistIps',
 };
 
 export const closePopup = async () => {
