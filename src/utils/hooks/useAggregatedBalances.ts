@@ -40,6 +40,8 @@ export function useFocusCurrencySymbolsAndBalances() {
 
   return {
     isCurrencyTypeToken,
+    chain: walletCurrency.chain,
+    token: walletCurrency.token,
     networkCurrencyCombinedDisplayName: walletCurrency.displayName,
     currencySymbol: isCurrencyTypeToken
       ? (walletCurrency.token as string)

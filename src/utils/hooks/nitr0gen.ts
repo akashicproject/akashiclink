@@ -2,6 +2,7 @@ import { Preferences } from '@capacitor/preferences';
 import { datadogRum } from '@datadog/browser-rum';
 import {
   EthereumSymbol,
+  FeeDelegationStrategy,
   type IBaseAcTransaction,
   isCoinSymbol,
   type ITransactionProposalClientSideOtk,
@@ -122,6 +123,9 @@ export const useSendL1Transaction = () => {
         dispatch(
           addLocalTransaction({
             ...signedTransactionData,
+            feeIsDelegated:
+              signedTransactionData.feeDelegationStrategy ===
+              FeeDelegationStrategy.Delegate,
             status: TransactionStatus.PENDING,
             initiatedAt: new Date(),
             layer: TransactionLayer.L1,

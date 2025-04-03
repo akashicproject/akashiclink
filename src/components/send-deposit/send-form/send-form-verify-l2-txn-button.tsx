@@ -1,44 +1,39 @@
 import { FeeDelegationStrategy } from '@helium-pay/backend';
-import { IonCol, IonRow } from '@ionic/react';
-import type { FC } from 'react';
+import type { Dispatch, FC, SetStateAction } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../../constants/urls';
 import { useAppSelector } from '../../../redux/app/hooks';
 import { selectFocusCurrencyDetail } from '../../../redux/slices/preferenceSlice';
-import { history, historyGoBackOrReplace } from '../../../routing/history';
+import { history } from '../../../routing/history';
 import { akashicPayPath } from '../../../routing/navigation-tabs';
 import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
 import { useVerifyTxnAndSign } from '../../../utils/hooks/useVerifyTxnAndSign';
-import {
-  AlertBox,
-  errorAlertShell,
-  formAlertResetState,
-} from '../../common/alert/alert';
-import { PrimaryButton, WhiteButton } from '../../common/buttons';
+import type { FormAlertState } from '../../common/alert/alert';
+import { errorAlertShell } from '../../common/alert/alert';
+import { PrimaryButton } from '../../common/buttons';
 import type { ValidatedAddressPair } from './types';
 
 type SendFormActionButtonsProps = {
   validatedAddressPair: ValidatedAddressPair;
   amount: string;
   disabled: boolean;
-  isDelegated: boolean;
   onAddressReset: () => void;
+  setAlert: Dispatch<SetStateAction<FormAlertState>>;
 };
 
-export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
+export const SendFormVerifyL2TxnButton: FC<SendFormActionButtonsProps> = ({
   validatedAddressPair,
   amount,
   disabled,
-  isDelegated,
   onAddressReset,
+  setAlert,
 }) => {
   const { t } = useTranslation();
   const { nativeCoinSymbol } = useFocusCurrencySymbolsAndBalances();
   const { chain, token } = useAppSelector(selectFocusCurrencyDetail);
 
-  const [alert, setAlert] = useState(formAlertResetState);
   const [isLoading, setIsLoading] = useState(false);
 
   const verifyTxnAndSign = useVerifyTxnAndSign();
@@ -52,9 +47,7 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
         amount,
         chain,
         token,
-        isDelegated
-          ? FeeDelegationStrategy.Delegate
-          : FeeDelegationStrategy.None
+        FeeDelegationStrategy.None
       );
       if (typeof res === 'string') {
         setAlert(
@@ -86,42 +79,15 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
     }
   };
 
-  const onCancel = () => {
-    historyGoBackOrReplace();
-  };
-
   return (
-    <>
-      {alert.visible && (
-        <IonRow>
-          <IonCol size={'12'}>
-            <AlertBox state={alert} />
-          </IonCol>
-        </IonRow>
-      )}
-      <IonRow>
-        <IonCol size={'6'}>
-          <PrimaryButton
-            expand="block"
-            className={'w-100'}
-            onClick={onConfirm}
-            disabled={isLoading || disabled}
-            isLoading={isLoading}
-          >
-            {t('Next')}
-          </PrimaryButton>
-        </IonCol>
-        <IonCol size={'6'}>
-          <WhiteButton
-            disabled={isLoading}
-            className={'w-100'}
-            expand="block"
-            onClick={onCancel}
-          >
-            {t('Cancel')}
-          </WhiteButton>
-        </IonCol>
-      </IonRow>
-    </>
+    <PrimaryButton
+      expand="block"
+      className={'w-100'}
+      onClick={onConfirm}
+      disabled={isLoading || disabled}
+      isLoading={isLoading}
+    >
+      {t('Next')}
+    </PrimaryButton>
   );
 };

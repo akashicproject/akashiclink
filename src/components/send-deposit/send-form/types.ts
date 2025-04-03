@@ -1,4 +1,5 @@
 import type {
+  FeeDelegationStrategy,
   IBaseAcTransaction,
   ITerriAcTransaction,
 } from '@helium-pay/backend';
@@ -29,6 +30,7 @@ export interface SendConfirmationTxnsDetail {
   validatedAddressPair: ValidatedAddressPair;
   amount: string;
   delegatedFee?: string;
+  feeDelegationStrategy?: FeeDelegationStrategy;
   txnFinal?: SendConfirmationTxnFinal;
 }
 

@@ -2,6 +2,7 @@ import { datadogRum } from '@datadog/browser-rum';
 import {
   type CoinSymbol,
   type CurrencySymbol,
+  type FeeDelegationStrategy,
   type IBaseAcTransaction,
   type IWithdrawalProposal,
   keyError,
@@ -47,7 +48,8 @@ export const useVerifyTxnAndSign = () => {
     validatedAddressPair: ValidatedAddressPair,
     amount: string,
     coinSymbol: CoinSymbol,
-    tokenSymbol?: CurrencySymbol
+    tokenSymbol?: CurrencySymbol,
+    feeDelegationStrategy?: FeeDelegationStrategy
   ): Promise<string | UseVerifyAndSignResponse> => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
     const nitr0genApi = new Nitr0genApi();
@@ -108,6 +110,7 @@ export const useVerifyTxnAndSign = () => {
         amount,
         coinSymbol,
         tokenSymbol,
+        feeDelegationStrategy,
       };
 
       const { preparedTxn, fromAddress, delegatedFee } =

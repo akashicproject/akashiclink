@@ -23,6 +23,7 @@ import {
 } from '../../../utils/hooks/nitr0gen';
 import { useInterval } from '../../../utils/hooks/useInterval';
 import { useVerifyTxnAndSign } from '../../../utils/hooks/useVerifyTxnAndSign';
+import type { ITransactionFailureResponse } from '../../../utils/nitr0gen/nitr0gen.interface';
 import { unpackRequestErrorMessage } from '../../../utils/unpack-request-error-message';
 import {
   AlertBox,
@@ -82,7 +83,8 @@ export const SendConfirmationFormActionButtons = ({
           txnsDetail.validatedAddressPair,
           txnsDetail.amount,
           txnsDetail.txn.coinSymbol,
-          txnsDetail.txn.tokenSymbol
+          txnsDetail.txn.tokenSymbol,
+          txnsDetail.feeDelegationStrategy
         );
 
         if (typeof res === 'string') {
@@ -128,10 +130,11 @@ export const SendConfirmationFormActionButtons = ({
         : await triggerSendL1Transaction({
             ...txn,
             signedTx: signedTxn as ITerriAcTransaction,
+            feeDelegationStrategy: txnsDetail.feeDelegationStrategy,
           });
 
       if (!response.isSuccess) {
-        throw new Error(response.reason);
+        throw new Error((response as ITransactionFailureResponse).reason);
       }
 
       setTxnFinal({

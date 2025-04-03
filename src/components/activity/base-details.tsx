@@ -53,7 +53,7 @@ export function BaseDetails({
       className="transfer-detail ion-margin-top-lg"
       style={{
         display: 'flex',
-        gap: '16px',
+        gap: '8px',
         flexDirection: 'column',
       }}
     >

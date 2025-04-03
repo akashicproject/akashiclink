@@ -182,11 +182,13 @@ export function OneActivity({
   )} ${transfer?.currency?.chain}`;
 
   if (isDelegated) {
-    feeText = `${t('DelegatedGasFee')}: ${Big(
-      transfer.internalFee?.withdraw ?? '0'
-    ).toFixed(
-      getPrecision(transfer.amount, transfer.internalFee?.withdraw ?? '0')
-    )} ${currencyDisplayName}`;
+    feeText = `${t('DelegatedGasFee')}: ${
+      transfer.internalFee?.withdraw
+        ? Big(transfer.internalFee?.withdraw ?? '0').toFixed(
+            getPrecision(transfer.amount, transfer.internalFee?.withdraw ?? '0')
+          )
+        : '-'
+    } ${currencyDisplayName}`;
   }
 
   const [nftUrl, setNftUrl] = useState('');
