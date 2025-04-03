@@ -1,6 +1,8 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { userError } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -23,13 +25,17 @@ import { historyGoBack } from '../../routing/history-stack';
 import {
   onInputChange,
   selectMigrateWalletForm,
+  selectUsername,
 } from '../../slices/migrateWalletSlice';
+import { OwnersAPI } from '../../utils/api';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
+import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 
 export function MigrateWalletOldPassword() {
   const { t } = useTranslation();
   const history = useHistory();
   const migrateWalletForm = useAppSelector(selectMigrateWalletForm);
+  const username = useAppSelector(selectUsername);
   const dispatch = useAppDispatch();
 
   /** Scrolling on IOS */
@@ -42,10 +48,15 @@ export function MigrateWalletOldPassword() {
     if (!migrateWalletForm.oldPassword) return;
 
     try {
+      if (username && migrateWalletForm.oldPassword) {
+        await OwnersAPI.validatePassword({
+          username: username,
+          password: migrateWalletForm.oldPassword,
+        });
+      }
       history.push(urls.migrateWalletSecret);
     } catch (e) {
-      datadogRum.addError(e);
-      setAlert(errorAlertShell(t('GenericFailureMsg')));
+      setAlert(errorAlertShell(t(unpackRequestErrorMessage(e))));
     }
   }
 
@@ -58,6 +69,12 @@ export function MigrateWalletOldPassword() {
         expand="block"
         fill="clear"
         onClick={() => {
+          dispatch(
+            onInputChange({
+              oldPassword: String(''),
+            })
+          );
+          setAlert(formAlertResetState);
           historyGoBack(history, true);
         }}
       >

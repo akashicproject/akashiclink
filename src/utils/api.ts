@@ -99,6 +99,16 @@ export const OwnersAPI = {
 
     return response.data;
   },
+  validatePassword: async (loginData: ILoginUser): Promise<void> => {
+    const response = await axiosBase.post(
+      `/auth/validatePassword`,
+      JSON.stringify(loginData)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+  },
   confirmPassword: async (
     loginData: IConfirmPassword
   ): Promise<IMinimalUserResponse> => {
