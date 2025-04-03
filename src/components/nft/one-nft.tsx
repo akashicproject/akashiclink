@@ -119,7 +119,7 @@ export function OneNft(props: Props) {
       >
         <IonImg
           alt={props.nft?.description}
-          src={getNftImage(props.nft.streamId)}
+          src={getNftImage(props.nft?.ledgerId)}
           class={
             props.isBig
               ? 'nft-image-big nft-img-size'

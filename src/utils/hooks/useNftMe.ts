@@ -7,7 +7,7 @@ import { useOwner } from './useOwner';
 
 export const useNftMe = () => {
   const { authenticated } = useOwner();
-  const { data, error, mutate } = useSWR(
+  const { data, error, mutate } = useSWR<INft[]>(
     authenticated ? `/nft/me` : '',
     fetcher,
     {

@@ -249,7 +249,7 @@ export function OneActivity({
             </NftName>
             <NftImage>
               <IonImg
-                src={getNftImage(transfer.nft?.streamId ?? '', '30')}
+                src={getNftImage(transfer.nft?.ledgerId ?? '', '30')}
               ></IonImg>
             </NftImage>
           </Nft>

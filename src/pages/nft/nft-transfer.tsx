@@ -141,7 +141,7 @@ export function NftTransfer() {
       setSearchedResultType(SearchResult.Layer2);
       setSearched(true);
     } else {
-      const acnsResult = await OwnersAPI.nftSearch({ searchValue: value });
+      const acnsResult = await OwnersAPI.searchAcnsByName({ name: value });
       if (acnsResult.value) {
         setSearched(true);
         setToAddress(acnsResult.value);

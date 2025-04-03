@@ -124,17 +124,16 @@ export const SendAddressInput = ({
       }
 
       // -- Alias
-      const { l2Address: aliasL2Address } =
-        await OwnersAPI.checkL2AddressByAlias({
-          to: userInput,
-        });
-      if (typeof aliasL2Address === 'undefined') {
+      const result = await OwnersAPI.searchAcnsByName({
+        name: userInput,
+      });
+      if (!result.value) {
         setAlert(errorAlertShell('AddressHelpText'));
         return;
       }
 
       onAddressValidated({
-        convertedToAddress: aliasL2Address,
+        convertedToAddress: result.value,
         userInputToAddress: userInput,
         userInputToAddressType: 'alias',
       });

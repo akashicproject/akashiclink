@@ -225,19 +225,6 @@ export const OwnersAPI = {
     return response.data;
   },
 
-  checkL2AddressByAlias: async (
-    l2Check: ICheckL2Address
-  ): Promise<ICheckL2AddressResponse> => {
-    const response = await axiosBase.get(
-      `/nft/acns/check-l2-address?to=${l2Check.to}`
-    );
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-    return response.data;
-  },
-
   changePassword: async (
     changePasswordData: IChangePassword
   ): Promise<void> => {
@@ -322,8 +309,10 @@ export const OwnersAPI = {
     return data as IDiffconKeysResponse;
   },
 
-  nftSearch: async (iAcnsSearch: IAcnsSearch): Promise<ISearchAcnsResponse> => {
-    const requestUrl = `/nft/acns/search?searchValue=${iAcnsSearch.searchValue}`;
+  searchAcnsByName: async (
+    iAcnsSearch: IAcnsSearch
+  ): Promise<ISearchAcnsResponse> => {
+    const requestUrl = `/nft/acns/search?name=${iAcnsSearch.name}`;
     const response = await axiosBase.get(requestUrl);
     const { data, status } = response;
     if (status >= 400) {

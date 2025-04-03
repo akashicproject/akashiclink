@@ -54,7 +54,7 @@ export function Nft() {
   const isDarkMode = storedTheme === themeType.DARK;
 
   const transferNft = () => {
-    if (currentNft?.acns?.value !== null) {
+    if (currentNft?.acns?.value) {
       setAlert(
         errorAlertShell('NSRecordWarning', { nftName: currentNft?.name || '' })
       );

@@ -54,7 +54,7 @@ export const AasListingSwitch = ({
       }
       setIsLoading(true);
       if (name && activeAccount?.identity && cacheOtk) {
-        const newValue = !isListed ? activeAccount.identity : null;
+        const newValue = !isListed ? activeAccount.identity : undefined;
         const verifyUpdateAcnsResponse: IVerifyUpdateAcnsResponse =
           await OwnersAPI.verifyUpdateAcns({
             name: name,
