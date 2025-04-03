@@ -1,8 +1,5 @@
-import { datadogRum } from '@datadog/browser-rum';
-import { userError } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -61,28 +58,6 @@ export function MigrateWalletOldPassword() {
     }
   }
 
-  /**
-   * Redirect user to previous page, and reset page state
-   */
-  const CancelButton = (
-    <IonCol>
-      <WhiteButton
-        expand="block"
-        fill="clear"
-        onClick={() => {
-          dispatch(
-            onInputChange({
-              oldPassword: String(''),
-            })
-          );
-          setAlert(formAlertResetState);
-          historyGoBack(history, true);
-        }}
-      >
-        {t('Cancel')}
-      </WhiteButton>
-    </IonCol>
-  );
   return (
     <PublicLayout className="vertical-center">
       <MainGrid>
@@ -91,43 +66,60 @@ export function MigrateWalletOldPassword() {
             <h2>{t('PleaseEnterYourPassword')}</h2>
           </IonCol>
         </IonRow>
-
-        <>
+        <IonRow>
+          <IonCol>
+            <StyledInput
+              label={t('Password')}
+              placeholder={t('EnterPassword')}
+              type="password"
+              onIonInput={({ target: { value } }) => {
+                dispatch(
+                  onInputChange({
+                    oldPassword: String(value),
+                  })
+                );
+                setAlert(formAlertResetState);
+              }}
+              value={migrateWalletForm.oldPassword}
+              errorPrompt={StyledInputErrorPrompt.Password}
+            />
+          </IonCol>
+        </IonRow>
+        {alert.visible && (
           <IonRow>
-            <AlertBox state={alert} />
-          </IonRow>
-
-          <IonRow>
-            <IonCol>
-              <StyledInput
-                label={t('Password')}
-                placeholder={t('EnterPassword')}
-                type="password"
-                onIonInput={({ target: { value } }) => {
-                  dispatch(
-                    onInputChange({
-                      oldPassword: String(value),
-                    })
-                  );
-                }}
-                value={migrateWalletForm.oldPassword}
-                errorPrompt={StyledInputErrorPrompt.Password}
-              />
+            <IonCol size="12">
+              <AlertBox state={alert} />
             </IonCol>
           </IonRow>
-          <IonRow>
-            <IonCol>
-              <PurpleButton
-                expand="block"
-                onClick={confirmOldPassword}
-                disabled={!migrateWalletForm.oldPassword}
-              >
-                {t('Confirm')}
-              </PurpleButton>
-            </IonCol>
-            {CancelButton}
-          </IonRow>
-        </>
+        )}
+        <IonRow>
+          <IonCol>
+            <PurpleButton
+              expand="block"
+              onClick={confirmOldPassword}
+              disabled={!migrateWalletForm.oldPassword}
+            >
+              {t('Confirm')}
+            </PurpleButton>
+          </IonCol>
+          <IonCol>
+            <WhiteButton
+              expand="block"
+              fill="clear"
+              onClick={() => {
+                dispatch(
+                  onInputChange({
+                    oldPassword: String(''),
+                  })
+                );
+                setAlert(formAlertResetState);
+                historyGoBack(history, true);
+              }}
+            >
+              {t('Cancel')}
+            </WhiteButton>
+          </IonCol>
+        </IonRow>
       </MainGrid>
     </PublicLayout>
   );

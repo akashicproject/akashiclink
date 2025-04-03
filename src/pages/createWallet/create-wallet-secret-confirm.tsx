@@ -1,9 +1,9 @@
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
-import { IonCol, IonRow } from '@ionic/react';
+import { IonCol, IonRow, IonText } from '@ionic/react';
 import axios from 'axios';
 import { isEqual } from 'lodash';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -48,7 +48,7 @@ export function CreateWalletSecretConfirm() {
   const [alert, setAlert] = useState(formAlertResetState);
 
   /** Tracking response from server after account is created */
-  const [creatingAccount, setCreatingAccount] = useState(false);
+  const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
   const { addLocalAccount, setActiveAccount, addLocalOtkAndCache } =
     useAccountStorage();
@@ -68,7 +68,7 @@ export function CreateWalletSecretConfirm() {
       if (!otk || !createWalletForm.password) {
         throw new Error('Something went wrong. Try again');
       }
-      setCreatingAccount(true);
+      setIsCreatingAccount(true);
 
       // TODO: When going to phase2 (i.e. v1 endpoints only or local otk only), enable this
       // - Remove the 2FA step when creating account, go directly here. (email no longer needed)
@@ -102,13 +102,13 @@ export function CreateWalletSecretConfirm() {
       if (axios.isAxiosError(e)) message = e.response?.data?.message || message;
       setAlert(errorAlertShell(message));
     } finally {
-      setCreatingAccount(false);
+      setIsCreatingAccount(false);
     }
   }
 
   return (
     <PublicLayout className="vertical-center">
-      {creatingAccount && (
+      {isCreatingAccount && (
         <Spinner
           header={'CreatingYourWallet'}
           warning={'DoNotClose'}
@@ -130,53 +130,61 @@ export function CreateWalletSecretConfirm() {
           </IonCol>
         </IonRow>
         <IonRow>
-          <AlertBox state={alert} />
+          <IonCol size={'12'}>
+            <IonText className={'ion-text-size-xs'} color={'dark'}>
+              <h3 className={'ion-text-align-left ion-margin-0'}>
+                {t('Important')}
+              </h3>
+              <b className={'ion-margin-top-xxs'}>
+                {t('SaveBackUpSecureLocation')}
+              </b>
+            </IonText>
+          </IonCol>
         </IonRow>
         <IonRow>
-          <IonCol>
-            <IonRow style={{ textAlign: 'left' }}>
-              <h3 style={{ margin: '0' }}>{t('Important')}</h3>
-              <StyledSpan style={{ textAlign: 'justify' }}>
-                {t('SaveBackUpSecureLocation')}
-              </StyledSpan>
-            </IonRow>
-            <IonRow style={{ marginTop: '16px' }}>
-              <SecretWords
-                initialWords={maskedPassPhrase}
-                withAction={false}
-                onChange={(value) => {
-                  dispatch(
-                    onInputChange({
-                      confirmPassPhrase: value,
-                    })
-                  );
-                }}
-              />
-            </IonRow>
-            <IonRow style={{ justifyContent: 'space-around' }}>
-              <IonCol size="5">
-                <PurpleButton
-                  style={{ width: '100%' }}
-                  expand="block"
-                  onClick={() => activateWalletAccount()}
-                >
-                  {t('Confirm')}
-                </PurpleButton>
-              </IonCol>
-              <IonCol size="5">
-                <WhiteButton
-                  style={{ width: '100%' }}
-                  fill="clear"
-                  onClick={async () => {
-                    history.push({
-                      pathname: akashicPayPath(urls.secret),
-                    });
-                  }}
-                >
-                  {t('GoBack')}
-                </WhiteButton>
-              </IonCol>
-            </IonRow>
+          <IonCol size={'12'}>
+            <SecretWords
+              initialWords={maskedPassPhrase}
+              withAction={false}
+              onChange={(value) => {
+                dispatch(
+                  onInputChange({
+                    confirmPassPhrase: value,
+                  })
+                );
+                setAlert(formAlertResetState);
+              }}
+            />
+          </IonCol>
+        </IonRow>
+        {alert.visible && (
+          <IonRow>
+            <IonCol size="12">
+              <AlertBox state={alert} />
+            </IonCol>
+          </IonRow>
+        )}
+        <IonRow>
+          <IonCol size="6">
+            <PurpleButton
+              expand="block"
+              onClick={() => activateWalletAccount()}
+            >
+              {t('Confirm')}
+            </PurpleButton>
+          </IonCol>
+          <IonCol size="6">
+            <WhiteButton
+              expand="block"
+              fill="clear"
+              onClick={async () => {
+                history.push({
+                  pathname: akashicPayPath(urls.secret),
+                });
+              }}
+            >
+              {t('GoBack')}
+            </WhiteButton>
           </IonCol>
         </IonRow>
       </MainGrid>

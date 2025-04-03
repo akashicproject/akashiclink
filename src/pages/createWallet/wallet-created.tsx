@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import { IonCol, IonImg, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 
 import { useAppDispatch } from '../../app/hooks';
 import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
+import { history } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { onClear } from '../../slices/createWalletSlice';
 import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
@@ -27,13 +27,26 @@ export const StyledA = styled.a({
 
 export const WalletCreated = () => {
   const { t } = useTranslation();
-  const history = useHistory();
   const { mutateOwner } = useOwner();
   const { mutateTransfersMe } = useTransfersMe();
   const { mutateNftTransfersMe } = useNftTransfersMe();
   const { mutateBalancesMe } = useBalancesMe();
   const { mutateNftMe } = useNftMe();
   const dispatch = useAppDispatch();
+
+  const handleOnConfirm = async () => {
+    dispatch(onClear());
+    await mutateOwner();
+    await mutateTransfersMe();
+    await mutateNftTransfersMe();
+    await mutateBalancesMe();
+    await mutateNftMe();
+    // creation flow is finished, completely reset router history
+    history.entries = [history.entries[0]];
+    history.length = 1;
+    history.index = 0;
+    history.replace(akashicPayPath(urls.loggedFunction));
+  };
 
   return (
     <PublicLayout className="vertical-center">
@@ -86,18 +99,7 @@ export const WalletCreated = () => {
         </IonRow>
         <IonRow className={'ion-center'}>
           <IonCol size={'6'}>
-            <PurpleButton
-              expand="block"
-              onClick={async () => {
-                dispatch(onClear());
-                mutateOwner();
-                await mutateTransfersMe();
-                await mutateNftTransfersMe();
-                await mutateBalancesMe();
-                await mutateNftMe();
-                history.push(akashicPayPath(urls.loggedFunction));
-              }}
-            >
+            <PurpleButton expand="block" onClick={handleOnConfirm}>
               {t('GotIt')}
             </PurpleButton>
           </IonCol>

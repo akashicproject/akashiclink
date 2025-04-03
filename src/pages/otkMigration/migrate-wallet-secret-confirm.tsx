@@ -81,9 +81,6 @@ export function MigrateWalletSecretConfirm() {
           </IonCol>
         </IonRow>
         <IonRow>
-          <AlertBox state={alert} />
-        </IonRow>
-        <IonRow>
           <IonCol>
             <IonRow style={{ textAlign: 'left' }}>
               <h3 style={{ margin: '0' }}>{t('Important')}</h3>
@@ -104,30 +101,35 @@ export function MigrateWalletSecretConfirm() {
                 }}
               />
             </IonRow>
-            <IonRow style={{ justifyContent: 'space-around' }}>
-              <IonCol size="5">
-                <PurpleButton
-                  style={{ width: '100%' }}
-                  expand="block"
-                  onClick={() => confirmSecret()}
-                >
-                  {t('Confirm')}
-                </PurpleButton>
-              </IonCol>
-              <IonCol size="5">
-                <WhiteButton
-                  style={{ width: '100%' }}
-                  fill="clear"
-                  onClick={async () => {
-                    history.push({
-                      pathname: akashicPayPath(urls.migrateWalletSecret),
-                    });
-                  }}
-                >
-                  {t('GoBack')}
-                </WhiteButton>
-              </IonCol>
-            </IonRow>
+          </IonCol>
+        </IonRow>
+        {alert.visible && (
+          <IonRow>
+            <AlertBox state={alert} />
+          </IonRow>
+        )}
+        <IonRow style={{ justifyContent: 'space-around' }}>
+          <IonCol size="5">
+            <PurpleButton
+              style={{ width: '100%' }}
+              expand="block"
+              onClick={() => confirmSecret()}
+            >
+              {t('Confirm')}
+            </PurpleButton>
+          </IonCol>
+          <IonCol size="5">
+            <WhiteButton
+              style={{ width: '100%' }}
+              fill="clear"
+              onClick={async () => {
+                history.push({
+                  pathname: akashicPayPath(urls.migrateWalletSecret),
+                });
+              }}
+            >
+              {t('GoBack')}
+            </WhiteButton>
           </IonCol>
         </IonRow>
       </MainGrid>

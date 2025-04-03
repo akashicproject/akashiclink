@@ -10,6 +10,7 @@ import { urls } from '../../constants/urls';
 import { history } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { onClear } from '../../slices/importWalletSlice';
+import { useOwner } from '../../utils/hooks/useOwner';
 
 export const StyledSpan = styled.span({
   fontSize: '12px',
@@ -21,6 +22,17 @@ export const StyledSpan = styled.span({
 export const ImportSuccess = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const { mutateOwner } = useOwner();
+
+  const handleOnConfirm = async () => {
+    dispatch(onClear());
+    await mutateOwner();
+    // migration flow is finished, completely reset router history
+    history.entries = [history.entries[0]];
+    history.length = 1;
+    history.index = 0;
+    history.replace(akashicPayPath(urls.loggedFunction));
+  };
 
   return (
     <PublicLayout className="vertical-center">
@@ -43,17 +55,7 @@ export const ImportSuccess = () => {
             </h3>
           </IonCol>
           <IonCol size={'6'}>
-            <PurpleButton
-              expand="block"
-              onClick={() => {
-                dispatch(onClear());
-                // import flow is finished, completely reset router history
-                history.entries = [history.entries[0]];
-                history.length = 1;
-                history.index = 0;
-                history.replace(akashicPayPath(urls.loggedFunction));
-              }}
-            >
+            <PurpleButton expand="block" onClick={handleOnConfirm}>
               {t('Confirm')}
             </PurpleButton>
             {/** TODO: Re-enable with different flow at later stage */}

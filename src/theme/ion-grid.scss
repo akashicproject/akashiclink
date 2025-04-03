@@ -43,3 +43,7 @@
 .ion-grid-row-gap-xs {
   row-gap: 0.75rem; // 12px
 }
+
+.ion-grid-column-gap-xs {
+  --ion-grid-column-padding: 8px;
+}

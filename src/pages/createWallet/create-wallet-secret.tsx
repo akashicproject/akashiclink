@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { IonCol, IonRow } from '@ionic/react';
+import { IonCol, IonRow, IonText } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -70,57 +70,61 @@ export function CreateWalletSecret() {
     <PublicLayout className="vertical-center">
       <MainGrid style={{ gap: '24px', padding: '0' }}>
         <IonRow>
-          <IonCol size="12" style={{ textAlign: 'center' }}>
-            <IonRow>
+          <IonCol size="12">
+            <IonText className={'ion-text-size-xs'} color={'dark'}>
               <h2
-                style={{
-                  fontSize: '20pt',
-                  margin: '0 auto',
-                }}
+                className={
+                  'ion-text-align-center ion-text-size-xl ion-margin-bottom-xxs'
+                }
               >
                 {t('WriteSecretRecoveryPhrase')}
               </h2>
-            </IonRow>
-            <IonRow>
-              <StyledSpan style={{ textAlign: 'center' }}>
+              <p className={'ion-text-align-center'}>
                 {t('Store12SecretRecoveryPhrase')}
-              </StyledSpan>
-            </IonRow>
+              </p>
+            </IonText>
           </IonCol>
         </IonRow>
         <IonRow>
-          <IonCol>
-            <IonRow style={{ textAlign: 'left' }}>
-              <h3 style={{ margin: '0' }}>{t('Important')}</h3>
-              <StyledSpan style={{ textAlign: 'justify' }}>
+          <IonCol size={'12'}>
+            <IonText className={'ion-text-size-xs'} color={'dark'}>
+              <h3 className={'ion-text-align-left ion-margin-0'}>
+                {t('Important')}
+              </h3>
+              <b className={'ion-margin-top-xxs'}>
                 {t('SaveBackUpSecureLocation')}
-              </StyledSpan>
-            </IonRow>
-            <IonRow style={{ marginTop: '16px' }}>
-              {otk?.phrase && (
-                <SecretWords
-                  initialWords={otk.phrase.split(' ')}
-                  withAction={true}
-                />
-              )}
-            </IonRow>
-            <IonRow style={{ justifyContent: 'center' }}>
-              <PurpleButton
-                style={{ width: '149px' }}
-                expand="block"
-                onClick={() => {
-                  confirmSecret();
-                }}
-              >
-                {t('Next')}
-              </PurpleButton>
-            </IonRow>
+              </b>
+            </IonText>
           </IonCol>
-          {alert?.visible && (
+        </IonRow>
+        <IonRow>
+          <IonCol size={'12'}>
+            {otk?.phrase && (
+              <SecretWords
+                initialWords={otk.phrase.split(' ')}
+                withAction={true}
+              />
+            )}
+          </IonCol>
+        </IonRow>
+        {alert?.visible && (
+          <IonRow>
             <IonCol size="12">
               <AlertBox state={alert} />
             </IonCol>
-          )}
+          </IonRow>
+        )}
+        <IonRow className={'ion-justify-content-center'}>
+          <IonCol size="6">
+            <PurpleButton
+              expand="block"
+              onClick={() => {
+                confirmSecret();
+              }}
+            >
+              {t('Next')}
+            </PurpleButton>
+          </IonCol>
         </IonRow>
       </MainGrid>
     </PublicLayout>

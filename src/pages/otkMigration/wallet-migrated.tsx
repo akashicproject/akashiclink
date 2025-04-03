@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import { IonImg, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 
 import { useAppDispatch } from '../../app/hooks';
 import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
+import { history } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { onClear } from '../../slices/migrateWalletSlice';
 import { useOwner } from '../../utils/hooks/useOwner';
@@ -24,14 +24,17 @@ export const StyledA = styled.a({
 
 export const WalletMigrated = () => {
   const { t } = useTranslation();
-  const history = useHistory();
   const dispatch = useAppDispatch();
   const { mutateOwner } = useOwner();
 
-  const handleOnClick = async () => {
+  const handleOnConfirm = async () => {
     dispatch(onClear());
     await mutateOwner();
-    history.push(akashicPayPath(urls.loggedFunction));
+    // migration flow is finished, completely reset router history
+    history.entries = [history.entries[0]];
+    history.length = 1;
+    history.index = 0;
+    history.replace(akashicPayPath(urls.loggedFunction));
   };
 
   return (
@@ -96,7 +99,7 @@ export const WalletMigrated = () => {
           <PurpleButton
             style={{ width: '149px' }}
             expand="block"
-            onClick={handleOnClick}
+            onClick={handleOnConfirm}
           >
             {t('GotIt')}
           </PurpleButton>
