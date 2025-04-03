@@ -57,34 +57,25 @@ export const ImportWalletSecret = () => {
         ? errorAlertShell(unpackRequestErrorMessage(importWalletError))
         : formAlertResetState
     );
+    // if import failed, release button to let user try again
+    setIsLoading(false);
   }, [importWalletError, t]);
 
   const onConfirmRecoveryPhrase = async () => {
     setIsLoading(true);
 
     if (
+      !importWalletForm.passPhrase ||
       !isAllFilled ||
-      typeof importWalletForm.passPhrase === 'undefined' ||
       !validateSecretPhrase(importWalletForm.passPhrase)
     ) {
       setAlert(errorAlertShell('InvalidSecretPhrase'));
+      setIsLoading(false);
       return;
     }
 
-    try {
-      // user will be redirected to other page if import is successful
-      dispatch(reconstructOtkAsync(importWalletForm.passPhrase));
-    } catch (e) {
-      setAlert(
-        errorAlertShell(
-          importWalletError?.message ||
-            (e as Error).message ||
-            'GenericFailureMsg'
-        )
-      );
-      // if not, release button to let user try again
-      setIsLoading(false);
-    }
+    // user will be redirected to other page if import is successful
+    dispatch(reconstructOtkAsync(importWalletForm.passPhrase));
   };
 
   const onSecretWordsChange = async (values: string[]) => {

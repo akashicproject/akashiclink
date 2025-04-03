@@ -36,20 +36,19 @@ export function ImportWalletKeypair() {
         ? errorAlertShell(unpackRequestErrorMessage(importWalletError))
         : formAlertResetState
     );
+    // // if import failed, release button to let user try again
+    setIsLoading(false);
   }, [importWalletError, t]);
 
   const onRequestImport = () => {
-    if (importWalletForm.privateKey) {
-      setIsLoading(true);
-      try {
-        // user will be redirected to other page if import is successful
-        dispatch(restoreOtkFromKeypairAsync(importWalletForm.privateKey));
-      } catch (e) {
-        setAlert(errorAlertShell((e as Error).message || 'GenericFailureMsg'));
-        // if not, release button to let user try again
-        setIsLoading(false);
-      }
+    setIsLoading(true);
+    if (!importWalletForm.privateKey) {
+      setAlert(errorAlertShell('InvalidKeyPair'));
+      setIsLoading(false);
+      return;
     }
+    // user will be redirected to other page if import is successful
+    dispatch(restoreOtkFromKeypairAsync(importWalletForm.privateKey));
   };
 
   const onCancel = () => {
