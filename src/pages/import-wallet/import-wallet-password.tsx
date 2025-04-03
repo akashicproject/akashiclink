@@ -5,6 +5,7 @@ import { CreatePasswordForm } from '../../components/wallet-setup/create-passwor
 import { urls } from '../../constants/urls';
 import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
 import {
+  onClear,
   onInputChange,
   selectImportWalletForm,
   selectOtk,
@@ -87,12 +88,7 @@ export function ImportWalletPassword() {
   }
 
   const onClickCancel = () => {
-    dispatch(
-      onInputChange({
-        password: '',
-        confirmPassword: '',
-      })
-    );
+    dispatch(onClear());
     historyGoBackOrReplace(urls.akashicPay);
   };
 
