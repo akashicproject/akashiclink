@@ -1,10 +1,6 @@
 import './activity.scss';
 
-import {
-  NetworkDictionary,
-  TransactionLayer,
-  TransactionType,
-} from '@helium-pay/backend';
+import { TransactionLayer, TransactionType } from '@helium-pay/backend';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
 
@@ -39,11 +35,9 @@ export function TransactionDetails({
           <ListLabelValueItem
             label={t('AkashicAlias')}
             value={`${
-              currentTransfer?.initiatedToNonL2 &&
-              !NetworkDictionary[currentTransfer.coinSymbol].regex.address.exec(
-                currentTransfer?.initiatedToNonL2
-              )
-                ? currentTransfer.initiatedToNonL2
+              currentTransfer.transferType === TransactionType.WITHDRAWAL &&
+              currentTransfer.receiverAlias
+                ? currentTransfer.receiverAlias
                 : '-'
             }`}
             valueSize={'md'}
