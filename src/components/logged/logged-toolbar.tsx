@@ -10,6 +10,7 @@ import { arrowBack } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { urls } from '../../constants/urls';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { AccountSelection } from '../account-selection/account-selection';
 import { SquareWhiteButton } from '../buttons';
@@ -22,6 +23,8 @@ const TIMEOUT = 5 * 60;
 export function LoggedToolbar() {
   const logout = useLogout();
   const history = useHistory();
+  const isDashboard =
+    history.location.pathname === `/akashic/${urls.loggedFunction}`;
 
   const { setActiveAccount } = useAccountStorage();
   // const [logoutTrigger, setLogoutTrigger] = useState<LocalAccount>();
@@ -60,18 +63,21 @@ export function LoggedToolbar() {
   return (
     <IonGrid fixed>
       <IonRow class="ion-justify-content-around">
-        <IonCol size="auto">
-          <SquareWhiteButton
-            class="icon-button"
-            onClick={() => history.goBack()}
-          >
-            <IonIcon
-              class="icon-button-icon"
-              slot="icon-only"
-              icon={arrowBack}
-            />
-          </SquareWhiteButton>
-        </IonCol>
+        {isDashboard ? null : (
+          <IonCol size="auto">
+            <SquareWhiteButton
+              class="icon-button"
+              onClick={() => history.goBack()}
+            >
+              <IonIcon
+                class="icon-button-icon"
+                slot="icon-only"
+                icon={arrowBack}
+              />
+            </SquareWhiteButton>
+          </IonCol>
+        )}
+
         {pending ? (
           <IonCol size="1">
             <IonSpinner />
