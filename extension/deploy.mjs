@@ -123,14 +123,12 @@ const zipExtension = async () => {
           ],
         });
       } else {
-        // TODO Uncomment this line to enable auto upload
-        // upload();
+        upload();
       }
     });
   });
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const upload = () => {
   const zipFile = fs.createReadStream(zipName);
   webStore
