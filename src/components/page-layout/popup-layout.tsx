@@ -37,6 +37,8 @@ export function PopupLayout({
             className="ion-no-border "
             style={{
               background: 'var(--ion-header-background)',
+              height: '88px',
+              minHeight: '88px',
             }}
           >
             {activeAccount && (
