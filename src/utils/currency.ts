@@ -9,8 +9,14 @@ import Big from 'big.js';
 
 /** Direction of coin/token decimal conversion */
 type ConversionDirection = 'to' | 'from';
+
 /**
  * Method for safe conversion to and from coin/token decimals
+ *
+ * @throws BadRequestException if:
+ * - the coin/token combination is not supported
+ * - amount cannot be represented as an integer in the smallest denomination
+ * @deprecated use {@link convertToDecimals} or {@link convertFromDecimals}
  */
 export function convertToFromDecimals(
   amount: string,
@@ -18,27 +24,50 @@ export function convertToFromDecimals(
   direction: ConversionDirection,
   tokenSymbol?: CurrencySymbol
 ): string {
-  const conversionFactor = !tokenSymbol
-    ? NetworkDictionary[coinSymbol].nativeCoin.decimal
-    : NetworkDictionary[coinSymbol].tokens.find((t) => t.symbol === tokenSymbol)
-        ?.decimal;
-  if (!conversionFactor)
-    throw new BadRequestException(otherError.unsupportedCoinError);
-
-  const convertedAmount =
-    direction === 'to'
-      ? Big(10).pow(conversionFactor).times(amount)
-      : Big(amount);
-
-  if (convertedAmount.mod(1).toString() !== '0')
-    throw new BadRequestException(otherError.transactionTooSmallError);
-
   return direction === 'to'
-    ? convertedAmount.toFixed()
-    : Big(10)
-        .pow(conversionFactor * -1)
-        .times(convertedAmount)
-        .toFixed(conversionFactor);
+    ? convertToDecimals(amount, coinSymbol, tokenSymbol)
+    : convertFromDecimals(amount, coinSymbol, tokenSymbol);
+}
+
+/**
+ * Method for safe conversion to coin/token decimals
+ *
+ * @throws BadRequestException if:
+ * - the coin/token combination is not supported
+ * - amount cannot be represented as an integer in the smallest denomination
+ */
+export function convertFromDecimals(
+  amount: string,
+  coinSymbol: CoinSymbol,
+  tokenSymbol?: CurrencySymbol
+): string {
+  const bigAmount = Big(amount);
+  throwIfNotInteger(bigAmount);
+
+  const conversionFactor = getConversionFactor(coinSymbol, tokenSymbol);
+  return Big(10)
+    .pow(conversionFactor * -1)
+    .times(bigAmount)
+    .toFixed(conversionFactor);
+}
+
+/**
+ * Method for safe conversion from coin/token decimals
+ *
+ * @throws BadRequestException if:
+ * - the coin/token combination is not supported
+ * - amount cannot be represented as an integer in the smallest denomination
+ */
+export function convertToDecimals(
+  amount: string,
+  coinSymbol: CoinSymbol,
+  tokenSymbol?: CurrencySymbol
+): string {
+  const conversionFactor = getConversionFactor(coinSymbol, tokenSymbol);
+  const convertedAmount = Big(10).pow(conversionFactor).times(amount);
+  throwIfNotInteger(convertedAmount);
+
+  return convertedAmount.toFixed();
 }
 
 /**
@@ -188,4 +217,23 @@ export function convertObjectCurrencies(
     }
     return object;
   }
+}
+
+function getConversionFactor(
+  coinSymbol: CoinSymbol,
+  tokenSymbol?: CurrencySymbol
+): number {
+  if (!tokenSymbol) return NetworkDictionary[coinSymbol].nativeCoin.decimal;
+
+  const token = NetworkDictionary[coinSymbol].tokens.find(
+    (t) => t.symbol === tokenSymbol
+  );
+  if (!token) throw new BadRequestException(otherError.unsupportedCoinError);
+
+  return token.decimal;
+}
+
+function throwIfNotInteger(amount: Big) {
+  if (amount.mod(1).toString() !== '0')
+    throw new BadRequestException(otherError.transactionTooSmallError);
 }
