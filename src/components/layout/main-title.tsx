@@ -6,6 +6,6 @@ export const MainTitle = styled.div({
   fontWeight: 700,
   fontSize: '24px',
   lineHeight: '28px',
-  color: '#290056',
+  color: 'var(--ion-color-primary-10)',
   textAlign: 'center',
 });

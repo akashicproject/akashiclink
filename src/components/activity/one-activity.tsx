@@ -42,7 +42,7 @@ const TimeWrapper = styled.div({
   lineHeight: '16px',
   fontWeight: 400,
   fontFamily: 'Nunito Sans',
-  color: '#290056',
+  color: 'var(--ion-color-primary-10)',
 });
 
 const Type = styled.div({
@@ -104,7 +104,7 @@ const Amount = styled.div({
   fontSize: '10px',
   fontWeight: 700,
   fontFamily: 'Nunito Sans',
-  color: '#290056',
+  color: 'var(--ion-color-primary-10)',
 });
 
 const Icon = styled(IonIcon)({

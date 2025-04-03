@@ -1,17 +1,19 @@
 .swiper-button-next {
-  background-image: url('/public/shared-assets/images/arrow-forward.png');
+  background-image: var(--swiper-button-next-background-image);
   background-repeat: no-repeat;
   background-size: cover;
   width: 24px;
   height: 24px;
+  right: -5px;
 }
 
 .swiper-button-prev {
-  background-image: url('/public/shared-assets/images/arrow-back.png');
+  background-image: var(--swiper-button-prev-background-image);
   background-repeat: no-repeat;
   background-size: cover;
   width: 24px;
   height: 24px;
+  left: -5px;
 }
 
 .swiper-button-next::after {

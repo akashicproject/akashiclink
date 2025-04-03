@@ -10,6 +10,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-primary-contrast-rgb: 255, 255, 255;
   --ion-color-primary-shade: #7444b6;
   --ion-color-primary-tint: #7444b6;
+  --ion-color-primary-10: #290056;
 
   /** secondary **/
   --ion-color-secondary: #eddcff;
@@ -58,6 +59,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-dark-contrast-rgb: 255, 255, 255;
   --ion-color-dark-shade: #290056;
   --ion-color-dark-tint: #290056;
+  --ion-color-dark-ontline: #958e99;
 
   /** medium **/
   --ion-color-medium: #5b299c;
@@ -77,6 +79,26 @@ http://ionicframework.com/docs/theming/ */
 
   --ion-background-color: #f3f5f6;
   --ion-background-color-rgb: 243, 245, 246;
+
+  /** buttons **/
+  --ion-white-button-text: #7444b6;
+  --ion-white-button-background: #f3f5f6;
+
+  /** select **/
+  --ion-color-select: #c297ff;
+
+  /** header-background **/
+  --ion-logged-header: #290056;
+  --ion-slider: #c297ff;
+
+  /** setting **/
+  --ion-settings-color: #4a454e;
+
+  /** iamges for swiper **/
+  --swiper-button-prev-background-image: url('/public/shared-assets/images/arrow-back.png');
+  --swiper-button-next-background-image: url('/public/shared-assets/images/arrow-forward.png');
+
+  /** iamges for swiper **/
 
   --ion-font-family: 'Nunito Sans', serif;
 }
@@ -121,8 +143,9 @@ body.dark {
   --ion-color-primary-contrast-rgb: 0, 0, 0;
   --ion-color-primary-shade: #d7d8da;
   --ion-color-primary-tint: #f5f6f9;
+  --ion-color-primary-10: #ffffff;
 
-  --ion-color-secondary: #50c8ff;
+  --ion-color-secondary: #625b71;
   --ion-color-secondary-rgb: 80, 200, 255;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
@@ -156,6 +179,7 @@ body.dark {
   --ion-color-danger-contrast-rgb: 255, 255, 255;
   --ion-color-danger-shade: #e04055;
   --ion-color-danger-tint: #ff5b71;
+  --ion-color-dark-ontline: #958e99;
 
   --ion-color-dark: #f4f5f8;
   --ion-color-dark-rgb: 244, 245, 248;
@@ -177,6 +201,27 @@ body.dark {
   --ion-color-light-contrast-rgb: 255, 255, 255;
   --ion-color-light-shade: #1e2023;
   --ion-color-light-tint: #383a3e;
+
+  --ion-background-color: #1f1f1f;
+  --ion-background-color-rgb: 31, 31, 31;
+
+  /** buttons **/
+  --ion-white-button-text: #eddcff;
+  --ion-white-button-background: #1f1f1f;
+
+  /** select **/
+  --ion-color-select: #f4f5f8;
+
+  /** header-background **/
+  --ion-logged-header: #c297ff;
+  --ion-slider: #7444b6;
+
+  /** setting **/
+  --ion-settings-color: #ffffff;
+
+  /** iamges for swiper **/
+  --swiper-button-prev-background-image: url('/public/shared-assets/images/arrow-back-dark.png');
+  --swiper-button-next-background-image: url('/public/shared-assets/images/arrow-forward-dark.png');
 }
 
 /*

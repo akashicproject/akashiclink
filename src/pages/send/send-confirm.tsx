@@ -49,7 +49,7 @@ const TextTitle = styled.div({
   fontWeight: 700,
   fontSize: '16px',
   lineHeight: '24px',
-  color: '#290056',
+  color: 'var(--ion-color-primary-10)',
 });
 
 const TextContent = styled.div({
@@ -58,7 +58,7 @@ const TextContent = styled.div({
   fontWeight: 400,
   fontSize: '16px',
   lineHeight: '20px',
-  color: '#290056',
+  color: 'var(--ion-color-primary-10)',
 });
 
 const InputPasswordWrapper = styled.div({
@@ -76,7 +76,7 @@ const InputPasswordText = styled.div({
   fontWeight: 700,
   fontSize: '14px',
   lineHeight: '20px',
-  color: '#290056',
+  color: 'var(--ion-color-primary-10)',
 });
 
 interface Props {

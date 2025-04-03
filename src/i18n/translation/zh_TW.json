@@ -111,5 +111,7 @@
   "SeeMore": "查看更多",
   "EnterEmailToCreateAccount": "請輸入您的電子郵箱地址接收驗證碼。",
   "EmailAlreadyUsed": "該電子郵件已與一個帳戶關聯 - 請使用其他電子郵件。",
-  "BestWayToInvestYourMoney": "投資金錢的最佳方式！"
+  "BestWayToInvestYourMoney": "投資金錢的最佳方式！",
+  "NeedHelp": "需要幫助？請聯繫",
+  "AkashicWalletSupport": "AkashicWallet支持"
 }

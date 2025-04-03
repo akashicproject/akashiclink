@@ -37,7 +37,7 @@ ion-select {
 
 .icon-button-icon {
   font-size: 24px;
-  color: #7b757f;
+  color: var(--ion-settings-color);
 }
 
 .arrow-btn-item {
@@ -53,12 +53,12 @@ ion-select {
 
 .icon-arrow {
   font-size: 24px;
-  color: #290056;
+  color: 'var(--ion-color-primary-10)';
 }
 
 .icon-arrow-item {
   font-size: 18px;
-  color: #290056;
+  color: 'var(--ion-color-primary-10)';
 }
 
 .activity-list {
@@ -83,7 +83,7 @@ ion-select {
 }
 
 .address-copy-btn {
-  color: #290056;
+  color: var(--ion-color-primary-10);
   --background: none;
   --box-shadow: none;
 }

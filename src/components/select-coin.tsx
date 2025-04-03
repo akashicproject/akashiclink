@@ -37,7 +37,7 @@ const BalanceTitle = styled.div({
   fontSize: '24px',
   lineHeight: '28px',
   textAlign: 'center',
-  color: '#290056',
+  color: 'var(--ion-color-primary-10)',
 });
 
 const BalanceText = styled.div({
@@ -46,7 +46,7 @@ const BalanceText = styled.div({
   fontWeight: 500,
   fontSize: '14px',
   lineHeight: '20px',
-  color: '#290056',
+  color: 'var(--ion-color-primary-10)',
 });
 
 export function SelectCoin() {
@@ -136,7 +136,7 @@ export function SelectCoin() {
   };
 
   return (
-    <IonGrid>
+    <IonGrid style={{ width: '280px' }}>
       <IonRow style={{ marginTop: '15px' }}>
         <IonCol class="ion-center">
           <Swiper

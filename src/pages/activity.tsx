@@ -86,6 +86,17 @@ export function Activity() {
 
   return (
     <LoggedLayout>
+      <IonRow style={{ marginTop: '20px' }}>
+        <IonCol>
+          <WhiteButton
+            expand="block"
+            routerLink={akashicPayPath(urls.loggedFunction)}
+          >
+            {t('GoBack')}
+          </WhiteButton>
+        </IonCol>
+      </IonRow>
+      <Divider style={{ margin: '20px 0px' }} />
       <Virtuoso
         style={{
           marginTop: '40px',
@@ -106,14 +117,6 @@ export function Activity() {
           </OneActivity>
         )}
       ></Virtuoso>
-      <Divider style={{ marginTop: '20px' }} />
-      <IonRow style={{ marginTop: '20px' }}>
-        <IonCol class="ion-center">
-          <WhiteButton routerLink={akashicPayPath(urls.loggedFunction)}>
-            {t('GoBack')}
-          </WhiteButton>
-        </IonCol>
-      </IonRow>
       <IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
         <IonHeader>
           <IonToolbar>

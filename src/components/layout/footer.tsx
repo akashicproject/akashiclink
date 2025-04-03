@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
 import { IonFooter } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 const FooterText = styled.span({
   fontFamily: 'Nunito Sans',
-  color: '#290056',
+  color: 'var(--ion-color-primary-10)',
   fontSize: '14px',
   lineHeight: '20px',
   fontWeight: '700',
@@ -13,6 +14,7 @@ const FooterText = styled.span({
 });
 
 export function Footer() {
+  const { t } = useTranslation();
   return (
     <>
       <IonFooter
@@ -22,11 +24,11 @@ export function Footer() {
           alignItems: 'center',
           justifyContent: 'center',
           height: '80px',
-          background: '#F3F5F6',
+          background: 'var(--ion-background-color)',
         }}
       >
         <FooterText>
-          Need help? Contact <a href={'url'}>AkashicWallet support</a>
+          {t('NeedHelp')} <a href={'url'}>{t('AkashicWalletSupport')}</a>
         </FooterText>
       </IonFooter>
     </>

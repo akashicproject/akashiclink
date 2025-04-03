@@ -45,5 +45,5 @@
   --box-shadow: none;
   --min-height: 40px;
   --border: none;
-  --color: #290056;
+  --color: 'var(--ion-color-primary-10)';
 }

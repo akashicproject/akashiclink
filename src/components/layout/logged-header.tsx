@@ -1,12 +1,22 @@
 import { IonHeader, IonImg, IonRouterLink, isPlatform } from '@ionic/react';
+import { useState } from 'react';
 
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
+import type { ThemeType } from '../../theme/const';
+import { themeType } from '../../theme/const';
+import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { LanguageDropdown } from './language-select';
 import { ThemeSelect } from './theme-select';
 
 export function LoggedHeader(props: { loggedIn?: boolean }) {
   const isMobile = isPlatform('mobile');
+
+  const [_, __, storedTheme] = useLocalStorage(
+    'theme',
+    themeType.SYSTEM as ThemeType
+  );
+  const [currentTheme, setCurrentTheme] = useState(storedTheme);
 
   return (
     <IonHeader
@@ -15,7 +25,9 @@ export function LoggedHeader(props: { loggedIn?: boolean }) {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        background: props.loggedIn ? '#290056' : '#F3F5F6',
+        background: props.loggedIn
+          ? 'var(--ion-logged-header)'
+          : 'var(--ion-background-color)',
         justifyContent: 'space-between',
         height: isMobile ? '72px' : '40px',
         gap: '10px',
@@ -26,7 +38,7 @@ export function LoggedHeader(props: { loggedIn?: boolean }) {
         <IonImg
           alt={''}
           src={
-            props.loggedIn
+            props.loggedIn || currentTheme === themeType.DARK
               ? '/shared-assets/images/wallet-logo-white.svg'
               : '/shared-assets/images/wallet-logo-black.svg'
           }
@@ -41,7 +53,7 @@ export function LoggedHeader(props: { loggedIn?: boolean }) {
           gap: '16px',
         }}
       >
-        <ThemeSelect />
+        <ThemeSelect updateTheme={setCurrentTheme} />
       </div>
     </IonHeader>
   );

@@ -1,7 +1,7 @@
 ion-select::part(placeholder),
 ion-select::part(icon),
 ion-select::part(text) {
-  color: var(--ion-color-light);
+  color: var(--ion-color-select);
   --placeholder-opacity: 1;
   font-size: 14px;
   font-weight: 700;
@@ -16,5 +16,5 @@ ion-button {
   padding-right: 0 !important;
   padding-top: 0 !important;
   padding-bottom: 0 !important;
-  color: var(--ion-color-light);
+  color: var(--ion-color-select);
 }

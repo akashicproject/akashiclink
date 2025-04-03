@@ -32,9 +32,9 @@ const purpleButtonCss: CSSInterpolation = {
 const whiteButtonCss: CSSInterpolation = {
   ['&::part(native)']: {
     ...buttonBaseCss,
-    background: white,
+    background: 'var(--ion-white-button-background)',
     borderColor: '#7B757F',
-    color: purple,
+    color: 'var(--ion-white-button-text)',
     ...buttonTextBaseCss,
     [':active, :focus']: {
       background: 'rgba(103, 80, 164, 0.08)',
@@ -44,7 +44,7 @@ const whiteButtonCss: CSSInterpolation = {
 
 const tabButtonCss: CSSInterpolation = {
   ['&::part(native)']: {
-    color: '#290056',
+    color: 'var(--ion-color-primary-10)',
     background: 'transparent',
     boxShadow: 'none',
     borderBottom: '2px solid #CCC4CF',

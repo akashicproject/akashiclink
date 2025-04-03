@@ -32,7 +32,7 @@
   font-weight: 400;
   line-height: 40px;
   --min-height: none;
-  --color: #290056;
+  --color: var(--ion-color-primary-10);
 }
 
 input::-webkit-outer-spin-button,

@@ -28,7 +28,7 @@ function SettingsText({ text, id }: { text: string; id?: string }) {
         fontSize: '14px',
         lineHeight: '20px',
         fontFamily: 'Nunito Sans',
-        color: '#290056',
+        color: 'var(--ion-color-primary-10)',
       }}
     >
       {text}
@@ -93,9 +93,9 @@ export function SettingsPopover() {
         <IonItem button={true} detail={false} id={id} style={SettingsItemCss}>
           <IonIcon
             slot="start"
-            class="icon-arrow"
             icon={caretBackOutline}
             style={{
+              color: 'var(--ion-settings-color)',
               fontSize: '10px',
               display: focus === id ? 'visible' : 'none',
             }}

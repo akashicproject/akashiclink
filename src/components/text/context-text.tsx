@@ -9,5 +9,5 @@ export const ContentText = styled.span({
   fontSize: '16px',
   lineHeight: '24px',
   fontFamily: 'Nunito Sans',
-  color: '#290056',
+  color: 'var(--ion-color-primary-10)',
 });

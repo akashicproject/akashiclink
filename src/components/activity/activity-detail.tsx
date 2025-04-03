@@ -34,11 +34,11 @@ const TextContent = styled.div({
   fontWeight: 400,
   fontSize: '16px',
   lineHeight: '20px',
-  color: '#290056',
+  color: 'var(--ion-color-primary-10)',
 });
 
 const Link = styled.a({
-  color: '#290056',
+  color: 'var(--ion-color-primary-10)',
 });
 
 const TextTitle = styled.div({
@@ -47,7 +47,7 @@ const TextTitle = styled.div({
   fontWeight: 700,
   fontSize: '16px',
   lineHeight: '24px',
-  color: '#290056',
+  color: 'var(--ion-color-primary-10)',
 });
 
 export const ActivityDetail: React.FC<{

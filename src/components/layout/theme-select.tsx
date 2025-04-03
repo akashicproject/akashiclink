@@ -7,11 +7,13 @@ import { useEffect } from 'react';
 import type { ThemeType } from '../../theme/const';
 import { themeType } from '../../theme/const';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
-
+interface Props {
+  updateTheme: (val: ThemeType) => void;
+}
 /**
  * Slider prototyped of stack overflow answer, for toggling theme
  */
-export function ThemeSelect() {
+export function ThemeSelect(props: Props) {
   /**
    * Theme set across the app
    */
@@ -52,14 +54,17 @@ export function ThemeSelect() {
       {/* eslint-disable */}
       <div
         className="slider-button"
-        onClick={() =>
+        onClick={() => {
           setStoredTheme(
             storedTheme === themeType.LIGHT ? themeType.DARK : themeType.LIGHT
-          )
-        }
+          );
+          props.updateTheme(
+            storedTheme === themeType.LIGHT ? themeType.DARK : themeType.LIGHT
+          );
+        }}
       >
         {/* eslint-enable */}
-        <div className={`slider ${isDarkMode ? 'dark' : 'light'}`}>
+        <div className="slider">
           <div className={`slider-handle ${isDarkMode ? 'right' : 'left'}`}>
             <IonIcon icon={isDarkMode ? moon : sunny} />
           </div>
