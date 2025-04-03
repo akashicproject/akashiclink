@@ -16,7 +16,7 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Virtuoso } from 'react-virtuoso';
 
@@ -27,6 +27,7 @@ import { LoggedLayout } from '../components/layout/loggedLayout';
 import { urls } from '../constants/urls';
 import { heliumPayPath } from '../routing/navigation-tree';
 import { useTransfersMe } from '../utils/hooks/useTransfersMe';
+import { lastPageStorage } from '../utils/last-page-storage';
 import { WALLET_CURRENCIES } from '../utils/supported-currencies';
 
 export const Divider = styled.div({
@@ -72,6 +73,12 @@ export function Activity() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentTransfer, setCurrentTransfer] =
     useState<WalletTransactionRecord>();
+
+  // store current page to activity page if reopen
+  useEffect(() => {
+    lastPageStorage.store(urls.activity);
+  }, []);
+
   const [transferParams, _] = useState({
     startDate: dayjs().subtract(1, 'month').toDate(),
     endDate: dayjs().toDate(),

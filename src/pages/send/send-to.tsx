@@ -13,7 +13,7 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { RouteComponentProps } from 'react-router';
 
@@ -24,6 +24,7 @@ import { urls } from '../../constants/urls';
 import { heliumPayPath } from '../../routing/navigation-tree';
 import { OwnersAPI } from '../../utils/api';
 import { useKeyMe } from '../../utils/hooks/useKeyMe';
+import { lastPageStorage } from '../../utils/last-page-storage';
 import { WALLET_CURRENCIES } from '../../utils/supported-currencies';
 import { SendConfirm } from './send-confirm';
 import { SendMain } from './send-main';
@@ -94,6 +95,11 @@ export function SendTo({
   const aggregatedBalances = useAggregatedBalances();
   const { keys: userWallets } = useKeyMe();
   const { coinSymbol } = params;
+
+  // store current page to main logged page if reopen
+  useEffect(() => {
+    lastPageStorage.store(urls.loggedFunction);
+  }, []);
 
   // Find specified currency or default to the first one
   const currentWalletCurrency =

@@ -9,6 +9,7 @@ import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { SelectCoin } from '../../components/select-coin';
 import { urls } from '../../constants/urls';
 import { heliumPayPath } from '../../routing/navigation-tree';
+import { lastPageStorage } from '../../utils/last-page-storage';
 import { WALLET_CURRENCIES } from '../../utils/supported-currencies';
 import { LoggedMain } from './logged-main';
 
@@ -18,6 +19,11 @@ export function LoggedFunction() {
     document.getElementById('activity')?.click();
   }, []);
   const [coinSymbol, setCoinSymbol] = useState(WALLET_CURRENCIES[0].symbol);
+
+  // store current page to main logged page if reopen
+  useEffect(() => {
+    lastPageStorage.store(urls.loggedFunction);
+  }, []);
 
   return (
     <LoggedMain>

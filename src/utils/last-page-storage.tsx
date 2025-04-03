@@ -1,10 +1,12 @@
 import { IonButton, IonIcon } from '@ionic/react';
 import { closeCircleOutline } from 'ionicons/icons';
 
-import type { urls } from '../constants/urls';
+import { urls } from '../constants/urls';
 
 const LastPageStorage = 'last-page';
 const LastPageVarsStorage = 'last-page-vars';
+// Expire last page after 3 mins to improve security
+const expiredTime = 3 * 60 * 1000;
 
 /**
  * Store and retrieve the last page user was on before clicking
@@ -18,14 +20,33 @@ export const lastPageStorage = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     lastPageVars: any = {}
   ): void => {
-    localStorage.setItem(LastPageStorage, lastPage);
+    const expiry = new Date(Date.now() + expiredTime);
+    const lastPageObj = {
+      url: lastPage,
+      expiredTime: expiry,
+    };
+    localStorage.setItem(LastPageStorage, JSON.stringify(lastPageObj));
     localStorage.setItem(LastPageVarsStorage, JSON.stringify(lastPageVars));
   },
   clear: (): void => {
     localStorage.removeItem(LastPageStorage);
     localStorage.removeItem(LastPageVarsStorage);
   },
-  get: (): string | null => localStorage.getItem(LastPageStorage),
+  get: (): string | null => {
+    const lastPageObj = JSON.parse(
+      localStorage.getItem(LastPageStorage) || '{}'
+    );
+    if (Object.keys(lastPageObj).length === 0) {
+      return null;
+    }
+    const now = new Date();
+    const expiry = new Date(lastPageObj.expiredTime);
+    if (now > expiry) {
+      localStorage.removeItem(LastPageStorage);
+      return urls.heliumPay;
+    }
+    return lastPageObj.url;
+  },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getVars: (): any =>
     JSON.parse(localStorage.getItem(LastPageVarsStorage) || '{}'),
