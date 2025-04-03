@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
 import { Divider, formatWalletTransfer } from '../../pages/activity';
@@ -28,7 +29,7 @@ const ActivityDiv = styled.div({
   height: '200px',
 });
 
-const SeeMore = styled.a({
+const SeeMore = styled(Link)({
   fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 700,
@@ -88,9 +89,7 @@ export const ActivityAndNFTTab = () => {
             );
           })}
           {walletFormatTransfers.length >= 1 ? (
-            <SeeMore href={heliumPayPath(urls.activity)}>
-              {t('SeeMore')}
-            </SeeMore>
+            <SeeMore to={heliumPayPath(urls.activity)}>{t('SeeMore')}</SeeMore>
           ) : null}
         </ActivityDiv>
       ) : (
