@@ -7,6 +7,7 @@ import {
 import { IonIcon, IonText } from '@ionic/react';
 import { addOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import { Virtuoso } from 'react-virtuoso';
 
 import { AddressScreeningItem } from '../../components/activity/smart-scan/AddressScreeningItem';
@@ -14,6 +15,8 @@ import { PrimaryButton } from '../../components/common/buttons';
 import { Divider } from '../../components/common/divider';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 import { type IWalletCurrency } from '../../constants/currencies';
+import { urls } from '../../constants/urls';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 
 export const Wrapper = styled.div({
   display: 'flex',
@@ -140,6 +143,7 @@ const renderItem = (index: number, scan: SmartScanType) => (
 
 export const AddressScreeningHistoryList = () => {
   const { t } = useTranslation();
+  const history = useHistory();
 
   return (
     <DashboardLayout showSwitchAccountBar showAddress showRefresh>
@@ -198,7 +202,12 @@ export const AddressScreeningHistoryList = () => {
         >
           {t('ScanAddressReport')}
         </IonText>
-        <PrimaryButton style={{ width: '150px', margin: 0 }}>
+        <PrimaryButton
+          style={{ width: '150px', margin: 0 }}
+          onClick={() => {
+            history.push(akashicPayPath(urls.addressScreeningNewScan));
+          }}
+        >
           <IonIcon icon={addOutline} />
           {t('NewScan')}
         </PrimaryButton>

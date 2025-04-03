@@ -4,12 +4,14 @@ import { IonAlert, IonCol, IonRow } from '@ionic/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { urls } from '../../constants/urls';
 import {
   historyGoBackOrReplace,
+  historyReplace,
   historyResetStackAndRedirect,
 } from '../../routing/history';
-import { useSendL2Transaction } from '../../utils/hooks/nitr0gen';
-import type { ITransactionFailureResponse } from '../../utils/nitr0gen/nitr0gen.interface';
+import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { usePayToScreen } from '../../utils/hooks/usePayToScreen';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import {
   AlertBox,
@@ -25,7 +27,8 @@ export const AddressScreeningConfirmationFormActionButtons = ({
   txnsDetail: AddressScanConfirmationTxnsDetail;
 }) => {
   const { t } = useTranslation();
-  const { trigger: triggerSendL2Transaction } = useSendL2Transaction();
+  const { trigger } = usePayToScreen();
+  const { activeAccount } = useAccountStorage();
 
   const [forceAlert, setForceAlert] = useState(formAlertResetState);
   const [formAlert, setFormAlert] = useState(formAlertResetState);
@@ -35,30 +38,30 @@ export const AddressScreeningConfirmationFormActionButtons = ({
     try {
       setFormAlert(formAlertResetState);
 
-      if (!txnsDetail.txn || !txnsDetail.signedTxn) {
+      if (
+        !activeAccount?.identity ||
+        !txnsDetail.txn ||
+        !txnsDetail.signedTxn ||
+        !txnsDetail.validatedScanAddress?.scanAddress ||
+        !txnsDetail.validatedScanAddress?.scanChain
+      ) {
         setFormAlert(errorAlertShell('GenericFailureMsg'));
         return;
       }
       setIsLoading(true);
 
-      const { txToSign: _, ...txn } = txnsDetail.txn;
-      const signedTxn = txnsDetail.signedTxn;
-
-      //TODO: 1293 - using normal L2 txn for now, should integrate with actual API (send to BE instead of nitrogen)
-      const response = await triggerSendL2Transaction({
-        ...txn,
-        signedTx: signedTxn as IBaseAcTransaction,
+      const response = await trigger({
+        ownerIdentity: activeAccount?.identity as `AS${string}`,
+        addressToScreen: txnsDetail.validatedScanAddress.scanAddress,
+        screenCoinSymbol: txnsDetail.validatedScanAddress.scanChain,
+        signedPaymentTx: txnsDetail.signedTxn as IBaseAcTransaction,
       });
 
-      if (!response.isSuccess) {
-        throw new Error((response as ITransactionFailureResponse).reason);
-      }
-
-      // TODO: 1293 - redirect to scan detail page with given scan id
-      historyResetStackAndRedirect();
-      // historyReplace(urls.scanDetail, {
-      //   id: response.id
-      // });
+      historyReplace(urls.addressScreeningDetails, {
+        addressScreeningSearch: {
+          id: response._id,
+        },
+      });
     } catch (error) {
       const errorShell = errorAlertShell(unpackRequestErrorMessage(error));
       if (
