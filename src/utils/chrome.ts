@@ -36,18 +36,26 @@ export const closePopup = async () => {
 };
 
 export const closeAllPopup = async () => {
-  const context = await chrome?.runtime?.getContexts({
-    // @ts-ignore
-    contextTypes: ['TAB'],
-  });
+  try {
+    const context = await chrome?.runtime?.getContexts({
+      // @ts-ignore
+      contextTypes: ['TAB'],
+    });
 
-  // @ts-ignore
-  context?.forEach((ctx) => {
-    chrome.windows.remove(ctx.windowId);
-  });
+    // @ts-ignore
+    context?.forEach((ctx) => {
+      chrome.windows.remove(ctx.windowId);
+    });
+  } catch (e) {
+    console.warn(e);
+  }
 };
 
 export const responseToSite = async (response: unknown) => {
-  // Message is forwarded via serviceWorker
-  await chrome?.runtime?.sendMessage(chrome?.runtime?.id, response);
+  try {
+    // Message is forwarded via serviceWorker
+    await chrome?.runtime?.sendMessage(chrome?.runtime?.id, response);
+  } catch (e) {
+    console.warn(e);
+  }
 };

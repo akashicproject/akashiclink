@@ -37,6 +37,7 @@ const InitialIcon = styled.div<{ isActive: boolean }>(({ isActive }) => ({
 const StyledNftImage = styled(IonImg)({
   height: '32px',
   width: '32px',
+  minWidth: '32px',
   borderRadius: '32px',
   overflow: 'hidden',
 });

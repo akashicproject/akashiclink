@@ -9,7 +9,7 @@ import { akashicPayPath } from '../../routing/navigation-tabs';
 import { List } from '../common/list/list';
 
 const StyledIonItem = styled(IonItem)`
-  --background: var(--ion-background-color);
+  --background: transparent;
 `;
 
 export const AccountManagementList = ({
@@ -22,7 +22,7 @@ export const AccountManagementList = ({
   const { t } = useTranslation();
 
   return (
-    <List>
+    <List style={{ backgroundColor: 'transparent', padding: '0 12px' }}>
       <StyledIonItem detail={false} button onClick={onClickRemove}>
         <IonIcon
           style={{ fontSize: 18 }}

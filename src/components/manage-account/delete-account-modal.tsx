@@ -53,6 +53,7 @@ export const DeleteAccountModal = ({
       isOpen={isOpen}
       onDidDismiss={onCancel}
       className="custom-alert delete-modal"
+      style={{ padding: '0 30px' }}
     >
       <IonToolbar className="custom-toolbar-background">
         <IonButtons slot="end">
