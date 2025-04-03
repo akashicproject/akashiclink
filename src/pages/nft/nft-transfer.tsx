@@ -115,11 +115,11 @@ export function NftTransfer() {
       setSearched(false);
       setSearchedResultType(SearchResult.NoResult);
     }
-    const searchResult = await OwnersAPI.checkL2Address({
+    const { l2Address } = await OwnersAPI.checkL2Address({
       to: value,
     });
-    if (searchResult && value.match(L2Regex)) {
-      setToAddress(searchResult);
+    if (l2Address && value.match(L2Regex)) {
+      setToAddress(l2Address);
       setSearchedResultType(SearchResult.Layer2);
       setSearched(true);
     } else {

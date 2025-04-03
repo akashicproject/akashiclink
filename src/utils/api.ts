@@ -4,6 +4,7 @@ import type {
   IActivateWalletAccountResponse,
   IChangePassword,
   ICheckL2Address,
+  ICheckL2AddressResponse,
   IImportWallet,
   IImportWalletResponse,
   IKeyGeneration,
@@ -144,10 +145,27 @@ export const OwnersAPI = {
 
     return response.data;
   },
-  checkL2Address: async (l2Check: ICheckL2Address): Promise<string | null> => {
+  checkL2Address: async (
+    l2Check: ICheckL2Address
+  ): Promise<ICheckL2AddressResponse> => {
     let requestUrl = `/owner/check-l2-address?to=${l2Check.to}`;
     if (l2Check.coinSymbol) requestUrl += `&coinSymbol=${l2Check.coinSymbol}`;
     const response = await axiosOwnerBase.get(requestUrl);
+    console.log(response);
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+    return response.data;
+  },
+
+  checkL2AddressByAlias: async (
+    l2Check: ICheckL2Address
+  ): Promise<ICheckL2AddressResponse> => {
+    const response = await axiosOwnerBase.get(
+      `/nft/acns/check-l2-address?to=${l2Check.to}`
+    );
+    console.log(response);
     const { data, status } = response;
     if (status >= 400) {
       throw new Error(data.message);

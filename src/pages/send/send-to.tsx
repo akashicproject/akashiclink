@@ -229,12 +229,12 @@ export function SendTo() {
         setTimeout(async () => {
           setL1AddressWhenL2(undefined);
 
-          const acnsResult = await OwnersAPI.nftSearch({
-            searchValue: recipientAddress,
+          const acnsResult = await OwnersAPI.checkL2AddressByAlias({
+            to: recipientAddress,
           });
 
-          if (acnsResult.value) {
-            setToAddress(acnsResult.value);
+          if (acnsResult.l2Address) {
+            setToAddress(acnsResult.l2Address);
             setGasFree(true);
           } else {
             setAlertRequest({
@@ -253,14 +253,14 @@ export function SendTo() {
       setTimeout(async () => {
         setL1AddressWhenL2(undefined);
 
-        const l2address = await OwnersAPI.checkL2Address({
+        const { l2Address } = await OwnersAPI.checkL2Address({
           to: recipientAddress,
           coinSymbol: chain,
         });
 
-        if (l2address) {
+        if (l2Address) {
           // If l2 address exists
-          setToAddress(l2address);
+          setToAddress(l2Address);
           recipientAddress.match(NetworkDictionary[chain].regex.address) &&
             setL1AddressWhenL2(recipientAddress);
           setGasFree(true);
