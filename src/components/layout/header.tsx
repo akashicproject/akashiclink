@@ -56,9 +56,7 @@ export function Header({ loggedIn }: { loggedIn?: boolean }) {
         }}
       >
         {!loggedIn && <LanguageDropdown />}
-        <IonRouterLink
-          routerLink={loggedIn ? akashicPayPath(urls.dashboard) : undefined}
-        >
+        <IonRouterLink>
           <IonImg
             alt={''}
             src={chooseLogo(loggedIn ?? false, storedTheme)}
