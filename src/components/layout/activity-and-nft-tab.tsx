@@ -94,7 +94,6 @@ export const ActivityAndNftTabComponent = ({
           if (!fromNfts) {
             history.push(akashicPayPath(urls.nfts));
           }
-          setNftTab(true);
         }}
         class={nftTab ? 'open' : ''}
       >
