@@ -1,10 +1,15 @@
 import styled from '@emotion/styled';
-import { TransactionStatus } from '@helium-pay/backend';
+import {
+  L2Regex,
+  TransactionLayer,
+  TransactionStatus,
+} from '@helium-pay/backend';
 import { IonImg } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { List } from '../common/list/list';
+import { ListVerticalLabelValueItem } from '../common/list/list-vertical-label-value-item';
 import { ListCopyTxHashItem } from '../send-deposit/copy-tx-hash';
 import { FromToAddressBlock } from '../send-deposit/from-to-address-block';
 
@@ -21,6 +26,7 @@ export function BaseDetails({
 }: {
   currentTransfer: ITransactionRecordForExtension;
 }) {
+  const isL2 = currentTransfer.layer === TransactionLayer.L2;
   const { t } = useTranslation();
   const statusString = (status: string | undefined) => {
     switch (status) {
@@ -60,6 +66,24 @@ export function BaseDetails({
         </div>
       </DetailColumn>
       <List lines="none">
+        {isL2 && currentTransfer?.initiatedToL1Address && (
+          <ListVerticalLabelValueItem
+            label={t('InputAddress')}
+            value={currentTransfer?.initiatedToL1Address}
+          />
+        )}
+        <FromToAddressBlock
+          fromAddress={currentTransfer.fromAddress}
+          toAddress={currentTransfer.toAddress}
+          fromAddressUrl={
+            currentTransfer.internalSenderUrl ??
+            currentTransfer.senderAddressUrl
+          }
+          toAddressUrl={
+            currentTransfer.internalRecipientUrl ??
+            currentTransfer.recipientAddressUrl
+          }
+        />
         {currentTransfer.txHash && currentTransfer.txHashUrl && (
           <ListCopyTxHashItem
             txHash={currentTransfer.txHash}
@@ -74,19 +98,6 @@ export function BaseDetails({
             suffix="AS"
           />
         )}
-
-        <FromToAddressBlock
-          fromAddress={currentTransfer.fromAddress}
-          toAddress={currentTransfer.toAddress}
-          fromAddressUrl={
-            currentTransfer.internalSenderUrl ??
-            currentTransfer.senderAddressUrl
-          }
-          toAddressUrl={
-            currentTransfer.internalRecipientUrl ??
-            currentTransfer.recipientAddressUrl
-          }
-        />
       </List>
     </div>
   );
