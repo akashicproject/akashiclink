@@ -17,10 +17,10 @@ export const useSetGlobalLanguage = (): [
   (newValue: string) => Promise<void>
 ] => {
   const { i18n } = useTranslation();
-
+  const localLanguage = getLocalisationLanguage();
   const [selectedLanguage, setSelectedLanguage] = useLocalStorage(
     'language',
-    ''
+    localLanguage
   );
 
   useEffect(() => {
@@ -29,5 +29,5 @@ export const useSetGlobalLanguage = (): [
     }
   }, [selectedLanguage, i18n]);
 
-  return [selectedLanguage || getLocalisationLanguage(), setSelectedLanguage];
+  return [selectedLanguage, setSelectedLanguage];
 };
