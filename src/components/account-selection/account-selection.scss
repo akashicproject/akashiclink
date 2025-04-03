@@ -2,7 +2,7 @@
   /* Shift popovers to have vertical padding relative to trigger element */
   top: 8px;
   //--width: 75% !important;
-  --width: calc(100vw - 64px) !important;
+  --width: calc(100vw - 88px) !important;
   --offset-x: -16px;
 
   ion-select-popover {
@@ -42,4 +42,8 @@
 .public-layout ion-select.account-selections-options::part(container) {
   opacity: 1;
   width: 100vw;
+}
+
+.public-layout .account-selection {
+  --width: calc(100vw - 64px) !important;
 }

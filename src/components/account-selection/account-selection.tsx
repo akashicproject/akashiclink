@@ -122,9 +122,9 @@ export function AccountSelection({
                 {!showCopyButton
                   ? `${accountPrefix} - ${displayLongText(
                       account.identity,
-                      16
+                      20
                     )}`
-                  : `${displayLongText(account.identity)}`}
+                  : `${displayLongText(account.identity, 16)}`}
               </IonSelectOption>
             );
           }),
