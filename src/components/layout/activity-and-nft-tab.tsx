@@ -106,7 +106,6 @@ export function ActivityAndNftTab() {
   const isMobile = isPlatform('mobile');
   const [transferParams] = useState({
     startDate: dayjs().subtract(1, 'month').toDate(),
-    endDate: dayjs().toDate(),
   });
   const itemDisplayIndex = 3;
   const history = useHistory();

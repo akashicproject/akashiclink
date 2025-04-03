@@ -108,7 +108,6 @@ export function Activity() {
   }, []);
   const [transferParams, _] = useState({
     startDate: dayjs().subtract(1, 'month').toDate(),
-    endDate: dayjs().toDate(),
   });
   const { transfers, isLoading } = useTransfersMe(transferParams);
   const walletFormatTransfers = formatTransfers(transfers);

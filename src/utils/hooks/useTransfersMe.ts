@@ -3,19 +3,16 @@ import type {
   ITransactionRecord,
 } from '@helium-pay/backend';
 import { TransactionResult, TransactionStatus } from '@helium-pay/backend';
+import buildURL from 'axios/unsafe/helpers/buildURL';
 import useSWR from 'swr';
 
 import fetcher from '../ownerFetcher';
 
 export const useTransfersMe = (params?: IClientTransactionRecord) => {
   const { data, error } = useSWR(
-    [
-      `/key/transfers/me`,
-      {
-        params,
-      },
-    ],
-    fetcher
+    buildURL(`/key/transfers/me`, params),
+    fetcher,
+    {}
   );
   // Dates come from backend as string so need to transform them here
   // also, remove trailing zeros from amounts

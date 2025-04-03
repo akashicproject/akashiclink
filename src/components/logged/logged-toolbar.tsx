@@ -130,8 +130,11 @@ export function LoggedToolbar({
             class="icon-button"
             id="refresh-button"
             onClick={() => {
-              mutate(['/key/transfers/me']);
-              mutate(['/owner/agg-balances']);
+              mutate(
+                (key) =>
+                  typeof key === 'string' && key.startsWith('/key/transfers/me')
+              );
+              mutate('/owner/agg-balances');
             }}
           >
             <IonIcon
