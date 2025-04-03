@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
-import { TransactionLayer, TransactionStatus } from '@helium-pay/backend';
+import {
+  NetworkDictionary,
+  TransactionLayer,
+  TransactionStatus,
+} from '@helium-pay/backend';
 import { IonImg } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
@@ -62,12 +66,15 @@ export function BaseDetails({
         </div>
       </DetailColumn>
       <List lines="none">
-        {isL2 && currentTransfer?.initiatedToL1Address && (
-          <ListVerticalLabelValueItem
-            label={t('InputAddress')}
-            value={currentTransfer?.initiatedToL1Address}
-          />
-        )}
+        {isL2 &&
+          NetworkDictionary[currentTransfer.coinSymbol].regex.address.exec(
+            currentTransfer?.initiatedToNonL2 ?? ''
+          ) && (
+            <ListVerticalLabelValueItem
+              label={t('InputAddress')}
+              value={currentTransfer?.initiatedToNonL2}
+            />
+          )}
         <FromToAddressBlock
           fromAddress={currentTransfer.fromAddress}
           toAddress={currentTransfer.toAddress}

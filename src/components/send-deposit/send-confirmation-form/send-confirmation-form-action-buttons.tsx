@@ -119,6 +119,10 @@ export const SendConfirmationFormActionButtons = ({
             ...txn,
             forceL1: undefined,
             signedTx: signedTxn as IBaseTransaction,
+            initiatedToNonL2:
+              txnsDetail.validatedAddressPair.userInputToAddressType !== 'l2'
+                ? txnsDetail.validatedAddressPair.userInputToAddress
+                : '',
           })
         : await OwnersAPI.sendL1TransactionUsingClientSideOtk([
             {

@@ -1,6 +1,10 @@
 import './activity.scss';
 
-import { TransactionLayer, TransactionType } from '@helium-pay/backend';
+import {
+  NetworkDictionary,
+  TransactionLayer,
+  TransactionType,
+} from '@helium-pay/backend';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
 
@@ -16,6 +20,7 @@ export function TransactionDetails({
 }: {
   currentTransfer: ITransactionRecordForExtension;
 }) {
+  const { t } = useTranslation();
   return (
     <>
       <BaseDetails currentTransfer={currentTransfer} />
@@ -25,6 +30,23 @@ export function TransactionDetails({
       ) : (
         <WithdrawDetails currentTransfer={currentTransfer} />
       )}
+      {currentTransfer?.initiatedToNonL2 &&
+        !NetworkDictionary[currentTransfer.coinSymbol].regex.address.exec(
+          currentTransfer?.initiatedToNonL2
+        ) && (
+          <List lines="none">
+            <Divider
+              style={{ width: '100%' }}
+              className={'ion-margin-vertical'}
+            />
+            <ListLabelValueItem
+              label={t('Remark')}
+              value={`${currentTransfer?.initiatedToNonL2}`}
+              valueSize={'md'}
+              valueBold
+            />
+          </List>
+        )}
     </>
   );
 }
