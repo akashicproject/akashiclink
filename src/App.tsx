@@ -17,9 +17,10 @@ import './theme/font.css';
 import './theme/common.scss';
 
 import { IonApp, setupIonicReact } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
+import { IonReactMemoryRouter } from '@ionic/react-router';
 
 import { PreferenceProvider } from './components/PreferenceProvider';
+import { history } from './history';
 import { NavigationTree } from './routing/navigation-tree';
 
 setupIonicReact();
@@ -29,9 +30,9 @@ export default function App() {
   return (
     <IonApp>
       <PreferenceProvider>
-        <IonReactRouter>
+        <IonReactMemoryRouter history={history}>
           <NavigationTree />
-        </IonReactRouter>
+        </IonReactMemoryRouter>
       </PreferenceProvider>
     </IonApp>
   );

@@ -85,6 +85,7 @@ export function NavigationTree() {
     <IonRouterOutlet animated={false}>
       {/* AkashicPay tree - default so redirect at bottom */}
       {hpSubtree.registerPage(AkashicPayMain)}
+      {hpSubtree.registerPage(AkashicPayMain, urls.akashicPay)}
       {hpSubtree.registerPage(CreateWallet, urls.createWalletUrl)}
       {hpSubtree.registerPage(Recovery, urls.recoveryUrl)}
       {hpSubtree.registerPage(ResetPassword, urls.resetPassword)}

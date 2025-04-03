@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-import { akashicPayRoot } from '../routing/navigation-tree';
+import { urls } from '../constants/urls';
+import { history } from '../history';
+import { akashicPayPath } from '../routing/navigation-tree';
 import { lastPageStorage, NavigationPriority } from './last-page-storage';
 
 const AppConfig = {
@@ -29,23 +31,22 @@ axiosOwnerBase.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
+  async (error) => {
     if (401 === error.response.status) {
       // Skip if already on landing page
-      if (window.location.href === `${window.location.origin}${akashicPayRoot}`)
-        return;
+      if (history.location.pathname === '/akashic') return;
 
       // Get the current page user in on from memory
-      lastPageStorage.get().then((currentPage) => {
-        // If current page is undefined, or required authentication, kick user to the landing page
-        if (
-          !currentPage ||
-          currentPage.navigationPriority ===
-            NavigationPriority.AWAIT_AUTHENTICATION
-        ) {
-          window.location.href = `${window.location.origin}/index.html`;
-        }
-      });
+      const currentPage = await lastPageStorage.get();
+      // If current page is undefined, or required authentication, kick user to the landing page
+      if (
+        !currentPage ||
+        currentPage.navigationPriority ===
+          NavigationPriority.AWAIT_AUTHENTICATION
+      ) {
+        history.push(akashicPayPath(urls.akashicPay));
+        window.location.reload();
+      }
     } else {
       return Promise.reject(error);
     }

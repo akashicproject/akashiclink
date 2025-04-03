@@ -33,12 +33,16 @@ export function AkashicPayMain() {
 
   /**
    * Check if there is a forced page to redirect to
+   * Sometimes a random loggedFunction with immediate priority sneaks in there (at least when moving between app versions)
+   *  which causes unwanted push here, so we check for that.
+   * TODO: Figure out root cause and address
    */
   useEffect(() => {
     const loadPage = async () => {
       const lastPage = await lastPageStorage.get();
       if (
         lastPage &&
+        lastPage.lastPageUrl !== urls.loggedFunction &&
         lastPage.navigationPriority === NavigationPriority.IMMEDIATE
       )
         history.push(akashicPayPath(lastPage.lastPageUrl));
