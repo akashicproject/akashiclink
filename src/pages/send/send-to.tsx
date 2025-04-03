@@ -5,7 +5,8 @@ import type { ITransactionProposal } from '@helium-pay/backend';
 import { L2Regex, NetworkDictionary, TEST_TO_MAIN } from '@helium-pay/backend';
 import { IonCol, IonImg, IonRow, IonSpinner } from '@ionic/react';
 import Big from 'big.js';
-import { useEffect, useState } from 'react';
+import { debounce } from 'lodash';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { SwiperSlide } from 'swiper/react';
@@ -115,6 +116,8 @@ const FeeMarker = styled.div({
   lineHeight: '16px',
   border: '1px solid #958E99',
   color: 'var(--ion-color-primary-10)',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
 });
 
 const EqualsL2Box = styled.div({
@@ -178,15 +181,17 @@ export function SendTo() {
       chain: currency.chain,
     });
   const { chain, token } = currentWalletMetadata.walletCurrency;
-  const currentWallet = userWallets.filter((wallet) => {
-    return wallet.coinSymbol === chain;
-  })[0];
+  const currentWallet =
+    userWallets.filter((wallet) => {
+      return wallet.coinSymbol === chain;
+    })[0] ?? {};
 
   const availableBalance = aggregatedBalances.get(
     currentWalletMetadata.walletCurrency
   );
 
   const [internalFee, setInternalFee] = useState('0.0');
+  const [gasFee, setGasFee] = useState('0.0');
 
   /**
    * Handling of direct l1 transfers or gas-free l2 transfers via nitr0gen
@@ -213,7 +218,6 @@ export function SendTo() {
     setAlertRequest(formAlertResetState);
     setGasFree(false);
     if (!recipientAddress) return;
-
     // 1. Regex validation
     if (
       !recipientAddress.match(NetworkDictionary[chain].regex.address) &&
@@ -267,6 +271,26 @@ export function SendTo() {
       }, validateAddressWithBackendTimeout)
     );
   };
+
+  // Debounced function to handle gas fee calculation. I counts when user stops typing for a spified delay(1000)
+  const debouncedHandleGasFee = useCallback(
+    // Call the API to estimate gas fee when the user stops typing
+    debounce(async (amountValue: string, toAddress: string) => {
+      if (amountValue && Big(amountValue).gt(0) && toAddress) {
+        const gas = await OwnersAPI.estimateGasFee({
+          fromAddress: currentWallet.address,
+          toAddress,
+          amount: amountValue,
+          coinSymbol: chain,
+          tokenSymbol: token,
+        });
+        setGasFee(parseFloat(gas.feesEstimate).toFixed(8));
+      } else {
+        setGasFee('0.0');
+      }
+    }, 1000),
+    [currentWallet.address]
+  );
 
   const [amount, setAmount] = useState<string>('');
   const validateAmount = (value: string) => {
@@ -450,23 +474,42 @@ export function SendTo() {
                       token
                     )
                   );
+                  debouncedHandleGasFee(value as string, toAddress as string);
                 }}
                 validate={validateAmount}
                 submitOnEnter={verifyTransaction}
                 value={amount}
               />
-              <StyledInput
-                isHorizontal={true}
-                label={t('SendTo')}
-                placeholder={t('EnterAddress')}
-                type={'text'}
-                errorPrompt={StyledInputErrorPrompt.Address}
-                onIonInput={({ target: { value } }) =>
-                  validateRecipientAddressWithBackend(value as string)
-                }
-                submitOnEnter={verifyTransaction}
-                value={rawAddress}
-              />
+              <GasWrapper style={{ margin: '8px 0' }}>
+                <StyledInput
+                  isHorizontal={true}
+                  label={t('SendTo')}
+                  placeholder={t('EnterAddress')}
+                  type={'text'}
+                  errorPrompt={StyledInputErrorPrompt.Address}
+                  onIonInput={({ target: { value } }) => {
+                    validateRecipientAddressWithBackend(value as string),
+                      debouncedHandleGasFee(
+                        (amount as string) ?? '0',
+                        value as string
+                      );
+                  }}
+                  submitOnEnter={verifyTransaction}
+                  value={rawAddress}
+                />
+                {!gasFree && toAddress && (
+                  <IonImg
+                    src={
+                      !alertRequest.message && toAddress
+                        ? '/shared-assets/images/right.png'
+                        : storedTheme === themeType.LIGHT
+                        ? '/shared-assets/images/right-light.svg'
+                        : '/shared-assets/images/right-dark.svg'
+                    }
+                    style={{ width: '40px', height: '40px' }}
+                  />
+                )}
+              </GasWrapper>
               {gasFree && (
                 <GasWrapper style={{ margin: '8px 0' }}>
                   <EqualsL2Box>
@@ -494,14 +537,13 @@ export function SendTo() {
                   }}
                 >
                   <IonImg
-                    src={
-                      storedTheme === themeType.DARK
-                        ? currentWalletMetadata.darkCurrencyIcon
-                        : currentWalletMetadata.currencyIcon
-                    }
+                    src={NetworkDictionary[chain].networkIcon}
                     style={{ width: '20px', height: '26px' }}
                   />
-                  {NetworkDictionary[currency.chain].displayName}
+                  {NetworkDictionary[currency.chain].displayName.replace(
+                    /Chain/g,
+                    ''
+                  )}
                 </Chain>
               )}
               <GasWrapper>
@@ -525,13 +567,14 @@ export function SendTo() {
                   </GasFreeMarker>
                 )}
                 {gasFree || !toAddress ? null : (
-                  <FeeMarker>{`+ ${t('GasFee')}`}</FeeMarker>
+                  <FeeMarker>{`${t('GasFee')} : ${gasFee} ${
+                    TEST_TO_MAIN.get(chain) || chain
+                  }`}</FeeMarker>
                 )}
                 <FeeMarker>{`${t('Fee')}: ${internalFee} ${
                   token || TEST_TO_MAIN.get(chain) || chain
                 }`}</FeeMarker>
               </GasWrapper>
-
               {alertRequest.visible && <AlertBox state={alertRequest} />}
               <IonRow style={{ width: '100%' }}>
                 <IonCol size="6" style={{ paddingLeft: '0' }}>

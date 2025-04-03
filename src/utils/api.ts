@@ -6,6 +6,8 @@ import type {
   ICheckL2Address,
   ICheckL2AddressResponse,
   IConfirmPassword,
+  IEstimateGasFee,
+  IEstimateGasFeeResponse,
   IImportWallet,
   IImportWalletResponse,
   IKeyGeneration,
@@ -262,5 +264,19 @@ export const OwnersAPI = {
     if (status >= 400) {
       throw new Error(data.message);
     }
+  },
+
+  estimateGasFee: async (
+    transactionData: IEstimateGasFee
+  ): Promise<IEstimateGasFeeResponse> => {
+    const response = await axiosBase.post(
+      `/key/estimate-gas-fee`,
+      JSON.stringify(transactionData)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+    return response.data;
   },
 };

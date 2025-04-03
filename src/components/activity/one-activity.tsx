@@ -57,11 +57,12 @@ const Type = styled.div({
   justifyContent: 'center',
   padding: '3px 8px',
   gap: '45px',
-  width: '100%',
+  width: '98px',
   height: '23px',
   border: '1px solid #958E99',
   borderRadius: '8px 0px 0px 0px',
   whiteSpace: 'nowrap',
+  overflow: 'hidden',
 });
 
 const TypeIcon = styled.div({
@@ -76,6 +77,7 @@ const TypeIcon = styled.div({
   height: '23px',
   border: '1px solid #958E99',
   borderRadius: '0px 8px 0px 0px',
+  whiteSpace: 'nowrap',
 });
 
 const Time = styled.div({
@@ -244,7 +246,7 @@ export function OneActivity({
                 <span
                   style={{
                     color: '#DE3730',
-                    fontSize: '7px',
+                    fontSize: '9px',
                   }}
                 >
                   {`${transferType} - ${t('Pending')}`}
