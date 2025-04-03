@@ -20,7 +20,7 @@ export const CreateOrImportForm = () => {
         </IonCol>
       </IonRow>
       <IonRow style={{ marginBottom: '0.75rem' }}>
-        <IonCol size="8" className="ion-center">
+        <IonCol className="ion-center">
           <IonCheckbox
             checked={checked}
             onIonChange={() => {
@@ -28,11 +28,10 @@ export const CreateOrImportForm = () => {
             }}
             className="ion-text-size-sm"
             labelPlacement={'end'}
+            style={{ marginRight: '8px' }}
           >
             {`${t('IAgreeToTermsOfUse')}`}
           </IonCheckbox>
-        </IonCol>
-        <IonCol size="4" className="ion-center">
           <a
             rel="noreferrer"
             href="https://akashic-1.gitbook.io/akashicwallet/terms-of-use"

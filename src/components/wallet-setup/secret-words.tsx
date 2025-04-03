@@ -85,7 +85,6 @@ const MaskLabelContainer = styled.div`
   color: var(--ion-color-primary);
   ion-label {
     font-weight: 700;
-    font-size: 10px;
   }
   z-index: 1;
 `;
@@ -198,12 +197,14 @@ export function SecretWords({
               src={`/shared-assets/images/visibility.svg`}
               style={{ height: '20px', width: '20px' }}
             ></IonIcon>
-            <IonLabel className="ion-text-size-xs">
+            <IonLabel className="ion-text-size-xxs">
               {t('MakeSureNoBodyIsLooking')}
             </IonLabel>
             <IonLabel
-              className="ion-text-size-xs"
-              style={{ cursor: 'pointer' }}
+              className="ion-text-size-sm ion-text-underline"
+              style={{
+                cursor: 'pointer',
+              }}
             >
               {t('PressToReveal')}
             </IonLabel>
