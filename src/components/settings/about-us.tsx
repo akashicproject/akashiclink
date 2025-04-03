@@ -2,7 +2,7 @@ import './settings.scss';
 
 import { Browser } from '@capacitor/browser';
 import styled from '@emotion/styled';
-import { IonIcon, IonModal } from '@ionic/react';
+import { IonButton, IonIcon, IonModal } from '@ionic/react';
 import type { Dispatch, RefObject, SetStateAction } from 'react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -27,7 +27,9 @@ function UpdateModal({
   const info = useCurrentAppInfo();
   const [availableVersion] = useLocalStorage('available-app-version', '0.0.0');
   const [updateUrl] = useLocalStorage('update-url', '');
+  const [highlights] = useLocalStorage('highlights', ['']);
   const { t } = useTranslation();
+  const [isMoreInfo, setMoreInfo] = useState(false);
   return (
     <IonModal
       id="update-modal"
@@ -54,6 +56,34 @@ function UpdateModal({
         >
           {`${info?.name} v${availableVersion}`}
         </h3>
+        {isMoreInfo && (
+          <>
+            <h4>
+              {t('WhatsNewIn', {
+                version: availableVersion,
+              })}
+            </h4>
+            <ul>
+              {highlights.map((highlight, i) => {
+                return (
+                  <li className="ion-text-size-xs" key={i}>
+                    {highlight}
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+        )}
+        <IonButton
+          mode="ios"
+          fill="clear"
+          className="ion-text-size-xxs p-0 m-0 more-info-btn no-ripple"
+          onClick={() => {
+            setMoreInfo(!isMoreInfo);
+          }}
+        >
+          {!isMoreInfo ? t('MoreInfo') : t('LessInfo')}
+        </IonButton>
         <PurpleButton
           style={{ width: '100%', marginTop: '24px' }}
           onClick={async () => {

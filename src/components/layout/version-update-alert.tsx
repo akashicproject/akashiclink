@@ -16,7 +16,7 @@ export const VersionUpdateAlert = () => {
   const [, setUpdateUrl] = useLocalStorage('update-url', '');
   const [skipVersion, setSkipVersion] = useLocalStorage('skip-version', '');
   const [updateType, setUpdateType] = useLocalStorage('update-type', '');
-
+  const [, setHighlights] = useLocalStorage('highlights', ['']);
   const info = useCurrentAppInfo();
 
   useEffect(() => {
@@ -39,6 +39,7 @@ export const VersionUpdateAlert = () => {
       compareVersions(appVersion, config.awLatestVersion) === -1
     ) {
       setUpdateType('soft');
+      setHighlights(config.highlights || ['']);
     }
   }, [config, skipVersion, info]);
 

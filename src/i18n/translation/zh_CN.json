@@ -276,5 +276,8 @@
   "AutoLock": "自动锁",
   "HideSmallBalances": "隐藏小额余额",
   "EstimatedGasFeeMessage": "*仅估算矿工費。实际矿工費将在交易确认后显示。",
-  "AkashicAlias": "Akashic域名"
+  "AkashicAlias": "Akashic域名",
+  "WhatsNewIn": "v{{version}} 中的新功能",
+  "MoreInfo": "详细信息",
+  "LessInfo": "更少信息"
 }
