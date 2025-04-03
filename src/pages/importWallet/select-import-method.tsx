@@ -42,7 +42,11 @@ export const SelectImportMethod = () => {
           );
         }}
       >
-        <IonIcon className="icon-button-icon" slot="icon-only" icon={arrowBack} />
+        <IonIcon
+          className="icon-button-icon"
+          slot="icon-only"
+          icon={arrowBack}
+        />
       </SquareWhiteButton>
       <MainGrid style={{ gap: '16px', padding: '102px 15px' }}>
         <IonRow>

@@ -28,7 +28,7 @@ export function PublicLayout({
       setTimeout(() => {
         setSpin(false);
         localStorage.removeItem('spinner');
-      }, 4500)
+      }, 4500);
     }
   });
 
