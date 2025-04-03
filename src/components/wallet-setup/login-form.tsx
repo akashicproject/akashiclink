@@ -7,10 +7,10 @@ import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
 import { OwnersAPI } from '../../utils/api';
 import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
+import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemapAASToAddress';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
-import { useNftMe } from '../../utils/hooks/useNftMe';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useOwner } from '../../utils/hooks/useOwner';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
@@ -33,11 +33,7 @@ import { Spinner } from '../common/loader/spinner';
  * - Upload button triggering login request and redirect is successfull
  */
 export function LoginForm() {
-  const {
-    getLocalOtkAndCache,
-    addAasToActiveAccount,
-    removeAasFromActiveAccount,
-  } = useAccountStorage();
+  const { getLocalOtkAndCache } = useAccountStorage();
   const { t } = useTranslation();
   const [alert, setAlert] = useState(formAlertResetState);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +49,7 @@ export function LoginForm() {
   const { mutateTransfersMe } = useTransfersMe();
   const { mutateNftTransfersMe } = useNftTransfersMe();
   const { mutateBalancesMe } = useBalancesMe();
-  const { mutateNftMe } = useNftMe();
+  const fetchAndRemapAASToAddress = useFetchAndRemapAASToAddress();
 
   addPrefixToAccounts();
   useIosScrollPasswordKeyboardIntoView();
@@ -94,10 +90,10 @@ export function LoginForm() {
       );
       if (localSelectedOtk) {
         await OwnersAPI.loginV1({
-          identity: localSelectedOtk.identity!,
+          identity: localSelectedOtk.identity,
           signedAuth: signImportAuth(
             localSelectedOtk.key.prv.pkcs8pem,
-            localSelectedOtk.identity!
+            localSelectedOtk.identity
           ),
         });
       } else {
@@ -126,14 +122,8 @@ export function LoginForm() {
       await mutateTransfersMe();
       await mutateNftTransfersMe();
       await mutateBalancesMe();
-      const nfts = await mutateNftMe();
-      const nft = nfts.find(
-        (nft: { acns: { value: string } }) =>
-          nft.acns.value !== null && nft.acns.value !== ''
-      );
-      nft
-        ? addAasToActiveAccount(activeAccount!, nft.acns.name)
-        : removeAasFromActiveAccount(activeAccount!);
+      await fetchAndRemapAASToAddress();
+
       setSelectedAccount(undefined);
       setPassword('');
       historyResetStackAndRedirect();

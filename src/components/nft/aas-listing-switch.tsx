@@ -11,6 +11,7 @@ import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { OwnersAPI } from '../../utils/api';
+import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemapAASToAddress';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { signTxBody } from '../../utils/nitr0gen-api';
@@ -38,17 +39,18 @@ export const AasListingSwitch = ({
   customAlertMessage: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const { cacheOtk } = useContext(CacheOtkContext);
-  const { activeAccount, addAasToActiveAccount, removeAasFromActiveAccount } =
-    useAccountStorage();
+  const { activeAccount } = useAccountStorage();
   const { mutateNftMe } = useNftMe();
   const { t } = useTranslation();
   const [isListed, setIsListed] = useState<boolean>(!!aasValue);
   const [isLoading, setIsLoading] = useState(false);
+  const fetchAndRemapAASToAddress = useFetchAndRemapAASToAddress();
+
   const updateAASList = async () => {
     try {
       setIsLoading(true);
-      if (name) {
-        const newValue = !isListed ? activeAccount!.identity : null;
+      if (name && activeAccount?.identity) {
+        const newValue = !isListed ? activeAccount.identity : null;
         const verifyUpdateAcnsResponse: IVerifyUpdateAcnsResponse =
           await OwnersAPI.verifyUpdateAcns({
             name: name,
@@ -71,9 +73,7 @@ export const AasListingSwitch = ({
           name: name,
           newValue: newValue,
         });
-        newValue
-          ? addAasToActiveAccount(activeAccount!, name)
-          : removeAasFromActiveAccount(activeAccount!);
+        await fetchAndRemapAASToAddress();
       }
       await mutateNftMe();
       setIsListed(!isListed);

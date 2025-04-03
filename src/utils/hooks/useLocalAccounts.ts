@@ -45,12 +45,9 @@ export const useAccountStorage = () => {
       setLocalAccounts(accountsWithPrefix);
     }
   };
-  const addAasToActiveAccount = async (
-    account: LocalAccount,
-    aasName: string
-  ) => {
+  const addAasToActiveAccount = async (aasName: string) => {
     const updatedAccounts = localAccounts.map((l) => {
-      if (l.identity === account.identity) {
+      if (l.identity === activeAccount?.identity) {
         return { ...l, aasName };
       }
       return l;
@@ -58,9 +55,9 @@ export const useAccountStorage = () => {
     setLocalAccounts(updatedAccounts);
   };
 
-  const removeAasFromActiveAccount = async (account: LocalAccount) => {
+  const removeAasFromActiveAccount = async () => {
     const updatedAccounts = localAccounts.map((l) => {
-      if (l.identity === account.identity) {
+      if (l.identity === activeAccount?.identity) {
         const { aasName, ...rest } = l;
         return { ...rest };
       }

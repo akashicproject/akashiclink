@@ -9,6 +9,7 @@ import { PublicLayout } from '../../components/page-layout/public-layout';
 import { useAppDispatch } from '../../redux/app/hooks';
 import { onClear } from '../../redux/slices/importWalletSlice';
 import { historyResetStackAndRedirect } from '../../routing/history';
+import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemapAASToAddress';
 import { useOwner } from '../../utils/hooks/useOwner';
 
 export const StyledSpan = styled.span({
@@ -22,10 +23,12 @@ export const ImportWalletSuccessful = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { mutateOwner } = useOwner();
+  const fetchAndRemapAASToAddress = useFetchAndRemapAASToAddress();
 
   const handleOnConfirm = async () => {
     dispatch(onClear());
     await mutateOwner();
+    await fetchAndRemapAASToAddress();
     // migration flow is finished, completely reset router history
     historyResetStackAndRedirect();
   };
