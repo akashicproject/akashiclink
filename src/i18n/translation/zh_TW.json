@@ -275,5 +275,6 @@
   "LockAkashicWallet": "鎖定 Akashic 錢包",
   "AutoLock": "自動鎖",
   "HideSmallBalances": "隱藏小額餘額",
-  "EstimatedGasFeeMessage": "*僅估算礦工費。實際礦工費將在交易確認後顯示。"
+  "EstimatedGasFeeMessage": "*僅估算礦工費。實際礦工費將在交易確認後顯示。",
+  "AkashicAlias": "Akashic域名"
 }

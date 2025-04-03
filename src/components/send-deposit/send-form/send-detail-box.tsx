@@ -36,6 +36,13 @@ export const SendDetailBox = ({
     <IonRow className={'ion-grid-row-gap-sm'}>
       <IonCol size={'12'}>
         <List lines="none" bordered compact>
+          {validatedAddressPair.acnsAlias && (
+            <ListLabelValueItem
+              label={t('AkashicAlias')}
+              value={validatedAddressPair.acnsAlias}
+              labelBold
+            />
+          )}
           {isL2 &&
             validatedAddressPair.convertedToAddress !==
               validatedAddressPair.userInputToAddress && (

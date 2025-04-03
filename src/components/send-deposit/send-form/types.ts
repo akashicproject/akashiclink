@@ -7,6 +7,7 @@ import type {
 export type ValidatedAddressPair = {
   convertedToAddress: string;
   userInputToAddress: string;
+  acnsAlias?: string;
   userInputToAddressType?: 'l2' | 'l1' | 'alias';
 };
 

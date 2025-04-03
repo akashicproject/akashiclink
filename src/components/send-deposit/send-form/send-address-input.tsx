@@ -86,7 +86,7 @@ export const SendAddressInput = ({
     try {
       // -- Internal address (matches L2Regex), check if it exists
       if (userInput.match(L2Regex)) {
-        const { l2Address } = await OwnersAPI.checkL2Address({
+        const { l2Address, acnsAlias } = await OwnersAPI.checkL2Address({
           to: userInput,
           coinSymbol: chain,
         });
@@ -95,6 +95,7 @@ export const SendAddressInput = ({
           setAlert(errorAlertShell('invalidL2Address'));
         } else {
           onAddressValidated({
+            acnsAlias,
             convertedToAddress: l2Address,
             userInputToAddress: userInput,
             userInputToAddressType: 'l2',
@@ -106,12 +107,14 @@ export const SendAddressInput = ({
 
       // -- External address, use paired L2 or original L1
       if (userInput.match(NetworkDictionary[chain].regex.address)) {
-        const { l2Address: pairedL2Address } = await OwnersAPI.checkL2Address({
-          to: userInput,
-          coinSymbol: chain,
-        });
+        const { l2Address: pairedL2Address, acnsAlias } =
+          await OwnersAPI.checkL2Address({
+            to: userInput,
+            coinSymbol: chain,
+          });
 
         onAddressValidated({
+          acnsAlias,
           convertedToAddress: pairedL2Address ?? userInput,
           userInputToAddress: userInput,
           userInputToAddressType: 'l1',
