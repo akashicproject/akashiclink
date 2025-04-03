@@ -7,7 +7,6 @@ import {
   ActiveAccountContext,
   CacheOtkContext,
   LocalAccountContext,
-  LocalOtkContext,
 } from '../../components/PreferenceProvider';
 import type { FullOtk } from '../otk-generation';
 
@@ -32,7 +31,6 @@ export interface LocalAccount {
 export const useAccountStorage = () => {
   const { localAccounts, setLocalAccounts } = useContext(LocalAccountContext);
   const { activeAccount, setActiveAccount } = useContext(ActiveAccountContext);
-  const { localOtks, setLocalOtks } = useContext(LocalOtkContext);
   const { setCacheOtk } = useContext(CacheOtkContext);
 
   const addPrefixToAccounts = async () => {
@@ -76,28 +74,18 @@ export const useAccountStorage = () => {
     password: string
   ): Promise<FullOtk | undefined> => {
     const encryptedOtk = await SecureStorage.getItem(identity);
-    if (encryptedOtk) {
-      const encryptedOtkBuff = Buffer.from(encryptedOtk!, 'base64');
-      const key = genKeyFromPassword(password);
-      const decipher = crypto.createDecipheriv(algorithm, key, secretIv);
-      return JSON.parse(
-        decipher.update(encryptedOtkBuff.toString('utf8'), 'hex', 'utf8') +
-          decipher.final('utf8')
-      );
-    } else {
-      // Legacy
-      // get otk from localstorage if not found in keystore
-      // once get, set to keystore
-      // remove otk from localstorage
-      const otk = localOtks.find((l) => l.identity === activeAccount?.identity);
-      if (otk) {
-        await addLocalOtk(otk, password);
-        await removeLocalOtkFromLocalStorage(otk.identity);
-        return otk;
-      } else {
-        return undefined;
-      }
+
+    if (!encryptedOtk) {
+      return undefined;
     }
+
+    const encryptedOtkBuff = Buffer.from(encryptedOtk, 'base64');
+    const key = genKeyFromPassword(password);
+    const decipher = crypto.createDecipheriv(algorithm, key, secretIv);
+    return JSON.parse(
+      decipher.update(encryptedOtkBuff.toString('utf8'), 'hex', 'utf8') +
+        decipher.final('utf8')
+    );
   };
 
   const getLocalOtkAndCache = async (
@@ -141,23 +129,7 @@ export const useAccountStorage = () => {
   const removeLocalOtk = async (identity: string) => {
     await SecureStorage.removeItem(identity);
 
-    // Legacy
-    // remove otk from localstorage
-    await removeLocalOtkFromLocalStorage(identity);
-
     setCacheOtk(null);
-  };
-
-  // Legacy
-  // remove otk from localstorage
-  const removeLocalOtkFromLocalStorage = async (identity: string) => {
-    const otksToKeep = localOtks.reduce((p, c) => {
-      if (c.identity !== identity) {
-        p.push(c);
-      }
-      return p;
-    }, [] as FullOtk[]);
-    await setLocalOtks(otksToKeep);
   };
 
   // key min length is 32 byte

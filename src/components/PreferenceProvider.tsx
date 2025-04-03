@@ -50,16 +50,6 @@ export const LocalAccountContext = createContext<{
   },
 });
 
-export const LocalOtkContext = createContext<{
-  localOtks: FullOtk[];
-  setLocalOtks: Dispatch<FullOtk[]>;
-}>({
-  localOtks: [],
-  setLocalOtks: () => {
-    console.warn('setLocalOtks not ready');
-  },
-});
-
 export const ActiveAccountContext = createContext<{
   activeAccount: LocalAccount | null;
   setActiveAccount: Dispatch<LocalAccount | null>;
@@ -96,8 +86,6 @@ export const PreferenceProvider = ({ children }: { children: ReactNode }) => {
     []
   );
 
-  const [localOtks, setLocalOtks] = useLocalStorage<FullOtk[]>('otks', []);
-
   const [activeAccount, setActiveAccount] =
     useLocalStorage<LocalAccount | null>('session-account', null);
 
@@ -122,28 +110,21 @@ export const PreferenceProvider = ({ children }: { children: ReactNode }) => {
             setCacheOtk,
           }}
         >
-          <LocalOtkContext.Provider
+          <ActiveAccountContext.Provider
             value={{
-              localOtks,
-              setLocalOtks,
+              activeAccount,
+              setActiveAccount,
             }}
           >
-            <ActiveAccountContext.Provider
+            <CurrencyContext.Provider
               value={{
-                activeAccount,
-                setActiveAccount,
+                focusCurrency: focusCurrency,
+                setFocusCurrency: setFocusCurrency,
               }}
             >
-              <CurrencyContext.Provider
-                value={{
-                  focusCurrency: focusCurrency,
-                  setFocusCurrency: setFocusCurrency,
-                }}
-              >
-                {children}
-              </CurrencyContext.Provider>
-            </ActiveAccountContext.Provider>
-          </LocalOtkContext.Provider>
+              {children}
+            </CurrencyContext.Provider>
+          </ActiveAccountContext.Provider>
         </CacheOtkContext.Provider>
       </LocalAccountContext.Provider>
     </ThemeContext.Provider>
