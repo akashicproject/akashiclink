@@ -14,8 +14,6 @@ import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
 import { historyGoBack } from '../../routing/history-stack';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import { useOwner } from '../../utils/hooks/useOwner';
-import { importAccountUrl, View } from '../import-wallet';
 
 export const StyledSpan = styled.span({
   fontSize: '12px',
@@ -29,17 +27,13 @@ export const StyledSpan = styled.span({
 export const SelectImportMethod = () => {
   const { t } = useTranslation();
   const history = useHistory();
-  const loginCheck = useOwner(true);
 
   return (
     <PublicLayout contentStyle={{ padding: '0 30px' }}>
       <SquareWhiteButton
         className="icon-button"
         onClick={() => {
-          historyGoBack(
-            history,
-            !loginCheck.isLoading && !loginCheck.authenticated
-          );
+          historyGoBack(history, true);
         }}
       >
         <IonIcon
@@ -62,12 +56,10 @@ export const SelectImportMethod = () => {
             style={{ width: '100%' }}
             expand="block"
             onClick={() => {
-              history.push(akashicPayPath(importAccountUrl), {
-                initalView: View.SubmitRequest,
-              });
+              history.push(akashicPayPath(urls.secretPhraseImport));
             }}
           >
-            {t('KeyPair')}
+            {t('12Words')}
           </PurpleButton>
         </IonRow>
         <IonRow>
@@ -75,10 +67,10 @@ export const SelectImportMethod = () => {
             style={{ width: '100%' }}
             fill="clear"
             onClick={() => {
-              history.push(akashicPayPath(urls.secretPhraseImport));
+              history.push(akashicPayPath(urls.keyPairImport));
             }}
           >
-            {t('12Words')}
+            {t('KeyPair')}
           </WhiteButton>
         </IonRow>
       </MainGrid>

@@ -34,17 +34,31 @@ export function MigrateWalletNotice() {
 
   const nextPage = async () => {
     const otk = await generateOTK();
-    lastPageStorage.store(
-      urls.migrateWalletSecret,
-      NavigationPriority.IMMEDIATE,
-      {
-        username: history.location.state.migrateWallet?.username,
-        oldPassword: history.location.state.migrateWallet?.oldPassword,
-        passPhrase: otk.phrase,
-        otk,
-      }
-    );
-    history.push(urls.migrateWalletSecret);
+    // If no password provided, send to page to get old password (used to login and decrypt old eOtk for migration)
+    if (!history.location.state.migrateWallet?.oldPassword) {
+      lastPageStorage.store(
+        urls.migrateWalletOldPassword,
+        NavigationPriority.IMMEDIATE,
+        {
+          username: history.location.state.migrateWallet?.username,
+          passPhrase: otk.phrase,
+          otk,
+        }
+      );
+      history.push(urls.migrateWalletOldPassword);
+    } else {
+      lastPageStorage.store(
+        urls.migrateWalletSecret,
+        NavigationPriority.IMMEDIATE,
+        {
+          username: history.location.state.migrateWallet?.username,
+          oldPassword: history.location.state.migrateWallet?.oldPassword,
+          passPhrase: otk.phrase,
+          otk,
+        }
+      );
+      history.push(urls.migrateWalletSecret);
+    }
   };
 
   return (

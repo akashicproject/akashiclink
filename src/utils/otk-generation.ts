@@ -1,13 +1,92 @@
 import { ActiveCrypto } from '@activeledger/activecrypto';
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
-import { KeyHandler } from '@activeledger/sdk-bip39';
+import { KeyHandler, KeyType } from '@activeledger/sdk-bip39';
+import * as crypto from 'crypto';
 
+import { decodeECPrivateKey, encodeECPublicKey } from './otk-helpers';
 export interface FullOtk {
   identity: string;
   key: ActiveCrypto.KeyHandler;
   type: string;
   name: string;
   phrase?: string;
+}
+
+// Generate a purely client-side otk. Only used for authorization in the first instance
+export async function generateOTK(): Promise<IKeyExtended> {
+  const kh = new KeyHandler();
+  return await kh.generateBIP39Key('otk', true);
+}
+
+export function validateSecretPhrase(wordArray: string[]) {
+  // Slightly hacky solution to prevent alert from showing when user re-enters page after past bad input.
+  // For some reason, the array gets overwritten with a len-1 empty string array upon exiting the 12-word page.
+  // Further, an empty input should not be false
+  if (
+    wordArray.length === 0 ||
+    (wordArray.length === 1 && wordArray[0] === '')
+  ) {
+    return true;
+  }
+  if (wordArray.length !== 12) {
+    return false;
+  }
+  return wordArray.every((word) => secretPhraseDictionary.includes(word));
+}
+export async function restoreOtk(phrase: string) {
+  const kh = new KeyHandler();
+  return await kh.restoreBIP39Key('otk', phrase, true);
+}
+
+function parsePrvKey(prvKey: string): string {
+  if (prvKey.startsWith('0x')) {
+    return prvKey;
+  }
+  return (
+    '-----BEGIN EC PRIVATE KEY-----\n' +
+    `${prvKey}\n` +
+    '-----END EC PRIVATE KEY-----'
+  );
+}
+
+export function restoreOtkFromKeypair(keyPair: string): IKeyExtended {
+  const curve = crypto.createECDH('secp256k1');
+  const otkPriv = parsePrvKey(keyPair);
+  let publicKey;
+
+  if (otkPriv.startsWith('0x')) {
+    curve.setPrivateKey(keyPair.replace('0x', ''), 'hex');
+    publicKey = curve.getPublicKey('hex', 'uncompressed');
+  } else {
+    const pemDecoded = Buffer.from(decodeECPrivateKey(otkPriv), 'hex');
+    curve.setPrivateKey(pemDecoded);
+    publicKey = encodeECPublicKey(curve.getPublicKey());
+  }
+
+  return {
+    key: {
+      prv: { pkcs8pem: otkPriv },
+      pub: { pkcs8pem: publicKey },
+    },
+    type: KeyType.EllipticCurve,
+    name: 'otk',
+  };
+}
+
+// Sign a piece of data using the private key to be verified by the backend
+export function signImportAuth(otkPriv: string, data: string) {
+  // Have to but private key into correct format
+  const pemPrivate =
+    '-----BEGIN EC PRIVATE KEY-----\n' +
+    `${otkPriv}\n` +
+    '-----END EC PRIVATE KEY-----';
+  let kp;
+  if (otkPriv.startsWith('0x')) {
+    kp = new ActiveCrypto.KeyPair('secp256k1', otkPriv);
+  } else {
+    kp = new ActiveCrypto.KeyPair('secp256k1', pemPrivate);
+  }
+  return kp.sign(data);
 }
 
 const secretPhraseDictionary = [
@@ -2060,44 +2139,3 @@ const secretPhraseDictionary = [
   'zone',
   'zoo',
 ];
-
-// Generate a purely client-side otk. Only used for authorization in the first instance
-export async function generateOTK(): Promise<IKeyExtended> {
-  const kh = new KeyHandler();
-  return await kh.generateBIP39Key('otk', true);
-}
-
-export function validateSecretPhrase(wordArray: string[]) {
-  // Slightly hacky solution to prevent alert from showing when user re-enters page after past bad input.
-  // For some reason, the array gets overwritten with a len-1 empty string array upon exiting the 12-word page.
-  // Further, an empty input should not be false
-  if (
-    wordArray.length === 0 ||
-    (wordArray.length === 1 && wordArray[0] === '')
-  ) {
-    return true;
-  }
-  if (wordArray.length !== 12) {
-    return false;
-  }
-  return wordArray.every((word) => secretPhraseDictionary.includes(word));
-}
-export async function restoreOtk(phrase: string) {
-  const kh = new KeyHandler();
-  return await kh.restoreBIP39Key('otk', phrase, true);
-}
-// Sign a piece of data (email) using the private key to be verified by the backend
-export function signImportAuth(otkPriv: string, email: string) {
-  // Have to but private key into correct format
-  const pemPrivate =
-    '-----BEGIN EC PRIVATE KEY-----\n' +
-    `${otkPriv}\n` +
-    '-----END EC PRIVATE KEY-----';
-  let kp;
-  if (otkPriv.startsWith('0x')) {
-    kp = new ActiveCrypto.KeyPair('secp256k1', otkPriv);
-  } else {
-    kp = new ActiveCrypto.KeyPair('secp256k1', pemPrivate);
-  }
-  return kp.sign(email);
-}

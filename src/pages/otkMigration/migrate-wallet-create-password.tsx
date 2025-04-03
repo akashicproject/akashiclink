@@ -24,7 +24,6 @@ import { historyGoBack } from '../../routing/history-stack';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
-import { useOwner } from '../../utils/hooks/useOwner';
 import {
   cacheCurrentPage,
   lastPageStorage,
@@ -53,7 +52,6 @@ const CheckBoxText = styled.span({
 export function MigrateWalletCreatePassword() {
   const { t } = useTranslation();
   const history = useHistory();
-  const loginCheck = useOwner(true);
 
   /** Tracking user input */
   const [password, setPassword] = useState<string>();
@@ -150,10 +148,7 @@ export function MigrateWalletCreatePassword() {
       <ResetPageButton
         expand="block"
         callback={() => {
-          historyGoBack(
-            history,
-            !loginCheck.isLoading && !loginCheck.authenticated
-          );
+          historyGoBack(history, true);
         }}
       />
     </IonCol>

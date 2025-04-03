@@ -49,7 +49,7 @@ export const OwnersAPI = {
     importData: IImportWallet
   ): Promise<IImportWalletResponse> => {
     const response = await axiosBase.post(
-      `/auth/import-wallet-account`,
+      `/auth/import-wallet`,
       JSON.stringify(importData)
     );
     const { data, status } = response;
@@ -59,7 +59,6 @@ export const OwnersAPI = {
 
     return response.data;
   },
-
   fetchKeyPair: async (
     importData: ITempShowOtkPrv
   ): Promise<ITempShowOtkPrvResponse> => {

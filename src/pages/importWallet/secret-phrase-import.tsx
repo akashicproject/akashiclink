@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { IMPORT_CONST } from '@helium-pay/backend';
 import { IonIcon, IonRow } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import { useEffect, useState } from 'react';
@@ -12,15 +13,18 @@ import { SecretWords } from '../../components/secret-words/secret-words';
 import { urls } from '../../constants/urls';
 import { historyGoBack } from '../../routing/history-stack';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import { useOwner } from '../../utils/hooks/useOwner';
+import { OwnersAPI } from '../../utils/api';
 import {
   cacheCurrentPage,
   lastPageStorage,
   NavigationPriority,
 } from '../../utils/last-page-storage';
-import { restoreOtk, validateSecretPhrase } from '../../utils/otk-generation';
+import {
+  restoreOtk,
+  signImportAuth,
+  validateSecretPhrase,
+} from '../../utils/otk-generation';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
-import { View } from '../import-wallet';
 
 const StyledSpan = styled.span({
   fontSize: '12px',
@@ -43,8 +47,6 @@ const StyledDiv = styled.div<DivProps>`
 `;
 export const SecretPhraseImport = () => {
   const history = useHistory();
-  const loginCheck = useOwner(true);
-
   const [initialWords, setInitialWords] = useState(new Array(12).fill(''));
   const [phrase, setPhrase] = useState<string[]>([]);
   const [error, setError] = useState(false);
@@ -70,25 +72,32 @@ export const SecretPhraseImport = () => {
   const handleConfirmRecoveryPhrase = async () => {
     try {
       const reconstructedOtk = await restoreOtk(phrase.join(' '));
+      const { identity } = await OwnersAPI.importAccount({
+        publicKey: reconstructedOtk.key.pub.pkcs8pem,
+        signedAuth: signImportAuth(
+          reconstructedOtk.key.prv.pkcs8pem,
+          IMPORT_CONST
+        ),
+      });
+      const fullOtk = { ...reconstructedOtk, identity };
       await lastPageStorage.clear();
       await lastPageStorage.store(
-        urls.importAccountUrl,
+        urls.createWalletPassword,
         NavigationPriority.IMMEDIATE,
         {
-          view: View.SubmitSecretPhrase,
-          otk: reconstructedOtk,
-          passPhrase: phrase,
+          otk: fullOtk,
         }
       );
-
       // Remove phrase state before leaving page
       setPhrase([]);
       setInitialWords([]);
       setError(false);
       history.push({
-        pathname: akashicPayPath(urls.importAccountUrl),
+        pathname: akashicPayPath(urls.createWalletPassword),
         state: {
-          importView: View.SubmitSecretPhrase,
+          createPassword: {
+            isImport: true,
+          },
         },
       });
     } catch (err) {
@@ -182,10 +191,7 @@ export const SecretPhraseImport = () => {
                 setInitialWords([]);
                 setError(false);
                 await lastPageStorage.clear();
-                historyGoBack(
-                  history,
-                  !loginCheck.isLoading && !loginCheck.authenticated
-                );
+                historyGoBack(history, true);
               }}
             >
               {t('Cancel')}

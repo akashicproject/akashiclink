@@ -12,8 +12,8 @@ import { CreateWalletSecret } from '../pages/createWallet/create-wallet-secret';
 import { CreateWalletSecretConfirm } from '../pages/createWallet/create-wallet-secret-confirm';
 import { WalletCreated } from '../pages/createWallet/wallet-created';
 import { ErrorPage } from '../pages/error';
-import { ImportWallet } from '../pages/import-wallet';
 import { ImportSuccess } from '../pages/importWallet/import-success';
+import { KeyPairImport } from '../pages/importWallet/keypair-import';
 import { SecretPhraseImport } from '../pages/importWallet/secret-phrase-import';
 import { SelectImportMethod } from '../pages/importWallet/select-import-method';
 import { Dashboard } from '../pages/logged/dashboard';
@@ -53,7 +53,6 @@ export function NavigationTree() {
       {AkashicTab.registerPage(AkashicPayMain, urls.akashicPay)}
       {AkashicTab.registerPage(CreateWallet, urls.createWalletUrl)}
       {AkashicTab.registerPage(ManageAccounts, urls.manageAccounts)}
-      {AkashicTab.registerPage(ImportWallet, urls.importAccountUrl)}
       {AkashicTab.registerPage(Dashboard, urls.loggedFunction)}
       {AkashicTab.registerPage(LoggedCreate, urls.loggedCreate)}
       {AkashicTab.registerPage(DepositPage, urls.loggedDeposit)}
@@ -84,6 +83,7 @@ export function NavigationTree() {
       {AkashicTab.registerPage(SecretPhraseImport, urls.secretPhraseImport)}
       {AkashicTab.registerPage(SelectImportMethod, urls.selectImportMethod)}
       {AkashicTab.registerPage(ImportSuccess, urls.importSuccess)}
+      {AkashicTab.registerPage(KeyPairImport, urls.keyPairImport)}
       {AkashicTab.registerPage(
         ChangePasswordAfterImport,
         urls.changePasswordAfterImport

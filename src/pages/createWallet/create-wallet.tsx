@@ -31,7 +31,6 @@ import { historyGoBack } from '../../routing/history-stack';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
-import { useOwner } from '../../utils/hooks/useOwner';
 import {
   cacheCurrentPage,
   lastPageStorage,
@@ -51,7 +50,6 @@ enum CreateWalletView {
 export function CreateWallet() {
   const { i18n, t } = useTranslation();
   const history = useHistory();
-  const loginCheck = useOwner(true);
 
   const [view, setView] = useState(CreateWalletView.RequestAccount);
   /** Tracking user input */
@@ -265,10 +263,7 @@ export function CreateWallet() {
       <ResetPageButton
         expand="block"
         callback={() => {
-          historyGoBack(
-            history,
-            !loginCheck.isLoading && !loginCheck.authenticated
-          );
+          historyGoBack(history, true);
           setView(CreateWalletView.RequestAccount);
         }}
       />
