@@ -1,0 +1,13 @@
+.alert-icon {
+  width: 48px;
+  height: 48px;
+  color: #c297ff;
+}
+
+ion-modal#nft-model {
+  --width: 333px;
+  --height: 341px;
+  --border-radius: 16px;
+  --background: #fff;
+  align-items: center;
+}

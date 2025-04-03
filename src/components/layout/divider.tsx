@@ -8,6 +8,6 @@ export const DividerDiv = styled.div({
 
 export const DividerDivWithoutMargin = styled.div({
   borderTop: '2px solid #D9D9D9',
-  marginTop: '0px',
-  marginBottom: '0px',
+  height: '2px',
+  width: '270px',
 });

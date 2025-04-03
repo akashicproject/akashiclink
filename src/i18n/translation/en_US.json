@@ -1,5 +1,6 @@
 {
   "Locale": "en-US",
+  "AkashicChain": "Akashic Chain",
   "CreateWallet": "Create Wallet",
   "LoginWithExistingCredential": "Login with existing credential",
   "General": "General",
@@ -23,6 +24,7 @@
   "EnterYourEmail": "Enter your email",
   "Email": "Email",
   "Send": "Send",
+  "Sender": "Sender",
   "SendCode": "Send a Code",
   "Deposit": "Deposit",
   "VerificationCode": "Verification Code",
@@ -132,5 +134,18 @@
   "invalidL2Address": "Please provide a valid Layer 2 recipient address.",
   "SendNewCode": "Send a New Code",
   "VersionInfo": "Version info",
-  "KeyPairBackup": "KeyPair Backup"
+  "KeyPairBackup": "KeyPair Backup",
+  "DoNotOwnNfts": "You currently do not own any NFTs",
+  "Transfer": "Transfer",
+  "NSRecordWarning": "Please delete the NS record for {{nftName}} in order to initiate the transfer.",
+  "GoNSSettings": "Go to NS Settings",
+  "PleaseInputToSearch": "Please input Akashic Chain Address for transfer.",
+  "NoSearchResult": "No Search Result",
+  "List": "List",
+  "NewEdit": "New (Edit)",
+  "RemoveAcnsWarning": "Are you sure you want to remove ( {{acnsName}} ) from your list?",
+  "RemoveAcnsSuccess": "( {{acnsName}} ) has been removed from your list.",
+  "NoData": "No Data",
+  "EditAcnsSuccess": "Successfully Registered",
+  "NftName": "Nft Name"
 }

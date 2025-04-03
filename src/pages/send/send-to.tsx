@@ -31,6 +31,7 @@ import { useExchangeRates } from '../../utils/hooks/useExchangeRates';
 import { useKeyMe } from '../../utils/hooks/useKeyMe';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { lastPageStorage } from '../../utils/last-page-storage';
+import { displayLongText } from '../../utils/long-text';
 import { WALLET_CURRENCIES } from '../../utils/supported-currencies';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { SendConfirm } from './send-confirm';
@@ -154,7 +155,7 @@ const EqualsL2Box = styled.div({
   borderRadius: '8px',
   fontFamily: 'Nunito Sans',
   fontWeight: '400',
-  fontSize: '5px',
+  fontSize: '12px',
   lineHeight: '16px',
   color: '#290056',
   border: '1px solid #958e99',
@@ -240,10 +241,17 @@ export function SendTo() {
         setL1AddressWhenL2(value);
       setGasFree(true);
     } else {
-      setShowNativeCoinNeeded(tokenSymbol !== undefined);
-      setToAddress(value);
       setL1AddressWhenL2('');
-      setGasFree(false);
+      // Check if anything found by Acns
+      const acnsResult = await OwnersAPI.checkL2AddressByAcns({ to: value });
+      if (acnsResult) {
+        setToAddress(acnsResult);
+        setGasFree(true);
+      } else {
+        setShowNativeCoinNeeded(tokenSymbol !== undefined);
+        setToAddress(value);
+        setGasFree(false);
+      }
     }
     return l2address;
   };
@@ -373,7 +381,11 @@ export function SendTo() {
                 />
                 {gasFree && inputAddress !== toAddress && (
                   <GasWrapper>
-                    <EqualsL2Box>{`${inputAddress} = ${toAddress}`}</EqualsL2Box>
+                    <EqualsL2Box>
+                      {(l1AddressWhenL2 === ''
+                        ? `${displayLongText(inputAddress)} = `
+                        : '') + `${displayLongText(toAddress)}`}
+                    </EqualsL2Box>
                     <IonImg
                       alt={''}
                       src={'/shared-assets/images/right.png'}

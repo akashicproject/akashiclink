@@ -1,4 +1,5 @@
 import type {
+  IAcnsSearch,
   IActivateWalletAccount,
   IActivateWalletAccountResponse,
   IChangePassword,
@@ -17,6 +18,10 @@ import type {
   ITransactionProposal,
   ITransactionSettledResponse,
   ITransactionVerifyResponse,
+  ITransferNftResponse,
+  IUpdateAcns,
+  SearchAcnsResponse,
+  TransferNftByMintOperatorDto,
 } from '@helium-pay/backend';
 
 import { axiosBasePublic, axiosOwnerBase } from './axios-helper';
@@ -148,6 +153,18 @@ export const OwnersAPI = {
     }
     return response.data;
   },
+  // TODO: Merge with above
+  checkL2AddressByAcns: async (
+    l2Check: ICheckL2Address
+  ): Promise<string | null> => {
+    const requestUrl = `/nft/acns/check-l2-address?to=${l2Check.to}`;
+    const response = await axiosOwnerBase.get(requestUrl);
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+    return response.data;
+  },
   changePassword: async (
     changePasswordData: IChangePassword
   ): Promise<void> => {
@@ -188,5 +205,40 @@ export const OwnersAPI = {
       throw new Error(data.message);
     }
     return data as IActivateWalletAccountResponse;
+  },
+
+  nftSearch: async (iAcnsSearch: IAcnsSearch): Promise<SearchAcnsResponse> => {
+    const requestUrl = `/nft/acns/search?searchValue=${iAcnsSearch.searchValue}`;
+    const response = await axiosOwnerBase.get(requestUrl);
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+    return response.data;
+  },
+
+  nftTransfer: async (
+    transferNftByMintOperatorDto: TransferNftByMintOperatorDto
+  ): Promise<ITransferNftResponse> => {
+    const response = await axiosOwnerBase.post(
+      `/nft/transfer`,
+      JSON.stringify(transferNftByMintOperatorDto)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+    return response.data;
+  },
+
+  updateAcns: async (updateAcns: IUpdateAcns) => {
+    const response = await axiosOwnerBase.post(
+      `/nft/acns`,
+      JSON.stringify(updateAcns)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
   },
 };

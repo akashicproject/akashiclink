@@ -87,7 +87,7 @@ http://ionicframework.com/docs/theming/ */
   /** select **/
   --ion-color-select: #7444b6;
 
-  /** header-background **/
+  /** header-background also used in setting-naming as icon color**/
   --ion-logged-header: #290056;
   --ion-slider: #c297ff;
 
@@ -214,7 +214,7 @@ body.dark {
   /** select **/
   --ion-color-select: #f4f5f8;
 
-  /** header-background **/
+  /** header-background also used in setting-naming as icon color**/
   --ion-logged-header: #c297ff;
   --ion-slider: #7444b6;
 

@@ -1,5 +1,6 @@
 {
   "Locale": "zh-CN",
+  "AkashicChain": "Akashic链",
   "CreateWallet": "建立钱包",
   "LoginWithExistingCredential": "使用现有认证登录",
   "General": "基本",
@@ -23,6 +24,7 @@
   "EnterYourEmail": "输入你的电子邮箱",
   "Email": "电子邮箱",
   "Send": "发送",
+  "Sender": "发送人",
   "SendCode": "发送代码",
   "Deposit": "存储",
   "VerificationCode": "验证码",
@@ -132,5 +134,18 @@
   "invalidL2Address": "请提供正确的Layer L2接收地址。",
   "SendNewCode": "发送新代码",
   "VersionInfo": "版本信息",
-  "KeyPairBackup": "密钥对备份"
+  "KeyPairBackup": "密钥对备份",
+  "DoNotOwnNfts": "现在不拥有任何NFT",
+  "Transfer": "转账",
+  "NSRecordWarning": "请删除NS{{nftName}}的NS记录，然后发起转账。",
+  "GoNSSettings": "到NS设置",
+  "PleaseInputToSearch": "请输入Akashic地址用进行转账。",
+  "NoSearchResult": "无搜索结果",
+  "List": "列表",
+  "NewEdit": "新增 (编辑)",
+  "RemoveAcnsWarning": "确定从列表中删除( {{acnsName}} )吗?",
+  "RemoveAcnsSuccess": "( {{acnsName}} ) 已经从列表中删除。",
+  "NoData": "没有数据",
+  "EditAcnsSuccess": "注册成功",
+  "NftName": "Nft名称"
 }

@@ -1,22 +1,43 @@
+import './settings.css';
+
 import styled from '@emotion/styled';
+import type { IAcnsResponse } from '@helium-pay/backend';
 import {
   IonButton,
   IonCol,
   IonGrid,
   IonIcon,
+  IonImg,
   IonLabel,
+  IonModal,
   IonRow,
   IonSegment,
   IonSegmentButton,
   IonSelect,
   IonSelectOption,
+  IonSpinner,
+  IonToast,
 } from '@ionic/react';
-import { createOutline } from 'ionicons/icons';
+import {
+  checkmarkCircleOutline,
+  pencilOutline,
+  trashBinOutline,
+} from 'ionicons/icons';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
+import {
+  Alert,
+  errorAlertShell,
+  formAlertResetState,
+} from '../components/alert/alert';
 import { PurpleButton, WhiteButton } from '../components/buttons';
 import { LoggedLayout } from '../components/layout/logged-layout';
-import { availableNames, K } from '../constants/dummy-data';
+import { StyledInput } from '../components/styled-input';
+import { OwnersAPI } from '../utils/api';
+import { useNftAcnsMe } from '../utils/hooks/useNftAcnsMe';
+import { displayLongText } from '../utils/long-text';
+import { unpackRequestErrorMessage } from '../utils/unpack-request-error-message';
 
 const enum View {
   edit = 'edit',
@@ -34,135 +55,280 @@ const MenuSlider = styled(IonLabel)({
   color: 'var(--ion-color-dark)',
 });
 
-export function SettingsNaming() {
-  // const query = new URLSearchParams(window.location.search);
+const AcnsWrapper = styled.div({
+  display: 'inline-flex',
+  flexDirection: 'column',
+  gap: '24px',
+});
 
+const OneAcns = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '24px',
+});
+
+const OneAcnsWrapper = styled.div({
+  display: 'flex',
+  alignItems: 'flex-start',
+  gap: '-1px',
+});
+
+const AcnsName = styled.div({
+  display: 'flex',
+  width: '117px',
+  height: '40px',
+  padding: '6px 16px',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: '8px 0px 0px 8px',
+  border: '1px solid var(--m-3-sys-dark-outline, #958E99)',
+  fontSize: '14px',
+  fontFamily: 'Nunito Sans',
+  fontWeight: '700',
+  lineHeight: '20px',
+  color: 'var(--ion-color-primary-10)',
+});
+
+const AcnsAddress = styled.div({
+  display: 'flex',
+  width: '128px',
+  height: '40px',
+  padding: '6px 16px',
+  justifyContent: 'center',
+  alignItems: 'center',
+  border: '1px solid var(--m-3-sys-dark-outline, #958E99)',
+  fontSize: '14px',
+  fontFamily: 'Nunito Sans',
+  fontWeight: '700',
+  lineHeight: '20px',
+  color: 'var(--ion-color-primary-10)',
+});
+
+const EditBox = styled.div({
+  display: 'flex',
+  width: '40px',
+  height: '40px',
+  padding: '6px 16px',
+  justifyContent: 'center',
+  alignItems: 'center',
+  border: '1px solid var(--m-3-sys-dark-outline, #958E99)',
+});
+
+const DeleteBox = styled.div({
+  display: 'flex',
+  width: '40px',
+  height: '40px',
+  padding: '6px 16px',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: '0px 8px 8px 0px',
+  border: '1px solid var(--m-3-sys-dark-outline, #958E99)',
+});
+
+const Divider = styled.div({
+  width: '100%',
+  height: '2px',
+  border: '1px solid #D9D9D9',
+});
+
+const ModelDiv = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '24px',
+  marginTop: '64px',
+  padding: '0 40px',
+});
+
+const WarningText = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  textAlign: 'center',
+  width: '253px',
+  height: '69px',
+  fontFamily: 'Nunito Sans',
+  fontWeight: '700',
+  fontSize: '16px',
+  lineHeight: '24px',
+  color: '#000',
+});
+
+const NoDataDiv = styled.div({
+  fontSize: '16px',
+  fontFamily: 'Nunito Sans',
+  fontWeight: '700',
+  lineHeight: '24px',
+  color: 'var(--ion-color-primary-10)',
+  width: '100%',
+  height: '100%',
+  textAlign: 'center',
+  top: '400px',
+  position: 'fixed',
+});
+
+export function SettingsNaming() {
+  const { t } = useTranslation();
+
+  const { acns } = useNftAcnsMe();
+  const namedAcns = acns.filter((a) => !!a.value);
+  console.log(namedAcns);
   const [view, setView] = useState(View.list);
-  const [keyNames, setKeyNames] = useState<{ [key: string]: string }>({});
-  const [editKey, setEditKey] = useState<K>();
-  const [name, setName] = useState('');
+  const [alert, setAlert] = useState(formAlertResetState);
+  const [editAcns, setEditAcns] = useState(namedAcns[0]);
+  const [selectedName, setSelectedName] = useState('');
+  const [newValue, setNewValue] = useState('');
+  const [showEditToast, setShowEditToast] = useState(false);
+  const [isConfirmModel, setIsConfirmModel] = useState(false);
+  const [isResultModel, setIsResultModel] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const removeAcns = async (name: string) => {
+    setIsConfirmModel(false);
+    try {
+      await OwnersAPI.updateAcns({
+        name: name,
+        newValue: null,
+      });
+      setIsResultModel(true);
+    } catch (error) {
+      setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+    }
+  };
+
+  const confirmUpdate = async () => {
+    setLoading(true);
+    try {
+      await OwnersAPI.updateAcns({
+        name: selectedName,
+        newValue: newValue,
+      });
+      setView(View.list);
+      setShowEditToast(true);
+    } catch (error) {
+      setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateAcns = (acns: IAcnsResponse) => {
+    setEditAcns(acns);
+    setSelectedName(acns.name);
+    setView(View.edit);
+  };
 
   return (
     <LoggedLayout>
-      <IonRow style={{ marginBottom: '50px' }}>
+      <Alert state={alert} />
+      <IonRow style={{ marginTop: '30px', marginBottom: '30px' }}>
         <IonCol size="12">
           <IonSegment
             value={view}
             onIonChange={({ detail: { value } }) => setView(value as View)}
           >
-            <IonSegmentButton style={{ minWidth: '50%' }} value={View.edit}>
-              <MenuSlider>New (Edit)</MenuSlider>
-            </IonSegmentButton>
             <IonSegmentButton style={{ minWidth: '50%' }} value={View.list}>
-              <MenuSlider>List</MenuSlider>
+              <MenuSlider>{t('List')}</MenuSlider>
+            </IonSegmentButton>
+            <IonSegmentButton style={{ minWidth: '50%' }} value={View.edit}>
+              <MenuSlider>{t('NewEdit')}</MenuSlider>
             </IonSegmentButton>
           </IonSegment>
         </IonCol>
       </IonRow>
-      {view === View.list && (
-        <>
-          {Object.values(K).map((k) => (
-            <IonRow key={k} style={{ width: '50%', margin: '0 auto' }}>
-              <IonCol
-                style={{
-                  borderRadius: '10px 0 0 10px',
-                  border: '1px solid gray',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <MenuSlider>{keyNames[k] || 'Not set'}</MenuSlider>
-              </IonCol>
-              <IonCol
-                style={{
-                  borderRadius: '0',
-                  border: '1px solid gray',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <MenuSlider>{k}</MenuSlider>
-              </IonCol>
-              <IonCol
-                size="1"
-                style={{
-                  background: 'var(--ion-color-secondary)',
-                  borderRadius: '0 10px 10px 0',
-                  border: '1px solid gray',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <IonButton
-                  class="icon-button-icon"
-                  fill="clear"
-                  onClick={() => {
-                    setEditKey(k);
-                    setView(View.edit);
-                  }}
-                >
-                  <IonIcon slot="icon-only" color="dark" icon={createOutline} />
-                </IonButton>
-              </IonCol>
-            </IonRow>
-          ))}
-        </>
-      )}
-      {editKey && view === View.edit && (
-        <IonGrid style={{ width: '50%' }}>
+      {view === View.list &&
+        (namedAcns.length > 0 ? (
+          <IonRow style={{ marginTop: '30px' }}>
+            <IonCol class="ion-center">
+              <AcnsWrapper>
+                {acns.map((oneAcns, index) => (
+                  <OneAcns key={oneAcns.name}>
+                    <OneAcnsWrapper>
+                      <AcnsName>{oneAcns.name}</AcnsName>
+                      <AcnsAddress>
+                        {displayLongText(oneAcns.ownerIdentity)}
+                      </AcnsAddress>
+                      <EditBox>
+                        <IonButton
+                          class="acns-icon"
+                          onClick={() => updateAcns(oneAcns)}
+                        >
+                          <IonIcon
+                            slot="icon-only"
+                            icon={pencilOutline}
+                          ></IonIcon>
+                        </IonButton>
+                      </EditBox>
+                      <DeleteBox>
+                        <IonButton
+                          class="acns-icon"
+                          onClick={() => {
+                            setEditAcns(oneAcns);
+                            setIsConfirmModel(true);
+                          }}
+                        >
+                          <IonIcon
+                            slot="icon-only"
+                            icon={trashBinOutline}
+                          ></IonIcon>
+                        </IonButton>
+                      </DeleteBox>
+                    </OneAcnsWrapper>
+                    {index === acns.length - 1 ? null : <Divider />}
+                  </OneAcns>
+                ))}
+              </AcnsWrapper>
+            </IonCol>
+          </IonRow>
+        ) : (
+          <NoDataDiv>{t('NoData')}</NoDataDiv>
+        ))}
+      {view === View.edit && (
+        <IonGrid style={{ width: '270px' }}>
           <IonRow>
             <IonCol>
               <IonSelect
                 style={{
-                  border: '1px solid gray',
-                  borderRadius: '10px',
-                  padding: '5px 10px',
+                  border: '1px solid var(--m-3-sys-dark-outline, #958E99)',
+                  borderRadius: '8px',
+                  padding: '6px 8px 6px 16px',
+                  width: '100%',
+                  height: '40px',
                 }}
-                value={name}
+                value={selectedName}
                 interface="popover"
                 placeholder="Available names"
-                onIonChange={({ detail: { value } }) => setName(value)}
+                onIonChange={({ detail: { value } }) => setSelectedName(value)}
               >
-                {availableNames
-                  .filter((n) => !Object.values(keyNames).includes(n))
-                  .map((a) => (
-                    <IonSelectOption key={a} value={a}>
-                      {a}
-                    </IonSelectOption>
-                  ))}
+                {acns.map((a) => (
+                  <IonSelectOption key={a.name} value={a.name}>
+                    {a.name}
+                  </IonSelectOption>
+                ))}
               </IonSelect>
             </IonCol>
           </IonRow>
-          <IonRow>
-            <IonCol class="ion-center">
-              <IonLabel
-                style={{
-                  width: '100%',
-                  border: '1px solid gray',
-                  borderRadius: '10px',
-                  padding: '5px 10px',
+          <IonRow style={{ marginTop: '20px' }}>
+            <IonCol>
+              <StyledInput
+                placeholder={'x'}
+                onIonInput={({ target: { value } }) => {
+                  setNewValue(value as string);
                 }}
-              >
-                {editKey}
-              </IonLabel>
+                style={{ width: '100%' }}
+              />
             </IonCol>
           </IonRow>
-          <IonRow>
+          <IonRow style={{ marginTop: '20px' }}>
             <IonCol>
               <PurpleButton
                 expand="block"
-                onClick={() => {
-                  setKeyNames({
-                    ...keyNames,
-                    [editKey]: name,
-                  });
-                  setView(View.list);
-                }}
+                onClick={() => confirmUpdate()}
+                disabled={loading}
               >
-                Confirm
+                {t('Confirm')}
+                {loading ? (
+                  <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
+                ) : null}
               </PurpleButton>
             </IonCol>
             <IonCol>
@@ -172,12 +338,76 @@ export function SettingsNaming() {
                   setView(View.list);
                 }}
               >
-                Cancel
+                {t('Cancel')}
               </WhiteButton>
             </IonCol>
           </IonRow>
         </IonGrid>
       )}
+      <IonModal
+        id="settings-model"
+        isOpen={isConfirmModel}
+        onDidDismiss={() => setIsConfirmModel(false)}
+      >
+        <ModelDiv>
+          <IonImg
+            alt={''}
+            src={'/shared-assets/images/error-outline.png'}
+            style={{ width: '48px', height: '48px' }}
+          />
+          <WarningText>
+            {t('RemoveAcnsWarning', { acnsName: editAcns?.name || '' })}
+          </WarningText>
+          <IonRow
+            class="ion-justify-content-between"
+            style={{ width: '270px' }}
+          >
+            <IonCol>
+              <PurpleButton
+                expand="block"
+                onClick={() => removeAcns(editAcns.name)}
+              >
+                {t('Confirm')}
+              </PurpleButton>
+            </IonCol>
+            <IonCol>
+              <WhiteButton
+                expand="block"
+                onClick={() => setIsConfirmModel(false)}
+              >
+                {t('Cancel')}
+              </WhiteButton>
+            </IonCol>
+          </IonRow>
+        </ModelDiv>
+      </IonModal>
+      <IonModal
+        id="settings-model"
+        isOpen={isResultModel}
+        onDidDismiss={() => setIsResultModel(false)}
+      >
+        <ModelDiv>
+          <IonImg
+            alt={''}
+            src={'/shared-assets/images/right.png'}
+            style={{ width: '48px', height: '48px' }}
+          />
+          <WarningText>
+            {t('RemoveAcnsSuccess', { acnsName: editAcns?.name || '' })}
+          </WarningText>
+          <PurpleButton expand="block" onClick={() => setIsResultModel(false)}>
+            {t('Close')}
+          </PurpleButton>
+        </ModelDiv>
+      </IonModal>
+      <IonToast
+        cssClass="settings-toast"
+        isOpen={showEditToast}
+        onDidDismiss={() => setShowEditToast(false)}
+        message={t('EditAcnsSuccess') as string}
+        duration={1500}
+        icon={checkmarkCircleOutline}
+      />
     </LoggedLayout>
   );
 }

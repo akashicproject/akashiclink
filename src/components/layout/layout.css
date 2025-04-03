@@ -12,6 +12,10 @@ ion-content {
   overflow: auto;
 }
 
+.nft-layout {
+  text-align: -webkit-center;
+}
+
 *::-webkit-scrollbar {
   display: none;
 }

@@ -9,7 +9,8 @@ import { errorMsgs } from '../../constants/error-messages';
 import { displayLongText } from '../../utils/long-text';
 import { SendMain } from './send-main';
 
-const HeaderWrapper = styled.div({
+// TODO: move the exported components to separate files since they are used in other places
+export const HeaderWrapper = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -20,7 +21,7 @@ const HeaderWrapper = styled.div({
   marginTop: '20px',
 });
 
-const HeaderTitle = styled.div({
+export const HeaderTitle = styled.div({
   fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 700,
@@ -29,7 +30,7 @@ const HeaderTitle = styled.div({
   color: 'var(--ion-color-primary-10)',
 });
 
-const ResultContent = styled.div({
+export const ResultContent = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
@@ -38,7 +39,7 @@ const ResultContent = styled.div({
   width: '270px',
 });
 
-const TextWrapper = styled.div({
+export const TextWrapper = styled.div({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
@@ -48,7 +49,7 @@ const TextWrapper = styled.div({
   height: '24px',
 });
 
-const TextTitle = styled.div({
+export const TextTitle = styled.div({
   fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 400,
@@ -57,7 +58,7 @@ const TextTitle = styled.div({
   color: 'var(--ion-color-primary-10)',
 });
 
-const TextContent = styled.div({
+export const TextContent = styled.div({
   fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 700,

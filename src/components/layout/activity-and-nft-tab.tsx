@@ -3,7 +3,7 @@ import { isPlatform } from '@ionic/react';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
 import { Divider, formatWalletTransfer } from '../../pages/activity';
@@ -48,6 +48,7 @@ export const ActivityAndNftTab = () => {
   const [tab, setTab] = useState('activity');
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
+  const history = useHistory();
   const [transferParams, _] = useState({
     startDate: dayjs().subtract(1, 'month').toDate(),
     endDate: dayjs().toDate(),
@@ -68,7 +69,7 @@ export const ActivityAndNftTab = () => {
         <TabButton
           style={{ width: '50%', marginInline: '0' }}
           id={'nft'}
-          onClick={() => setTab('nft')}
+          onClick={() => history.push(akashicPayPath(urls.nfts))}
         >
           Nft
         </TabButton>

@@ -1,0 +1,31 @@
+.acns-icon {
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  --background: transparent;
+  --padding-start: 0;
+  --padding-end: 0;
+  color: var(--ion-logged-header);
+}
+
+ion-modal#settings-model {
+  --width: 333px;
+  --height: 341px;
+  --border-radius: 16px;
+  --background: #fff;
+  align-items: center;
+}
+
+.settings-toast {
+  --background: #41cc9a;
+  --border-radius: 8px;
+  --width: 350px;
+  padding: 8px 49px;
+  font-size: 14px;
+  font-family: Nunito Sans, serif;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+  color: #fff;
+  text-align: center;
+}

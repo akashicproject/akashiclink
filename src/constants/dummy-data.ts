@@ -3,7 +3,9 @@
  * TODO: remove once not needed or transform into tests
  */
 
+import type { IAcns, IAcnsResponse, INft } from '@helium-pay/backend';
 import {
+  ChainType,
   TransactionLayer,
   TransactionResult,
   TransactionStatus,
@@ -279,5 +281,286 @@ export const transfersDate = [
       '0x62ad3aa5500ccddd35b9730007a7daeffc004c25e31227b83e4bb828629caaa1',
     feesPaid: '0.000062530428807000',
     ownerAddress: '0xE94F9Ce88501e57353ab2C31B1f3b47429c92B21',
+  },
+];
+
+export const nftsData: INft[] = [
+  {
+    chainType: ChainType.AkashicChain,
+    name: 'nft1',
+    description: 'ntf1 des',
+    account: 'account1',
+    image:
+      'https://img.freepik.com/premium-vector/gift-postcard-with-cartoon-animals-panda-decorative-floral-background-with-branches-plants_71599-6394.jpg?w=1060',
+    edition: 'edition 1',
+    attributes: [
+      {
+        trait_type: 'trait_type',
+        value: 'value',
+      },
+    ],
+    ownerIdentity: 'ownerIdentity1',
+    acns: {
+      streamId: 'streamId',
+      chainType: ChainType.AkashicChain,
+      nftStreamId: 'nftStreamId',
+      ownerIdentity: 'ownerIdentity',
+      recordType: 'recordType',
+      recordKey: 'recordKey',
+      name: 'nft1',
+      value: null,
+    } as IAcns,
+  } as INft,
+  {
+    chainType: ChainType.AkashicChain,
+    name: 'nft2',
+    description: 'ntf2 des',
+    account: 'account1',
+    image:
+      'https://img.freepik.com/free-vector/cute-cartoon-happy-children-asian-student-uniform-character-people-vector-illustration-drawing_40876-3618.jpg?w=1060&t=st=1687501638~exp=1687502238~hmac=5285d1e4eb728533a94977ef9df4a1127f73a56249a57380f3d49f6b674b00a4',
+    attributes: [
+      {
+        trait_type: 'trait_type',
+        value: 'value',
+      },
+    ],
+    ownerIdentity: 'ownerIdentity1',
+    acns: {
+      streamId: 'streamId',
+      chainType: ChainType.AkashicChain,
+      nftStreamId: 'nftStreamId',
+      ownerIdentity: 'ownerIdentity',
+      recordType: 'recordType',
+      recordKey: 'recordKey',
+      name: 'nft2',
+      value: 'value',
+    } as IAcns,
+  } as INft,
+  {
+    chainType: ChainType.AkashicChain,
+    name: 'nft3',
+    description: 'ntf3 des',
+    account: 'account1',
+    image:
+      'https://img.freepik.com/free-photo/cute-ai-generated-cartoon-bunny_23-2150288868.jpg?size=338&ext=jpg&ga=GA1.1.2076558833.1687501636&semt=sph',
+    attributes: [
+      {
+        trait_type: 'trait_type',
+        value: 'value',
+      },
+    ],
+    ownerIdentity: 'ownerIdentity1',
+    acns: {
+      streamId: 'streamId',
+      chainType: ChainType.AkashicChain,
+      nftStreamId: 'nftStreamId',
+      ownerIdentity: 'ownerIdentity',
+      recordType: 'recordType',
+      recordKey: 'recordKey',
+      name: 'nft3',
+      value: null,
+    } as IAcns,
+  } as INft,
+  {
+    chainType: ChainType.AkashicChain,
+    name: 'nft4',
+    description: 'ntf4 des',
+    account: 'account1',
+    image:
+      'https://img.freepik.com/free-vector/flyer-template-with-international-literacy-day-concept-design-brochure-leaflet-watercolor_83728-4124.jpg?size=338&ext=jpg&ga=GA1.1.2076558833.1687501636&semt=sph',
+    attributes: [
+      {
+        trait_type: 'trait_type',
+        value: 'value',
+      },
+    ],
+    ownerIdentity: 'ownerIdentity1',
+    acns: {
+      streamId: 'streamId',
+      chainType: ChainType.AkashicChain,
+      nftStreamId: 'nftStreamId',
+      ownerIdentity: 'ownerIdentity',
+      recordType: 'recordType',
+      recordKey: 'recordKey',
+      name: 'nft4',
+      value: null,
+    } as IAcns,
+  } as INft,
+  {
+    chainType: ChainType.AkashicChain,
+    name: 'nft5',
+    description: 'ntf5 des',
+    account: 'account1',
+    image:
+      'https://img.freepik.com/free-psd/fat-graffiti-text-effect-youth-culture_36662-1384.jpg?size=626&ext=jpg&ga=GA1.1.2076558833.1687501636&semt=sph',
+    attributes: [
+      {
+        trait_type: 'trait_type',
+        value: 'value',
+      },
+    ],
+    ownerIdentity: 'ownerIdentity1',
+    acns: {
+      streamId: 'streamId',
+      chainType: ChainType.AkashicChain,
+      nftStreamId: 'nftStreamId',
+      ownerIdentity: 'ownerIdentity',
+      recordType: 'recordType',
+      recordKey: 'recordKey',
+      name: 'nft5',
+      value: null,
+    } as IAcns,
+  } as INft,
+  {
+    chainType: ChainType.AkashicChain,
+    name: 'nft6',
+    description: 'ntf6 des',
+    account: 'account1',
+    image:
+      'https://img.freepik.com/premium-vector/gift-postcard-with-cartoon-animals-panda-decorative-floral-background-with-branches-plants_71599-6394.jpg?w=1060',
+    attributes: [
+      {
+        trait_type: 'trait_type',
+        value: 'value',
+      },
+    ],
+    ownerIdentity: 'ownerIdentity1',
+    acns: {
+      streamId: 'streamId',
+      chainType: ChainType.AkashicChain,
+      nftStreamId: 'nftStreamId',
+      ownerIdentity: 'ownerIdentity',
+      recordType: 'recordType',
+      recordKey: 'recordKey',
+      name: 'nft6',
+      value: null,
+    } as IAcns,
+  } as INft,
+  {
+    chainType: ChainType.AkashicChain,
+    name: 'nft7',
+    description: 'ntf7 des',
+    account: 'account1',
+    image:
+      'https://img.freepik.com/free-vector/cute-cartoon-happy-children-asian-student-uniform-character-people-vector-illustration-drawing_40876-3618.jpg?w=1060&t=st=1687501638~exp=1687502238~hmac=5285d1e4eb728533a94977ef9df4a1127f73a56249a57380f3d49f6b674b00a4',
+    attributes: [
+      {
+        trait_type: 'trait_type',
+        value: 'value',
+      },
+    ],
+    ownerIdentity: 'ownerIdentity1',
+    acns: {
+      streamId: 'streamId',
+      chainType: ChainType.AkashicChain,
+      nftStreamId: 'nftStreamId',
+      ownerIdentity: 'ownerIdentity',
+      recordType: 'recordType',
+      recordKey: 'recordKey',
+      name: 'nft7',
+      value: null,
+    } as IAcns,
+  } as INft,
+  {
+    chainType: ChainType.AkashicChain,
+    name: 'nft8',
+    description: 'ntf8 des',
+    account: 'account1',
+    image:
+      'https://img.freepik.com/free-photo/cute-ai-generated-cartoon-bunny_23-2150288868.jpg?size=338&ext=jpg&ga=GA1.1.2076558833.1687501636&semt=sph',
+    attributes: [
+      {
+        trait_type: 'trait_type',
+        value: 'value',
+      },
+    ],
+    ownerIdentity: 'ownerIdentity1',
+    acns: {
+      streamId: 'streamId',
+      chainType: ChainType.AkashicChain,
+      nftStreamId: 'nftStreamId',
+      ownerIdentity: 'ownerIdentity',
+      recordType: 'recordType',
+      recordKey: 'recordKey',
+      name: 'nft8',
+      value: null,
+    } as IAcns,
+  } as INft,
+  {
+    chainType: ChainType.AkashicChain,
+    name: 'nft9',
+    description: 'ntf9 des',
+    account: 'account1',
+    image:
+      'https://img.freepik.com/free-vector/flyer-template-with-international-literacy-day-concept-design-brochure-leaflet-watercolor_83728-4124.jpg?size=338&ext=jpg&ga=GA1.1.2076558833.1687501636&semt=sph',
+    attributes: [
+      {
+        trait_type: 'trait_type',
+        value: 'value',
+      },
+    ],
+    ownerIdentity: 'ownerIdentity1',
+    acns: {
+      streamId: 'streamId',
+      chainType: ChainType.AkashicChain,
+      nftStreamId: 'nftStreamId',
+      ownerIdentity: 'ownerIdentity',
+      recordType: 'recordType',
+      recordKey: 'recordKey',
+      name: 'nft9',
+      value: null,
+    } as IAcns,
+  } as INft,
+  {
+    chainType: ChainType.AkashicChain,
+    name: 'nft10',
+    description: 'ntf10 des',
+    account: 'account1',
+    image:
+      'https://img.freepik.com/free-psd/fat-graffiti-text-effect-youth-culture_36662-1384.jpg?size=626&ext=jpg&ga=GA1.1.2076558833.1687501636&semt=sph',
+    attributes: [
+      {
+        trait_type: 'trait_type',
+        value: 'value',
+      },
+    ],
+    ownerIdentity: 'ownerIdentity1',
+    acns: {
+      streamId: 'streamId',
+      chainType: ChainType.AkashicChain,
+      nftStreamId: 'nftStreamId',
+      ownerIdentity: 'ownerIdentity',
+      recordType: 'recordType',
+      recordKey: 'recordKey',
+      name: 'nft10',
+      value: null,
+    } as IAcns,
+  } as INft,
+];
+
+export const acnsData: IAcnsResponse[] = [
+  {
+    chainType: ChainType.AkashicChain,
+    recordType: 'recordType',
+    recordKey: 'recordKey',
+    name: 'acns1',
+    value: 'xxxx',
+    ownerIdentity: 'aaabbbxxx1111',
+  },
+  {
+    chainType: ChainType.AkashicChain,
+    recordType: 'recordType',
+    recordKey: 'recordKey',
+    name: 'acns2',
+    value: 'yyyy',
+    ownerIdentity: 'aaabbbxxx1111',
+  },
+  {
+    chainType: ChainType.AkashicChain,
+    recordType: 'recordType',
+    recordKey: 'recordKey',
+    name: 'acns3',
+    value: 'zzzz',
+    ownerIdentity: 'aaabbbxxx1111',
   },
 ];

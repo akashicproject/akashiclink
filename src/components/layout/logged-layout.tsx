@@ -3,11 +3,13 @@ import './layout.css';
 import styled from '@emotion/styled';
 import { IonContent, IonFooter, IonPage, isPlatform } from '@ionic/react';
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { LoggedToolbar } from '../logged/logged-toolbar';
 import { LoggedHeader } from './logged-header';
 
-const ChainDiv = styled.div({
+// TODO: move the exported component to a separate file since it is used in other places
+export const ChainDiv = styled.div({
   width: '100%',
   height: '40px',
   fontSize: '14px',
@@ -27,6 +29,7 @@ export const LoggedLayout: React.FC<{
   children: ReactNode;
   footer?: ReactNode;
 }> = ({ children, footer }) => {
+  const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
   const ChainDivMarginBottom = isMobile ? '32px' : '0px';
   return (
@@ -34,7 +37,7 @@ export const LoggedLayout: React.FC<{
       <LoggedHeader loggedIn={true} />
       <IonContent>
         <ChainDiv style={{ marginBottom: ChainDivMarginBottom }}>
-          AkashicPay Chain
+          {t('AkashicChain')}
         </ChainDiv>
         <LoggedToolbar />
         {children}

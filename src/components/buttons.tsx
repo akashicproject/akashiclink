@@ -56,6 +56,18 @@ const tabButtonCss: CSSInterpolation = {
   },
 };
 
+const bottomTabButton: CSSInterpolation = {
+  ['&::part(native)']: {
+    color: 'var(--ion-color-primary-10)',
+    background: 'transparent',
+    borderRadius: 0,
+    ...buttonTextBaseCss,
+    [':active, :focus']: {
+      borderTop: '2px solid #C297FF',
+    },
+  },
+};
+
 export const PurpleButton = styled(IonButton)({
   ...purpleButtonCss,
 });
@@ -73,4 +85,8 @@ export const TabButton = styled(IonButton)({
  */
 export const TextButton = styled.button({
   background: 'none',
+});
+
+export const BottomTabButton = styled(IonButton)({
+  ...bottomTabButton,
 });
