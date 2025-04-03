@@ -1,6 +1,5 @@
 import { userConst } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -19,7 +18,6 @@ import {
 } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import {
   cacheCurrentPage,
@@ -49,7 +47,7 @@ export function ChangePassword() {
      * Activation request is sent -> email with activation code is sent to user
   
      */
-  async function requestImportAccount() {
+  async function changePassword() {
     if (newPassword && oldPassword) {
       try {
         await changeOtkPassword(
@@ -60,29 +58,6 @@ export function ChangePassword() {
         history.push(akashicPayPath(urls.changePasswordConfirm));
       } catch (error) {
         setAlertRequest(errorAlertShell(t(unpackRequestErrorMessage(error))));
-      }
-    }
-  }
-
-  async function confirmOldPassword() {
-    if (oldPassword) {
-      try {
-        await OwnersAPI.confirmPassword({
-          password: oldPassword,
-        });
-        // Call for verification email to be sent (if login doesn't error)
-        requestImportAccount();
-      } catch (error) {
-        if (
-          axios.isAxiosError(error) &&
-          error?.response?.data?.message === userConst.invalidPassErrorMsg
-        ) {
-          setAlertRequest(errorAlertShell(t('OldPasswordIncorrect')));
-        } else if (axios.isAxiosError(error)) {
-          setAlertRequest(errorAlertShell(t(unpackRequestErrorMessage(error))));
-        } else {
-          setAlertRequest(errorAlertShell(t('GenericFailureMsg')));
-        }
       }
     }
   }
@@ -156,7 +131,7 @@ export function ChangePassword() {
               value={confirmPassword}
               errorPrompt={StyledInputErrorPrompt.ConfirmPassword}
               validate={validateConfirmPassword}
-              submitOnEnter={confirmOldPassword}
+              submitOnEnter={changePassword}
             />
           </IonCol>
         </IonRow>
@@ -166,7 +141,7 @@ export function ChangePassword() {
           <IonCol>
             <PurpleButton
               expand="block"
-              onClick={confirmOldPassword}
+              onClick={changePassword}
               disabled={!oldPassword || !newPassword || !confirmPassword}
             >
               {t('Confirm')}

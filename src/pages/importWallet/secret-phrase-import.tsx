@@ -164,9 +164,12 @@ export const SecretPhraseImport = () => {
             {t('PasteYourSecretPhrase')}
           </StyledDiv>
           <StyledDiv
-            hidden={!error}
             color="#DE3730"
-            style={{ justifyContent: 'center', border: '1px solid #DE3730' }}
+            style={{
+              justifyContent: 'center',
+              border: '1px solid #DE3730',
+              display: !error ? 'none' : 'flex',
+            }}
           >
             {t('InvalidInput')}
           </StyledDiv>

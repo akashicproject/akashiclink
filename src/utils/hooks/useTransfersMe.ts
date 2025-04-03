@@ -13,7 +13,7 @@ export const useTransfersMe = (params?: IClientTransactionRecord) => {
     buildURL(`/key/transfers/me`, params),
     fetcher,
     {
-      refreshInterval: 1000 * 60, // refresh interval every 60secs
+      refreshInterval: 1000 * 10, // refresh interval every 10secs
     }
   );
   // Dates come from backend as string so need to transform them here

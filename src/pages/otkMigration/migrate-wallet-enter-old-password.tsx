@@ -78,6 +78,8 @@ export function MigrateWalletOldPassword() {
           otk,
         }
       );
+
+      setPassword(undefined);
       history.push(urls.migrateWalletSecret);
     } catch (e) {
       datadogRum.addError(e);

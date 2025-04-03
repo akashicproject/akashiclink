@@ -120,6 +120,9 @@ export function MigrateWalletCreatePassword() {
           signedAuth: signImportAuth(otk.key.prv.pkcs8pem, identity),
         });
 
+        setPassword(undefined);
+        setConfirmPassword(undefined);
+
         history.push({
           pathname: akashicPayPath(urls.migrateWalletComplete),
         });

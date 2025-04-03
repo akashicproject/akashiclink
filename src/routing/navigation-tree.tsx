@@ -24,6 +24,7 @@ import { NftTransfer } from '../pages/nft/nft-transfer';
 import { NftTransferResult } from '../pages/nft/nft-transfer-result';
 import { Nfts } from '../pages/nft/nfts';
 import { MigrateWalletCreatePassword } from '../pages/otkMigration/migrate-wallet-create-password';
+import { MigrateWalletOldPassword } from '../pages/otkMigration/migrate-wallet-enter-old-password';
 import { MigrateWalletNotice } from '../pages/otkMigration/migrate-wallet-notice';
 import { MigrateWalletSecret } from '../pages/otkMigration/migrate-wallet-secret';
 import { MigrateWalletSecretConfirm } from '../pages/otkMigration/migrate-wallet-secret-confirm';
@@ -91,6 +92,10 @@ export function NavigationTree() {
       {AkashicTab.registerPage(
         MigrateWalletSecretConfirm,
         urls.migrateWalletSecretConfirm
+      )}
+      {AkashicTab.registerPage(
+        MigrateWalletOldPassword,
+        urls.migrateWalletOldPassword
       )}
       {AkashicTab.registerPage(
         MigrateWalletCreatePassword,

@@ -11,7 +11,7 @@ import {
   IonPopover,
   IonRow,
 } from '@ionic/react';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const WordCol = styled(IonCol)`
@@ -30,6 +30,7 @@ const WordNumber = styled(IonLabel)`
   width: 12px;
   margin: 0;
   opacity: 1 !important;
+  color: var(--ion-color-primary-10);
 `;
 
 type WordInputProps = {
@@ -43,9 +44,12 @@ const WordInput = styled(IonInput)<WordInputProps>`
   font-size: 10px;
   text-align: center;
   color: var(--ion-color-primary-10);
+  width: 64px;
+  margin-left: 8px;
+  min-height: 24px !important;
+  opacity: unset !important;
   input {
     height: 24px;
-    width: 64px;
     padding: 8px !important;
     &:disabled {
       opacity: 1 !important;
@@ -58,6 +62,7 @@ const ActionButton = styled(IonButton)`
   font-weight: 700;
   text-transform: none;
   color: var(--ion-color-primary-shade);
+  --padding-start: 2px;
 `;
 
 type MaskContainerProps = {
@@ -150,7 +155,7 @@ export function SecretWords({
 
   const onInputChange = async (value: string | null | undefined, i: number) => {
     const sWords = value?.split(' ');
-    let newWords = [];
+    let newWords: string[] = [];
     if (sWords?.length === 12) {
       newWords = sWords;
     } else {
@@ -189,6 +194,7 @@ export function SecretWords({
                     <WordItem>
                       <WordNumber>{i + 1}.</WordNumber>
                       <WordInput
+                        aria-label={`${i + 1}`}
                         id={`wordInput-${i}`}
                         value={words[i]}
                         type={visibility ? 'text' : 'password'}
@@ -224,7 +230,7 @@ export function SecretWords({
         </MaskBlurContainer>
       </MaskContainer>
       {withAction && (
-        <IonGrid>
+        <IonGrid style={{ padding: '0px' }}>
           <IonRow class="ion-justify-content-between">
             <IonCol size={'6'}>
               <ActionButton fill="clear" onClick={onHiddenBtnClick}>

@@ -125,8 +125,12 @@ export function CreateWalletPassword() {
       addLocalAccount({
         identity: otk.identity,
       });
+
       // remove local variables
       await lastPageStorage.clear();
+      setConfirmPassword(undefined);
+      setPassword(undefined);
+
       history.push({
         pathname: akashicPayPath(urls.importSuccess),
       });
@@ -144,6 +148,10 @@ export function CreateWalletPassword() {
           password,
           otk,
         });
+
+        setConfirmPassword(undefined);
+        setPassword(undefined);
+
         history.push({
           pathname: akashicPayPath(urls.secret),
         });

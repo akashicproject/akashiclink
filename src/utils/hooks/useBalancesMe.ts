@@ -5,7 +5,7 @@ import fetcher from '../ownerFetcher';
 
 export const useBalancesMe = () => {
   const { data, error } = useSWR(`/owner/agg-balances`, fetcher, {
-    refreshInterval: 1000 * 60, // refreshing every 1 min
+    refreshInterval: 1000 * 10, // refreshing every 10
   });
   return {
     keys: (data || []) as IOwnerBalancesResponse[],
