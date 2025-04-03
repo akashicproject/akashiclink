@@ -15,10 +15,10 @@ import {
 } from '../../components/PreferenceProvider';
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { urls } from '../../constants/urls';
+import { themeType } from '../../theme/const';
 import { useLargestBalanceKeys } from '../../utils/hooks/useLargestBalanceKeys';
 import { cacheCurrentPage } from '../../utils/last-page-storage';
 import { LoggedMain } from './logged-main';
-import { themeType } from '../../theme/const';
 
 const CoinWrapper = styled.div({
   display: 'flex',

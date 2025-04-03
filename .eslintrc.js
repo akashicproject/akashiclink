@@ -13,7 +13,13 @@ module.exports = {
     project: 'tsconfig.json',
   },
   root: true,
-  ignorePatterns: [...getDefaultIgnorePatterns(), '.next', '.out', 'extension'],
+  ignorePatterns: [
+    ...getDefaultIgnorePatterns(),
+    '.next',
+    '.out',
+    'extension',
+    '**/*.mjs',
+  ],
   extends: [
     '@helium-pay/eslint-config-bases/typescript',
     '@helium-pay/eslint-config-bases/sonar',

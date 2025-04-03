@@ -14,6 +14,24 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
+### ios getNextVersionCode
+
+```sh
+[bundle exec] fastlane ios getNextVersionCode
+```
+
+### ios getNextReleaseName
+
+```sh
+[bundle exec] fastlane ios getNextReleaseName
+```
+
+### ios updateManifest
+
+```sh
+[bundle exec] fastlane ios updateManifest
+```
+
 ### ios buildIpa
 
 ```sh

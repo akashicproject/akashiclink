@@ -12,6 +12,7 @@ import { IonCol, IonImg, IonRow, IonSpinner, useIonRouter } from '@ionic/react';
 import Big from 'big.js';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { SwiperSlide } from 'swiper/react';
 
 import {
   AlertBox,
@@ -32,6 +33,7 @@ import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
+import { themeType } from '../../theme/const';
 import { OwnersAPI } from '../../utils/api';
 import { useAggregatedBalances } from '../../utils/hooks/useAggregatedBalances';
 import { useExchangeRates } from '../../utils/hooks/useExchangeRates';
@@ -43,8 +45,6 @@ import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-mess
 import { SendConfirm } from './send-confirm';
 import { SendMain } from './send-main';
 import { SendResult } from './send-result';
-import { themeType } from '../../theme/const';
-import { SwiperSlide } from 'swiper/react';
 
 /** Styled components */
 const SendWrapper = styled.div({
