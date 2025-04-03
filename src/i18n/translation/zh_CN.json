@@ -244,5 +244,6 @@
   "UpdateNoticeBullet1": "将提供 12 个秘密恢复密语备份机会",
   "UpdateNoticeBullet2": "您必须确保这 12 个密语的安全，否则您的账户将无法恢复。",
   "UpdateNoticeBullet3": "AAkashic 钱包不会存储或收集您的密钥对、12 个密语或密码。",
-  "WalletMigrationSuccessful": "成功创建 12 个字的恢复密语"
+  "WalletMigrationSuccessful": "成功创建 12 个字的恢复密语",
+  "InvalidSecretPhrase": "无效密语"
 }

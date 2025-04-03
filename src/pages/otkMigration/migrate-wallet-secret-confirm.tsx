@@ -1,10 +1,16 @@
 import styled from '@emotion/styled';
 import { IonCol, IonRow } from '@ionic/react';
 import { isEqual } from 'lodash';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import {
+  AlertBox,
+  errorAlertShell,
+  formAlertResetState,
+} from '../../components/alert/alert';
 import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
@@ -33,20 +39,29 @@ export function MigrateWalletSecretConfirm() {
   const otk = useAppSelector(selectOtk);
   const maskedPassPhrase = useAppSelector(selectMaskedPassPhrase);
   const dispatch = useAppDispatch();
+  const [alert, setAlert] = useState(formAlertResetState);
 
   const confirmSecret = async () => {
-    // Check for correct 12-word confirmation
-    if (
-      !isEqual(
-        migrateWalletForm.confirmPassPhrase!.join(' '),
-        otk!.phrase!.trim()
-      )
-    )
-      return;
+    try {
+      // Check for correct 12-word confirmation
+      if (
+        !isEqual(
+          migrateWalletForm.confirmPassPhrase!.join(' '),
+          otk!.phrase!.trim()
+        )
+      ) {
+        throw new Error(t('InvalidSecretPhrase'));
+      }
 
-    history.push({
-      pathname: akashicPayPath(urls.migrateWalletPassword),
-    });
+      setAlert(formAlertResetState);
+      history.push({
+        pathname: akashicPayPath(urls.migrateWalletPassword),
+      });
+    } catch (e) {
+      const error = e as Error;
+      const message = error.message || t('GenericFailureMsg');
+      setAlert(errorAlertShell(message));
+    }
   };
 
   return (
@@ -64,6 +79,9 @@ export function MigrateWalletSecretConfirm() {
               </h2>
             </IonRow>
           </IonCol>
+        </IonRow>
+        <IonRow>
+          <AlertBox state={alert} />
         </IonRow>
         <IonRow>
           <IonCol>

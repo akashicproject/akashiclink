@@ -54,17 +54,17 @@ export function CreateWalletSecretConfirm() {
     useAccountStorage();
 
   async function activateWalletAccount() {
-    // Check for correct 12-word confirmation
-    if (
-      !isEqual(
-        createWalletForm.confirmPassPhrase!.join(' '),
-        otk!.phrase!.trim()
-      )
-    )
-      return;
-
     // Submit request and display "creating account loader"
     try {
+      // Check for correct 12-word confirmation
+      if (
+        !isEqual(
+          createWalletForm.confirmPassPhrase!.join(' '),
+          otk!.phrase!.trim()
+        )
+      ) {
+        throw new Error(t('InvalidSecretPhrase'));
+      }
       if (!otk || !createWalletForm.password) {
         throw new Error('Something went wrong. Try again');
       }
@@ -97,7 +97,8 @@ export function CreateWalletSecretConfirm() {
       });
     } catch (e) {
       datadogRum.addError(e);
-      let message = t('GenericFailureMsg');
+      const error = e as Error;
+      let message = error.message || t('GenericFailureMsg');
       if (axios.isAxiosError(e)) message = e.response?.data?.message || message;
       setAlert(errorAlertShell(message));
     } finally {

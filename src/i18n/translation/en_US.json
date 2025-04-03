@@ -244,5 +244,6 @@
   "UpdateNoticeBullet1": "12 seeded secret recovery phrase backup opportunity will be given",
   "UpdateNoticeBullet2": "You must secure this 12 seeded phrase, otherwise your account cannot be restored.",
   "UpdateNoticeBullet3": "Akashic Wallet does not store nor collect your KeyPair, 12 seeded phrase or password.",
-  "WalletMigrationSuccessful": "12-word secret recovery phrase creation successful"
+  "WalletMigrationSuccessful": "12-word secret recovery phrase creation successful",
+  "InvalidSecretPhrase": "Invalid Secret Phrase"
 }
