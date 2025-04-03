@@ -7,7 +7,6 @@ import {
   IonGrid,
   IonIcon,
   IonInput,
-  IonItem,
   IonLabel,
   IonPopover,
   IonRow,
@@ -15,14 +14,15 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const WordItem = styled(IonItem)`
+const WordCol = styled(IonCol)`
+  --ion-padding: 4px;
+`;
+
+const WordItem = styled.div`
   height: 40px;
-  width: 110px;
-  &::part(native) {
-    height: 16px;
-    padding: 0;
-    background-color: transparent;
-  }
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const WordNumber = styled(IonLabel)`
@@ -90,18 +90,18 @@ const MaskLabelContainer = styled.div`
   }
 `;
 
-const StyledIonRow = styled(IonRow)`
-  justify-content: 'space-between';
-  width: '100%';
-  text-align: 'center';
-`;
-
 const StyledIonIcon = styled(IonIcon)`
   font-size: 12px;
   height: 20px;
   width: 20px;
   margin-right: 4px;
 `;
+
+const CopyActionButton = styled.div`
+  display: flex;
+  justify-content: end;
+`;
+
 /**
  * 12 words inputs
  * initialWords => array of 12 strings
@@ -183,8 +183,8 @@ export function SecretWords({
             <IonRow>
               {visibilityArray.map((visibility, i) => {
                 return (
-                  <IonCol size="4" key={i}>
-                    <WordItem lines={'none'}>
+                  <WordCol size="4" key={i} class="ion-padding-horizontal">
+                    <WordItem>
                       <WordNumber>{i + 1}.</WordNumber>
                       <WordInput
                         id={`wordInput-${i}`}
@@ -214,7 +214,7 @@ export function SecretWords({
                         />
                       )}
                     </WordItem>
-                  </IonCol>
+                  </WordCol>
                 );
               })}
             </IonRow>
@@ -222,43 +222,47 @@ export function SecretWords({
         </MaskBlurContainer>
       </MaskContainer>
       {withAction && (
-        <StyledIonRow>
-          <IonCol size={'5'}>
-            <ActionButton fill="clear" onClick={onHiddenBtnClick}>
-              <StyledIonIcon
-                src={`/shared-assets/images/visibility-${
-                  isHidden ? 'off-color' : 'on'
-                }.svg`}
-                style={{
-                  height: '20px',
-                  width: '20px',
-                  marginRight: '4px',
-                }}
-              />
+        <IonGrid>
+          <IonRow class="ion-justify-content-between">
+            <IonCol size={'6'}>
+              <ActionButton fill="clear" onClick={onHiddenBtnClick}>
+                <StyledIonIcon
+                  src={`/shared-assets/images/visibility-${
+                    isHidden ? 'off-color' : 'on'
+                  }.svg`}
+                  style={{
+                    height: '20px',
+                    width: '20px',
+                    marginRight: '4px',
+                  }}
+                />
 
-              {isHidden ? t('RevealRecoveryPhase') : t('HideRecoveryPhase')}
-            </ActionButton>
-          </IonCol>
-          <IonCol offset={'1'} size={'6'}>
-            <ActionButton fill="clear" onClick={handleCopy}>
-              <StyledIonIcon
-                slot="icon-only"
-                src={`/shared-assets/images/copy-icon-secret-white.svg`}
-              />
-              {t('CopyToClipboard')}
-            </ActionButton>
-            <IonPopover
-              side="top"
-              alignment="center"
-              ref={popover}
-              isOpen={popoverOpen}
-              class={'copied-popover'}
-              onDidDismiss={() => setPopoverOpen(false)}
-            >
-              <IonContent class="ion-padding">{t('Copied')}</IonContent>
-            </IonPopover>
-          </IonCol>
-        </StyledIonRow>
+                {isHidden ? t('RevealRecoveryPhase') : t('HideRecoveryPhase')}
+              </ActionButton>
+            </IonCol>
+            <IonCol size={'6'}>
+              <CopyActionButton>
+                <ActionButton fill="clear" onClick={handleCopy}>
+                  <StyledIonIcon
+                    slot="icon-only"
+                    src={`/shared-assets/images/copy-icon-secret-white.svg`}
+                  />
+                  {t('CopyToClipboard')}
+                </ActionButton>
+                <IonPopover
+                  side="top"
+                  alignment="center"
+                  ref={popover}
+                  isOpen={popoverOpen}
+                  class={'copied-popover'}
+                  onDidDismiss={() => setPopoverOpen(false)}
+                >
+                  <IonContent class="ion-padding">{t('Copied')}</IonContent>
+                </IonPopover>
+              </CopyActionButton>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       )}
     </>
   );
