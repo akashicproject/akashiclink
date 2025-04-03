@@ -20,17 +20,9 @@
     "service_worker": "serviceWorker.js",
     "type": "module"
   },
-  "content_scripts": [
-    {
-      "js": ["content.js"],
-      "matches": ["http://*/*", "https://*/*"],
-      "run_at": "document_idle"
-    }
-  ],
   "externally_connectable": {
     "ids": ["*"],
     "matches": [
-      "https://*.google.com/*",
       "https://*.akashicpay.com/*",
       "https://*.staging-akashicpay.com/*",
       "http://localhost:3000/*"
