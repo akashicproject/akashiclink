@@ -57,7 +57,10 @@ export function ConfirmLockPassword({
           <WhiteButton>Cancel</WhiteButton>
         </IonCol>
         <IonCol>
-          <PurpleButton onClick={() => password && setVal(password)}>
+          <PurpleButton
+            disabled={!password}
+            onClick={() => password && setVal(password)}
+          >
             Confirm
           </PurpleButton>
         </IonCol>

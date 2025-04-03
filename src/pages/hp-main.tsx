@@ -10,13 +10,16 @@ import {
   IonPage,
   IonRow,
 } from '@ionic/react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 
 import { PurpleButton, WhiteButton } from '../components/buttons';
 import { Footer } from '../components/layout/footer';
 import { urls } from '../constants/urls';
 import { heliumPayPath } from '../routing/navigation-tree';
-import { unpackCachedAccounts } from '../utils/local-storage';
+import { lastPageStorage } from '../utils/last-page-storage';
+import { getLocalAccounts } from '../utils/local-account-storage';
 
 const ContentText = styled.span({
   fontWeight: 700,
@@ -28,7 +31,14 @@ const ContentText = styled.span({
 
 export function HeliumPayMain() {
   const { t } = useTranslation();
-  const availableAccounts = unpackCachedAccounts();
+  const availableAccounts = getLocalAccounts();
+  const history = useHistory();
+
+  useEffect(() => {
+    // Redirect to last page user was on
+    const lastPage = lastPageStorage.get();
+    if (lastPage) history.push(heliumPayPath(lastPage));
+  }, []);
 
   return (
     <IonPage>
@@ -60,7 +70,7 @@ export function HeliumPayMain() {
           <IonRow style={{ marginTop: '8px' }}>
             <IonCol>
               <PurpleButton
-                routerLink={heliumPayPath(urls.beforeCreateWallet)}
+                routerLink={heliumPayPath(urls.createWalletUrl)}
                 expand="block"
               >
                 <span>{t('CreateWallet')}</span>
@@ -70,7 +80,7 @@ export function HeliumPayMain() {
           <IonRow>
             <IonCol>
               <PurpleButton
-                routerLink={heliumPayPath(urls.import)}
+                routerLink={heliumPayPath(urls.importAccountUrl)}
                 expand="block"
               >
                 {t('ImportWallet')}
@@ -91,7 +101,7 @@ export function HeliumPayMain() {
             <IonRow>
               <IonCol>
                 <PurpleButton
-                  routerLink={heliumPayPath(urls.login)}
+                  routerLink={heliumPayPath(urls.loginUrl)}
                   expand="block"
                 >
                   {t('Login')}

@@ -57,9 +57,7 @@ export function RecoverCode() {
               <IonButton onClick={() => history.goBack()}>Back</IonButton>
             </IonCol>
             <IonCol>
-              <IonButton routerLink={heliumPayPath(urls.dashboard)}>
-                Confirm
-              </IonButton>
+              <IonButton>Confirm</IonButton>
             </IonCol>
           </IonRow>
         </IonGrid>

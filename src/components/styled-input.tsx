@@ -1,28 +1,51 @@
 import './styled-input.css';
 
-import type { TextFieldTypes } from '@ionic/core';
-import type { IonInputCustomEvent } from '@ionic/core/dist/types/components';
 import { IonInput, IonItem, IonLabel } from '@ionic/react';
+import type { ComponentProps } from 'react';
+import { useState } from 'react';
 
-interface Props {
+type StyledInputProps = ComponentProps<typeof IonInput> & {
   label: string;
-  type: TextFieldTypes;
   placeholder: string;
-  onIonInput?: (event: IonInputCustomEvent<InputEvent>) => void;
-}
+  validate?: (value: string) => boolean;
+};
 
-export const StyledInput: React.FC<Props> = (props: Props) => {
+/**
+ * Standard input box with validation highlighting
+ */
+export function StyledInput({
+  className,
+  label,
+  onIonInput,
+  validate,
+  ...props
+}: StyledInputProps) {
+  const [inputValid, setInputValid] = useState<boolean>();
+
+  /** Set validation state based off user defined function */
+  function validateInput(ev: Event) {
+    if (!validate) return;
+
+    const value = (ev.target as HTMLInputElement).value;
+    setInputValid(undefined);
+    if (value === '') return;
+    validate(value) ? setInputValid(true) : setInputValid(false);
+  }
+
   return (
-    <IonItem class={'styled-item'}>
+    <IonItem class={'styled-item'} lines="none">
       <IonLabel class={'styled-label'} position={'stacked'}>
-        {props.label}
+        {label}
       </IonLabel>
       <IonInput
-        type={props.type}
-        placeholder={props.placeholder}
-        class={'styled-input'}
-        onIonInput={props.onIonInput}
+        class="styled-input"
+        className={`${!inputValid && 'fail'} ${className}`}
+        onIonInput={(event) => {
+          onIonInput && onIonInput(event);
+          validateInput(event);
+        }}
+        {...props}
       ></IonInput>
     </IonItem>
   );
-};
+}

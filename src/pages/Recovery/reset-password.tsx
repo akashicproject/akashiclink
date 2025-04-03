@@ -40,7 +40,7 @@ export function ResetPassword() {
         <IonRow>
           <IonCol>
             <PurpleButton
-              routerLink={heliumPayPath(urls.creatingWallet)}
+              routerLink={heliumPayPath(urls.createWalletUrl)}
               expand="block"
             >
               {t('Confirm')}

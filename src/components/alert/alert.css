@@ -1,0 +1,4 @@
+ion-alert.custom-alert {
+  color: var(--ion-color-danger-contrast);
+  --background: var(--ion-color-danger);
+}

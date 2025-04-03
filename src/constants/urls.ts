@@ -1,14 +1,16 @@
+import { createWalletUrl } from '../pages/createWallet/create-wallet';
+import { importAccountUrl } from '../pages/import-wallet';
+import { loginUrl } from '../pages/login';
+
 export const urls = {
   heliumPay: 'hp',
   beforeCreateWallet: 'before-create-wallet',
-  createWallet: 'create-wallet',
-  creatingWallet: 'creating-wallet',
+  createWalletUrl,
   recovery: 'recovery',
   resetPassword: 'reset-password',
   verification: 'verification',
-  walletCreated: 'wallet-created',
-  login: 'login',
-  import: 'import-wallet',
+  loginUrl,
+  importAccountUrl,
   welcome: 'welcome',
   loggedFunction: 'logged-function',
   loggedCreate: 'logged-create',
@@ -31,4 +33,4 @@ export const urls = {
   error: 'error',
 
   us2: 'us2',
-};
+} as const;

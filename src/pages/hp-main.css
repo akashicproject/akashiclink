@@ -33,7 +33,6 @@
   --background: transparent;
   --box-shadow: none;
   --min-height: 40px;
-  --border-radius: 8px;
-  --border-width: 2px;
-  --border-color: #7b757f;
+  --border: none;
+  --color: #290056;
 }

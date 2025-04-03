@@ -3,12 +3,8 @@ import { Redirect, Route } from 'react-router';
 
 import { urls } from '../constants/urls';
 import { Activity } from '../pages/activity';
-import { BeforeCreateWallet } from '../pages/createWallet/before-create-wallet';
 import { CreateWallet } from '../pages/createWallet/create-wallet';
-import { CreatingWallet } from '../pages/createWallet/creating-wallet';
-import { WalletCreated } from '../pages/createWallet/wallet-created';
 import { ErrorPage } from '../pages/error';
-import { HeliumPayDashboard } from '../pages/hp-dashboard';
 import { HeliumPayMain } from '../pages/hp-main';
 import { ImportWallet } from '../pages/import-wallet';
 import { LoggedCreate } from '../pages/logged/logged-create';
@@ -89,15 +85,12 @@ export function NavigationTree() {
     <IonRouterOutlet>
       {/* HeliumPay tree - default so redirect at bottom */}
       {hpSubtree.registerPage(HeliumPayMain)}
-      {hpSubtree.registerPage(BeforeCreateWallet, urls.beforeCreateWallet)}
-      {hpSubtree.registerPage(CreateWallet, urls.createWallet)}
-      {hpSubtree.registerPage(CreatingWallet, urls.creatingWallet)}
-      {hpSubtree.registerPage(WalletCreated, urls.walletCreated)}
+      {hpSubtree.registerPage(CreateWallet, urls.createWalletUrl)}
       {hpSubtree.registerPage(Recovery, urls.recovery)}
       {hpSubtree.registerPage(ResetPassword, urls.resetPassword)}
       {hpSubtree.registerPage(Verification, urls.verification)}
-      {hpSubtree.registerPage(Login, urls.login)}
-      {hpSubtree.registerPage(ImportWallet, urls.import)}
+      {hpSubtree.registerPage(Login, urls.loginUrl)}
+      {hpSubtree.registerPage(ImportWallet, urls.importAccountUrl)}
       {hpSubtree.registerPage(Welcome, urls.welcome)}
       {hpSubtree.registerPage(LoggedFunction, urls.loggedFunction)}
       {hpSubtree.registerPage(LoggedCreate, urls.loggedCreate)}
@@ -107,7 +100,6 @@ export function NavigationTree() {
       {hpSubtree.registerPage(SendResult, urls.sendResult)}
       {hpSubtree.registerPage(Activity, urls.activity)}
       {hpSubtree.registerPage(Recover, urls.recover)}
-      {hpSubtree.registerPage(HeliumPayDashboard, urls.dashboard)}
       {hpSubtree.registerPage(Settings, urls.settings)}
       {hpSubtree.registerPage(RecoverCode, urls.recoverCode)}
       {hpSubtree.registerPage(SettingsLanguage, urls.settingsLanguage)}

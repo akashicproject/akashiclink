@@ -1,4 +1,6 @@
 import type {
+  IActivateWalletAccount,
+  IActivateWalletAccountResponse,
   IChangePassword,
   IImportWallet,
   IImportWalletResponse,
@@ -7,6 +9,7 @@ import type {
   ILoginUser,
   IMinimalUserResponse,
   IRegisterApiPassphrase,
+  IRequestActivationCode,
   ITempShowOtkPrv,
   ITempShowOtkPrvResponse,
   ITransactionProposal,
@@ -14,16 +17,17 @@ import type {
   ITransactionSigned,
   ITransactionSignResponse,
   ITransactionVerifyResponse,
+  ITwoFaLogin,
 } from '@helium-pay/backend';
 
 import { axiosBasePublic, axiosOwnerBase } from './axios-helper';
 
 export const OwnersAPI = {
-  importWallet: async (
+  importAccount: async (
     importData: IImportWallet
   ): Promise<IImportWalletResponse> => {
     const response = await axiosBasePublic.post(
-      `/auth/import-wallet-with-otk-prv`,
+      `/auth/import-wallet-account`,
       JSON.stringify(importData)
     );
     const { data, status } = response;
@@ -66,6 +70,20 @@ export const OwnersAPI = {
     if (status >= 400) {
       throw new Error(data.message);
     }
+  },
+  login2fa: async (
+    login2faData: ITwoFaLogin
+  ): Promise<IMinimalUserResponse> => {
+    const response = await axiosBasePublic.post(
+      `/auth/2fa`,
+      JSON.stringify(login2faData)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+
+    return response.data;
   },
   registerApiPassphrase: async (
     registerData: IRegisterApiPassphrase
@@ -146,5 +164,32 @@ export const OwnersAPI = {
     if (status >= 400) {
       throw new Error(data.message);
     }
+  },
+
+  requestActivationCode: async function (
+    payload: IRequestActivationCode
+  ): Promise<void> {
+    const response = await axiosOwnerBase.post(
+      `/auth/request-2fa-activation`,
+      JSON.stringify(payload)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+  },
+
+  activateNewAccount: async (
+    payload: IActivateWalletAccount
+  ): Promise<IActivateWalletAccountResponse> => {
+    const response = await axiosOwnerBase.post(
+      `/auth/activate-wallet-account`,
+      JSON.stringify(payload)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+    return data as IActivateWalletAccountResponse;
   },
 };

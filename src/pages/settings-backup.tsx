@@ -1,34 +1,23 @@
 import './common.css';
 
 import styled from '@emotion/styled';
-import {
-  IonButton,
-  IonCol,
-  IonIcon,
-  IonImg,
-  IonItem,
-  IonLabel,
-  IonRow,
-  IonText,
-} from '@ionic/react';
-import { copyOutline } from 'ionicons/icons';
+import { IonCol, IonImg, IonRow } from '@ionic/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
+import {
+  Alert,
+  errorAlertShell,
+  formAlertResetState,
+} from '../components/alert/alert';
 import { PurpleButton, WhiteButton } from '../components/buttons';
 import { ConfirmLockPassword } from '../components/confirm-lock-password';
+import { Copy } from '../components/copy/copy';
 import { DividerDiv } from '../components/layout/divider';
 import { LoggedLayout } from '../components/layout/loggedLayout';
 import { MainGrid } from '../components/layout/main-grid';
 import { MainTitle } from '../components/layout/main-title';
 import { OwnersAPI } from '../utils/api';
-
-const CopyText = styled.span({
-  fontWeight: 700,
-  fontSize: '14px',
-  lineHeight: '20px',
-  fontFamily: 'Nunito Sans',
-  color: 'var(--ion-color-dark)',
-});
 
 const WarningText = styled.span({
   fontWeight: 700,
@@ -44,19 +33,30 @@ export enum BackupKeyPairState {
 }
 
 export function SettingsBackup() {
+  const { t } = useTranslation();
+
   const [view, setView] = useState(BackupKeyPairState.ConfirmPassword);
   const [keyPair, setKeyPair] = useState('');
+  const [alert, setAlert] = useState(formAlertResetState);
 
+  /**
+   * Submit request to display private key - requires password
+   */
   const fetchKeyPair = async (password: string) => {
-    const { otkPrv } = await OwnersAPI.fetchKeyPair({ password });
-    if (otkPrv) {
-      setKeyPair(otkPrv);
-      setView(BackupKeyPairState.ViewKeyPair);
+    try {
+      const { otkPrv } = await OwnersAPI.fetchKeyPair({ password });
+      if (otkPrv) {
+        setKeyPair(otkPrv);
+        setView(BackupKeyPairState.ViewKeyPair);
+      }
+    } catch (e) {
+      setAlert(errorAlertShell(t('InvalidPassword')));
     }
   };
 
   return (
     <LoggedLayout>
+      <Alert state={alert} />
       {view === BackupKeyPairState.ConfirmPassword && (
         <ConfirmLockPassword setVal={fetchKeyPair} />
       )}
@@ -74,36 +74,7 @@ export function SettingsBackup() {
           </IonRow>
           <IonRow>
             <IonCol>
-              <IonItem
-                lines="none"
-                style={{
-                  backgroundColor: 'none',
-                }}
-              >
-                <IonLabel
-                  style={{
-                    border: '1px solid var(--ion-color-dark)',
-                    borderRadius: '4px',
-                    margin: '10px',
-                    padding: '10px',
-                    height: '80%',
-                  }}
-                >
-                  <IonText class="ion-text-wrap" color="dark">
-                    <CopyText>{keyPair}</CopyText>
-                  </IonText>
-                </IonLabel>
-                <IonButton
-                  class="icon-button"
-                  onClick={() => navigator.clipboard.writeText(keyPair)}
-                >
-                  <IonIcon
-                    slot="icon-only"
-                    class="icon-button-icon"
-                    icon={copyOutline}
-                  />
-                </IonButton>
-              </IonItem>
+              <Copy text={keyPair} />
             </IonCol>
           </IonRow>
           <IonRow>

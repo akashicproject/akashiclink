@@ -78,5 +78,11 @@
   "ErrorPageDesc": "非常抱歉，请联系客服或",
   "ErrorPageBackButton": "返回主頁",
   "Coin": "币",
-  "EsTGasFee": "预估矿工费"
+  "EsTGasFee": "预估矿工费",
+  "PrivateKey": "私钥",
+  "ConfirmEmailSent": "请点击发送至 {{email}} 的激活链接",
+  "InvalidEmail": "请输入有效的电子邮件地址。",
+  "PasswordHelperText": "密码必须是10个字符，包含一个大写字母和一个数字",
+  "SaveKey": "API口令应包含小写和大写字符、数字和特殊符号，并且至少有20个字符长。",
+  "InvalidPassword": "密码错误!"
 }

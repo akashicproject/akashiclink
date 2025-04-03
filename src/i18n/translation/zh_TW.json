@@ -58,9 +58,10 @@
   "CopyTxHash": "複製交易哈希",
   "From": "從",
   "To": "到",
-  "Result": "結果",
   "Success": "成功",
   "Failure": "抱歉",
+  "Result": "結果",
+  "Failed": "失敗",
   "MissingTranslationError": "缺少翻譯錯誤",
   "ContractInteraction": "細節",
   "UserDoesNotExist": "用戶不存在",
@@ -77,5 +78,11 @@
   "ErrorPageDesc": "非常抱歉，請聯絡客服或",
   "ErrorPageBackButton": "返回主頁",
   "Coin": "幣",
-  "EsTGasFee": "預估礦工費"
+  "EsTGasFee": "預估礦工費",
+  "PrivateKey": "私鑰",
+  "ConfirmEmailSent": "請點擊發送至 {{email}} 的啟用鏈接",
+  "InvalidEmail": "請輸入有效的電子郵件地址。",
+  "PasswordHelperText": "密碼必須是10個字符，包含一個大寫字母和一個數字",
+  "SaveKey": "這是唯一的副本，一但丟失，就不能恢復（但可以更換）。",
+  "InvalidPassword": "密碼錯誤!"
 }
