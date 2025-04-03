@@ -216,6 +216,3 @@ PLATFORMS
 DEPENDENCIES
   fastlane
   fastlane-plugin-update_provisioning_profile_specifier
-
-BUNDLED WITH
-   2.4.10
