@@ -136,7 +136,7 @@
   "AvailableGas": "可用矿工费",
   "EsTGasFee": "预估矿工费",
   "GasFee": "矿工费",
-  "DelegatedGasFee": "矿工费（委托式）",
+  "DelegatedGasFee": "矿工费（代付）",
   "L2Fee": "L2 费用",
   "GasLimit": "矿工上限",
   "GasUsed": "使用的矿工",
