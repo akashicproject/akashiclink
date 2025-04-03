@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
-import { Nitr0genApi } from '../../utils/nitrogen-api';
+import { Nitr0genApi } from '../../utils/nitr0gen-api';
 import { CacheOtkContext } from '../PreferenceProvider';
 import { Toggle } from '../toggle/toggle';
 

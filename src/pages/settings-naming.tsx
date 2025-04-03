@@ -44,7 +44,7 @@ import { OwnersAPI } from '../utils/api';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useNftAcnsMe } from '../utils/hooks/useNftAcnsMe';
 import { displayLongText } from '../utils/long-text';
-import { Nitr0genApi } from '../utils/nitrogen-api';
+import { Nitr0genApi } from '../utils/nitr0gen-api';
 import { unpackRequestErrorMessage } from '../utils/unpack-request-error-message';
 
 const enum View {
