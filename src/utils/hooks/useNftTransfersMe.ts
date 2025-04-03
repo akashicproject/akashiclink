@@ -18,7 +18,7 @@ export const useNftTransfersMe = (params?: INftTransactionRecordRequest) => {
     ...response
   } = useSWR<INftTransactionRecord[], Error>(
     activeAccount?.identity
-      ? buildURL(`/nft/owner/${activeAccount?.identity}`, params)
+      ? buildURL(`/nft/owner/${activeAccount?.identity}/transfers`, params)
       : null,
     fetcher,
     { refreshInterval: REFRESH_INTERVAL }
