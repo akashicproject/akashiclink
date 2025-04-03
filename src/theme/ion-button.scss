@@ -1,12 +1,14 @@
-/**
- * Remove default shadow on buttons
- */
 ion-button {
+  /** Remove default shadow on buttons */
   --box-shadow: none;
+  min-height: 32px;
+  --padding-top: 1em;
+  --padding-bottom: 1em;
+  --transition: 'none';
 
   &.icon-button {
-    min-width: 40px;
-    min-height: 40px;
+    min-width: 32px;
+    min-height: 32px;
     margin: 0;
     --background: var(--ion-background-color);
     --border-color: #7b757f;
@@ -20,11 +22,15 @@ ion-button {
 
   /** Square icons */
   .icon-button-icon {
-    font-size: 1.5rem;
+    font-size: 18px;
     color: var(--ion-settings-color);
   }
 }
 
+ion-button[slot='end'] {
+  margin-inline-start: 16px;
+}
+
 ion-icon[slot='icon-only'] {
-  font-size: 1.5rem;
+  font-size: 18px;
 }

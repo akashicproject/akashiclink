@@ -54,18 +54,14 @@ export function ConfirmLockPassword({
   };
 
   return (
-    <MainGrid style={{ padding: '56px 48px' }}>
+    <MainGrid className={'ion-grid-row-gap-sm'}>
       <IonRow>
-        <IonCol className="ion-no-padding">
-          <h2 style={{ marginBottom: '8px' }}>{t('KeyPairBackup')}</h2>
-        </IonCol>
-      </IonRow>
-      <IonRow style={{ marginBottom: '40px' }}>
         <IonCol>
+          <h2 style={{ marginBottom: '8px' }}>{t('KeyPairBackup')}</h2>
           <h6 style={{ margin: '0px' }}>{t('PleaseEnterYourPassword')}</h6>
         </IonCol>
       </IonRow>
-      <IonRow className={'ion-grid-row-gap-lg'}>
+      <IonRow>
         <IonCol size="12">
           <StyledInput
             label={t('Password')}

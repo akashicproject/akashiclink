@@ -1,4 +1,4 @@
-import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
+import { IonIcon } from '@ionic/react';
 import { useState } from 'react';
 
 import { REFRESH_BUTTON_DISABLED_TIME } from '../../constants';
@@ -42,99 +42,89 @@ export function Toolbar({
   };
 
   return (
-    <IonGrid
-      className="ion-no-padding"
-      style={{ padding: '16px 24px 0px', height: 'auto' }}
-      fixed
+    <div
+      style={{
+        padding: '16px 24px',
+        height: 'auto',
+        display: 'flex',
+        gap: '8px',
+        justifyContent: 'space-between',
+      }}
     >
-      <IonRow style={{ gap: '8px' }}>
-        {showBackButton && (
-          <IonCol
-            className="ion-no-padding"
-            size="auto"
-            style={{
-              width: '10%',
+      {showBackButton && (
+        <div style={{ flex: 0 }}>
+          <SquareWhiteButton
+            className="icon-button"
+            onClick={onClickBackButton}
+          >
+            <IonIcon
+              className="icon-button-icon"
+              slot="icon-only"
+              src={`/shared-assets/images/${
+                storedTheme === themeType.DARK
+                  ? 'back-arrow-white.svg'
+                  : 'back-arrow-purple.svg'
+              }`}
+            />
+          </SquareWhiteButton>
+        </div>
+      )}
+      {showAddress && (
+        <div style={{ flex: 1 }}>
+          <AccountSelection
+            size={'md'}
+            showCopyButton={true}
+            onNewAccountClick={(selectedAccount) => {
+              // When a different account is clicked, set it as the active account and logout
+              setActiveAccount(selectedAccount);
+              logout();
+            }}
+          />
+        </div>
+      )}
+      {showRefresh && (
+        <div style={{ flex: 0 }}>
+          <SquareWhiteButton
+            disabled={refreshDisabled}
+            className="icon-button"
+            id="refresh-button"
+            onClick={async () => {
+              try {
+                setRefreshDisabled(true);
+                await mutateTransfersMe();
+                await mutateNftTransfersMe();
+                await mutateBalancesMe();
+                await mutateNftMe();
+              } finally {
+                // To prevent spam of the backend, disable the refresh button for a little while
+                setTimeout(
+                  () => setRefreshDisabled(false),
+                  REFRESH_BUTTON_DISABLED_TIME
+                );
+              }
             }}
           >
-            <SquareWhiteButton
-              className="icon-button"
-              onClick={onClickBackButton}
-            >
-              <IonIcon
-                className="icon-button-icon"
-                slot="icon-only"
-                src={`/shared-assets/images/${
-                  storedTheme === themeType.DARK
-                    ? 'back-arrow-white.svg'
-                    : 'back-arrow-purple.svg'
-                }`}
-              />
-            </SquareWhiteButton>
-          </IonCol>
-        )}
-        <IonCol
-          className="ion-no-padding"
+            <IonIcon
+              slot="icon-only"
+              className="icon-button-icons"
+              src={`/shared-assets/images/${
+                storedTheme === themeType.DARK
+                  ? 'refresh-dark.svg'
+                  : 'refresh-light.svg'
+              }`}
+            />
+          </SquareWhiteButton>
+        </div>
+      )}
+      {showSetting && (
+        <div
           style={{
-            width: '71%',
-            flex: '1 0 71%',
+            flex: 0,
           }}
         >
-          {showAddress && (
-            <AccountSelection
-              showCopyButton={true}
-              onNewAccountClick={(selectedAccount) => {
-                // When a different account is clicked, set it as the active account and logout
-                setActiveAccount(selectedAccount);
-                logout();
-              }}
-            />
-          )}
-        </IonCol>
-        {showRefresh && (
-          <IonCol className="ion-no-padding" size="auto">
-            <SquareWhiteButton
-              disabled={refreshDisabled}
-              className="icon-button"
-              id="refresh-button"
-              onClick={async () => {
-                try {
-                  setRefreshDisabled(true);
-                  await mutateTransfersMe();
-                  await mutateNftTransfersMe();
-                  await mutateBalancesMe();
-                  await mutateNftMe();
-                } finally {
-                  // To prevent spam of the backend, disable the refresh button for a little while
-                  setTimeout(
-                    () => setRefreshDisabled(false),
-                    REFRESH_BUTTON_DISABLED_TIME
-                  );
-                }
-              }}
-            >
-              <IonIcon
-                slot="icon-only"
-                className="icon-button-icons"
-                src={`/shared-assets/images/${
-                  storedTheme === themeType.DARK
-                    ? 'refresh-dark.svg'
-                    : 'refresh-light.svg'
-                }`}
-              />
-            </SquareWhiteButton>
-          </IonCol>
-        )}
-        {showSetting && (
-          <IonCol
-            className="ion-no-padding"
-            style={{
-              width: '10%',
-            }}
-          >
-            <SettingsPopover />
-          </IonCol>
-        )}
-      </IonRow>
-    </IonGrid>
+          <SettingsPopover />
+        </div>
+      )}
+    </div>
   );
 }

@@ -131,9 +131,6 @@ export const PreferenceProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-/**
- * Read and update the theme context across the whole application
- */
 export const useTheme: () => [
   ThemeType,
   Dispatch<ThemeType> | undefined
@@ -154,9 +151,6 @@ export const useTheme: () => [
   return [storedTheme, setStoredTheme];
 };
 
-/**
- * Read and update the currency context across the whole application
- */
 export const useFocusCurrency: () => [
   IWalletCurrency,
   Dispatch<IWalletCurrency> | undefined
@@ -164,4 +158,21 @@ export const useFocusCurrency: () => [
   const { focusCurrency, setFocusCurrency } = useContext(CurrencyContext);
 
   return [focusCurrency, setFocusCurrency];
+};
+
+export const useFocusCurrencyDetail: () => IWalletCurrency = () => {
+  const [currency] = useFocusCurrency();
+  const currentWalletMetadata =
+    SUPPORTED_CURRENCIES_FOR_EXTENSION.lookup(currency);
+
+  return currentWalletMetadata.walletCurrency;
+};
+
+export const useCacheOtk: () => [
+  FullOtk | null,
+  Dispatch<FullOtk | null> | undefined
+] = () => {
+  const { cacheOtk, setCacheOtk } = useContext(CacheOtkContext);
+
+  return [cacheOtk, setCacheOtk];
 };

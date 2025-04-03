@@ -32,20 +32,6 @@ import { formatMergeAndSortNftAndCryptoTransfers } from '../../utils/formatTrans
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 
-const L2Icon = '/shared-assets/images/PayLogo-all-white.svg';
-export const Divider = styled.div<{
-  borderColor?: string;
-  height?: string;
-  borderWidth?: string;
-}>((props) => ({
-  boxSizing: 'border-box',
-  height: `${props.height || '2px'}`,
-  border: `${props.borderWidth || '1px'} solid ${
-    props.borderColor || '#D9D9D9'
-  }`,
-  width: '100%',
-}));
-
 const ListContainer = styled.div({
   paddingLeft: '8px',
   paddingRight: '8px',

@@ -1,7 +1,7 @@
 import './akashic-main.scss';
 
 import { Preferences } from '@capacitor/preferences';
-import { IonCol, IonImg, IonRow, isPlatform } from '@ionic/react';
+import { IonImg, isPlatform } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -60,18 +60,17 @@ export function AkashicPayMain() {
 
   return (
     <PublicLayout>
-      <IonRow>
-        <IonCol className="ion-center">
-          <IonImg
-            className={
-              isMobile || !localAccounts.length
-                ? 'welcome-img'
-                : 'welcome-img-small'
-            }
-            alt="welcome"
-          />
-        </IonCol>
-      </IonRow>
+      <IonImg
+        className={`
+          ion-margin-auto 
+          ${
+            isMobile || !localAccounts.length
+              ? 'welcome-img'
+              : 'welcome-img-small'
+          }
+        `}
+        alt="welcome"
+      />
       {localAccounts.length ? <LoginForm /> : <CreateOrImportForm />}
     </PublicLayout>
   );

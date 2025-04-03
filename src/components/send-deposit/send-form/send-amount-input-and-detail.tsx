@@ -1,0 +1,185 @@
+import styled from '@emotion/styled';
+import { L2Regex } from '@helium-pay/backend';
+import type { InputChangeEventDetail, InputCustomEvent } from '@ionic/react';
+import { IonChip, IonCol, IonInput, IonRow, IonText } from '@ionic/react';
+import Big from 'big.js';
+import { debounce } from 'lodash';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
+import { useCalculateFocusCurrencyL2WithdrawalFee } from '../../../utils/hooks/useExchangeRates';
+import {
+  AlertBox,
+  errorAlertShell,
+  formAlertResetState,
+} from '../../common/alert/alert';
+import { TextButton } from '../../common/buttons';
+import { SendDetailBox } from './send-detail-box';
+import { SendFormActionButtons } from './send-form-action-buttons';
+import type { ValidatedAddressPair } from './types';
+
+const CurrencyChip = styled(IonChip)({
+  '--background': 'var(--ion-color-primary)',
+  '--color': 'var(--ion-color-primary-contrast)',
+  opacity: 1,
+});
+
+const AmountInput = styled(IonInput)({
+  textAlign: 'center',
+  border: 0,
+  borderBottom: '1px solid var(--ion-select-border)',
+  borderRadius: 0,
+  fontSize: '1.5rem',
+  fontWeight: 700,
+  width: '100%',
+});
+
+export const SendAmountInputAndDetail = ({
+  validatedAddressPair,
+  onAddressReset,
+}: {
+  validatedAddressPair: ValidatedAddressPair;
+  onAddressReset: () => void;
+}) => {
+  const { t } = useTranslation();
+  const [alert, setAlert] = useState(formAlertResetState);
+  const [amount, setAmount] = useState<string>('');
+
+  const {
+    isCurrencyTypeToken,
+    networkCurrencyCombinedDisplayName,
+    currencyBalance,
+    currencySymbol,
+    nativeCoinBalance,
+    nativeCoinSymbol,
+  } = useFocusCurrencySymbolsAndBalances();
+
+  const isL2 = validatedAddressPair.convertedToAddress.match(L2Regex);
+  const calculateL2Fee = useCalculateFocusCurrencyL2WithdrawalFee();
+
+  const isAmountLargerThanZero = amount !== '' && Big(amount).gt(0);
+
+  const validateAmount = debounce(async (input: string) => {
+    setAlert(formAlertResetState);
+
+    const userInputAmount = Big(input);
+
+    // amount must be larger then 0
+    if (userInputAmount.lte(0)) {
+      setAlert(errorAlertShell(t('amountLargerThenZero')));
+      return;
+    }
+
+    // if L2, balance must be larger than amount + internal fee
+    if (isL2) {
+      const fee = calculateL2Fee(input);
+      if (userInputAmount.gt(Big(currencyBalance ?? 0).sub(fee))) {
+        setAlert(errorAlertShell(t('SavingsExceeded')));
+        return;
+      }
+
+      return;
+    }
+
+    // if L1, balance must be larger than amount,
+    // and native coin balance must be larger than 0 (pay gas fee)
+    if (userInputAmount.gt(Big(currencyBalance ?? 0))) {
+      setAlert(errorAlertShell(t('SavingsExceeded')));
+    }
+    if (Big(nativeCoinBalance).lte(0)) {
+      setAlert(
+        errorAlertShell(
+          t('showNativeCoinNeededMsg', {
+            coinSymbol: nativeCoinSymbol,
+          })
+        )
+      );
+    }
+
+    // TODO: balance must be larger than amount + fee estimated
+  }, 200);
+
+  const onAmountChange = (e: InputCustomEvent<InputChangeEventDetail>) => {
+    setAmount(e.target?.value?.toString() ?? '');
+
+    if (typeof e.target?.value === 'string' && e.target?.value !== '') {
+      validateAmount(e.target?.value);
+    }
+  };
+
+  const onClickUseMax = () => {
+    const maxFee = calculateL2Fee(currencyBalance);
+    setAmount(Big(currencyBalance).sub(maxFee).toString());
+  };
+
+  return (
+    <>
+      <IonRow className={'ion-grid-row-gap-xs ion-center'}>
+        <IonCol className={'ion-center'} size={'12'}>
+          <CurrencyChip disabled>
+            {networkCurrencyCombinedDisplayName}
+          </CurrencyChip>
+        </IonCol>
+      </IonRow>
+      <IonRow className={'ion-grid-row-gap-xxxs'}>
+        <IonCol
+          className={
+            'ion-center ion-flex-direction-column ion-align-items-center'
+          }
+          offset={'2'}
+          size={'8'}
+        >
+          <AmountInput
+            placeholder={'0.00'}
+            type="number"
+            onIonInput={onAmountChange}
+            value={amount}
+          />
+          <TextButton
+            onClick={onClickUseMax}
+            className={'ion-text-size-xs'}
+            fill="clear"
+          >
+            <b>{t('UseMax')}</b>
+          </TextButton>
+          <IonText className={'ion-text-size-xs ion-text-align-center'}>
+            <b>{`${t('Balance')}: ${Big(currencyBalance).toFixed(
+              isCurrencyTypeToken ? 2 : 4
+            )} ${currencySymbol}`}</b>
+          </IonText>
+          {!isL2 && isCurrencyTypeToken && (
+            <IonText className={'ion-text-size-xs ion-text-align-center'}>
+              <b>{`${t('NativeCoinBalance')}: ${Big(nativeCoinBalance).toFixed(
+                4
+              )} ${nativeCoinSymbol}`}</b>
+            </IonText>
+          )}
+        </IonCol>
+      </IonRow>
+      {isAmountLargerThanZero && (
+        <SendDetailBox
+          validatedAddressPair={validatedAddressPair}
+          amount={amount}
+          fee={calculateL2Fee(amount)}
+          currencySymbol={currencySymbol}
+        />
+      )}
+      {alert.visible && (
+        <IonRow>
+          <IonCol size={'12'}>
+            <AlertBox state={alert} />
+          </IonCol>
+        </IonRow>
+      )}
+      {isAmountLargerThanZero && (
+        <SendFormActionButtons
+          validatedAddressPair={validatedAddressPair}
+          onAddressReset={onAddressReset}
+          amount={amount}
+          disabled={alert.visible}
+        />
+      )}
+    </>
+  );
+};

@@ -22,7 +22,7 @@ export function NftLayout({
   const { t } = useTranslation();
   return (
     <IonPage>
-      <Header loggedIn={true} />
+      <Header />
       <IonContent class="nft-layout">
         <IonRow style={{ borderBottom: '2px solid #C297FF' }}>
           <IonCol size="12" className="ion-no-padding">

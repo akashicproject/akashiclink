@@ -5,7 +5,6 @@ export const urls = {
   welcome: 'welcome',
   dashboard: 'dashboard',
   deposit: 'deposit',
-  sendFunction: 'send-function',
   sendTo: 'send-to',
   sendConfirm: 'send-confirm',
   sendResult: 'send-result',

@@ -1,9 +1,9 @@
+import { userConst } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
-import { userConst } from '../../../../../backend';
 import {
   AlertBox,
   errorAlertShell,
@@ -57,14 +57,16 @@ export function ChangePassword() {
 
   return (
     <DashboardLayout>
-      <MainGrid style={{ padding: '32px 48px' }}>
-        <IonRow className={'ion-grid-row-gap-xl'}>
+      <MainGrid style={{ padding: '0px 24px' }}>
+        <IonRow className={'ion-grid-row-gap-lg'}>
           <IonCol size="12">
             <h2 className={'ion-margin-top-0 ion-margin-bottom-xs'}>
               {t('ChangePassword')}
             </h2>
             <h6>{t('ChangePasswordInfo')}</h6>
           </IonCol>
+        </IonRow>
+        <IonRow className={'ion-grid-row-gap-xs'}>
           <IonCol size="12">
             <StyledInput
               label={t('OldPassword')}
@@ -77,6 +79,8 @@ export function ChangePassword() {
               errorPrompt={StyledInputErrorPrompt.Password}
               validate={validatePassword}
             />
+          </IonCol>
+          <IonCol size="12">
             <StyledInput
               label={t('NewPassword')}
               placeholder={t('EnterPassword')}
@@ -88,6 +92,8 @@ export function ChangePassword() {
               errorPrompt={StyledInputErrorPrompt.Password}
               validate={validatePassword}
             />
+          </IonCol>
+          <IonCol size="12">
             <StyledInput
               label={t('ConfirmPassword')}
               type="password"
@@ -106,6 +112,8 @@ export function ChangePassword() {
               <AlertBox state={alertRequest} />
             </IonCol>
           )}
+        </IonRow>
+        <IonRow className={'ion-grid-row-gap-lg'}>
           <IonCol size="6">
             <WhiteButton
               expand="block"

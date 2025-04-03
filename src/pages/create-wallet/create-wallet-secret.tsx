@@ -57,9 +57,9 @@ export function CreateWalletSecret() {
 
   return (
     <PublicLayout className="vertical-center">
-      <MainGrid className={'ion-grid-gap-xs'}>
-        <IonRow>
-          <IonCol size="12">
+      <MainGrid className={'ion-no-padding'}>
+        <IonRow className={'ion-center ion-grid-row-gap-xs'}>
+          <IonCol size="11">
             <IonText className={'ion-text-size-xs'} color={'dark'}>
               <h2
                 className={
@@ -73,22 +73,22 @@ export function CreateWalletSecret() {
               </p>
             </IonText>
           </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol size={'12'}>
+          <IonCol size={'11'}>
             <IonText className={'ion-text-size-xs'} color={'dark'}>
-              <h3 className={'ion-text-align-left ion-margin-0'}>
+              <h3 className={'ion-text-align-center ion-margin-0'}>
                 {t('Important')}
               </h3>
               <p
-                className={'ion-margin-top-xxs ion-text-bold ion-text-size-xxs'}
+                className={
+                  'ion-text-align-center ion-margin-top-xxs ion-text-bold ion-text-size-xxs'
+                }
               >
                 {t('SaveBackUpSecureLocation')}
               </p>
             </IonText>
           </IonCol>
         </IonRow>
-        <IonRow>
+        <IonRow className={'ion-grid-row-gap-xxs'}>
           <IonCol size={'12'}>
             {otk?.phrase && (
               <SecretWords
@@ -108,7 +108,7 @@ export function CreateWalletSecret() {
             </IonCol>
           </IonRow>
         )}
-        <IonRow className={'ion-justify-content-center'}>
+        <IonRow className={'ion-justify-content-center ion-grid-row-gap-xxs'}>
           <IonCol size="6">
             <PurpleButton
               expand="block"

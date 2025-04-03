@@ -21,14 +21,10 @@ export function ManageAccounts() {
 
   return (
     <PublicLayout>
-      <MainGrid>
+      <MainGrid className={'ion-no-padding'}>
         <IonRow style={{ justifyContent: 'start' }}>
           <SquareWhiteButton
             className="icon-button"
-            style={{
-              height: '40px',
-              width: '40px',
-            }}
             onClick={onClickBackButton}
           >
             <IonIcon
@@ -38,7 +34,7 @@ export function ManageAccounts() {
             />
           </SquareWhiteButton>
         </IonRow>
-        <IonRow className={'ion-grid-row-gap-lg'}>
+        <IonRow className={'ion-grid-row-gap-sm'}>
           <IonCol size="12">
             <h2 className={'ion-margin-bottom-xxs'}>{t('ManageAccounts')}</h2>
             <IonText

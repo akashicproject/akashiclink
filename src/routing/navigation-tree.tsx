@@ -29,9 +29,8 @@ import { Nft } from '../pages/nft/nft';
 import { NftTransfer } from '../pages/nft/nft-transfer';
 import { NftTransferResult } from '../pages/nft/nft-transfer-result';
 import { Nfts } from '../pages/nft/nfts';
-import { SendConfirm } from '../pages/send/send-confirm';
-import { SendResult } from '../pages/send/send-result';
-import { SendTo } from '../pages/send/send-to';
+import { SendPage } from '../pages/send/send';
+import { SendConfirmationPage } from '../pages/send/send-confirmation';
 import { ChangePasswordConfirm } from '../pages/settings/change-password/confirm';
 import { ChangePassword } from '../pages/settings/change-password/enter-passwords';
 import { Settings } from '../pages/settings/settings';
@@ -53,9 +52,8 @@ export function NavigationTree() {
       {AkashicTab.registerPage(ManageAccounts, urls.manageAccounts)}
       {AkashicTab.registerPage(Dashboard, urls.dashboard)}
       {AkashicTab.registerPage(DepositPage, urls.deposit)}
-      {AkashicTab.registerPage(SendConfirm, urls.sendConfirm)}
-      {AkashicTab.registerPage(SendTo, urls.sendTo)}
-      {AkashicTab.registerPage(SendResult, urls.sendResult)}
+      {AkashicTab.registerPage(SendPage, urls.sendTo)}
+      {AkashicTab.registerPage(SendConfirmationPage, urls.sendConfirm)}
       {AkashicTab.registerPage(Nfts, urls.nfts)}
       {AkashicTab.registerPage(Nft, urls.nft)}
       {AkashicTab.registerPage(NftTransfer, urls.nftTransfer)}

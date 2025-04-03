@@ -40,7 +40,7 @@ export const ImportWalletSelectMethod = () => {
           icon={arrowBack}
         />
       </SquareWhiteButton>
-      <MainGrid style={{ padding: '120px 16px' }}>
+      <MainGrid style={{ padding: '80px 16px' }}>
         <IonRow className={'ion-grid-row-gap-md'}>
           <IonCol size="12" style={{ textAlign: 'center' }}>
             <h2 className={'ion-margin-bottom-xxs ion-margin-top-0'}>

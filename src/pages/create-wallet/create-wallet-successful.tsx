@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
-import { IonCol, IonImg, IonRow, IonText } from '@ionic/react';
+import { IonCol, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
 import { PurpleButton } from '../../components/common/buttons';
+import { SuccessfulIconWithTitle } from '../../components/common/state-icon-with-title/successful-icon-with-title';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/page-layout/public-layout';
 import { useAppDispatch } from '../../redux/app/hooks';
@@ -45,34 +46,22 @@ export const CreateWalletSuccessful = () => {
 
   return (
     <PublicLayout className="vertical-center">
-      <MainGrid className={'ion-grid-row-gap-lg'}>
-        <IonRow className={'ion-grid-row-gap-md ion-center'}>
-          <IonCol size={'12'} className={'ion-center'}>
-            <IonImg
-              alt={''}
-              src={'/shared-assets/images/right.png'}
-              style={{ width: '40px', height: '40px' }}
-            />
-          </IonCol>
+      <MainGrid className={'ion-grid-row-gap-md'}>
+        <IonRow className={'ion-center'}>
           <IonCol size={'12'}>
-            <h2 className={'ion-text-align-center ion-margin-0'}>
-              {t('WalletCreationSuccessful')}
-            </h2>
-            <IonText
-              className={'ion-text-align-center ion-text-size-xs'}
-              color={'dark'}
-            >
-              <p>{t('WalletProtectedSuccessfully')}</p>
+            <SuccessfulIconWithTitle title={t('WalletCreationSuccessful')} />
+            <IonText color={'dark'}>
+              <p className={'ion-text-align-center ion-text-size-xs'}>
+                {t('WalletProtectedSuccessfully')}
+              </p>
             </IonText>
           </IonCol>
         </IonRow>
-        <IonRow className={'ion-grid-row-gap-sm ion-center'}>
+        <IonRow className={'ion-center ion-grid-row-gap-xs'}>
           <IonCol size={'12'}>
-            <h3 className={'ion-text-align-center ion-margin-0'}>
+            <h3 className={'ion-text-align-center ion-margin-bottom-sm'}>
               {t('Remember')}
             </h3>
-          </IonCol>
-          <IonCol size={'12'}>
             <IonText className={'ion-text-size-xs'} color={'dark'}>
               <ul>
                 <li>{t('CantRecoverSecretPhrase')}</li>

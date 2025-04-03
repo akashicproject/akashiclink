@@ -1,0 +1,173 @@
+import styled from '@emotion/styled';
+import { L2Regex, NetworkDictionary } from '@helium-pay/backend';
+import type { InputChangeEventDetail, InputCustomEvent } from '@ionic/react';
+import {
+  IonButton,
+  IonCol,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonRow,
+  IonText,
+} from '@ionic/react';
+import axios from 'axios';
+import { closeOutline } from 'ionicons/icons';
+import { debounce } from 'lodash';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { OwnersAPI } from '../../../utils/api';
+import { useAccountStorage } from '../../../utils/hooks/useLocalAccounts';
+import { unpackRequestErrorMessage } from '../../../utils/unpack-request-error-message';
+import {
+  AlertBox,
+  errorAlertShell,
+  formAlertResetState,
+} from '../../common/alert/alert';
+import { StyledInput } from '../../common/input/styled-input';
+import { useFocusCurrencyDetail } from '../../providers/PreferenceProvider';
+import type { ValidatedAddressPair } from './types';
+
+const LockedAddress = styled(IonItem)({
+  ['&::part(native)']: {
+    color: 'var(--ion-color-primary)',
+    borderColor: 'var(--ion-color-primary)',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderRadius: 8,
+    height: 40,
+    fontSize: '0.75rem',
+    '--inner-padding-end': '8px',
+  },
+});
+
+export const SendAddressInput = ({
+  validatedAddressPair,
+  onAddressValidated,
+  onAddressReset,
+}: {
+  validatedAddressPair: ValidatedAddressPair;
+  onAddressValidated: (addresses: ValidatedAddressPair) => void;
+  onAddressReset: () => void;
+}) => {
+  const { t } = useTranslation();
+
+  const [alert, setAlert] = useState(formAlertResetState);
+  const { activeAccount } = useAccountStorage();
+  const { chain } = useFocusCurrencyDetail();
+
+  const validateAddress = debounce(async (input: string) => {
+    setAlert(formAlertResetState);
+
+    const userInput = input.trim();
+
+    if (!userInput) return;
+
+    // Not allow sending to self address
+    if (userInput === activeAccount?.identity) {
+      setAlert(errorAlertShell(t('NoSelfSend')));
+      return;
+    }
+
+    try {
+      // -- Internal address (matches L2Regex), check if it exists
+      if (userInput.match(L2Regex)) {
+        const { l2Address } = await OwnersAPI.checkL2Address({
+          to: userInput,
+          coinSymbol: chain,
+        });
+
+        if (typeof l2Address === 'undefined') {
+          setAlert(errorAlertShell(t('invalidL2Address')));
+        } else {
+          onAddressValidated({
+            convertedToAddress: l2Address,
+            userInputToAddress: userInput,
+          });
+        }
+
+        return;
+      }
+
+      // -- External address, use paired L2 or original L1
+      if (userInput.match(NetworkDictionary[chain].regex.address)) {
+        const { l2Address: pairedL2Address } = await OwnersAPI.checkL2Address({
+          to: userInput,
+          coinSymbol: chain,
+        });
+
+        onAddressValidated({
+          convertedToAddress: pairedL2Address ?? userInput,
+          userInputToAddress: userInput,
+        });
+
+        return;
+      }
+
+      // -- Alias
+      const { l2Address: aliasL2Address } =
+        await OwnersAPI.checkL2AddressByAlias({
+          to: userInput,
+        });
+      if (typeof aliasL2Address === 'undefined') {
+        setAlert(errorAlertShell(t('AddressHelpText')));
+        return;
+      }
+
+      onAddressValidated({
+        convertedToAddress: aliasL2Address,
+        userInputToAddress: userInput,
+      });
+    } catch (error) {
+      setAlert(
+        errorAlertShell(
+          axios.isAxiosError(error)
+            ? t(unpackRequestErrorMessage(error))
+            : 'GenericFailureMsg'
+        )
+      );
+    }
+  }, 500);
+
+  const onAddressChange = (e: InputCustomEvent<InputChangeEventDetail>) => {
+    if (typeof e.target?.value === 'string') {
+      validateAddress(e.target.value);
+    }
+  };
+
+  const onAddressClear = () => {
+    onAddressReset();
+  };
+
+  return (
+    <IonRow className={'ion-center ion-grid-row-gap-xxs'}>
+      <IonCol className={'ion-text-align-center'} size={'12'}>
+        <IonText>
+          <h2 className="ion-margin-0">{t('SendTo')}</h2>
+        </IonText>
+      </IonCol>
+      <IonCol size={'12'}>
+        {validatedAddressPair.userInputToAddress === '' && (
+          <StyledInput
+            placeholder={t('EnterAddress')}
+            type={'text'}
+            onIonInput={onAddressChange}
+          />
+        )}
+        {validatedAddressPair.userInputToAddress !== '' && (
+          <LockedAddress lines="full">
+            <IonLabel>{validatedAddressPair.userInputToAddress}</IonLabel>
+            <IonButton onClick={onAddressClear} fill="clear" slot="end">
+              <IonIcon slot="icon-only" icon={closeOutline}></IonIcon>
+            </IonButton>
+          </LockedAddress>
+        )}
+      </IonCol>
+      {alert.visible && (
+        <IonCol size={'12'}>
+          <AlertBox state={alert} />
+        </IonCol>
+      )}
+    </IonRow>
+  );
+};

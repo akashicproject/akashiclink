@@ -116,7 +116,7 @@ export function MigrateWalletCreatePassword() {
   return (
     <PublicLayout className="vertical-center">
       <MainGrid>
-        <IonRow className="ion-grid-row-gap-lg">
+        <IonRow className="ion-grid-row-gap-sm">
           <IonCol size="12">
             <h2 className={'ion-margin-bottom-xxs'}>{t('CreatePassword')}</h2>
             <CreatePasswordInfo

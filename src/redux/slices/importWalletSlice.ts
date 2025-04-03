@@ -1,9 +1,9 @@
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import { datadogRum } from '@datadog/browser-rum';
+import { IMPORT_CONST, userError } from '@helium-pay/backend';
 import type { PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { isAxiosError } from 'axios';
 
-import { IMPORT_CONST, userError } from '../../../../backend';
 import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
 import { OwnersAPI } from '../../utils/api';

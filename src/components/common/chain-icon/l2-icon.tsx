@@ -1,0 +1,19 @@
+import { IonImg } from '@ionic/react';
+import React from 'react';
+
+export const L2Icon = ({ size = 24 }: { size?: number }) => {
+  return (
+    <div
+      style={{
+        width: size,
+        height: size,
+        borderRadius: '50%',
+      }}
+    >
+      <IonImg
+        src={'/shared-assets/icons/L2_icon.svg'}
+        style={{ width: 'auto ', height: '100%' }}
+      />
+    </div>
+  );
+};

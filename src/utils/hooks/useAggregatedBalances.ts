@@ -1,5 +1,7 @@
+import { NetworkDictionary } from '@helium-pay/backend';
 import { useEffect, useState } from 'react';
 
+import { useFocusCurrencyDetail } from '../../components/providers/PreferenceProvider';
 import { makeWalletCurrency } from '../../constants/currencies';
 import { CurrencyMap } from '../currencyMap';
 import { useBalancesMe } from './useBalancesMe';
@@ -24,4 +26,35 @@ export function useAggregatedBalances() {
   }, [userBalancesStringify]);
 
   return aggregatedBalances;
+}
+
+export function useFocusCurrencySymbolsAndBalances() {
+  const aggregatedBalances = useAggregatedBalances();
+  const walletCurrency = useFocusCurrencyDetail();
+
+  const isCurrencyTypeToken = typeof walletCurrency.token !== 'undefined';
+  const nativeCoin = NetworkDictionary[walletCurrency.chain].nativeCoin;
+
+  return {
+    isCurrencyTypeToken,
+    networkCurrencyCombinedDisplayName: walletCurrency.displayName,
+    currencySymbol: isCurrencyTypeToken
+      ? (walletCurrency.token as string)
+      : nativeCoin.displayName,
+    currencyBalance:
+      aggregatedBalances.get(
+        isCurrencyTypeToken
+          ? walletCurrency
+          : {
+              displayName: nativeCoin.displayName,
+              chain: walletCurrency.chain,
+            }
+      ) ?? '0',
+    nativeCoinSymbol: nativeCoin.displayName,
+    nativeCoinBalance:
+      aggregatedBalances.get({
+        displayName: nativeCoin.displayName,
+        chain: walletCurrency.chain,
+      }) ?? '0',
+  };
 }

@@ -142,10 +142,10 @@ export function LoginForm() {
       <h1 className="ion-justify-content-center ion-margin-top-lg ion-margin-bottom-xs">
         {t('WelcomeBack')}
       </h1>
-      <h3 className="ion-justify-content-center ion-margin-top-0">
+      <h3 className="ion-justify-content-center ion-margin-top-0 ion-margin-bottom-md">
         {t('EmpoweringYourWealth')}
       </h3>
-      <IonRow className={'ion-grid-gap-md ion-margin-top-lg'}>
+      <IonRow className={'ion-grid-gap-xs'}>
         <IonCol size="12">
           <AccountSelection onNewAccountClick={(a) => setSelectedAccount(a)} />
         </IonCol>

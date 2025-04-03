@@ -111,13 +111,9 @@ export function CreateWalletSecretConfirm() {
   return (
     <PublicLayout className="vertical-center">
       {isCreatingAccount && (
-        <Spinner
-          header={'CreatingYourWallet'}
-          warning={'DoNotClose'}
-          animationDuration="30s"
-        />
+        <Spinner header={'CreatingYourWallet'} warning={'DoNotClose'} />
       )}
-      <MainGrid style={{ gap: '24px', padding: '0' }}>
+      <MainGrid>
         <IonRow>
           <IonCol size="12" style={{ textAlign: 'center' }}>
             <h2
@@ -132,11 +128,13 @@ export function CreateWalletSecretConfirm() {
         <IonRow>
           <IonCol size={'12'}>
             <IonText className={'ion-text-size-xs'} color={'dark'}>
-              <h3 className={'ion-text-align-left ion-margin-0'}>
+              <h3 className={'ion-text-align-center ion-margin-0'}>
                 {t('Important')}
               </h3>
               <p
-                className={'ion-margin-top-xxs ion-text-bold ion-text-size-xxs'}
+                className={
+                  'ion-text-align-center ion-margin-top-xxs ion-text-bold ion-text-size-xxs'
+                }
               >
                 {t('SaveBackUpSecureLocation')}
               </p>

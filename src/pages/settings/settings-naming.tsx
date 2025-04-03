@@ -2,6 +2,12 @@ import './settings-naming.scss';
 
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
+import type {
+  IAcnsResponse,
+  IUpdateAcns,
+  IUpdateAcnsUsingClientSideOtk,
+  IVerifyUpdateAcnsResponse,
+} from '@helium-pay/backend';
 import {
   IonCol,
   IonGrid,
@@ -17,12 +23,6 @@ import { checkmarkCircleOutline } from 'ionicons/icons';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type {
-  IAcnsResponse,
-  IUpdateAcns,
-  IUpdateAcnsUsingClientSideOtk,
-  IVerifyUpdateAcnsResponse,
-} from '../../../../backend';
 import { AccountSelection } from '../../components/account-selection/account-selection';
 import {
   CustomAlert,
@@ -35,6 +35,7 @@ import {
   TabButton,
   WhiteButton,
 } from '../../components/common/buttons';
+import { SuccessfulIconWithTitle } from '../../components/common/state-icon-with-title/successful-icon-with-title';
 import { MainGrid } from '../../components/layout/main-grid';
 import { Tabs } from '../../components/layout/tabs';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
@@ -474,14 +475,9 @@ export function SettingsNaming() {
         onDidDismiss={() => setIsResultModel(false)}
       >
         <ModelDiv>
-          <IonImg
-            alt={''}
-            src={'/shared-assets/images/right.png'}
-            style={{ width: '48px', height: '48px' }}
+          <SuccessfulIconWithTitle
+            title={t('RemoveAcnsSuccess', { acnsName: editAcns?.name || '' })}
           />
-          <WarningText>
-            {t('RemoveAcnsSuccess', { acnsName: editAcns?.name || '' })}
-          </WarningText>
           <PurpleButton expand="block" onClick={() => setIsResultModel(false)}>
             {t('Close')}
           </PurpleButton>

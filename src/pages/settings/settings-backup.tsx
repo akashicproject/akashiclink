@@ -31,7 +31,7 @@ export function SettingsBackup() {
         <ConfirmLockPassword onPasswordCheckSuccess={onPasswordCheckSuccess} />
       )}
       {view === BackupKeyPairState.ViewKeyPair && (
-        <MainGrid style={{ padding: '56px 48px' }}>
+        <MainGrid>
           <IonRow>
             <IonCol>
               <h2>{t('ThisIsYourKeyPair')}</h2>

@@ -54,7 +54,7 @@ export const AccountList = () => {
   };
 
   return (
-    <IonList>
+    <IonList lines={'full'}>
       {localAccounts.map((account) => (
         <IconAndLabel key={account.identity}>
           <div

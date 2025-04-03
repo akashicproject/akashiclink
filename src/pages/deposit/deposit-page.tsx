@@ -1,12 +1,12 @@
 import './deposit-page.scss';
 
 import styled from '@emotion/styled';
+import type { CoinSymbol } from '@helium-pay/backend';
+import { NetworkDictionary } from '@helium-pay/backend';
 import { IonCol, IonGrid, IonImg, IonRow, IonText } from '@ionic/react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useTranslation } from 'react-i18next';
 
-import type { CoinSymbol } from '../../../../backend';
-import { NetworkDictionary } from '../../../../backend';
 import { OtkBox } from '../../components/otk-box/otk-box';
 import { LayoutWithActivityTab } from '../../components/page-layout/layout-with-activity-tab';
 import {

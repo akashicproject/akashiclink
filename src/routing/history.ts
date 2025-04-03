@@ -1,9 +1,13 @@
-import { createMemoryHistory } from 'history';
-
+import type { IBaseTransaction } from '@activeledger/sdk-bip39';
 import type {
   IL1ClientSideOtkTransactionBase,
+  ITerriTransaction,
   ITransactionProposalClientSideOtk,
-} from '../../../backend';
+  ITransactionVerifyResponse,
+} from '@helium-pay/backend';
+import { createMemoryHistory } from 'history';
+
+import type { ValidatedAddressPair } from '../components/send-deposit/send-form/types';
 import type { Url } from '../constants/urls';
 import { urls } from '../constants/urls';
 import type { TransferResultType } from '../pages/nft/nft-transfer-result';
@@ -21,13 +25,9 @@ export interface LocationState {
     errorMsg?: string;
   };
   sendConfirm?: {
-    fromAddress: string;
-    transaction?: (
-      | IL1ClientSideOtkTransactionBase
-      | ITransactionProposalClientSideOtk
-    )[];
-    currencyDisplayName?: string;
-    gasFree?: boolean;
+    txns: ITransactionVerifyResponse[];
+    signedTxns: (IBaseTransaction | ITerriTransaction)[];
+    validatedAddressPair: ValidatedAddressPair;
   };
   sendResult?: {
     fromAddress: string;

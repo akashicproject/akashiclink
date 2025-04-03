@@ -58,7 +58,7 @@ export function MigrateWalletOldPassword() {
 
   return (
     <PublicLayout className="vertical-center">
-      <MainGrid className={'ion-grid-row-gap-lg'}>
+      <MainGrid className={'ion-grid-row-gap-sm'}>
         <IonRow>
           <IonCol>
             <h2>{t('PleaseEnterYourPassword')}</h2>

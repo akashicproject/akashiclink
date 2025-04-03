@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
-import { IonCol, IonImg, IonRow } from '@ionic/react';
+import { IonCol, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
 import { PurpleButton } from '../../components/common/buttons';
+import { SuccessfulIconWithTitle } from '../../components/common/state-icon-with-title/successful-icon-with-title';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/page-layout/public-layout';
 import { useAppDispatch } from '../../redux/app/hooks';
@@ -34,20 +35,7 @@ export const ImportWalletSuccessful = () => {
       <MainGrid>
         <IonRow className={'ion-grid-row-gap-md ion-center'}>
           <IonCol size={'12'} className={'ion-center'}>
-            <IonImg
-              alt={''}
-              src={'/shared-assets/images/right.png'}
-              style={{ width: '40px', height: '40px' }}
-            />
-          </IonCol>
-          <IonCol size={'12'} className={'ion-center'}>
-            <h3
-              className={
-                'ion-margin-0 ion-margin-bottom-lg ion-text-align-center'
-              }
-            >
-              {t('ImportSuccessful')}
-            </h3>
+            <SuccessfulIconWithTitle title={t('ImportSuccessful')} />
           </IonCol>
           <IonCol size={'6'}>
             <PurpleButton expand="block" onClick={handleOnConfirm}>

@@ -16,7 +16,6 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-primary-tint: #7444b6;
   --ion-color-primary-10: #290056;
   --ion-color-primary-dark: #290056;
-  --ion-text-header: #7444b6;
 
   /** secondary **/
   --ion-color-secondary: #eddcff;
@@ -25,8 +24,6 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-secondary-contrast-rgb: 41, 0, 85;
   --ion-color-secondary-shade: #eddcff;
   --ion-color-secondary-tint: #eddcff;
-  --toggle-track: #e8e0eb;
-  --nft-background: #1f1f1f;
 
   /** tertiary **/
   --ion-color-tertiary: #dfd5ec;
@@ -85,6 +82,8 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-shade: #c297ff;
   --ion-color-light-tint: #c297ff;
 
+  --ion-color-grey: #958e99;
+
   --ion-background-color: #f3f5f6;
   --ion-background-color-rgb: 243, 245, 246;
 
@@ -93,8 +92,13 @@ http://ionicframework.com/docs/theming/ */
   --ion-white-button-background: #f3f5f6;
 
   /** header-background also used in setting-naming as icon color**/
-  --ion-logged-header: #290056;
+  --ion-header-background: #290056;
   --ion-slider: #c297ff;
+
+  /** grid **/
+  --ion-grid-padding: 16px;
+  --ion-grid-column-padding: 8px;
+  --ion-grid-row-padding: 4px;
 
   /** setting **/
   --ion-settings-color: #290056;
@@ -113,6 +117,12 @@ http://ionicframework.com/docs/theming/ */
 
   /** Image for main page **/
   --main-image: url('/public/shared-assets/images/main/main-img.png');
+
+  /** custom component  **/
+  --ion-text-header: #7444b6;
+  --toggle-track: #e8e0eb;
+  --nft-background: #1f1f1f;
+  --chain-icon-background: #290056;
 }
 
 /**
@@ -127,7 +137,6 @@ body.dark {
   --ion-color-primary-tint: #f5f6f9;
   --ion-color-primary-10: #ffffff;
   --ion-color-primary-dark: #290056;
-  --ion-text-header: #c297ff;
 
   --ion-color-secondary: #625b71;
   --ion-color-secondary-rgb: 80, 200, 255;
@@ -135,8 +144,6 @@ body.dark {
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
   --ion-color-secondary-shade: #46b0e0;
   --ion-color-secondary-tint: #62ceff;
-  --toggle-track: #625b71;
-  --nft-background: #5b299c;
 
   --ion-color-tertiary: #6a64ff;
   --ion-color-tertiary-rgb: 106, 100, 255;
@@ -196,7 +203,7 @@ body.dark {
   --ion-white-button-background: #1f1f1f;
 
   /** header-background also used in setting-naming as icon color**/
-  --ion-logged-header: #c297ff;
+  --ion-header-background: #c297ff;
   --ion-slider: #7444b6;
 
   /** setting **/
@@ -216,6 +223,12 @@ body.dark {
 
   /** Image for main page **/
   --main-image: url('/public/shared-assets/images/main/main-img-dark-mode.png');
+
+  /** custom component  **/
+  --ion-text-header: #c297ff;
+  --toggle-track: #625b71;
+  --nft-background: #5b299c;
+  --chain-icon-background: #c297ff;
 }
 
 /**

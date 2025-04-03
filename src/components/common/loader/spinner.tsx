@@ -24,7 +24,7 @@ const LoaderDiv = styled.div({
 export const Spinner = ({
   header,
   warning,
-  animationDuration = '5s',
+  animationDuration = '30s',
 }: {
   header?: string;
   warning?: string;

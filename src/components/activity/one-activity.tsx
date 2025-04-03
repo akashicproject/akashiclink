@@ -12,11 +12,11 @@ import RotateRightOutlinedIcon from '@mui/icons-material/RotateRightOutlined';
 import type { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Divider } from '../../pages/activity/activity';
 import { themeType } from '../../theme/const';
 import { formatAmount } from '../../utils/formatAmount';
 import { formatDate } from '../../utils/formatDate';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
+import { Divider } from '../common/divider';
 import { useTheme } from '../providers/PreferenceProvider';
 
 const L2Icon = '/shared-assets/images/PayLogo-all-white.svg';
@@ -343,10 +343,7 @@ export function OneActivity({
       </ActivityWrapper>
       {divider && (
         <Divider
-          style={{ margin: '8px 0px' }}
           borderColor={storedTheme === themeType.DARK ? '#2F2F2F' : '#D9D9D9'}
-          height={'1px'}
-          borderWidth={'0.5px'}
         />
       )}
     </>

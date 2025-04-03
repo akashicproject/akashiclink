@@ -139,3 +139,22 @@ ion-label {
 .ion-text-bold {
   font-weight: 700;
 }
+.ion-text-underline {
+  text-decoration: underline;
+}
+
+.ion-text-color-primary {
+  color: var(--ion-color-primary);
+}
+
+.ion-text-color-primary-10 {
+  color: var(--ion-color-primary-10);
+}
+
+.ion-text-color-medium {
+  color: var(--ion-color-medium);
+}
+
+.ion-text-color-grey {
+  color: var(--ion-color-grey);
+}

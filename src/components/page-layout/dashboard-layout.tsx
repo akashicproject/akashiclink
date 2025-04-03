@@ -1,12 +1,6 @@
 import { Preferences } from '@capacitor/preferences';
 import styled from '@emotion/styled';
-import {
-  IonContent,
-  IonFooter,
-  IonPage,
-  IonRouterLink,
-  isPlatform,
-} from '@ionic/react';
+import { IonContent, IonFooter, IonPage, IonRouterLink } from '@ionic/react';
 import { type ReactNode, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -50,7 +44,6 @@ export function DashboardLayout({
   showSetting?: boolean;
 }) {
   const { t } = useTranslation();
-  const isMobile = isPlatform('mobile');
 
   const { isLoading, authenticated } = useOwner();
 
@@ -71,12 +64,9 @@ export function DashboardLayout({
 
   return (
     <IonPage>
-      <Header loggedIn={true} />
+      <Header />
       <IonContent>
-        <ChainDiv
-          style={{ marginBottom: isMobile ? '8px' : '0px' }}
-          routerLink={akashicPayPath(urls.dashboard)}
-        >
+        <ChainDiv routerLink={akashicPayPath(urls.dashboard)}>
           {t('AkashicChain')}
         </ChainDiv>
         <Toolbar

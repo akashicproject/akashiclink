@@ -1,8 +1,8 @@
+import { userConst } from '@helium-pay/backend';
 import { IonCheckbox, IonCol, IonRow } from '@ionic/react';
 import type { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 import { useTranslation } from 'react-i18next';
 
-import { userConst } from '../../../../backend';
 import { useAppDispatch } from '../../redux/app/hooks';
 import type { CreateWalletForm } from '../../redux/slices/createWalletSlice';
 import type { ImportWalletForm } from '../../redux/slices/importWalletSlice';
@@ -51,8 +51,8 @@ export function CreatePasswordForm({
 
   return (
     <PublicLayout className="vertical-center">
-      <MainGrid>
-        <IonRow className="ion-grid-row-gap-lg">
+      <MainGrid className="ion-grid-row-gap-sm">
+        <IonRow>
           <IonCol size="12">
             <h2 className={'ion-margin-bottom-xxs'}>{t('CreatePassword')}</h2>
             <p

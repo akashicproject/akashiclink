@@ -12,7 +12,7 @@ const squareButtonBaseCss: CSSInterpolation = {
   border: '1px solid transparent',
   borderRadius: '6px !important',
   textAlign: 'center',
-  height: '40px',
+  height: '32px',
 };
 
 const buttonBaseCss: CSSInterpolation = {
@@ -152,11 +152,14 @@ export const TabButton = styled(IonButton)({
   ...tabButtonCss,
 });
 
-/**
- * Button is just underlined text
- */
-export const TextButton = styled.button({
+/** Button is just underlined text */
+export const TextButton = styled(IonButton)({
   background: 'none',
+  textDecoration: 'underline',
+  minHeight: 0,
+  ['&::part(native)']: {
+    padding: 4,
+  },
 });
 
 export const BottomTabButton = styled(IonButton)({

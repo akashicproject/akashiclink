@@ -4,7 +4,7 @@ import { IonPage } from '@ionic/react';
 import { type ReactNode } from 'react';
 
 import { Footer } from '../layout/footer';
-import { Header } from '../layout/header';
+import { PublicHeader } from '../layout/public-header';
 
 /**
  * Narrow layout for all public pages (before user has completed login)
@@ -22,7 +22,7 @@ export function PublicLayout({
   return (
     <IonPage>
       <div className="vertical public-layout">
-        <Header />
+        <PublicHeader />
         <div className={`content ${className ?? ''}`} style={contentStyle}>
           {children}
         </div>

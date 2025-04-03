@@ -5,13 +5,13 @@ import 'swiper/css/navigation';
 import './select-coin.scss';
 
 import styled from '@emotion/styled';
+import { TEST_TO_MAIN } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import Big from 'big.js';
 import { useEffect, useState } from 'react';
 import SwiperCore, { Navigation, Virtual } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { TEST_TO_MAIN } from '../../../../backend';
 import type { IWalletCurrency } from '../../constants/currencies';
 import {
   compareWalletCurrencies,

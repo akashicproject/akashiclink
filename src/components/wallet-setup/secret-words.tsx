@@ -262,7 +262,7 @@ export function SecretWords({
         </MaskBlurContainer>
       </MaskContainer>
       {withAction && (
-        <IonRow className="ion-margin">
+        <IonRow className="ion-margin ion-center">
           <IonCol size={'6'}>
             <CopyActionButton>
               <CopyClipBoardLabel

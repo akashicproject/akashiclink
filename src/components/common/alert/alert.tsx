@@ -161,6 +161,7 @@ export function AlertBox({
 
   return (
     <IonNote
+      className="alert-box"
       style={{
         ...(state.visible && {
           border: `1px solid ${style?.color || color}`,

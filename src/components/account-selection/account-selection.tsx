@@ -39,10 +39,12 @@ export function AccountSelection({
   onNewAccountClick,
   showCopyButton,
   hideCreateImport,
+  size = 'lg',
 }: {
   onNewAccountClick?: (selectedAccount: LocalAccount) => void;
   showCopyButton?: boolean;
   hideCreateImport?: boolean;
+  size?: 'md' | 'lg';
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -99,8 +101,8 @@ export function AccountSelection({
         style={{
           flexGrow: 1,
           padding: '0px 8px 0px 16px',
-          height: '40px',
-          minHeight: '40px',
+          height: size === 'lg' ? 40 : 32,
+          minHeight: size === 'lg' ? 40 : 32,
           minWidth: '0',
         }}
         value={selectedAccount}
