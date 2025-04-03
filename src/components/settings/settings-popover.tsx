@@ -4,11 +4,12 @@ import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-lan
 import { IonIcon, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
 import { caretBackOutline, settingsOutline } from 'ionicons/icons';
 import type { MouseEventHandler, ReactNode } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
+import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { SquareWhiteButton } from '../buttons';
 import { useLogout } from '../logout';
 
@@ -117,12 +118,21 @@ export function SettingsPopover() {
     event: undefined,
   });
 
-  // eslint-disable-next-line
-  const changeLanguage = (event: any) => {
-    if (event.target.id) {
-      i18n.changeLanguage(event.target.id);
-    }
+  const getLocalisationLanguage = (): string => {
+    const browserLanguage = window.navigator.language;
+    for (const lang of LANGUAGE_LIST)
+      if (lang.locale === browserLanguage) return lang.locale;
+    // Default to english
+    return LANGUAGE_LIST[0].locale;
   };
+  const [selectedLanguage, setSelectedLanguage, _] = useLocalStorage(
+    'language',
+    getLocalisationLanguage()
+  );
+
+  useEffect(() => {
+    i18n.changeLanguage(selectedLanguage);
+  }, [selectedLanguage, i18n]);
 
   return (
     <>
@@ -160,7 +170,7 @@ export function SettingsPopover() {
                   key={l.locale}
                   displayText={l.title}
                   id={l.locale}
-                  onClick={(event) => changeLanguage(event)}
+                  onClick={(_) => setSelectedLanguage(l.locale)}
                 />
               ))}
             </SettingsList>
