@@ -73,7 +73,9 @@ export const useMyTransfers = (params?: IClientTransactionRecord) => {
   // Add local transactions
   const withLocalTransactions = [
     ...localTransactions.filter(
-      (t) => !duplicatedLocalTransactionHashes.includes(t.l2TxnHash)
+      (t) =>
+        !duplicatedLocalTransactionHashes.includes(t.l2TxnHash) &&
+        t.fromAddress === activeAccount?.identity
     ),
     ...(data?.transactions ?? []),
   ];
@@ -81,7 +83,7 @@ export const useMyTransfers = (params?: IClientTransactionRecord) => {
   const transformedTransfers = withLocalTransactions.map((d) => ({
     ...d,
     // remove trailing zeros from amounts
-    amount: d.amount.replace(/\.*0+$/, ''),
+    amount: d.amount?.toString().replace(/\.*0+$/, ''),
     feesPaid: d.feesPaid?.replace(/\.*0+$/, ''),
     // Dates come from backend as string so need to transform them here
     date: new Date(d.date),
