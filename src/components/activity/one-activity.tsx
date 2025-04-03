@@ -55,6 +55,7 @@ const Type = styled.div({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
+  padding: '3px 8px',
   gap: '45px',
   width: '100%',
   height: '23px',
@@ -243,6 +244,7 @@ export function OneActivity({
                 <span
                   style={{
                     color: '#DE3730',
+                    fontSize: '7px',
                   }}
                 >
                   {`${transferType} - ${t('Pending')}`}

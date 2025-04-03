@@ -1,3 +1,4 @@
+import { Browser } from '@capacitor/browser';
 import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import {
@@ -35,9 +36,19 @@ const TextContent = styled.div({
   lineHeight: '20px',
   ...darkColor,
 });
+
+const ExternalLink = styled.button({
+  backgroundColor: 'white',
+  textDecoration: 'underline',
+  cursor: 'pointer',
+  fontWeight: 400,
+  fontSize: '16px',
+  lineHeight: '20px',
+  ...darkColor,
+});
+
 const Header = styled.h4(darkColor);
 const Header3 = styled.h3(darkColor);
-const Link = styled.a(darkColor);
 
 export function TransactionDetails({
   currentTransfer,
@@ -96,6 +107,10 @@ export function TransactionDetails({
     }, 1000);
   };
 
+  const openInBrowser = async (url: string) => {
+    await Browser.open({ url });
+  };
+
   return (
     <>
       <DetailColumn>
@@ -109,38 +124,34 @@ export function TransactionDetails({
       <DetailColumn>
         <Header>{t('txHash')}</Header>
         <TextContent>
-          {isLayer2 ? (
-            displayLongText(currentTransfer.txHash)
-          ) : (
-            <>
-              <Link href={currentTransfer.txHashUrl}>
-                {displayLongText(currentTransfer.txHash)}
-              </Link>
-              <IonButton
-                style={{ height: '22px', width: '19px' }}
-                class="copy-button"
-                onClick={async (e: never) =>
-                  copyData(currentTransfer.l2TxnHashUrl, e)
-                }
-              >
-                <IonIcon
-                  slot="icon-only"
-                  class="copy-icon"
-                  src={`/shared-assets/images/copy-icon-dark.svg`}
-                />
-                <IonPopover
-                  side="top"
-                  alignment="center"
-                  ref={popover}
-                  isOpen={popoverOpen}
-                  class={'copied-popover'}
-                  onDidDismiss={() => setPopoverOpen(false)}
-                >
-                  <IonContent class="ion-padding">{t('Copied')}</IonContent>
-                </IonPopover>
-              </IonButton>
-            </>
-          )}
+          <ExternalLink
+            onClick={() => openInBrowser(currentTransfer.l2TxnHashUrl)}
+          >
+            {displayLongText(currentTransfer.l2TxnHash)}
+          </ExternalLink>
+          <IonButton
+            style={{ height: '22px', width: '19px' }}
+            class="copy-button"
+            onClick={async (e: never) =>
+              copyData(currentTransfer.l2TxnHashUrl, e)
+            }
+          >
+            <IonIcon
+              slot="icon-only"
+              class="copy-icon"
+              src={`/shared-assets/images/copy-icon-dark.svg`}
+            />
+            <IonPopover
+              side="top"
+              alignment="center"
+              ref={popover}
+              isOpen={popoverOpen}
+              class={'copied-popover'}
+              onDidDismiss={() => setPopoverOpen(false)}
+            >
+              <IonContent class="ion-padding">{t('Copied')}</IonContent>
+            </IonPopover>
+          </IonButton>
         </TextContent>
       </DetailColumn>
       <DetailColumn>
@@ -148,31 +159,33 @@ export function TransactionDetails({
         <Header>{t('To')}</Header>
       </DetailColumn>
       <DetailColumn>
-        {isLayer2 ? (
-          <TextContent>
+        <TextContent>
+          <ExternalLink
+            onClick={() =>
+              openInBrowser(
+                currentTransfer.internalSenderUrl ??
+                  currentTransfer.senderAddressUrl
+              )
+            }
+          >
             {displayLongText(currentTransfer.fromAddress)}
-          </TextContent>
-        ) : (
-          <TextContent>
-            <Link href={currentTransfer.senderAddressUrl}>
-              {displayLongText(currentTransfer.fromAddress)}
-            </Link>
-          </TextContent>
-        )}
+          </ExternalLink>
+        </TextContent>
         <TextContent>
           <IonIcon icon={arrowForwardCircleOutline} />
         </TextContent>
-        {isLayer2 ? (
-          <TextContent>
+        <TextContent>
+          <ExternalLink
+            onClick={() =>
+              openInBrowser(
+                currentTransfer.internalRecipientUrl ??
+                  currentTransfer.recipientAddressUrl
+              )
+            }
+          >
             {displayLongText(currentTransfer.toAddress)}
-          </TextContent>
-        ) : (
-          <TextContent>
-            <Link href={currentTransfer.recipientAddressUrl}>
-              {displayLongText(currentTransfer.toAddress)}
-            </Link>
-          </TextContent>
-        )}
+          </ExternalLink>
+        </TextContent>
       </DetailColumn>
       <Divider style={{ margin: '8px' }} />
       <DetailColumn>
