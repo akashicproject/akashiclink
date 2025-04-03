@@ -3,21 +3,10 @@ import useSWR from 'swr';
 
 import fetcher from '../ownerFetcher';
 
-/**
- * @param noReload will only request this is single time
- */
-export const useOwner = (noReload = false) => {
-  const { data, error, mutate } = useSWR(
-    `/owner/me`,
-    fetcher,
-    noReload
-      ? {
-          refreshInterval: 0,
-          revalidateOnFocus: false,
-          shouldRetryOnError: false,
-        }
-      : {}
-  );
+export const useOwner = () => {
+  const { data, error, mutate } = useSWR(`/owner/me`, fetcher, {
+    shouldRetryOnError: false,
+  });
 
   const owner = (data || {}) as IOwnerInfoResponse;
 
@@ -27,6 +16,6 @@ export const useOwner = (noReload = false) => {
     authenticated: !!owner.ownerIdentity,
     isLoading: !error && !data,
     isError: error,
-    mutate,
+    mutateOwner: mutate,
   };
 };

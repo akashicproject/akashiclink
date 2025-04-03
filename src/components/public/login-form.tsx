@@ -20,9 +20,9 @@ import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-key
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
-import { mutate } from 'swr';
 import { signImportAuth } from '../../utils/otk-generation';
 import { Spinner } from '../loader/spinner';
+import { useOwner } from '../../utils/hooks/useOwner';
 
 /**
  * Form allowing user to login
@@ -44,6 +44,7 @@ export function LoginForm() {
   } = useAccountStorage();
   const [selectedAccount, setSelectedAccount] = useState<LocalAccount>();
   const [password, setPassword] = useState<string>();
+  const { owner, mutateOwner } = useOwner();
 
   addPrefixToAccounts();
 
@@ -68,7 +69,7 @@ export function LoginForm() {
     } else {
       setSelectedAccount(localAccounts?.[0]);
     }
-  }, [activeAccount, localAccounts]);
+  }, [activeAccount, localAccounts, owner]);
 
   const login = async () => {
     try {
@@ -112,7 +113,7 @@ export function LoginForm() {
       });
       // Set the login account
       setActiveAccount(selectedAccount);
-      await mutate(`/owner/me`);
+      await mutateOwner();
       history.push(akashicPayPath(urls.loggedFunction));
       setSelectedAccount(undefined);
       setPassword('');

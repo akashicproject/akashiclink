@@ -7,10 +7,12 @@ import buildURL from 'axios/unsafe/helpers/buildURL';
 import useSWR from 'swr';
 
 import fetcher from '../ownerFetcher';
+import { useOwner } from './useOwner';
 
 export const useTransfersMe = (params?: IClientTransactionRecord) => {
-  const { data, error } = useSWR(
-    buildURL(`/key/transfers/me`, params),
+  const { authenticated } = useOwner();
+  const { data, error, mutate } = useSWR(
+    authenticated ? buildURL(`/key/transfers/me`, params) : '',
     fetcher,
     {
       refreshInterval: 1000 * 10, // refresh interval every 10secs
@@ -36,5 +38,6 @@ export const useTransfersMe = (params?: IClientTransactionRecord) => {
     transfers: transformedFails,
     isLoading: !error && !data,
     isError: error,
+    mutateTransfersMe: mutate,
   };
 };

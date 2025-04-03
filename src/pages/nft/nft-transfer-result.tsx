@@ -1,7 +1,6 @@
 import { IonCol, IonImg, IonRow, isPlatform } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useSWRConfig } from 'swr';
 
 import { PurpleButton } from '../../components/buttons';
 import { DividerDiv } from '../../components/layout/divider';
@@ -10,6 +9,7 @@ import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
+import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { displayLongText } from '../../utils/long-text';
 import {
   HeaderTitle,
@@ -31,8 +31,8 @@ export interface TransferResultType {
 
 export function NftTransferResult() {
   const { t } = useTranslation();
+  const { mutateNftTransfersMe } = useNftTransfersMe();
   const history = useHistory<LocationState>();
-  const { mutate } = useSWRConfig();
   const state = history.location.state?.nftTransferResult;
   const wrongResult = state?.errorMsg !== errorMsgs.NoError;
   const isMobile = isPlatform('mobile');
@@ -98,10 +98,7 @@ export function NftTransferResult() {
             expand="block"
             routerLink={akashicPayPath(urls.nfts)}
             onClick={async () => {
-              await mutate(
-                (key) =>
-                  typeof key === 'string' && key.startsWith('/nft/transfers/me')
-              );
+              await mutateNftTransfersMe();
             }}
           >
             {t('Confirm')}

@@ -27,6 +27,6 @@ export const useConfig = () => {
         },
     isLoading: !error && !data,
     isError: error,
-    mutate,
+    mutateConfig: mutate,
   };
 };

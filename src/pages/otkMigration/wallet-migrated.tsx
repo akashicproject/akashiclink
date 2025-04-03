@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { IonImg, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { mutate } from 'swr';
 
 import { useAppDispatch } from '../../app/hooks';
 import { PurpleButton } from '../../components/buttons';
@@ -11,6 +10,7 @@ import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { onClear } from '../../slices/migrateWalletSlice';
+import { useOwner } from '../../utils/hooks/useOwner';
 import { StyledSpan } from './migrate-wallet-secret';
 
 export const StyledA = styled.a({
@@ -26,10 +26,11 @@ export const WalletMigrated = () => {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const { mutateOwner } = useOwner();
 
   const handleOnClick = async () => {
     dispatch(onClear());
-    await mutate(`/owner/me`);
+    await mutateOwner();
     history.push(akashicPayPath(urls.loggedFunction));
   };
 

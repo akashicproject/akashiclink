@@ -1,11 +1,13 @@
 import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSWRConfig } from 'swr';
 
 import { urls } from '../../constants/urls';
 import { themeType } from '../../theme/const';
+import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
+import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { AccountSelection } from '../account-selection/account-selection';
 import { SquareWhiteButton } from '../buttons';
 import { useLogout } from '../logout';
@@ -23,8 +25,9 @@ export function LoggedToolbar({
   showAddress?: boolean;
   showBackButton?: boolean;
 }) {
-  // Mutate is ued to to trigger a revalidation
-  const { mutate } = useSWRConfig();
+  const { mutateTransfersMe } = useTransfersMe();
+  const { mutateNftTransfersMe } = useNftTransfersMe();
+  const { mutateBalancesMe } = useBalancesMe();
   const logout = useLogout();
   const history = useHistory();
   const [storedTheme] = useTheme();
@@ -92,17 +95,9 @@ export function LoggedToolbar({
               onClick={async () => {
                 try {
                   setRefreshDisabled(true);
-                  await mutate(
-                    (key) =>
-                      typeof key === 'string' &&
-                      key.startsWith('/key/transfers/me')
-                  );
-                  await mutate(
-                    (key) =>
-                      typeof key === 'string' &&
-                      key.startsWith('/nft/transfers/me')
-                  );
-                  await mutate('/owner/agg-balances');
+                  await mutateTransfersMe();
+                  await mutateNftTransfersMe();
+                  await mutateBalancesMe();
                 } finally {
                   setRefreshDisabled(false);
                 }

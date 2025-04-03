@@ -2,9 +2,11 @@ import type { IKeyInfoResponse } from '@helium-pay/backend';
 import useSWR from 'swr';
 
 import fetcher from '../ownerFetcher';
+import { useOwner } from './useOwner';
 
 export const useKeyMe = () => {
-  const { data, error } = useSWR(`/key/me`, fetcher, {});
+  const { authenticated } = useOwner();
+  const { data, error } = useSWR(authenticated ? `/key/me` : '', fetcher, {});
 
   // Dates come from backend as string so need to transform them here
   const dataWithDates = ((data || []) as IKeyInfoResponse[]).map((d) => ({

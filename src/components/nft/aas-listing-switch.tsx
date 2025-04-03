@@ -40,7 +40,7 @@ export const AasListingSwitch = ({
 }) => {
   const { cacheOtk } = useContext(CacheOtkContext);
   const { activeAccount } = useAccountStorage();
-  const { mutate } = useNftMe();
+  const { mutateNftMe } = useNftMe();
   const { t } = useTranslation();
   const [isListed, setIsListed] = useState<boolean>(!!aasValue);
   const [isLoading, setIsLoading] = useState(false);
@@ -73,7 +73,7 @@ export const AasListingSwitch = ({
         });
       }
 
-      await mutate();
+      await mutateNftMe();
       setIsListed(!isListed);
     } catch (error) {
       const errorMsg = axios.isAxiosError(error)

@@ -15,7 +15,7 @@ import { useOwner } from '../utils/hooks/useOwner';
 
 export function ManageAccounts() {
   const history = useHistory();
-  const { authenticated } = useOwner(true);
+  const { authenticated } = useOwner();
 
   const { t } = useTranslation();
 

@@ -49,7 +49,7 @@ export function LoggedLayout({
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
 
-  const { isLoading, authenticated } = useOwner(true);
+  const { isLoading, authenticated } = useOwner();
 
   /** If user auth has expired, redirect to login page */
   useEffect(() => {

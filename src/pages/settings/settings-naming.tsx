@@ -161,7 +161,7 @@ export function SettingsNaming() {
   const { t } = useTranslation();
   const { cacheOtk } = useContext(CacheOtkContext);
   const { activeAccount } = useAccountStorage();
-  const { acns, mutate } = useNftAcnsMe();
+  const { acns, mutateNftAcnsMe } = useNftAcnsMe();
   const namedAcns = acns.filter((a) => !!a.value);
 
   const [view, setView] = useState(View.list);
@@ -205,7 +205,7 @@ export function SettingsNaming() {
       datadogRum.addError(error);
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
     } finally {
-      await mutate();
+      await mutateNftAcnsMe();
       setLoading(false);
     }
   };
@@ -246,7 +246,7 @@ export function SettingsNaming() {
       datadogRum.addError(error);
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
     } finally {
-      await mutate();
+      await mutateNftAcnsMe();
       setLoading(false);
     }
   };

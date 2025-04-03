@@ -5,14 +5,18 @@ import { urls } from '../constants/urls';
 import { history } from '../history';
 import { akashicPayPath } from '../routing/navigation-tabs';
 import { axiosBase } from '../utils/axios-helper';
+import { useBalancesMe } from '../utils/hooks/useBalancesMe';
 import { useOwner } from '../utils/hooks/useOwner';
+import { useTransfersMe } from '../utils/hooks/useTransfersMe';
 import { CacheOtkContext } from './PreferenceProvider';
 
 /**
  * Hook that logs user out and clears all session settings
  */
 export function useLogout(callLogout = true) {
-  const { mutate } = useOwner(true);
+  const { mutateOwner } = useOwner();
+  const { mutateBalancesMe } = useBalancesMe();
+  const { mutateTransfersMe } = useTransfersMe();
   const { setCacheOtk } = useContext(CacheOtkContext);
 
   return async () => {
@@ -33,7 +37,18 @@ export function useLogout(callLogout = true) {
     });
 
     // Trigger refresh of login status
-    await mutate();
+    await mutateOwner(
+      {},
+      {
+        revalidate: false,
+      }
+    );
+    await mutateBalancesMe([], {
+      revalidate: false,
+    });
+    await mutateTransfersMe([], {
+      revalidate: false,
+    });
     history.push(akashicPayPath(urls.akashicPay));
   };
 }

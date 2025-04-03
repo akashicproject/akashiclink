@@ -94,7 +94,7 @@ const NftWrapper = styled.div({
 export function NftTransfer() {
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
-  const { nfts, isLoading, mutate } = useNftMe();
+  const { nfts, isLoading, mutateNftMe } = useNftMe();
   const history = useHistory<LocationState>();
   const state = history.location.state?.nft;
   const currentNft = nfts.find((nft) => nft.name === state?.nftName)!;
@@ -179,7 +179,7 @@ export function NftTransfer() {
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
     } finally {
       setInputValue('');
-      await mutate();
+      await mutateNftMe();
       setLoading(false);
     }
   };

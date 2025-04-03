@@ -4,7 +4,6 @@ import { IonCol, IonImg, IonRow } from '@ionic/react';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { useSWRConfig } from 'swr';
 
 import { PurpleButton } from '../../components/buttons';
 import { DividerDivWithoutMargin } from '../../components/layout/divider';
@@ -12,6 +11,8 @@ import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
+import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
+import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { displayLongText } from '../../utils/long-text';
 import { SendMain } from './send-main';
 
@@ -74,7 +75,8 @@ export const TextContent = styled.div({
 
 export function SendResult() {
   const { t } = useTranslation();
-  const { mutate } = useSWRConfig();
+  const { mutateBalancesMe } = useBalancesMe();
+  const { mutateTransfersMe } = useTransfersMe();
   const history = useHistory<LocationState>();
   const state = history.location.state?.sendResult;
   const wrongResult = state?.errorMsg !== errorMsgs.NoError;
@@ -168,11 +170,8 @@ export function SendResult() {
           <PurpleButton
             expand="block"
             onClick={async () => {
-              await mutate('/owner/agg-balances');
-              await mutate(
-                (key) =>
-                  typeof key === 'string' && key.startsWith('/key/transfers/me')
-              );
+              await mutateBalancesMe();
+              await mutateTransfersMe();
               history.push(akashicPayPath(urls.loggedFunction));
             }}
           >
