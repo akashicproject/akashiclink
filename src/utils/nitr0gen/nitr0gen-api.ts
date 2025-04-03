@@ -31,13 +31,13 @@ export const nitr0genNativeCoin = '#native';
 
 enum ProductionContracts {
   Namespace = 'akashic',
-  Create = '66512ecab1c265acf27008de29bc3b6f474af1d4b723216b1635b5f75693372e@1.0.0', // Only supports trx, eth, bnb + testnets
-  CryptoTransfer = '7c0f535721d70d0c0cc6ab8cd19bb51195e9e52098c896def975410dea9b964f@1.0.0',
-  DiffConsensus = '8667534942f5468f65c0505672389834483c1185722a571a286430d321990b3a@1.0.0',
-  Onboard = 'e9dd831155c0c2ac80360377412c044d8ad82535f9e919a2b1a03fd1f74f9d37@1.0.0',
-  NFTNamespace = 'nft',
-  NFTTransfer = '476d6fca10148634004b19ef1604f5d89bff562532a5fa454cd58bae09ab64e5@1.0.0',
-  NFTAcnsRecord = '9d9db88cdae6f1083b9462eb7c33dd8620e54d5ed5f8714cf05447ca0fca8731@1.0.0',
+  Create = '50e1372f0d3805dac4a51299bb0e99960862d7d01f247e85725d99011682b8ac@1.0.0', // Only supports trx, eth, bnb + testnets
+  CryptoTransfer = '2bae6ea681826c0307ee047ef68eb0cf53487a257c498de7d081d66de119d666@1.0.0',
+  DiffConsensus = '94479927cbe0860a3f51cbd36230faef7d1b69974323a83c8abcc78e3d0e8dd9@1.0.0',
+  Onboard = 'a456ddc07da6d46a6897d24de188e767b87a9d9f2f3c617d858aaf819e0e5bce@1.0.0',
+  NFTNamespace = 'akashicnft',
+  NFTTransfer = 'e7ba6aa2aea7ae33f6bce49a07e6f8a2e6a5983e66b44f236e76cf689513c20a@1.0.0',
+  NFTAcnsRecord = '6b1acfbfba1f54571036fd579f509f4c60ac1e363c111f70815bea33957cf64a@1.0.0',
   NFTAcnsRecordTesting = 'DNE',
 }
 
