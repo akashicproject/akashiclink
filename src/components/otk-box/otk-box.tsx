@@ -1,5 +1,6 @@
 import './otk-box.css';
 
+import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import { IonButton, IonIcon, IonItem, IonLabel, IonText } from '@ionic/react';
 import { copyOutline } from 'ionicons/icons';
@@ -22,6 +23,12 @@ export function OtkBox({
   text?: string;
   withCopy?: boolean;
 }) {
+  const handleCopy = async () => {
+    await Clipboard.write({
+      string: text || '',
+    });
+  };
+
   return (
     <IonItem lines="none">
       <IonLabel
@@ -39,10 +46,7 @@ export function OtkBox({
         </IonText>
       </IonLabel>
       {withCopy && (
-        <IonButton
-          class="icon-button"
-          onClick={() => navigator.clipboard.writeText(text || '')}
-        >
+        <IonButton class="icon-button" onClick={handleCopy}>
           <IonIcon
             slot="icon-only"
             class="icon-button-icon"

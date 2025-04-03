@@ -75,7 +75,7 @@ yarn build
 2. Build the App with
 
 ```sh
-yarn build:android
+yarn sync:android
 ```
 
 3. Open the App automatically with

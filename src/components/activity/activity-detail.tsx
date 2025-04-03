@@ -1,3 +1,4 @@
+import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import { TransactionStatus } from '@helium-pay/backend';
 import { IonButton, IonIcon } from '@ionic/react';
@@ -94,8 +95,10 @@ export const ActivityDetail: React.FC<{
           </Link>
           <IonButton
             class="copy-button"
-            onClick={() =>
-              navigator.clipboard.writeText(currentTransfer.txHashUrl ?? '')
+            onClick={async () =>
+              await Clipboard.write({
+                string: currentTransfer.txHashUrl ?? '',
+              })
             }
           >
             <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />
@@ -113,10 +116,10 @@ export const ActivityDetail: React.FC<{
           </Link>
           <IonButton
             class="copy-button"
-            onClick={() =>
-              navigator.clipboard.writeText(
-                currentTransfer.senderAddressUrl ?? ''
-              )
+            onClick={async () =>
+              await Clipboard.write({
+                string: currentTransfer.senderAddressUrl ?? '',
+              })
             }
           >
             <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />
@@ -131,10 +134,10 @@ export const ActivityDetail: React.FC<{
           </Link>
           <IonButton
             class="copy-button"
-            onClick={() =>
-              navigator.clipboard.writeText(
-                currentTransfer.recipientAddressUrl ?? ''
-              )
+            onClick={async () =>
+              await Clipboard.write({
+                string: currentTransfer.recipientAddressUrl ?? '',
+              })
             }
           >
             <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />

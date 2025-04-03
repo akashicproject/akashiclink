@@ -8,7 +8,7 @@
     "serve": "serve -d build",
     "sync:android": "env-cmd -f .env.staging.local craco build && env-cmd -f .env.staging.local npx cap sync",
     "sync:prod:android": "env-cmd -f .env.production.local craco build && env-cmd -f .env.production.local npx cap sync",
-    "build:android": "yarn sync:android && cd android && bundle exec fastlane buildAab --env staging",
+    "build:android": "yarn sync:android && cd android && bundle exec fastlane buildApk --env staging",
     "build:prod:android": "yarn sync:prod:android && cd android && bundle exec fastlane buildApk --env production",
     "deploy:android": "yarn build:android && cd android && bundle exec fastlane internal --env staging",
     "deploy:prod:android": "yarn build:prod:android && cd android && bundle exec fastlane internal --env production",
@@ -21,6 +21,7 @@
   "dependencies": {
     "@capacitor/android": "^5.0.0",
     "@capacitor/app": "^5.0.0",
+    "@capacitor/clipboard": "5.0.4",
     "@capacitor/core": "^5.0.0",
     "@capacitor/haptics": "^5.0.0",
     "@capacitor/keyboard": "^5.0.0",
