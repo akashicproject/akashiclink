@@ -7,8 +7,6 @@ import type {
   IImportWalletResponse,
   IKeyGeneration,
   IKeyGenerationResponse,
-  IL1TransactionSigned,
-  IL1TransactionSignResponse,
   ILoginUser,
   IMinimalUserResponse,
   IRegisterApiPassphrase,
@@ -112,26 +110,12 @@ export const OwnersAPI = {
 
     return response.data;
   },
-  signTransaction: async (
-    transactionToSignData: ITransactionProposal[]
-  ): Promise<IL1TransactionSignResponse[]> => {
-    const response = await axiosOwnerBase.post(
-      `/key/sign`,
-      JSON.stringify(transactionToSignData)
-    );
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-
-    return response.data;
-  },
   sendL1Transaction: async (
-    signedTransactionData: IL1TransactionSigned[]
+    transactionToSendData: ITransactionProposal[]
   ): Promise<ITransactionSettledResponse[]> => {
     const response = await axiosOwnerBase.post(
       `/key/send/l1`,
-      JSON.stringify(signedTransactionData)
+      JSON.stringify(transactionToSendData)
     );
     const { data, status } = response;
     if (status >= 400) {

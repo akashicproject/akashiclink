@@ -1,7 +1,10 @@
 import './send.css';
 
 import styled from '@emotion/styled';
-import type { ITransactionVerifyResponse as VerifiedTransaction } from '@helium-pay/backend';
+import type {
+  ITransactionSettledResponse,
+  ITransactionVerifyResponse as VerifiedTransaction,
+} from '@helium-pay/backend';
 import { userConst } from '@helium-pay/backend';
 import { IonCol, IonIcon, IonRow } from '@ionic/react';
 import axios from 'axios';
@@ -111,12 +114,9 @@ export function SendConfirm(props: Props) {
           username: owner.username,
           password,
         });
-        let response;
+        let response: ITransactionSettledResponse[];
         if (!props.gasFree) {
-          const signedTransaction = await OwnersAPI.signTransaction([
-            props.transaction,
-          ]);
-          response = await OwnersAPI.sendL1Transaction(signedTransaction);
+          response = await OwnersAPI.sendL1Transaction([props.transaction]);
         } else {
           response = [await OwnersAPI.sendL2Transaction([props.transaction])];
         }
@@ -137,9 +137,7 @@ export function SendConfirm(props: Props) {
           setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
         } else if (axios.isAxiosError(error)) {
           props.isResult();
-          props.getErrorMsg(
-            unpackRequestErrorMessage(error?.response?.data?.message)
-          );
+          props.getErrorMsg(unpackRequestErrorMessage(error));
         } else {
           props.isResult();
           props.getErrorMsg(t('GenericFailureMsg'));
