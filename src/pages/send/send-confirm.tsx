@@ -6,7 +6,7 @@ import type {
   ITransactionVerifyResponse as VerifiedTransaction,
 } from '@helium-pay/backend';
 import { userConst } from '@helium-pay/backend';
-import { IonCol, IonIcon, IonRow } from '@ionic/react';
+import { IonCol, IonIcon, IonRow, IonSpinner } from '@ionic/react';
 import axios from 'axios';
 import { arrowForwardCircleOutline } from 'ionicons/icons';
 import { useState } from 'react';
@@ -103,6 +103,7 @@ export function SendConfirm(props: Props) {
   const { owner } = useOwner();
   const [password, setPassword] = useState<string>('');
   const [alert, setAlert] = useState(formAlertResetState);
+  const [loading, setLoading] = useState(false);
 
   const validatePassword = (value: string) =>
     !!value.match(userConst.passwordRegex);
@@ -110,6 +111,7 @@ export function SendConfirm(props: Props) {
   async function signTransaction() {
     if (props.transaction) {
       try {
+        setLoading(true);
         await OwnersAPI.login({
           username: owner.username,
           password,
@@ -142,6 +144,8 @@ export function SendConfirm(props: Props) {
           props.isResult();
           props.getErrorMsg(t('GenericFailureMsg'));
         }
+      } finally {
+        setLoading(false);
       }
     }
   }
@@ -206,14 +210,19 @@ export function SendConfirm(props: Props) {
         class="ion-justify-content-between"
         style={{
           marginTop: '24px',
-          marginRight: '100px',
-          marginLeft: '100px',
           padding: '0px 50px',
         }}
       >
         <IonCol>
-          <PurpleButton expand="block" onClick={signTransaction}>
+          <PurpleButton
+            expand="block"
+            onClick={signTransaction}
+            disabled={loading}
+          >
             {t('Confirm')}
+            {loading ? (
+              <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
+            ) : null}
           </PurpleButton>
         </IonCol>
         <IonCol>
