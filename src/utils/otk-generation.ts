@@ -57,6 +57,9 @@ export function restoreOtkFromKeypair(keyPair: string): IKeyExtended {
   if (otkPriv.startsWith('0x')) {
     curve.setPrivateKey(keyPair.replace('0x', ''), 'hex');
     publicKey = curve.getPublicKey('hex', 'uncompressed');
+    if (!publicKey.startsWith('0x')) {
+      publicKey = '0x' + publicKey;
+    }
   } else {
     const pemDecoded = Buffer.from(decodeECPrivateKey(otkPriv), 'hex');
     curve.setPrivateKey(pemDecoded);
