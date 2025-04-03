@@ -116,7 +116,7 @@ export function AccountSelection({
             return;
           }
           if (value === DropdownOptions.ImportAccount) {
-            history.push(akashicPayPath(urls.importAccountUrl));
+            history.push(akashicPayPath(urls.selectImportMethod));
             return;
           }
 

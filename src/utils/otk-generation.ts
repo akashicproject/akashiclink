@@ -8,6 +8,10 @@ export async function generateOTK(): Promise<IKeyExtended> {
   return await kh.generateBIP39Key('otk', true);
 }
 
+export async function restoreOtk(phrase: string) {
+  const kh = new KeyHandler();
+  return await kh.restoreBIP39Key('otk', phrase, true);
+}
 // Sign a piece of data (email) using the private key to be verified by the backend
 export function signImportAuth(otkPriv: string, email: string) {
   // Have to but private key into correct format
@@ -15,7 +19,11 @@ export function signImportAuth(otkPriv: string, email: string) {
     '-----BEGIN EC PRIVATE KEY-----\n' +
     `${otkPriv}\n` +
     '-----END EC PRIVATE KEY-----';
-
-  const kp = new ActiveCrypto.KeyPair('secp256k1', pemPrivate);
+  let kp;
+  if (otkPriv.startsWith('0x')) {
+    kp = new ActiveCrypto.KeyPair('secp256k1', otkPriv);
+  } else {
+    kp = new ActiveCrypto.KeyPair('secp256k1', pemPrivate);
+  }
   return kp.sign(email);
 }

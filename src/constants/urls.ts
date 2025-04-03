@@ -41,4 +41,8 @@ export const urls = {
   us2: 'us2',
   walletCreated: 'wallet-created',
   secretConfirm: 'secret-confirm',
+  secretPhraseImport: 'secret-phrase-import',
+  selectImportMethod: 'select-import-method',
+  importSuccess: 'import-success',
+  changePasswordAfterImport: 'change-password-after-import',
 } as const;

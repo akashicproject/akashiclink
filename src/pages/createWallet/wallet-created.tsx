@@ -73,7 +73,10 @@ export const WalletCreated = () => {
               </StyledSpan>
             </li>
             <li>
-              <StyledA href="https://akashic-1.gitbook.io/akashicwallet/">
+              <StyledA
+                href="https://akashic-1.gitbook.io/akashicwallet/"
+                target={'_blank'}
+              >
                 {t('LearnMore')}
               </StyledA>
             </li>

@@ -44,7 +44,6 @@ export function ChangePasswordTwoFa() {
   const history = useHistory<LocationState>();
   const state = history.location.state?.changePassTwoFa;
 
-  console.log('state', state);
   // When first entering this page from 1st part of change-password
   //    -> Store variables so they are saved if user soft-closes
   if (state) {

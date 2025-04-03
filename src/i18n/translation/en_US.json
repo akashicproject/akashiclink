@@ -206,5 +206,14 @@
   "Store12SecretRecoveryPhrase": "Write down this 12-word Secret Recovery Phrase and store it securely for your exclusive access",
   "SaveBackUpSecureLocation": "Save your Recovery Phrase as you won't have access to it again. Backup to a secure location, preferably outside your mobile environment.",
   "Important": "Important",
-  "ConfirmSecretRecovery": "Confirm Secret Recovery Phrase"
+  "ConfirmSecretRecovery": "Confirm Secret Recovery Phrase",
+  "AccessWalletWithRecoveryPhrase": "Access your wallet with your Secret Recovery Phrase",
+  "AkashicWalletCannotRecoverYourPassword": "AkashicWallet cannot recover your password. Your Secret Recovery Phrase validates ownership, restores your wallet, and establishes a new password. Please enter your Secret Recovery Phrase.",
+  "TypeSecretPhrase": "Type your Secret Recovery Phrase",
+  "PasteYourSecretPhrase": "You can paste your entire secret recovery phrase into any fields",
+  "ConfirmSecretPhrase": "Confirm Secret Recovery Phrase",
+  "PleaseChooseSecurityOptionToImportWallet": "Please choose a security option to Import your Wallet",
+  "ImportSuccessful": "Import Successful",
+  "12Words": "12 Words",
+  "YouHaveOptionTo": "You now have the option to"
 }

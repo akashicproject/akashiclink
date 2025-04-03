@@ -18,7 +18,6 @@ import {
 } from '../components/alert/alert';
 import { PurpleButton, TextButton, WhiteButton } from '../components/buttons';
 import { PublicLayout } from '../components/layout/public-layout';
-import { useLogout } from '../components/logout';
 import {
   StyledInput,
   StyledInputErrorPrompt,
@@ -36,16 +35,18 @@ import {
 import { signImportAuth } from '../utils/otk-generation';
 import { unpackRequestErrorMessage } from '../utils/unpack-request-error-message';
 
-enum View {
+export enum View {
   Submit,
+  SubmitSecretPhrase,
   TwoFa,
 }
 export const importAccountUrl = 'import';
-
+type LocationViewProp = {
+  view: View;
+};
 export function ImportWallet() {
-  const history = useHistory();
+  const history = useHistory<LocationViewProp>();
   const { t, i18n } = useTranslation();
-  const logout = useLogout();
 
   /**
    * Track user inputs
@@ -59,12 +60,17 @@ export function ImportWallet() {
   };
 
   const { addLocalAccount, setActiveAccount } = useAccountStorage();
-  const [view, setView] = useState(View.Submit);
+  const [view, setView] = useState(
+    history.location?.state?.view ? history.location.state.view : View.Submit
+  );
+  const [initialView, setInitialView] = useState(
+    history.location?.state?.view ? history.location.state.view : View.Submit
+  );
   const [alert, setAlert] = useState(formAlertResetState);
   const [alertPage2, setAlertPage2] = useState(emailSentAlert);
   const [timerReset, setTimerReset] = useState(0);
   const [activationCode, setActivationCode] = useState<string>();
-
+  const [passPhrase, setPassPhrase] = useState<string>();
   const validateActivationCode = (value: string) =>
     !!value.match(activationCodeRegex);
 
@@ -73,14 +79,13 @@ export function ImportWallet() {
       importAccountUrl,
       NavigationPriority.IMMEDIATE,
       async () => {
-        const { privateKey, email } = await lastPageStorage.getVars();
-        if (!privateKey || !email) {
-          setView(View.Submit);
-        } else {
-          setPrivateKey(privateKey);
-          setEmail(email);
-          setView(View.TwoFa);
-        }
+        const { privateKey, email, view, initialView, passPhrase } =
+          await lastPageStorage.getVars();
+        setPassPhrase(passPhrase || '');
+        setView(view || View.Submit);
+        setInitialView(initialView || View.Submit);
+        setEmail(email || '');
+        setPrivateKey(privateKey || '');
       }
     );
   }, []);
@@ -105,6 +110,8 @@ export function ImportWallet() {
         setAlertPage2(emailSentAlert);
         // TODO: reword logic to avoid storing private key in plain text open format
         lastPageStorage.store(importAccountUrl, NavigationPriority.IMMEDIATE, {
+          view: View.TwoFa,
+          initialView: initialView || View.Submit,
           privateKey,
           email,
         });
@@ -134,7 +141,7 @@ export function ImportWallet() {
         };
         addLocalAccount(importedAccount);
         setActiveAccount(importedAccount);
-        await logout();
+        history.push(akashicPayPath(urls.importSuccess));
         localStorage.setItem('spinner', 'true');
       }
     } catch (error) {
@@ -166,6 +173,65 @@ export function ImportWallet() {
           <h2>{t('ImportWallet')}</h2>
         </IonCol>
       </IonRow>
+      {view === View.SubmitSecretPhrase && (
+        <>
+          <IonRow>
+            <IonCol>
+              <StyledInput
+                label={t('Email')}
+                type={'text'}
+                placeholder={t('EnterYourEmail')}
+                onIonInput={async ({ target: { value } }) => {
+                  setEmail(value as string);
+                  await lastPageStorage.store(
+                    urls.importAccountUrl,
+                    NavigationPriority.IMMEDIATE,
+                    {
+                      view: initialView,
+                      initialView: initialView,
+                      email: value,
+                    }
+                  );
+                  setAlert(formAlertResetState);
+                }}
+                value={email}
+                submitOnEnter={requestImportAccount}
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow style={{ justifyContent: 'space-between' }}>
+            <IonCol size="6">
+              <PurpleButton
+                disabled={!email}
+                onClick={requestImportAccount}
+                expand="block"
+              >
+                {t('Confirm')}
+              </PurpleButton>
+            </IonCol>
+            <IonCol size="6">
+              <WhiteButton
+                onClick={async () => {
+                  history.push(akashicPayPath(urls.secretPhraseImport));
+                  await lastPageStorage.store(
+                    urls.secretPhraseImport,
+                    NavigationPriority.IMMEDIATE,
+                    {
+                      passPhrase: passPhrase,
+                    }
+                  );
+                }}
+                style={{ width: '100%' }}
+              >
+                {t('GoBack')}
+              </WhiteButton>
+            </IonCol>
+          </IonRow>
+          <IonRow style={{ marginTop: '24px' }}>
+            <AlertBox state={alert} />
+          </IonRow>
+        </>
+      )}
       {view === View.Submit && (
         <>
           <IonRow>
@@ -268,10 +334,14 @@ export function ImportWallet() {
               <WhiteButton
                 expand="block"
                 onClick={async () => {
-                  setActivationCode(undefined);
-                  await lastPageStorage.clear();
-                  setView(View.Submit);
-                  history.goBack();
+                  if (initialView) {
+                    setView(initialView);
+                  } else {
+                    setActivationCode(undefined);
+                    await lastPageStorage.clear();
+                    setView(View.Submit);
+                    history.goBack();
+                  }
                 }}
               >
                 {t('Cancel')}

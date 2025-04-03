@@ -12,12 +12,12 @@ import {
   IonPopover,
   IonRow,
 } from '@ionic/react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const WordItem = styled(IonItem)`
   height: 40px;
-  width: 100px;
+  width: 110px;
   &::part(native) {
     height: 16px;
     padding: 0;
@@ -112,14 +112,25 @@ export function SecretWords({
   initialWords,
   onChange,
   withAction,
+  inputVisibility = false,
+  disableInput = true,
 }: {
   initialWords: string[];
   onChange?: (words: string[]) => void;
   withAction?: boolean;
+  inputVisibility?: boolean;
+  disableInput?: boolean;
 }) {
   const { t } = useTranslation();
   const [words, setWords] = useState(initialWords);
   const [isHidden, setIsHidden] = useState(withAction ? true : false);
+  const [visibilityArray, setVisibility] = useState<boolean[]>(
+    new Array(initialWords.length).fill(!inputVisibility) as boolean[]
+  );
+
+  useEffect(() => {
+    setWords(initialWords);
+  }, [initialWords]);
   const handleCopy = async (e: never) => {
     await Clipboard.write({
       string: words.join(' ') || '',
@@ -135,15 +146,18 @@ export function SecretWords({
   const popover = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
 
-  const onInputChange = async (
-    value: string | number | null | undefined,
-    i: number
-  ) => {
-    const newWords = [
-      ...words.slice(0, i),
-      value?.toString() || '',
-      ...words.slice(i + 1),
-    ];
+  const onInputChange = async (value: string | null | undefined, i: number) => {
+    const sWords = value?.split(' ');
+    let newWords = [];
+    if (sWords?.length === 12) {
+      newWords = sWords;
+    } else {
+      newWords = [
+        ...words.slice(0, i),
+        value?.toString() || '',
+        ...words.slice(i + 1),
+      ];
+    }
     setWords(newWords);
     onChange && onChange(newWords);
   };
@@ -167,19 +181,38 @@ export function SecretWords({
         <MaskBlurContainer isHidden={isHidden}>
           <IonGrid>
             <IonRow>
-              {initialWords.map((initialWord, i) => {
+              {visibilityArray.map((visibility, i) => {
                 return (
                   <IonCol size="4" key={i}>
                     <WordItem lines={'none'}>
                       <WordNumber>{i + 1}.</WordNumber>
                       <WordInput
+                        id={`wordInput-${i}`}
                         value={words[i]}
-                        disabled={initialWord !== ''}
-                        fillable={initialWord === ''}
-                        onIonInput={({ target: { value } }) =>
-                          onInputChange(value, i)
+                        type={visibility ? 'text' : 'password'}
+                        disabled={disableInput ? initialWords[i] !== '' : false}
+                        fillable={disableInput ? initialWords[i] === '' : true}
+                        onIonChange={({ target: { value } }) =>
+                          onInputChange(value as string, i)
                         }
                       ></WordInput>
+                      {inputVisibility && (
+                        <IonIcon
+                          src={`/shared-assets/images/visibility-${
+                            visibility ? 'on' : 'off'
+                          }.svg`}
+                          onClick={() => {
+                            visibilityArray[i] = !visibility;
+                            setVisibility([...visibilityArray]);
+                          }}
+                          style={{
+                            cursor: 'pointer',
+                            height: '10px',
+                            width: '10px',
+                            marginLeft: '4px',
+                          }}
+                        />
+                      )}
                     </WordItem>
                   </IonCol>
                 );

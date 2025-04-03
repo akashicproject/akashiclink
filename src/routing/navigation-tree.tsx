@@ -13,6 +13,9 @@ import { CreateWalletSecretConfirm } from '../pages/createWallet/create-wallet-s
 import { WalletCreated } from '../pages/createWallet/wallet-created';
 import { ErrorPage } from '../pages/error';
 import { ImportWallet } from '../pages/import-wallet';
+import { ImportSuccess } from '../pages/importWallet/import-success';
+import { SecretPhraseImport } from '../pages/importWallet/secret-phrase-import';
+import { SelectImportMethod } from '../pages/importWallet/select-import-method';
 import { Dashboard } from '../pages/logged/dashboard';
 import { DepositPage } from '../pages/logged/deposit-page';
 import { LoggedCreate } from '../pages/logged/logged-create';
@@ -22,6 +25,7 @@ import { NftTransferResult } from '../pages/nft/nft-transfer-result';
 import { Nfts } from '../pages/nft/nfts';
 import { Recover } from '../pages/recover';
 import { RecoverCode } from '../pages/recover-code';
+import { ChangePasswordAfterImport } from '../pages/Recovery/change-password-after-import';
 import { Recovery } from '../pages/Recovery/recovery';
 import { ResetPassword } from '../pages/Recovery/reset-password';
 import { Verification } from '../pages/Recovery/verification';
@@ -126,6 +130,13 @@ export function NavigationTree() {
       {hpSubtree.registerPage(CreateWalletSecret, urls.secret)}
       {hpSubtree.registerPage(WalletCreated, urls.walletCreated)}
       {hpSubtree.registerPage(CreateWalletSecretConfirm, urls.secretConfirm)}
+      {hpSubtree.registerPage(SecretPhraseImport, urls.secretPhraseImport)}
+      {hpSubtree.registerPage(SelectImportMethod, urls.selectImportMethod)}
+      {hpSubtree.registerPage(ImportSuccess, urls.importSuccess)}
+      {hpSubtree.registerPage(
+        ChangePasswordAfterImport,
+        urls.changePasswordAfterImport
+      )}
       {/* US² tree */}
       {us2Subtree.registerPage(Us2Main)}
 

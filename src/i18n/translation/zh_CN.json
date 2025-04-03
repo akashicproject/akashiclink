@@ -206,5 +206,14 @@
   "Store12SecretRecoveryPhrase": "写下这 12 个字的恢复密语，并妥善保存，供您专用",
   "SaveBackUpSecureLocation": "保存您的恢复密语，因为您将无法再次存取该密语。备份到一个安全的位置，最好是在您的移动设备之外。",
   "Important": "重要",
-  "ConfirmSecretRecovery": "确认恢复密语"
+  "ConfirmSecretRecovery": "确认恢复密语",
+  "AccessWalletWithRecoveryPhrase": "使用恢复密语存取钱包",
+  "AkashicWalletCannotRecoverYourPassword": "AkashicWallet 无法恢复您的密码。您的恢复密语可验证所有权、恢复钱包并设置新密码。请输入您的恢复密语。",
+  "TypeSecretPhrase": "输入您的恢复密语",
+  "PasteYourSecretPhrase": "您可以将整个恢复密语粘贴到任何字段中",
+  "ConfirmSecretPhrase": "确认恢复密语",
+  "PleaseChooseSecurityOptionToImportWallet": "请选择一个安全选项来导入您的钱包",
+  "ImportSuccessful": "导入成功",
+  "12Words": "12 个字",
+  "YouHaveOptionTo": "您现在可以选择"
 }

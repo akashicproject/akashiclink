@@ -32,6 +32,7 @@
     "typecheck": "tsc --project ./tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@activeledger/activecrypto": "2.11.6",
     "@activeledger/sdk-bip39": "1.0.3",
     "@capacitor/android": "^5.0.0",
     "@capacitor/app": "^5.0.0",

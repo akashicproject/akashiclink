@@ -104,7 +104,7 @@ export function AkashicPayMain() {
             <IonRow style={{ marginTop: '16px' }}>
               <IonCol>
                 <WhiteButton
-                  routerLink={akashicPayPath(urls.importAccountUrl)}
+                  routerLink={akashicPayPath(urls.selectImportMethod)}
                   expand="block"
                 >
                   {t('ImportWallet')}
