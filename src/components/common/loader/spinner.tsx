@@ -39,10 +39,6 @@ export const Spinner = ({
     alignItems: 'center',
     justifyContent: 'center',
   });
-  const StyledIonIcon = styled(IonIcon)`
-    color: var(--ion-color-primary-70);
-    font-size: 24px;
-  `;
 
   const { t } = useTranslation();
   return (
@@ -81,7 +77,10 @@ export const Spinner = ({
       </div>
       {warning && (
         <StyledDiv>
-          <StyledIonIcon src={'/shared-assets/images/alert.svg'} />
+          <IonIcon
+            className={'ion-text-size-xxl'}
+            src={'/shared-assets/images/alert.svg'}
+          />
           <span>{t(warning)}</span>
         </StyledDiv>
       )}
