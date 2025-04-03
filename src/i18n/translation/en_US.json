@@ -290,5 +290,12 @@
   "Message": "Message",
   "WelcomeToAkashicPay": "Welcome to AkashicPay",
   "ClickToSignIn": "Click to sign in and accept the AkashicPay terms of services and privacy policy",
-  "LockAndUnlockAnotherAccount": "Lock and unlock another account"
+  "LockAndUnlockAnotherAccount": "Lock and unlock another account",
+  "Popup": {
+    "identity": "Akashic Address",
+    "content": "Message",
+    "payoutCallbackUrl": "Payout Callback Url",
+    "depositCallbackUrl": "Deposit Callback Url",
+    "withdrawalCallbackUrl": "Withdrawal Callback Url"
+  }
 }

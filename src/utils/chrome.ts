@@ -6,6 +6,9 @@ export const EXTENSION_EVENT = {
 };
 
 export const EXTENSION_ERROR = {
+  UNKNOWN: 'UNKNOWN',
+  RECEIVING_END_DOES_NOT_EXIST:
+    'Could not establish connection. Receiving end does not exist.',
   WC_SESSION_NOT_FOUND: 'WC_SESSION_NOT_FOUND',
 };
 
@@ -17,6 +20,11 @@ export const ETH_METHOD = {
 
 export const WALLET_METHOD = {
   UNLOCK_WALLET: 'UNLOCK_WALLET',
+};
+
+export const TYPED_DATA_PRIMARY_TYPE = {
+  BECOME_BP: 'BPContract',
+  SETUP_CALLBACK_URL: 'SetupCallbackUrl',
 };
 
 export const closePopup = async () => {

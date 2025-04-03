@@ -4,7 +4,7 @@ import { useAppSelector } from '../../redux/app/hooks';
 import { selectCacheOtk } from '../../redux/slices/accountSlice';
 import { unpackRequestErrorMessage } from '../unpack-request-error-message';
 
-export const useSignBecomeBpMessage = () => {
+export const useSignSetupCallbackUrl = () => {
   const cacheOtk = useAppSelector(selectCacheOtk);
 
   return async () => {
@@ -16,7 +16,7 @@ export const useSignBecomeBpMessage = () => {
       // TODO: could be Nitr0genApi.onboardOtkToBP(otk)
       // await Nitr0genApi.onboardOtk(otk)
 
-      return '0xsignedBecomeBpMessageHere';
+      return '0xsignedSetupCallbackUrl';
     } catch (error) {
       datadogRum.addError(error);
       return unpackRequestErrorMessage(error);

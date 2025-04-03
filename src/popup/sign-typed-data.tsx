@@ -1,4 +1,4 @@
-import { IonCol, IonRow } from '@ionic/react';
+import { IonCol, IonRow, IonSpinner } from '@ionic/react';
 import { getSdkError } from '@walletconnect/utils';
 import { type Web3WalletTypes } from '@walletconnect/web3wallet';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -15,8 +15,10 @@ import {
   EXTENSION_ERROR,
   EXTENSION_EVENT,
   responseToSite,
+  TYPED_DATA_PRIMARY_TYPE,
 } from '../utils/chrome';
 import { useSignBecomeBpMessage } from '../utils/hooks/useSignBecomeBpMessage';
+import { useSignSetupCallbackUrl } from '../utils/hooks/useSignSetupCallbackUrl';
 import { useWeb3Wallet } from '../utils/web3wallet';
 
 export function SignTypedData() {
@@ -30,11 +32,13 @@ export function SignTypedData() {
     id: 0,
     method: '',
     topic: '',
+    primaryType: '',
     message: {} as Record<string, string>,
     response: {},
   });
 
   const signBecomeBpMessage = useSignBecomeBpMessage();
+  const signSetupCallbackUrl = useSignSetupCallbackUrl();
 
   const onSessionRequest = useCallback(
     async (event: Web3WalletTypes.SessionRequest) => {
@@ -48,6 +52,7 @@ export function SignTypedData() {
           id,
           method: request.method,
           message: typedData.message,
+          primaryType: typedData.primaryType,
           topic,
           response: {},
         });
@@ -61,11 +66,17 @@ export function SignTypedData() {
   }, []);
 
   const acceptSessionRequest = async () => {
-    const { topic, id } = requestContent;
+    const { topic, id, primaryType } = requestContent;
 
     try {
       // TODO: sign message here
-      const signedMsg = await signBecomeBpMessage();
+      let signedMsg = '';
+
+      if (primaryType === TYPED_DATA_PRIMARY_TYPE.BECOME_BP) {
+        signedMsg = await signBecomeBpMessage();
+      } else {
+        signedMsg = await signSetupCallbackUrl();
+      }
 
       await web3wallet?.respondSessionRequest({
         topic,
@@ -151,6 +162,8 @@ export function SignTypedData() {
     };
   }, [onSessionRequest, web3wallet]);
 
+  const isWaitingRequestContent = requestContent.method === '';
+
   return (
     <PopupLayout>
       <IonRow>
@@ -170,19 +183,15 @@ export function SignTypedData() {
           </p>
         </IonCol>
         <IonCol size={'12'}>
+          {isWaitingRequestContent && <IonSpinner name="circular"></IonSpinner>}
           <List lines={'none'}>
-            <ListVerticalLabelValueItem
-              label={t('Message')}
-              value={
-                requestContent?.message?.content === ''
-                  ? '-'
-                  : requestContent?.message?.content
-              }
-            />
-            <ListVerticalLabelValueItem
-              label={t('WalletAddress')}
-              value={searchParams.get('identity') ?? '-'}
-            />
+            {Object.entries(requestContent?.message).map(([key, value]) => (
+              <ListVerticalLabelValueItem
+                key={key}
+                label={t(`Popup.${key}`)}
+                value={value ?? '-'}
+              />
+            ))}
           </List>
         </IonCol>
       </IonRow>
@@ -190,7 +199,7 @@ export function SignTypedData() {
         <IonCol size={'6'}>
           <PrimaryButton
             expand="block"
-            disabled={requestContent.method === ''}
+            disabled={isWaitingRequestContent}
             onClick={onClickReject}
           >
             {t('Deny')}
@@ -199,7 +208,7 @@ export function SignTypedData() {
         <IonCol size={'6'}>
           <PrimaryButton
             expand="block"
-            disabled={requestContent.method === ''}
+            disabled={isWaitingRequestContent}
             onClick={onClickSign}
           >
             {t('Confirm')}

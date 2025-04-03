@@ -290,5 +290,12 @@
   "Message": "信息",
   "WelcomeToAkashicPay": "欢迎使用 AkashicPay",
   "ClickToSignIn": "点击登录并接受 AkashicPay 服务条款和隐私政策",
-  "LockAndUnlockAnotherAccount": "锁定此帐号并解锁另一个帐号"
+  "LockAndUnlockAnotherAccount": "锁定此帐号并解锁另一个帐号",
+  "Popup": {
+    "identity": "Akashic Address",
+    "content": "Message",
+    "payoutCallbackUrl": "Payout Callback Url",
+    "depositCallbackUrl": "Deposit Callback Url",
+    "withdrawalCallbackUrl": "Withdrawal Callback Url"
+  }
 }
