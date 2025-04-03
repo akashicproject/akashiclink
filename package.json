@@ -119,8 +119,6 @@
     "@craco/types": "7.1.0",
     "@datadog/datadog-ci": "2.43.0",
     "@helium-pay/backend": "workspace:^",
-    "@semantic-release/exec": "6.0.3",
-    "@semantic-release/gitlab": "13.2.3",
     "@storybook/addon-coverage": "1.0.4",
     "@storybook/addon-docs": "^8.3.6",
     "@storybook/addon-essentials": "^8.3.6",
@@ -145,8 +143,6 @@
     "msw": "2.6.0",
     "msw-storybook-addon": "2.0.3",
     "playwright": "1.48.2",
-    "semantic-release": "24.2.0",
-    "semantic-release-monorepo": "8.0.2",
     "serve": "14.2.0",
     "storybook": "^8.3.6",
     "storybook-react-context": "0.6.0",
@@ -171,39 +167,6 @@
   "msw": {
     "workerDirectory": [
       "public"
-    ]
-  },
-  "release": {
-    "extends": "semantic-release-monorepo",
-    "branches": [
-      "main",
-      {
-        "name": "staging",
-        "prerelease": true
-      }
-    ],
-    "repositoryUrl": "https://gitlab.com/dreamsai/cpg-2/HeliumPay-monorepo",
-    "plugins": [
-      [
-        "@semantic-release/commit-analyzer",
-        {
-          "preset": "angular",
-          "releaseRules": [
-            {
-              "type": "chore",
-              "release": "patch"
-            }
-          ]
-        }
-      ],
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/gitlab",
-      [
-        "@semantic-release/exec",
-        {
-          "publishCmd": "cd ../../.. && WALLET_VERSION=${nextRelease.version} bash ci/scripts/deploy-wallet-extension.sh"
-        }
-      ]
     ]
   }
 }
