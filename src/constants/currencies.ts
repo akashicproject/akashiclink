@@ -208,9 +208,5 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
 
 export const ALLOWED_NETWORKS =
   process.env.REACT_APP_ENABLE_TESTNET_CURRENCIES === 'true'
-    ? [
-        CoinSymbol.Ethereum_Sepolia,
-        CoinSymbol.Tron_Nile,
-        CoinSymbol.Tron_Shasta,
-      ]
+    ? [CoinSymbol.Ethereum_Sepolia, CoinSymbol.Tron_Shasta]
     : [CoinSymbol.Ethereum_Mainnet, CoinSymbol.Tron];
