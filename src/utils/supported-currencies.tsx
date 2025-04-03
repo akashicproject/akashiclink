@@ -1,4 +1,9 @@
-import { CoinSymbol, isCoinSymbol } from '@helium-pay/backend';
+import type { IOwnerBalancesResponse } from '@helium-pay/backend';
+import {
+  CoinSymbol,
+  CurrencySymbol,
+  NetworkDictionary,
+} from '@helium-pay/backend';
 
 /**
  * Unlike the owners webapp, the wallet will support
@@ -17,29 +22,41 @@ import { CoinSymbol, isCoinSymbol } from '@helium-pay/backend';
 
 /**
  * Wallet currency is characterised by
- * arg1: the chain it is on
- * arg2: (optional) token symbol
+ * @param displayName
+ * @param the chain it is on
+ * @param (optional) token - if not supplied, default to the NATIVE coin of the chain
  */
-export type WalletCurrency = [CoinSymbol, string?];
+export type WalletCurrency = {
+  displayName: string;
+  chain: CoinSymbol;
+  token?: CurrencySymbol;
+};
 
 /** Quick method to generate a valid currency */
 export function makeWalletCurrency(
   chain: CoinSymbol,
-  tokenSymbol?: string
+  token?: CurrencySymbol
 ): WalletCurrency {
-  return tokenSymbol ? [chain, tokenSymbol] : [chain];
-}
+  if (!token)
+    return {
+      displayName: NetworkDictionary[chain].nativeCoin.displayName,
+      chain,
+    };
 
-/** Method to parse the stringified version of the currency that is stored in hashmap */
-export function parseWalletCurrency(
-  currency: string
-): WalletCurrency | undefined {
-  const [chain, token] = JSON.parse(currency);
-  if (isCoinSymbol(chain)) return makeWalletCurrency(chain, token);
+  const tokenMetadata = NetworkDictionary[chain].tokens.find(
+    ({ symbol }) => symbol === token
+  );
+  if (!tokenMetadata)
+    throw Error(`Token ${token} does not exist on chain ${chain}`);
+  return {
+    displayName: tokenMetadata.displayName,
+    chain,
+    token,
+  };
 }
 
 /**
- * Hashmap for storing and looking up wallet currencies
+ * Hashmap for storing and looking up values assigned to wallet currencies
  */
 export class CurrencyMap<T> extends Map {
   get(c: WalletCurrency) {
@@ -64,26 +81,30 @@ export class CurrencyMap<T> extends Map {
 }
 
 /**
- * Information for display of currency in app
- * TODO: combine currency and symbol - they both represent the same information
-   currency: [CoinSymbol, TokenSymbol]
-   symbol: [CoinSymbol-TokenSymbol]
-   Will need to include parsing and dynamic typechecks and make use of `parseWalletCurrency`
+ * Information for display of currency in app:
  *
- * @param symbol of the currency WITHIN the wallet extension.
- * @param currency identity, see WalletCurrency: [CoinSymbol (chain currency is on), Token(does not exist for native coins)]
- * @param logo of currency
+ * @param currency identity, see WalletCurrency: [displayName, CoinSymbol (chain currency is on), Token(does not exist for native coins)]
+ * @param logo main
+ * @param darkLogo to use when dark theme is on
+ * @param greyLogo to use when currency is out of focus
  */
-export interface WalletCurrencyMetadata {
+interface WalletCurrencyMetadata {
   currency: WalletCurrency;
-  symbol: string;
-  logo: string; // main logo
+  logo: string;
   icon: string;
-  darkLogo?: string; // dedicated dark theme logo
-  greyLogo?: string; // dedicated grey logo for dark theme
+  darkLogo?: string;
+  greyLogo?: string;
 }
+
+/**
+ * Information about user wallet formatted for display in the extension
+ */
+export type UserWallet = Omit<IOwnerBalancesResponse, 'balance'> & {
+  balance?: string;
+  address?: string;
+};
+
 export const L2Icon = '/shared-assets/images/PayLogo-all-white.svg';
-/** Declaration of supported currencies */
 
 const MAINNET_CURRENCIES: WalletCurrencyMetadata[] = [
   // TODO: re-enable when L2 transactions are supported for BTC
@@ -95,7 +116,6 @@ const MAINNET_CURRENCIES: WalletCurrencyMetadata[] = [
   //   icon: '/shared-assets/icons/btc_icon.png',
   // },
   {
-    symbol: 'ETH',
     currency: makeWalletCurrency(CoinSymbol.Ethereum_Mainnet),
     logo: '/shared-assets/images/eth.png',
     darkLogo: '/shared-assets/images/eth-dark.png',
@@ -103,7 +123,6 @@ const MAINNET_CURRENCIES: WalletCurrencyMetadata[] = [
     icon: '/shared-assets/icons/eth_icon.png',
   },
   {
-    symbol: 'TRX',
     currency: makeWalletCurrency(CoinSymbol.Tron),
     logo: '/shared-assets/images/trx.png',
     darkLogo: '/shared-assets/images/trx.png',
@@ -111,15 +130,16 @@ const MAINNET_CURRENCIES: WalletCurrencyMetadata[] = [
     icon: '/shared-assets/icons/trx_icon.png',
   },
   {
-    symbol: 'USDT-ERC20',
-    currency: makeWalletCurrency(CoinSymbol.Ethereum_Mainnet, 'USDT'),
+    currency: makeWalletCurrency(
+      CoinSymbol.Ethereum_Mainnet,
+      CurrencySymbol.USDT
+    ),
     logo: '/shared-assets/images/usdt.png',
     greyLogo: '/shared-assets/images/usdt-grey.png',
     icon: '/shared-assets/icons/eth_icon.png',
   },
   {
-    symbol: 'USDT-TRC20',
-    currency: makeWalletCurrency(CoinSymbol.Tron, 'USDT'),
+    currency: makeWalletCurrency(CoinSymbol.Tron, CurrencySymbol.USDT),
     logo: '/shared-assets/images/usdt.png',
     greyLogo: '/shared-assets/images/usdt-grey.png',
     icon: '/shared-assets/icons/trx_icon.png',
@@ -136,7 +156,6 @@ const TESTNET_CURRENCIES: WalletCurrencyMetadata[] = [
   //   icon: '/shared-assets/icons/btc_icon.png',
   // },
   {
-    symbol: 'GOR',
     currency: makeWalletCurrency(CoinSymbol.Görli),
     logo: '/shared-assets/images/eth.png',
     darkLogo: '/shared-assets/images/eth-dark.png',
@@ -144,29 +163,25 @@ const TESTNET_CURRENCIES: WalletCurrencyMetadata[] = [
     icon: '/shared-assets/icons/eth_icon.png',
   },
   {
-    symbol: 'Nile',
     currency: makeWalletCurrency(CoinSymbol.Tron_Nile),
     logo: '/shared-assets/images/trx.png',
     greyLogo: '/shared-assets/images/trx-grey.png',
     icon: '/shared-assets/icons/trx_icon.png',
   },
   {
-    symbol: 'Shasta',
     currency: makeWalletCurrency(CoinSymbol.Tron_Shasta),
     logo: '/shared-assets/images/trx.png',
     greyLogo: '/shared-assets/images/trx-grey.png',
     icon: '/shared-assets/icons/trx_icon.png',
   },
   {
-    symbol: 'tUSDT-ERC20',
-    currency: makeWalletCurrency(CoinSymbol.Görli, 'USDT'),
+    currency: makeWalletCurrency(CoinSymbol.Görli, CurrencySymbol.USDT),
     logo: '/shared-assets/images/usdt.png',
     greyLogo: '/shared-assets/images/usdt-grey.png',
     icon: '/shared-assets/icons/eth_icon.png',
   },
   {
-    symbol: 'tUSDT-TRC20',
-    currency: makeWalletCurrency(CoinSymbol.Tron_Nile, 'USDT'),
+    currency: makeWalletCurrency(CoinSymbol.Tron_Nile, CurrencySymbol.USDT),
     logo: '/shared-assets/images/usdt.png',
     greyLogo: '/shared-assets/images/usdt-grey.png',
     icon: '/shared-assets/icons/trx_icon.png',
@@ -185,3 +200,24 @@ export const WALLET_CURRENCIES = [
     ? TESTNET_CURRENCIES
     : []),
 ];
+
+/**
+ * Comparator between two wallet currencies, checking both chain and token sybmol
+ */
+export function compareWalletCurrency(
+  wc1: WalletCurrency,
+  wc2: WalletCurrency
+) {
+  return wc1.chain === wc2.chain && wc1.token === wc2.token;
+}
+
+/**
+ * Fetch metadata of a given currency
+ */
+export function lookupWalletCurrency(wc1: WalletCurrency) {
+  return (
+    WALLET_CURRENCIES.find(({ currency: wc2 }) =>
+      compareWalletCurrency(wc1, wc2)
+    ) || WALLET_CURRENCIES[0]
+  );
+}

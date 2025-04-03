@@ -18,11 +18,11 @@ import { limitDecimalPlaces } from '../utils/conversions';
 import { useAggregatedBalances } from '../utils/hooks/useAggregatedBalances';
 import { useExchangeRates } from '../utils/hooks/useExchangeRates';
 import { useLocalStorage } from '../utils/hooks/useLocalStorage';
-import type {
-  WalletCurrency,
-  WalletCurrencyMetadata,
+import type { WalletCurrency } from '../utils/supported-currencies';
+import {
+  compareWalletCurrency,
+  WALLET_CURRENCIES,
 } from '../utils/supported-currencies';
-import { WALLET_CURRENCIES } from '../utils/supported-currencies';
 
 // install Virtual module
 SwiperCore.use([Virtual, Navigation]);
@@ -47,10 +47,6 @@ export function SelectCoin() {
     themeType.SYSTEM as ThemeType
   );
 
-  // TODO: change to 0 once swiper is upgraded to v10.x
-  // set the default currency the 2nd one because otherwise the swiper doesn't look good
-  const defaultCurrencyIdx = 1;
-
   /**
    * Swiper requires that the total number of slides
    * is at least 2 x `slidesPerView` in order for the looping to occur properly,
@@ -61,51 +57,41 @@ export function SelectCoin() {
     ...WALLET_CURRENCIES,
   ];
 
-  const aggregatedBalances = useAggregatedBalances();
-  const { keys: exchangeRates, length: exchangeRateLength } =
-    useExchangeRates();
-
+  // TODO: change to 0 once swiper is upgraded to v10.x
+  // set the default currency the 2nd one because otherwise the swiper doesn't look good
+  const defaultCurrencyIdx = 1;
   /**
    * Track cross-page currency selection by user
    */
-  const [currency, setCurrency, _] = useLocalStorage(
-    'currency',
-    WALLET_CURRENCIES_FOR_SWIPER[defaultCurrencyIdx].symbol
+  const [focusCurrency, setFocusCurrency, _] = useLocalStorage(
+    'focusCurrency',
+    WALLET_CURRENCIES_FOR_SWIPER[defaultCurrencyIdx].currency
   );
 
   /**
-   * Aux functions to lookup the currency information
+   * Balance information
    */
-  const findCurrency =
-    (currencySymbol: string) => (c: WalletCurrencyMetadata) =>
-      c.symbol === currencySymbol;
-  const findExchangeRate = ({
-    currency: [chain, token],
-  }: WalletCurrencyMetadata) =>
+  const [focusCurrencyUSDTBalance, setFocusCurrencyUSDTBalance] =
+    useState<Big>();
+
+  const { keys: exchangeRates, length: exchangeRateLength } =
+    useExchangeRates();
+
+  const findExchangeRate = ({ chain, token }: WalletCurrency) =>
     exchangeRates.find(
       (ex) => !token && ex.coinSymbol === (TEST_TO_MAIN.get(chain) || chain)
     )?.price || 1;
 
-  /**
-   * TODO: Combine with currency
-   * Track currency under focus in the slider
-   */
-  const [focusCurrency, setFocusCurrency] = useState(
-    WALLET_CURRENCIES_FOR_SWIPER.find(findCurrency(currency)) ||
-      WALLET_CURRENCIES_FOR_SWIPER[defaultCurrencyIdx]
-  );
-  const [focusCurrencyUSDT, setFocusCurrencyUSDT] = useState<Big>();
+  const aggregatedBalances = useAggregatedBalances();
 
   /**
    * Update the USDT equivalent once exchange rates are loaded
    */
   useEffect(
     () => {
-      const defaultBig = Big(
-        aggregatedBalances.get(focusCurrency.currency) || 0
-      );
+      const defaultBig = Big(aggregatedBalances.get(focusCurrency) || 0);
       const conversionRate = findExchangeRate(focusCurrency);
-      setFocusCurrencyUSDT(Big(conversionRate).times(defaultBig));
+      setFocusCurrencyUSDTBalance(Big(conversionRate).times(defaultBig));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [aggregatedBalances, exchangeRateLength]
@@ -116,9 +102,11 @@ export function SelectCoin() {
    */
   const [swiperRef, setSwiperRef] = useState<SwiperCore>();
   const [swiperIdx, setSwiperIdx] = useState(
-    WALLET_CURRENCIES_FOR_SWIPER.findIndex((c) => c.symbol === currency) ||
-      defaultCurrencyIdx
+    WALLET_CURRENCIES_FOR_SWIPER.findIndex(({ currency }) =>
+      compareWalletCurrency(currency, focusCurrency)
+    ) || defaultCurrencyIdx
   );
+
   /**
    * Slide to last index
    */
@@ -137,16 +125,20 @@ export function SelectCoin() {
    * - Update global state
    */
   const handleSlideChange = () => {
-    const newIndex = swiperRef?.realIndex ?? defaultCurrencyIdx;
-    const newCurrency = WALLET_CURRENCIES_FOR_SWIPER[newIndex];
+    if (!swiperRef) return;
 
+    if (isNaN(swiperRef.realIndex)) {
+      return;
+    }
+
+    const newIndex = swiperRef.realIndex;
     setSwiperIdx(newIndex);
-    setFocusCurrency(newCurrency);
-    setCurrency(newCurrency.symbol);
+    const wc = WALLET_CURRENCIES_FOR_SWIPER[newIndex].currency;
+    setFocusCurrency(wc);
 
-    const conversionRate = findExchangeRate(newCurrency);
-    const bigCurrency = Big(aggregatedBalances.get(newCurrency.currency) || 0);
-    setFocusCurrencyUSDT(Big(conversionRate).times(bigCurrency));
+    const conversionRate = findExchangeRate(wc);
+    const bigCurrency = Big(aggregatedBalances.get(wc) || 0);
+    setFocusCurrencyUSDTBalance(Big(conversionRate).times(bigCurrency));
   };
 
   // select the relevant icon path
@@ -165,10 +157,10 @@ export function SelectCoin() {
     }
   };
 
-  // select the relevant chain icon to construct the USDT logo
-  const usdtChainIcon = (currency: WalletCurrency, idx: number) => {
+  // Lookup USDT icon
+  const usdtChainIcon = (wc: WalletCurrency, idx: number) => {
     const chain = WALLET_CURRENCIES_FOR_SWIPER.find(
-      (newCurrency) => newCurrency.currency[0] === currency[0]
+      ({ currency: { chain } }) => chain === wc.chain
     );
     if (swiperIdx !== idx && chain?.greyLogo !== undefined) {
       return chain.greyLogo;
@@ -195,11 +187,11 @@ export function SelectCoin() {
             loop={true}
           >
             {WALLET_CURRENCIES_FOR_SWIPER.map(
-              ({ logo, darkLogo, greyLogo, symbol, currency }, idx) => {
+              ({ logo, darkLogo, greyLogo, currency }, idx) => {
                 return (
                   <SwiperSlide
                     className="unselectable"
-                    key={`${symbol}-${idx}`}
+                    key={idx}
                     style={{
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -218,7 +210,7 @@ export function SelectCoin() {
                             }
                       }
                     />
-                    {currency[1] && (
+                    {currency.token && (
                       <IonImg
                         src={usdtChainIcon(currency, idx)}
                         style={
@@ -249,16 +241,14 @@ export function SelectCoin() {
       <IonRow class="ion-margin-top">
         <IonCol class="ion-no-padding">
           <BalanceTitle>
-            {limitDecimalPlaces(
-              aggregatedBalances.get(focusCurrency.currency) || 0
-            )}{' '}
-            {focusCurrency.symbol.toUpperCase()}
+            {limitDecimalPlaces(aggregatedBalances.get(focusCurrency) || 0)}{' '}
+            {focusCurrency.displayName.toUpperCase()}
           </BalanceTitle>
         </IonCol>
       </IonRow>
       <IonRow>
         <IonCol class="ion-no-padding">
-          <BalanceText>${`${focusCurrencyUSDT} USD`}</BalanceText>
+          <BalanceText>${`${focusCurrencyUSDTBalance} USD`}</BalanceText>
         </IonCol>
       </IonRow>
     </>

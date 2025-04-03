@@ -90,7 +90,7 @@ const InputPasswordText = styled.div({
 
 interface Props {
   transaction: VerifiedTransaction[] | undefined;
-  coinSymbol: string;
+  currencyDisplayName: string;
   gasFree: boolean;
   isResult: () => void;
   getErrorMsg: (msg: string) => void;
@@ -189,7 +189,7 @@ export function SendConfirm(props: Props) {
             <TextWrapper>
               <TextTitle>{t('Amount')}</TextTitle>
               <TextTitle>
-                {totalAmount.toString()} {props.coinSymbol}
+                {totalAmount.toString()} {props.currencyDisplayName}
               </TextTitle>
             </TextWrapper>
             <Divider />

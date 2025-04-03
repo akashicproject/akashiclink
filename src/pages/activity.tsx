@@ -51,7 +51,7 @@ export function formatWalletTransfer(
   transfers.forEach((transfer, id) => {
     const unpackedTransfer = transferToTableFormat(transfer, id);
     const walletSupportedCurrency = WALLET_CURRENCIES.find(
-      (currency) => currency.currency[0] === transfer.coinSymbol
+      ({ currency: { chain } }) => chain === transfer.coinSymbol
     );
     if (unpackedTransfer !== undefined && walletSupportedCurrency) {
       const walletUnpackedTransfer = {

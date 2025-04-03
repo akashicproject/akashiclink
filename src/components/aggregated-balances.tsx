@@ -1,13 +1,13 @@
 import { IonButton, IonCard, IonCol, IonGrid, IonRow } from '@ionic/react';
 
-import type { Wallet } from '../constants/dummy-data';
+import type { UserWallet } from '../utils/supported-currencies';
 
 export function AggregatedBalances({
   keyWallets,
   onClick,
 }: {
-  keyWallets: Wallet[];
-  onClick: (wallet: Wallet) => void;
+  keyWallets: UserWallet[];
+  onClick: (wallet: UserWallet) => void;
 }) {
   return (
     <IonCard>

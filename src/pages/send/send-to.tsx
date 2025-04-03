@@ -31,10 +31,13 @@ import { useAggregatedBalances } from '../../utils/hooks/useAggregatedBalances';
 import { useExchangeRates } from '../../utils/hooks/useExchangeRates';
 import { useKeyMe } from '../../utils/hooks/useKeyMe';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
-import { calculateInternalFee } from '../../utils/internal-fee';
+import { calculateInternalWithdrawalFee } from '../../utils/internal-fee';
 import { lastPageStorage } from '../../utils/last-page-storage';
 import { displayLongText } from '../../utils/long-text';
-import { WALLET_CURRENCIES } from '../../utils/supported-currencies';
+import {
+  lookupWalletCurrency,
+  WALLET_CURRENCIES,
+} from '../../utils/supported-currencies';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { SendConfirm } from './send-confirm';
 import { SendMain } from './send-main';
@@ -156,8 +159,8 @@ export function SendTo() {
   const { keys: exchangeRates } = useExchangeRates();
 
   const [_, __, currency] = useLocalStorage(
-    'currency',
-    WALLET_CURRENCIES[0].symbol
+    'focusCurrency',
+    WALLET_CURRENCIES[0].currency
   );
 
   // store current page to main logged page if reopen
@@ -166,18 +169,14 @@ export function SendTo() {
   }, []);
 
   // Find specified currency or default to the first one
-  const currentWalletCurrency =
-    WALLET_CURRENCIES.find((c) => c.symbol === currency) ||
-    WALLET_CURRENCIES[0];
-
+  const currentWalletMetadata = lookupWalletCurrency(currency);
+  const { chain, token } = currentWalletMetadata.currency;
   const currentWallet = userWallets.filter((wallet) => {
-    return wallet.coinSymbol === currentWalletCurrency.currency[0];
+    return wallet.coinSymbol === chain;
   })[0];
-  const coinSymbol = currentWalletCurrency.currency[0];
-  const tokenSymbol = currentWalletCurrency.currency[1];
 
   const [internalFee, setInternalFee] = useState(
-    calculateInternalFee('1', exchangeRates, coinSymbol, tokenSymbol)
+    calculateInternalWithdrawalFee('1', exchangeRates, chain, token)
   );
 
   // Keeps track of which page the user is at
@@ -214,9 +213,7 @@ export function SendTo() {
 
     // 1. Regex validation
     if (
-      !recipientAddress.match(
-        NetworkDictionary[currentWalletCurrency.currency[0]].regex.address
-      ) &&
+      !recipientAddress.match(NetworkDictionary[chain].regex.address) &&
       !recipientAddress.match(L2Regex)
     ) {
       // 2a. If input address does not match standard form, lookup value in the ACNS
@@ -250,25 +247,24 @@ export function SendTo() {
 
         const l2address = await OwnersAPI.checkL2Address({
           to: recipientAddress,
-          coinSymbol: currentWalletCurrency.currency[0],
+          coinSymbol: chain,
         });
 
         if (l2address) {
           // If l2 address exists
           setToAddress(l2address);
-          recipientAddress.match(
-            NetworkDictionary[currentWalletCurrency.currency[0]].regex.address
-          ) && setL1AddressWhenL2(recipientAddress);
+          recipientAddress.match(NetworkDictionary[chain].regex.address) &&
+            setL1AddressWhenL2(recipientAddress);
           setGasFree(true);
         } else {
           setL1AddressWhenL2(undefined);
           setToAddress(recipientAddress);
-          if (tokenSymbol !== undefined)
+          if (token !== undefined)
             setAlertRequest({
               success: false,
               visible: true,
               message: t('showNativeCoinNeededMsg', {
-                coinSymbol: currentWalletCurrency.currency[0],
+                coinSymbol: chain,
               }),
             });
           setGasFree(false);
@@ -281,12 +277,7 @@ export function SendTo() {
   const validateAmount = (value: string) =>
     !(!value || value.charAt(0) === '-' || Big(value).lte(0));
   const validateAddress = (value: string) => {
-    return (
-      gasFree ||
-      !!value.match(
-        NetworkDictionary[currentWalletCurrency.currency[0]].regex.address
-      )
-    );
+    return gasFree || !!value.match(NetworkDictionary[chain].regex.address);
   };
 
   const [signError, setSignError] = useState(errorMsgs.NoError);
@@ -309,8 +300,8 @@ export function SendTo() {
       fromAddress: currentWallet.address,
       toAddress,
       amount,
-      coinSymbol,
-      tokenSymbol: tokenSymbol ? tokenSymbol : undefined,
+      coinSymbol: chain,
+      token: token ? token : undefined,
       forceL1: !gasFree,
       toL1Address: l1AddressWhenL2,
     };
@@ -330,7 +321,7 @@ export function SendTo() {
         setAlertRequest(
           errorAlertShell(
             t('insufficientBalance', {
-              coinSymbol,
+              coinSymbol: chain,
             })
           )
         );
@@ -354,12 +345,12 @@ export function SendTo() {
               <CurrencyWrapper>
                 <IonImg
                   alt={''}
-                  src={currentWalletCurrency.logo}
+                  src={currentWalletMetadata.logo}
                   style={{ width: '40px', height: '40px' }}
                 />
                 <BalanceText>
-                  {aggregatedBalances.get(currentWalletCurrency.currency)}{' '}
-                  {currentWalletCurrency.symbol}
+                  {aggregatedBalances.get(currentWalletMetadata.currency)}{' '}
+                  {currentWalletMetadata.currency.displayName}
                 </BalanceText>
               </CurrencyWrapper>
             </IonCol>
@@ -387,11 +378,11 @@ export function SendTo() {
                   onIonInput={({ target: { value } }) => {
                     setAmount(value as string);
                     setInternalFee(
-                      calculateInternalFee(
+                      calculateInternalWithdrawalFee(
                         value as string,
                         exchangeRates,
-                        coinSymbol,
-                        tokenSymbol
+                        chain,
+                        token
                       )
                     );
                   }}
@@ -429,7 +420,7 @@ export function SendTo() {
                     {t('GasFree')}
                   </GasFreeMarker>
                   <FeeMarker>{`Fee: ${internalFee.toFixed(2)} ${
-                    TEST_TO_MAIN.get(coinSymbol) || coinSymbol
+                    TEST_TO_MAIN.get(chain) || chain
                   }`}</FeeMarker>
                 </GasWrapper>
                 {gasFree || !toAddress ? null : (
@@ -471,7 +462,7 @@ export function SendTo() {
       )}
       {pageView === SendView.Confirm && (
         <SendConfirm
-          coinSymbol={currency || ''}
+          currencyDisplayName={currency.displayName || ''}
           transaction={verifiedTransaction}
           gasFree={gasFree}
           isResult={() => setPageView(SendView.Result)}
@@ -482,7 +473,7 @@ export function SendTo() {
         <SendResult
           errorMsg={signError}
           transaction={verifiedTransaction}
-          coinSymbol={currency || ''}
+          currencyDisplayName={currency.displayName || ''}
           goBack={() => router.goBack()}
         />
       )}

@@ -69,7 +69,7 @@ export const TextContent = styled.div({
 interface Props {
   transaction: VerifiedTransaction[] | undefined;
   errorMsg: string;
-  coinSymbol: string;
+  currencyDisplayName: string;
   goBack: () => void;
 }
 export function SendResult(props: Props) {
@@ -131,7 +131,7 @@ export function SendResult(props: Props) {
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('Coin')}</TextTitle>
-                <TextContent>{props.coinSymbol}</TextContent>
+                <TextContent>{props.currencyDisplayName}</TextContent>
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('Amount')}</TextTitle>

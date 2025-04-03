@@ -15,7 +15,10 @@ import { akashicPayPath } from '../../routing/navigation-tree';
 import { useLargestBalanceKeys } from '../../utils/hooks/useLargestBalanceKeys';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { lastPageStorage } from '../../utils/last-page-storage';
-import { WALLET_CURRENCIES } from '../../utils/supported-currencies';
+import {
+  lookupWalletCurrency,
+  WALLET_CURRENCIES,
+} from '../../utils/supported-currencies';
 import { LoggedMain } from './logged-main';
 
 const CoinWrapper = styled.div({
@@ -30,8 +33,8 @@ export function DepositPage() {
   const { t } = useTranslation();
 
   const [currency, ..._] = useLocalStorage(
-    'currency',
-    WALLET_CURRENCIES[0].symbol
+    'focusCurrency',
+    WALLET_CURRENCIES[0].currency
   );
 
   // store current page to main logged page if reopen
@@ -40,9 +43,7 @@ export function DepositPage() {
   }, []);
 
   // Find specified currency or default to the first one
-  const currentWalletCurrency =
-    WALLET_CURRENCIES.find((c) => c.symbol === currency) ||
-    WALLET_CURRENCIES[0];
+  const currentWalletMetadata = lookupWalletCurrency(currency);
 
   const { keys: addresses, isLoading: isAddressesLoading } =
     useLargestBalanceKeys({
@@ -52,7 +53,7 @@ export function DepositPage() {
   const walletAddressDetail = addresses?.find(
     (address) =>
       address.coinSymbol.toLowerCase() ===
-      currentWalletCurrency.currency[0].toLowerCase()
+      currentWalletMetadata.currency.chain.toLowerCase()
   );
 
   const walletAddress = walletAddressDetail?.address ?? '-';
@@ -70,12 +71,12 @@ export function DepositPage() {
               {walletAddressDetail?.coinSymbol && (
                 <IonImg
                   alt={''}
-                  src={currentWalletCurrency.logo}
+                  src={currentWalletMetadata.logo}
                   style={{ height: '30px' }}
                 />
               )}
               <IonText>
-                <h3>{currentWalletCurrency.symbol ?? '-'}</h3>
+                <h3>{currentWalletMetadata.currency.displayName ?? '-'}</h3>
               </IonText>
             </CoinWrapper>
           </IonCol>
