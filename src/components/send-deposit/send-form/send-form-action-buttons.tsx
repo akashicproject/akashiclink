@@ -90,7 +90,7 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
             expand="block"
             className={'w-100'}
             onClick={onConfirm}
-            disabled={disabled}
+            disabled={disabled || isLoading}
             isLoading={isLoading}
           >
             {t('Next')}
