@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
+import { type IWalletScreening } from '@helium-pay/backend';
 import { IonImg, IonText } from '@ionic/react';
 import { type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { urls } from '../../constants/urls';
-import { type SmartScanType } from '../../pages/address-screening/address-screening-history';
 import { historyGo } from '../../routing/history';
 import { formatDate } from '../../utils/formatDate';
 import { Divider } from '../common/divider';
@@ -64,8 +64,7 @@ const RISK_COLORS: { [key: string]: string } = {
  * @param divider separator after
  */
 interface AddressScreeningItemProps {
-  scan: SmartScanType;
-  onClick?: () => void;
+  screening: IWalletScreening;
   style?: CSSProperties;
   showDetail?: boolean;
   hasHoverEffect?: boolean;
@@ -75,7 +74,7 @@ interface AddressScreeningItemProps {
 const currenciesIcon = [...SUPPORTED_CURRENCIES_FOR_EXTENSION.list];
 
 export function AddressScreeningHistoryItem({
-  scan,
+  screening,
   style,
   hasHoverEffect,
   divider,
@@ -83,13 +82,13 @@ export function AddressScreeningHistoryItem({
   const { t } = useTranslation();
 
   const currencyObj = currenciesIcon.find(
-    (c) => c.walletCurrency.chain === scan.currency?.chain
+    (c) => c.walletCurrency.chain === screening.coinSymbol
   );
 
   const handleClick = () => {
     historyGo(urls.addressScreeningDetails, {
       addressScreeningSearch: {
-        id: scan._id,
+        id: screening._id.toString(),
       },
     });
   };
@@ -97,7 +96,7 @@ export function AddressScreeningHistoryItem({
   return (
     <>
       <AddressScreeningWrapper
-        key={scan.hash}
+        key={screening._id.toString()}
         onClick={handleClick}
         style={style}
         hover={hasHoverEffect || false}
@@ -114,20 +113,22 @@ export function AddressScreeningHistoryItem({
             />
           </TypeIcon>
           <FlexWrapper>
-            <AccountHash className="ion-text-size-xxs">{scan.hash}</AccountHash>
+            <AccountHash className="ion-text-size-xxs">
+              {screening.address}
+            </AccountHash>
             <Time className="ion-text-size-xxs">
-              {formatDate(new Date(scan.date))}
+              {formatDate(new Date(screening.createdAt))}
             </Time>
           </FlexWrapper>
         </IconWrapper>
         <IonText
           className="ion-text-size-xs"
           style={{
-            color: RISK_COLORS[scan.risk.toLowerCase()],
+            color: RISK_COLORS[screening.riskLevel.toLowerCase()],
             fontWeight: 700,
           }}
         >
-          {t(scan.risk)}
+          {t(screening.riskLevel)}
         </IonText>
       </AddressScreeningWrapper>
       {divider && (

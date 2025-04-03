@@ -1,22 +1,20 @@
 import styled from '@emotion/styled';
-import {
-  EthereumSymbol,
-  NetworkDictionary,
-  TronSymbol,
-} from '@helium-pay/backend';
-import { IonIcon, IonText } from '@ionic/react';
+import { type IWalletScreening } from '@helium-pay/backend';
+import { IonIcon, IonSpinner, IonText } from '@ionic/react';
 import { addOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { Virtuoso } from 'react-virtuoso';
+import { type GridComponents, Virtuoso } from 'react-virtuoso';
+import { AlertIcon } from 'src/components/common/icons/alert-icon';
 
 import { AddressScreeningHistoryItem } from '../../components/address-screening/address-screening-history-item';
-import { PrimaryButton } from '../../components/common/buttons';
+import { PrimaryButton, WhiteButton } from '../../components/common/buttons';
 import { Divider } from '../../components/common/divider';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
-import { type IWalletCurrency } from '../../constants/currencies';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
+import { useWalletScreenHistory } from '../../utils/hooks/useWalletScreenHistory';
+import { NoActivityText, NoActivityWrapper } from '../activity/activity';
 
 export const Wrapper = styled.div({
   display: 'flex',
@@ -38,121 +36,50 @@ const SmartScanFooter = styled.div({
   justifyContent: 'center',
   alignItems: 'center',
   textAlign: 'center',
-  paddingBlockStart: 25,
+  paddingBlockStart: 8,
   gap: 8,
 });
 
-// TODO: swap with API data once it's ready
-export type SmartScanType = {
-  _id: string;
-  hash: string;
-  date: Date;
-  risk: string; // Could be made more specific with union type if risks are predetermined
-  currency: IWalletCurrency;
-};
-const MOCK_SMART_SCANS: SmartScanType[] = [
-  {
-    _id: '1',
-    hash: '0x47CE0C6eD5B0Ce3d3A51fd...c3c2936',
-    date: new Date(),
-    risk: 'Severe',
-    currency: {
-      chain: EthereumSymbol.Ethereum_Sepolia,
-      displayName:
-        NetworkDictionary[EthereumSymbol.Ethereum_Sepolia].nativeCoin
-          .displayName,
-    },
-  },
-  {
-    _id: '2',
-    hash: '0x47CE0C6eD5B0Ce3d3A51fd...c3c2936',
-    date: new Date(),
-    risk: 'High',
-    currency: {
-      chain: TronSymbol.Tron_Shasta,
-      displayName:
-        NetworkDictionary[TronSymbol.Tron_Shasta].nativeCoin.displayName,
-    },
-  },
-  {
-    _id: '3',
-    hash: '0x47CE0C6eD5B0Ce3d3A51fd...c3c2936',
-    date: new Date(),
-    risk: 'Moderate',
-    currency: {
-      chain: EthereumSymbol.Ethereum_Sepolia,
-      displayName: 'Ethereum Sepolia Testnet',
-    },
-  },
-  {
-    _id: '4',
-    hash: '0x47CE0C6eD5B0Ce3d3A51fd...c3h2936',
-    date: new Date(),
-    risk: 'Low',
-    currency: {
-      chain: TronSymbol.Tron_Shasta,
-      displayName:
-        NetworkDictionary[TronSymbol.Tron_Shasta].nativeCoin.displayName,
-    },
-  },
-  {
-    _id: '5',
-    hash: '0x47CE0C6eD5B0Ce3d3A51fd...c3t2936',
-    date: new Date(),
-    risk: 'Low',
-    currency: {
-      chain: TronSymbol.Tron_Shasta,
-      displayName:
-        NetworkDictionary[TronSymbol.Tron_Shasta].nativeCoin.displayName,
-    },
-  },
-  {
-    _id: '6',
-    hash: '0x47CE0C6eD5B0Ce3d3A51fd...c3u2936',
-    date: new Date(),
-    risk: 'Low',
-    currency: {
-      chain: TronSymbol.Tron_Shasta,
-      displayName:
-        NetworkDictionary[TronSymbol.Tron_Shasta].nativeCoin.displayName,
-    },
-  },
-  {
-    _id: '7',
-    hash: '0x47CE0C6eD5B0Ce3d3A51fd...c3d2936',
-    date: new Date(),
-    risk: 'Low',
-    currency: {
-      chain: TronSymbol.Tron_Shasta,
-      displayName:
-        NetworkDictionary[TronSymbol.Tron_Shasta].nativeCoin.displayName,
-    },
-  },
-  {
-    _id: '8',
-    hash: '0x47CE0C6eD5B0Ce3d3A51fd...c3c2536',
-    date: new Date(),
-    risk: 'Low',
-    currency: {
-      chain: TronSymbol.Tron_Shasta,
-      displayName:
-        NetworkDictionary[TronSymbol.Tron_Shasta].nativeCoin.displayName,
-    },
-  },
-];
-
-const renderItem = (index: number, scan: SmartScanType) => (
+const renderItem = (_: number, screening: IWalletScreening) => (
   <AddressScreeningHistoryItem
-    scan={scan}
+    screening={screening}
     showDetail
     hasHoverEffect
-    divider={index < MOCK_SMART_SCANS.length - 1}
+    divider
   />
 );
+
+const ListFooter: GridComponents['Footer'] = ({
+  context: { loadMore, loading },
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <div className={'ion-display-flex ion-justify-content-center'}>
+      <WhiteButton
+        expand="block"
+        size={'small'}
+        disabled={loading}
+        onClick={loadMore}
+        style={{
+          minWidth: 200,
+        }}
+      >
+        {loading ? t('Loading') : t('LoadMore')}
+      </WhiteButton>
+    </div>
+  );
+};
 
 export const AddressScreeningHistory = () => {
   const { t } = useTranslation();
   const history = useHistory();
+  const { screenings, count, isLoading, isLoadingMore, setSize, size } =
+    useWalletScreenHistory();
+
+  const loadMore = () => {
+    setSize(size + 1);
+  };
 
   return (
     <DashboardLayout showSwitchAccountBar showAddress showRefresh>
@@ -165,8 +92,7 @@ export const AddressScreeningHistory = () => {
         </IonText>
       </Wrapper>
 
-      {/* TODO: 1295 - adapt with API call */}
-      {/* {!isDataLoaded && (
+      {isLoading && (
         <IonSpinner
           color="primary"
           name="circular"
@@ -178,25 +104,30 @@ export const AddressScreeningHistory = () => {
             '--webkit-transform': 'translateX(-50%)',
           }}
         />
-      )} */}
-      {/* TODO: 1295 - adapt with API call */}
-      {/* {isDataLoaded && MOCK_SMART_SCANS.length === 0 && (
+      )}
+      {!isLoading && count === 0 && (
         <NoActivityWrapper>
           <AlertIcon />
           <NoActivityText>{t('NoActivity')}</NoActivityText>
         </NoActivityWrapper>
-      )} */}
-      <SmartScanWrapper>
-        <Virtuoso
-          style={{
-            margin: '8px 0px',
-            minHeight: '240px',
-          }}
-          data={MOCK_SMART_SCANS}
-          itemContent={renderItem}
-        ></Virtuoso>
-      </SmartScanWrapper>
-
+      )}
+      {!isLoading && count !== 0 && (
+        <SmartScanWrapper>
+          <Virtuoso
+            style={{
+              margin: '8px 0px',
+              minHeight: 'calc(100vh - 330px - var(--ion-safe-area-bottom)',
+            }}
+            data={screenings}
+            itemContent={renderItem}
+            context={{ loading: isLoadingMore, loadMore }}
+            components={{
+              Footer:
+                count && screenings.length < count ? ListFooter : undefined,
+            }}
+          />
+        </SmartScanWrapper>
+      )}
       <SmartScanFooter>
         <Divider
           style={{ width: '328px', margin: 0 }}
