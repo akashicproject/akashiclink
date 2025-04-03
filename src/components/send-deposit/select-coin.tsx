@@ -62,8 +62,8 @@ export function SelectCoin() {
   const [focusCurrencyUSDTBalance, setFocusCurrencyUSDTBalance] =
     useState<Big>();
 
-  const { keys: exchangeRates, length: exchangeRateLength } =
-    useExchangeRates();
+  const { exchangeRates } = useExchangeRates();
+  const exchangeRateLength = exchangeRates.length;
 
   const findExchangeRate = ({ chain, token }: IWalletCurrency) =>
     exchangeRates.find(

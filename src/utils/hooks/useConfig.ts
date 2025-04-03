@@ -5,31 +5,33 @@ import useSWR from 'swr';
 import fetcher from '../ownerFetcher';
 
 export const useConfig = () => {
-  const { data, error, mutate } = useSWR(`/config`, fetcher, {});
-  const config = (data || {}) as IConfigResponse;
+  const { data, ...response } = useSWR<IConfigResponse, Error>(
+    `/config`,
+    fetcher
+  );
   return {
-    config: isPlatform('ios')
+    config: !data
+      ? undefined
+      : isPlatform('ios')
       ? {
-          awMinVersion: config.awMinVersionIos,
-          awLatestVersion: config.awLatestVersionIos,
-          awUrl: config.awUrlIos,
-          highlights: config.highlights?.ios,
+          awMinVersion: data.awMinVersionIos,
+          awLatestVersion: data.awLatestVersionIos,
+          awUrl: data.awUrlIos,
+          highlights: data.highlights?.ios,
         }
       : isPlatform('android')
       ? {
-          awMinVersion: config.awMinVersionAndroid,
-          awLatestVersion: config.awLatestVersionAndroid,
-          awUrl: config.awUrlAndroid,
-          highlights: config.highlights?.android,
+          awMinVersion: data.awMinVersionAndroid,
+          awLatestVersion: data.awLatestVersionAndroid,
+          awUrl: data.awUrlAndroid,
+          highlights: data.highlights?.android,
         }
       : {
-          awMinVersion: config.awMinVersionExtension,
-          awLatestVersion: config.awLatestVersionExtension,
-          awUrl: config.awUrlExtension,
-          highlights: config.highlights?.extension,
+          awMinVersion: data.awMinVersionExtension,
+          awLatestVersion: data.awLatestVersionExtension,
+          awUrl: data.awUrlExtension,
+          highlights: data.highlights?.extension,
         },
-    isLoading: !error && !data,
-    isError: error,
-    mutateConfig: mutate,
+    ...response,
   };
 };

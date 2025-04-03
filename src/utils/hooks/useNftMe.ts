@@ -7,17 +7,12 @@ import { useOwner } from './useOwner';
 
 export const useNftMe = () => {
   const { authenticated } = useOwner();
-  const { data, error, mutate } = useSWR<INft[]>(
-    authenticated ? `/nft/me` : '',
-    fetcher,
-    {
-      refreshInterval: REFRESH_INTERVAL,
-    }
-  );
-  return {
-    nfts: (data || []) as INft[],
-    isLoading: !error && !data,
-    isError: error,
-    mutateNftMe: mutate,
-  };
+  const {
+    data,
+    mutate: mutateNftMe,
+    ...response
+  } = useSWR<INft[], Error>(authenticated ? `/nft/me` : null, fetcher, {
+    refreshInterval: REFRESH_INTERVAL,
+  });
+  return { nfts: data ?? [], mutateNftMe, ...response };
 };

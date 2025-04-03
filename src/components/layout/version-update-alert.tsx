@@ -23,7 +23,7 @@ export const VersionUpdateAlert = () => {
     const appVersion = info?.version?.split('-')[0];
 
     // compare when all versions are loaded
-    if (!appVersion || !config.awMinVersion || !config.awLatestVersion) {
+    if (!appVersion || !config) {
       setUpdateType('');
       return;
     }
@@ -51,7 +51,7 @@ export const VersionUpdateAlert = () => {
       header={t('NewVersionAvailable')}
       message={t('NewVersionAvailableMessage')}
       buttons={[
-        ...(updateType === 'soft'
+        ...(config && updateType === 'soft'
           ? [
               {
                 text: t('Later'),
@@ -62,18 +62,22 @@ export const VersionUpdateAlert = () => {
               },
             ]
           : []),
-        {
-          text: t('Update'),
-          role: 'confirm',
-          handler: async () => {
-            setSkipVersion(config.awLatestVersion);
-            await Browser.open({
-              url: config.awUrl,
-            });
-            // make it non dismissable
-            return false;
-          },
-        },
+        ...(config
+          ? [
+              {
+                text: t('Update'),
+                role: 'confirm',
+                handler: async () => {
+                  setSkipVersion(config.awLatestVersion);
+                  await Browser.open({
+                    url: config.awUrl,
+                  });
+                  // make it non dismissible
+                  return false;
+                },
+              },
+            ]
+          : []),
       ]}
     />
   );

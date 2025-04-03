@@ -6,17 +6,16 @@ import { useOwner } from './useOwner';
 
 export const useKeyMe = () => {
   const { authenticated } = useOwner();
-  const { data, error } = useSWR(authenticated ? `/key/me` : '', fetcher, {});
+  const { data, ...response } = useSWR<IKeyInfoResponse[], Error>(
+    authenticated ? `/key/me` : null,
+    fetcher
+  );
 
   // Dates come from backend as string so need to transform them here
-  const dataWithDates = ((data || []) as IKeyInfoResponse[]).map((d) => ({
+  const dataWithDates = (data ?? []).map((d) => ({
     ...d,
     createdAt: new Date(d.createdAt),
   }));
 
-  return {
-    keys: dataWithDates,
-    isLoading: !error && !data,
-    isError: error,
-  };
+  return { keys: dataWithDates, ...response };
 };

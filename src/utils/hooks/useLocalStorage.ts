@@ -2,6 +2,10 @@ import { Preferences } from '@capacitor/preferences';
 import { datadogRum } from '@datadog/browser-rum';
 import { useEffect, useState } from 'react';
 
+// TODO rewrite this to wrap https://github.com/capacitor-community/react-hooks?tab=readme-ov-file#storage-hooks
+//  this API exposes async hook functions which is... not right.
+//  I guess we need to preserve the datadog rum stuff though.
+
 /**
  * Access localPreferences using the key. Also, expose a function to update and save value
  *

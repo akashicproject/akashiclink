@@ -7,17 +7,18 @@ import { useOwner } from './useOwner';
 
 export const useBalancesMe = () => {
   const { authenticated } = useOwner();
-  const { data, error, mutate } = useSWR(
-    authenticated ? `/owner/agg-balances` : '',
+  const {
+    data,
+    mutate: mutateBalancesMe,
+    ...response
+  } = useSWR<IOwnerBalancesResponse[], Error>(
+    authenticated ? `/owner/agg-balances` : null,
     fetcher,
-    {
-      refreshInterval: REFRESH_INTERVAL,
-    }
+    { refreshInterval: REFRESH_INTERVAL }
   );
   return {
-    keys: (data || []) as IOwnerBalancesResponse[],
-    isLoading: !error && !data,
-    isError: error,
-    mutateBalancesMe: mutate,
+    keys: data ?? [],
+    mutateBalancesMe,
+    ...response,
   };
 };

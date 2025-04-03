@@ -12,21 +12,22 @@ import { useOwner } from './useOwner';
 
 export const useNftTransfersMe = (params?: INftTransactionRecordRequest) => {
   const { authenticated } = useOwner();
-  const { data, error, mutate } = useSWR(
-    authenticated ? buildURL(`/nft/transfers/me`, params) : '',
+  const {
+    data,
+    mutate: mutateNftTransfersMe,
+    ...response
+  } = useSWR<INftTransactionRecord[], Error>(
+    authenticated ? buildURL(`/nft/transfers/me`, params) : null,
     fetcher,
-    {
-      refreshInterval: REFRESH_INTERVAL,
-    }
+    { refreshInterval: REFRESH_INTERVAL }
   );
   // HACK: filter out pending transactions
   const filteredData = data?.filter(
     (t: { status: TransactionStatus }) => t.status !== TransactionStatus.PENDING
   );
   return {
-    transfers: (filteredData ?? []) as INftTransactionRecord[],
-    isLoading: !error && !data,
-    isError: error,
-    mutateNftTransfersMe: mutate,
+    transfers: filteredData ?? [],
+    mutateNftTransfersMe,
+    ...response,
   };
 };

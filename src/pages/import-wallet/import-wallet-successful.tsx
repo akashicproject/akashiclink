@@ -28,7 +28,7 @@ export const ImportWalletSuccessful = () => {
   const handleOnConfirm = async () => {
     dispatch(onClear());
     await mutateOwner();
-    if (owner.ownerIdentity) {
+    if (owner?.ownerIdentity) {
       await fetchAndRemapAASToAddress(owner.ownerIdentity);
     }
     // migration flow is finished, completely reset router history

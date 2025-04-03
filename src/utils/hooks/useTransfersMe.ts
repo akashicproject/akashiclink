@@ -26,8 +26,12 @@ const transferMeFetcher = async (path: string, config?: AxiosRequestConfig) => {
 
 export const useTransfersMe = (params?: IClientTransactionRecord) => {
   const { authenticated } = useOwner();
-  const { data, error, mutate } = useSWR(
-    authenticated ? buildURL(`/key/transfers/me`, { ...params }) : '',
+  const {
+    data,
+    mutate: mutateTransfersMe,
+    ...response
+  } = useSWR<ITransactionRecord[], Error>(
+    authenticated ? buildURL(`/key/transfers/me`, { ...params }) : null,
     transferMeFetcher,
     {
       refreshInterval: REFRESH_INTERVAL,
@@ -37,7 +41,7 @@ export const useTransfersMe = (params?: IClientTransactionRecord) => {
 
   // Dates come from backend as string so need to transform them here
   // also, remove trailing zeros from amounts
-  const dataWithDates = ((data || []) as ITransactionRecord[]).map((d) => ({
+  const dataWithDates = (data ?? []).map((d) => ({
     ...d,
     amount: d.amount.replace(/\.*0+$/, ''),
     feesPaid: d.feesPaid?.replace(/\.*0+$/, ''),
@@ -53,8 +57,7 @@ export const useTransfersMe = (params?: IClientTransactionRecord) => {
   );
   return {
     transfers: transformedFails,
-    isLoading: !error && !data,
-    isError: error,
-    mutateTransfersMe: mutate,
+    mutateTransfersMe,
+    ...response,
   };
 };

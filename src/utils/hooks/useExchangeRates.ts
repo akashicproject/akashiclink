@@ -7,21 +7,18 @@ import { calculateInternalWithdrawalFee } from '../internal-fee';
 import fetcher from '../ownerFetcher';
 
 export const useExchangeRates = () => {
-  const { data, error } = useSWR(
+  const { data, ...response } = useSWR<IExchangeRate[], Error>(
     `/public-api/owner/exchange-rates`,
-    fetcher,
-    {}
+    fetcher
   );
   return {
-    keys: (data || []) as IExchangeRate[],
-    length: data ? Object.keys(data).length : 0,
-    isLoading: !error && !data,
-    isError: error,
+    exchangeRates: data ?? [],
+    ...response,
   };
 };
 
 export const useCalculateFocusCurrencyL2WithdrawalFee = () => {
-  const { keys: exchangeRates } = useExchangeRates();
+  const { exchangeRates } = useExchangeRates();
   const { chain, token } = useAppSelector(selectFocusCurrencyDetail);
 
   return (amount: string) => {

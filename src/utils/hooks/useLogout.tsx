@@ -33,12 +33,9 @@ export function useLogout(callLogout = true) {
     });
 
     // Trigger refresh of login status
-    await mutateOwner(
-      {},
-      {
-        revalidate: false,
-      }
-    );
+    await mutateOwner(undefined, {
+      revalidate: false,
+    });
     await mutateBalancesMe([], {
       revalidate: false,
     });
