@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { OneNft } from '../nft/one-nft';
-import { BaseDetails, Header } from './base-details';
+import { BaseDetails } from './base-details';
 
 export function NftDetail({
   currentTransfer,

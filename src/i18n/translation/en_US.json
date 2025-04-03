@@ -178,7 +178,7 @@
     "Title": "Network",
     "AkashicChain": "Akashic Chain",
     "ETH": "Ethereum Mainnet",
-    "GOR": "Ethereum GOERLI Testnet",
+    "SEP": "Ethereum Sepolia Testnet",
     "BNB": "Binance Chain",
     "TBNB": "Binance Testnet",
     "TRX": "Tron Chain",

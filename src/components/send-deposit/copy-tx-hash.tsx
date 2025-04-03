@@ -16,9 +16,11 @@ import { displayLongText } from '../../utils/long-text';
 export const ListCopyTxHashItem = ({
   txHash,
   txHashUrl,
+  suffix,
 }: {
   txHash: string;
   txHashUrl?: string;
+  suffix?: string;
 }) => {
   const { t } = useTranslation();
   const popover = useRef<HTMLIonPopoverElement>(null);
@@ -55,7 +57,7 @@ export const ListCopyTxHashItem = ({
     >
       <IonLabel>
         <span className={`ion-color-primary ion-text-size-xs ion-text-bold`}>
-          {t('txHash')}
+          {t('txHash') + (suffix ? ` (${suffix})` : '')}
         </span>
       </IonLabel>
       <IonNote

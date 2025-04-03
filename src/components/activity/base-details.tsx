@@ -1,23 +1,12 @@
-import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import { TransactionStatus } from '@helium-pay/backend';
-import {
-  IonButton,
-  IonContent,
-  IonIcon,
-  IonImg,
-  IonPopover,
-} from '@ionic/react';
-import { arrowForwardCircleOutline } from 'ionicons/icons';
-import React, { useRef, useState } from 'react';
+import { IonImg } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
-import { displayLongText } from '../../utils/long-text';
-export const darkColor = {
-  color: 'var(--ion-color-primary-10)',
-  margin: 0,
-};
+import { List } from '../common/list/list';
+import { ListCopyTxHashItem } from '../send-deposit/copy-tx-hash';
+import { FromToAddressBlock } from '../send-deposit/from-to-address-block';
 
 export const DetailColumn = styled.div({
   display: 'flex',
@@ -26,23 +15,12 @@ export const DetailColumn = styled.div({
   justifyContent: 'space-between',
   maxHeight: '20px',
 });
-export const TextContent = styled.div({
-  display: 'flex',
-  alignContent: 'center',
-  fontWeight: 400,
-  fontSize: '12px',
-  lineHeight: '16px',
-  ...darkColor,
-});
-export const Header = styled.h4(darkColor);
-export const Link = styled.a(darkColor);
+
 export function BaseDetails({
   currentTransfer,
 }: {
   currentTransfer: ITransactionRecordForExtension;
 }) {
-  const popover = useRef<HTMLIonPopoverElement>(null);
-  const [popoverOpen, setPopoverOpen] = useState(false);
   const { t } = useTranslation();
   const statusString = (status: string | undefined) => {
     switch (status) {
@@ -58,19 +36,7 @@ export function BaseDetails({
         return t('MissingTranslationError');
     }
   };
-  const copyData = async (data: string, e: never) => {
-    await Clipboard.write({
-      string: data ?? '',
-    });
 
-    if (popover.current) {
-      popover.current.event = e;
-    }
-    setPopoverOpen(true);
-    setTimeout(() => {
-      setPopoverOpen(false);
-    }, 1000);
-  };
   return (
     <div
       className="transfer-detail"
@@ -82,7 +48,7 @@ export function BaseDetails({
       }}
     >
       <DetailColumn>
-        <Header>{t('Status')}</Header>
+        <h4 className="ion-margin-0">{t('Status')}</h4>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <h4 className="ion-no-margin">
             {statusString(currentTransfer.status)}
@@ -93,124 +59,35 @@ export function BaseDetails({
           />
         </div>
       </DetailColumn>
-      {currentTransfer.txHash && currentTransfer.txHashUrl && (
-        <DetailColumn>
-          <Header>
-            {t('txHash')} ({currentTransfer.coinSymbol})
-          </Header>
-          <TextContent style={{ display: 'flex', alignItems: 'center' }}>
-            <Link href={currentTransfer.txHashUrl}>
-              {displayLongText(currentTransfer.txHash)}
-            </Link>
-            <IonButton
-              style={{ height: 'auto', width: '19px' }}
-              className="copy-button"
-              onClick={async (e: never) =>
-                copyData(currentTransfer.txHashUrl || '', e)
-              }
-            >
-              <IonIcon
-                slot="icon-only"
-                className="copy-icon"
-                src={`/shared-assets/images/copy-icon-dark.svg`}
-              />
-              <IonPopover
-                side="top"
-                alignment="center"
-                ref={popover}
-                isOpen={popoverOpen}
-                className={'copied-popover'}
-                onDidDismiss={() => setPopoverOpen(false)}
-              >
-                <IonContent class="ion-padding">{t('Copied')}</IonContent>
-              </IonPopover>
-            </IonButton>
-          </TextContent>
-        </DetailColumn>
-      )}
-      <DetailColumn>
-        <Header style={currentTransfer.txHash ? { color: '#B0A9B3' } : {}}>
-          {t('txHash')} (AS)
-        </Header>
-        <TextContent
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <Link
-            href={currentTransfer.l2TxnHashUrl}
-            style={{ color: currentTransfer.txHash ? '#B0A9B3' : '' }}
-          >
-            {displayLongText(currentTransfer.l2TxnHash)}
-          </Link>
-          <IonButton
-            style={{ height: '22px', width: '19px' }}
-            className="copy-button"
-            onClick={async (e: never) =>
-              copyData(currentTransfer.l2TxnHashUrl, e)
-            }
-          >
-            <IonIcon
-              slot="icon-only"
-              className="copy-icon"
-              src={`/shared-assets/images/copy-icon-${
-                currentTransfer.txHash ? 'light' : 'dark'
-              }.svg`}
-            />
-            <IonPopover
-              side="top"
-              alignment="center"
-              ref={popover}
-              isOpen={popoverOpen}
-              className={'copied-popover'}
-              onDidDismiss={() => setPopoverOpen(false)}
-            >
-              <IonContent class="ion-padding">{t('Copied')}</IonContent>
-            </IonPopover>
-          </IonButton>
-        </TextContent>
-      </DetailColumn>
-      <div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '100%',
-          }}
-        >
-          <DetailColumn>
-            <Header>{t('From')}</Header>
-            <Header>{t('To')}</Header>
-          </DetailColumn>
-          <DetailColumn>
-            <TextContent>
-              <Link
-                href={
-                  currentTransfer.internalSenderUrl ??
-                  currentTransfer.senderAddressUrl
-                }
-              >
-                {displayLongText(currentTransfer.fromAddress)}
-              </Link>
-            </TextContent>
-            <IonIcon
-              style={{ height: '24px', width: '24px', color: '#CCC4CF' }}
-              icon={arrowForwardCircleOutline}
-            />
-            <TextContent>
-              <Link
-                href={
-                  currentTransfer.internalRecipientUrl ??
-                  currentTransfer.recipientAddressUrl
-                }
-              >
-                {displayLongText(currentTransfer.toAddress)}
-              </Link>
-            </TextContent>
-          </DetailColumn>
-        </div>
-      </div>
+      <List lines="none">
+        {currentTransfer.txHash && currentTransfer.txHashUrl && (
+          <ListCopyTxHashItem
+            txHash={currentTransfer.txHash}
+            txHashUrl={currentTransfer.txHashUrl}
+            suffix={currentTransfer.coinSymbol}
+          />
+        )}
+        {currentTransfer.l2TxnHash && (
+          <ListCopyTxHashItem
+            txHash={currentTransfer.l2TxnHash}
+            txHashUrl={currentTransfer.l2TxnHashUrl}
+            suffix="AS"
+          />
+        )}
+
+        <FromToAddressBlock
+          fromAddress={currentTransfer.fromAddress}
+          toAddress={currentTransfer.toAddress}
+          fromAddressUrl={
+            currentTransfer.internalSenderUrl ??
+            currentTransfer.senderAddressUrl
+          }
+          toAddressUrl={
+            currentTransfer.internalRecipientUrl ??
+            currentTransfer.recipientAddressUrl
+          }
+        />
+      </List>
     </div>
   );
 }

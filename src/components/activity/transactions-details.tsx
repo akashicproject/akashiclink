@@ -1,36 +1,15 @@
 import './activity.scss';
 
-import styled from '@emotion/styled';
 import { TransactionLayer, TransactionType } from '@helium-pay/backend';
+import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
 
-import { formatAmount } from '../../utils/formatAmount';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
-import { BaseDetails, DetailColumn } from './base-details';
+import { Divider } from '../common/divider';
+import { List } from '../common/list/list';
+import { ListLabelValueItem } from '../common/list/list-label-value-item';
+import { BaseDetails } from './base-details';
 
-const TransactionalDetailsDivider = styled.div({
-  margin: '16px 0px',
-  border: '1px solid #EEEEEE',
-  height: '1px',
-});
-const Header3 = styled.h3({
-  textAlign: 'left',
-  margin: '0px',
-});
-const VerticalWrapper = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignContent: 'center',
-});
-const HorizontalWrapper = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '16px',
-});
-const TextColor = {
-  color: 'var(--ion-color-primary-10)',
-};
 export function TransactionDetails({
   currentTransfer,
 }: {
@@ -39,7 +18,7 @@ export function TransactionDetails({
   return (
     <>
       <BaseDetails currentTransfer={currentTransfer} />
-      <TransactionalDetailsDivider style={{ margin: '8px' }} />
+      <Divider style={{ width: '100%' }} className={'ion-margin-vertical'} />
       {currentTransfer.transferType === TransactionType.DEPOSIT ? (
         <DepositDetails currentTransfer={currentTransfer} />
       ) : (
@@ -54,67 +33,57 @@ const WithdrawDetails = ({
   currentTransfer: ITransactionRecordForExtension;
 }) => {
   const { t } = useTranslation();
-  const isTransactionL2 = currentTransfer.layer === TransactionLayer.L2;
+  const isL2 = currentTransfer.layer === TransactionLayer.L2;
+
+  const precision = !isL2 || !currentTransfer.tokenSymbol ? 6 : 2;
+
+  const currencySymbol =
+    currentTransfer.currency?.token ?? currentTransfer.currency?.displayName;
+
+  // Calculate total Amount
+  const totalAmount = Big(currentTransfer.amount);
+  const totalFee = Big(currentTransfer?.feesPaid ?? '0');
+
+  const internalFee = Big(currentTransfer.internalFee?.deposit ?? '0').add(
+    currentTransfer.internalFee?.withdraw ?? '0'
+  );
+  const totalAmountWithFee = totalAmount.add(internalFee);
+
   return (
-    <HorizontalWrapper>
-      <Header3>Send</Header3>
-      <VerticalWrapper>
-        <DetailColumn>
-          <span style={TextColor} className="ion-text-size-xs">
-            {isTransactionL2 ? 'Fee' : t('Gas fee')}
-          </span>
-        </DetailColumn>
-        <DetailColumn>
-          <Header3>
-            {formatAmount(
-              isTransactionL2
-                ? currentTransfer.internalFee?.withdraw ?? '0'
-                : currentTransfer.feesPaid ?? '0'
-            )}{' '}
-            {isTransactionL2
-              ? currentTransfer.tokenSymbol || currentTransfer.coinSymbol
-              : currentTransfer.coinSymbol}
-          </Header3>
-        </DetailColumn>
-      </VerticalWrapper>
-      <VerticalWrapper>
-        <DetailColumn>
-          <span style={TextColor} className="ion-text-size-xs">
-            {t('Amount')}
-          </span>
-        </DetailColumn>
-        <DetailColumn>
-          <Header3>
-            {formatAmount(currentTransfer.amount ?? 0)}{' '}
-            {currentTransfer.tokenSymbol || currentTransfer.coinSymbol}
-          </Header3>
-        </DetailColumn>
-      </VerticalWrapper>
-      <VerticalWrapper>
-        <DetailColumn>
-          <span style={TextColor} className="ion-text-size-xs">
-            {t('Total')}
-          </span>
-        </DetailColumn>
-        <DetailColumn style={{ display: 'flex', flexDirection: 'column' }}>
-          {isTransactionL2 ? (
-            <Header3>
-              {formatAmount(currentTransfer.amount ?? 0)}{' '}
-              {currentTransfer.tokenSymbol || currentTransfer.coinSymbol}
-            </Header3>
-          ) : (
-            <>
-              <Header3 style={{ width: '100%', textAlign: 'right' }}>
-                {currentTransfer.amount ?? 0} {currentTransfer.tokenSymbol}
-              </Header3>
-              <span className="ion-text-size-xxs" style={{ color: '#958E99' }}>
-                + {currentTransfer.feesPaid} {currentTransfer.coinSymbol}
-              </span>
-            </>
-          )}
-        </DetailColumn>
-      </VerticalWrapper>
-    </HorizontalWrapper>
+    <List lines="none">
+      <h3 className="ion-text-align-left ion-margin-0">{t('Send')}</h3>
+      <ListLabelValueItem
+        label={t('Amount')}
+        value={`${totalAmount.toFixed(precision)} ${currencySymbol}`}
+        valueSize={'md'}
+        valueBold
+      />
+      <ListLabelValueItem
+        label={t(isL2 ? 'Fee' : 'GasFee')}
+        value={`${
+          isL2 ? internalFee.toFixed(precision) : totalFee.toFixed(precision)
+        } ${isL2 ? currencySymbol : currentTransfer.currency?.chain}`}
+        valueSize={'md'}
+        valueBold
+      />
+      <ListLabelValueItem
+        label={t('Total')}
+        value={`${
+          isL2
+            ? totalAmountWithFee.toFixed(precision)
+            : totalAmount.toFixed(precision)
+        } ${currencySymbol}`}
+        remark={
+          isL2
+            ? undefined
+            : `+${totalFee.toFixed(precision)} ${
+                currentTransfer.currency?.chain
+              }`
+        }
+        valueSize={'md'}
+        valueBold
+      />
+    </List>
   );
 };
 const DepositDetails = ({
@@ -124,22 +93,16 @@ const DepositDetails = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <HorizontalWrapper>
-      <Header3>{t('Deposit')}</Header3>
-      <VerticalWrapper>
-        <DetailColumn>
-          <span className="ion-text-size-xs" style={TextColor}>
-            {t('Total')}
-          </span>
-        </DetailColumn>
-        <DetailColumn>
-          <Header3>
-            {currentTransfer.amount +
-              ' ' +
-              (currentTransfer.tokenSymbol || currentTransfer.coinSymbol)}
-          </Header3>
-        </DetailColumn>
-      </VerticalWrapper>
-    </HorizontalWrapper>
+    <List lines="none">
+      <h3 className="ion-text-align-left ion-margin-0">{t('Deposit')}</h3>
+      <ListLabelValueItem
+        label={t('Total')}
+        value={`${currentTransfer.amount} ${
+          currentTransfer.tokenSymbol ?? currentTransfer.coinSymbol
+        }`}
+        valueSize={'md'}
+        valueBold
+      />
+    </List>
   );
 };

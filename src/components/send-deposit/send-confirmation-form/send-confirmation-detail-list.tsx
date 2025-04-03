@@ -31,6 +31,7 @@ export const SendConfirmationDetailList = ({
   txns: ITransactionVerifyResponse[];
   txnFinal?: SendConfirmationTxnFinal;
   validatedAddressPair: ValidatedAddressPair;
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 }) => {
   const { t } = useTranslation();
 
@@ -56,7 +57,12 @@ export const SendConfirmationDetailList = ({
         (accm, { feesEstimate }) => accm.add(feesEstimate ?? '0'),
         Big(0)
       ) ?? Big(0);
-  const totalAmountWithFee = totalAmount.add(totalFee);
+  const internalFee = txns?.reduce(
+    (accm, { internalFee }) =>
+      accm.add(internalFee?.deposit ?? '0').add(internalFee?.withdraw ?? '0'),
+    Big(0)
+  );
+  const totalAmountWithFee = totalAmount.add(internalFee);
 
   return (
     <List lines="none">
@@ -109,9 +115,9 @@ export const SendConfirmationDetailList = ({
       />
       <ListLabelValueItem
         label={t(isL2 ? 'Fee' : 'GasFee')}
-        value={`${totalFee.toFixed(precision)} ${
-          isL2 ? currencySymbol : nativeCoinSymbol
-        }`}
+        value={`${
+          isL2 ? internalFee.toFixed(precision) : totalFee.toFixed(precision)
+        } ${isL2 ? currencySymbol : nativeCoinSymbol}`}
         valueSize={'md'}
         valueBold
       />

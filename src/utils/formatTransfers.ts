@@ -47,12 +47,12 @@ export function formatTransfers(transfers: ITransactionRecord[]) {
         currency: makeWalletCurrency(t.coinSymbol, t?.tokenSymbol),
         fromAddress:
           t.layer === TransactionLayer.L2
-            ? t.fromAddress
-            : t.fromOwner?.oneTimePublicKeys.at(-1)?.identity ?? t.fromAddress,
+            ? t.fromAddress ?? t.fromOwner?.oneTimePublicKeys.at(-1)?.identity
+            : t.fromAddress,
         toAddress:
           t.layer === TransactionLayer.L2
-            ? t.toAddress
-            : t.toOwner?.oneTimePublicKeys.at(-1)?.identity ?? t.toAddress,
+            ? t.toAddress ?? t.toOwner?.oneTimePublicKeys.at(-1)?.identity
+            : t.toAddress,
         internalSenderUrl: l2Sender
           ? `${akashicScanAccountsUrl}/${l2Sender}`
           : undefined, // Keep undefined so we can default to L1 URL if there is no L2 URL

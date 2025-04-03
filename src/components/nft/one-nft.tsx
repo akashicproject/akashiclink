@@ -22,13 +22,12 @@ const AccountNameWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  gap: 8px;
+  padding: 8px 0px;
 `;
 const NtfWrapper = styled.div<{ isAASLinked: boolean }>((props) => ({
   height: '100%',
   width: '100%',
   display: 'flex',
-  gap: '8px',
   flexDirection: 'column',
   alignItems: 'center',
   padding: '8px',
@@ -120,6 +119,7 @@ export function OneNft(props: Props) {
             slot="icon-only"
             className="copy-icon"
             style={{
+              marginLeft: '4px',
               width: '20px',
               height: '20px',
             }}
