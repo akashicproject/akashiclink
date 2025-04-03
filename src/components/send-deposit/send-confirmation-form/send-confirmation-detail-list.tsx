@@ -36,18 +36,11 @@ export const SendConfirmationDetailList = ({
   // eslint-disable-next-line sonarjs/cognitive-complexity
 }) => {
   const { t } = useTranslation();
-
   const { chain } = useAppSelector(selectFocusCurrencyDetail);
   const { isCurrencyTypeToken, currencySymbol, nativeCoinSymbol } =
     useFocusCurrencySymbolsAndBalances();
 
   const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
-  const isUserInputAddressL1 = NetworkDictionary[chain].regex.address.exec(
-    validatedAddressPair?.userInputToAddress
-  );
-  const isUserInputAddressL2 = L2Regex.exec(
-    validatedAddressPair?.userInputToAddress
-  );
 
   // Calculate total Amount
   const totalAmount =
@@ -99,6 +92,11 @@ export const SendConfirmationDetailList = ({
     ? currencySymbol + (isL2 ? ` (${nativeCoinSymbol})` : '')
     : nativeCoinSymbol;
 
+  const alias =
+    validatedAddressPair?.userInputToAddressType === 'alias'
+      ? validatedAddressPair?.userInputToAddress
+      : validatedAddressPair?.acnsAlias ?? '-';
+
   const feeCurrencyDisplayName =
     isCurrencyTypeToken && isL2
       ? currencySymbol + ` (${nativeCoinSymbol})`
@@ -116,14 +114,14 @@ export const SendConfirmationDetailList = ({
           </h3>
         </IonText>
       </IonItem>
-      {isL2 && isUserInputAddressL1 && (
+      {
         <div className="ion-margin-bottom-sm">
           <ListVerticalLabelValueItem
             label={t('InputAddress')}
             value={validatedAddressPair?.userInputToAddress}
           />
         </div>
-      )}
+      }
       {!txnFinal && (
         <ListVerticalLabelValueItem
           label={t('SendTo')}
@@ -158,7 +156,7 @@ export const SendConfirmationDetailList = ({
         valueBold
       />
       <ListLabelValueItem
-        label={t(isL2 ? 'Fee' : 'GasFee')}
+        label={t(isL2 ? 'L2Fee' : 'GasFee')}
         value={`${
           isL2 ? internalFee.toFixed(precision) : totalFee.toFixed(precision)
         } ${feeCurrencyDisplayName}`}
@@ -178,21 +176,19 @@ export const SendConfirmationDetailList = ({
         valueSize={'md'}
         valueBold
       />
-      {isL2 && !isUserInputAddressL1 && !isUserInputAddressL2 && (
-        <>
-          <IonItem>
-            <Divider
-              style={{ width: '100%' }}
-              className={'ion-margin-vertical'}
-            />
-          </IonItem>
-          <ListLabelValueItem
-            label={t('Remark')}
-            value={displayLongText(validatedAddressPair?.userInputToAddress)}
-            labelBold
+      <>
+        <IonItem>
+          <Divider
+            style={{ width: '100%' }}
+            className={'ion-margin-vertical'}
           />
-        </>
-      )}
+        </IonItem>
+        <ListLabelValueItem
+          label={t('AkashicAlias')}
+          value={displayLongText(alias)}
+          labelBold
+        />
+      </>
     </List>
   );
 };
