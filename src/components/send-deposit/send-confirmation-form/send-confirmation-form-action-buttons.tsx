@@ -6,6 +6,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { ONE_DAY_MS, ONE_MINUTE_MS } from '../../../constants';
 import {
   historyGoBackOrReplace,
   historyResetStackAndRedirect,
@@ -47,59 +48,65 @@ export const SendConfirmationFormActionButtons = ({
 
   const verifyTxnAndSign = useVerifyTxnAndSign();
 
-  // Re-verify txn every 1 mins
-  useInterval(async () => {
-    try {
-      // skip when there was an error / txn request in progress / txn completed
-      if (forceAlert.visible || formAlert.visible || isLoading || txnFinal) {
-        return;
-      }
-
-      setIsLoading(true);
-
-      if (!txnsDetail.validatedAddressPair || !txnsDetail.amount) {
-        setFormAlert(errorAlertShell(t('GenericFailureMsg')));
-        return;
-      }
-
-      const res = await verifyTxnAndSign(
-        txnsDetail.validatedAddressPair,
-        txnsDetail.amount
-      );
-
-      if (typeof res === 'string') {
-        setFormAlert(errorAlertShell(t(res)));
-        return;
-      }
-
-      setTxnsDetail({
-        ...txnsDetail,
-        txns: res.txns,
-        signedTxns: res.signedTxns,
-      });
-    } catch (e) {
-      setFormAlert(errorAlertShell(t(unpackRequestErrorMessage(e))));
-    } finally {
-      setIsLoading(false);
-    }
-  }, 60 * 1000); // 1 mins
-
   const isL2 = L2Regex.exec(
     txnsDetail?.validatedAddressPair?.convertedToAddress
   );
+
+  // Re-verify txn every 1 mins if L1
+  useInterval(
+    async () => {
+      try {
+        // skip when there was an error / txn request in progress / txn completed
+        if (forceAlert.visible || formAlert.visible || isLoading || txnFinal) {
+          return;
+        }
+
+        setIsLoading(true);
+
+        if (!txnsDetail.validatedAddressPair || !txnsDetail.amount) {
+          setFormAlert(errorAlertShell(t('GenericFailureMsg')));
+          return;
+        }
+
+        const res = await verifyTxnAndSign(
+          txnsDetail.validatedAddressPair,
+          txnsDetail.amount
+        );
+
+        if (typeof res === 'string') {
+          setFormAlert(errorAlertShell(t(res)));
+          return;
+        }
+
+        setTxnsDetail({
+          ...txnsDetail,
+          txns: res.txns,
+          signedTxns: res.signedTxns,
+        });
+      } catch (e) {
+        setFormAlert(errorAlertShell(t(unpackRequestErrorMessage(e))));
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    isL2 ? ONE_DAY_MS : ONE_MINUTE_MS
+  ); // 1 min if L1, 24 hr if L2
 
   const onConfirm = async () => {
     try {
       setFormAlert(formAlertResetState);
 
-      if (!txnsDetail?.txns?.[0] || !txnsDetail?.signedTxns?.[0]) {
+      if (
+        !txnsDetail.txns ||
+        !txnsDetail.txns[0] ||
+        !txnsDetail?.signedTxns?.[0]
+      ) {
         setFormAlert(errorAlertShell(t('GenericFailureMsg')));
         return;
       }
       setIsLoading(true);
 
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      const { txToSign, ...txn } = txnsDetail?.txns?.[0];
+      const { txToSign: _, ...txn } = txnsDetail.txns[0];
       const signedTxn = txnsDetail?.signedTxns[0];
 
       const response = isL2
