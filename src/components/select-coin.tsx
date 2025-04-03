@@ -227,7 +227,7 @@ export function SelectCoin() {
                                 left: '66px',
                               }
                             : {
-                                width: '16px',
+                                width: '10px',
                                 height: '16px',
                                 position: 'absolute',
                                 top: 0,
