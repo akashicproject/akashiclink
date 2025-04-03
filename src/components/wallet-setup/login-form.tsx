@@ -10,9 +10,9 @@ import { useAccountMe } from '../../utils/hooks/useAccountMe';
 import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemapAASToAddress';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { useMyTransfers } from '../../utils/hooks/useMyTransfers';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useOwner } from '../../utils/hooks/useOwner';
-import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { signImportAuth } from '../../utils/otk-generation';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { AccountSelection } from '../account-selection/account-selection';
@@ -44,7 +44,7 @@ export function LoginForm() {
   } = useAccountStorage();
   const [password, setPassword] = useState<string>('');
   const { mutateOwner } = useOwner();
-  const { mutateTransfersMe } = useTransfersMe();
+  const { mutateMyTransfers } = useMyTransfers();
   const { mutateNftTransfersMe } = useNftTransfersMe();
   const { mutate: mutateAccountMe } = useAccountMe();
   const fetchAndRemapAASToAddress = useFetchAndRemapAASToAddress();
@@ -103,7 +103,7 @@ export function LoginForm() {
       });
       // Set the login account
       await mutateOwner();
-      await mutateTransfersMe();
+      await mutateMyTransfers();
       await mutateNftTransfersMe();
       await mutateAccountMe();
       await fetchAndRemapAASToAddress(activeAccount.identity);

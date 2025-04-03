@@ -18,8 +18,8 @@ import type { LocationState } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 import { formatMergeAndSortNftAndCryptoTransfers } from '../../utils/formatTransfers';
+import { useMyTransfers } from '../../utils/hooks/useMyTransfers';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
-import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 
 const ListContainer = styled.div({
   paddingLeft: '8px',
@@ -60,7 +60,7 @@ export function Activity() {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
   const storedTheme = useAppSelector(selectTheme);
-  const { transfers, isLoading } = useTransfersMe();
+  const { transfers, isLoading } = useMyTransfers();
   const { transfers: nftTransfers, isLoading: isLoadingNft } =
     useNftTransfersMe();
   const walletFormatTransfers = formatMergeAndSortNftAndCryptoTransfers(

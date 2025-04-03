@@ -6,13 +6,13 @@ import { useAppSelector } from '../../../redux/app/hooks';
 import { selectTheme } from '../../../redux/slices/preferenceSlice';
 import { themeType } from '../../../theme/const';
 import { useAccountMe } from '../../../utils/hooks/useAccountMe';
+import { useMyTransfers } from '../../../utils/hooks/useMyTransfers';
 import { useNftMe } from '../../../utils/hooks/useNftMe';
 import { useNftTransfersMe } from '../../../utils/hooks/useNftTransfersMe';
-import { useTransfersMe } from '../../../utils/hooks/useTransfersMe';
 import { SquareWhiteButton } from '../../common/buttons';
 
 export const RefreshDataButton = () => {
-  const { mutateTransfersMe } = useTransfersMe();
+  const { mutateMyTransfers } = useMyTransfers();
   const { mutateNftTransfersMe } = useNftTransfersMe();
   const { mutate: mutateAccountMe } = useAccountMe();
   const { mutateNftMe } = useNftMe();
@@ -28,7 +28,7 @@ export const RefreshDataButton = () => {
       onClick={async () => {
         try {
           setRefreshDisabled(true);
-          await mutateTransfersMe();
+          await mutateMyTransfers();
           await mutateNftTransfersMe();
           await mutateAccountMe();
           await mutateNftMe();

@@ -7,13 +7,13 @@ import { setCacheOtk } from '../../redux/slices/accountSlice';
 import { historyResetStackAndRedirect } from '../../routing/history';
 import { axiosBase } from '../axios-helper';
 import { useAccountMe } from './useAccountMe';
+import { useMyTransfers } from './useMyTransfers';
 import { useOwner } from './useOwner';
-import { useTransfersMe } from './useTransfersMe';
 
 export function useLogout(callLogout = true) {
   const { mutateOwner } = useOwner();
   const { mutate: mutateAccountMe } = useAccountMe();
-  const { mutateTransfersMe } = useTransfersMe();
+  const { mutateMyTransfers } = useMyTransfers();
   const dispatch = useAppDispatch();
 
   return async () => {
@@ -39,7 +39,7 @@ export function useLogout(callLogout = true) {
     await mutateAccountMe(undefined, {
       revalidate: false,
     });
-    await mutateTransfersMe(undefined, {
+    await mutateMyTransfers(undefined, {
       revalidate: false,
     });
 

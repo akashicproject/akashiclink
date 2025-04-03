@@ -9,8 +9,8 @@ import { urls } from '../../constants/urls';
 import type { LocationState } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { formatMergeAndSortNftAndCryptoTransfers } from '../../utils/formatTransfers';
+import { useMyTransfers } from '../../utils/hooks/useMyTransfers';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
-import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { OneActivity } from '../activity/one-activity';
 import { TabButton } from '../common/buttons';
 import { Tabs } from './tabs';
@@ -94,7 +94,7 @@ export function ActivityAndNftTab() {
   const itemDisplayIndex = 3;
   const history = useHistory<LocationState>();
   const [nftTab, setNftTab] = useState(false);
-  const { transfers } = useTransfersMe();
+  const { transfers } = useMyTransfers();
   const { transfers: nftTransfers } = useNftTransfersMe();
   const walletFormatTransfers = formatMergeAndSortNftAndCryptoTransfers(
     transfers,

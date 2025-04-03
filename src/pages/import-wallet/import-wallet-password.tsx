@@ -17,10 +17,10 @@ import {
 import { useAccountMe } from '../../utils/hooks/useAccountMe';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { useMyTransfers } from '../../utils/hooks/useMyTransfers';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useOwner } from '../../utils/hooks/useOwner';
-import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 
 export function ImportWalletPassword() {
   useIosScrollPasswordKeyboardIntoView();
@@ -36,7 +36,7 @@ export function ImportWalletPassword() {
   const validateConfirmPassword = (value: string) =>
     importWalletForm.password === value;
   const { mutateOwner } = useOwner();
-  const { mutateTransfersMe } = useTransfersMe();
+  const { mutateMyTransfers } = useMyTransfers();
   const { mutateNftTransfersMe } = useNftTransfersMe();
   const { mutate: mutateAccountMe } = useAccountMe();
   const { mutateNftMe } = useNftMe();
@@ -78,7 +78,7 @@ export function ImportWalletPassword() {
       });
 
       await mutateOwner();
-      await mutateTransfersMe();
+      await mutateMyTransfers();
       await mutateNftTransfersMe();
       await mutateAccountMe();
       await mutateNftMe();
