@@ -37,11 +37,6 @@ const TransactionStatusWrapper = styled.div({
   justifyContent: 'space-between',
 });
 
-const Type = styled.div({
-  fontWeight: 'bold',
-  fontSize: '0.625rem',
-});
-
 const IconWrapper = styled.div({
   display: 'flex',
   gap: '8px',
@@ -135,7 +130,6 @@ export function OneActivity({
   transfer,
   onClick,
   style,
-  showDetail,
   hasHoverEffect,
   divider,
 }: OneActivityProps) {
@@ -213,7 +207,8 @@ export function OneActivity({
           </TypeIcon>
           <TransactionStatusWrapper>
             {transfer.status !== TransactionStatus.CONFIRMED ? (
-              <Type
+              <div
+                className={'ion-text-size-sm ion-text-bold'}
                 style={{
                   color:
                     storedTheme === themeType.DARK
@@ -224,9 +219,11 @@ export function OneActivity({
                 {transfer.status === TransactionStatus.PENDING
                   ? `${transferType} - ${t('Pending')}`
                   : `${transferType} - ${t('Failed')}`}
-              </Type>
+              </div>
             ) : (
-              <Type>{transferType}</Type>
+              <div className={'ion-text-size-sm ion-text-bold'}>
+                {transferType}
+              </div>
             )}
             {transfer.status !== TransactionStatus.CONFIRMED ? (
               <Time

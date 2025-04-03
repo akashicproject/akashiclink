@@ -3,7 +3,7 @@ import './activity.scss';
 import styled from '@emotion/styled';
 import { IonIcon, IonSpinner } from '@ionic/react';
 import dayjs from 'dayjs';
-import { alertCircleOutline, closeOutline } from 'ionicons/icons';
+import { alertCircleOutline } from 'ionicons/icons';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -149,8 +149,9 @@ export function Activity() {
           class="force-center"
           style={{
             marginLeft: '50vw',
-            transform: 'translateX(-100%)',
-            '--webkit-transform': 'translateX(-100%)',
+            marginTop: '50%',
+            transform: 'translateX(-50%)',
+            '--webkit-transform': 'translateX(-50%)',
           }}
         ></IonSpinner>
       )}
