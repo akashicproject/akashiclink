@@ -1,5 +1,3 @@
-import './common.css';
-
 import styled from '@emotion/styled';
 import {
   IonButton,

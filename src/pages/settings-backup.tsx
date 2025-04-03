@@ -1,5 +1,3 @@
-import './common.css';
-
 import styled from '@emotion/styled';
 import { IonCol, IonImg, IonRow } from '@ionic/react';
 import { useState } from 'react';

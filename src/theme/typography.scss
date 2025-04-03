@@ -1,0 +1,54 @@
+html {
+  font-family: 'Nunito Sans';
+}
+
+/**
+ * All titles are:
+ * - centered
+ * - with a default weight of 700
+ * - default colour
+ */
+%heading-shared {
+  text-align: center;
+  font-weight: 700;
+  color: var(--ion-color-primary-10);
+  text-transform: none;
+}
+
+h1 {
+  @extend %heading-shared;
+  font-weight: 900;
+  font-size: 32px;
+}
+
+h2 {
+  @extend %heading-shared;
+  font-size: 24px;
+  line-height: 28px;
+  margin-bottom: 20px;
+}
+
+h3 {
+  @extend %heading-shared;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+h4 {
+  @extend %heading-shared;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+h5 {
+  @extend %heading-shared;
+  font-size: 12px;
+}
+
+/**
+ * Labels placed next to inputs
+ */
+ion-label {
+  font-size: 14px;
+  font-weight: 500;
+}

@@ -1,5 +1,4 @@
 import './akashic-main.css';
-import './common.css';
 
 import { IonCol, IonImg, IonRow, isPlatform } from '@ionic/react';
 import { useEffect } from 'react';

@@ -1,0 +1,39 @@
+/**
+ * Styling of the dropdown menu popovers, giving user a list of options to click
+ */
+
+@use 'typography';
+
+ion-popover {
+  /* Turn off the default dimmed background */
+  --backdrop-opacity: 0;
+
+  /* Shift popovers to have vertical padding relative to trigger element */
+  top: 8px;
+
+  /** Chunky label text */
+  ion-select-popover ion-label {
+    font-weight: 700;
+  }
+
+  /** Customised colouring of selection options */
+  ion-item {
+    @extend %heading-shared;
+    text-align: unset;
+
+    /* Item under user's cursor */
+    --background-hover: var(--ion-color-primary);
+    --background-hover-opacity: 30%;
+    --background: transparent !important;
+    --ripple-color: var(--ion-color-tertiary);
+
+    /* Item under selection */
+    --background-focused: var(--ion-current-selection) !important;
+    --background-focused-opacity: var(
+      --ion-current-selection-opacity
+    ) !important;
+    --color-focused: var(--ion-color-primary-10);
+
+    padding-right: 0px;
+  }
+}

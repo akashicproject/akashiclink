@@ -1,5 +1,3 @@
-import './common.css';
-
 import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
 import {
   IonButton,

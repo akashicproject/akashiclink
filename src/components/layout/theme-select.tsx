@@ -1,4 +1,4 @@
-import './theme-select.css';
+import './theme-select.scss';
 
 import { IonIcon } from '@ionic/react';
 import { moon, sunny } from 'ionicons/icons';

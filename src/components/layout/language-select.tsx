@@ -1,4 +1,4 @@
-import './language-dropdown.css';
+import './language-select.scss';
 
 import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
 import { IonButton, IonIcon, IonItem, IonList, IonPopover } from '@ionic/react';
@@ -33,7 +33,7 @@ export const LanguageDropdown = () => {
   const triggerId = 'popover-trigger';
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div className="language-select">
       <IonButton class="language-button" fill="clear" id={triggerId}>
         <IonIcon slot="icon-only" icon={globeOutline} />
         <IonIcon slot="end" icon={caretDownOutline} />
@@ -51,6 +51,7 @@ export const LanguageDropdown = () => {
         >
           {LANGUAGE_LIST.map((item) => (
             <IonItem
+              className={item.locale === selectedLanguage ? 'ion-focused' : ''}
               key={item.locale}
               button={true}
               detail={false}

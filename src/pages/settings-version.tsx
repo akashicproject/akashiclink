@@ -1,5 +1,3 @@
-import './common.css';
-
 import { IonCol, IonPage, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 

@@ -1,0 +1,19 @@
+/**
+ * Popover is stretched to fit languages
+ */
+.language-popover {
+  --max-width: fit-content;
+}
+
+.language-button {
+  /* Padding removed around button  */
+  --padding-start: 0 !important;
+  --padding-end: 0 !important;
+  --padding-top: 0 !important;
+  --padding-bottom: 0 !important;
+
+  /* Dark colouring  */
+  color: var(--ion-color-select);
+  --background-hover: none;
+  --ripple-color: transparent;
+}

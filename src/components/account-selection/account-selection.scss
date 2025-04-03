@@ -1,0 +1,21 @@
+.account-selection {
+  /**
+   * Add a frame to the selection menu and round the corners
+   */
+  ion-select-popover {
+    border: 1px solid var(--ion-select-border) !important;
+    border-radius: 4px;
+  }
+
+  /*
+   * Ensures that selection menu is small enough to fit
+   * under the selection button
+   */
+  ion-list {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border-radius: 3px;
+    max-height: 120px;
+    overflow: scroll;
+  }
+}

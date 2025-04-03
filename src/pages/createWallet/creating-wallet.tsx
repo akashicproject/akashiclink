@@ -1,4 +1,4 @@
-import './create-wallet.css';
+import './create-wallet.scss';
 
 import { IonBackdrop, IonCol, IonProgressBar, IonRow } from '@ionic/react';
 import { useEffect, useState } from 'react';
@@ -31,19 +31,10 @@ export function CreatingWallet() {
   return (
     <>
       <IonBackdrop />
-      <MainGrid
-        style={{
-          // Places it above the popover
-          zIndex: 100,
-        }}
-      >
+      <MainGrid className="creating-wallet">
         <IonRow>
           <IonCol>
-            <IonProgressBar
-              value={progress}
-              color="primary"
-              class="progress-bar"
-            ></IonProgressBar>
+            <IonProgressBar value={progress} color="primary"></IonProgressBar>
           </IonCol>
         </IonRow>
         <IonRow>

@@ -1,0 +1,17 @@
+/**
+ * Rounded container styling
+ */
+ion-card {
+  margin-left: 30%;
+  margin-right: 30%;
+}
+
+/**
+ * Dark backdrop on top of which to place "pending" or "loading" content
+ * - Remember to give the content that should appear on top of this
+ * backdrop a high zIndex
+ */
+ion-backdrop {
+  opacity: 0.95;
+  background: var(--ion-background-color);
+}

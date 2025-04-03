@@ -1,0 +1,58 @@
+/** Rounded toggle button, which we style ourselves (inbuilt toggle is inflexible) */
+.slider-button {
+  /* Dimensions */
+  width: 60px;
+  height: 30px;
+  position: relative;
+
+  /* Horizontal container that will contain the:
+   * - Slider
+   * - SunIcon
+   * - MoonIcon
+   */
+  .slider {
+    width: 100%;
+    height: 100%;
+    background-color: var(--ion-slider);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    /** Smooth colour changes  */
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  /**
+   * Sun/Moon icons inside a round container
+   */
+  .slider-handle {
+    width: 24px;
+    height: 24px;
+    color: black;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .slider-handle.right {
+    transform: translateX(30px);
+  }
+
+  .slider-handle.left {
+    transform: translateX(0);
+  }
+
+  .icon-handle.right {
+    margin-left: 10px;
+    color: white;
+  }
+
+  .icon-handle.left {
+    margin-left: 39px;
+  }
+}

@@ -1,5 +1,3 @@
-import '../pages/common.css';
-
 import { NetworkDictionary } from '@helium-pay/backend/src/modules/api-interfaces/networks/networks.model';
 import type { ITransactionRecord } from '@helium-pay/backend/src/modules/api-interfaces/transactions/transaction-records.interface';
 import { TransactionStatus } from '@helium-pay/backend/src/modules/keys/models/transaction-status.model';

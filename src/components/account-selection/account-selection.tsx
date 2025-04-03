@@ -1,3 +1,5 @@
+import './account-selection.scss';
+
 import { IonSelect, IonSelectOption } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -77,17 +79,16 @@ export function AccountSelection({
       }}
       interface="popover"
       interfaceOptions={{
+        htmlAttributes: {
+          className: 'account-selection',
+        },
         side: 'bottom',
         size: 'cover',
       }}
     >
       {[
         ...localAccounts.map((account) => (
-          <IonSelectOption
-            key={account.username}
-            value={account}
-            class="menu-text"
-          >
+          <IonSelectOption key={account.username} value={account}>
             {account.identity}
           </IonSelectOption>
         )),

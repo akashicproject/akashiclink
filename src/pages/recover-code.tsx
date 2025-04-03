@@ -1,5 +1,3 @@
-import './common.css';
-
 import {
   IonButton,
   IonCard,

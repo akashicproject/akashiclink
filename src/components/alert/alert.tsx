@@ -1,5 +1,4 @@
 import './alert.css';
-import '../../pages/common.css';
 
 import { IonAlert, IonNote } from '@ionic/react';
 import { useEffect, useState } from 'react';

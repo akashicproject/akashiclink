@@ -93,6 +93,9 @@ http://ionicframework.com/docs/theming/ */
 
   /** setting **/
   --ion-settings-color: #290056;
+  --ion-current-selection: #6750a4;
+  --ion-current-selection-opacity: 12%;
+  --ion-select-border: #958e99;
 
   /** iamges for swiper **/
   --swiper-button-prev-background-image: url('/public/shared-assets/images/arrow-back.png');
@@ -123,20 +126,11 @@ ion-select::part(icon) {
   opacity: 1;
 }
 
-ion-popover {
-  --width: calc(calc(calc(6 / var(--ion-grid-columns, 12)) * 100%) - 20px);
-  --max-width: calc(calc(calc(6 / var(--ion-grid-columns, 12)) * 100%) - 20px);
-}
-
 .select-interface-option {
   color: var(--ion-color-dark);
   font-size: 14px;
   line-height: 20px;
   font-weight: 700;
-}
-
-.select-interface-option .my-custom-interface {
-  color: red;
 }
 
 /*
@@ -226,6 +220,9 @@ body.dark {
 
   /** setting **/
   --ion-settings-color: #ffffff;
+  --ion-current-selection: #625b71;
+  --ion-current-selection-opacity: 100%;
+  --ion-select-border: #958e99;
 
   /** iamges for swiper **/
   --swiper-button-prev-background-image: url('/public/shared-assets/images/arrow-back-dark.png');

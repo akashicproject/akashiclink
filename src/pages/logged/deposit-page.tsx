@@ -1,3 +1,5 @@
+import './deposit-page.scss';
+
 import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import type { CoinSymbol } from '@helium-pay/backend';
