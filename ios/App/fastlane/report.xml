@@ -5,82 +5,82 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="00: default_platform" time="0.000179">
+      <testcase classname="fastlane.lanes" name="00: default_platform" time="0.000147">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="01: get_build_number" time="0.615133">
+      <testcase classname="fastlane.lanes" name="01: get_build_number" time="0.834126">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="02: slack" time="0.195607">
+      <testcase classname="fastlane.lanes" name="02: slack" time="0.205783">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="03: Switch to ios buildIpa lane" time="0.000157">
+      <testcase classname="fastlane.lanes" name="03: Switch to ios buildIpa lane" time="0.000288">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="04: get_build_number" time="0.625148">
+      <testcase classname="fastlane.lanes" name="04: get_build_number" time="0.617833">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="05: get_info_plist_value" time="0.001059">
+      <testcase classname="fastlane.lanes" name="05: get_info_plist_value" time="0.000811">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="06: set_info_plist_value" time="0.001295">
+      <testcase classname="fastlane.lanes" name="06: set_info_plist_value" time="0.001895">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="07: set_info_plist_value" time="0.000702">
+      <testcase classname="fastlane.lanes" name="07: set_info_plist_value" time="0.00063">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="08: set_info_plist_value" time="0.000584">
+      <testcase classname="fastlane.lanes" name="08: set_info_plist_value" time="0.002334">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="09: set_info_plist_value" time="0.000739">
+      <testcase classname="fastlane.lanes" name="09: set_info_plist_value" time="0.001004">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="10: cert" time="0.68042">
+      <testcase classname="fastlane.lanes" name="10: cert" time="0.792145">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="11: sigh" time="0.913894">
+      <testcase classname="fastlane.lanes" name="11: sigh" time="0.916289">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="12: update_project_provisioning" time="0.031276">
+      <testcase classname="fastlane.lanes" name="12: update_project_provisioning" time="0.031105">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="13: build_app" time="27.546782">
+      <testcase classname="fastlane.lanes" name="13: build_app" time="38.215361">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="14: upload_to_testflight" time="324.490413">
+      <testcase classname="fastlane.lanes" name="14: upload_to_testflight" time="220.840476">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="15: slack" time="0.291386">
+      <testcase classname="fastlane.lanes" name="15: slack" time="0.290701">
         
       </testcase>
     
