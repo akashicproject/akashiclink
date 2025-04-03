@@ -53,34 +53,21 @@ export function LoginForm() {
    * Selection is populated on load to match the account save in session
    */
   useEffect(() => {
-    if (!selectedAccount) {
-      if (activeAccount) {
-        const matchingAccount = localAccounts?.find(
-          (a) => a.username === activeAccount.username
-        );
-        setSelectedAccount(matchingAccount);
-      } else {
-        setSelectedAccount(localAccounts?.[0]);
-      }
+    if (selectedAccount) {
+      return;
+    }
+    if (activeAccount) {
+      const matchingAccount = localAccounts?.find(
+        (a) =>
+          a.username === activeAccount.username ||
+          a.identity === activeAccount.identity
+      );
+      setSelectedAccount(matchingAccount);
+    } else {
+      setSelectedAccount(localAccounts?.[0]);
     }
   }, [activeAccount, localAccounts]);
 
-  /**
-   * Ensures that selectedAccount in the dropdown menu matches the activeAccount
-   */
-  useEffect(() => {
-    setTimeout(() => {
-      if (activeAccount && selectedAccount && activeAccount !== selectedAccount)
-        isPlatform('mobile') && location.reload();
-    }, 500);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeAccount, window.location.pathname]);
-
-  /**
-   * Perform login - if 201 is returned, attempt to fetch some data:
-   * - 401 means that 2fa has not been passed yet
-   * - 200 means that 2fa is not required by backend
-   */
   const login = async () => {
     try {
       setIsLoading(true);
@@ -121,7 +108,7 @@ export function LoginForm() {
         setIsLoading(false);
         setActiveAccount(selectedAccount);
         localStorage.setItem('spinner', 'true');
-        mutate(`/owner/me`);
+        await mutate(`/owner/me`);
         history.push(akashicPayPath(urls.loggedFunction));
       }
     } catch (error) {

@@ -100,6 +100,8 @@ const StyledIonIcon = styled(IonIcon)`
 const CopyActionButton = styled.div`
   display: flex;
   justify-content: end;
+  width: 100%;
+  height: 100%;
 `;
 
 /**
@@ -192,7 +194,7 @@ export function SecretWords({
                         type={visibility ? 'text' : 'password'}
                         disabled={disableInput ? initialWords[i] !== '' : false}
                         fillable={disableInput ? initialWords[i] === '' : true}
-                        onIonChange={({ target: { value } }) =>
+                        onIonInput={({ target: { value } }) =>
                           onInputChange(value as string, i)
                         }
                       ></WordInput>

@@ -97,8 +97,8 @@ export function NftTransferResult() {
           <PurpleButton
             expand="block"
             routerLink={akashicPayPath(urls.nfts)}
-            onClick={() => {
-              mutate(
+            onClick={async () => {
+              await mutate(
                 (key) =>
                   typeof key === 'string' && key.startsWith('/nft/transfers/me')
               );

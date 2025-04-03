@@ -91,8 +91,8 @@ export const WalletMigrated = () => {
             onClick={async () => {
               await lastPageStorage.clear();
               localStorage.setItem('spinner', 'true');
+              await mutate(`/owner/me`);
               history.push(akashicPayPath(urls.loggedFunction));
-              mutate(`/owner/me`);
             }}
           >
             {t('GotIt')}

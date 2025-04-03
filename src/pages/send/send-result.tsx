@@ -161,9 +161,9 @@ export function SendResult() {
         <IonCol>
           <PurpleButton
             expand="block"
-            onClick={() => {
-              mutate('/owner/agg-balances');
-              mutate(
+            onClick={async () => {
+              await mutate('/owner/agg-balances');
+              await mutate(
                 (key) =>
                   typeof key === 'string' && key.startsWith('/key/transfers/me')
               );
