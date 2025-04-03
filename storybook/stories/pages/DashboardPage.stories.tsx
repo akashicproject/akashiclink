@@ -25,7 +25,7 @@ const meta: Meta<typeof Dashboard> = {
       handlers: {
         owner: mockGetOwnerDetails,
         nft: mockGetNftOwner,
-        transactions: mockGetOwnerTransactions,
+        transactions: mockGetOwnerTransactions(),
         nftTransfer: mockGetNftOwnerTransfers,
       },
     },
@@ -41,7 +41,7 @@ export const DashboardPage: Story = {
       handlers: {
         owner: mockGetOwnerDetails,
         nft: mockGetNftOwner,
-        transactions: mockGetOwnerTransactions,
+        transactions: mockGetOwnerTransactions(),
         nftTransfer: mockGetNftOwnerTransfers,
       },
     },
