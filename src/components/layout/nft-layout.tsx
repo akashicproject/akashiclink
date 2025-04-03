@@ -32,7 +32,7 @@ export function NftLayout({
       <LoggedHeader loggedIn={true} />
       <IonContent class="nft-layout">
         <IonRow style={{ borderBottom: '2px solid #C297FF' }}>
-          <IonCol size="12">
+          <IonCol size="12" className="ion-no-padding">
             <ChainDiv
               style={{ borderBottom: 'none' }}
               routerLink={akashicPayPath(urls.loggedFunction)}
