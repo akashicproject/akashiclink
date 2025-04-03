@@ -70,7 +70,7 @@
   "Confirmed": "Confirmed",
   "Pending": "Pending",
   "Any": "Any",
-  "txHash": "Tx Hash",
+  "txHash": "L2 Tx Hash",
   "CopyTxHash": "Copy Tx Hash",
   "From": "From",
   "To": "To",

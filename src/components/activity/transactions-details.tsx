@@ -109,38 +109,32 @@ export function TransactionDetails({
       <DetailColumn>
         <Header>{t('txHash')}</Header>
         <TextContent>
-          {isLayer2 ? (
-            displayLongText(currentTransfer.txHash)
-          ) : (
-            <>
-              <Link href={currentTransfer.txHashUrl}>
-                {displayLongText(currentTransfer.txHash)}
-              </Link>
-              <IonButton
-                style={{ height: '22px', width: '19px' }}
-                class="copy-button"
-                onClick={async (e: never) =>
-                  copyData(currentTransfer.l2TxnHashUrl, e)
-                }
-              >
-                <IonIcon
-                  slot="icon-only"
-                  class="copy-icon"
-                  src={`/shared-assets/images/copy-icon-dark.svg`}
-                />
-                <IonPopover
-                  side="top"
-                  alignment="center"
-                  ref={popover}
-                  isOpen={popoverOpen}
-                  class={'copied-popover'}
-                  onDidDismiss={() => setPopoverOpen(false)}
-                >
-                  <IonContent class="ion-padding">{t('Copied')}</IonContent>
-                </IonPopover>
-              </IonButton>
-            </>
-          )}
+          <Link href={currentTransfer.l2TxnHashUrl}>
+            {displayLongText(currentTransfer.l2TxnHash)}
+          </Link>
+          <IonButton
+            style={{ height: '22px', width: '19px' }}
+            class="copy-button"
+            onClick={async (e: never) =>
+              copyData(currentTransfer.l2TxnHashUrl, e)
+            }
+          >
+            <IonIcon
+              slot="icon-only"
+              class="copy-icon"
+              src={`/shared-assets/images/copy-icon-dark.svg`}
+            />
+            <IonPopover
+              side="top"
+              alignment="center"
+              ref={popover}
+              isOpen={popoverOpen}
+              class={'copied-popover'}
+              onDidDismiss={() => setPopoverOpen(false)}
+            >
+              <IonContent class="ion-padding">{t('Copied')}</IonContent>
+            </IonPopover>
+          </IonButton>
         </TextContent>
       </DetailColumn>
       <DetailColumn>
@@ -148,31 +142,33 @@ export function TransactionDetails({
         <Header>{t('To')}</Header>
       </DetailColumn>
       <DetailColumn>
-        {isLayer2 ? (
-          <TextContent>
+        <TextContent>
+          <Link
+            href={
+              currentTransfer.fromOwner ??
+              currentTransfer.layer === TransactionLayer.L2
+                ? currentTransfer.internalSenderUrl
+                : currentTransfer.senderAddressUrl
+            }
+          >
             {displayLongText(currentTransfer.fromAddress)}
-          </TextContent>
-        ) : (
-          <TextContent>
-            <Link href={currentTransfer.senderAddressUrl}>
-              {displayLongText(currentTransfer.fromAddress)}
-            </Link>
-          </TextContent>
-        )}
+          </Link>
+        </TextContent>
         <TextContent>
           <IonIcon icon={arrowForwardCircleOutline} />
         </TextContent>
-        {isLayer2 ? (
-          <TextContent>
+        <TextContent>
+          <Link
+            href={
+              currentTransfer.toOwner ??
+              currentTransfer.layer === TransactionLayer.L2
+                ? currentTransfer.internalRecipientUrl
+                : currentTransfer.recipientAddressUrl
+            }
+          >
             {displayLongText(currentTransfer.toAddress)}
-          </TextContent>
-        ) : (
-          <TextContent>
-            <Link href={currentTransfer.recipientAddressUrl}>
-              {displayLongText(currentTransfer.toAddress)}
-            </Link>
-          </TextContent>
-        )}
+          </Link>
+        </TextContent>
       </DetailColumn>
       <Divider style={{ margin: '8px' }} />
       <DetailColumn>
