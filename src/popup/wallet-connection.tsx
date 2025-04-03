@@ -19,6 +19,7 @@ import {
 } from '../utils/chrome';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useOwnerKeys } from '../utils/hooks/useOwnerKeys';
+import { useSignAuthorizeActionMessage } from '../utils/hooks/useSignAuthorizeActionMessage';
 import {
   buildApproveSessionNamespace,
   useWeb3Wallet,
@@ -40,6 +41,8 @@ export function WalletConnection() {
 
   const { activeAccount } = useAccountStorage();
   const { keys: addresses } = useOwnerKeys(activeAccount?.identity ?? '');
+
+  const signAuthorizeActionMessage = useSignAuthorizeActionMessage();
 
   const activeAccountL1Address =
     addresses?.find(
@@ -124,12 +127,19 @@ export function WalletConnection() {
         await closePopup();
       }
 
+      const payloadToSign = {
+        identity: activeAccount?.identity ?? '',
+        expires: Date.now() + 60 * 1000,
+      };
+
+      const signedMsg = await signAuthorizeActionMessage(payloadToSign);
+
       await web3wallet?.respondSessionRequest({
         topic,
         response: {
           id,
           jsonrpc: '2.0',
-          result: `${activeAccountL1Address}-${activeAccount?.identity}`,
+          result: `${signedMsg}-${JSON.stringify(payloadToSign)}`,
         },
       });
 
