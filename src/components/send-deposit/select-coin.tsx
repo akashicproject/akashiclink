@@ -28,7 +28,7 @@ SwiperCore.use([Virtual, Navigation]);
 const BalanceTitle = styled.div({
   fontStyle: 'normal',
   fontWeight: 700,
-  fontSize: '24px',
+  fontSize: '20px',
   lineHeight: '28px',
   textAlign: 'center',
   color: 'var(--ion-color-primary-10)',
@@ -235,7 +235,7 @@ export function SelectCoin() {
       </IonCol>
       <IonCol size={'12'}>
         <BalanceTitle>
-          {formatAmount(aggregatedBalances.get(focusCurrency) || 0)}{' '}
+          {formatAmount(aggregatedBalances.get(focusCurrency) ?? 0)}{' '}
           {focusCurrency.displayName}
         </BalanceTitle>
         <BalanceText>
