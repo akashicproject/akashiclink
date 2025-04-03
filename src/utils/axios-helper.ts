@@ -23,15 +23,19 @@ export const axiosBaseV1 = createAxiosInstance(
 
 /**
  * Any request that 401s (auth cookie expired or not set) should chuck user
- * out to the landing page screen, unless the current page has an IMMEDIATE navigation priority
+ * out to the landing page screen
  */
 axiosBase.interceptors.response.use(
   // Pass through valid responses
   (response) => response,
   async (error) => {
     if (401 === error.response.status) {
-      // Skip if already on root page or manage-account page
-      if (history.location.pathname.match(/^\/$|\/(?:akashic|manage-account)$/))
+      // Skip if already on root page, manage-account, create, or import pages
+      if (
+        history.location.pathname.match(
+          /^\/$|\/(?:akashic$|manage-account|import-wallet|create-wallet)/
+        )
+      )
         return;
 
       await Preferences.remove({
