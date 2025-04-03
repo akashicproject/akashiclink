@@ -204,6 +204,7 @@ export function Settings() {
                 onClick={menuItem.onClick}
                 endComponent={menuItem.endComponent}
                 isAccordion={menuItem.isAccordion}
+                link={menuItem.link}
               >
                 {menuItem.children}
               </SettingItem>
