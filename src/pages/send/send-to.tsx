@@ -293,8 +293,8 @@ export function SendTo() {
     try {
       const response = await OwnersAPI.verifyTransaction(originalTxn);
       setVerifiedTransaction(response[0]);
-      const feesEstimate = BigInt(response[0].feesEstimate || '0');
-      const balance = BigInt(currentWallet.balance);
+      const feesEstimate = Number(response[0].feesEstimate || '0');
+      const balance = Number(currentWallet.balance);
       // if do not have enough balance to pay the estimated gas, can not to next step
       if (balance < feesEstimate) {
         setVerifyError(
