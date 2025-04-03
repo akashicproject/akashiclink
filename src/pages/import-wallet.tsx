@@ -111,7 +111,7 @@ export function ImportWallet() {
           lang: i18n.language as Language,
         });
         if (!response.email) {
-          setAlert(errorAlertShell(t('UserDoesNotExist')));
+          setAlert(errorAlertShell(t('InvalidKeyPairOrEmail')));
           return;
         }
         setView(View.Submit2fa);

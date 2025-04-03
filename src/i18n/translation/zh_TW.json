@@ -79,6 +79,7 @@
   "Failed": "失敗",
   "MissingTranslationError": "缺少翻譯錯誤",
   "ContractInteraction": "細節",
+  "InvalidKeyPairOrEmail": "密鑰對或使用者電子郵件無效，請重新檢查。",
   "UserDoesNotExist": "用戶不存在",
   "OTKNotFound": "找不到正確的OTK",
   "UnownedKey": "你不擁有該錢包",
