@@ -83,8 +83,8 @@ export const useMyTransfers = (params?: IClientTransactionRecord) => {
   const transformedTransfers = withLocalTransactions.map((d) => ({
     ...d,
     // remove trailing zeros from amounts
-    amount: d.amount?.toString().replace(/\.*0+$/, ''),
-    feesPaid: d.feesPaid?.replace(/\.*0+$/, ''),
+    amount: Number(d.amount).toString(),
+    feesPaid: Number(d.feesPaid).toString(),
     // Dates come from backend as string so need to transform them here
     date: new Date(d.date),
     // HACK: set transactions with result = Failure to status = Failed
