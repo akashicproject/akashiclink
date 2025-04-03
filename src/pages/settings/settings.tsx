@@ -1,5 +1,4 @@
-import styled from '@emotion/styled';
-import { IonIcon, IonInput, IonRadioGroup } from '@ionic/react';
+import { IonRadioGroup } from '@ionic/react';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,18 +19,6 @@ import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { getImageIconUrl } from '../../utils/url-utils';
-
-const SearchBar = styled(IonInput)`
-  --padding-bottom: 8px;
-  --padding-top: 8px;
-  --padding-left: 8px;
-  --padding-right: 8px;
-  font-size: 10px;
-  min-height: 20px !important;
-  .native-input {
-    padding-left: 0px !important;
-  }
-`;
 
 const autoLockTimeMap: AutoLockProp[] = [
   {
@@ -140,10 +127,10 @@ export function Settings() {
     {
       header: t('AutoLock'),
       iconUrl: getImageIconUrl('auto-lock.svg'),
-      endComponent: <AutoLockTextCaret autoLockTime={autoLock!.label} />,
+      endComponent: <AutoLockTextCaret autoLockTime={autoLock.label} />,
       isAccordion: true,
       children: (
-        <AutoLockAccordion autoLock={autoLock!} setAutoLock={setAutoLock} />
+        <AutoLockAccordion autoLock={autoLock} setAutoLock={setAutoLock} />
       ),
     },
     {

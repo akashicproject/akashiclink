@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { debounce } from 'lodash';
-import React, { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -27,7 +27,7 @@ import {
 } from '../../components/common/input/styled-input';
 import { OneNft } from '../../components/nft/one-nft';
 import { NftLayout } from '../../components/page-layout/nft-layout';
-import { CacheOtkContext } from '../../components/providers/PreferenceProvider';
+import { useCacheOtk } from '../../components/providers/PreferenceProvider';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
 import {
@@ -94,7 +94,7 @@ export function NftTransfer() {
   const { nfts, isLoading, mutateNftMe } = useNftMe();
   const history = useHistory<LocationState>();
   const state = history.location.state?.nft;
-  const currentNft = nfts.find((nft) => nft.name === state?.nftName)!;
+  const currentNft = nfts.find((nft) => nft.name === state?.nftName) ?? nfts[0];
   const [inputValue, setInputValue] = useState<string>('');
   const [toAddress, setToAddress] = useState<string>('');
   const [searched, setSearched] = useState(false);
@@ -105,7 +105,7 @@ export function NftTransfer() {
 
   const [alert, setAlert] = useState(formAlertResetState);
   const [loading, setLoading] = useState(false);
-  const { cacheOtk } = useContext(CacheOtkContext);
+  const [cacheOtk, _] = useCacheOtk();
 
   // input username to address
   // TODO: we need to add more check constraint in the future, like l2 address start with "AS"
@@ -146,7 +146,7 @@ export function NftTransfer() {
       const verifiedNft = await OwnersAPI.verifyNftTransaction(payload);
       // "Hack" used when signing nft transactions, identity must be something else than the otk identity
       const signerOtk = {
-        ...cacheOtk!,
+        ...cacheOtk,
         identity: verifiedNft.nftAcnsStreamId,
       };
       const signedTx = await signTxBody(verifiedNft.txToSign, signerOtk);

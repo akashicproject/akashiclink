@@ -1,7 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { userConst } from '@helium-pay/backend';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import {
   errorAlertShell,
@@ -24,7 +23,6 @@ import { useOwner } from '../../utils/hooks/useOwner';
 
 export function CreateWalletPassword() {
   useIosScrollPasswordKeyboardIntoView();
-  const { t } = useTranslation();
   const createWalletForm = useAppSelector(selectCreateWalletForm);
   const dispatch = useAppDispatch();
   const [alert, setAlert] = useState(formAlertResetState);

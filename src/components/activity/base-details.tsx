@@ -1,9 +1,5 @@
 import styled from '@emotion/styled';
-import {
-  L2Regex,
-  TransactionLayer,
-  TransactionStatus,
-} from '@helium-pay/backend';
+import { TransactionLayer, TransactionStatus } from '@helium-pay/backend';
 import { IonImg } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 

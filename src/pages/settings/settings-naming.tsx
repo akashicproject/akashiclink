@@ -20,7 +20,7 @@ import {
   IonToast,
 } from '@ionic/react';
 import { checkmarkCircleOutline } from 'ionicons/icons';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { AccountSelection } from '../../components/account-selection/account-selection';
@@ -40,7 +40,7 @@ import { MainGrid } from '../../components/layout/main-grid';
 import { Tabs } from '../../components/layout/tabs';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 import {
-  CacheOtkContext,
+  useCacheOtk,
   useTheme,
 } from '../../components/providers/PreferenceProvider';
 import { themeType } from '../../theme/const';
@@ -163,7 +163,7 @@ const NoDataDiv = styled.div({
 
 export function SettingsNaming() {
   const { t } = useTranslation();
-  const { cacheOtk } = useContext(CacheOtkContext);
+  const [cacheOtk, _] = useCacheOtk();
   const { activeAccount } = useAccountStorage();
   const { acns, mutateNftAcnsMe } = useNftAcnsMe();
   const namedAcns = acns.filter((a) => !!a.value);
@@ -172,7 +172,7 @@ export function SettingsNaming() {
   const [alert, setAlert] = useState(formAlertResetState);
   const [editAcns, setEditAcns] = useState(namedAcns[0]);
   const [selectedName, setSelectedName] = useState('');
-  const [newValue, setNewValue] = useState(activeAccount!.identity);
+  const [newValue, setNewValue] = useState(activeAccount?.identity ?? null);
   const [showEditToast, setShowEditToast] = useState(false);
   const [isConfirmModel, setIsConfirmModel] = useState(false);
   const [isResultModel, setIsResultModel] = useState(false);
@@ -190,7 +190,7 @@ export function SettingsNaming() {
 
       // "Hack" used when signing nft transactions, identity must be something else than the otk identity
       const signerOtk = {
-        ...cacheOtk!,
+        ...cacheOtk,
         identity: verifyUpdateAcnsResponse.nftAcnsStreamId,
       };
       const signedTx = await signTxBody(
@@ -229,7 +229,7 @@ export function SettingsNaming() {
 
       // "Hack" used when signing nft transactions, identity must be something else than the otk identity
       const signerOtk = {
-        ...cacheOtk!,
+        ...cacheOtk,
         identity: verifyUpdateAcnsResponse.nftAcnsStreamId,
       };
 

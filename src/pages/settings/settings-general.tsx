@@ -1,6 +1,6 @@
 import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
-import { IonIcon, IonRadio, IonRadioGroup } from '@ionic/react';
-import React, { useEffect, useState } from 'react';
+import { IonRadioGroup } from '@ionic/react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Toggle } from '../../components/common/toggle/toggle';
@@ -14,7 +14,6 @@ import { DownArrow } from '../../components/settings/down-arrow';
 import { SettingItem } from '../../components/settings/setting-item';
 import { SettingsRadio } from '../../components/settings/setting-radio';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
-import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { getImageIconUrl } from '../../utils/url-utils';
 
 const getLocalizationLanguage = (): string => {

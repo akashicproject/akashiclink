@@ -1,8 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
@@ -14,7 +13,7 @@ import {
 } from '../common/alert/alert';
 import { PurpleButton } from '../common/buttons';
 import { StyledInput } from '../common/input/styled-input';
-import { PageHeader, SettingsWrapper } from './base-components';
+import { SettingsWrapper } from './base-components';
 
 /**
  * Initiates a confirmation procedure using supplied method
@@ -32,8 +31,6 @@ export function ConfirmLockPassword({
   const [alert, setAlert] = useState(formAlertResetState);
   const { getLocalOtk, activeAccount } = useAccountStorage();
 
-  const history = useHistory();
-
   // Submit request to display private key - requires password
   const handleOnConfirm = async () => {
     try {
@@ -41,7 +38,8 @@ export function ConfirmLockPassword({
         setAlert(errorAlertShell('InvalidPassword'));
         return;
       }
-      const otk = await getLocalOtk(activeAccount!.identity!, password);
+      if (!activeAccount) return;
+      const otk = await getLocalOtk(activeAccount.identity, password);
       if (otk) {
         onPasswordCheckSuccess(otk);
       } else {

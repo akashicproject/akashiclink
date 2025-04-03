@@ -2,11 +2,10 @@ import './theme-select.scss';
 
 import { IonIcon } from '@ionic/react';
 import { moon, sunny } from 'ionicons/icons';
-import { useEffect } from 'react';
 
 import { themeType } from '../../theme/const';
 import { Toggle } from '../common/toggle/toggle';
-import { toggleDarkTheme, useTheme } from '../providers/PreferenceProvider';
+import { useTheme } from '../providers/PreferenceProvider';
 
 /**
  * Slider prototyped of stack overflow answer, for toggling theme

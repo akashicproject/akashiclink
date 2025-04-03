@@ -89,8 +89,9 @@ export function ChangePassword() {
     if (!allowedToChange) return;
     if (newPassword && oldPassword) {
       try {
+        if (!activeAccount) return;
         await changeOtkPassword(
-          activeAccount!.identity!,
+          activeAccount.identity,
           oldPassword,
           newPassword
         );

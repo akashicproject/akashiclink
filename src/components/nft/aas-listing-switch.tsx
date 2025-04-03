@@ -7,7 +7,7 @@ import {
   nftErrors,
 } from '@helium-pay/backend';
 import axios from 'axios';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { OwnersAPI } from '../../utils/api';
@@ -16,7 +16,7 @@ import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { signTxBody } from '../../utils/nitr0gen-api';
 import { Toggle } from '../common/toggle/toggle';
-import { CacheOtkContext } from '../providers/PreferenceProvider';
+import { useCacheOtk } from '../providers/PreferenceProvider';
 
 const AASListSwitchContainer = styled.div`
   display: flex;
@@ -38,7 +38,7 @@ export const AasListingSwitch = ({
   customAlertHandle: React.Dispatch<React.SetStateAction<boolean>>;
   customAlertMessage: React.Dispatch<React.SetStateAction<string>>;
 }) => {
-  const { cacheOtk } = useContext(CacheOtkContext);
+  const [cacheOtk, _] = useCacheOtk();
   const { activeAccount } = useAccountStorage();
   const { mutateNftMe } = useNftMe();
   const { t } = useTranslation();
@@ -59,7 +59,7 @@ export const AasListingSwitch = ({
 
         // "Hack" used when signing nft transactions, identity must be something else than the otk identity
         const signerOtk = {
-          ...cacheOtk!,
+          ...cacheOtk,
           identity: verifyUpdateAcnsResponse.nftAcnsStreamId,
         };
 

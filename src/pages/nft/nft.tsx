@@ -44,7 +44,7 @@ export function Nft() {
   const state = history.location.state?.nft;
 
   const { nfts } = useNftMe();
-  const currentNft = nfts.find((nft) => nft.name === state?.nftName);
+  const currentNft = nfts.find((nft) => nft.name === state?.nftName) ?? nfts[0];
   const [message, setCustomAlertMessage] = useState(
     t('NSRecordWarning', { nftName: currentNft?.name || '' })
   );
@@ -85,7 +85,7 @@ export function Nft() {
         <IonGrid fixed={true}>
           <IonRow>
             <NftContainer>
-              <OneNft nft={currentNft!} isBig={true} />
+              <OneNft nft={currentNft} isBig={true} />
             </NftContainer>
           </IonRow>
           <IonRow className="ion-margin">
@@ -98,7 +98,7 @@ export function Nft() {
 
           {currentNft && currentNft.acns && (
             <AasListingSwitch
-              name={currentNft.acns!.name}
+              name={currentNft.acns.name}
               aasValue={currentNft.acns?.value ?? ''}
               customAlertHandle={setIsOpen}
               customAlertMessage={setCustomAlertMessage}

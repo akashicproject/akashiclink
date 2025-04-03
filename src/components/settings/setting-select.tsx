@@ -33,8 +33,8 @@ export function SettingSelect({ loggedIn }: { loggedIn: boolean }) {
             : getImageIconUrl('setting-menu-primary.svg')
         }
         onClick={(e) => {
-          if (loggedIn) {
-            settingPopoverRef.current!.event = e;
+          if (loggedIn && settingPopoverRef.current) {
+            settingPopoverRef.current.event = e;
             setPopoverOpen(!popoverOpen);
           } else {
             setModalOpen(!modalOpen);

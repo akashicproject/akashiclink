@@ -131,7 +131,7 @@ export const useAccountStorage = () => {
     const encryptedOtk = Buffer.from(
       cipher.update(JSON.stringify(otk), 'utf8', 'hex') + cipher.final('hex')
     ).toString('base64');
-    await SecureStorage.setItem(otk.identity!, encryptedOtk);
+    await SecureStorage.setItem(otk.identity, encryptedOtk);
   };
 
   const addLocalOtkAndCache = async (otk: FullOtk, password: string) => {

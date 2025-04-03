@@ -45,9 +45,11 @@ export function MigrateWalletSecretConfirm() {
     try {
       // Check for correct 12-word confirmation
       if (
+        !migrateWalletForm.confirmPassPhrase ||
+        !otk?.phrase ||
         !isEqual(
-          migrateWalletForm.confirmPassPhrase!.join(' '),
-          otk!.phrase!.trim()
+          migrateWalletForm.confirmPassPhrase.join(' '),
+          otk.phrase.trim()
         )
       ) {
         throw new Error(t('InvalidSecretPhrase'));

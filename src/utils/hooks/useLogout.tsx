@@ -25,7 +25,7 @@ export function useLogout(callLogout = true) {
       try {
         await axiosBase.post(`/auth/logout`);
       } catch {
-        console.log('Account already logged out');
+        console.error('Account already logged out');
       }
     }
 

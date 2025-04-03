@@ -63,26 +63,28 @@ export function MigrateWalletCreatePassword() {
       !(
         migrateWalletForm.password &&
         migrateWalletForm.confirmPassword &&
-        migrateWalletForm.checked
+        migrateWalletForm.checked &&
+        otk
       )
     )
       return;
 
     if (
       validateConfirmPassword(migrateWalletForm.confirmPassword) &&
-      validatePassword(migrateWalletForm.password)
+      validatePassword(migrateWalletForm.password) &&
+      migrateWalletForm.oldPassword
     ) {
       try {
         setIsLoading(true);
         // Login With v0-api to be authenticated for swap-endpoint
         await OwnersAPI.login({
-          username: username!,
-          password: migrateWalletForm.oldPassword!,
+          username: username ?? '',
+          password: migrateWalletForm.oldPassword,
         });
 
         // Transfers permissions from server-side OTK to the just-generated client-side otk
         const { identity } = await OwnersAPI.swapEotkToOtk(
-          otk!.key.pub.pkcs8pem
+          otk.key.pub.pkcs8pem
         );
 
         setAlert(formAlertResetState);
@@ -101,7 +103,7 @@ export function MigrateWalletCreatePassword() {
         // Login so user is authenticated
         await OwnersAPI.loginV1({
           identity,
-          signedAuth: signImportAuth(otk!.key.prv.pkcs8pem, identity),
+          signedAuth: signImportAuth(otk.key.prv.pkcs8pem, identity),
         });
         setIsLoading(false);
         historyResetStackAndRedirect(urls.migrateWalletComplete);

@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { getImageIconUrl } from '../../utils/url-utils';
 import { PurpleButton, WhiteButton } from '../common/buttons';
-import { DownArrow } from './down-arrow';
 import { ForwardArrow } from './forward-arrow';
 import type { SettingItemProps } from './setting-item';
 import { SettingItem } from './setting-item';

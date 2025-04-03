@@ -1,6 +1,5 @@
 import type { Dispatch, ReactNode } from 'react';
-import { createContext, useContext, useEffect } from 'react';
-import { IdleTimerProvider, useIdleTimer } from 'react-idle-timer';
+import { createContext, useContext } from 'react';
 
 import type { IWalletCurrency } from '../../constants/currencies';
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
@@ -212,10 +211,13 @@ export const useFocusCurrencyDetail: () => IWalletCurrency = () => {
 };
 
 export const useCacheOtk: () => [
-  FullOtk | null,
+  FullOtk,
   Dispatch<FullOtk | null> | undefined
 ] = () => {
   const { cacheOtk, setCacheOtk } = useContext(CacheOtkContext);
+  if (!cacheOtk) {
+    throw new Error('No otk stored!');
+  }
 
   return [cacheOtk, setCacheOtk];
 };

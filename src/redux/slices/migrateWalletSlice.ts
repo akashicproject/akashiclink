@@ -72,8 +72,9 @@ export const migrateWalletSlice = createAppSlice({
       async () => {
         // Generate OTK
         const otk = (await generateOTK()) as FullOtk;
+        if (!otk.phrase) throw new Error('No phrase!');
         const randomNumberArray = getRandomNumbers(0, 11, 4);
-        const maskedPassPhrase = otk.phrase!.split(' ');
+        const maskedPassPhrase = otk.phrase.split(' ');
         randomNumberArray.forEach((e) => {
           maskedPassPhrase[e] = '';
         });

@@ -2,7 +2,7 @@ import { Browser } from '@capacitor/browser';
 import { datadogRum } from '@datadog/browser-rum';
 import { IonAlert } from '@ionic/react';
 import { compareVersions } from 'compare-versions';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useConfig } from '../../utils/hooks/useConfig';
@@ -62,8 +62,8 @@ export default function VersionUpdateAlert() {
       isOpen={updateType === 'soft' || updateType === 'hard'}
       onDidDismiss={() => updateType === 'soft' && setUpdateType('')}
       backdropDismiss={false}
-      header={t('NewVersionAvailable')!}
-      message={t('NewVersionAvailableMessage')!}
+      header={t('NewVersionAvailable')}
+      message={t('NewVersionAvailableMessage')}
       buttons={[
         ...(updateType === 'soft'
           ? [

@@ -32,7 +32,7 @@ export const LanguageDropdown = () => {
   }, [selectedLanguage, i18n]);
 
   const openPopover = (e: SyntheticEvent) => {
-    popover.current!.event = e;
+    if (popover.current) popover.current.event = e;
     setIsOpen(!isOpen);
   };
   return (

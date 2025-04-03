@@ -4,7 +4,6 @@ import type { ReactNode } from 'react';
 import { useState } from 'react';
 
 import { Divider } from '../common/divider';
-import { DownArrow } from './down-arrow';
 import { ForwardArrow } from './forward-arrow';
 
 const Header = styled(IonText)`

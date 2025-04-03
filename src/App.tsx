@@ -19,7 +19,7 @@ import './theme/common.scss';
 import { Preferences } from '@capacitor/preferences';
 import { IonApp, setupIonicReact } from '@ionic/react';
 import { IonReactMemoryRouter } from '@ionic/react-router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 
 import VersionUpdateAlert from './components/layout/version-update-alert';
 import { PreferenceProvider } from './components/providers/PreferenceProvider';

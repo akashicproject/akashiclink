@@ -19,10 +19,6 @@ export const useVerifyTxnAndSign = () => {
   return async (validatedAddressPair: ValidatedAddressPair, amount: string) => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
 
-    if (!cacheOtk) {
-      return 'GenericFailureMsg';
-    }
-
     try {
       const txns = await OwnersAPI.verifyTransactionUsingClientSideOtk({
         fromAddress: activeAccount?.identity,

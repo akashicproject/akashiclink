@@ -12,6 +12,8 @@ export function NftDetail({
   currentTransfer: ITransactionRecordForExtension;
 }) {
   const { t } = useTranslation();
+
+  if (!currentTransfer.nft) return null;
   return (
     <>
       <div
@@ -22,7 +24,7 @@ export function NftDetail({
       >
         <OneNft
           style={{ marginTop: '0px' }}
-          nft={currentTransfer.nft!}
+          nft={currentTransfer.nft}
           isBig={false}
         />
       </div>

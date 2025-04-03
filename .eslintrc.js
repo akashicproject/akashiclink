@@ -31,9 +31,9 @@ module.exports = {
   rules: {
     '@typescript-eslint/naming-convention': 'off',
     'no-unused-private-class-members': 'error',
-    'no-console': 'off',
+    'no-console': ['error', { allow: ['warn', 'error'] }],
     '@typescript-eslint/no-unused-vars': [
-      'warn',
+      'error',
       {
         argsIgnorePattern: '^_',
         varsIgnorePattern: '^_',

@@ -54,7 +54,6 @@ export function convertObjectCurrencies(
   direction: 'to' | 'from'
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): any {
-  // console.log(object, direction);
   if (
     object?.coinSymbol &&
     (object.amount || object.feesEstimate || object.internalFee)

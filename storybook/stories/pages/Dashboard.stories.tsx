@@ -44,7 +44,10 @@ export const Dashboard: Story = {
           identity: 'mock-1',
           username: 'mock-user-1',
         },
-        setActiveAccount: (_: LocalAccount) => console.log('Setting account'),
+        // TODO: Make this do something or delete
+        setActiveAccount: (localAcc: LocalAccount) => {
+          return localAcc;
+        },
       },
     }),
   ],
