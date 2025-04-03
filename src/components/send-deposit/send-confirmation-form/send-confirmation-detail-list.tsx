@@ -67,10 +67,14 @@ export const SendConfirmationDetailList = ({
     .add(internalFee)
     .add(isCurrencyTypeToken ? Big(0) : totalFee);
 
-  const precision = getPrecision(
-    totalAmount.toString(),
-    totalFee.toString() ?? internalFee.toString() ?? '0'
-  );
+  const feeForPrecision =
+    totalFee > Big(0)
+      ? totalFee.toString()
+      : internalFee > Big(0)
+      ? internalFee.toString()
+      : '0';
+
+  const precision = getPrecision(totalAmount.toString(), feeForPrecision);
 
   const getUrl = (
     type: 'account' | 'transaction',
