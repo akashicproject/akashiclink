@@ -1,6 +1,6 @@
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import { datadogRum } from '@datadog/browser-rum';
-import { IMPORT_CONST, keyError } from '@helium-pay/backend';
+import { keyError } from '@helium-pay/backend';
 import type { PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { isAxiosError } from 'axios';
 
@@ -8,11 +8,7 @@ import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
 import { OwnersAPI } from '../../utils/api';
 import type { FullOtk } from '../../utils/otk-generation';
-import {
-  restoreOtk,
-  restoreOtkFromKeypair,
-  signImportAuth,
-} from '../../utils/otk-generation';
+import { restoreOtk, restoreOtkFromKeypair } from '../../utils/otk-generation';
 import { createAppSlice } from '../app/createAppSlice';
 
 export interface ImportWalletForm {
@@ -74,12 +70,8 @@ export const importWalletSlice = createAppSlice({
         const reconstructedOtk = await restoreOtk(passPhrase.join(' '));
         let identity: string | undefined;
         try {
-          const response = await OwnersAPI.importAccount({
+          const response = await OwnersAPI.retrieveIdentity({
             publicKey: reconstructedOtk.key.pub.pkcs8pem,
-            signedAuth: signImportAuth(
-              reconstructedOtk.key.prv.pkcs8pem,
-              IMPORT_CONST
-            ),
           });
           identity = response.identity;
         } catch (e) {
@@ -117,9 +109,8 @@ export const importWalletSlice = createAppSlice({
         let identity: string | undefined;
         try {
           try {
-            const response = await OwnersAPI.importAccount({
+            const response = await OwnersAPI.retrieveIdentity({
               publicKey: otk.key.pub.pkcs8pem,
-              signedAuth: signImportAuth(privateKey, IMPORT_CONST),
             });
             identity = response.identity;
           } catch (e) {
@@ -130,9 +121,8 @@ export const importWalletSlice = createAppSlice({
               e.response?.data.message === keyError.invalidPrivateKey
             ) {
               otk = restoreOtkFromKeypair(privateKey, 'uncompressed');
-              const response = await OwnersAPI.importAccount({
+              const response = await OwnersAPI.retrieveIdentity({
                 publicKey: otk.key.pub.pkcs8pem,
-                signedAuth: signImportAuth(privateKey, IMPORT_CONST),
               });
               identity = response.identity;
             } else {

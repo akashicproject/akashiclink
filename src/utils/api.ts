@@ -7,13 +7,13 @@ import type {
   IDiffconKeysResponse,
   IEstimateGasFee,
   IEstimateGasFeeResponse,
-  IImportWalletNew,
-  IImportWalletResponseNew,
   IL1ClientSideOtkTransactionBase,
   ILoginUserWithOtk,
   ILookForL2Address,
   ILookForL2AddressResponse,
   IMinimalUserResponse,
+  IRetrieveIdentity,
+  IRetrieveIdentityResponse,
   ITransactionProposal,
   ITransactionSettledResponse,
   ITransactionVerifyResponse,
@@ -30,12 +30,11 @@ import type {
 import { axiosBase, axiosBaseV1 } from './axios-helper';
 
 export const OwnersAPI = {
-  importAccount: async (
-    importData: IImportWalletNew
-  ): Promise<IImportWalletResponseNew> => {
-    const response = await axiosBase.post(
-      `/auth/import-wallet`,
-      JSON.stringify(importData)
+  retrieveIdentity: async (
+    retrieveData: IRetrieveIdentity
+  ): Promise<IRetrieveIdentityResponse> => {
+    const response = await axiosBase.get(
+      `/public-api/owner/retrieve-identity?publicKey=${retrieveData.publicKey}`
     );
     const { data, status } = response;
     if (status >= 400) {
