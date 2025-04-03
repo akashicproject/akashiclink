@@ -111,6 +111,18 @@ yarn serve:android
 
 4. In Android Studio, click "Run" to run the app in virtual device
 
+## Live reloading Android or ios App
+
+```sh
+yarn debug:ios
+```
+
+or
+
+```sh
+yarn debug:android
+```
+
 ## Styling
 
 > Styling is done with `scss` and 80% of what you would need to use can be found [in this tutorial](https://sass-lang.com/guide/#variables).
