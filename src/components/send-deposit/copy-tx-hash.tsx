@@ -17,15 +17,16 @@ export const ListCopyTxHashItem = ({
   txHash,
   txHashUrl,
   suffix,
+  color,
 }: {
   txHash: string;
   txHashUrl?: string;
   suffix?: string;
+  color?: string;
 }) => {
   const { t } = useTranslation();
   const popover = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
-
   const copyData = async (data: string, e: never) => {
     await Clipboard.write({
       string: data ?? '',
@@ -55,14 +56,14 @@ export const ListCopyTxHashItem = ({
         'w-100 ion-display-flex ion-align-items-end ion-justify-content-between'
       }
     >
-      <IonLabel>
+      <IonLabel style={{ color }}>
         <span className={`ion-color-primary ion-text-size-xs ion-text-bold`}>
           {t('txHash') + (suffix ? ` (${suffix})` : '')}
         </span>
       </IonLabel>
       <IonNote
         className={`ion-text-size-xs ion-display-flex ion-align-items-center`}
-        color="dark"
+        style={{ color: color || 'var(--ion-text-color)' }}
         slot={'end'}
       >
         <IonText
@@ -79,7 +80,9 @@ export const ListCopyTxHashItem = ({
             onClick={onClickCopyIcon}
             slot="icon-only"
             className="copy-icon"
-            src={`/shared-assets/images/copy-icon-dark.svg`}
+            src={`/shared-assets/images/copy-icon-${
+              suffix === 'AS' ? 'light' : 'dark'
+            }.svg`}
           />
         </div>
         <IonPopover

@@ -30,23 +30,27 @@ export function TransactionDetails({
       ) : (
         <WithdrawDetails currentTransfer={currentTransfer} />
       )}
-      {currentTransfer?.initiatedToNonL2 &&
-        !NetworkDictionary[currentTransfer.coinSymbol].regex.address.exec(
-          currentTransfer?.initiatedToNonL2
-        ) && (
-          <List lines="none">
-            <Divider
-              style={{ width: '100%' }}
-              className={'ion-margin-vertical'}
-            />
-            <ListLabelValueItem
-              label={t('Remark')}
-              value={`${currentTransfer?.initiatedToNonL2}`}
-              valueSize={'md'}
-              valueBold
-            />
-          </List>
-        )}
+      {
+        <List lines="none">
+          <Divider
+            style={{ width: '100%' }}
+            className={'ion-margin-vertical'}
+          />
+          <ListLabelValueItem
+            label={t('AkashicAlias')}
+            value={`${
+              currentTransfer?.initiatedToNonL2 &&
+              !NetworkDictionary[currentTransfer.coinSymbol].regex.address.exec(
+                currentTransfer?.initiatedToNonL2
+              )
+                ? currentTransfer.initiatedToNonL2
+                : '-'
+            }`}
+            valueSize={'md'}
+            valueBold
+          />
+        </List>
+      }
     </>
   );
 }
@@ -103,7 +107,7 @@ const WithdrawDetails = ({
         valueBold
       />
       <ListLabelValueItem
-        label={t(isL2 ? 'Fee' : 'GasFee')}
+        label={t(isL2 ? 'L2Fee' : 'GasFee')}
         value={`${
           isL2
             ? internalFee.toFixed(precision)

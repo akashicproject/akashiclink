@@ -1,9 +1,5 @@
 import styled from '@emotion/styled';
-import {
-  NetworkDictionary,
-  TransactionLayer,
-  TransactionStatus,
-} from '@helium-pay/backend';
+import { TransactionStatus } from '@helium-pay/backend';
 import { IonImg } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
@@ -26,7 +22,6 @@ export function BaseDetails({
 }: {
   currentTransfer: ITransactionRecordForExtension;
 }) {
-  const isL2 = currentTransfer.layer === TransactionLayer.L2;
   const { t } = useTranslation();
   const statusString = (status: string | undefined) => {
     switch (status) {
@@ -66,15 +61,17 @@ export function BaseDetails({
         </div>
       </DetailColumn>
       <List lines="none">
-        {isL2 &&
-          NetworkDictionary[currentTransfer.coinSymbol].regex.address.exec(
-            currentTransfer?.initiatedToNonL2 ?? ''
-          ) && (
-            <ListVerticalLabelValueItem
-              label={t('InputAddress')}
-              value={currentTransfer?.initiatedToNonL2}
-            />
-          )}
+        {
+          <ListVerticalLabelValueItem
+            label={t('InputAddress')}
+            value={
+              currentTransfer.initiatedToNonL2 &&
+              currentTransfer.initiatedToNonL2 !== ''
+                ? currentTransfer.initiatedToNonL2
+                : currentTransfer.toAddress
+            }
+          />
+        }
         <FromToAddressBlock
           fromAddress={currentTransfer.fromAddress}
           toAddress={currentTransfer.toAddress}
@@ -99,6 +96,7 @@ export function BaseDetails({
             txHash={currentTransfer.l2TxnHash}
             txHashUrl={currentTransfer.l2TxnHashUrl}
             suffix="AS"
+            color="var(--activity-dim-text)"
           />
         )}
       </List>

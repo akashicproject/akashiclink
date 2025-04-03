@@ -136,6 +136,7 @@
   "AvailableGas": "Available Gas",
   "EsTGasFee": "Est. Gas Fee",
   "GasFee": "Gas fee",
+  "L2Fee": "L2 fee",
   "GasLimit": "Gas limit",
   "GasUsed": "Gas used",
   "PriorityFee": "Priority fee",
