@@ -22,6 +22,7 @@ import {
 } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
 import { historyGoBack } from '../../routing/history-stack';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import {
   onInputChange,
   selectMigrateWalletForm,
@@ -54,7 +55,7 @@ export function MigrateWalletOldPassword() {
           password: migrateWalletForm.oldPassword,
         });
       }
-      history.push(urls.migrateWalletSecret);
+      history.push(akashicPayPath(urls.migrateWalletSecret));
     } catch (e) {
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(e))));
     }

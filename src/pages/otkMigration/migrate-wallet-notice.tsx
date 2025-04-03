@@ -10,6 +10,8 @@ import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
+import { akashicPayPath } from '../../routing/navigation-tabs';
+import { onClear } from '../../slices/importWalletSlice';
 import {
   onInputChange,
   selectMigrateWalletForm,
@@ -41,11 +43,13 @@ export function MigrateWalletNotice() {
   useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   const nextPage = async () => {
+    // Because we might have been pushed to migration from import-flow, clear the import-state here
+    dispatch(onClear());
     // If no password provided, send to page to get old password (used to login and decrypt old eOtk for migration)
     if (!migrateWalletForm.oldPassword) {
-      history.push(urls.migrateWalletOldPassword);
+      history.push(akashicPayPath(urls.migrateWalletOldPassword));
     } else {
-      history.push(urls.migrateWalletSecret);
+      history.push(akashicPayPath(urls.migrateWalletSecret));
     }
   };
 
