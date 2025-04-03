@@ -37,7 +37,7 @@ const SeeMore = styled(Link)({
   textAlign: 'center',
   width: '100%',
   display: 'block',
-  bottom: '3%',
+  bottom: '2rem',
 });
 const ListContainer = styled.div({
   display: 'flex',
@@ -146,7 +146,7 @@ export function ActivityAndNftTab() {
             className="vertical"
             style={{
               height: isMobile ? '25vh' : '20vh',
-              margin: '5px',
+              marginTop: '0.8rem',
               overflow: 'auto',
             }}
           >
@@ -202,7 +202,7 @@ export function ActivityAndNftTab() {
           </div>
           {walletFormatTransfers.length >= itemDisplayIndex && !nftTab && (
             <SeeMore
-              style={{ position: isMobile ? 'relative' : 'fixed' }}
+              style={{ position: 'fixed' }}
               to={akashicPayPath(urls.activity)}
             >
               {t('SeeMore')}
@@ -210,7 +210,7 @@ export function ActivityAndNftTab() {
           )}
           {nftTab && nfts.length > itemDisplayIndex && (
             <SeeMore
-              style={{ position: isMobile ? 'relative' : 'fixed' }}
+              style={{ position: 'fixed' }}
               to={akashicPayPath(urls.nfts)}
             >
               {t('SeeMore')}
