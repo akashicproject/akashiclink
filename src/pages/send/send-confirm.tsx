@@ -152,6 +152,14 @@ export function SendConfirm() {
               forceL1: undefined,
             }),
           ];
+
+          // response = [
+          //   await OwnersAPI.sendL2TransactionUsingClientSideOtk({
+          //     ...state?.transaction[0],
+          //     forceL1: undefined,
+          //     signedTx: state.signedTx ?? '',
+          //   }),
+          // ];
         }
         if (!response[0].isSuccess) {
           setAlert(

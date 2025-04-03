@@ -22,6 +22,7 @@ import type {
   ITempShowOtkPrvResponse,
   ITransactionBase,
   ITransactionProposal,
+  ITransactionProposalClientSideOtk,
   ITransactionSettledResponse,
   ITransactionVerifyResponse,
   ITransferNft,
@@ -129,6 +130,22 @@ export const OwnersAPI = {
 
     return response.data;
   },
+
+  verifyTransactionUsingClientSideOtk: async (
+    transactionData: ITransactionProposal
+  ): Promise<ITransactionVerifyResponse[]> => {
+    const response = await axiosBaseV1.post(
+      `/key/verify-txns`,
+      JSON.stringify(transactionData)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+
+    return response.data;
+  },
+
   sendL1Transaction: async (
     transactionToSendData: ITransactionBase[]
   ): Promise<ITransactionSettledResponse[]> => {
@@ -155,6 +172,20 @@ export const OwnersAPI = {
       throw new Error(data.message);
     }
 
+    return response.data;
+  },
+
+  sendL2TransactionUsingClientSideOtk: async (
+    signedTransactionData: ITransactionProposalClientSideOtk
+  ): Promise<ITransactionSettledResponse> => {
+    const response = await axiosBaseV1.post(
+      `/key/send/l2`,
+      JSON.stringify(signedTransactionData)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
     return response.data;
   },
   checkL2Address: async (

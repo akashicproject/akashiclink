@@ -2,13 +2,19 @@ import type { IBaseTransaction } from '@activeledger/sdk';
 import { TransactionHandler } from '@activeledger/sdk';
 import type { IKey } from '@activeledger/sdk/lib/interfaces';
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
-import type { IVerifyNftResponse } from '@helium-pay/backend';
+import type {
+  ITransactionVerifyResponse,
+  IVerifyNftResponse,
+} from '@helium-pay/backend';
 
+import { convertToFromDecimals } from './currency';
 import type { LocalAccount } from './hooks/useLocalAccounts';
 
 enum Nitr0gen {
+  Namespace = 'notabox.keys',
   NFTNamespace = 'candypig',
   NFTTransfer = '52e8ec2faef459da41fc4ed669644b4f07639bfdd871081763517e92973d3623@1.0.5',
+  CryptoTransfer = 'a48df2fd31400a9b69d9b8bdb699618faed2999ca08c559695a4b74597d3e895@2.0.2',
 }
 
 const MINTER_OTK: IKey = {
@@ -29,6 +35,9 @@ const MINTER_OTK: IKey = {
 };
 const MINTEE_IDENTITY =
   'AS4c64c3c7b696aa275d0d2226538f22d5fdbe51ed31ec3b6e9910659cfa867348';
+const nitr0genNativeCoin = '#native';
+const AP_FEE_IDENTITY =
+  'be45ec32caf53998e4d8d51feca112c82d334007d2b8ea70e62798af82b5a1d2';
 /**
  * Class implements basic intereactions with the Nirt0gen network
  */
@@ -46,8 +55,9 @@ export const Nitr0genApi = {
       const otk = localOtks?.find(
         (l) => l.identity === activeAccount?.identity
       );
+      if (!otk) throw Error(`Unable to find otk`);
 
-      const { phrase: _, ...object } = otk ?? localOtks[0];
+      const { phrase: _, ...object } = otk;
       signerOtk = object;
     }
     signerOtk.identity = verifiedNft.nftOwnerIdentity;
@@ -71,6 +81,71 @@ export const Nitr0genApi = {
     };
 
     signerOtk.identity = verifiedNft.nftAcnsStreamId;
+    // Sign Transaction & Send
+    const txHandler = new TransactionHandler();
+    return makeTxSafe(await txHandler.signTransaction(txBody, signerOtk));
+  },
+
+  L2Transaction: async (
+    details: ITransactionVerifyResponse,
+    localOtks: IKeyExtended[],
+    activeAccount: LocalAccount
+  ): Promise<string> => {
+    const { amount, coinSymbol, tokenSymbol, internalFee } = details;
+    const otk = localOtks?.find((l) => l.identity === activeAccount?.identity);
+    if (!otk) throw Error(`Unable to find otk`);
+    const { phrase: _, ...object } = otk;
+    const signerOtk: IKey = object;
+
+    // Convert fees and turn into one
+    const internalDepositFee = BigInt(
+      convertToFromDecimals(
+        internalFee?.deposit ?? '0',
+        coinSymbol,
+        'to',
+        tokenSymbol
+      )
+    );
+    const internalWithdrawFee = BigInt(
+      convertToFromDecimals(
+        internalFee?.withdraw ?? '0',
+        coinSymbol,
+        'to',
+        tokenSymbol
+      )
+    );
+    const totalInternalFee = (
+      internalWithdrawFee + internalDepositFee
+    ).toString();
+    const $i = {
+      owner: {
+        $stream: activeAccount.identity,
+        network: details.coinSymbol,
+        token: details.tokenSymbol ?? nitr0genNativeCoin,
+        amount: convertToFromDecimals(
+          amount,
+          coinSymbol,
+          'to',
+          tokenSymbol
+        ).toString(),
+        fee: { fixed: totalInternalFee },
+      },
+    };
+
+    const txBody: IBaseTransaction = {
+      $tx: {
+        $namespace: Nitr0gen.Namespace,
+        $contract: Nitr0gen.CryptoTransfer,
+        $entry: 'transfer',
+        $i,
+        $o: {
+          feeto: { $stream: AP_FEE_IDENTITY },
+          to: { $stream: details.toAddress },
+        },
+      },
+      $sigs: {},
+      $selfsign: false,
+    };
     // Sign Transaction & Send
     const txHandler = new TransactionHandler();
     return makeTxSafe(await txHandler.signTransaction(txBody, signerOtk));

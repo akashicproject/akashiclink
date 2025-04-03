@@ -19,6 +19,7 @@ export interface LocationState {
     transaction?: ITransactionVerifyResponse[];
     currencyDisplayName?: string;
     gasFree?: boolean;
+    signedTx?: string;
   };
   sendResult?: {
     transaction?: ITransactionVerifyResponse[];

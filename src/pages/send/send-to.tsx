@@ -35,6 +35,7 @@ import { OwnersAPI } from '../../utils/api';
 import { useAggregatedBalances } from '../../utils/hooks/useAggregatedBalances';
 import { useExchangeRates } from '../../utils/hooks/useExchangeRates';
 import { useKeyMe } from '../../utils/hooks/useKeyMe';
+import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { calculateInternalWithdrawalFee } from '../../utils/internal-fee';
 import { cacheCurrentPage } from '../../utils/last-page-storage';
 import { displayLongText } from '../../utils/long-text';
@@ -343,6 +344,7 @@ export function SendTo() {
   };
 
   const [loading, setLoading] = useState(false);
+  const { activeAccount } = useAccountStorage();
 
   // Send transaction to the backend for verification
   const verifyTransaction = async () => {
@@ -365,15 +367,28 @@ export function SendTo() {
       tokenSymbol: token ? token : undefined,
       forceL1: !gasFree,
       toL1Address: l1AddressWhenL2,
+      ownedIdentity: activeAccount?.identity,
     };
     try {
       const response = await OwnersAPI.verifyTransaction(originalTxn);
+      // enable it when we switch to V1 apis
+      // const response = await OwnersAPI.verifyTransactionUsingClientSideOtk(
+      //   originalTxn
+      // );
+
       // reject the request if /verify returns multiple transfers
       // for L2: multiple transactions from the same Nitr0gen identity can always be combined into a single one, so it should be fine
       if (response.length > 1 && !gasFree) {
         setAlertRequest(errorAlertShell(t('GenericFailureMsg')));
         return;
       }
+
+      // enable it when we switch to V1 apis
+      // const signedTx = await Nitr0genApi.L2Transaction(
+      //   response[0],
+      //   localOtks,
+      //   activeAccount!
+      // );
       const feesEstimate = Number(response[0].feesEstimate || '0');
       const balance = Number(
         aggregatedBalances.get({
@@ -404,6 +419,7 @@ export function SendTo() {
               currencyDisplayName: currency.displayName || '',
               transaction: response,
               gasFree,
+              // signedTx,
             },
           },
         });
