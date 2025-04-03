@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { CoinSymbol, CurrencySymbol } from '@helium-pay/backend';
 
-import type { ITronTransaction } from './tron.interface';
-
 /** ********* Internal Arguments/Responses ********* **/
 
 export interface L2TxDetail {
@@ -15,7 +13,6 @@ export interface L2TxDetail {
 
 export interface L1TxDetail {
   amount: string;
-  hex?: ITronTransaction;
   nonce?: number;
 }
 
@@ -62,12 +59,8 @@ export interface IKeyCreationResponse {
 /**
  * Nitr0gen Contract for signing ethereum coin and token transfers
  */
-export interface Nitr0EthereumTrxSignature {
-  to: string;
-  from: string;
-  amount: string;
+export interface Nitr0EthereumTrx {
   nonce: number;
-  chainId: number;
   gas: string;
   contractAddress?: string;
 }
@@ -75,37 +68,14 @@ export interface Nitr0EthereumTrxSignature {
 /**
  * Nitr0gen contract for signing tron coin and token transfers
  */
-export interface Nitr0TronTrxSignature {
-  to: string;
-  amount: unknown;
-  hex: ITronTransaction;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Nitr0TronTrx {}
 
 /**
  * Nitr0gen contract for signing btc transfers
  */
-export interface Nitr0BtcSignature {
-  inputs: {
-    address: string;
-    txid: string;
-    outputIndex: number;
-    satoshis: number;
-    script: null;
-    scriptPubKey: null;
-  }[];
-  outputs: {
-    address: string;
-    satoshis: number;
-  }[];
-  fees: number;
-  to: string;
-  amount: string;
-}
 
-export type TransactionSignature =
-  | Nitr0EthereumTrxSignature
-  | Nitr0TronTrxSignature
-  | Nitr0BtcSignature;
+export type Nitr0Transaction = Nitr0EthereumTrx | Nitr0TronTrx;
 
 export interface INewNitr0genKey {
   ledgerId: string;

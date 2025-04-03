@@ -2,29 +2,21 @@ import { TransactionHandler } from '@activeledger/sdk';
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import { datadogRum } from '@datadog/browser-rum';
 import type {
+  CoinSymbol,
   CurrencySymbol,
   IBaseTransactionWithDbIndex,
   ITerriTransaction,
 } from '@helium-pay/backend';
-import {
-  CoinSymbol,
-  keyError,
-  NetworkDictionary,
-  otherError,
-} from '@helium-pay/backend';
+import { keyError, NetworkDictionary, otherError } from '@helium-pay/backend';
 import axios from 'axios';
 
 import { convertToFromASPrefix } from '../convert-as-prefix';
-import { EthereumChainMetadata, EthereumHelper } from './ethereum.service';
 import type {
   ActiveLedgerResponse,
   IKeyCreationResponse,
   IOnboardedIdentity,
   L1TxDetail,
   L2TxDetail,
-  Nitr0EthereumTrxSignature,
-  Nitr0TronTrxSignature,
-  TransactionSignature,
 } from './nitr0gen.interface';
 import {
   BadGatewayException,
@@ -34,7 +26,6 @@ import {
   NotFoundException,
   PortType,
 } from './nitr0gen.utils';
-import { TronHelper } from './tron.service';
 
 // Used to index nitr0gen responses when getting info for native coin
 export const nitr0genNativeCoin = '#native';
@@ -89,9 +80,6 @@ export async function signTxBody<T extends IBaseTransactionWithDbIndex>(
  * Class implements basic interactions with the Nitr0gen network
  */
 export class Nitr0genApi {
-  private ethereum = new EthereumHelper();
-  private tron = new TronHelper();
-
   public async onboardOtk(otk: IKeyExtended): Promise<IOnboardedIdentity> {
     const tx = await this.onboardOtkTransaction(otk);
     const response = await this.post<ActiveLedgerResponse>(tx);
@@ -309,26 +297,16 @@ export class Nitr0genApi {
     keyLedgerId: string,
     network: CoinSymbol,
     amount: string,
-    transaction: TransactionSignature,
+    toAddress: string,
     token?: CurrencySymbol
   ): Promise<IBaseTransactionWithDbIndex> {
-    // Build Transaction
-    const txDetail: L1TxDetail = {
-      amount,
+    const $o: { [keyLedgerId: string]: L1TxDetail } = {
+      [keyLedgerId]: { amount },
     };
 
-    // Used by Tron transactions
-    if ('hex' in transaction) {
-      txDetail['hex'] = transaction.hex;
-    }
-
-    // Used by ETH/BNB transactions
-    if ('nonce' in transaction) {
-      txDetail['nonce'] = transaction.nonce;
-    }
-    const $o: { [keyLedgerId: string]: L1TxDetail } = {};
-
-    $o[keyLedgerId] = txDetail;
+    const contractAddress = NetworkDictionary[network].tokens.find(
+      (t) => t.symbol === token
+    )?.contract;
 
     const txBody: IBaseTransactionWithDbIndex = {
       $tx: {
@@ -341,7 +319,8 @@ export class Nitr0genApi {
             network,
             token: token ?? nitr0genNativeCoin,
             amount,
-            signtx: transaction,
+            to: toAddress,
+            contractAddress,
           },
         },
         $o,
@@ -466,56 +445,6 @@ export class Nitr0genApi {
       ...otk,
       identity: acnsStreamId,
     });
-  }
-
-  /**
-   * Constructs an L1 transaction
-   * Use if backend is down to create an L1-transaction directly
-   */
-  public async constructL1TransactionObject(
-    coinSymbol: CoinSymbol,
-    amount: string,
-    toAddress: string,
-    fromAddress: string,
-    tokenContract?: string
-  ): Promise<Nitr0TronTrxSignature | Nitr0EthereumTrxSignature> {
-    switch (coinSymbol) {
-      case CoinSymbol.Ethereum_Mainnet:
-      case CoinSymbol.Ethereum_Sepolia:
-      case CoinSymbol.Binance_Smart_Chain_Mainnet:
-      case CoinSymbol.Binance_Smart_Chain_Testnet:
-        return {
-          to: toAddress,
-          from: fromAddress,
-          nonce: await this.ethereum.getTransactionCount(
-            fromAddress,
-            coinSymbol
-          ),
-          gas:
-            '0x' +
-            (await this.ethereum.getGasFee(coinSymbol))['medium'].toString(16), // gas price
-          chainId: EthereumChainMetadata[coinSymbol].chainId,
-          // ERC20 token or ETH transfer, amounts in hexadecimal
-          amount: '0x' + BigInt(amount).toString(16),
-          contractAddress: tokenContract,
-        };
-      case CoinSymbol.Tron:
-      case CoinSymbol.Tron_Nile:
-      case CoinSymbol.Tron_Shasta:
-        return {
-          to: toAddress,
-          amount,
-          hex: await this.tron.createTransaction(
-            toAddress,
-            fromAddress,
-            amount,
-            coinSymbol,
-            tokenContract
-          ),
-        };
-      default:
-        throw new Error(otherError.unsupportedCoinError);
-    }
   }
 
   /**
