@@ -8,14 +8,14 @@ import { useEffect, useState } from 'react';
  * @param key The key of the localPreferences item
  * @param initialValue The default value returned when it is not saved before
  *
- * @returns {[value, setPreferenceAndStateValue]}
+ * @returns {[value, setPreferenceAndStateValue, removePreference]}
  * The value of the requested item, and the helper function to update the item
  * and a direct read of the local Preferences value (useful when hook is used in multiple components)
  */
 export const useLocalStorage = <T>(
   key: string,
   initialValue: T
-): [T, (newValue: T) => Promise<void>] => {
+): [T, (newValue: T) => Promise<void>, () => Promise<void>] => {
   const [stateValue, setStateValue] = useState<T>();
 
   useEffect(() => {
@@ -55,5 +55,21 @@ export const useLocalStorage = <T>(
       console.error(e);
     }
   };
-  return [stateValue ?? initialValue, setPreferenceAndStateValue];
+
+  const removePreference = async () => {
+    try {
+      setStateValue(undefined);
+      await Preferences.remove({
+        key,
+      });
+    } catch (e) {
+      datadogRum.addError(e);
+      console.error(e);
+    }
+  };
+  return [
+    stateValue ?? initialValue,
+    setPreferenceAndStateValue,
+    removePreference,
+  ];
 };

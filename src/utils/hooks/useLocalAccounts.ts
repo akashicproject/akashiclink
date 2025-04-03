@@ -41,34 +41,38 @@ export const useAccountStorage = () => {
   // Similarly for active account
   // TODO: Delete the legacy-stuff when backwards-compatibility to local storage
   // no longer necessary
-  const [legacyLocalAccounts, setLegacyLocalAccounts] = useLocalStorage<
+  const dispatch = useAppDispatch();
+
+  const [legacyLocalAccounts, _c, removeLegacyLocalAccounts] = useLocalStorage<
     LocalAccount[] | undefined
-  >('cached-accounts', []);
+  >('cached-accounts', undefined);
 
   const storedLocalAccounts = useAppSelector(selectLocalAccounts);
 
-  const localAccounts = storedLocalAccounts.concat(
-    (legacyLocalAccounts ?? []).filter(
-      (acc) => !storedLocalAccounts.includes(acc)
+  const localAccounts = Object.values(
+    [...storedLocalAccounts, ...(legacyLocalAccounts ?? [])].reduce(
+      (acc, next) => {
+        next.identity && (acc[next.identity] = next);
+        return acc;
+      },
+      {} as Record<string, LocalAccount>
     )
   );
 
-  const [legacyActiveAccount, setLegacyActiveAccount] =
+  const [legacyActiveAccount, _s, removeLegacyActiveAccount] =
     useLocalStorage<LocalAccount | null>('session-account', null);
 
   const activeAccount =
     useAppSelector(selectActiveAccount) ?? legacyActiveAccount;
 
-  const dispatch = useAppDispatch();
-
   // After running this code we know we have migrated away from local storage
   // and can thus null legacy-storage and force-update the redux account-list
   if (legacyLocalAccounts && legacyLocalAccounts.length) {
     dispatch(setLocalAccounts(localAccounts));
-    setLegacyLocalAccounts(undefined);
+    removeLegacyLocalAccounts();
   }
   if (legacyActiveAccount) {
-    setLegacyActiveAccount(null);
+    removeLegacyActiveAccount();
   }
 
   const addPrefixToAccounts = async () => {
@@ -82,6 +86,7 @@ export const useAccountStorage = () => {
       dispatch(setLocalAccounts(accountsWithPrefix));
     }
   };
+
   const addAasToAccountByIdentity = async (
     aasName: string,
     identity: string
