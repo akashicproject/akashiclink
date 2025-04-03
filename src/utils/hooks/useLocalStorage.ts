@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 /**
- * Access localStorage using the key. Also Expose a function to update and save value
+ * Access localStorage using the key. Also, expose a function to update and save value
  *
  * @param key The key of the localStorage item
  * @param defaultValue The default value returned when it is not saved before

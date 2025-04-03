@@ -11,7 +11,7 @@ import { useState } from 'react';
 
 import { PurpleButton, WhiteButton } from '../components/buttons';
 import { CountdownDiv } from '../components/layout/countdown';
-import { LoggedLayout } from '../components/layout/loggedLayout';
+import { LoggedLayout } from '../components/layout/logged-layout';
 import { MainGrid } from '../components/layout/main-grid';
 import { ResetPassword } from './Recovery/reset-password';
 

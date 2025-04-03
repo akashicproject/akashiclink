@@ -14,7 +14,7 @@ import { PurpleButton, WhiteButton } from '../components/buttons';
 import { ConfirmLockPassword } from '../components/confirm-lock-password';
 import { Copy } from '../components/copy/copy';
 import { DividerDiv } from '../components/layout/divider';
-import { LoggedLayout } from '../components/layout/loggedLayout';
+import { LoggedLayout } from '../components/layout/logged-layout';
 import { MainGrid } from '../components/layout/main-grid';
 import { MainTitle } from '../components/layout/main-title';
 import { OwnersAPI } from '../utils/api';

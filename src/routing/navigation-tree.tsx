@@ -7,9 +7,9 @@ import { CreateWallet } from '../pages/createWallet/create-wallet';
 import { ErrorPage } from '../pages/error';
 import { HeliumPayMain } from '../pages/hp-main';
 import { ImportWallet } from '../pages/import-wallet';
+import { Dashboard } from '../pages/logged/dashboard';
+import { DepositPage } from '../pages/logged/deposit-page';
 import { LoggedCreate } from '../pages/logged/logged-create';
-import { LoggedDeposit } from '../pages/logged/logged-deposit';
-import { LoggedFunction } from '../pages/logged/logged-function';
 import { Login } from '../pages/login';
 import { Recover } from '../pages/recover';
 import { RecoverCode } from '../pages/recover-code';
@@ -92,9 +92,9 @@ export function NavigationTree() {
       {hpSubtree.registerPage(Login, urls.loginUrl)}
       {hpSubtree.registerPage(ImportWallet, urls.importAccountUrl)}
       {hpSubtree.registerPage(Welcome, urls.welcome)}
-      {hpSubtree.registerPage(LoggedFunction, urls.loggedFunction)}
+      {hpSubtree.registerPage(Dashboard, urls.loggedFunction)}
       {hpSubtree.registerPage(LoggedCreate, urls.loggedCreate)}
-      {hpSubtree.registerPage(LoggedDeposit, urls.loggedDeposit)}
+      {hpSubtree.registerPage(DepositPage, urls.loggedDeposit)}
       {hpSubtree.registerPage(SendConfirm, urls.sendConfirm)}
       {hpSubtree.registerPage(SendTo, urls.sendTo)}
       {hpSubtree.registerPage(SendResult, urls.sendResult)}

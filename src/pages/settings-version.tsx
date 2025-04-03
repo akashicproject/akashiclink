@@ -2,7 +2,7 @@ import './common.css';
 
 import { IonCol, IonPage, IonRow } from '@ionic/react';
 
-import { LoggedLayout } from '../components/layout/loggedLayout';
+import { LoggedLayout } from '../components/layout/logged-layout';
 import { MainGrid } from '../components/layout/main-grid';
 import { MainTitle } from '../components/layout/main-title';
 

@@ -15,15 +15,15 @@ import {
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { RouteComponentProps } from 'react-router';
 
 import { PurpleButton, WhiteButton } from '../../components/buttons';
-import { useAggregatedBalances } from '../../components/select-coin';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
 import { heliumPayPath } from '../../routing/navigation-tree';
 import { OwnersAPI } from '../../utils/api';
+import { useAggregatedBalances } from '../../utils/hooks/useAggregatedBalances';
 import { useKeyMe } from '../../utils/hooks/useKeyMe';
+import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { lastPageStorage } from '../../utils/last-page-storage';
 import { WALLET_CURRENCIES } from '../../utils/supported-currencies';
 import { SendConfirm } from './send-confirm';
@@ -87,23 +87,25 @@ enum SendView {
   Result = 'Result',
 }
 
-export function SendTo({
-  match: { params },
-}: RouteComponentProps<{ coinSymbol?: string }>) {
+export function SendTo() {
   const { t } = useTranslation();
   const router = useIonRouter();
   const aggregatedBalances = useAggregatedBalances();
   const { keys: userWallets } = useKeyMe();
-  const { coinSymbol } = params;
+
+  const [currency, _] = useLocalStorage(
+    'currency',
+    WALLET_CURRENCIES[0].symbol
+  );
 
   // store current page to main logged page if reopen
   useEffect(() => {
-    lastPageStorage.store(urls.loggedFunction);
+    lastPageStorage.store(urls.sendTo);
   }, []);
 
   // Find specified currency or default to the first one
   const currentWalletCurrency =
-    WALLET_CURRENCIES.find((currency) => currency.symbol === coinSymbol) ||
+    WALLET_CURRENCIES.find((c) => c.symbol === currency) ||
     WALLET_CURRENCIES[0];
 
   // Keeps track of which page the user is at
@@ -232,7 +234,7 @@ export function SendTo({
       )}
       {pageView === SendView.Confirm && (
         <SendConfirm
-          coinSymbol={coinSymbol || ''}
+          coinSymbol={currency || ''}
           transaction={verifiedTransaction}
           isResult={() => setPageView(SendView.Result)}
           getErrorMsg={(errorMsg) => setSignError(errorMsg)}
@@ -243,7 +245,7 @@ export function SendTo({
         <SendResult
           errorMsg={signError}
           transaction={verifiedTransaction}
-          coinSymbol={coinSymbol || ''}
+          coinSymbol={currency || ''}
           goBack={() => router.goBack()}
         />
       )}

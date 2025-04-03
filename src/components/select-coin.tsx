@@ -12,13 +12,9 @@ import { useEffect, useState } from 'react';
 import SwiperCore, { Navigation, Virtual } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { useBalancesMe } from '../utils/hooks/useBalancesMe';
+import { useAggregatedBalances } from '../utils/hooks/useAggregatedBalances';
 import { useExchangeRates } from '../utils/hooks/useExchangeRates';
-import {
-  CurrencyMap,
-  makeWalletCurrency,
-  WALLET_CURRENCIES,
-} from '../utils/supported-currencies';
+import { WALLET_CURRENCIES } from '../utils/supported-currencies';
 
 // install Virtual module
 SwiperCore.use([Virtual, Navigation]);
@@ -53,27 +49,6 @@ const BalanceText = styled.div({
 
 interface Props {
   changeCurrency: (wc: string) => void;
-}
-
-/** Map balances from backend onto the currencies supported nby the wallet */
-export function useAggregatedBalances() {
-  const { keys: userBalances } = useBalancesMe();
-
-  const [aggregatedBalances, setAggregatedBalances] = useState(
-    new CurrencyMap<string>()
-  );
-
-  useEffect(() => {
-    const updatedAggregatedBalances = new CurrencyMap<string>();
-    for (const { coinSymbol, tokenSymbol, balance } of userBalances)
-      updatedAggregatedBalances.set(
-        makeWalletCurrency(coinSymbol, tokenSymbol),
-        balance
-      );
-    setAggregatedBalances(updatedAggregatedBalances);
-  }, [userBalances]);
-
-  return aggregatedBalances;
 }
 
 export function SelectCoin(props: Props) {

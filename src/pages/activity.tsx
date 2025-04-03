@@ -23,7 +23,7 @@ import { Virtuoso } from 'react-virtuoso';
 import { ActivityDetail } from '../components/activity/activity-detail';
 import { OneActivity } from '../components/activity/one-activity';
 import { WhiteButton } from '../components/buttons';
-import { LoggedLayout } from '../components/layout/loggedLayout';
+import { LoggedLayout } from '../components/layout/logged-layout';
 import { urls } from '../constants/urls';
 import { heliumPayPath } from '../routing/navigation-tree';
 import { useTransfersMe } from '../utils/hooks/useTransfersMe';

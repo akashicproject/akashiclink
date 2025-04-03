@@ -2,7 +2,7 @@ import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
 import { PurpleButton } from '../components/buttons';
-import { LoggedLayout } from '../components/layout/loggedLayout';
+import { LoggedLayout } from '../components/layout/logged-layout';
 import { urls } from '../constants/urls';
 
 export const ErrorPage = () => {

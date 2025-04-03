@@ -17,7 +17,7 @@ import { createOutline } from 'ionicons/icons';
 import { useState } from 'react';
 
 import { PurpleButton, WhiteButton } from '../components/buttons';
-import { LoggedLayout } from '../components/layout/loggedLayout';
+import { LoggedLayout } from '../components/layout/logged-layout';
 import { availableNames, K } from '../constants/dummy-data';
 
 const enum View {
