@@ -17,6 +17,7 @@ const buttonBaseCss: CSSInterpolation = {
   borderRadius: '100px !important',
   textAlign: 'center',
   height: '40px',
+  letterSpacing: '0.01rem',
 };
 
 const buttonTextBaseCss: CSSInterpolation = {
@@ -77,15 +78,20 @@ export const PrimaryButton = ({
   children,
   ...props
 }: IonButtonProps & { isLoading?: boolean; disabled?: boolean }) => (
-  <PrimaryButtonCSS disabled={isLoading ?? disabled} {...props}>
+  <PrimaryButtonCSS disabled={isLoading || disabled} {...props}>
     {children}
     {isLoading && (
-      <IonSpinner className={'ion-margin-start'} slot="end" name="circular" />
+      <IonSpinner
+        style={{ width: 20 }}
+        className={children ? 'ion-margin-left-xs' : ''}
+        slot="end"
+        name="circular"
+      />
     )}
   </PrimaryButtonCSS>
 );
 
-export const WhiteButton = styled(IonButton)<{ disabled?: boolean }>`
+export const WhiteButtonCSS = styled(IonButton)<{ disabled?: boolean }>`
   ${whiteButtonCss}
   &::part(native) {
     ${(props) =>
@@ -94,6 +100,25 @@ export const WhiteButton = styled(IonButton)<{ disabled?: boolean }>`
         : 'color: var(--ion-color-primary);'}
   }
 `;
+
+export const WhiteButton = ({
+  isLoading,
+  disabled,
+  children,
+  ...props
+}: IonButtonProps & { isLoading?: boolean; disabled?: boolean }) => (
+  <WhiteButtonCSS disabled={isLoading || disabled} {...props}>
+    {children}
+    {isLoading && (
+      <IonSpinner
+        style={{ width: 20 }}
+        className={children ? 'ion-margin-left-xs' : ''}
+        slot="end"
+        name="circular"
+      />
+    )}
+  </WhiteButtonCSS>
+);
 
 export const OutlineButton = styled(IonButton)({
   ['&::part(native)']: {
