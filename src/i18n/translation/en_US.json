@@ -142,6 +142,7 @@
   "invalidL2Address": "Please provide a valid Layer 2 recipient address.",
   "SendNewCode": "Send a New Code",
   "VersionInfo": "Version info",
+  "AboutUs": "About Us",
   "KeyPairBackup": "KeyPair Backup",
   "DoNotOwnNfts": "You currently do not own any NFTs",
   "Transfer": "Transfer",

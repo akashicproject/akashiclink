@@ -217,7 +217,7 @@ export function SettingsPopover() {
           >
             <SettingsList isSubmenu={true}>
               <SettingsItem
-                displayText={t('VersionInfo')}
+                displayText={t('AboutUs')}
                 routerLink={akashicPayPath(urls.settingsVersion)}
               />
             </SettingsList>

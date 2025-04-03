@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IonCheckbox, IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
+import { IonCheckbox, IonCol, IonGrid, IonRow } from '@ionic/react';
 import { PurpleButton, WhiteButton } from '../buttons';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { urls } from '../../constants/urls';
@@ -21,6 +21,7 @@ const CreateOrImportForm = () => {
       <IonRow style={{ marginBottom: '0.75rem' }}>
         <IonCol size="8" className="ion-center">
           <IonCheckbox
+            checked={checked}
             onIonChange={() => {
               setChecked(!checked);
             }}
