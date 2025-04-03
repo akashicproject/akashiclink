@@ -36,7 +36,7 @@ export function Header() {
           width: 40,
         }}
       >
-        <SettingSelect loggedIn />
+        <SettingSelect />
       </div>
     </IonHeader>
   );

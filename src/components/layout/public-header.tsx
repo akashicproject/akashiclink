@@ -1,9 +1,8 @@
 import { IonHeader, IonImg, IonRouterLink } from '@ionic/react';
-
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectTheme } from '../../redux/slices/preferenceSlice';
 import { themeType } from '../../theme/const';
-import { SettingSelect } from '../settings/setting-select';
+import { SettingModalWithTriggerButton } from '../settings/setting-modal-with-trigger-button';
 import { LanguageDropdown } from './toolbar/language-select';
 
 export function PublicHeader() {
@@ -29,7 +28,7 @@ export function PublicHeader() {
           style={{ height: '100%' }}
         />
       </IonRouterLink>
-      <SettingSelect loggedIn={false} />
+      <SettingModalWithTriggerButton />
     </IonHeader>
   );
 }

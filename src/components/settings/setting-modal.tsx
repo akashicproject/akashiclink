@@ -10,7 +10,7 @@ import { ThemeSelect } from '../layout/toolbar/theme-select';
 import { AboutUs, AboutUsCaret } from './about-us';
 import { SettingItem, type SettingItemProps } from './setting-item';
 
-export function SettingsModal({
+export function SettingModal({
   modal,
   isOpen,
   setIsOpen,
