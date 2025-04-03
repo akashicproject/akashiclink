@@ -33,7 +33,11 @@ import { Spinner } from '../common/loader/spinner';
  * - Upload button triggering login request and redirect is successfull
  */
 export function LoginForm() {
-  const { getLocalOtkAndCache } = useAccountStorage();
+  const {
+    getLocalOtkAndCache,
+    addAasToActiveAccount,
+    removeAasFromActiveAccount,
+  } = useAccountStorage();
   const { t } = useTranslation();
   const [alert, setAlert] = useState(formAlertResetState);
   const [isLoading, setIsLoading] = useState(false);
@@ -122,7 +126,14 @@ export function LoginForm() {
       await mutateTransfersMe();
       await mutateNftTransfersMe();
       await mutateBalancesMe();
-      await mutateNftMe();
+      const nfts = await mutateNftMe();
+      const nft = nfts.find(
+        (nft: { acns: { value: string } }) =>
+          nft.acns.value !== null && nft.acns.value !== ''
+      );
+      nft
+        ? addAasToActiveAccount(activeAccount!, nft.acns.name)
+        : removeAasFromActiveAccount(activeAccount!);
       setSelectedAccount(undefined);
       setPassword('');
       historyResetStackAndRedirect();

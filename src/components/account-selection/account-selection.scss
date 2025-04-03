@@ -1,14 +1,13 @@
 .account-selection {
   /* Shift popovers to have vertical padding relative to trigger element */
   top: 8px;
-  --width: 75% !important;
+  //--width: 75% !important;
+  --width: calc(100vw - 64px) !important;
   --offset-x: -16px;
-  /**
-   * Add a frame to the selection menu and round the corners
-   */
+
   ion-select-popover {
     border: 1px solid var(--ion-select-border) !important;
-    border-radius: 4px;
+    border-radius: 12px;
     padding-right: 1px;
   }
 
@@ -17,7 +16,7 @@
    * under the selection button
    */
   ion-list {
-    border-radius: 3px;
+    border-radius: 12px;
     max-height: 160px;
     overflow: scroll;
   }
@@ -37,4 +36,10 @@
     min-height: 32px;
     height: 32px;
   }
+}
+
+// TODO: temp bad hotfix here, should figure out an better way to handle
+.public-layout ion-select.account-selections-options::part(container) {
+  opacity: 1;
+  width: 100vw;
 }

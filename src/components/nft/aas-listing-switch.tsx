@@ -38,7 +38,8 @@ export const AasListingSwitch = ({
   customAlertMessage: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const { cacheOtk } = useContext(CacheOtkContext);
-  const { activeAccount } = useAccountStorage();
+  const { activeAccount, addAasToActiveAccount, removeAasFromActiveAccount } =
+    useAccountStorage();
   const { mutateNftMe } = useNftMe();
   const { t } = useTranslation();
   const [isListed, setIsListed] = useState<boolean>(!!aasValue);
@@ -70,8 +71,10 @@ export const AasListingSwitch = ({
           name: name,
           newValue: newValue,
         });
+        newValue
+          ? addAasToActiveAccount(activeAccount!, name)
+          : removeAasFromActiveAccount(activeAccount!);
       }
-
       await mutateNftMe();
       setIsListed(!isListed);
     } catch (error) {

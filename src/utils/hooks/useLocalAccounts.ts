@@ -21,6 +21,7 @@ const secretIv = '6RxIESTJ1eJLpjpe';
 export interface LocalAccount {
   identity: string;
   username?: string;
+  aasName?: string;
 }
 
 /**
@@ -43,6 +44,29 @@ export const useAccountStorage = () => {
       }));
       setLocalAccounts(accountsWithPrefix);
     }
+  };
+  const addAasToActiveAccount = async (
+    account: LocalAccount,
+    aasName: string
+  ) => {
+    const updatedAccounts = localAccounts.map((l) => {
+      if (l.identity === account.identity) {
+        return { ...l, aasName };
+      }
+      return l;
+    });
+    setLocalAccounts(updatedAccounts);
+  };
+
+  const removeAasFromActiveAccount = async (account: LocalAccount) => {
+    const updatedAccounts = localAccounts.map((l) => {
+      if (l.identity === account.identity) {
+        const { aasName, ...rest } = l;
+        return { ...rest };
+      }
+      return l;
+    });
+    setLocalAccounts(updatedAccounts);
   };
 
   const addLocalAccount = async (account: LocalAccount) => {
@@ -154,5 +178,7 @@ export const useAccountStorage = () => {
     removeLocalOtk,
     changeOtkPassword,
     getLocalOtk,
+    addAasToActiveAccount,
+    removeAasFromActiveAccount,
   };
 };
