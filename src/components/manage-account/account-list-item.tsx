@@ -43,6 +43,7 @@ const StyledNftImage = styled(IonImg)({
 });
 const IconAndLabel = styled(IonItem)<{ isLightText?: boolean }>(
   ({ isLightText }) => ({
+    '--padding-start': 0,
     ['ion-label']: {
       ['h3']: {
         marginBottom: 0,

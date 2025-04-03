@@ -7,7 +7,7 @@ import {
 import { IonCol, IonRow, IonSpinner } from '@ionic/react';
 import { getSdkError } from '@walletconnect/utils';
 import { type Web3WalletTypes } from '@walletconnect/web3wallet';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { BorderedBox } from '../components/common/box/border-box';
@@ -295,8 +295,17 @@ export function SignTypedData() {
             {t('OnlySignThisMessageIfYouFullyUnderstand')}
           </p>
         </IonCol>
-        <IonCol size={'12'}>
-          {isWaitingRequestContent && <IonSpinner name="circular"></IonSpinner>}
+        <IonCol
+          size={'12'}
+          className={'ion-justify-content-center ion-align-items-center'}
+        >
+          {isWaitingRequestContent && (
+            <IonSpinner
+              className={'w-100 ion-margin-top-xl'}
+              color="secondary"
+              name="circular"
+            />
+          )}
           <List lines={'none'}>
             {Object.entries(requestContent?.message).map(([key, value]) => (
               <ListVerticalLabelValueItem

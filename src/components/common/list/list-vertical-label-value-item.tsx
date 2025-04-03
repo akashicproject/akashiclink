@@ -24,9 +24,7 @@ export const ListVerticalLabelValueItem: FC<ListLabelValueRowProps> = ({
         >
           {label}
         </span>
-        <p className={'ion-text-size-sm'} style={{ color: '#7B757F' }}>
-          {value}
-        </p>
+        <p className={'ion-text-size-sm ion-text-color-grey'}>{value}</p>
       </IonText>
     </IonItem>
   );

@@ -2,10 +2,10 @@ import styled from '@emotion/styled';
 import { TransactionStatus } from '@helium-pay/backend';
 import { IonImg } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from 'src/redux/app/hooks';
-import { selectTheme } from 'src/redux/slices/preferenceSlice';
-import { themeType } from 'src/theme/const';
 
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectTheme } from '../../redux/slices/preferenceSlice';
+import { themeType } from '../../theme/const';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { List } from '../common/list/list';
 import { ListVerticalLabelValueItem } from '../common/list/list-vertical-label-value-item';
