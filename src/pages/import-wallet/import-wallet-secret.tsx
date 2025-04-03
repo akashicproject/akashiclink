@@ -115,7 +115,7 @@ export const ImportWalletSecret = () => {
               <p className={'ion-text-align-center'}>
                 {t('AkashicWalletCannotRecoverYourPassword')}{' '}
                 <a
-                  href="https://akashic-1.gitbook.io/akashicwallet/"
+                  href="https://akashic-1.gitbook.io/akashiclink"
                   target={'_blank'}
                   style={{
                     textDecoration: 'none',

@@ -69,7 +69,7 @@ export const CreateWalletSuccessful = () => {
                 </li>
                 <li>
                   <StyledA
-                    href="https://akashic-1.gitbook.io/akashicwallet/"
+                    href="https://akashic-1.gitbook.io/akashiclink/"
                     target={'_blank'}
                   >
                     {t('LearnMore')}

@@ -34,7 +34,7 @@ export const CreateOrImportForm = () => {
           </IonCheckbox>
           <a
             rel="noreferrer"
-            href="https://akashic-1.gitbook.io/akashicwallet/terms-of-use"
+            href="https://akashic-1.gitbook.io/akashiclink/terms-of-use-and-privacy-policy-1"
             target={'_blank'}
             style={{
               color: 'var(--ion-color-primary)',

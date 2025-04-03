@@ -141,7 +141,7 @@ export function AboutUs({
       header: t('PrivacyPolicy'),
       onClick: async () => {
         await Browser.open({
-          url: 'https://akashic-1.gitbook.io/akashicwallet/terms-of-use-and-privacy-policy',
+          url: 'https://akashic-1.gitbook.io/akashiclink/terms-of-use-and-privacy-policy-1',
         });
       },
       endComponent: <ForwardArrow />,
@@ -150,7 +150,7 @@ export function AboutUs({
       header: t('TermsOfUse'),
       onClick: async () => {
         await Browser.open({
-          url: 'https://akashic-1.gitbook.io/akashicwallet/terms-of-use-and-privacy-policy',
+          url: 'https://akashic-1.gitbook.io/akashiclink/terms-of-use-and-privacy-policy-1',
         });
       },
       endComponent: <ForwardArrow />,
@@ -160,7 +160,7 @@ export function AboutUs({
       header: t('VisitOurWebsite'),
       onClick: async () => {
         await Browser.open({
-          url: 'https://www.akashicwallet.com/en',
+          url: 'https://www.akashiclink.com/en',
         });
       },
       endComponent: <ForwardArrow />,
