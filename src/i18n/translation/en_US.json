@@ -85,6 +85,7 @@
   "Failed": "Failed",
   "ContractInteraction": "Contract Interaction",
   "InvalidKeyPairOrEmail": "Invalid key-pair or user email, please check again.",
+  "InvalidKeyPair": "Invalid Keypair input",
   "UserDoesNotExist": "User does not exist!",
   "OTKNotFound": "Could not find the required OTK",
   "UnownedKey": "You do not own this wallet",

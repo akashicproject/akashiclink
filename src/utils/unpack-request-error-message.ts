@@ -4,7 +4,14 @@ import {
   otherError,
   userError,
 } from '@helium-pay/backend';
+import type { SerializedError } from '@reduxjs/toolkit';
 import axios from 'axios';
+
+function isSerializedError(object: unknown): object is SerializedError {
+  return (
+    !!(<SerializedError>object)?.message && !!(<SerializedError>object)?.stack
+  );
+}
 
 /**
  * find the correct error message string from i18n folder, if not, return t(`GenericFailureMsg`)
@@ -16,7 +23,7 @@ import axios from 'axios';
 export const unpackRequestErrorMessage = (error: unknown) => {
   const errorMsg = axios.isAxiosError(error)
     ? error?.response?.data?.message
-    : error instanceof Error
+    : error instanceof Error || isSerializedError(error)
     ? error.message
     : '';
 
@@ -70,6 +77,8 @@ export const unpackRequestErrorMessage = (error: unknown) => {
       return 'ProviderError';
     case errorMsg === otherError.otkSwapAlreadyDone:
       return 'AlreadyMigratedPleaseReImport';
+    case errorMsg === keyError.invalidPrivateKey:
+      return 'InvalidKeyPair';
     default:
       return 'GenericFailureMsg';
   }

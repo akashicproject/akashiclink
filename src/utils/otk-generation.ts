@@ -1,6 +1,7 @@
 import { ActiveCrypto } from '@activeledger/activecrypto';
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import { KeyHandler, KeyType } from '@activeledger/sdk-bip39';
+import { keyError } from '@helium-pay/backend';
 import * as crypto from 'crypto';
 
 import { decodeECPrivateKey, encodeECPublicKey } from './otk-helpers';
@@ -55,30 +56,34 @@ export function restoreOtkFromKeypair(
   keyPair: string,
   format: 'compressed' | 'uncompressed' = 'compressed'
 ): IKeyExtended {
-  const curve = crypto.createECDH('secp256k1');
-  const otkPriv = parsePrvKey(keyPair);
-  let publicKey;
+  try {
+    const curve = crypto.createECDH('secp256k1');
+    const otkPriv = parsePrvKey(keyPair);
+    let publicKey;
 
-  if (otkPriv.startsWith('0x')) {
-    curve.setPrivateKey(keyPair.replace('0x', ''), 'hex');
-    publicKey = curve.getPublicKey('hex', format);
-    if (!publicKey.startsWith('0x')) {
-      publicKey = '0x' + publicKey;
+    if (otkPriv.startsWith('0x')) {
+      curve.setPrivateKey(keyPair.replace('0x', ''), 'hex');
+      publicKey = curve.getPublicKey('hex', format);
+      if (!publicKey.startsWith('0x')) {
+        publicKey = '0x' + publicKey;
+      }
+    } else {
+      const pemDecoded = Buffer.from(decodeECPrivateKey(otkPriv), 'hex');
+      curve.setPrivateKey(pemDecoded);
+      publicKey = encodeECPublicKey(curve.getPublicKey());
     }
-  } else {
-    const pemDecoded = Buffer.from(decodeECPrivateKey(otkPriv), 'hex');
-    curve.setPrivateKey(pemDecoded);
-    publicKey = encodeECPublicKey(curve.getPublicKey());
-  }
 
-  return {
-    key: {
-      prv: { pkcs8pem: otkPriv },
-      pub: { pkcs8pem: publicKey },
-    },
-    type: KeyType.EllipticCurve,
-    name: 'otk',
-  };
+    return {
+      key: {
+        prv: { pkcs8pem: otkPriv },
+        pub: { pkcs8pem: publicKey },
+      },
+      type: KeyType.EllipticCurve,
+      name: 'otk',
+    };
+  } catch {
+    throw new Error(keyError.invalidPrivateKey);
+  }
 }
 
 // Sign a piece of data using the private key to be verified by the backend

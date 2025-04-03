@@ -1,6 +1,6 @@
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import { datadogRum } from '@datadog/browser-rum';
-import { IMPORT_CONST, userError } from '@helium-pay/backend';
+import { IMPORT_CONST, keyError } from '@helium-pay/backend';
 import type { PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { isAxiosError } from 'axios';
 
@@ -72,13 +72,28 @@ export const importWalletSlice = createAppSlice({
       async (passPhrase: string[]) => {
         // Reconstruct OTK
         const reconstructedOtk = await restoreOtk(passPhrase.join(' '));
-        const { identity, username } = await OwnersAPI.importAccount({
-          publicKey: reconstructedOtk.key.pub.pkcs8pem,
-          signedAuth: signImportAuth(
-            reconstructedOtk.key.prv.pkcs8pem,
-            IMPORT_CONST
-          ),
-        });
+        let username: string | undefined;
+        let identity: string | undefined;
+        try {
+          const response = await OwnersAPI.importAccount({
+            publicKey: reconstructedOtk.key.pub.pkcs8pem,
+            signedAuth: signImportAuth(
+              reconstructedOtk.key.prv.pkcs8pem,
+              IMPORT_CONST
+            ),
+          });
+          identity = response.identity;
+          username = response.username;
+        } catch (e) {
+          // Axios-errors don't get mapped nicely to SerializezError so we
+          // re-throw as Error
+          if (isAxiosError(e)) {
+            throw new Error(e.response?.data.message);
+          } else {
+            throw e;
+          }
+        }
+
         if (identity) {
           historyResetStackAndRedirect(urls.importWalletPassword);
           return { ...reconstructedOtk, identity };
@@ -111,26 +126,36 @@ export const importWalletSlice = createAppSlice({
         let username: string | undefined;
         let identity: string | undefined;
         try {
-          const response = await OwnersAPI.importAccount({
-            publicKey: otk.key.pub.pkcs8pem,
-            signedAuth: signImportAuth(privateKey, IMPORT_CONST),
-          });
-          identity = response.identity;
-          username = response.username;
-        } catch (e) {
-          // This error could be because of a bug where we have some otks stored "compressed" and some "uncompressed"
-          // So if facing this error, we try again with "uncompressed"
-          if (
-            isAxiosError(e) &&
-            e.response?.data.message === userError.userNotFoundError
-          ) {
-            otk = restoreOtkFromKeypair(privateKey, 'uncompressed');
+          try {
             const response = await OwnersAPI.importAccount({
               publicKey: otk.key.pub.pkcs8pem,
               signedAuth: signImportAuth(privateKey, IMPORT_CONST),
             });
             identity = response.identity;
             username = response.username;
+          } catch (e) {
+            // This error could be because of a bug where we have some otks stored "compressed" and some "uncompressed"
+            // So if facing this error, we try again with "uncompressed"
+            if (
+              isAxiosError(e) &&
+              e.response?.data.message === keyError.invalidPrivateKey
+            ) {
+              otk = restoreOtkFromKeypair(privateKey, 'uncompressed');
+              const response = await OwnersAPI.importAccount({
+                publicKey: otk.key.pub.pkcs8pem,
+                signedAuth: signImportAuth(privateKey, IMPORT_CONST),
+              });
+              identity = response.identity;
+              username = response.username;
+            }
+          }
+        } catch (e) {
+          // Axios-errors don't get mapped nicely to SerializezError so we
+          // re-throw as Error
+          if (isAxiosError(e)) {
+            throw new Error(e.response?.data.message);
+          } else {
+            throw e;
           }
         }
         // The value we return becomes the `fulfilled` action payload
