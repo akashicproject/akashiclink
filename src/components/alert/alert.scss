@@ -2,7 +2,9 @@ ion-alert.custom-alert {
   color: var(--ion-color-danger-contrast);
   --background: var(--ion-color-danger);
 }
-
+ion-modal {
+  --background: #2c2c2c;
+}
 ion-note {
   width: 100%;
   border-radius: 8px;
@@ -39,12 +41,10 @@ ion-note {
     font-weight: 700;
     font-size: 16px;
     line-height: 24px;
-    color: #000;
     // padding-bottom: 30px;
 
     h2 {
       margin-top: 0;
-      color: #000;
     }
   }
 }

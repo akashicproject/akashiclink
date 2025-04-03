@@ -8,6 +8,7 @@ import {
   IonImg,
   IonModal,
   IonNote,
+  IonText,
   IonToolbar,
 } from '@ionic/react';
 import { closeOutline } from 'ionicons/icons';
@@ -128,10 +129,10 @@ export function CustomAlert({ state }: { state: CustomAlertState }) {
           src={'/shared-assets/images/error-outline.png'}
           style={{ width: '48px', height: '48px' }}
         />
-        <div className="warning-text">
+        <IonText className="warning-text">
           <h2>{state.success ? `${t('Success')}` : `${t('Failure')}`}</h2>
           {state.message}
-        </div>
+        </IonText>
         {state.onConfirm && (
           <PurpleButton onClick={state.onConfirm} style={{ width: '160px' }}>
             {state.confirmButtonMessage ?? t('Confirm')}
