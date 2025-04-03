@@ -18,7 +18,7 @@ export function useIdleTime() {
   const { reset } = useIdleTimer({
     timeout: autoLockTime * 60000,
     onIdle: logout,
-    debounce: 10000,
+    throttle: 10000,
     onAction: async () => {
       const newVal = Date.now() + autoLockTime * 60 * 1000;
       await setAutoLockBy(newVal);

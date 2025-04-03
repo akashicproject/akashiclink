@@ -43,7 +43,7 @@ export function PopupLayout({
               <AccountListItem
                 lines={'none'}
                 account={activeAccount}
-                isLightText
+                forceLightMode
               />
             )}
           </IonHeader>

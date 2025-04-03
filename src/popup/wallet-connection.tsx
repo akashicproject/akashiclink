@@ -2,12 +2,12 @@ import { CoinSymbol } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import { getInternalError, getSdkError } from '@walletconnect/utils';
 import { type Web3WalletTypes } from '@walletconnect/web3wallet';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { sepolia } from 'viem/chains';
 
 import { BorderedBox } from '../components/common/box/border-box';
-import { PrimaryButton } from '../components/common/buttons';
+import { OutlineButton, PrimaryButton } from '../components/common/buttons';
 import { AccountListItem } from '../components/manage-account/account-list-item';
 import { PopupLayout } from '../components/page-layout/popup-layout';
 import {
@@ -229,13 +229,13 @@ export function WalletConnection() {
         <IonCol size={'12'}>
           <IonRow>
             <IonCol size={'6'}>
-              <PrimaryButton
+              <OutlineButton
                 expand="block"
                 onClick={onClickRejectConnect}
                 disabled={!sessionProposalId}
               >
                 {t('Deny')}
-              </PrimaryButton>
+              </OutlineButton>
             </IonCol>
             <IonCol size={'6'}>
               <PrimaryButton

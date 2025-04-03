@@ -146,7 +146,8 @@ http://ionicframework.com/docs/theming/ */
   --activity-list-divider: #d9d9d9;
   --toggle-theme-background: #a2a2ff;
   --toggle-theme-text: #0b006b;
-  --ion-initial-icon-color: #7444b6;
+  --ion-initial-icon-color: #1b00b3;
+  --ion-popup-initial-icon-color: #1b00b3;
 }
 
 /** Dark Colors **/
@@ -275,12 +276,13 @@ body.dark {
   --toggle-track: #625b71;
   --nft-header-background: #201b4d;
   --nft-background: #1b1547;
-  --chain-icon-background: #c297ff;
+  --chain-icon-background: #a2a2ff;
   --activity-dim-text: #958e99;
   --activity-list-divider: #2f2f2f;
   --toggle-theme-background: #1b00b3;
   --toggle-theme-text: #0b006b;
-  --ion-initial-icon-color: #c297ff;
+  --ion-initial-icon-color: #a2a2ff;
+  --ion-popup-initial-icon-color: #0b006b;
 }
 
 /** iOS Dark Theme */
