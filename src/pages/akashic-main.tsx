@@ -99,12 +99,14 @@ export function AkashicPayMain() {
           <div
             style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
           >
-            <IonRow style={{ marginTop: '24px', marginBottom: '40px' }}>
-              <IonCol class="ion-center">
-                <h3 style={{ margin: '0' }}>{t('EmpoweringYourWealth')}</h3>
-              </IonCol>
-            </IonRow>
-            <IonRow>
+            <h3 style={{ marginTop: '24px', margin: '0' }}>
+              {t('EmpoweringYourWealth')}
+            </h3>
+            <IonRow
+              style={{
+                marginTop: '24px',
+              }}
+            >
               <IonCol
                 size="12"
                 style={{
@@ -125,6 +127,11 @@ export function AkashicPayMain() {
                     rel="noreferrer"
                     href="https://akashic-1.gitbook.io/akashicwallet/terms-of-use"
                     target={'_blank'}
+                    style={{
+                      color: '#7444B6',
+                      textDecoration: 'none',
+                      fontSize: '12px',
+                    }}
                   >
                     {t('TermsOfUse')}
                   </a>
