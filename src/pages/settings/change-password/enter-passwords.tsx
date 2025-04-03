@@ -28,18 +28,62 @@ export function ChangePassword() {
 
   const [oldPassword, setOldPassword] = useState<string>();
   const [newPassword, setNewPassword] = useState<string>();
+  const [confirmPassword, setConfirmPassword] = useState<string>();
+  const [allowedToChange, setAllowedToChange] = useState<boolean>(false);
+
   const validatePassword = (value: string) =>
     !!value.match(userConst.passwordRegex);
-  const [confirmPassword, setConfirmPassword] = useState<string>();
+
   const validateConfirmPassword = (value: string) => newPassword === value;
 
   const [alertRequest, setAlertRequest] = useState(formAlertResetState);
   const { changeOtkPassword } = useAccountStorage();
 
-  /**
-     * Activation request is sent -> email with activation code is sent to user
-  
-     */
+  // When confirming or cancelling
+  const resetStates = () => {
+    setAlertRequest(formAlertResetState);
+    setAllowedToChange(false);
+    setNewPassword(undefined);
+    setOldPassword(undefined);
+    setConfirmPassword(undefined);
+  };
+
+  // Checks whether user is allowed to press confirm and thus change password
+  // A number of checks must be passed.
+  const validatePasswordChange = (
+    oldPassword?: string,
+    newPassword?: string,
+    confirmPassword?: string
+  ) => {
+    setAlertRequest(formAlertResetState);
+    setAllowedToChange(false);
+    // All fields must've been supplied
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      return;
+    }
+
+    // All fields must adhere to password-regex
+    if (
+      !userConst.passwordRegex.exec(oldPassword) ||
+      !userConst.passwordRegex.exec(newPassword) ||
+      !userConst.passwordRegex.exec(confirmPassword)
+    ) {
+      return;
+    }
+
+    // Can not change to same password
+    if (oldPassword === newPassword) {
+      return;
+    }
+
+    // The two inputs for new password must be the same
+    if (newPassword !== confirmPassword) {
+      return;
+    }
+
+    setAllowedToChange(true);
+  };
+
   async function changePassword() {
     if (newPassword && oldPassword) {
       try {
@@ -49,6 +93,7 @@ export function ChangePassword() {
           newPassword
         );
         history.push(akashicPayPath(urls.changePasswordConfirm));
+        resetStates();
       } catch (error) {
         setAlertRequest(errorAlertShell(t(unpackRequestErrorMessage(error))));
       }
@@ -72,9 +117,14 @@ export function ChangePassword() {
               label={t('OldPassword')}
               placeholder={t('EnterPassword')}
               type="password"
-              onIonInput={({ target: { value } }) =>
-                setOldPassword(value as string)
-              }
+              onIonInput={({ target: { value } }) => {
+                setOldPassword(value as string);
+                validatePasswordChange(
+                  value as string,
+                  newPassword,
+                  confirmPassword
+                );
+              }}
               value={oldPassword}
               errorPrompt={StyledInputErrorPrompt.Password}
               validate={validatePassword}
@@ -85,9 +135,14 @@ export function ChangePassword() {
               label={t('NewPassword')}
               placeholder={t('EnterPassword')}
               type="password"
-              onIonInput={({ target: { value } }) =>
-                setNewPassword(value as string)
-              }
+              onIonInput={({ target: { value } }) => {
+                setNewPassword(value as string);
+                validatePasswordChange(
+                  oldPassword,
+                  value as string,
+                  confirmPassword
+                );
+              }}
               value={newPassword}
               errorPrompt={StyledInputErrorPrompt.Password}
               validate={validatePassword}
@@ -98,9 +153,14 @@ export function ChangePassword() {
               label={t('ConfirmPassword')}
               type="password"
               placeholder={t('ConfirmPassword')}
-              onIonInput={({ target: { value } }) =>
-                setConfirmPassword(value as string)
-              }
+              onIonInput={({ target: { value } }) => {
+                setConfirmPassword(value as string);
+                validatePasswordChange(
+                  oldPassword,
+                  newPassword,
+                  value as string
+                );
+              }}
               value={confirmPassword}
               errorPrompt={StyledInputErrorPrompt.ConfirmPassword}
               validate={validateConfirmPassword}
@@ -119,6 +179,7 @@ export function ChangePassword() {
               expand="block"
               fill="clear"
               onClick={() => {
+                resetStates();
                 history.push(akashicPayPath(urls.dashboard));
               }}
             >
@@ -129,7 +190,7 @@ export function ChangePassword() {
             <PurpleButton
               expand="block"
               onClick={changePassword}
-              disabled={!oldPassword || !newPassword || !confirmPassword}
+              disabled={!allowedToChange}
             >
               {t('Confirm')}
             </PurpleButton>
