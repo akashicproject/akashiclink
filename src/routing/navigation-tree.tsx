@@ -3,13 +3,13 @@ import { IonRouterOutlet, isPlatform } from '@ionic/react';
 import type { Location } from 'history';
 import { useEffect, useState } from 'react';
 import { Redirect } from 'react-router';
-import { AddressScreeningDetails } from 'src/pages/address-screening/address-screening-detail';
 
 import { Spinner } from '../components/common/loader/spinner';
 import { LAST_HISTORY_ENTRIES } from '../constants';
 import { urls } from '../constants/urls';
 import { Activity } from '../pages/activity/activity';
 import { ActivityDetails } from '../pages/activity/activity-details';
+import { AddressScreeningDetails } from '../pages/address-screening/address-screening-detail';
 import { AddressScreeningHistory } from '../pages/address-screening/address-screening-history';
 import { AddressScreeningNewScan } from '../pages/address-screening/address-screening-new-scan';
 import { AddressScreeningNewScanConfirmation } from '../pages/address-screening/address-screening-new-scan-confirmation';
