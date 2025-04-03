@@ -145,7 +145,6 @@
     "playwright": "1.48.2",
     "serve": "14.2.0",
     "storybook": "^8.3.6",
-    "storybook-react-context": "0.6.0",
     "watch": "1.0.2",
     "zip-folder": "1.0.0"
   },
