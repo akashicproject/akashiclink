@@ -25,8 +25,8 @@
   "externally_connectable": {
     "ids": ["*"],
     "matches": [
-      "https://*.akashicscan.com/*",
-      "https://*.staging-akashicscan.com/*",
+      "https://*.akashicpay.com/*",
+      "https://*.staging-akashicpay.com/*",
       "http://localhost:3000/*",
       "http://localhost:3001/*"
     ]
