@@ -40,7 +40,7 @@ const CoinWrapper = styled.div({
 export function DepositPage() {
   const { t } = useTranslation();
 
-  const [currency, _] = useLocalStorage(
+  const [currency, ..._] = useLocalStorage(
     'currency',
     WALLET_CURRENCIES[0].symbol
   );

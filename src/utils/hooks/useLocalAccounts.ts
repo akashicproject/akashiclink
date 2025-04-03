@@ -17,7 +17,7 @@ export interface LocalAccount {
  */
 export const useAccountStorage = () => {
   const LocalAccountStorage = 'cached-accounts';
-  const [localAccounts, setLocalAccounts] = useLocalStorage<LocalAccount[]>(
+  const [localAccounts, setLocalAccounts, _] = useLocalStorage<LocalAccount[]>(
     LocalAccountStorage,
     []
   );

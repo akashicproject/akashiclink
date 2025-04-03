@@ -9,18 +9,11 @@ import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { SelectCoin } from '../../components/select-coin';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
-import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { lastPageStorage } from '../../utils/last-page-storage';
-import { WALLET_CURRENCIES } from '../../utils/supported-currencies';
 import { LoggedMain } from './logged-main';
 
 export function Dashboard() {
   const { t } = useTranslation();
-
-  const [_, setCurrency] = useLocalStorage(
-    'currency',
-    WALLET_CURRENCIES[0].symbol
-  );
 
   // store current page to main logged page if reopen
   useEffect(() => {
@@ -29,7 +22,7 @@ export function Dashboard() {
 
   return (
     <LoggedMain>
-      <SelectCoin changeCurrency={(c) => setCurrency(c)} />
+      <SelectCoin />
       <IonGrid>
         <IonRow class="ion-justify-content-between">
           <IonCol>

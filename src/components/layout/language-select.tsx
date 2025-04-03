@@ -21,14 +21,14 @@ export const LanguageDropdown = () => {
     // Default to english
     return LANGUAGE_LIST[0].locale;
   };
-  const [selectedLanguage, setSelectedLanguage] = useLocalStorage(
+  const [selectedLanguage, setSelectedLanguage, _] = useLocalStorage(
     'language',
     getLocalisationLanguage()
   );
 
   useEffect(() => {
     i18n.changeLanguage(selectedLanguage);
-  }, [selectedLanguage]);
+  }, [selectedLanguage, i18n]);
 
   return (
     <div style={{ display: 'flex' }}>

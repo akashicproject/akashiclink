@@ -40,16 +40,24 @@ export function AkashicPayMain() {
   const loginCheck = useOwner(true);
 
   /** Redirect to last page user was on */
-  useEffect(() => {
-    const lastPage = lastPageStorage.get();
-    if (lastPage) history.push(akashicPayPath(lastPage));
-  }, []);
+  useEffect(
+    () => {
+      const lastPage = lastPageStorage.get();
+      if (lastPage) history.push(akashicPayPath(lastPage));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   /** If user is logged in, redirect to main dashboard */
-  useEffect(() => {
-    if (!loginCheck.isLoading && !loginCheck.isError)
-      history.push(akashicPayPath(urls.loggedFunction));
-  }, [loginCheck]);
+  useEffect(
+    () => {
+      if (!loginCheck.isLoading && !loginCheck.isError)
+        history.push(akashicPayPath(urls.loggedFunction));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [loginCheck]
+  );
 
   return (
     <IonPage>

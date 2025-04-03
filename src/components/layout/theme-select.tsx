@@ -15,7 +15,7 @@ export function ThemeSelect() {
   /**
    * Theme set across the app
    */
-  const [storedTheme, setStoredTheme] = useLocalStorage(
+  const [storedTheme, setStoredTheme, _] = useLocalStorage(
     'theme',
     themeType.SYSTEM as ThemeType
   );

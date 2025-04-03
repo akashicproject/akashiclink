@@ -87,7 +87,7 @@ export function SendTo() {
   const { keys: userWallets } = useKeyMe();
   const [alert, setAlert] = useState(formAlertResetState);
 
-  const [currency, _] = useLocalStorage(
+  const [_, __, currency] = useLocalStorage(
     'currency',
     WALLET_CURRENCIES[0].symbol
   );
