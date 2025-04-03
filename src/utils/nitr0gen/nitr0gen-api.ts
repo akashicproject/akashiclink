@@ -113,7 +113,8 @@ export class Nitr0genApi {
   public async createKey(otk: IKeyExtended, coinSymbol: CoinSymbol) {
     const tx = await this.keyCreateTransaction(
       otk,
-      NetworkDictionary[coinSymbol].nitr0gen
+      NetworkDictionary[coinSymbol].nitr0gen,
+      coinSymbol
     );
     const response = await this.post<
       ActiveLedgerResponse<IKeyCreationResponse>
@@ -298,7 +299,8 @@ export class Nitr0genApi {
    */
   async keyCreateTransaction(
     otk: IKeyExtended,
-    coinSymbol: string
+    coinSymbol: string,
+    network: CoinSymbol
   ): Promise<IBaseTransactionWithDbIndex> {
     // Build Transaction
     const txBody: IBaseTransactionWithDbIndex = {
@@ -309,11 +311,11 @@ export class Nitr0genApi {
           owner: {
             $stream: otk.identity,
             symbol: coinSymbol.toLowerCase(),
+            network,
           },
         },
       },
       $sigs: {},
-      $selfsign: false,
     };
     // Sign Transaction
     return await signTxBody(txBody, otk);
@@ -348,7 +350,6 @@ export class Nitr0genApi {
         },
       },
       $sigs: {},
-      $selfsign: false,
     };
 
     // Sign Transaction
@@ -404,7 +405,6 @@ export class Nitr0genApi {
         $o,
       },
       $sigs: {},
-      $selfsign: false,
     };
 
     // Sign Transaction
@@ -440,7 +440,6 @@ export class Nitr0genApi {
         },
       },
       $sigs: {},
-      $selfsign: false,
     };
     // Sign Transaction
     return await signTxBody(txBody, otk);

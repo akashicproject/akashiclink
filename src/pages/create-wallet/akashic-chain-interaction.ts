@@ -39,7 +39,7 @@ export async function createAccountWithKeys(
 
   const createKeyResponse = await triggerCreateKeys({
     keyCreationTxs,
-    otk,
+    otk: fullOtk,
   });
 
   const createdKeys = createKeyResponse.createdKeysToDiffcon;
@@ -58,7 +58,6 @@ export async function createAccountWithKeys(
   if (keyDiffconTxs.length > 0) {
     const diffconResponse = await triggerDiffconKeys({
       keyDiffconTxs,
-      otk,
     });
 
     // 4. If any keys fail diffcon, try to create them again (as they have been deleted)
@@ -104,7 +103,6 @@ async function createAndDiffconKeys(
 
   const diffconResponse = await triggerDiffconKeys({
     keyDiffconTxs,
-    otk,
   });
 
   return diffconResponse.failedDiffcon;

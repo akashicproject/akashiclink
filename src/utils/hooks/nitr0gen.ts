@@ -120,8 +120,9 @@ export const useActivateNewAccount = () => {
     // signed by frontend
     for (const coinSymbol of allowedChains) {
       const signedTx = await nitr0genApi.keyCreateTransaction(
-        activateNewAccountData.otk,
-        NetworkDictionary[coinSymbol].nitr0gen
+        { ...activateNewAccountData.otk, identity: otkIdentity },
+        NetworkDictionary[coinSymbol].nitr0gen,
+        coinSymbol
       );
       keysToCreate.push({ coinSymbol, signedTx });
     }
@@ -171,7 +172,6 @@ export const useDiffconKeys = () => {
 
   const trigger = async (diffconKeysData: {
     keyDiffconTxs: IDiffconTx[];
-    otk: IKeyExtended;
   }): Promise<IDiffconKeysResponse> => {
     const failedDiffconKeys: IKeysToCreate[] = [];
     // Diffcon-check keys for user on nitr0gen
