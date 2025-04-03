@@ -23,6 +23,8 @@ import type {
   IRequestActivationCodeResponse,
   ISearchAcnsResponse,
   ISignedTransactionResponse,
+  ISwapEotkDto,
+  ISwapEotkResponse,
   ITempShowOtkPrv,
   ITempShowOtkPrvResponse,
   ITransactionBase,
@@ -416,6 +418,21 @@ export const OwnersAPI = {
       `/key/estimate-gas-fee`,
       JSON.stringify(transactionData)
     );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+    return response.data;
+  },
+
+  swapEotkToOtk: async (publicKey: string): Promise<ISwapEotkResponse> => {
+    const response = await axiosBase.post(
+      `/auth/swap/eotk`,
+      JSON.stringify({
+        publicKey,
+      } as ISwapEotkDto)
+    );
+
     const { data, status } = response;
     if (status >= 400) {
       throw new Error(data.message);

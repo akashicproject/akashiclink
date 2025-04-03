@@ -38,4 +38,9 @@ export const urls = {
   importSuccess: 'import-success',
   changePasswordAfterImport: 'change-password-after-import',
   manageAccounts: 'manage-account',
+  migrateWalletSecret: 'migrate-wallet-secret',
+  migrateWalletSecretConfirm: 'migrate-secret-confirm',
+  migrateWalletPassword: 'migrate-wallet-password',
+  migrateWalletNotice: 'migrate-wallet-notice',
+  migrateWalletComplete: 'migrate-wallet-complete',
 } as const;

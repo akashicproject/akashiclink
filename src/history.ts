@@ -40,4 +40,8 @@ export interface LocationState {
     password: string;
     otk: IKeyExtended;
   };
+  migrateWallet?: {
+    username: string;
+    oldPassword: string;
+  };
 }

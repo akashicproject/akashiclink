@@ -21,7 +21,7 @@ import type { FullOtk } from '../otk-generation';
  */
 export interface LocalAccount {
   identity: string;
-  username: string;
+  username?: string;
 }
 
 /**

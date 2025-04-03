@@ -30,7 +30,7 @@ import { signImportAuth } from '../../utils/otk-generation';
  * - Upload button triggering login request and redirect is successfull
  */
 export function LoginForm() {
-  const {getLocalOtkAndCache} = useAccountStorage();
+  const { getLocalOtkAndCache } = useAccountStorage();
   const history = useHistory();
   const { t } = useTranslation();
   const [alert, setAlert] = useState(formAlertResetState);
@@ -86,8 +86,11 @@ export function LoginForm() {
       setIsLoading(true);
       // await delay(5000);
       if (selectedAccount && password) {
-        const localSelectedOtk = await getLocalOtkAndCache(selectedAccount.identity, password);
-        if(localSelectedOtk){
+        const localSelectedOtk = await getLocalOtkAndCache(
+          selectedAccount.identity,
+          password
+        );
+        if (localSelectedOtk) {
           await OwnersAPI.loginV1({
             identity: localSelectedOtk.identity!,
             signedAuth: signImportAuth(
@@ -96,11 +99,19 @@ export function LoginForm() {
             ),
           });
         } else {
-          // @TODO remove once #572 is addressed
-          await OwnersAPI.login({
-            username: selectedAccount.username,
-            password,
+          // @TODO remove once old accounts no longer supported
+          // Redirect to Migration-Flow
+          history.push({
+            pathname: akashicPayPath(urls.migrateWalletNotice),
+            state: {
+              migrateWallet: {
+                username: selectedAccount.username,
+                oldPassword: password,
+              },
+            },
           });
+          setIsLoading(false);
+          return;
         }
 
         datadogRum.setUser({

@@ -24,6 +24,11 @@ import { Nft } from '../pages/nft/nft';
 import { NftTransfer } from '../pages/nft/nft-transfer';
 import { NftTransferResult } from '../pages/nft/nft-transfer-result';
 import { Nfts } from '../pages/nft/nfts';
+import { MigrateWalletCreatePassword } from '../pages/otkMigration/migrate-wallet-create-password';
+import { MigrateWalletNotice } from '../pages/otkMigration/migrate-wallet-notice';
+import { MigrateWalletSecret } from '../pages/otkMigration/migrate-wallet-secret';
+import { MigrateWalletSecretConfirm } from '../pages/otkMigration/migrate-wallet-secret-confirm';
+import { WalletMigrated } from '../pages/otkMigration/wallet-migrated';
 import { RecoverCode } from '../pages/recover-code';
 import { ChangePasswordAfterImport } from '../pages/Recovery/change-password-after-import';
 import { SendConfirm } from '../pages/send/send-confirm';
@@ -83,6 +88,17 @@ export function NavigationTree() {
         ChangePasswordAfterImport,
         urls.changePasswordAfterImport
       )}
+      {AkashicTab.registerPage(MigrateWalletNotice, urls.migrateWalletNotice)}
+      {AkashicTab.registerPage(MigrateWalletSecret, urls.migrateWalletSecret)}
+      {AkashicTab.registerPage(
+        MigrateWalletSecretConfirm,
+        urls.migrateWalletSecretConfirm
+      )}
+      {AkashicTab.registerPage(
+        MigrateWalletCreatePassword,
+        urls.migrateWalletPassword
+      )}
+      {AkashicTab.registerPage(WalletMigrated, urls.migrateWalletComplete)}
       {/* US² tree */}
       {Us2Tab.registerPage(Us2Main)}
 
