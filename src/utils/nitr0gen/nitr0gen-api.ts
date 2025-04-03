@@ -70,16 +70,14 @@ enum TestNetContracts {
 }
 
 const Nitr0gen =
-  process.env.NODE_ENV === 'production'
-    ? ProductionContracts
-    : TestNetContracts;
+  process.env.REACT_APP_ENV === 'prod' ? ProductionContracts : TestNetContracts;
 
 export async function signTxBody<T extends IBaseTransactionWithDbIndex>(
   txBody: T,
   otk: IKeyExtended
 ): Promise<T> {
   const txHandler = new TransactionHandler();
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.REACT_APP_ENV !== 'prod') {
     if (!process.env.REACT_APP_REDIS_DB_INDEX) {
       throw new Error(
         'You must specify the variable `REACT_APP_REDIS_DB_INDEX` in your AW .env file or you will clobber staging!'
@@ -460,7 +458,7 @@ export class Nitr0genApi {
       $tx: {
         $namespace: Nitr0gen.NFTNamespace,
         $contract:
-          process.env.NODE_ENV === 'production'
+          process.env.REACT_APP_ENV === 'prod'
             ? Nitr0gen.NFTAcnsRecord
             : Nitr0gen.NFTAcnsRecordTesting,
         $i: {
