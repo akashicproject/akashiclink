@@ -89,9 +89,10 @@ export const useVerifyTxnAndSign = () => {
         tokenSymbol: token,
       };
 
-      const { feesEstimate, withdrawalKeys } = await OwnersAPI.prepareL1Txn(
-        transactionData
-      );
+      const {
+        fees: { feesEstimate },
+        withdrawalKeys,
+      } = await OwnersAPI.prepareL1Txn(transactionData);
       const txns: ITransactionVerifyResponse[] = await Promise.all(
         withdrawalKeys.map(
           async (key) =>
