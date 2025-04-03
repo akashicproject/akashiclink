@@ -110,7 +110,7 @@
   "ConfirmEmailSent": "An activation code has been sent. Please check {{email}} to complete the update.",
   "GenericFailureMsg": "Your operation failed, please try again later.",
   "InvalidEmail": "Please enter a valid email address",
-  "PasswordHelperText": "Password must be at least 10 characters long, contain 1 capital letter and 1 number",
+  "PasswordHelperText": "Password must be 10+ characters long, and a mixture of lower/upper case letters & numbers.",
   "NewPasswordMustBeDifferent": "Please do not use old password as your new password",
   "SaveKey": "This is the only copy of the private key and cannot be restored if lost (but can be replaced)",
   "InvalidPassword": "Password is incorrect!",
