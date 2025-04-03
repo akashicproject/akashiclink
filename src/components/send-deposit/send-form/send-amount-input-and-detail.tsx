@@ -170,7 +170,7 @@ export const SendAmountInputAndDetail = ({
           validatedAddressPair={validatedAddressPair}
           amount={amount}
           fee={calculateL2Fee(amount)}
-          currencySymbol={currencySymbol}
+          currencySymbol={networkCurrencyCombinedDisplayName}
         />
       )}
       {alert.visible && (

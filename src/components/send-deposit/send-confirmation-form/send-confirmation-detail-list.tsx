@@ -84,6 +84,17 @@ export const SendConfirmationDetailList = ({
       : `${NetworkDictionary[chain].txnUrl}/${value}`;
   };
 
+  // If token, displayed as "USDT" for L1 and "USDT (ETH)" for L2 (since
+  // deducing the chain the token belongs to is not trivial)
+  const currencyDisplayName = isCurrencyTypeToken
+    ? currencySymbol + (isL2 ? ` (${nativeCoinSymbol})` : '')
+    : nativeCoinSymbol;
+
+  const feeCurrencyDisplayName =
+    isCurrencyTypeToken && isL2
+      ? currencySymbol + ` (${nativeCoinSymbol})`
+      : nativeCoinSymbol;
+
   return (
     <List lines="none">
       <IonItem className={'ion-margin-bottom-xs'}>
@@ -131,7 +142,7 @@ export const SendConfirmationDetailList = ({
       </IonItem>
       <ListLabelValueItem
         label={t('Amount')}
-        value={`${totalAmount.toFixed(precision)} ${currencySymbol}`}
+        value={`${totalAmount.toFixed(precision)} ${currencyDisplayName}`}
         valueSize={'md'}
         valueBold
       />
@@ -139,13 +150,15 @@ export const SendConfirmationDetailList = ({
         label={t(isL2 ? 'Fee' : 'GasFee')}
         value={`${
           isL2 ? internalFee.toFixed(precision) : totalFee.toFixed(precision)
-        } ${isL2 ? currencySymbol : nativeCoinSymbol}`}
+        } ${feeCurrencyDisplayName}`}
         valueSize={'md'}
         valueBold
       />
       <ListLabelValueItem
         label={t('Total')}
-        value={`${totalAmountWithFee.toFixed(precision)} ${currencySymbol}`}
+        value={`${totalAmountWithFee.toFixed(
+          precision
+        )} ${currencyDisplayName}`}
         remark={
           isL2 || !isCurrencyTypeToken
             ? undefined

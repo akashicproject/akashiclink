@@ -158,12 +158,18 @@ export function OneActivity({
   // minimum necessary (or 2)
   const gasPrecision = getPrecision('0', transfer.feesPaid ?? '0');
   const amountPrecision = getPrecision(transfer.amount, '0');
+
+  // If token, displayed as "USDT" for L1 and "USDT (ETH)" for L2 (since
+  // deducing the chain the token belongs to is not trivial)
+  const currencyDisplayName = transfer?.currency?.token
+    ? transfer?.currency?.token + (isL2 ? ` (${transfer.currency.chain})` : '')
+    : transfer?.currency?.chain;
+
   /**
    * Style the icon displaying the chain information:
    * - L2 transactions need to display the full AkashicChain text and so need less padding
    * - If the more-info-chevron is displayed, reduce the spacing
    */
-
   return (
     <>
       <ActivityWrapper
@@ -253,11 +259,7 @@ export function OneActivity({
             >
               {`${isTxnDeposit ? '+' : '-'}${Big(transfer.amount).toFixed(
                 amountPrecision
-              )} ${
-                transfer?.currency?.token
-                  ? transfer?.currency?.token
-                  : transfer?.currency?.chain
-              }`}
+              )} ${currencyDisplayName}`}
             </Amount>
             {!isTxnDeposit && transfer.feesPaid && (
               <GasFee

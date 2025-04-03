@@ -41,9 +41,6 @@ const WithdrawDetails = ({
     currentTransfer?.feesPaid?.toString() ?? '0'
   );
 
-  const currencySymbol =
-    currentTransfer.currency?.token ?? currentTransfer.currency?.chain;
-
   // Calculate total Amount
   const totalAmount = Big(currentTransfer.amount);
   const totalFee = Big(currentTransfer?.feesPaid ?? '0');
@@ -53,12 +50,25 @@ const WithdrawDetails = ({
     .add(internalFee)
     .add(currentTransfer.tokenSymbol ? Big(0) : totalFee);
 
+  // If token, displayed as "USDT" for L1 and "USDT (ETH)" for L2 (since
+  // deducing the chain the token belongs to is not trivial)
+  const currencyDisplayName = currentTransfer?.currency?.token
+    ? currentTransfer?.currency?.token +
+      (isL2 ? ` (${currentTransfer.currency.chain})` : '')
+    : currentTransfer?.currency?.chain;
+
+  const feeCurrencyDisplayName =
+    currentTransfer?.currency?.token && isL2
+      ? currentTransfer?.currency?.token +
+        ` (${currentTransfer.currency.chain})`
+      : currentTransfer?.currency?.chain;
+
   return (
     <List lines="none">
       <h3 className="ion-text-align-left ion-margin-0">{t('Send')}</h3>
       <ListLabelValueItem
         label={t('Amount')}
-        value={`${totalAmount.toFixed(precision)} ${currencySymbol}`}
+        value={`${totalAmount.toFixed(precision)} ${currencyDisplayName}`}
         valueSize={'md'}
         valueBold
       />
@@ -66,13 +76,15 @@ const WithdrawDetails = ({
         label={t(isL2 ? 'Fee' : 'GasFee')}
         value={`${
           isL2 ? internalFee.toFixed(precision) : totalFee.toFixed(precision)
-        } ${isL2 ? currencySymbol : currentTransfer.currency?.chain}`}
+        } ${feeCurrencyDisplayName}`}
         valueSize={'md'}
         valueBold
       />
       <ListLabelValueItem
         label={t('Total')}
-        value={`${totalAmountWithFee.toFixed(precision)} ${currencySymbol}`}
+        value={`${totalAmountWithFee.toFixed(
+          precision
+        )} ${currencyDisplayName}`}
         remark={
           isL2 || !currentTransfer.tokenSymbol
             ? undefined
