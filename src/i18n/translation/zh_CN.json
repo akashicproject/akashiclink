@@ -184,7 +184,7 @@
   "OldPassword": "旧密码",
   "OldPasswordIncorrect": "你的旧密码不正确，请检查后重试。",
   "PasswordChangeSuccess": "密码更新成功！",
-  "linkAlias": "连接你的 Akashic 链地址",
+  "linkAlias": "将您的域名与您的 Akashic 地址连接",
   "MakeSureNoBodyIsLooking": "请确保没有人在看",
   "RevealRecoveryPhase": "显示私钥恢复词汇",
   "HideRecoveryPhase": "隐藏私钥恢复词汇",
