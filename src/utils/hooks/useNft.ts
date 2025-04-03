@@ -9,7 +9,7 @@ export const useNft = (nftName: string, chainType: ChainType) => {
     fetcher
   );
   return {
-    nft: (data || []) as INftResponse,
+    nft: (data || {}) as INftResponse,
     isLoading: !error && !data,
     isError: error,
   };

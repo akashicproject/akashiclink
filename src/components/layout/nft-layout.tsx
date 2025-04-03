@@ -29,7 +29,10 @@ export const NftLayout: React.FC<{
     <IonPage>
       <LoggedHeader loggedIn={true} />
       <IonContent class="nft-layout">
-        <ChainDiv style={{ marginBottom: ChainDivMarginBottom }}>
+        <ChainDiv
+          style={{ marginBottom: ChainDivMarginBottom }}
+          routerLink={akashicPayPath(urls.loggedFunction)}
+        >
           {t('AkashicChain')}
         </ChainDiv>
         {children}

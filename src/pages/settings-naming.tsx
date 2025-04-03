@@ -76,7 +76,7 @@ const AcnsName = styled.div({
   display: 'flex',
   width: '117px',
   height: '40px',
-  padding: '6px 16px',
+  padding: '6px 6px',
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: '8px 0px 0px 8px',
@@ -111,6 +111,9 @@ const EditBox = styled.div({
   justifyContent: 'center',
   alignItems: 'center',
   border: '1px solid var(--m-3-sys-dark-outline, #958E99)',
+  '&:hover': {
+    backgroundColor: '#EDDCFF',
+  },
 });
 
 const DeleteBox = styled.div({
@@ -122,6 +125,9 @@ const DeleteBox = styled.div({
   alignItems: 'center',
   borderRadius: '0px 8px 8px 0px',
   border: '1px solid var(--m-3-sys-dark-outline, #958E99)',
+  '&:hover': {
+    backgroundColor: '#EDDCFF',
+  },
 });
 
 const Divider = styled.div({
@@ -168,7 +174,7 @@ const NoDataDiv = styled.div({
 export function SettingsNaming() {
   const { t } = useTranslation();
 
-  const { acns } = useNftAcnsMe();
+  const { acns, mutate } = useNftAcnsMe();
   const namedAcns = acns.filter((a) => !!a.value);
   const [view, setView] = useState(View.list);
   const [alert, setAlert] = useState(formAlertResetState);
@@ -181,35 +187,39 @@ export function SettingsNaming() {
   const [loading, setLoading] = useState(false);
 
   const removeAcns = async (name: string) => {
-    setLoading(true);
-    try {
-      await OwnersAPI.updateAcns({
-        name: name,
-        newValue: null,
-      });
-      setIsConfirmModel(false);
-      setIsResultModel(true);
-    } catch (error) {
-      setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
-    } finally {
-      setLoading(false);
-    }
+    await mutate(async () => {
+      setLoading(true);
+      try {
+        await OwnersAPI.updateAcns({
+          name: name,
+          newValue: null,
+        });
+        setIsConfirmModel(false);
+        setIsResultModel(true);
+      } catch (error) {
+        setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+      } finally {
+        setLoading(false);
+      }
+    });
   };
 
   const confirmUpdate = async () => {
-    setLoading(true);
-    try {
-      await OwnersAPI.updateAcns({
-        name: selectedName,
-        newValue: newValue,
-      });
-      setView(View.list);
-      setShowEditToast(true);
-    } catch (error) {
-      setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
-    } finally {
-      setLoading(false);
-    }
+    await mutate(async () => {
+      setLoading(true);
+      try {
+        await OwnersAPI.updateAcns({
+          name: selectedName,
+          newValue: newValue,
+        });
+        setView(View.list);
+        setShowEditToast(true);
+      } catch (error) {
+        setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+      } finally {
+        setLoading(false);
+      }
+    });
   };
 
   const updateAcns = (acns: IAcnsResponse) => {
@@ -225,12 +235,21 @@ export function SettingsNaming() {
         <IonCol size="12">
           <IonSegment
             value={view}
+            class="settings-segment"
             onIonChange={({ detail: { value } }) => setView(value as View)}
           >
-            <IonSegmentButton style={{ minWidth: '50%' }} value={View.list}>
+            <IonSegmentButton
+              style={{ minWidth: '50%' }}
+              value={View.list}
+              class="settings-segment-button"
+            >
               <MenuSlider>{t('List')}</MenuSlider>
             </IonSegmentButton>
-            <IonSegmentButton style={{ minWidth: '50%' }} value={View.edit}>
+            <IonSegmentButton
+              style={{ minWidth: '50%' }}
+              value={View.edit}
+              class="settings-segment-button"
+            >
               <MenuSlider>{t('NewEdit')}</MenuSlider>
             </IonSegmentButton>
           </IonSegment>

@@ -101,7 +101,7 @@ enum SearchResult {
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function NftTransfer() {
   const { t } = useTranslation();
-  const { nfts, isLoading } = useNftMe();
+  const { nfts, isLoading, mutate } = useNftMe();
   const { owner } = useOwner();
   const [_, __, nftName] = useLocalStorage('nft', '');
   const currentNft = nfts.find((nft) => nft.name === nftName) || nfts[0];
@@ -146,25 +146,27 @@ export function NftTransfer() {
   };
 
   const transferNft = async () => {
-    const payload = {
-      nftName: currentNft.name,
-      toL2Address: toAddress,
-    };
-    setLoading(true);
-    try {
-      const response = await OwnersAPI.nftTransfer(payload);
-      const result = {
-        sender: owner.ownerIdentity,
-        receiver: toAddress,
-        nftName: response.nftName,
+    await mutate(async () => {
+      const payload = {
+        nftName: currentNft.name,
+        toL2Address: toAddress,
       };
-      setTransferResult(result);
-      setPageView(TransferView.Result);
-    } catch (error) {
-      setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
-    } finally {
-      setLoading(false);
-    }
+      setLoading(true);
+      try {
+        const response = await OwnersAPI.nftTransfer(payload);
+        const result = {
+          sender: owner.ownerIdentity,
+          receiver: toAddress,
+          nftName: response.nftName,
+        };
+        setTransferResult(result);
+        setPageView(TransferView.Result);
+      } catch (error) {
+        setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+      } finally {
+        setLoading(false);
+      }
+    });
   };
 
   const debouncedSearchHandler = useMemo(
