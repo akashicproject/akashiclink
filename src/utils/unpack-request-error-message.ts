@@ -58,6 +58,8 @@ export const unpackRequestErrorMessage = (error: unknown) => {
       return 'NewPassSameAsOld';
     case errorMsg === keyError.savingsExceeded:
       return 'SavingsExceeded';
+    case errorMsg === keyError.nativeExceeded:
+      return 'showNativeCoinNeededMsg';
     case errorMsg === keyError.tokenNotFound:
       return 'TokenNotFound';
     case errorMsg === keyError.walletIsBusy:

@@ -30,7 +30,7 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
   onAddressReset,
 }) => {
   const { t } = useTranslation();
-  const { currencySymbol } = useFocusCurrencySymbolsAndBalances();
+  const { nativeCoinSymbol } = useFocusCurrencySymbolsAndBalances();
 
   const [alert, setAlert] = useState(formAlertResetState);
   const [isLoading, setIsLoading] = useState(false);
@@ -46,7 +46,7 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
         setAlert(
           errorAlertShell(
             t(res, {
-              coinSymbol: currencySymbol,
+              coinSymbol: nativeCoinSymbol,
             })
           )
         );

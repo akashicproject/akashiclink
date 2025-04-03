@@ -1,6 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { L2Regex } from '@helium-pay/backend';
-import Big from 'big.js';
 
 import {
   useCacheOtk,
@@ -10,18 +9,15 @@ import type { ValidatedAddressPair } from '../../components/send-deposit/send-fo
 import { OwnersAPI } from '../api';
 import { signTxBody } from '../nitr0gen-api';
 import { unpackRequestErrorMessage } from '../unpack-request-error-message';
-import { useFocusCurrencySymbolsAndBalances } from './useAggregatedBalances';
 import { useAccountStorage } from './useLocalAccounts';
 
 export const useVerifyTxnAndSign = () => {
   const { chain, token } = useFocusCurrencyDetail();
   const [cacheOtk, _] = useCacheOtk();
   const { activeAccount } = useAccountStorage();
-  const { currencyBalance } = useFocusCurrencySymbolsAndBalances();
 
   return async (validatedAddressPair: ValidatedAddressPair, amount: string) => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
-    const availableBalance = currencyBalance ?? '0';
 
     if (!cacheOtk) {
       return 'GenericFailureMsg';
@@ -43,19 +39,11 @@ export const useVerifyTxnAndSign = () => {
         return 'GenericFailureMsg';
       }
 
-      // final check if balance is enough
-      if (
-        Big(amount).gt(
-          Big(availableBalance ?? 0).sub(txns[0].feesEstimate ?? '0')
-        )
-      ) {
-        return isL2 ? 'SavingsExceeded' : 'insufficientBalance';
-      }
-
       // sign txns and move to final confirmation
+      // Okay to assert since we have filtered out on the line before
       const signedTxns = await Promise.all(
         txns
-          .filter((res) => typeof res.txToSign !== 'undefined')
+          .filter((res) => !!res.txToSign)
           .map((res) => signTxBody(res.txToSign!, cacheOtk))
       );
 
