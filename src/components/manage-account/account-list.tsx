@@ -25,7 +25,7 @@ export const AccountList = () => {
   const [accountToDelete, setAccountToDelete] = useState<LocalAccount | null>(
     null
   );
-  const isMobile = isPlatform('mobile');
+  const isMobile = isPlatform('ios') || isPlatform('android');
   const logout = useLogout();
 
   const onDeleteAccountClick = (account: LocalAccount) => () => {
@@ -47,8 +47,8 @@ export const AccountList = () => {
       <StyledList
         style={{
           height: `calc(100vh - ${
-            isMobile ? '368' : '320'
-          }px - var(--ion-safe-area-bottom))`,
+            isMobile ? '368px - var(--ion-safe-area-bottom)' : '320px'
+          })`,
         }}
         lines={'full'}
       >
