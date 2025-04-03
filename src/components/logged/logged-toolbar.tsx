@@ -1,4 +1,5 @@
 import { IonCol, IonGrid, IonIcon, IonRow, isPlatform } from '@ionic/react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSWRConfig } from 'swr';
 
@@ -25,6 +26,7 @@ export function LoggedToolbar({
   const isDashboard =
     history.location.pathname === `/akashic/${urls.loggedFunction}`;
   const [storedTheme] = useTheme();
+  const [refreshDisabled, setRefreshDisabled] = useState(false);
 
   const { setActiveAccount } = useAccountStorage();
 
@@ -78,6 +80,7 @@ export function LoggedToolbar({
         </IonCol>
         <IonCol className="ion-no-padding" hidden={!isRefresh} size="auto">
           <SquareWhiteButton
+            disabled={refreshDisabled}
             className="icon-button"
             id="refresh-button"
             onClick={() => {
@@ -90,6 +93,8 @@ export function LoggedToolbar({
                   typeof key === 'string' && key.startsWith('/nft/transfers/me')
               );
               mutate('/owner/agg-balances');
+              setRefreshDisabled(true);
+              setTimeout(() => setRefreshDisabled(false), 750);
             }}
           >
             <IonIcon
