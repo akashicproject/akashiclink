@@ -20,17 +20,16 @@ import { setupIonicReact } from '@ionic/react';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import type { Preview } from '@storybook/react';
 import { initialize, mswLoader } from 'msw-storybook-addon';
-import React, { Suspense, useEffect } from 'react';
-import { I18nextProvider } from 'react-i18next';
 
-import i18n from '../src/i18n/i18n';
+import { withI18next } from './providers/withI18next';
+import { withIonMemoryRouter } from './providers/withIonMemoryRouter';
+import { withReduxProvider } from './providers/withReduxProvider';
+import { withTheme } from './providers/withTheme';
 
-/** Must here here to allow Ionic components to render */
+/** Must set up here to allow Ionic components to render */
 setupIonicReact();
 
-/**
- * Setup mock service worker
- */
+/** Setup mock service worker */
 initialize({
   onUnhandledRequest: ({ method, url }) => {
     if (url.pathname.startsWith('/api')) {
@@ -43,43 +42,6 @@ initialize({
     }
   },
 });
-
-/**
- * Toggle theme when user toggle toolbar
- */
-const withTheme = (Story: any, context: any) => {
-  const isDark = context.globals.theme === 'Dark';
-
-  useEffect(() => {
-    document.body.classList.toggle('dark', isDark);
-    document.body.classList.toggle('light', !isDark);
-  }, [isDark]);
-
-  return <Story />;
-};
-
-/**
- * Inject translations into a story
- */
-const withI18next = (Story: any, context: any) => {
-  const { locale } = context.globals;
-
-  // When the locale global changes
-  // Set the new locale in i18n
-  useEffect(() => {
-    i18n.changeLanguage(locale);
-  }, [locale]);
-
-  return (
-    // This catches the suspense from components not yet ready (still loading translations)
-    // Alternative: set useSuspense to false on i18next.options.react when initializing i18next
-    <Suspense fallback={<div>loading translations...</div>}>
-      <I18nextProvider i18n={i18n}>
-        <Story />
-      </I18nextProvider>
-    </Suspense>
-  );
-};
 
 const preview: Preview = {
   parameters: {
@@ -99,7 +61,7 @@ const preview: Preview = {
           name: 'Extension',
           styles: {
             width: '360px',
-            height: '720px',
+            height: '600px',
           },
         },
         iphone6: INITIAL_VIEWPORTS.iphone6,
@@ -133,24 +95,18 @@ const preview: Preview = {
     },
     theme: {
       description: 'Global theme for components',
-      defaultValue: 'Light',
+      defaultValue: 'light',
       toolbar: {
         title: 'Theme',
         items: [
-          { value: 'Light', title: '☀ Light' },
-          { value: 'Dark', title: '☾ Dark' },
+          { value: 'light', title: '☀ Light' },
+          { value: 'dark', title: '☾ Dark' },
         ],
         dynamicTitle: true,
       },
     },
   },
-  /**
-   * Common wrappers for each story
-   */
-  decorators: [withI18next, withTheme],
-  /**
-   * Mock requests from backend
-   */
+  decorators: [withI18next, withTheme, withIonMemoryRouter, withReduxProvider],
   loaders: [mswLoader],
 };
 

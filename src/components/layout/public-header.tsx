@@ -18,6 +18,7 @@ export function PublicHeader() {
       className="ion-no-border"
       style={{
         background: 'var(--ion-background-color)',
+        display: 'flex', // overwrite ionic default ion-header
       }}
     >
       <LanguageDropdown />

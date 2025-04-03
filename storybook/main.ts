@@ -34,7 +34,6 @@ const config: StorybookConfig = {
     webpackConfigExtender.run(webpackConfig, __dirname, true),
 
   docs: {
-    autodocs: 'tag',
     defaultName: 'Documentation',
   },
 
