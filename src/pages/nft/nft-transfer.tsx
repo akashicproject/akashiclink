@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { debounce } from 'lodash';
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -30,7 +30,10 @@ import { NftLayout } from '../../components/page-layout/nft-layout';
 import { CacheOtkContext } from '../../components/providers/PreferenceProvider';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
-import type { LocationState } from '../../routing/history';
+import {
+  type LocationState,
+  historyGoBackOrReplace,
+} from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
@@ -47,6 +50,7 @@ const SendWrapper = styled.div({
   alignItems: 'center',
   padding: 0,
   width: '270px',
+  height: '90px',
 });
 
 const AddressWrapper = styled.div({
@@ -80,6 +84,7 @@ enum SearchResult {
   Layer2 = 'Layer2',
   AcnsName = 'AcnsName',
   NoResult = 'NoResult',
+  NoInput = 'NoInput',
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -94,7 +99,7 @@ export function NftTransfer() {
   const [toAddress, setToAddress] = useState<string>('');
   const [searched, setSearched] = useState(false);
   const [searchedResultType, setSearchedResultType] = useState(
-    SearchResult.NoResult
+    SearchResult.NoInput
   );
   const { activeAccount } = useAccountStorage();
 
@@ -104,11 +109,12 @@ export function NftTransfer() {
 
   // input username to address
   // TODO: we need to add more check constraint in the future, like l2 address start with "AS"
-  const inputToAddress = async (value: string) => {
-    if (value === '') {
+  const inputToAddress = debounce(async (value: string) => {
+    if (!value || value === '') {
       setToAddress('');
       setSearched(false);
-      setSearchedResultType(SearchResult.NoResult);
+      setSearchedResultType(SearchResult.NoInput);
+      return;
     }
     const { l2Address } = await OwnersAPI.checkL2Address({
       to: value,
@@ -125,9 +131,10 @@ export function NftTransfer() {
         setSearchedResultType(SearchResult.AcnsName);
       } else {
         setSearched(false);
+        setSearchedResultType(SearchResult.NoResult);
       }
     }
-  };
+  }, 500);
 
   const transferNft = async () => {
     const payload = {
@@ -176,17 +183,6 @@ export function NftTransfer() {
     }
   };
 
-  const debouncedSearchHandler = useMemo(
-    () => debounce(inputToAddress, 500),
-    []
-  );
-
-  useEffect(() => {
-    return () => {
-      debouncedSearchHandler.cancel();
-    };
-  }, []);
-
   return (
     <>
       <CustomAlert state={alert} />
@@ -222,12 +218,13 @@ export function NftTransfer() {
                     type={'text'}
                     errorPrompt={StyledInputErrorPrompt.Address}
                     onIonInput={({ target: { value } }) => {
-                      debouncedSearchHandler(value as string);
-                      setInputValue(value as string);
+                      !value && setSearchedResultType(SearchResult.NoInput);
+                      typeof value === 'string' && inputToAddress(value);
+                      typeof value === 'string' && setInputValue(value);
                     }}
                     value={inputValue}
                   />
-                  {inputValue && (
+                  {inputValue && searchedResultType !== SearchResult.NoInput && (
                     <AddressWrapper>
                       <AddressBox>
                         {searchedResultType === SearchResult.AcnsName &&
@@ -271,7 +268,10 @@ export function NftTransfer() {
                 </PurpleButton>
               </IonCol>
               <IonCol>
-                <WhiteButton expand="block" onClick={() => history.goBack()}>
+                <WhiteButton
+                  expand="block"
+                  onClick={() => historyGoBackOrReplace()}
+                >
                   {t('Cancel')}
                 </WhiteButton>
               </IonCol>

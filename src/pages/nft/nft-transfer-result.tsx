@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { IonCol, IonRow, isPlatform } from '@ionic/react';
+import { IonCol, IonGrid, IonRow, isPlatform } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -10,8 +10,10 @@ import { SuccessfulIconWithTitle } from '../../components/common/state-icon-with
 import { NftLayout } from '../../components/page-layout/nft-layout';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
-import type { LocationState } from '../../routing/history';
-import { akashicPayPath } from '../../routing/navigation-tabs';
+import {
+  type LocationState,
+  historyResetStackAndRedirect,
+} from '../../routing/history';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { displayLongText } from '../../utils/long-text';
 
@@ -38,7 +40,7 @@ export const TextWrapper = styled.div({
 export const TextTitle = styled.div({
   fontStyle: 'normal',
   fontWeight: 400,
-  fontSize: '12px',
+  fontSize: '1rem',
   lineHeight: '20px',
   color: 'var(--ion-color-primary-10)',
   display: 'flex',
@@ -48,7 +50,7 @@ export const TextTitle = styled.div({
 export const TextContent = styled.div({
   fontStyle: 'normal',
   fontWeight: 700,
-  fontSize: '16px',
+  fontSize: '1rem',
   lineHeight: '24px',
   color: 'var(--ion-color-primary-10)',
 });
@@ -69,66 +71,63 @@ export function NftTransferResult() {
   const state = history.location.state?.nftTransferResult;
   const wrongResult = state?.errorMsg !== errorMsgs.NoError;
   const isMobile = isPlatform('mobile');
+
+  const onFinish = async () => {
+    await mutateNftTransfersMe();
+    historyResetStackAndRedirect(urls.nfts);
+  };
+
   return (
     <NftLayout noFooter={true}>
-      <IonRow style={{ marginTop: isMobile ? '6rem' : '0' }}>
-        <IonCol size={'12'} className={'ion-center'}>
-          {wrongResult ? (
-            <ErrorIconWithTitle title={state?.errorMsg ?? ''} />
-          ) : (
-            <SuccessfulIconWithTitle title={t('TransactionSuccessful')} />
-          )}
-        </IonCol>
-      </IonRow>
-      <Divider style={{ width: '270px' }} />
-      {wrongResult ? null : (
-        <IonRow>
-          <IonCol class="ion-center">
-            <ResultContent>
-              <TextWrapper>
-                <TextTitle>{t('txHash')}</TextTitle>
-                <TextContent>
-                  {displayLongText(state?.transaction?.txHash || '')}
-                </TextContent>
-              </TextWrapper>
-              <TextWrapper>
-                <TextTitle>{t('Sender')}</TextTitle>
-                <TextContent>
-                  {displayLongText(state?.transaction?.sender || '')}
-                </TextContent>
-              </TextWrapper>
-              <TextWrapper>
-                <TextTitle>{t('Receiver')}</TextTitle>
-                <TextContent>
-                  {displayLongText(state?.transaction?.receiver)}
-                </TextContent>
-              </TextWrapper>
-              <TextWrapper>
-                <TextTitle>{'NFT'}</TextTitle>
-                <TextContent>{state?.transaction?.acnsAlias}</TextContent>
-              </TextWrapper>
-            </ResultContent>
+      <IonGrid className={'ion-grid-gap-sm'} style={{ padding: '8px 16px' }}>
+        <IonRow style={{ marginTop: !isMobile ? '6rem' : '3rem' }}>
+          <IonCol size={'12'} className={'ion-center'}>
+            {wrongResult ? (
+              <ErrorIconWithTitle title={state?.errorMsg ?? ''} />
+            ) : (
+              <SuccessfulIconWithTitle title={t('TransactionSuccessful')} />
+            )}
           </IonCol>
         </IonRow>
-      )}
-      <IonRow
-        style={{
-          width: '270px',
-          marginTop: isMobile ? '2.5rem' : '0.5rem',
-        }}
-      >
-        <IonCol>
-          <PurpleButton
-            expand="block"
-            routerLink={akashicPayPath(urls.nfts)}
-            onClick={async () => {
-              await mutateNftTransfersMe();
-            }}
-          >
-            {t('Ok')}
-          </PurpleButton>
-        </IonCol>
-      </IonRow>
+        <Divider style={{ width: '100%' }} />
+        {wrongResult ? null : (
+          <IonRow>
+            <IonCol class="ion-center">
+              <ResultContent>
+                <TextWrapper>
+                  <TextTitle>{t('txHash')}</TextTitle>
+                  <TextContent>
+                    {displayLongText(state?.transaction?.txHash ?? '')}
+                  </TextContent>
+                </TextWrapper>
+                <TextWrapper>
+                  <TextTitle>{t('Sender')}</TextTitle>
+                  <TextContent>
+                    {displayLongText(state?.transaction?.sender ?? '')}
+                  </TextContent>
+                </TextWrapper>
+                <TextWrapper>
+                  <TextTitle>{t('Receiver')}</TextTitle>
+                  <TextContent>
+                    {displayLongText(state?.transaction?.receiver ?? '')}
+                  </TextContent>
+                </TextWrapper>
+                <TextWrapper>
+                  <TextTitle>{'NFT'}</TextTitle>
+                  <TextContent>{state?.transaction?.acnsAlias}</TextContent>
+                </TextWrapper>
+              </ResultContent>
+            </IonCol>
+          </IonRow>
+        )}
+        <IonRow className="ion-center">
+          <IonCol size={'6'}>
+            <PurpleButton expand="block" onClick={onFinish}>
+              {t('Ok')}
+            </PurpleButton>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
     </NftLayout>
   );
 }
