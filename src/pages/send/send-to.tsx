@@ -19,7 +19,7 @@ import { IonCol, IonImg, IonRow, IonSpinner } from '@ionic/react';
 import axios from 'axios';
 import Big from 'big.js';
 import { debounce } from 'lodash';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { SwiperSlide } from 'swiper/react';
@@ -254,14 +254,6 @@ export function SendTo() {
           if (acnsResult.l2Address) {
             setToAddress(acnsResult.l2Address);
             setGasFree(true);
-            setInternalFee(
-              calculateInternalWithdrawalFee(
-                amount ?? '0',
-                exchangeRates,
-                chain,
-                token
-              )
-            );
           } else {
             setRecipientAlertRequest({
               success: false,
@@ -290,14 +282,6 @@ export function SendTo() {
           recipientAddress.match(NetworkDictionary[chain].regex.address) &&
             setL1AddressWhenL2(recipientAddress);
           setGasFree(true);
-          setInternalFee(
-            calculateInternalWithdrawalFee(
-              amount ?? '0',
-              exchangeRates,
-              chain,
-              token
-            )
-          );
         } else if (L2Regex.exec(recipientAddress)) {
           // If matches L2 format, but none found, show error
           setRecipientAlertRequest(errorAlertShell(t('invalidL2Address')));
@@ -305,7 +289,6 @@ export function SendTo() {
           setL1AddressWhenL2(undefined);
           setToAddress(recipientAddress);
           setGasFree(false);
-          setInternalFee('0.0');
           debouncedHandleGasFee(amount ?? '1', recipientAddress);
         }
       }, validateAddressWithBackendTimeout)
@@ -375,6 +358,22 @@ export function SendTo() {
   const validateAddress = (value: string) => {
     return gasFree || !!value.match(NetworkDictionary[chain].regex.address);
   };
+
+  // Calculate internal fee, which is only (currently) used for L2 (gasFree)
+  useEffect(() => {
+    if (gasFree && amount !== '') {
+      setInternalFee(
+        calculateInternalWithdrawalFee(
+          amount ?? '0',
+          exchangeRates,
+          chain,
+          token
+        )
+      );
+    } else {
+      setInternalFee('0.0');
+    }
+  }, [rawAddress, amount, chain, exchangeRates, token, gasFree]);
 
   const [loading, setLoading] = useState(false);
   const { activeAccount } = useAccountStorage();
@@ -462,7 +461,6 @@ export function SendTo() {
         setToAddress(undefined);
         setGasFree(false);
         setL1AddressWhenL2(undefined);
-        setInternalFee('0.0');
         history.push({
           pathname: akashicPayPath(urls.sendConfirm),
           state: {
@@ -554,16 +552,6 @@ export function SendTo() {
                 errorPrompt={StyledInputErrorPrompt.Amount}
                 onIonInput={({ target: { value } }) => {
                   setAmount(value as string);
-                  setInternalFee(
-                    gasFree
-                      ? calculateInternalWithdrawalFee(
-                          value as string,
-                          exchangeRates,
-                          chain,
-                          token
-                        )
-                      : '0.0'
-                  );
                   debouncedHandleGasFee(value as string, toAddress as string);
                 }}
                 validate={validateAmount}
