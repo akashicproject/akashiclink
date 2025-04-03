@@ -41,8 +41,11 @@ export function LoggedHeader({ loggedIn }: { loggedIn?: boolean }) {
         <IonImg
           alt={''}
           src={
-            loggedIn || currentTheme === themeType.DARK
+            (!loggedIn && currentTheme === themeType.DARK) ||
+            (loggedIn && currentTheme === themeType.LIGHT)
               ? '/shared-assets/images/wallet-logo-white.svg'
+              : loggedIn && currentTheme === themeType.DARK
+              ? '/shared-assets/images/wallet-logo-dark.svg'
               : '/shared-assets/images/wallet-logo-black.svg'
           }
           style={{ height: '100%' }}
