@@ -65,6 +65,7 @@ export const AccountManagementList = ({
         routerLink={akashicPayPath(urls.createWalletPassword)}
         routerOptions={{ unmount: true }}
       >
+        <IonIcon style={{ fontSize: 20 }} color={'primary'} icon={addOutline} />
         <IonText
           color={'primary'}
           className={
@@ -73,11 +74,6 @@ export const AccountManagementList = ({
         >
           {t('CreateWallet')}
         </IonText>
-        <IonIcon
-          style={{ paddingInlineStart: 2, fontSize: 18 }}
-          color={'primary'}
-          icon={addOutline}
-        />
       </StyledIonItem>
     </List>
   );

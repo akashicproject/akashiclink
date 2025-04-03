@@ -145,6 +145,7 @@ http://ionicframework.com/docs/theming/ */
   --activity-list-divider: #d9d9d9;
   --toggle-theme-background: #a2a2ff;
   --toggle-theme-text: #0b006b;
+  --ion-initial-icon-color: #7444b6;
 }
 
 /** Dark Colors **/
@@ -277,6 +278,7 @@ body.dark {
   --activity-list-divider: #2f2f2f;
   --toggle-theme-background: #1b00b3;
   --toggle-theme-text: #0b006b;
+  --ion-initial-icon-color: #c297ff;
 }
 
 /** iOS Dark Theme */

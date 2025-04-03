@@ -13,7 +13,7 @@ const InitialIcon = styled.div<{ isActive: boolean }>(({ isActive }) => ({
   height: '32px',
   flex: '0 0 32px',
   borderRadius: '32px',
-  background: 'var(--ion-color-primary)',
+  background: 'var(--ion-initial-icon-color)',
   margin: '0px',
   alignItems: 'center',
   justifyContent: 'center',
