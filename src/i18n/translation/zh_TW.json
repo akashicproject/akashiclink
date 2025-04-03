@@ -255,5 +255,6 @@
   "InvalidSecretPhrase": "無效密語",
   "PressToReveal": "按下显示",
   "AlreadyMigratedPleaseReImport": "錢包已遷移，請刪除您的帳戶並使用新的恢復方法匯入",
-  "AALinked": "AA-綁定"
+  "AALinked": "AA-綁定",
+  "OnlyOneAAS": "您已經將另一個 Akashic 域名連結到您的地址。每個地址僅允許一個 AAS 連結。"
 }

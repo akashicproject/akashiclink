@@ -1,9 +1,10 @@
 import './aas-listing-switch.scss';
 
 import styled from '@emotion/styled';
-import type {
-  IUpdateAcns,
-  IVerifyUpdateAcnsResponse,
+import {
+  type IUpdateAcns,
+  type IVerifyUpdateAcnsResponse,
+  nftErrors,
 } from '@helium-pay/backend';
 import axios from 'axios';
 import { useContext, useState } from 'react';
@@ -77,12 +78,17 @@ export const AasListingSwitch = ({
       const errorMsg = axios.isAxiosError(error)
         ? error?.response?.data?.message
         : '';
-      customAlertMessage(
-        t('AASLinkingFailed', {
-          timeRemaining: errorMsg.split(' ')[0],
-          timeUnit: t(errorMsg.split(' ')[1]),
-        })
-      );
+
+      if (errorMsg === nftErrors.onlyOneAASLinkingAllowed) {
+        customAlertMessage(t('OnlyOneAAS'));
+      } else {
+        customAlertMessage(
+          t('AASLinkingFailed', {
+            timeRemaining: errorMsg.split(' ')[0],
+            timeUnit: t(errorMsg.split(' ')[1]),
+          })
+        );
+      }
       customAlertHandle(true);
     } finally {
       setIsLoading(false);

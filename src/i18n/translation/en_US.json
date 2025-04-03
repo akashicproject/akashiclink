@@ -255,5 +255,6 @@
   "InvalidSecretPhrase": "Invalid Secret Phrase",
   "PressToReveal": "Press to reveal",
   "AlreadyMigratedPleaseReImport": "Wallet has already been migrated, please remove your account and use your new recovery method to import",
-  "AALinked": "AA-Linked"
+  "AALinked": "AA-Linked",
+  "OnlyOneAAS": "You have already linked another Akashic Alias to your address. Only one AAS Link is allowed per address."
 }
