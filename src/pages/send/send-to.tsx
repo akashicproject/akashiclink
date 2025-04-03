@@ -21,7 +21,7 @@ import {
 } from '../../components/styled-input';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
-import { heliumPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tree';
 import { OwnersAPI } from '../../utils/api';
 import { useAggregatedBalances } from '../../utils/hooks/useAggregatedBalances';
 import { useKeyMe } from '../../utils/hooks/useKeyMe';
@@ -233,7 +233,7 @@ export function SendTo() {
             <IonCol>
               <WhiteButton
                 expand="block"
-                routerLink={heliumPayPath(urls.loggedFunction)}
+                routerLink={akashicPayPath(urls.loggedFunction)}
               >
                 {t('Cancel')}
               </WhiteButton>

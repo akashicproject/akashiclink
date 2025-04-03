@@ -43,7 +43,7 @@ export const lastPageStorage = {
     const expiry = new Date(lastPageObj.expiredTime);
     if (now > expiry) {
       localStorage.removeItem(LastPageStorage);
-      return urls.heliumPay;
+      return urls.akashicPay;
     }
     return lastPageObj.url;
   },

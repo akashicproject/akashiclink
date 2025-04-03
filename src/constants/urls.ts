@@ -3,7 +3,7 @@ import { importAccountUrl } from '../pages/import-wallet';
 import { loginUrl } from '../pages/login';
 
 export const urls = {
-  heliumPay: 'hp',
+  akashicPay: 'akashic',
   beforeCreateWallet: 'before-create-wallet',
   createWalletUrl,
   recovery: 'recovery',

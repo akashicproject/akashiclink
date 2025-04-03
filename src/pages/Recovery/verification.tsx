@@ -8,7 +8,7 @@ import { MainTitle } from '../../components/layout/main-title';
 import { MainLayout } from '../../components/layout/mainLayout';
 import { StyledInput } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
-import { heliumPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tree';
 
 export function Verification() {
   const { t } = useTranslation();
@@ -37,7 +37,7 @@ export function Verification() {
         <IonRow>
           <IonCol>
             <PurpleButton
-              routerLink={heliumPayPath(urls.resetPassword)}
+              routerLink={akashicPayPath(urls.resetPassword)}
               expand="block"
             >
               {t('Confirm')}

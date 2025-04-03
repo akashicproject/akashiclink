@@ -18,7 +18,7 @@ import { MainTitle } from '../components/layout/main-title';
 import { MainLayout } from '../components/layout/mainLayout';
 import { StyledInput } from '../components/styled-input';
 import { urls } from '../constants/urls';
-import { heliumPayPath } from '../routing/navigation-tree';
+import { akashicPayPath } from '../routing/navigation-tree';
 import { OwnersAPI } from '../utils/api';
 import { lastPageStorage, ResetPageButton } from '../utils/last-page-storage';
 import { storeLocalAccount } from '../utils/local-account-storage';
@@ -87,7 +87,7 @@ export function ImportWallet() {
           username: username,
         });
         lastPageStorage.clear();
-        router.push(heliumPayPath(urls.loggedFunction));
+        router.push(akashicPayPath(urls.loggedFunction));
       }
     } catch (error) {
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));

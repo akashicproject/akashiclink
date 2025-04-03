@@ -69,7 +69,7 @@ export function SettingsBackup() {
           </IonRow>
           <IonRow>
             <IonCol class="ion-center">
-              <IonImg alt="dummy QE" src="/shared-assets/images/QR_US².png" />
+              <IonImg alt="dummy QE" src="/shared-assets/images/no-data.svg" />
             </IonCol>
           </IonRow>
           <IonRow>

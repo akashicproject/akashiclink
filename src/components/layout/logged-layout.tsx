@@ -31,10 +31,10 @@ export const LoggedLayout: React.FC<{
   const ChainDivMarginBottom = isMobile ? '32px' : '0px';
   return (
     <IonPage>
-      <LoggedHeader />
+      <LoggedHeader loggedIn={true} />
       <IonContent>
         <ChainDiv style={{ marginBottom: ChainDivMarginBottom }}>
-          HeliumPay Chain
+          AkashicPay Chain
         </ChainDiv>
         <LoggedToolbar />
         {children}

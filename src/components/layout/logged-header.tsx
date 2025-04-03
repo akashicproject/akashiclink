@@ -2,27 +2,20 @@ import type {
   IonToggleCustomEvent,
   ToggleChangeEventDetail,
 } from '@ionic/core';
-import {
-  IonHeader,
-  IonImg,
-  IonRouterLink,
-  IonToggle,
-  isPlatform,
-} from '@ionic/react';
+import { IonHeader, IonImg, IonRouterLink, IonToggle } from '@ionic/react';
 import { useEffect, useState } from 'react';
 
 import { urls } from '../../constants/urls';
-import { heliumPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tree';
 import type { ThemeType } from '../../theme/const';
 import { themeType } from '../../theme/const';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 
-export function LoggedHeader() {
+export function LoggedHeader(props: { loggedIn?: boolean }) {
   const [storedTheme, setStoredTheme] = useLocalStorage(
     'theme',
     themeType.SYSTEM as ThemeType
   );
-  const isMobile = isPlatform('mobile');
 
   const [isDarkMode, setIsDarkMode] = useState(storedTheme === themeType.DARK);
 
@@ -63,16 +56,21 @@ export function LoggedHeader() {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#5B299C',
+        background: props.loggedIn ? '#290056' : '#F3F5F6',
         gap: '160px',
-        height: isMobile ? '72px' : '40px',
+        height: '72px',
+        padding: '0% 0%',
       }}
     >
-      <IonRouterLink routerLink={heliumPayPath(urls.loggedFunction)}>
+      <IonRouterLink routerLink={akashicPayPath(urls.loggedFunction)}>
         <IonImg
           alt={''}
-          src="/shared-assets/images/layout/logged-icon.png"
-          style={{ width: '75px', height: '30px' }}
+          src={
+            props.loggedIn
+              ? '/shared-assets/images/wallet-logo-white.svg'
+              : '/shared-assets/images/wallet-logo-black.svg'
+          }
+          style={{ height: '100%' }}
         />
       </IonRouterLink>
       <div
@@ -83,15 +81,6 @@ export function LoggedHeader() {
           gap: '16px',
         }}
       >
-        <IonImg
-          alt={''}
-          src="/shared-assets/images/layout/avatar.png"
-          style={
-            isMobile
-              ? { width: '40px', height: '40px' }
-              : { width: '30px', height: '30px' }
-          }
-        />
         <IonToggle checked={isDarkMode} onIonChange={handleToggleTheme} />
       </div>
     </IonHeader>

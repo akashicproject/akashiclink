@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
 import { Divider, formatWalletTransfer } from '../../pages/activity';
-import { heliumPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tree';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { OneActivity } from '../activity/one-activity';
 import { TabButton } from '../buttons';
@@ -91,7 +91,7 @@ export const ActivityAndNFTTab = () => {
             );
           })}
           {walletFormatTransfers.length >= 1 ? (
-            <SeeMore to={heliumPayPath(urls.activity)}>{t('SeeMore')}</SeeMore>
+            <SeeMore to={akashicPayPath(urls.activity)}>{t('SeeMore')}</SeeMore>
           ) : null}
         </ActivityDiv>
       ) : (

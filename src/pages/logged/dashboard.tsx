@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { SelectCoin } from '../../components/select-coin';
 import { urls } from '../../constants/urls';
-import { heliumPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tree';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { lastPageStorage } from '../../utils/last-page-storage';
 import { WALLET_CURRENCIES } from '../../utils/supported-currencies';
@@ -35,7 +35,7 @@ export function Dashboard() {
           <IonCol>
             <PurpleButton
               expand="block"
-              routerLink={heliumPayPath(urls.sendTo)}
+              routerLink={akashicPayPath(urls.sendTo)}
             >
               {t('Send')}
               <IonIcon slot="end" icon={arrowForwardOutline}></IonIcon>
@@ -44,7 +44,7 @@ export function Dashboard() {
           <IonCol>
             <WhiteButton
               expand="block"
-              routerLink={heliumPayPath(urls.loggedDeposit)}
+              routerLink={akashicPayPath(urls.loggedDeposit)}
             >
               {t('Deposit')}
               <IonIcon slot="end" icon={arrowDownOutline}></IonIcon>

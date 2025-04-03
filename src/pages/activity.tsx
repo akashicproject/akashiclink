@@ -25,7 +25,7 @@ import { OneActivity } from '../components/activity/one-activity';
 import { WhiteButton } from '../components/buttons';
 import { LoggedLayout } from '../components/layout/logged-layout';
 import { urls } from '../constants/urls';
-import { heliumPayPath } from '../routing/navigation-tree';
+import { akashicPayPath } from '../routing/navigation-tree';
 import { useTransfersMe } from '../utils/hooks/useTransfersMe';
 import { lastPageStorage } from '../utils/last-page-storage';
 import { WALLET_CURRENCIES } from '../utils/supported-currencies';
@@ -109,7 +109,7 @@ export function Activity() {
       <Divider style={{ marginTop: '20px' }} />
       <IonRow style={{ marginTop: '20px' }}>
         <IonCol class="ion-center">
-          <WhiteButton routerLink={heliumPayPath(urls.loggedFunction)}>
+          <WhiteButton routerLink={akashicPayPath(urls.loggedFunction)}>
             {t('GoBack')}
           </WhiteButton>
         </IonCol>

@@ -1,5 +1,5 @@
 import './common.css';
-import './hp-main.css';
+import './akashic-main.css';
 
 import styled from '@emotion/styled';
 import {
@@ -26,7 +26,7 @@ import { PurpleButton } from '../components/buttons';
 import { Footer } from '../components/layout/footer';
 import { StyledInput } from '../components/styled-input';
 import { urls } from '../constants/urls';
-import { heliumPayPath } from '../routing/navigation-tree';
+import { akashicPayPath } from '../routing/navigation-tree';
 import { OwnersAPI } from '../utils/api';
 import { getLocalAccounts } from '../utils/local-account-storage';
 import { unpackRequestErrorMessage } from '../utils/unpack-request-error-message';
@@ -67,7 +67,7 @@ export function Login() {
           username: selectedAccount.username,
           password,
         });
-        router.push(heliumPayPath(urls.loggedFunction));
+        router.push(akashicPayPath(urls.loggedFunction));
       }
     } catch (error) {
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));

@@ -22,7 +22,7 @@ import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
-import { heliumPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tree';
 import { useLargestBalanceKeys } from '../../utils/hooks/useLargestBalanceKeys';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { lastPageStorage } from '../../utils/last-page-storage';
@@ -85,7 +85,7 @@ export function DepositPage() {
   };
 
   if (!isAddressesLoading && walletAddressDetail === undefined) {
-    return <Redirect to={heliumPayPath(urls.error)} />;
+    return <Redirect to={akashicPayPath(urls.error)} />;
   }
 
   return (

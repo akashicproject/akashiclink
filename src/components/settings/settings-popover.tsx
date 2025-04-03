@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
-import { heliumPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tree';
 import { OwnersAPI } from '../../utils/api';
 import { useOwner } from '../../utils/hooks/useOwner';
 import { lastPageStorage } from '../../utils/last-page-storage';
@@ -228,7 +228,7 @@ export function SettingsPopover() {
               <SettingsList>
                 <SettingsItem
                   displayText="Backup"
-                  routerLink={heliumPayPath(urls.settingsBackup)}
+                  routerLink={akashicPayPath(urls.settingsBackup)}
                 />
               </SettingsList>
             </SettingSubmenu>
@@ -236,7 +236,7 @@ export function SettingsPopover() {
             <SettingSubmenu displayText="Naming Service" id="nested-trigger">
               <SettingsList>
                 <SettingsItem
-                  routerLink={`${heliumPayPath(
+                  routerLink={`${akashicPayPath(
                     urls.settingsNaming
                   )}?service=hp`}
                   displayText="ANs"
@@ -249,7 +249,7 @@ export function SettingsPopover() {
               <SettingsList>
                 <SettingsItem
                   displayText="Recovery"
-                  routerLink={heliumPayPath(urls.recover)}
+                  routerLink={akashicPayPath(urls.recover)}
                 />
               </SettingsList>
             </SettingSubmenu>
@@ -258,11 +258,11 @@ export function SettingsPopover() {
               <SettingsList>
                 <SettingsItem
                   displayText="Version Info"
-                  routerLink={heliumPayPath(urls.settingsVersion)}
+                  routerLink={akashicPayPath(urls.settingsVersion)}
                 />
                 <SettingsItem
                   displayText="Links"
-                  routerLink={heliumPayPath(urls.settingsInfo)}
+                  routerLink={akashicPayPath(urls.settingsInfo)}
                 />
               </SettingsList>
             </SettingSubmenu>

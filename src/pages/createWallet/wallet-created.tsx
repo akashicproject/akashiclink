@@ -8,7 +8,7 @@ import { Copy } from '../../components/copy/copy';
 import { MainGrid } from '../../components/layout/main-grid';
 import { MainTitle } from '../../components/layout/main-title';
 import { urls } from '../../constants/urls';
-import { heliumPayPath } from '../../routing/navigation-tree';
+import { akashicPayPath } from '../../routing/navigation-tree';
 
 export function WalletCreated({
   privateKey,
@@ -43,7 +43,7 @@ export function WalletCreated({
         <IonCol>
           <PurpleButton
             expand="block"
-            routerLink={heliumPayPath(urls.loggedFunction)}
+            routerLink={akashicPayPath(urls.loggedFunction)}
           >
             {t('Continue')}
           </PurpleButton>

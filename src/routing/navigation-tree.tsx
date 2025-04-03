@@ -3,9 +3,9 @@ import { Redirect, Route } from 'react-router';
 
 import { urls } from '../constants/urls';
 import { Activity } from '../pages/activity';
+import { AkashicPayMain } from '../pages/akashic-main';
 import { CreateWallet } from '../pages/createWallet/create-wallet';
 import { ErrorPage } from '../pages/error';
-import { HeliumPayMain } from '../pages/hp-main';
 import { ImportWallet } from '../pages/import-wallet';
 import { Dashboard } from '../pages/logged/dashboard';
 import { DepositPage } from '../pages/logged/deposit-page';
@@ -20,7 +20,6 @@ import { SendConfirm } from '../pages/send/send-confirm';
 import { SendResult } from '../pages/send/send-result';
 import { SendTo } from '../pages/send/send-to';
 import { Settings } from '../pages/settings';
-import { SettingsBackup } from '../pages/settings-backup';
 import { SettingsInfo } from '../pages/settings-info';
 import { SettingsLanguage } from '../pages/settings-language';
 import { SettingsNaming } from '../pages/settings-naming';
@@ -71,8 +70,8 @@ export function createNavigationSubtree(
   };
 }
 
-const hpSubtree = createNavigationSubtree(urls.heliumPay, 'HeliumPay Chain');
-export const { createPath: heliumPayPath } = hpSubtree;
+const hpSubtree = createNavigationSubtree(urls.akashicPay, 'AkashicPay Chain');
+export const { createPath: akashicPayPath } = hpSubtree;
 
 const us2Subtree = createNavigationSubtree(urls.us2, 'Square (US²)');
 export const { createPath: us2Path } = us2Subtree;
@@ -83,8 +82,8 @@ export const { createPath: us2Path } = us2Subtree;
 export function NavigationTree() {
   return (
     <IonRouterOutlet>
-      {/* HeliumPay tree - default so redirect at bottom */}
-      {hpSubtree.registerPage(HeliumPayMain)}
+      {/* AkashicPay tree - default so redirect at bottom */}
+      {hpSubtree.registerPage(AkashicPayMain)}
       {hpSubtree.registerPage(CreateWallet, urls.createWalletUrl)}
       {hpSubtree.registerPage(Recovery, urls.recovery)}
       {hpSubtree.registerPage(ResetPassword, urls.resetPassword)}
@@ -103,7 +102,6 @@ export function NavigationTree() {
       {hpSubtree.registerPage(Settings, urls.settings)}
       {hpSubtree.registerPage(RecoverCode, urls.recoverCode)}
       {hpSubtree.registerPage(SettingsLanguage, urls.settingsLanguage)}
-      {hpSubtree.registerPage(SettingsBackup, urls.settingsBackup)}
       {hpSubtree.registerPage(SettingsNaming, urls.settingsNaming)}
       {hpSubtree.registerPage(SettingsVersion, urls.settingsVersion)}
       {hpSubtree.registerPage(SettingsInfo, urls.settingsInfo)}

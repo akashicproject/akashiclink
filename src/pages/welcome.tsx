@@ -1,4 +1,4 @@
-import './hp-main.css';
+import './akashic-main.css';
 
 import styled from '@emotion/styled';
 import {
@@ -17,7 +17,7 @@ import { PurpleButton } from '../components/buttons';
 import { Footer } from '../components/layout/footer';
 import { MainTitle } from '../components/layout/main-title';
 import { urls } from '../constants/urls';
-import { heliumPayPath } from '../routing/navigation-tree';
+import { akashicPayPath } from '../routing/navigation-tree';
 
 const FooterText = styled.a({
   fontFamily: 'Nunito Sans',
@@ -80,7 +80,7 @@ export function Welcome() {
           <IonRow style={{ marginTop: '8px' }}>
             <IonCol>
               <PurpleButton
-                routerLink={heliumPayPath(urls.beforeCreateWallet)}
+                routerLink={akashicPayPath(urls.beforeCreateWallet)}
                 expand="block"
               >
                 <span>{t('Unlock')}</span>
@@ -89,7 +89,7 @@ export function Welcome() {
           </IonRow>
           <IonRow style={{ marginTop: '18px' }}>
             <IonCol class="ion-center">
-              <FooterText href={heliumPayPath(urls.recovery)}>
+              <FooterText href={akashicPayPath(urls.recovery)}>
                 {t('ForgotYourPassword')}
               </FooterText>
             </IonCol>

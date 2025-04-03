@@ -80,7 +80,7 @@ export interface WalletCurrencyMetadata {
   logo: string;
   icon: string;
 }
-export const L2Icon = '/shared-assets/icons/akashic_icon.png';
+export const L2Icon = '/shared-assets/images/PayLogo-all-white.svg';
 /** Declaration of supported currencies */
 const MAINNET_CURRENCIES: WalletCurrencyMetadata[] = [
   {

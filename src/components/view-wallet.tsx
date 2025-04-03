@@ -30,7 +30,7 @@ export function ViewWallet({
               {NetworkDictionary[wallet.coinSymbol].displayName}
             </IonCardTitle>
           </IonCardHeader>
-          <img alt="dummy QE" src="/shared-assets/images/QR_US².png" />
+          <img alt="dummy QE" src="/shared-assets/images/no-data.svg" />
           <IonItem>
             <IonLabel>Public Address</IonLabel>
             {wallet.address}

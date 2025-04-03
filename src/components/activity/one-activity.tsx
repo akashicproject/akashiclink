@@ -100,7 +100,7 @@ const Amount = styled.div({
   padding: '4px 12px',
   width: '86px',
   height: '40px',
-  fontSize: '12px',
+  fontSize: '10px',
   fontWeight: 700,
   fontFamily: 'Nunito Sans',
   color: '#290056',
@@ -132,6 +132,18 @@ export function OneActivity({
   showDetail?: boolean;
 }) {
   const amount = Big(transfer.amount);
+  const isL2 = transfer.layer === TransactionLayer.L2;
+
+  // HACK: Reduce chain names to a single word to fit small screen
+  let label = transfer.chain;
+  switch (label.split(' ').length) {
+    case 2:
+      label = label.split(' ')[0];
+      break;
+    case 3:
+      label = label.split(' ')[1];
+      break;
+  }
 
   /**
    * Style the icon displaying the chain information:
@@ -139,13 +151,8 @@ export function OneActivity({
    * - If the more-info-chevron is displayed, reduce the spacing
    */
   const iconStyle = {
-    gap:
-      transfer.layer === TransactionLayer.L2
-        ? '0px'
-        : showDetail
-        ? '8px'
-        : '12px',
-    background: transfer.layer === TransactionLayer.L2 ? '#290056' : '#7444B6',
+    gap: isL2 ? '0px' : showDetail ? '8px' : '12px',
+    background: isL2 ? '#290056' : '#7444B6',
   };
   return (
     <OneTransfer key={transfer.id} onClick={onClick} style={style}>
@@ -157,16 +164,15 @@ export function OneActivity({
         <Chain style={iconStyle}>
           <IonImg
             alt=""
-            src={
-              transfer.layer === TransactionLayer.L2 ? L2Icon : transfer.icon
-            }
-            style={{ height: '12px' }}
+            src={isL2 ? L2Icon : transfer.icon}
+            style={{ height: isL2 ? '20px' : '12px' }}
           />
-          {transfer.layer === TransactionLayer.L2
-            ? 'AkashicChain'
-            : transfer.currency.displayName}
+          {isL2 ? null : label}
         </Chain>
-        <Amount>{`${amount} ${transfer.currency.displayName}`}</Amount>
+        {/* HACK: Reduce currency symbols to a single word to fit small screen */}
+        <Amount>{`${amount} ${
+          transfer.currency.displayName.split('-')[0]
+        }`}</Amount>
         {showDetail ? <Icon icon={chevronForwardOutline} /> : null}
       </ActivityWrapper>
       {children}

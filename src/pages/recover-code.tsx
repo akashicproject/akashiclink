@@ -21,7 +21,7 @@ import {
 import { useHistory } from 'react-router-dom';
 
 import { urls } from '../constants/urls';
-import { heliumPayPath } from '../routing/navigation-tree';
+import { akashicPayPath } from '../routing/navigation-tree';
 
 export function RecoverCode() {
   const history = useHistory();
@@ -46,7 +46,7 @@ export function RecoverCode() {
             </IonItem>
           </IonCardContent>
           <IonButton
-            onClick={() => history.push(heliumPayPath(urls.recoverCode))}
+            onClick={() => history.push(akashicPayPath(urls.recoverCode))}
           >
             Send
           </IonButton>

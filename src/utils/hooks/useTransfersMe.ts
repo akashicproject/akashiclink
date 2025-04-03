@@ -2,6 +2,7 @@ import type {
   IClientTransactionRecord,
   ITransactionRecord,
 } from '@helium-pay/backend';
+import { TransactionStatus } from '@helium-pay/backend';
 import useSWR from 'swr';
 
 import fetcher from '../ownerFetcher';
@@ -16,8 +17,12 @@ export const useTransfersMe = (params?: IClientTransactionRecord) => {
     ],
     fetcher
   );
+  // HACK: filter out pending transactions
+  const filteredData = ((data || []) as ITransactionRecord[]).filter(
+    (t) => t.status !== TransactionStatus.PENDING
+  );
   return {
-    transfers: (data || []) as ITransactionRecord[],
+    transfers: filteredData,
     isLoading: !error && !data,
     isError: error,
   };

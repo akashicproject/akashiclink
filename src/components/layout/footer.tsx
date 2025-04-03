@@ -26,7 +26,7 @@ export function Footer() {
         }}
       >
         <FooterText>
-          Need help? Contact <a href={'url'}>HeliumWallet support</a>
+          Need help? Contact <a href={'url'}>AkashicWallet support</a>
         </FooterText>
       </IonFooter>
     </>
