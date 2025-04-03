@@ -76,7 +76,7 @@ export const SendAmountInputAndDetail = ({
 
     // if L2, balance must be larger than amount + internal fee
     if (isL2) {
-      const fee = calculateL2Fee(input);
+      const fee = calculateL2Fee();
       if (userInputAmount.gt(Big(currencyBalance ?? 0).sub(fee))) {
         setAlert(errorAlertShell('SavingsExceeded'));
         return;
@@ -113,7 +113,7 @@ export const SendAmountInputAndDetail = ({
     setAlert(formAlertResetState);
     setAmount(
       Big(currencyBalance)
-        .sub(isL2 ? calculateL2Fee(currencyBalance) : '0')
+        .sub(isL2 ? calculateL2Fee() : '0')
         .toString()
     );
   };
@@ -169,7 +169,7 @@ export const SendAmountInputAndDetail = ({
         <SendDetailBox
           validatedAddressPair={validatedAddressPair}
           amount={amount}
-          fee={calculateL2Fee(amount)}
+          fee={calculateL2Fee()}
           currencySymbol={networkCurrencyCombinedDisplayName}
         />
       )}

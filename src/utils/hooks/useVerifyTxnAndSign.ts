@@ -68,7 +68,6 @@ export const useVerifyTxnAndSign = () => {
             ...convertObjectCurrencies(transactionData, convertFromDecimals),
             internalFee: {
               withdraw: calculateInternalWithdrawalFee(
-                amount,
                 exchangeRates,
                 chain,
                 token

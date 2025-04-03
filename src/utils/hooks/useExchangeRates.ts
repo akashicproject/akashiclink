@@ -21,12 +21,7 @@ export const useCalculateFocusCurrencyL2WithdrawalFee = () => {
   const { exchangeRates } = useExchangeRates();
   const { chain, token } = useAppSelector(selectFocusCurrencyDetail);
 
-  return (amount: string) => {
-    return calculateInternalWithdrawalFee(
-      amount ?? '0',
-      exchangeRates,
-      chain,
-      token
-    );
+  return () => {
+    return calculateInternalWithdrawalFee(exchangeRates, chain, token);
   };
 };
