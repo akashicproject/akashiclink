@@ -26,6 +26,7 @@ import {
   useSendL1Transaction,
   useSendL2Transaction,
 } from '../utils/hooks/nitr0gen';
+import { useGenerateSecondaryOtk } from '../utils/hooks/useGenerateSecondaryOtk';
 import { useSignAuthorizeActionMessage } from '../utils/hooks/useSignAuthorizeActionMessage';
 import { useVerifyTxnAndSign } from '../utils/hooks/useVerifyTxnAndSign';
 import { useWeb3Wallet } from '../utils/web3wallet';
@@ -49,10 +50,12 @@ export function SignTypedData() {
       string,
       string | Record<string, string>
     >,
+    secondaryOtk: {} as { oldPubKeyToRemove?: string },
     response: {},
   });
 
   const signAuthorizeActionMessage = useSignAuthorizeActionMessage();
+  const generateSecondaryOtk = useGenerateSecondaryOtk();
 
   const verifyTxnAndSign = useVerifyTxnAndSign();
   const { trigger: triggerSendL2Transaction } = useSendL2Transaction();
@@ -66,7 +69,7 @@ export function SignTypedData() {
       if (request.method === ETH_METHOD.SIGN_TYPED_DATA) {
         const typedData = JSON.parse(request.params[1]);
 
-        const { toSign, ...message } = typedData.message;
+        const { toSign, secondaryOtk, ...message } = typedData.message;
 
         setRequestContent({
           id,
@@ -75,6 +78,7 @@ export function SignTypedData() {
           primaryType: typedData.primaryType,
           topic,
           toSign: toSign,
+          secondaryOtk,
           response: {},
         });
       }
@@ -88,7 +92,7 @@ export function SignTypedData() {
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
   const acceptSessionRequest = async () => {
-    const { topic, id, primaryType, toSign } = requestContent;
+    const { topic, id, primaryType, toSign, secondaryOtk } = requestContent;
 
     try {
       let signedMsg = '';
@@ -100,6 +104,9 @@ export function SignTypedData() {
             identity: toSign.identity,
             expires: Number(toSign.expires),
           });
+          break;
+        case TYPED_DATA_PRIMARY_TYPE.GENERATE_SECONDARY_OTK:
+          signedMsg = await generateSecondaryOtk(secondaryOtk);
           break;
         case TYPED_DATA_PRIMARY_TYPE.PAYOUT: {
           // TODO: Fix all this casting

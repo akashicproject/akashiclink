@@ -35,6 +35,7 @@ export const nitr0genNativeCoin = '#native';
 enum ProductionContracts {
   Namespace = 'akashicchain',
   Create = '50e1372f0d3805dac4a51299bb0e99960862d7d01f247e85725d99011682b8ac@1.0.0', // Only supports trx, eth, bnb + testnets
+  CreateSecondaryOtk = 'DNE',
   CryptoTransfer = '2bae6ea681826c0307ee047ef68eb0cf53487a257c498de7d081d66de119d666@1.0.0',
   DiffConsensus = '94479927cbe0860a3f51cbd36230faef7d1b69974323a83c8abcc78e3d0e8dd9@1.0.0',
   Onboard = 'a456ddc07da6d46a6897d24de188e767b87a9d9f2f3c617d858aaf819e0e5bce@1.0.0',
@@ -47,6 +48,7 @@ enum ProductionContracts {
 enum TestNetContracts {
   Namespace = 'akashic',
   Create = 'c4f1186c58f49db2fdba401a1b36832902325d11a2e69ac6ef800836274c6894@5.1.4',
+  CreateSecondaryOtk = '5160b43ea831f05faace12e01a82ebec8a4eb036ddfd429559c7d37fe32c4ffb@1.1.1',
   CryptoTransfer = 'd1903e29ea83413ecc759d129f7a21e4f8039ac5650360cf83d993343b5ffaa6@5.6.1',
   DiffConsensus = '76869d5f632c283324b0cb7c8e16ba14eec2cf5d6d7b3f4521cc9b6a12818623@3.0.3',
   Onboard = 'b089a212ac22f57e2bef7d8a7f25702ebda98173939be2eba1ac0c2523d77383@5.0.4',
@@ -244,6 +246,31 @@ export class Nitr0genApi {
     };
 
     // Sign Transaction
+    return await signTxBody(txBody, otk);
+  }
+
+  public async secondaryOtkTransaction(
+    otk: IKeyExtended,
+    newPubKey: string,
+    oldPubKeyToRemove?: string
+  ) {
+    const txBody: IBaseAcTransaction = {
+      $tx: {
+        $namespace: Nitr0gen.Namespace,
+        $contract: Nitr0gen.CreateSecondaryOtk,
+        $i: {
+          owner: {
+            $stream: otk.identity,
+            add: {
+              type: 'secp256k1',
+              public: newPubKey,
+            },
+            remove: oldPubKeyToRemove,
+          },
+        },
+      },
+      $sigs: {},
+    };
     return await signTxBody(txBody, otk);
   }
 

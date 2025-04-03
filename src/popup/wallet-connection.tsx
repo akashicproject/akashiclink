@@ -190,12 +190,16 @@ export function WalletConnection() {
     const receivePairProposal = async () => {
       const activeSessions = web3wallet?.getActiveSessions();
 
+      // Clean up old sessions
       if (activeSessions && Object.values(activeSessions).length > 0) {
-        const currentSession = Object.values(activeSessions)[0];
-        await web3wallet?.disconnectSession({
-          topic: currentSession?.topic as string,
-          reason: getInternalError('RESTORE_WILL_OVERRIDE'),
-        });
+        await Promise.all(
+          Object.values(activeSessions).map((session) =>
+            web3wallet?.disconnectSession({
+              topic: session?.topic as string,
+              reason: getInternalError('RESTORE_WILL_OVERRIDE'),
+            })
+          )
+        );
       }
 
       await web3wallet?.pair({ uri });

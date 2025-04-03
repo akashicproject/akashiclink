@@ -6,7 +6,6 @@ import { selectCacheOtk } from '../../redux/slices/accountSlice';
 import { signAuthenticationData } from '../otk-generation';
 import { unpackRequestErrorMessage } from '../unpack-request-error-message';
 
-// TODO: Rename IBecomeBp to IAuthorizeActionToSign
 export type AuthorizeActionToSign = Omit<IBecomeBp, 'signature'> &
   Record<string, string | unknown>;
 

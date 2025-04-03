@@ -1,4 +1,5 @@
 import type {
+  ICreateSecondaryOtk,
   ILookForL2Address,
   ILookForL2AddressResponse,
   IPrepareL1TxnResponse,
@@ -50,5 +51,18 @@ export const OwnersAPI = {
     }
 
     return response.data;
+  },
+
+  generateSecondaryOtk: async (
+    signedReq: ICreateSecondaryOtk
+  ): Promise<void> => {
+    const response = await axiosBase.post(
+      `/owner/generate-secondary-otk`,
+      JSON.stringify(signedReq)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data);
+    }
   },
 };
