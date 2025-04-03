@@ -274,5 +274,6 @@
   "Theme": "Theme",
   "LockAkashicWallet": "Lock Akashic Wallet",
   "AutoLock": "Auto Lock",
-  "HideSmallBalances": "Hide Small Balances"
+  "HideSmallBalances": "Hide Small Balances",
+  "EstimatedGasFeeMessage": "*Estimated Gas fee only. Actual gas fee will be shown after the transaction is confirmed"
 }

@@ -1,3 +1,5 @@
+import type { ITransactionRecord } from '@helium-pay/backend';
+
 /**
  * Function limits the amount of decimal places:
  * e.g.
@@ -24,5 +26,22 @@ export function getPrecision(amount: string, feesPaid: string): number {
       feesPaid.split('.')[1]?.replace(/0+$/, '').length ?? 0
     ),
     6
+  );
+}
+
+/**
+ * Checks if gas-fee we are going to display is accurate
+ * Not accurate if it is an estimate or if the actual number is longer than the
+ * precision we display
+ * @param precision Number of dps we will display
+ */
+export function isGasFeeAccurate(
+  transfer: ITransactionRecord,
+  precision: number
+): boolean {
+  const gasFee = transfer.feesPaid ?? transfer.feesEstimate;
+  return !(
+    (!transfer.feesPaid && !!transfer.feesEstimate) ||
+    (gasFee ?? '').split('.')[1]?.replace(/0+$/, '').length > precision
   );
 }

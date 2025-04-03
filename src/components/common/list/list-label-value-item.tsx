@@ -41,6 +41,7 @@ export const ListLabelValueItem: FC<ListLabelValueRowProps> = ({
         <span className={'ion-text-color-primary-10'}>{value}</span>
         {remark && (
           <span
+            style={{ lineHeight: '0.75rem' }}
             className={
               'ion-text-size-xxs ion-margin-left-xxs ion-text-color-grey ion-text-align-right'
             }

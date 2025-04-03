@@ -13,7 +13,7 @@ import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectTheme } from '../../redux/slices/preferenceSlice';
 import { themeType } from '../../theme/const';
-import { getPrecision } from '../../utils/formatAmount';
+import { getPrecision, isGasFeeAccurate } from '../../utils/formatAmount';
 import { formatDate } from '../../utils/formatDate';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { displayLongText } from '../../utils/long-text';
@@ -155,10 +155,14 @@ export function OneActivity({
       ? currencyObj?.currencyIcon
       : currencyObj?.greyCurrencyIcon;
 
+  const gasFee = transfer.feesPaid ?? transfer.feesEstimate;
+
   // Use separate precision for gas and amount so they both show with the
   // minimum necessary (or 2)
-  const gasPrecision = getPrecision('0', transfer.feesPaid ?? '0');
+  const gasPrecision = getPrecision('0', gasFee ?? '0');
   const amountPrecision = getPrecision(transfer.amount, '0');
+
+  const gasFeeIsAccurate = isGasFeeAccurate(transfer, gasPrecision);
 
   // If token, displayed as "USDT" for L1 and "USDT (ETH)" for L2 (since
   // deducing the chain the token belongs to is not trivial)
@@ -269,7 +273,7 @@ export function OneActivity({
                 true
               )}
             </Amount>
-            {!isTxnDeposit && transfer.feesPaid && (
+            {!isTxnDeposit && gasFee && (
               <GasFee
                 style={{
                   color: !isTxnConfirmed
@@ -278,8 +282,8 @@ export function OneActivity({
                     ? 'var(--ion-color-primary-10)'
                     : 'var(--ion-light-text)',
                 }}
-              >{`${t('GasFee')}: ≈${Big(
-                Big(transfer.feesPaid).toFixed(gasPrecision)
+              >{`${t('GasFee')}: ${!gasFeeIsAccurate ? '≈' : ''}${Big(
+                Big(gasFee ?? '0').toFixed(gasPrecision)
               )} ${transfer?.currency?.chain}`}</GasFee>
             )}
           </AmountWrapper>

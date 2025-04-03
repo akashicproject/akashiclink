@@ -8,7 +8,7 @@ import {
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
 
-import { getPrecision } from '../../utils/formatAmount';
+import { getPrecision, isGasFeeAccurate } from '../../utils/formatAmount';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { Divider } from '../common/divider';
 import { List } from '../common/list/list';
@@ -54,18 +54,26 @@ const WithdrawDetails = ({
   currentTransfer,
 }: {
   currentTransfer: ITransactionRecordForExtension;
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 }) => {
   const { t } = useTranslation();
   const isL2 = currentTransfer.layer === TransactionLayer.L2;
 
+  const gasFee = currentTransfer.feesPaid ?? currentTransfer.feesEstimate;
+
+  const gasFeeIsEstimate =
+    !currentTransfer.feesPaid && !!currentTransfer.feesEstimate;
+
   const precision = getPrecision(
     currentTransfer?.amount,
-    currentTransfer?.feesPaid ?? currentTransfer.internalFee?.withdraw ?? '0'
+    gasFee ?? currentTransfer.internalFee?.withdraw ?? '0'
   );
+
+  const gasFeeIsAccurate = isGasFeeAccurate(currentTransfer, precision);
 
   // Calculate total Amount
   const totalAmount = Big(currentTransfer.amount);
-  const totalFee = Big(currentTransfer?.feesPaid ?? '0');
+  const totalFee = Big(gasFee ?? '0');
 
   const internalFee = Big(currentTransfer.internalFee?.withdraw ?? '0');
   const totalAmountWithFee = totalAmount
@@ -97,8 +105,10 @@ const WithdrawDetails = ({
       <ListLabelValueItem
         label={t(isL2 ? 'Fee' : 'GasFee')}
         value={`${
-          isL2 ? internalFee.toFixed(precision) : totalFee.toFixed(precision)
-        } ${feeCurrencyDisplayName}`}
+          isL2
+            ? internalFee.toFixed(precision)
+            : (!gasFeeIsAccurate ? '≈' : '') + totalFee.toFixed(precision)
+        } ${feeCurrencyDisplayName}${gasFeeIsEstimate ? '*' : ''}`}
         valueSize={'md'}
         valueBold
       />
@@ -112,11 +122,18 @@ const WithdrawDetails = ({
             ? undefined
             : `+${totalFee.toFixed(precision)} ${
                 currentTransfer.currency?.chain
-              }`
+              }${gasFeeIsEstimate ? '*' : ''}`
         }
         valueSize={'md'}
         valueBold
       />
+      {gasFeeIsEstimate && (
+        <ListLabelValueItem
+          label={''}
+          value={''}
+          remark={t('EstimatedGasFeeMessage')}
+        />
+      )}
     </List>
   );
 };
