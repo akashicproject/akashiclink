@@ -162,8 +162,7 @@ export const WALLET_CURRENCIES = [
   //
   // - Running yarn build will set OPTIMISE=undefined (skipping testnets for production mode)
   // - Running yarn build:dev will set OPTIMISE=false (adding testenets for dev mode)
-  ...(process.env.NODE_ENV !== 'production' ||
-  process.env.REACT_APP_OPTIMISE === 'false'
+  ...(process.env.REACT_APP_ENABLE_TESTNET_CURRENCIES === 'true'
     ? TESTNET_CURRENCIES
     : []),
 ];

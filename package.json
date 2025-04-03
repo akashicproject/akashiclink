@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "serve -d build",
     "build": "yarn lint:fix && craco build",
-    "build:dev": "watch 'REACT_APP_OPTIMISE=false DISABLE_ESLINT_PLUGIN=true craco build' ./src",
+    "build:dev": "watch 'DISABLE_ESLINT_PLUGIN=true env-cmd -f .env craco build' ./src",
     "build:staging": "yarn lint:fix && env-cmd -f .env.staging.local craco build",
     "build:prod": "yarn lint:fix && env-cmd -f .env.production.local craco build",
     "sync:android": "yarn build:staging && env-cmd -f .env.staging.local npx cap sync",
