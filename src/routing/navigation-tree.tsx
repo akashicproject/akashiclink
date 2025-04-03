@@ -7,6 +7,7 @@ import { AkashicPayMain } from '../pages/akashic-main';
 import { ChangePasswordConfirm } from '../pages/changePassword/confirm';
 import { ChangePasswordTwoFa } from '../pages/changePassword/email-2fa';
 import { ChangePassword } from '../pages/changePassword/enter-passwords';
+import { CreateWalletPassword } from '../pages/createWallet/create-password';
 import { CreateWallet } from '../pages/createWallet/create-wallet';
 import { CreateWalletSecret } from '../pages/createWallet/create-wallet-secret';
 import { CreateWalletSecretConfirm } from '../pages/createWallet/create-wallet-secret-confirm';
@@ -81,6 +82,7 @@ export function NavigationTree() {
         urls.changePasswordConfirm
       )}
       {AkashicTab.registerPage(ErrorPage, urls.error)}
+      {AkashicTab.registerPage(CreateWalletPassword, urls.createWalletPassword)}
       {AkashicTab.registerPage(CreateWalletSecret, urls.secret)}
       {AkashicTab.registerPage(WalletCreated, urls.walletCreated)}
       {AkashicTab.registerPage(CreateWalletSecretConfirm, urls.secretConfirm)}

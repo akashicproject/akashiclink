@@ -1,3 +1,4 @@
+import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import type { ITransactionVerifyResponse } from '@helium-pay/backend';
 import { createMemoryHistory } from 'history';
 
@@ -33,4 +34,8 @@ export interface LocationState {
     email: string;
   };
   importView?: View;
+  createWallet?: {
+    password: string;
+    otk: IKeyExtended;
+  };
 }

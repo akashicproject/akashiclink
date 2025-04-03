@@ -35,6 +35,7 @@ export const urls = {
   secret: 'create-wallet-secret',
   error: 'error',
   us2: 'us2',
+  createWalletPassword: 'create-wallet-password',
   walletCreated: 'wallet-created',
   secretConfirm: 'secret-confirm',
   secretPhraseImport: 'secret-phrase-import',
