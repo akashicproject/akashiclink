@@ -49,7 +49,7 @@ export const AasListingSwitch = ({
   const updateAASList = async () => {
     try {
       setIsLoading(true);
-      if (name && activeAccount?.identity) {
+      if (name && activeAccount?.identity && cacheOtk) {
         const newValue = !isListed ? activeAccount.identity : null;
         const verifyUpdateAcnsResponse: IVerifyUpdateAcnsResponse =
           await OwnersAPI.verifyUpdateAcns({

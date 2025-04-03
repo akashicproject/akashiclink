@@ -182,6 +182,10 @@ export function SettingsNaming() {
   const removeAcns = async (name: string) => {
     setLoading(true);
     try {
+      if (!cacheOtk) {
+        throw new Error('GenericFailureMsg');
+      }
+
       await OwnersAPI.updateAcns({ name, newValue: null });
       const verifyUpdateAcnsResponse: IVerifyUpdateAcnsResponse =
         await OwnersAPI.verifyUpdateAcns({
@@ -217,6 +221,10 @@ export function SettingsNaming() {
   const confirmUpdate = async () => {
     setLoading(true);
     try {
+      if (!cacheOtk) {
+        throw new Error('GenericFailureMsg');
+      }
+
       await OwnersAPI.updateAcns({
         name: selectedName,
         newValue: newValue,

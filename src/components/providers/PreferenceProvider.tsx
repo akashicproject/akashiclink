@@ -211,13 +211,10 @@ export const useFocusCurrencyDetail: () => IWalletCurrency = () => {
 };
 
 export const useCacheOtk: () => [
-  FullOtk,
+  FullOtk | null,
   Dispatch<FullOtk | null> | undefined
 ] = () => {
   const { cacheOtk, setCacheOtk } = useContext(CacheOtkContext);
-  if (!cacheOtk) {
-    throw new Error('No otk stored!');
-  }
 
   return [cacheOtk, setCacheOtk];
 };

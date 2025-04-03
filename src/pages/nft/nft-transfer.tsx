@@ -150,6 +150,9 @@ export function NftTransfer() {
     };
     setLoading(true);
     try {
+      if (!cacheOtk) {
+        throw new Error('GenericFailureMsg');
+      }
       const verifiedNft = await OwnersAPI.verifyNftTransaction(payload);
       // "Hack" used when signing nft transactions, identity must be something else than the otk identity
       const signerOtk = {
