@@ -326,5 +326,12 @@
   "SelectedPreferredNodeWarning": "The selected node is not reachable. Selecting this node may result in a failed connection to AkashicChain. Would you like to proceed?",
   "Unreachable": "Unreachable",
   "UnreachableNode": "Unreachable Node",
-  "SmartScan": "Smart Scan"
+  "ViewHistory": "View History",
+  "SmartScan": "Smart Scan",
+  "ScanAddressReport": "Scan an Address for an Analysis report",
+  "NewScan": "New Scan",
+  "Moderate": "Moderate",
+  "High": "High",
+  "Low": "Low",
+  "Severe": "Severe"
 }

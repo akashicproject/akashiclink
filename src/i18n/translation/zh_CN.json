@@ -326,5 +326,12 @@
   "SelectedPreferredNodeWarning": "所选节点无法连接。选择该节点可能导致与 AkashicChain 的连接失败。您想继续吗？",
   "Unreachable": "无法联系",
   "UnreachableNode": "无法连接节点",
-  "SmartScan": "智能扫描"
+  "ViewHistory": "查看历史",
+  "SmartScan": "智能扫描",
+  "ScanAddressReport": "扫描地址获取分析报告",
+  "NewScan": "新扫描",
+  "Moderate": "中等",
+  "High": "高",
+  "Low": "低",
+  "Severe": "严重"
 }

@@ -6,9 +6,9 @@ export const Divider = styled.div<{
   borderWidth?: string;
 }>((props) => ({
   boxSizing: 'border-box',
-  height: `${props.height || '1px'}`,
-  borderTop: `${props.borderWidth || '1px'} solid ${
-    props.borderColor || '#D9D9D9'
+  height: `${props.height ?? '1px'}`,
+  borderTop: `${props.borderWidth ?? '1px'} solid ${
+    props.borderColor ?? '#D9D9D9'
   }`,
   marginTop: '8px',
   marginBottom: '8px',
