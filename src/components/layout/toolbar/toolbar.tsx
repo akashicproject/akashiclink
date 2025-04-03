@@ -19,7 +19,7 @@ export function Toolbar({ showRefresh = false }: { showRefresh?: boolean }) {
       <div style={{ flex: 1 }}>
         <CopyBox
           compact
-          text={displayLongText(activeAccount?.identity ?? '', 24)}
+          text={displayLongText(activeAccount?.identity ?? '', 28, false, true)}
           copyText={activeAccount?.identity ?? ''}
         />
       </div>
