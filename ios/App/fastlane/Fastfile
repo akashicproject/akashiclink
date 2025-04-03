@@ -1,0 +1,152 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+slack_url = ENV['SLACK_URL']
+
+platform :ios do
+  desc "Build ipa file locally"
+  lane :buildIpa do
+    begin
+      previous_version_code = get_build_number()
+
+      next_version_code = previous_version_code.to_i + 1
+      next_release_name = "#{ENV['MAJOR_VERSION']}.#{ENV['MINOR_VERSION']}.#{ENV['PATCH_VERSION']}"
+
+      identifier = get_info_plist_value(
+        path: "App/Info.plist",
+        key: "CFBundleIdentifier"
+      )
+
+      set_info_plist_value(
+        path: "App/Info.plist",
+        key: "CFBundleIdentifier",
+        value: ENV["PACKAGE_NAME"]
+      )
+      set_info_plist_value(
+        path: "App/Info.plist",
+        key: "CFBundleDisplayName",
+        value: ENV["APP_NAME"]
+      )
+      set_info_plist_value(
+        path: "App/Info.plist",
+        key: "CFBundleShortVersionString",
+        value: next_release_name
+      )
+      set_info_plist_value(
+        path: "App/Info.plist",
+        key: "CFBundleVersion",
+        value: "#{next_version_code}"
+      )
+
+      cert(
+        api_key_path: "fastlane/key/apple-connect-api-key.json",
+        output_path: "fastlane/key/"
+      )
+      sigh(
+        api_key_path: "fastlane/key/apple-connect-api-key.json",
+        output_path: "fastlane/key/",
+        app_identifier: ENV["PACKAGE_NAME"]
+      )
+      update_project_provisioning(
+        xcodeproj: "App.xcodeproj",
+      )
+      build_app(
+        scheme: "App",
+        output_name: "#{ENV['FLAVORS']}-#{next_release_name}-(#{next_version_code})",
+        export_options: {
+          provisioningProfiles: {
+            "com.staging.akashicwallet.app" => "com.staging.akashicwallet.app AppStore",
+            "com.akashicwallet.app" => "com.akashicwallet.app AppStore"
+          }
+        }
+      )
+    rescue => exception
+      puts("Failed! #{exception.message}")
+    end
+  end
+
+  desc "Build a new release and upload to Apple Connect"
+  lane :internal do
+    begin
+      previous_version_code = get_build_number()
+
+      next_version_code = previous_version_code.to_i + 1
+      next_release_name = "#{ENV['MAJOR_VERSION']}.#{ENV['MINOR_VERSION']}.#{ENV['PATCH_VERSION']}"
+
+      slack(
+        slack_url: slack_url,
+        pretext: ":large_yellow_circle: :apple_mac: *[#{ENV['PACKAGE_NAME']}]* *[Testflight]* New ios build deployment in progress. Attempting to deploy version #{next_release_name}",
+        default_payloads: []
+      )
+      buildIpa
+      upload_to_testflight(
+        api_key_path: "fastlane/key/apple-connect-api-key.json",
+        app_identifier: ENV["PACKAGE_NAME"],
+        ipa: "output/#{ENV['FLAVORS']}-#{next_release_name}-(#{next_version_code}).ipa"
+      )
+      slack(
+        slack_url: slack_url,
+        message: ":large_green_circle: :party-apple: New build deployed successfully!",
+        success: true,
+        default_payloads: [:git_branch, :last_git_commit, :git_author],
+        attachment_properties: {
+          fields: [
+            {
+              title: "Package Name",
+              value: ENV['PACKAGE_NAME'],
+              short: false
+            },
+            {
+              title: "Version Code",
+              value: next_version_code,
+              short: true
+            },
+            {
+              title: "Release Name",
+              value: next_release_name,
+              short: true
+            },
+            {
+              title: "Build Date",
+              value: Time.new.to_s,
+              short: false
+            }
+          ]
+        }
+      )
+    rescue => exception
+      slack(
+        slack_url: slack_url,
+        message: ":red_circle: :apple-fire: Failed to deploy the build!",
+        success: false,
+        default_payloads: [:git_branch, :last_git_commit, :git_author],
+        attachment_properties: {
+          fields: [{
+              title: "Build Date",
+              value: "#{Time.new.to_s}",
+              short: true
+            },
+            {
+              title: "Error message",
+              value: "```#{exception.message}```",
+              short: false
+            }
+          ]
+        }
+      )
+    end
+  end
+end

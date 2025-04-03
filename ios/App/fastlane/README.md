@@ -1,5 +1,4 @@
-fastlane documentation
-----
+## fastlane documentation
 
 # Installation
 
@@ -14,30 +13,6 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 # Available Actions
 
 ## iOS
-
-### ios getNextVersionCode
-
-```sh
-[bundle exec] fastlane ios getNextVersionCode
-```
-
-
-
-### ios getNextReleaseName
-
-```sh
-[bundle exec] fastlane ios getNextReleaseName
-```
-
-
-
-### ios updateManifest
-
-```sh
-[bundle exec] fastlane ios updateManifest
-```
-
-
 
 ### ios buildIpa
 
@@ -55,7 +30,7 @@ Build ipa file locally
 
 Build a new release and upload to Apple Connect
 
-----
+---
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
 

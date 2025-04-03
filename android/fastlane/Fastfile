@@ -38,6 +38,7 @@ platform :android do
     )
   end
 
+  desc "Build a new release and upload to play store"
   lane :internal do
     begin
       previous_version_code = google_play_track_version_codes(
@@ -128,16 +129,6 @@ platform :android do
         }
       )
     end
-  end
-
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    gradle(task: "clean assembleRelease")
-    slack(
-      slack_url: slack_url,
-      message: 'Failed to distributed a new beta build',
-      success: false,
-    )
   end
 
   desc "Deploy a new version to the Google Play"
