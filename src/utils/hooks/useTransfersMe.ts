@@ -6,6 +6,7 @@ import { TransactionResult, TransactionStatus } from '@helium-pay/backend';
 import buildURL from 'axios/unsafe/helpers/buildURL';
 import useSWR from 'swr';
 
+import { REFRESH_INTERVAL } from '../../constants';
 import fetcher from '../ownerFetcher';
 import { useOwner } from './useOwner';
 
@@ -15,7 +16,7 @@ export const useTransfersMe = (params?: IClientTransactionRecord) => {
     authenticated ? buildURL(`/key/transfers/me`, params) : '',
     fetcher,
     {
-      refreshInterval: 1000 * 10, // refresh interval every 10secs
+      refreshInterval: REFRESH_INTERVAL,
     }
   );
   // Dates come from backend as string so need to transform them here

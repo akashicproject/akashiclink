@@ -1,6 +1,7 @@
 import type { INftResponse } from '@helium-pay/backend';
 import useSWR from 'swr';
 
+import { REFRESH_INTERVAL } from '../../constants';
 import fetcher from '../ownerFetcher';
 import { useOwner } from './useOwner';
 
@@ -10,7 +11,7 @@ export const useNftMe = () => {
     authenticated ? `/nft/me` : '',
     fetcher,
     {
-      refreshInterval: 1000 * 10, // refresh interval every 10secs
+      refreshInterval: REFRESH_INTERVAL,
     }
   );
   return {

@@ -2,6 +2,7 @@ import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { REFRESH_BUTTON_DISABLED_TIME } from '../../constants';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
@@ -105,7 +106,11 @@ export function LoggedToolbar({
                   await mutateBalancesMe();
                   await mutateNftMe();
                 } finally {
-                  setRefreshDisabled(false);
+                  // To prevent spam of the backend, disable the refresh button for a little while
+                  setTimeout(
+                    () => setRefreshDisabled(false),
+                    REFRESH_BUTTON_DISABLED_TIME
+                  );
                 }
               }}
             >

@@ -1,6 +1,7 @@
 import type { IOwnerBalancesResponse } from '@helium-pay/backend';
 import useSWR from 'swr';
 
+import { REFRESH_INTERVAL } from '../../constants';
 import fetcher from '../ownerFetcher';
 import { useOwner } from './useOwner';
 
@@ -10,7 +11,7 @@ export const useBalancesMe = () => {
     authenticated ? `/owner/agg-balances` : '',
     fetcher,
     {
-      refreshInterval: 1000 * 10, // refreshing every 10
+      refreshInterval: REFRESH_INTERVAL,
     }
   );
   return {
