@@ -70,7 +70,7 @@ const AddressBox = styled.div({
   fontWeight: '400',
   fontSize: '12px',
   lineHeight: '16px',
-  color: '#290056',
+  color: 'var(--ion-color-primary-10)',
   border: '1px solid #958e99',
 });
 
