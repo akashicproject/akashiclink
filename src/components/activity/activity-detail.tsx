@@ -13,8 +13,8 @@ import { arrowForwardCircleOutline, copyOutline } from 'ionicons/icons';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { WalletTransactionRecord } from '../../pages/activity';
 import { Divider } from '../../pages/activity';
+import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { displayLongText } from '../../utils/long-text';
 
 const DetailColumn = styled.div({
@@ -43,7 +43,7 @@ const Link = styled.a({
 export function ActivityDetail({
   currentTransfer,
 }: {
-  currentTransfer: WalletTransactionRecord;
+  currentTransfer: ITransactionRecordForExtension;
 }) {
   const { t } = useTranslation();
   const isLayer2 = currentTransfer.layer === TransactionLayer.L2;
@@ -63,11 +63,13 @@ export function ActivityDetail({
     }
   };
 
-  const displayChainName = (currentTransfer: WalletTransactionRecord) => {
-    if (!currentTransfer.currency.network) return;
+  const displayChainName = (
+    currentTransfer: ITransactionRecordForExtension
+  ) => {
+    if (!currentTransfer.currency.chain) return;
     if (currentTransfer.layer === TransactionLayer.L2)
       return t('Chain.AkashicChain');
-    return t(`Chain.${currentTransfer.currency.network.toUpperCase()}`);
+    return t(`Chain.${currentTransfer.currency.chain.toUpperCase()}`);
   };
 
   // TODO: once backend transaction are fetching:

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { L2Regex } from '@helium-pay/owners/src/constants/currencies';
+import { L2Regex } from '@helium-pay/backend';
 import {
   IonCol,
   IonIcon,

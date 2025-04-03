@@ -1,6 +1,6 @@
 import { IonButton, IonCard, IonCol, IonGrid, IonRow } from '@ionic/react';
 
-import type { UserWallet } from '../utils/supported-currencies';
+import type { UserWallet } from '../constants/wallets';
 
 export function SendTable({
   keyWallets,
