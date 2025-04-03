@@ -46,7 +46,7 @@ const NoDataDiv = styled.span({
 });
 
 const NoDataWrapper = styled.div({
-  height: '25vh',
+  height: '136px',
   position: 'relative',
 });
 
