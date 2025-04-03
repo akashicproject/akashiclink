@@ -67,9 +67,10 @@ const verifyUpdateAcns = (
   nfts: INft[],
   newValue?: string
 ) => {
+  // Show generic error
   if (newValue && ownerIdentity !== newValue)
     throw new Error(userConst.acnsOwnershipError);
-
+  // Show generic error
   if (acns.ownerIdentity !== ownerIdentity) {
     throw new Error(nftErrors.ownerIdentityShouldBeSame);
   }
@@ -136,10 +137,10 @@ export const AasListingSwitch = ({
         : error instanceof Error // From time-link-restriction
         ? error.message
         : '';
-
+      const timeUnits = ['hours', 'minutes', 'seconds'];
       if (errorMsg === nftErrors.onlyOneAASLinkingAllowed) {
         setAlert(errorAlertShell('OnlyOneAAS'));
-      } else {
+      } else if (timeUnits.includes(errorMsg.split(' ')[1])) {
         setAlert(
           errorAlertShell('AASLinkingFailed', {
             name,
@@ -147,6 +148,8 @@ export const AasListingSwitch = ({
             timeUnit: t(errorMsg.split(' ')[1]),
           })
         );
+      } else {
+        setAlert(errorAlertShell('GenericFailureMsg'));
       }
     } finally {
       setIsLoading(false);
