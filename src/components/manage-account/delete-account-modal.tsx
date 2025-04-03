@@ -39,6 +39,7 @@ export const DeleteAccountModal = ({
     removeLocalAccount,
     activeAccount,
     clearActiveAccount,
+    setActiveAccount,
   } = useAccountStorage();
   const logout = useLogout();
 
@@ -46,11 +47,13 @@ export const DeleteAccountModal = ({
     await removeLocalAccount(account);
 
     // if removing the last accounts save or removing the current account, logs out user
-    if (
-      localAccounts.length === 1 ||
-      activeAccount?.identity === account.identity
-    ) {
+    // If not removing last, must set active account to something else to not mess with subsequent login
+    if (localAccounts.length === 1) {
       await clearActiveAccount();
+      await logout();
+    } else if (activeAccount?.identity === account.identity) {
+      await clearActiveAccount();
+      setActiveAccount(localAccounts[0]);
       await logout();
     }
 
