@@ -217,7 +217,7 @@ export const useAccountStorage = () => {
   const localAccountsWithName: LocalAccount[] = localAccounts.map(
     (account) => ({
       ...account,
-      accountName: `Wallet ${account.identity.slice(-8)}`,
+      accountName: `Account ${account.identity.slice(-8)}`,
     })
   );
 
