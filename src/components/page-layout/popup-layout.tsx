@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { IonGrid, IonHeader, IonPage } from '@ionic/react';
-import React, { type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import { PopupHeader } from '../../popup/popup-header';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';

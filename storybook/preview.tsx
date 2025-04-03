@@ -72,6 +72,13 @@ const preview: Preview = {
             height: '600px',
           },
         },
+        popup: {
+          name: 'Extension Popup',
+          styles: {
+            width: '360px',
+            height: '720px',
+          },
+        },
         iphone6: INITIAL_VIEWPORTS.iphone6,
         iphonex: INITIAL_VIEWPORTS.iphonex,
         iphonexr: INITIAL_VIEWPORTS.iphonexr,

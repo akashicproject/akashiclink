@@ -1,3 +1,4 @@
+import type { StoryContext, StoryFn } from '@storybook/react';
 import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../src/redux/app/hooks';
@@ -7,7 +8,7 @@ import { themeType } from '../../src/theme/const';
 /**
  * Toggle theme when user toggle toolbar
  */
-export const withTheme = (Story: any, context: any) => {
+export const withTheme = (Story: StoryFn, context: StoryContext) => {
   const dispatch = useAppDispatch();
   const storedTheme = useAppSelector(selectTheme);
 

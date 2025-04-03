@@ -1,16 +1,13 @@
+import type { StoryContext, StoryFn } from '@storybook/react';
 import { Suspense, useEffect } from 'react';
 import { I18nextProvider } from 'react-i18next';
 
 import i18n from '../../src/i18n/i18n';
 
-/**
- * Inject translations into a story
- */
-export const withI18next = (Story: any, context: any) => {
+export const withI18next = (Story: StoryFn, context: StoryContext) => {
   const { locale } = context.globals;
 
-  // When the locale global changes
-  // Set the new locale in i18n
+  // When the locale global changes, Set the new locale in i18n
   useEffect(() => {
     i18n.changeLanguage(locale);
   }, [locale]);

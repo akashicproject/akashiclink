@@ -43,12 +43,16 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/*.stories.@(js|ts|jsx|tsx)'],
+      files: ['**/*.stories.@(js|ts|jsx|tsx)', 'storybook/*.@(js|ts|tsx|jsx)'],
       rules: {
         'import/no-default-export': 'off',
-        '@typescript-eslint/no-explicit-any': 'off',
         'react/display-name': 'off',
-        'react-hooks/rules-of-hooks': 'off',
+      },
+    },
+    {
+      files: ['storybook/providers/*.@(js|ts|tsx|jsx)'],
+      rules: {
+        'react-hooks/rules-of-hooks': 'off', // for having hooks within "with{Providers}"
       },
     },
   ],
