@@ -60,6 +60,8 @@ export const unpackRequestErrorMessage = (error: unknown) => {
       return 'WalletIsBusy';
     case keyError.transactionTimedOut:
       return 'TransactionTimeOut';
+    case otherError.signingError:
+      return 'ProviderError';
     default:
       return 'GenericFailureMsg';
   }
