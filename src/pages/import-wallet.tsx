@@ -91,8 +91,10 @@ export function ImportWallet() {
           await lastPageStorage.getVars();
         setView(view || View.SubmitRequest);
         setEmail(email || '');
-        setOtk(otk);
-        setPrivateKey(otk.key.prv.pkcs8pem || '');
+        if (otk) {
+          setOtk(otk);
+          setPrivateKey(otk.key.prv.pkcs8pem || '');
+        }
         setActivationCode('');
         setPassPhrase(passPhrase || '');
       }
