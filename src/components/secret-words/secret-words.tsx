@@ -157,7 +157,17 @@ export function SecretWords({
     const sWords = value?.split(' ');
     let newWords: string[] = [];
     if (sWords?.length === 12) {
-      newWords = sWords;
+      if (words.length) {
+        words.forEach((w, i) => {
+          if (!w) {
+            newWords[i] = sWords[i];
+          } else {
+            newWords[i] = words[i];
+          }
+        });
+      } else {
+        newWords = sWords;
+      }
     } else {
       newWords = [
         ...words.slice(0, i),
