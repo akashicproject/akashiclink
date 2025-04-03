@@ -5,19 +5,11 @@ import { IonCol, IonImg, IonRow, isPlatform } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { useAppDispatch } from '../app/hooks';
 import { PublicLayout } from '../components/layout/public-layout';
 import { Spinner } from '../components/loader/spinner';
+import { useLogout } from '../components/logout';
 import CreateOrImportForm from '../components/public/create-or-import-form';
 import { LoginForm } from '../components/public/login-form';
-import {
-  createWalletUrls,
-  importWalletUrls,
-  migrateWalletUrls,
-} from '../constants/urls';
-import { onClear as onCreateWalletClear } from '../slices/createWalletSlice';
-import { onClear as onImportWalletClear } from '../slices/importWalletSlice';
-import { onClear as onMigrateWalletClear } from '../slices/migrateWalletSlice';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 
 /**
@@ -32,7 +24,7 @@ export function AkashicPayMain() {
   const { localAccounts } = useAccountStorage();
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(true);
-  const dispatch = useAppDispatch();
+  const logout = useLogout();
 
   useEffect(() => {
     const redirectToLastLocation = async () => {
@@ -42,10 +34,8 @@ export function AkashicPayMain() {
       });
       const lastLocation = JSON.parse(lastLocationJson?.value || '{}');
       if (lastLocation?.pathname) {
-        if (shouldClearLocalStorage(lastLocation.pathname)) {
-          dispatch(onCreateWalletClear());
-          dispatch(onImportWalletClear());
-          dispatch(onMigrateWalletClear());
+        if (isPlatform('ios') || isPlatform('android')) {
+          logout();
         } else {
           history.replace(lastLocation.pathname, lastLocation.state);
         }
@@ -75,22 +65,3 @@ export function AkashicPayMain() {
     </PublicLayout>
   );
 }
-
-const shouldClearLocalStorage = (pathname: string) => {
-  if (isPlatform('ios') || isPlatform('android')) {
-    const pathnameParts = pathname.split('/');
-    const lastPartOfPathname = pathnameParts[pathnameParts.length - 1];
-    if (
-      (
-        [
-          ...createWalletUrls,
-          ...importWalletUrls,
-          ...migrateWalletUrls,
-        ] as string[]
-      ).includes(lastPartOfPathname)
-    ) {
-      return true;
-    }
-  }
-  return false;
-};

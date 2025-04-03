@@ -44,22 +44,3 @@ export const urls = {
   migrateWalletNotice: 'migrate-wallet-notice',
   migrateWalletComplete: 'migrate-wallet-complete',
 } as const;
-
-export const createWalletUrls = [
-  urls.createWalletPassword,
-  urls.secret,
-  urls.secretConfirm,
-];
-export const importWalletUrls = [
-  urls.importWalletPassword,
-  urls.keyPairImport,
-  urls.secretPhraseImport,
-  urls.selectImportMethod,
-];
-export const migrateWalletUrls = [
-  urls.migrateWalletNotice,
-  urls.migrateWalletSecret,
-  urls.migrateWalletSecretConfirm,
-  urls.migrateWalletOldPassword,
-  urls.migrateWalletPassword,
-];
