@@ -33,7 +33,7 @@ export const ListLabelValueItem: FC<ListLabelValueRowProps> = ({
         </span>
       </IonLabel>
       <IonNote
-        className={`ion-text-size-${valueSize} ion-flex-direction-column ion-display-flex ${
+        className={`ion-text-size-${valueSize} ion-flex-direction-column ion-display-flex ion-no-margin ${
           valueBold ? 'ion-text-bold' : ''
         }`}
         slot={'end'}

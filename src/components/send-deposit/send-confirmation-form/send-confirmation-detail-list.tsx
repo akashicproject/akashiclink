@@ -7,6 +7,7 @@ import { IonItem, IonText } from '@ionic/react';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
 
+import { getPrecision } from '../../../utils/formatAmount';
 import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
 import { displayLongText } from '../../../utils/long-text';
 import { L2Icon } from '../../common/chain-icon/l2-icon';
@@ -47,8 +48,6 @@ export const SendConfirmationDetailList = ({
     validatedAddressPair?.userInputToAddress
   );
 
-  const precision = !isL2 || !isCurrencyTypeToken ? 6 : 2;
-
   // Calculate total Amount
   const totalAmount =
     txns?.reduce((accm, { amount }) => {
@@ -67,6 +66,11 @@ export const SendConfirmationDetailList = ({
   const totalAmountWithFee = totalAmount
     .add(internalFee)
     .add(isCurrencyTypeToken ? Big(0) : totalFee);
+
+  const precision = getPrecision(
+    totalAmount.toString(),
+    totalFee.toString() ?? internalFee.toString() ?? '0'
+  );
 
   const getUrl = (
     type: 'account' | 'transaction',

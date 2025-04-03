@@ -3,6 +3,7 @@ import { IonCol, IonRow } from '@ionic/react';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
 
+import { getPrecision } from '../../../utils/formatAmount';
 import { displayLongText } from '../../../utils/long-text';
 import { L2Icon } from '../../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../../common/chain-icon/network-icon';
@@ -23,12 +24,12 @@ export const SendDetailBox = ({
   currencySymbol: string;
 }) => {
   const { t } = useTranslation();
-  const { chain, token } = useFocusCurrencyDetail();
+  const { chain } = useFocusCurrencyDetail();
 
   const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
-  const isCurrencyTypeToken = typeof token !== 'undefined';
 
-  const precision = !isL2 || !isCurrencyTypeToken ? 6 : 2;
+  // fee is internal-fee here
+  const precision = getPrecision(amount, fee ?? '0');
 
   return (
     <IonRow className={'ion-grid-row-gap-sm'}>
