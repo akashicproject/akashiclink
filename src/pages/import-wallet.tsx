@@ -82,7 +82,6 @@ export function ImportWallet() {
       }
     );
   }, []);
-
   /**
    * Uploads user credentials in a request to import an
    * account
@@ -90,6 +89,7 @@ export function ImportWallet() {
   async function requestImportAccount() {
     try {
       if (privateKey) {
+        // adding delay
         const { email } = await OwnersAPI.requestActivationCode({
           activationType: ActivationRequestType.ImportWalletAccount,
           payload: { privateKey },
@@ -99,7 +99,6 @@ export function ImportWallet() {
           setAlert(errorAlertShell(t('UserDoesNotExist')));
           return;
         }
-
         setEmail(email);
         setView(View.TwoFa);
         setTimerReset(timerReset + 1);
@@ -134,12 +133,8 @@ export function ImportWallet() {
         };
         addLocalAccount(importedAccount);
         setActiveAccount(importedAccount);
-        setTimeout(() => {
-          logout().then(() => {
-            setView(View.Submit);
-            isPlatform('mobile') && location.reload();
-          });
-        }, 500);
+        await logout();
+        localStorage.setItem('spinner', 'true');
       }
     } catch (error) {
       setAlertPage2(errorAlertShell(t(unpackRequestErrorMessage(error))));

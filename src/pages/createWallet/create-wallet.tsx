@@ -20,6 +20,7 @@ import {
 import { PurpleButton, TextButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
+import { Spinner } from '../../components/loader/spinner';
 import { useLogout } from '../../components/logout';
 import { OtkBox } from '../../components/otk-box/otk-box';
 import {
@@ -37,7 +38,7 @@ import {
   NavigationPriority,
   ResetPageButton,
 } from '../../utils/last-page-storage';
-import { CreatingWallet } from './creating-wallet';
+import { delay } from '../../utils/timer-function';
 
 enum CreateWalletView {
   RequestAccount = 'RequestAccount',
@@ -68,7 +69,6 @@ export function CreateWallet() {
   }, []);
 
   const [view, setView] = useState(CreateWalletView.RequestAccount);
-
   /** Tracking user input */
   const [email, setEmail] = useState<string>();
   const validateEmail = (value: string) => !!value.match(userConst.emailRegex);
@@ -138,7 +138,6 @@ export function CreateWallet() {
       }
     } else setAlertRequest(errorAlertShell(t('InvalidEmail')));
   }
-
   /**
    * Code in email is submitted to backend along with password to use
    * Wallets are created and user is moved to "Activation" screen
@@ -152,9 +151,8 @@ export function CreateWallet() {
       validatePassword(password)
     ) {
       // Submit request and display "creating account loader"
-      setCreatingAccount(true);
-
       try {
+        setCreatingAccount(true);
         const createAccountResponse = await OwnersAPI.activateNewAccount({
           lang: i18n.language as Language,
           password,
@@ -164,7 +162,6 @@ export function CreateWallet() {
           // TODO: add proper social recovery
           socialRecoveryEmail: 'test@mail.com',
         });
-
         // Complete the create-wallet flow
         await lastPageStorage.clear();
 
@@ -186,6 +183,7 @@ export function CreateWallet() {
           message = e.response?.data?.message || message;
         setAlertActivate(errorAlertShell(message));
       } finally {
+        await delay(2500);
         setCreatingAccount(false);
       }
     } else setAlertActivate(errorAlertShell(t('PasswordHelperText')));
@@ -210,10 +208,51 @@ export function CreateWallet() {
       />
     </IonCol>
   );
-
   return (
     <PublicLayout className="vertical-center">
+      {creatingAccount && <Spinner header={'CreatingYourWallet'} />}
       <MainGrid>
+        {view === CreateWalletView.AccountCreated && (
+          <>
+            <IonRow>
+              <IonCol>
+                <h2>{t('WalletCreated')}</h2>
+              </IonCol>
+            </IonRow>
+            <IonRow style={{ marginBottom: '32px' }}>
+              <IonCol>
+                <h6>{t('SaveKey')}</h6>
+              </IonCol>
+            </IonRow>
+            <IonRow class="ion-justify-content-center">
+              <IonCol>
+                <OtkBox
+                  label={t('PublicAddress')}
+                  text={newAccount?.identity}
+                  withCopy={false}
+                />
+              </IonCol>
+            </IonRow>
+            <IonRow class="ion-justify-content-center">
+              <IonCol>
+                <OtkBox label={t('PrivateKey')} text={newAccount?.privateKey} />
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                <PurpleButton
+                  expand="block"
+                  onClick={async () => {
+                    setView(CreateWalletView.RequestAccount);
+                    await logout();
+                  }}
+                >
+                  {t('Continue')}
+                </PurpleButton>
+              </IonCol>
+            </IonRow>
+          </>
+        )}
         {view !== CreateWalletView.AccountCreated && (
           <IonRow>
             <IonCol>
@@ -250,7 +289,6 @@ export function CreateWallet() {
             </IonCol>
           </IonRow>
         )}
-        {creatingAccount && <CreatingWallet />}
         {view === CreateWalletView.RequestAccount && (
           <>
             <IonRow>
@@ -341,49 +379,6 @@ export function CreateWallet() {
                   disabled={!password || !confirmPassword || !activationCode}
                 >
                   {t('Confirm')}
-                </PurpleButton>
-              </IonCol>
-            </IonRow>
-          </>
-        )}
-        {view === CreateWalletView.AccountCreated && (
-          <>
-            <IonRow>
-              <IonCol>
-                <h2>{t('WalletCreated')}</h2>
-              </IonCol>
-            </IonRow>
-            <IonRow style={{ marginBottom: '32px' }}>
-              <IonCol>
-                <h6>{t('SaveKey')}</h6>
-              </IonCol>
-            </IonRow>
-            <IonRow class="ion-justify-content-center">
-              <IonCol>
-                <OtkBox
-                  label={t('PublicAddress')}
-                  text={newAccount?.identity}
-                  withCopy={false}
-                />
-              </IonCol>
-            </IonRow>
-            <IonRow class="ion-justify-content-center">
-              <IonCol>
-                <OtkBox label={t('PrivateKey')} text={newAccount?.privateKey} />
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <PurpleButton
-                  expand="block"
-                  onClick={() => {
-                    setView(CreateWalletView.RequestAccount);
-                    logout().then(() => {
-                      isPlatform('mobile') && location.reload();
-                    });
-                  }}
-                >
-                  {t('Continue')}
                 </PurpleButton>
               </IonCol>
             </IonRow>

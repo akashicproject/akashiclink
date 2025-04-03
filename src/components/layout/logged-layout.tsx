@@ -5,14 +5,17 @@ import {
   IonPage,
   IonRouterLink,
   isPlatform,
+  useIonViewWillEnter,
 } from '@ionic/react';
-import { type ReactNode, useEffect } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { useOwner } from '../../utils/hooks/useOwner';
 import { lastPageStorage } from '../../utils/last-page-storage';
+import { delay } from '../../utils/timer-function';
+import { Spinner } from '../loader/spinner';
 import { LoggedToolbar } from '../logged/logged-toolbar';
 import { LoggedHeader } from './logged-header';
 
@@ -61,8 +64,21 @@ export function LoggedLayout({
     [loginCheck.isLoading]
   );
 
+  const [spin, setSpin] = useState(false);
+
+  useIonViewWillEnter(async () => {
+    const isSpinner = localStorage.getItem('spinner');
+    if (isSpinner === 'true') {
+      setSpin(true);
+      await delay(4500);
+      setSpin(false);
+      localStorage.removeItem('spinner');
+    }
+  });
+
   return (
     <IonPage>
+      {spin && <Spinner />}
       <LoggedHeader loggedIn={true} />
       <IonContent>
         <ChainDiv

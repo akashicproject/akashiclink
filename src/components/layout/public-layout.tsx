@@ -1,8 +1,10 @@
 import './public-layout.scss';
 
-import { IonPage } from '@ionic/react';
-import type { ReactNode } from 'react';
+import { IonPage, useIonViewWillEnter } from '@ionic/react';
+import { type ReactNode, useState } from 'react';
 
+import { delay } from '../../utils/timer-function';
+import { Spinner } from '../loader/spinner';
 import { Footer } from './footer';
 import { LoggedHeader } from './logged-header';
 
@@ -17,8 +19,20 @@ export function PublicLayout({
   className?: string;
   children: ReactNode;
 }) {
+  const [spin, setSpin] = useState(false);
+  useIonViewWillEnter(async () => {
+    const isSpinner = localStorage.getItem('spinner');
+    if (isSpinner === 'true') {
+      setSpin(true);
+      await delay(4500);
+      setSpin(false);
+      localStorage.removeItem('spinner');
+    }
+  });
+
   return (
     <IonPage>
+      {spin && <Spinner />}
       <div className="vertical public-layout">
         <LoggedHeader />
         <div className={`content ${className}`}>{children}</div>

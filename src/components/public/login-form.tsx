@@ -1,4 +1,4 @@
-import { IonCol, IonRow, isPlatform } from '@ionic/react';
+import { IonCol, IonRow, isPlatform, useIonViewWillLeave } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -18,6 +18,8 @@ import { OwnersAPI } from '../../utils/api';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
+import { Spinner } from '../loader/spinner';
+import { delay } from '../../utils/timer-function';
 
 // TODO: re-enable once password recovery loop is implemented
 // const HelpLink = styled.a({
@@ -34,7 +36,7 @@ export function LoginForm() {
   const history = useHistory();
   const { t } = useTranslation();
   const [alert, setAlert] = useState(formAlertResetState);
-
+  const [isLoading, setIsLoading] = useState(false);
   const { localAccounts, activeAccount, setActiveAccount } =
     useAccountStorage();
   const [selectedAccount, setSelectedAccount] = useState<LocalAccount>();
@@ -75,6 +77,8 @@ export function LoginForm() {
    */
   const login = async () => {
     try {
+      setIsLoading(true);
+      // await delay(5000);
       if (selectedAccount && password) {
         await OwnersAPI.login({
           username: selectedAccount.username,
@@ -85,10 +89,13 @@ export function LoginForm() {
           id: selectedAccount.username,
         });
         // Set the login account
+        setIsLoading(false);
         setActiveAccount(selectedAccount);
+        localStorage.setItem('spinner', 'true');
         history.push(akashicPayPath(urls.loggedFunction));
       }
     } catch (error) {
+      setIsLoading(false);
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
     }
   };
@@ -122,6 +129,7 @@ export function LoginForm() {
           </PurpleButton>
         </IonCol>
       </IonRow>
+      {/* {isLoading && <Spinner />} */}
       {/* TODO: re-enable once password recovery loop is implemented */}
       {/* <IonRow style={{ marginTop: '-10px' }}>
         <IonCol>

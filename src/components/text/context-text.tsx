@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
  */
 export const ContentText = styled.span({
   fontWeight: 700,
-  fontSize: '16px',
+  fontSize: '18px',
   lineHeight: '24px',
   color: 'var(--ion-color-primary-10)',
 });
