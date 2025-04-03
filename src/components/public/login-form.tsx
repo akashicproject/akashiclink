@@ -23,6 +23,10 @@ import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-mess
 import { signImportAuth } from '../../utils/otk-generation';
 import { Spinner } from '../loader/spinner';
 import { useOwner } from '../../utils/hooks/useOwner';
+import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
+import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
+import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
+import { useNftMe } from '../../utils/hooks/useNftMe';
 
 /**
  * Form allowing user to login
@@ -45,6 +49,10 @@ export function LoginForm() {
   const [selectedAccount, setSelectedAccount] = useState<LocalAccount>();
   const [password, setPassword] = useState<string>();
   const { owner, mutateOwner } = useOwner();
+  const { mutateTransfersMe } = useTransfersMe();
+  const { mutateNftTransfersMe } = useNftTransfersMe();
+  const { mutateBalancesMe } = useBalancesMe();
+  const { mutateNftMe } = useNftMe();
 
   addPrefixToAccounts();
 
@@ -111,6 +119,10 @@ export function LoginForm() {
       // Set the login account
       setActiveAccount(selectedAccount);
       await mutateOwner();
+      await mutateTransfersMe();
+      await mutateNftTransfersMe();
+      await mutateBalancesMe();
+      await mutateNftMe();
       history.replace(akashicPayPath(urls.loggedFunction));
       setSelectedAccount(undefined);
       setPassword('');

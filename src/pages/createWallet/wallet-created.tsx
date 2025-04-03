@@ -10,7 +10,11 @@ import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { onClear } from '../../slices/createWalletSlice';
+import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
+import { useNftMe } from '../../utils/hooks/useNftMe';
+import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useOwner } from '../../utils/hooks/useOwner';
+import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 
 export const StyledA = styled.a({
   fontSize: '12px',
@@ -25,6 +29,10 @@ export const WalletCreated = () => {
   const { t } = useTranslation();
   const history = useHistory();
   const { mutateOwner } = useOwner();
+  const { mutateTransfersMe } = useTransfersMe();
+  const { mutateNftTransfersMe } = useNftTransfersMe();
+  const { mutateBalancesMe } = useBalancesMe();
+  const { mutateNftMe } = useNftMe();
   const dispatch = useAppDispatch();
 
   return (
@@ -83,6 +91,10 @@ export const WalletCreated = () => {
               onClick={async () => {
                 dispatch(onClear());
                 mutateOwner();
+                await mutateTransfersMe();
+                await mutateNftTransfersMe();
+                await mutateBalancesMe();
+                await mutateNftMe();
                 history.push(akashicPayPath(urls.loggedFunction));
               }}
             >

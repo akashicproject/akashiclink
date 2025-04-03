@@ -9,7 +9,9 @@ export const useNftMe = () => {
   const { data, error, mutate } = useSWR(
     authenticated ? `/nft/me` : '',
     fetcher,
-    {}
+    {
+      refreshInterval: 1000 * 10, // refresh interval every 10secs
+    }
   );
   return {
     nfts: (data || []) as INftResponse[],

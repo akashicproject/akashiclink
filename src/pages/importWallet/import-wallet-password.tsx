@@ -15,8 +15,12 @@ import {
   selectImportWalletForm,
   selectOtk,
 } from '../../slices/importWalletSlice';
+import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { useNftMe } from '../../utils/hooks/useNftMe';
+import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useOwner } from '../../utils/hooks/useOwner';
+import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 
 export const CreatePasswordInfo = styled.p({
@@ -38,6 +42,10 @@ export function ImportWalletPassword() {
   const validateConfirmPassword = (value: string) =>
     importWalletForm.password === value;
   const { mutateOwner } = useOwner();
+  const { mutateTransfersMe } = useTransfersMe();
+  const { mutateNftTransfersMe } = useNftTransfersMe();
+  const { mutateBalancesMe } = useBalancesMe();
+  const { mutateNftMe } = useNftMe();
 
   /** Scrolling on IOS */
   const { isOpen } = useKeyboardState();
@@ -73,6 +81,10 @@ export function ImportWalletPassword() {
       });
 
       await mutateOwner();
+      await mutateTransfersMe();
+      await mutateNftTransfersMe();
+      await mutateBalancesMe();
+      await mutateNftMe();
 
       history.push({
         pathname: akashicPayPath(urls.importSuccess),

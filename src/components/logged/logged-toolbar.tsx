@@ -7,6 +7,7 @@ import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { useNftMe } from '../../utils/hooks/useNftMe';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { AccountSelection } from '../account-selection/account-selection';
@@ -27,6 +28,7 @@ export function LoggedToolbar({
   const { mutateTransfersMe } = useTransfersMe();
   const { mutateNftTransfersMe } = useNftTransfersMe();
   const { mutateBalancesMe } = useBalancesMe();
+  const { mutateNftMe } = useNftMe();
   const logout = useLogout();
   const history = useHistory();
   const [storedTheme] = useTheme();
@@ -101,6 +103,7 @@ export function LoggedToolbar({
                   await mutateTransfersMe();
                   await mutateNftTransfersMe();
                   await mutateBalancesMe();
+                  await mutateNftMe();
                 } finally {
                   setRefreshDisabled(false);
                 }
