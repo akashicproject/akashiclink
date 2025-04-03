@@ -35,8 +35,8 @@ export const nitr0genNativeCoin = '#native';
 enum ProductionContracts {
   Namespace = 'akashicchain',
   Create = '50e1372f0d3805dac4a51299bb0e99960862d7d01f247e85725d99011682b8ac@1.0.0', // Only supports trx, eth, bnb + testnets
-  CreateSecondaryOtk = 'DNE',
-  CryptoTransfer = '2bae6ea681826c0307ee047ef68eb0cf53487a257c498de7d081d66de119d666@1.0.0',
+  CreateSecondaryOtk = '178106a54eec05c747a9704ea32e39fd6fa656322c92bb3ec3ba37899f25c27f@1.0.0',
+  CryptoTransfer = '2bae6ea681826c0307ee047ef68eb0cf53487a257c498de7d081d66de119d666@1.1.0',
   DiffConsensus = '94479927cbe0860a3f51cbd36230faef7d1b69974323a83c8abcc78e3d0e8dd9@1.0.0',
   Onboard = 'a456ddc07da6d46a6897d24de188e767b87a9d9f2f3c617d858aaf819e0e5bce@1.0.0',
   NFTNamespace = 'akashicnft',
