@@ -70,7 +70,17 @@ export async function signTxBody<T extends IBaseAcTransaction>(
   }
   txBody.$tx._dbIndex = parseInt(process.env.REACT_APP_REDIS_DB_INDEX);
 
+  addExpireToTxBody(txBody);
+
   return await txHandler.signTransaction(txBody, otk);
+}
+
+/** Modifies the tx in-place and also returns the modified tx */
+function addExpireToTxBody<T extends IBaseAcTransaction>(txBody: T): T {
+  // 1 Min expiry, should be plenty
+  txBody.$tx.$expire = new Date(Date.now() + 60 * 1000).toISOString();
+
+  return txBody;
 }
 
 /**
