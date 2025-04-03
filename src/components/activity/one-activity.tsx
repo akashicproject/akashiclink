@@ -14,10 +14,9 @@ import { useTranslation } from 'react-i18next';
 
 import { Divider } from '../../pages/activity';
 import { themeType } from '../../theme/const';
-import { limitDecimalPlaces } from '../../utils/conversions';
+import { formatAmount } from '../../utils/formatAmount';
 import { formatDate } from '../../utils/formatDate';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
-import { displayLongCurrencyAmount } from '../../utils/long-amount';
 import { useTheme } from '../PreferenceProvider';
 
 const L2Icon = '/shared-assets/images/PayLogo-all-white.svg';
@@ -336,10 +335,9 @@ export function OneActivity({
             }}
           >
             {/* HACK: Reduce currency symbols to a single word to fit small screen */}
-            {displayLongCurrencyAmount(
-              limitDecimalPlaces(transfer.amount || '0'),
+            {`${formatAmount(transfer.amount)} ${
               transfer?.currency?.displayName?.split('-')[0] || ''
-            )}
+            }`}
           </Amount>
         )}
       </ActivityWrapper>

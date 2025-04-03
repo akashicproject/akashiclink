@@ -17,7 +17,7 @@ import {
   compareWalletCurrencies,
   SUPPORTED_CURRENCIES_FOR_EXTENSION,
 } from '../constants/currencies';
-import { limitDecimalPlaces } from '../utils/conversions';
+import { formatAmount } from '../utils/formatAmount';
 import { useAggregatedBalances } from '../utils/hooks/useAggregatedBalances';
 import { useExchangeRates } from '../utils/hooks/useExchangeRates';
 import { useFocusCurrency, useTheme } from './PreferenceProvider';
@@ -247,7 +247,7 @@ export function SelectCoin() {
       <IonRow class="ion-margin-top">
         <IonCol class="ion-no-padding">
           <BalanceTitle>
-            {limitDecimalPlaces(aggregatedBalances.get(focusCurrency) || 0)}{' '}
+            {formatAmount(aggregatedBalances.get(focusCurrency) || 0)}{' '}
             {focusCurrency.displayName.toUpperCase()}
           </BalanceTitle>
         </IonCol>
