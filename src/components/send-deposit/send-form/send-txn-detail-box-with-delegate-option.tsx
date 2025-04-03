@@ -29,14 +29,12 @@ const StyledWhiteButton = styled(WhiteButton)<{ backgroundColor?: string }>`
 export const SendTxnDetailBoxWithDelegateOption = ({
   validatedAddressPair,
   amount,
-  fee,
   disabled,
   setAlert,
   onAddressReset,
 }: {
   validatedAddressPair: ValidatedAddressPair;
   amount: string;
-  fee: string;
   disabled: boolean;
   setAlert: Dispatch<SetStateAction<FormAlertState>>;
   onAddressReset: () => void;
@@ -128,16 +126,16 @@ export const SendTxnDetailBoxWithDelegateOption = ({
                     <Tooltip content={t('DelegatedFeeDetail')} />
                   </div>
                 }
-                value={Big(delegatedFee ?? '0').toString()}
+                value={Big(delegatedFee).toString()}
                 amount={amount}
-                fee={fee}
+                fee={delegatedFee}
                 valueShorten
               />
               <ListLabelValueAmountItem
                 label={t('Total')}
-                value={Big('0').add(amount).toString()}
+                value={Big(amount).add(delegatedFee).toString()}
                 amount={amount}
-                fee={fee}
+                fee={delegatedFee}
                 valueShorten
               />
             </IonCol>
@@ -165,7 +163,9 @@ export const SendTxnDetailBoxWithDelegateOption = ({
               )}
               <ListLabelValueItem
                 label={t('GasFee')}
-                value={t('CalculateOnNextStep')}
+                value={t(
+                  canNonDelegate ? 'CalculateOnNextStep' : 'CannotNonDelegate'
+                )}
                 valueDim
                 labelBold
                 valueShorten
@@ -174,7 +174,7 @@ export const SendTxnDetailBoxWithDelegateOption = ({
                 label={t('Total')}
                 value={amount}
                 amount={amount}
-                fee={fee}
+                fee={delegatedFee}
                 valueShorten
               />
             </IonCol>

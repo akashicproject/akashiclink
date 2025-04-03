@@ -182,7 +182,6 @@ export const SendAmountInputAndDetail = ({
         <SendTxnDetailBoxWithDelegateOption
           validatedAddressPair={validatedAddressPair}
           amount={amount}
-          fee={calculateL2Fee()}
           disabled={alert.visible}
           setAlert={setAlert}
           onAddressReset={onAddressReset}

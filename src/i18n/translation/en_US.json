@@ -152,6 +152,7 @@
   "TransactionFee": "Transaction Fee",
   "UseMax": "Use Max",
   "CalculateOnNextStep": "Calculated on next step",
+  "CannotNonDelegate": "Insufficient Balance",
   "amountLargerThenZero": "Please provide amount larger than zero",
   "showNativeCoinNeededMsg": "Please make sure you have enough {{coinSymbol}} to pay the gas.",
   "insufficientBalance": "Sorry, your {{coinSymbol}} is not enough to pay the gas.",

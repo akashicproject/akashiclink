@@ -152,6 +152,7 @@
   "TransactionFee": "交易費",
   "UseMax": "使用全部",
   "CalculateOnNextStep": "於下一步計算",
+  "CannotNonDelegate": "餘額不足",
   "amountLargerThenZero": "請提供大於零的金額",
   "showNativeCoinNeededMsg": "請確保你有足夠的{{coinSymbol}}以支付礦工費。",
   "insufficientBalance": "對不起，你沒有足夠的{{coinSymbol}}以支付礦工費。",
