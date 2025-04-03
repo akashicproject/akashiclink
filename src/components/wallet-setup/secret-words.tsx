@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { CopyIcon } from '../common/icons/copy-icon';
+import { VisibilityOnIcon } from '../common/icons/visibility-on-icon';
 
 const WordCol = styled(IonCol)`
   --ion-padding: 4px;
@@ -38,15 +39,16 @@ const WordNumber = styled(IonLabel)`
 
 type WordInputProps = {
   fillable: boolean;
+  inputVisibility: boolean;
 };
 
 const WordInput = styled(IonInput)<WordInputProps>`
    && {
     border-radius: 8px;
     border: ${(props) =>
-      props.fillable
+      !props.inputVisibility && props.fillable
         ? '2px solid var(--ion-color-primary-70)'
-        : '1px solid #7B757F'};
+        : '1px solid var(--ion-color-grey)'};
     font-size: 0.625rem;
     text-align: center;
     color: var(--ion-color-primary-10);
@@ -87,7 +89,7 @@ const MaskLabelContainer = styled.div`
   justify-content: center;
   height: 100%;
   width: 100%;
-  color: var(--ion-color-primary);
+  color: var(--secret-word-text);
   ion-label {
     font-weight: 700;
   }
@@ -95,7 +97,7 @@ const MaskLabelContainer = styled.div`
 `;
 
 const CopyClipBoardLabel = styled(IonLabel)`
-  color: var(--ion-color-primary);
+  color: var(--secret-word-text);
   font-weight: 700;
   font-size: 0.625rem;
   align-items: center;
@@ -193,10 +195,7 @@ export function SecretWords({
       <MaskContainer isHidden={isHidden}>
         {isHidden && (
           <MaskLabelContainer onClick={onHiddenBtnClick}>
-            <IonIcon
-              src={`/shared-assets/images/visibility-on.svg`}
-              style={{ height: '20px', width: '20px' }}
-            ></IonIcon>
+            <VisibilityOnIcon style={{ height: '20px', width: '20px' }} />
             <IonLabel className="ion-text-size-xxs">
               {t('MakeSureNoBodyIsLooking')}
             </IonLabel>
@@ -225,25 +224,26 @@ export function SecretWords({
                         id={`wordInput-${i}`}
                         value={words[i]}
                         type={visibility ? 'text' : 'password'}
+                        inputVisibility={inputVisibility}
                         disabled={disableInput ? initialWords[i] !== '' : false}
                         fillable={disableInput ? initialWords[i] === '' : true}
                         onIonInput={({ detail: { value } }) =>
                           onInputChange(value as string, i)
                         }
-                      ></WordInput>
+                      />
                       {inputVisibility && (
                         <IonIcon
                           src={`/shared-assets/images/visibility-${
                             visibility ? 'on' : 'off'
-                          }.svg`}
+                          }-grey.svg`}
                           onClick={() => {
                             visibilityArray[i] = !visibility;
                             setVisibilityArray([...visibilityArray]);
                           }}
                           style={{
                             cursor: 'pointer',
-                            height: '15px',
-                            width: '15px',
+                            height: '16px',
+                            width: '16px',
                             marginLeft: '4px',
                           }}
                         />
@@ -265,7 +265,7 @@ export function SecretWords({
                 onClick={handleCopy}
               >
                 <CopyIcon
-                  isPrimaryInDark
+                  isDim
                   slot="icon-only"
                   style={{
                     fontSize: '0.75rem',

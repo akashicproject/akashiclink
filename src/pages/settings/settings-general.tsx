@@ -96,7 +96,7 @@ export function SettingsGeneral() {
     },
     {
       header: t('HideSmallBalances'),
-      iconUrl: getImageIconUrl('visibility-off.svg'),
+      iconUrl: getImageIconUrl('visibility-off-primary-70.svg'),
       endComponent: (
         <div style={{ width: '60px' }}>
           <Toggle

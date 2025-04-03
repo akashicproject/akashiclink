@@ -10,7 +10,7 @@ http://ionicframework.com/docs/theming/ */
   /** primary **/
   --ion-color-primary: #1b00b3;
   --ion-color-on-primary: #ffffff;
-  --ion-color-primary-container: #1b00b3;
+  --ion-color-primary-container: #3d31f0;
   --ion-color-primary-rgb: 34, 36, 40;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
@@ -91,7 +91,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-shade: #c297ff;
   --ion-color-light-tint: #c297ff;
 
-  --ion-color-grey: #7b757f;
+  --ion-color-grey: #74777d;
 
   --ion-background-color: #ffffff;
   --ion-background-color-rgb: 243, 245, 246;
@@ -151,13 +151,14 @@ http://ionicframework.com/docs/theming/ */
   --toggle-theme-text: #0b006b;
   --ion-initial-icon-color: #1b00b3;
   --ion-popup-initial-icon-color: #1b00b3;
+  --secret-word-text: #1b00b3;
 }
 
 /** Dark Colors **/
 body.dark {
   --ion-color-primary: #c2c1ff;
   --ion-color-on-primary: #1800a7;
-  --ion-color-primary-container: #8382ff;
+  --ion-color-primary-container: #a2a2ff;
   --ion-color-primary-rgb: 244, 245, 248;
   --ion-color-primary-contrast: #1800a7;
   --ion-color-primary-contrast-rgb: 0, 0, 0;
@@ -289,6 +290,7 @@ body.dark {
   --toggle-theme-text: #0b006b;
   --ion-initial-icon-color: #a2a2ff;
   --ion-popup-initial-icon-color: #0b006b;
+  --secret-word-text: #a2a2ff;
 }
 
 /** iOS Dark Theme */
