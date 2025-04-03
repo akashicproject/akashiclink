@@ -17,6 +17,7 @@ import { getPrecision } from '../../utils/formatAmount';
 import { formatDate } from '../../utils/formatDate';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { displayLongText } from '../../utils/long-text';
+import { getNftImage } from '../../utils/nft-image-link';
 import { Divider } from '../common/divider';
 
 const ActivityWrapper = styled.div<{ hover: boolean }>((props) => ({
@@ -243,7 +244,9 @@ export function OneActivity({
               </NftItem>
             </NftName>
             <NftImage>
-              <IonImg src={transfer?.nft?.image}></IonImg>
+              <IonImg
+                src={getNftImage(transfer.nft?.streamId ?? '', '30')}
+              ></IonImg>
             </NftImage>
           </Nft>
         ) : (

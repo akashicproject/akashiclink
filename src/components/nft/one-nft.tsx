@@ -8,6 +8,7 @@ import { t } from 'i18next';
 import { useRef, useState } from 'react';
 
 import { displayLongText } from '../../utils/long-text';
+import { getNftImage } from '../../utils/nft-image-link';
 interface Props {
   nft: INft;
   select?: () => void;
@@ -118,7 +119,7 @@ export function OneNft(props: Props) {
       >
         <IonImg
           alt={props.nft?.description}
-          src={props.nft?.image}
+          src={getNftImage(props.nft.streamId)}
           class={
             props.isBig
               ? 'nft-image-big nft-img-size'
