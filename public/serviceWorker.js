@@ -45,7 +45,7 @@ const closeAllPopup = async () => {
 // ---- Upon receive single message within extension
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   // forward message to AP
-  if (sender.id === chrome.runtime.id) {
+  if (webPort && sender.id === chrome.runtime.id) {
     webPort.postMessage(request);
   }
 });

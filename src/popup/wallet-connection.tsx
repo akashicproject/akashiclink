@@ -4,7 +4,7 @@ import { getInternalError, getSdkError } from '@walletconnect/utils';
 import { type Web3WalletTypes } from '@walletconnect/web3wallet';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { sepolia } from 'viem/chains';
+import { mainnet, sepolia } from 'viem/chains';
 
 import { BorderedBox } from '../components/common/box/border-box';
 import { OutlineButton, PrimaryButton } from '../components/common/buttons';
@@ -25,7 +25,10 @@ import {
 } from '../utils/web3wallet';
 import { ConnectionBackButton } from './connection-back-button';
 
-const chain = sepolia;
+const chain =
+  process.env.REACT_APP_ENABLE_TESTNET_CURRENCIES === 'true'
+    ? sepolia
+    : mainnet;
 
 export function WalletConnection() {
   const { t } = useTranslation();
@@ -54,10 +57,19 @@ export function WalletConnection() {
   const [sessionRequest, setSessionRequest] = useState<
     Web3WalletTypes.SessionRequest | undefined
   >();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const approve = async () => {
+    setIsProcessing(true);
+
     try {
-      if (!sessionProposalId || !sessionProposal) return;
+      if (!sessionProposalId || !sessionProposal) {
+        throw new Error(EXTENSION_ERROR.WC_SESSION_NOT_FOUND);
+      }
+
+      if (!activeAccountL1Address) {
+        throw new Error(EXTENSION_ERROR.COULD_NOT_READ_ADDRESS);
+      }
 
       const approvedNamespaces = buildApproveSessionNamespace({
         sessionProposal,
@@ -84,6 +96,8 @@ export function WalletConnection() {
   };
 
   const reject = async () => {
+    setIsProcessing(true);
+
     sessionProposalId &&
       (await web3wallet?.rejectSession({
         id: sessionProposalId,
@@ -232,7 +246,7 @@ export function WalletConnection() {
               <OutlineButton
                 expand="block"
                 onClick={onClickRejectConnect}
-                disabled={!sessionProposalId}
+                disabled={!sessionProposalId || isProcessing}
               >
                 {t('Deny')}
               </OutlineButton>
@@ -241,7 +255,7 @@ export function WalletConnection() {
               <PrimaryButton
                 expand="block"
                 onClick={onClickApproveConnect}
-                disabled={!sessionProposalId}
+                isLoading={!sessionProposalId || isProcessing}
               >
                 {t('Confirm')}
               </PrimaryButton>

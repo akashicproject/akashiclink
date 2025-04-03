@@ -63,6 +63,8 @@ export const useMyTransfersInfinite = (limit = 100, query = {}) => {
   const {
     data,
     mutate: mutateMyTransfers,
+    isLoading,
+    size,
     ...response
   } = useSWRInfinite<IOwnerTransactionsResponse, Error>(
     getKey,
@@ -132,6 +134,9 @@ export const useMyTransfersInfinite = (limit = 100, query = {}) => {
     transfers: transformedTransfers,
     mutateMyTransfers,
     transactionCount: result.transactionCount,
+    isLoading: isLoading,
+    isLoadingMore: size > 0 && data && typeof data[size - 1] === 'undefined',
+    size: size,
     ...response,
   };
 };

@@ -10,7 +10,9 @@ export const WalletLock = () => {
   useEffect(() => {
     const lockAndClose = async () => {
       await logout();
-      await closeAllPopup();
+      setTimeout(async () => {
+        await closeAllPopup();
+      }, 200);
     };
 
     lockAndClose();
