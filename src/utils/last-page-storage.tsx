@@ -9,8 +9,8 @@ import { urls } from '../constants/urls';
 
 const LastPageStorage = 'last-page';
 const LastPageVarsStorage = 'last-page-vars';
-// Expire last page after 3 mins to improve security
-const expiredTime = 3 * 60 * 1000;
+// Expire last page after 30 mins to improve security
+const expiredTime = 30 * 60 * 1000;
 
 /**
  * NavigationPriority indicates if the last page user was on, should be redirected
