@@ -1,7 +1,7 @@
 import { Preferences } from '@capacitor/preferences';
 import type {
   IClientTransactionRecord,
-  ITransactionRecord,
+  IOwnerTransactionsResponse,
 } from '@helium-pay/backend';
 import {
   TransactionResult,
@@ -34,7 +34,7 @@ export const useTransfersMe = (params?: IClientTransactionRecord) => {
     data,
     mutate: mutateTransfersMe,
     ...response
-  } = useSWR<ITransactionRecord[], Error>(
+  } = useSWR<IOwnerTransactionsResponse, Error>(
     activeAccount?.identity
       ? buildURL(`/public-api/owner/transactions`, {
           identity: activeAccount?.identity,
@@ -48,7 +48,7 @@ export const useTransfersMe = (params?: IClientTransactionRecord) => {
     }
   );
 
-  const transformedTransfers = (data ?? []).map((d) => ({
+  const transformedTransfers = (data?.transactions ?? []).map((d) => ({
     ...d,
     // remove trailing zeros from amounts
     amount: d.amount.replace(/\.*0+$/, ''),

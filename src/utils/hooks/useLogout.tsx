@@ -39,7 +39,7 @@ export function useLogout(callLogout = true) {
     await mutateAccountMe(undefined, {
       revalidate: false,
     });
-    await mutateTransfersMe([], {
+    await mutateTransfersMe(undefined, {
       revalidate: false,
     });
 
