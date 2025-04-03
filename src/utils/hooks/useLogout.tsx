@@ -1,4 +1,5 @@
 import { Preferences } from '@capacitor/preferences';
+import { mutate } from 'swr';
 
 import { LAST_HISTORY_ENTRIES } from '../../constants';
 import { urls } from '../../constants/urls';
@@ -6,14 +7,8 @@ import { useAppDispatch } from '../../redux/app/hooks';
 import { setCacheOtk } from '../../redux/slices/accountSlice';
 import { historyResetStackAndRedirect } from '../../routing/history';
 import { axiosBase } from '../axios-helper';
-import { useAccountMe } from './useAccountMe';
-import { useMyTransfers } from './useMyTransfers';
-import { useOwner } from './useOwner';
 
 export function useLogout(callLogout = true) {
-  const { mutateOwner } = useOwner();
-  const { mutate: mutateAccountMe } = useAccountMe();
-  const { mutateMyTransfers } = useMyTransfers();
   const dispatch = useAppDispatch();
 
   return async () => {
@@ -32,16 +27,8 @@ export function useLogout(callLogout = true) {
       key: LAST_HISTORY_ENTRIES,
     });
 
-    // Trigger refresh of login status
-    await mutateOwner(undefined, {
-      revalidate: false,
-    });
-    await mutateAccountMe(undefined, {
-      revalidate: false,
-    });
-    await mutateMyTransfers(undefined, {
-      revalidate: false,
-    });
+    // Clear the SWR cache for every key
+    mutate((_key) => true, undefined, { revalidate: false });
 
     // completely reset router history
     historyResetStackAndRedirect(urls.akashicPay);
