@@ -36,7 +36,6 @@ import { SendResult } from '../pages/send/send-result';
 import { SendTo } from '../pages/send/send-to';
 import { Settings } from '../pages/settings/settings';
 import { SettingsBackup } from '../pages/settings/settings-backup';
-import { SettingsDelete } from '../pages/settings/settings-delete';
 import { SettingsNaming } from '../pages/settings/settings-naming';
 import { SettingsVersion } from '../pages/settings/settings-version';
 import { Us2Main } from '../pages/us2-main';
@@ -65,7 +64,6 @@ export function NavigationTree() {
       {AkashicTab.registerPage(Settings, urls.settings)}
       {AkashicTab.registerPage(RecoverCode, urls.recoverCode)}
       {AkashicTab.registerPage(SettingsBackup, urls.settingsBackup)}
-      {AkashicTab.registerPage(SettingsDelete, urls.settingsDelete)}
       {AkashicTab.registerPage(SettingsNaming, urls.settingsNaming)}
       {AkashicTab.registerPage(SettingsVersion, urls.settingsVersion)}
       {AkashicTab.registerPage(ChangePassword, urls.changePassword)}

@@ -19,7 +19,6 @@ export const urls = {
   settings: 'settings',
   send: 'send',
   settingsBackup: 'settings-backup',
-  settingsDelete: 'settings-delete',
   settingsNaming: 'settings-naming',
   settingsVersion: 'settings-version',
   changePassword: 'change-password',
