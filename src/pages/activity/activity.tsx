@@ -1,13 +1,13 @@
 import './activity.scss';
 
 import styled from '@emotion/styled';
+import { TransactionLayer } from '@helium-pay/backend';
 import {
   IonBackdrop,
   IonButton,
-  IonButtons,
   IonCard,
-  IonCardTitle,
   IonIcon,
+  IonImg,
   IonSpinner,
 } from '@ionic/react';
 import dayjs from 'dayjs';
@@ -16,18 +16,23 @@ import { alertCircleOutline, closeOutline } from 'ionicons/icons';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import type { GridComponents } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
-import { ActivityDetail } from '../../components/activity/activity-detail';
+import { NftDetail } from '../../components/activity/nft-details';
 import { OneActivity } from '../../components/activity/one-activity';
-import { OneNft } from '../../components/nft/one-nft';
+import { TransactionDetails } from '../../components/activity/transactions-details';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
+import { urls } from '../../constants/urls';
+import type { LocationState } from '../../routing/history';
+import { akashicPayPath } from '../../routing/navigation-tabs';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { formatMergeAndSortNftAndCryptoTransfers } from '../../utils/formatTransfers';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 
+const L2Icon = '/shared-assets/images/PayLogo-all-white.svg';
 export const Divider = styled.div<{
   borderColor?: string;
   height?: string;
@@ -46,26 +51,6 @@ const ListContainer = styled.div({
   paddingRight: '8px',
 }) as GridComponents['List'];
 
-// @TODO can be used when we add text.
-// export const NoActivityWrapper = styled.div({
-//   width: '100%',
-//   display: 'inline-flex',
-//   flexDirection: 'column',
-//   alignItems: 'center',
-//   gap: '8px',
-//   marginTop: '200px',
-// });
-// export const NoActivityText = styled.div({
-//   fontFamily: 'Nunito Sans',
-//   fontStyle: 'normal',
-//   fontWeight: 700,
-//   fontSize: '16px',
-//   lineHeight: '24px',
-//   color: 'var(--ion-color-primary-10)',
-// });
-const Header = styled.h2({
-  color: 'var(--ion-color-primary-dark)',
-});
 export const NoActivityWrapper = styled.div({
   width: '100%',
   display: 'inline-flex',
@@ -83,75 +68,9 @@ export const NoActivityText = styled.div({
   color: 'var(--ion-color-primary-10)',
 });
 
-export const ActivityDetailComponent = ({
-  transfer,
-  setIsOpen,
-}: {
-  transfer: ITransactionRecordForExtension;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
-  return (
-    <IonCard className="activity-card unselectable">
-      {transfer.nft ? (
-        <div>
-          <div style={{ position: 'absolute', top: 0, right: 0 }}>
-            <IonButtons slot="end">
-              <IonButton onClick={() => setIsOpen(false)}>
-                <IonIcon
-                  className="icon-button-icon icon-dark"
-                  slot="icon-only"
-                  icon={closeOutline}
-                />
-              </IonButton>
-            </IonButtons>
-          </div>
-          <OneNft
-            style={{
-              position: 'relative',
-              margin: '0 auto',
-              boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-              borderRadius: '18px',
-              display: 'block',
-            }}
-            nft={transfer.nft}
-            isNameHidden={true}
-            isAccountNameHidden={false}
-            isBig={true}
-            nftNameStyle={{
-              textAlign: 'center',
-              fontSize: '19px',
-              width: '100%',
-              margin: '10px',
-              color: 'rgb(41, 0, 86)',
-            }}
-          />
-          <Header>{t('TransactionDetails')}</Header>
-        </div>
-      ) : (
-        <IonCardTitle>
-          <div className="spread">
-            <Header>{t('ContractInteraction')}</Header>
-            <IonButtons slot="end">
-              <IonButton onClick={() => setIsOpen(false)}>
-                <IonIcon
-                  className="icon-button-icon icon-dark"
-                  slot="icon-only"
-                  icon={closeOutline}
-                />
-              </IonButton>
-            </IonButtons>
-          </div>
-        </IonCardTitle>
-      )}
-      <ActivityDetail currentTransfer={transfer} />
-    </IonCard>
-  );
-};
 export function Activity() {
   const { t } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentTransfer, setCurrentTransfer] =
-    useState<ITransactionRecordForExtension>();
+  const history = useHistory<LocationState>();
   const [transferParams, _] = useState({
     startDate: dayjs().subtract(1, 'month').toDate(),
     hideSmallTransactions: true,
@@ -164,14 +83,7 @@ export function Activity() {
     nftTransfers
   );
   return (
-    <DashboardLayout>
-      {isOpen && <IonBackdrop />}
-      {isOpen && currentTransfer && (
-        <ActivityDetailComponent
-          transfer={currentTransfer}
-          setIsOpen={setIsOpen}
-        />
-      )}
+    <DashboardLayout showSetting={false}>
       {!isLoading && !isLoadingNft ? (
         walletFormatTransfers.length ? (
           <Virtuoso
@@ -187,8 +99,14 @@ export function Activity() {
               <OneActivity
                 transfer={transfer}
                 onClick={() => {
-                  setIsOpen(true);
-                  setCurrentTransfer(transfer);
+                  history.push({
+                    pathname: akashicPayPath(urls.activityDetails),
+                    state: {
+                      activityDetails: {
+                        currentTransfer: transfer,
+                      },
+                    },
+                  });
                 }}
                 showDetail={true}
                 hasHoverEffect={true}

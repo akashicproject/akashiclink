@@ -70,7 +70,7 @@
   "Confirmed": "Confirmed",
   "Pending": "Pending",
   "Any": "Any",
-  "txHash": "L2 Tx Hash",
+  "txHash": "Tx Hash",
   "CopyTxHash": "Copy Tx Hash",
   "From": "From",
   "To": "To",
@@ -146,7 +146,7 @@
   "KeyPairBackup": "KeyPair Backup",
   "DoNotOwnNfts": "You currently do not own any NFTs",
   "Transfer": "Transfer",
-  "NSRecordWarning": "Please delete the NS record for {{nftName}} in order to initiate the transfer.",
+  "NSRecordWarning": "{{nftName}} has already been AA-Linked, therefore it is not possible to transfer this NFT. Please unlink first and proceed to transfer.",
   "GoNSSettings": "Go to NS Settings",
   "PleaseInputToSearch": "Please input Akashic Chain Address for transfer.",
   "NoSearchResult": "No Search Result",
@@ -247,5 +247,6 @@
   "WalletMigrationSuccessful": "12-word secret recovery phrase creation successful",
   "InvalidSecretPhrase": "Invalid Secret Phrase",
   "PressToReveal": "Press to reveal",
-  "AlreadyMigratedPleaseReImport": "Wallet has already been migrated, please remove your account and use your new recovery method to import"
+  "AlreadyMigratedPleaseReImport": "Wallet has already been migrated, please remove your account and use your new recovery method to import",
+  "AALinked": "AA-Linked"
 }

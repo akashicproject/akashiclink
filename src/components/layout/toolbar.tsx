@@ -20,10 +20,12 @@ export function Toolbar({
   showRefresh = false,
   showAddress = false,
   showBackButton = true,
+  showSetting = true,
 }: {
   showRefresh?: boolean;
   showAddress?: boolean;
   showBackButton?: boolean;
+  showSetting?: boolean;
 }) {
   const { mutateTransfersMe } = useTransfersMe();
   const { mutateNftTransfersMe } = useNftTransfersMe();
@@ -122,14 +124,16 @@ export function Toolbar({
             </SquareWhiteButton>
           </IonCol>
         )}
-        <IonCol
-          className="ion-no-padding"
-          style={{
-            width: '10%',
-          }}
-        >
-          <SettingsPopover />
-        </IonCol>
+        {showSetting && (
+          <IonCol
+            className="ion-no-padding"
+            style={{
+              width: '10%',
+            }}
+          >
+            <SettingsPopover />
+          </IonCol>
+        )}
       </IonRow>
     </IonGrid>
   );

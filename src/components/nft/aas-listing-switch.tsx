@@ -5,7 +5,6 @@ import type {
   IUpdateAcns,
   IVerifyUpdateAcnsResponse,
 } from '@helium-pay/backend';
-import { IonCol, IonRow } from '@ionic/react';
 import axios from 'axios';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,14 +16,13 @@ import { signTxBody } from '../../utils/nitr0gen-api';
 import { Toggle } from '../common/toggle/toggle';
 import { CacheOtkContext } from '../providers/PreferenceProvider';
 
-const StyledIonRow = styled(IonRow)`
-  width: 100%;
+const AASListSwitchContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
-`;
-const StyledIonCol = styled(IonCol)`
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--ion-color-primary-10);
+  width: 100%;
+  gap: 16px;
 `;
 
 export const AasListingSwitch = ({
@@ -92,17 +90,15 @@ export const AasListingSwitch = ({
   };
 
   return (
-    <StyledIonRow hidden={!name} className="link-alias-toggle-row">
-      <StyledIonCol offsetMd="3" sizeMd="4" offsetXs={'1'} sizeXs={'7'}>
-        {t('linkAlias')}
-      </StyledIonCol>
-      <IonCol sizeXs="3" sizeMd="2" style={{ padding: '5px' }}>
+    <AASListSwitchContainer>
+      <h5 className="ion-no-margin ion-text-size-xxs">{t('linkAlias')}</h5>
+      <div className="toggle-wrapper">
         <Toggle
           isLoading={isLoading}
           onClickHandler={updateAASList}
           currentState={isListed ? 'active' : 'inActive'}
         />
-      </IonCol>
-    </StyledIonRow>
+      </div>
+    </AASListSwitchContainer>
   );
 };

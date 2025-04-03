@@ -1,14 +1,12 @@
 .activity-card {
   background: white;
 
-  width: 98%;
-  height: 90%;
-
-  margin: 5px;
-  padding: 24px 16px;
-
+  width: 95%;
+  padding: 24px 16px 24px 16px;
   z-index: 99;
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 8px;
 }

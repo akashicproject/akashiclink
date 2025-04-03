@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { debounce } from 'lodash';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -38,6 +38,7 @@ import { useNftMe } from '../../utils/hooks/useNftMe';
 import { displayLongText } from '../../utils/long-text';
 import { signTxBody } from '../../utils/nitr0gen-api';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
+import { NftContainer, NftWrapper } from './nft';
 import { NoNtfText, NoNtfWrapper } from './nfts';
 
 const SendWrapper = styled.div({
@@ -80,15 +81,6 @@ enum SearchResult {
   AcnsName = 'AcnsName',
   NoResult = 'NoResult',
 }
-const NftWrapper = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: 0,
-  gap: '24px',
-  width: '100%',
-  position: 'relative',
-});
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function NftTransfer() {
@@ -214,15 +206,11 @@ export function NftTransfer() {
             <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
           </NoNtfWrapper>
         ) : (
-          <NftWrapper style={{ top: isMobile ? '-10vh' : '-15vh' }}>
-            <IonRow>
-              <IonCol class="ion-center">
-                <OneNft
-                  nft={currentNft}
-                  isNameHidden={true}
-                  isAccountNameHidden={true}
-                />
-              </IonCol>
+          <NftWrapper>
+            <IonRow className="w-100">
+              <NftContainer>
+                <OneNft nft={currentNft} isBig={true} />
+              </NftContainer>
             </IonRow>
             <IonRow>
               <IonCol class="ion-center">

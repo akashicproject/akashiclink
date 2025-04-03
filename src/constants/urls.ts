@@ -41,4 +41,5 @@ export const urls = {
   migrateWalletPassword: 'migrate-wallet-password',
   migrateWalletNotice: 'migrate-wallet-notice',
   migrateWalletComplete: 'migrate-wallet-complete',
+  activityDetails: 'activity-details',
 } as const;

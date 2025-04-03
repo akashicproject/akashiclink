@@ -3,6 +3,7 @@ import { Redirect } from 'react-router';
 
 import { urls } from '../constants/urls';
 import { Activity } from '../pages/activity/activity';
+import { ActivityDetails } from '../pages/activity-details';
 import { AkashicPayMain } from '../pages/akashic-main';
 import { CreateWalletPassword } from '../pages/create-wallet/create-wallet-create-password';
 import { CreateWalletSecret } from '../pages/create-wallet/create-wallet-secret';
@@ -65,6 +66,7 @@ export function NavigationTree() {
       {AkashicTab.registerPage(SettingsNaming, urls.settingsNaming)}
       {AkashicTab.registerPage(SettingsVersion, urls.settingsVersion)}
       {AkashicTab.registerPage(ChangePassword, urls.changePassword)}
+      {AkashicTab.registerPage(ActivityDetails, urls.activityDetails)}
       {AkashicTab.registerPage(
         ChangePasswordConfirm,
         urls.changePasswordConfirm

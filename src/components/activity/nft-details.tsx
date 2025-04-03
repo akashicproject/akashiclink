@@ -1,126 +1,33 @@
-import { Clipboard } from '@capacitor/clipboard';
-import styled from '@emotion/styled';
-import { TransactionStatus } from '@helium-pay/backend';
-import { IonButton, IonContent, IonIcon, IonPopover } from '@ionic/react';
-import { arrowForwardCircleOutline } from 'ionicons/icons';
-import { useRef, useState } from 'react';
+import './activity.scss';
+
 import { useTranslation } from 'react-i18next';
 
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
-import { displayLongText } from '../../utils/long-text';
+import { OneNft } from '../nft/one-nft';
+import { BaseDetails, Header } from './base-details';
 
-const darkColor = {
-  color: 'var(--ion-color-primary-dark)',
-};
-const DetailColumn = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '0px',
-  height: '24px',
-  marginTop: '8px',
-});
-const TextContent = styled.div({
-  display: 'flex',
-  alignContent: 'center',
-  fontWeight: 400,
-  fontSize: '16px',
-  lineHeight: '20px',
-  ...darkColor,
-});
-const Header = styled.h4(darkColor);
-const Link = styled.a(darkColor);
 export function NftDetail({
   currentTransfer,
 }: {
   currentTransfer: ITransactionRecordForExtension;
 }) {
   const { t } = useTranslation();
-  const statusString = (status: string | undefined) => {
-    switch (status) {
-      case 'Any':
-        return t('Any');
-      case TransactionStatus.CONFIRMED:
-        return t('Confirmed');
-      case TransactionStatus.PENDING:
-        return t('Pending');
-      case TransactionStatus.FAILED:
-        return t('Failed');
-      default:
-        return t('MissingTranslationError');
-    }
-  };
-  const popover = useRef<HTMLIonPopoverElement>(null);
-  const [popoverOpen, setPopoverOpen] = useState(false);
-  const copyData = async (data: string, e: never) => {
-    await Clipboard.write({
-      string: data ?? '',
-    });
-
-    if (popover.current) {
-      popover.current.event = e;
-    }
-    setPopoverOpen(true);
-    setTimeout(() => {
-      setPopoverOpen(false);
-    }, 1000);
-  };
   return (
     <>
-      <DetailColumn>
-        <Header>{t('Status')}</Header>
-        <TextContent>{statusString(currentTransfer.status)}</TextContent>
-      </DetailColumn>
-      <DetailColumn>
-        <Header>{t('txHash')}</Header>
-        <TextContent>
-          {displayLongText(currentTransfer.l2TxnHash)}
-          <IonButton
-            style={{ height: '22px', width: '19px' }}
-            className="copy-button"
-            onClick={async (e: never) =>
-              copyData(currentTransfer.l2TxnHashUrl, e)
-            }
-          >
-            <IonIcon
-              slot="icon-only"
-              className="copy-icon"
-              src={`/shared-assets/images/copy-icon-dark.svg`}
-            />
-            <IonPopover
-              side="top"
-              alignment="center"
-              ref={popover}
-              isOpen={popoverOpen}
-              className={'copied-popover'}
-              onDidDismiss={() => setPopoverOpen(false)}
-            >
-              <IonContent class="ion-padding">{t('Copied')}</IonContent>
-            </IonPopover>
-          </IonButton>
-        </TextContent>
-      </DetailColumn>
-      <DetailColumn>
-        <Header>{t('From')}</Header>
-        <Header>{t('To')}</Header>
-      </DetailColumn>
-      <DetailColumn>
-        <TextContent>
-          <Link href={currentTransfer.internalSenderUrl}>
-            {displayLongText(currentTransfer.fromAddress)}
-          </Link>
-        </TextContent>
-
-        <TextContent>
-          <IonIcon icon={arrowForwardCircleOutline} />
-        </TextContent>
-        <TextContent>
-          <Link href={currentTransfer.internalRecipientUrl}>
-            {displayLongText(currentTransfer.toAddress)}
-          </Link>
-        </TextContent>
-      </DetailColumn>
+      <div
+        style={{
+          margin: '0 auto',
+          width: '50%',
+        }}
+      >
+        <OneNft
+          style={{ marginTop: '0px' }}
+          nft={currentTransfer.nft!}
+          isBig={false}
+        />
+      </div>
+      <h2 style={{ marginTop: '24px' }}>{t('TransactionDetails')}</h2>
+      <BaseDetails currentTransfer={currentTransfer} />
     </>
   );
 }

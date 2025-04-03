@@ -7,3 +7,12 @@ ion-toggle {
   --handle-background: #fff;
   --handle-background-checked: #fff;
 }
+
+.toggle-wrapper {
+  width: 20% !important;
+  /* Tablets (768px - 991px) */
+  @media only screen and (min-width: 768px) {
+    /* Styles for tablets */
+    width: 10% !important;
+  }
+}

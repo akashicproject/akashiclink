@@ -22,3 +22,7 @@
 .w-100 {
   width: 100%;
 }
+
+.button-transparent::part(native) {
+  background: transparent;
+}

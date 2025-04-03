@@ -146,7 +146,7 @@
   "KeyPairBackup": "密鑰對備份",
   "DoNotOwnNfts": "現在不擁有任何NFT",
   "Transfer": "轉賬",
-  "NSRecordWarning": "請刪除NS{{nftName}}的NS記錄，然後發起轉賬。",
+  "NSRecordWarning": "{{nftName}}已被 AA-綁定，因此無法轉移此 NFT。 請先解除綁定，然後繼續轉帳。",
   "GoNSSettings": "到NS設置",
   "PleaseInputToSearch": "請輸入Akashic地址用進行轉賬。",
   "NoSearchResult": "無搜索結果",
@@ -247,5 +247,6 @@
   "WalletMigrationSuccessful": "成功創建 12 個字的恢復密語",
   "InvalidSecretPhrase": "無效密語",
   "PressToReveal": "按下显示",
-  "AlreadyMigratedPleaseReImport": "錢包已遷移，請刪除您的帳戶並使用新的恢復方法匯入"
+  "AlreadyMigratedPleaseReImport": "錢包已遷移，請刪除您的帳戶並使用新的恢復方法匯入",
+  "AALinked": "AA-綁定"
 }

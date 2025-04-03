@@ -1,275 +1,145 @@
-import { Browser } from '@capacitor/browser';
-import { Clipboard } from '@capacitor/clipboard';
+import './activity.scss';
+
 import styled from '@emotion/styled';
-import {
-  TransactionLayer,
-  TransactionStatus,
-  TransactionType,
-} from '@helium-pay/backend';
-import { IonButton, IonContent, IonIcon, IonPopover } from '@ionic/react';
-import Big from 'big.js';
-import { arrowForwardCircleOutline } from 'ionicons/icons';
-import { useRef, useState } from 'react';
+import { TransactionLayer, TransactionType } from '@helium-pay/backend';
 import { useTranslation } from 'react-i18next';
 
-import { Divider } from '../../pages/activity/activity';
+import { formatAmount } from '../../utils/formatAmount';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
-import { displayLongText } from '../../utils/long-text';
+import { BaseDetails, DetailColumn } from './base-details';
 
-const darkColor = {
-  color: 'var(--ion-color-primary-dark)',
-};
-const DetailColumn = styled.div({
+const TransactionalDetailsDivider = styled.div({
+  margin: '16px 0px',
+  border: '1px solid #EEEEEE',
+  height: '1px',
+});
+const Header3 = styled.h3({
+  textAlign: 'left',
+  margin: '0px',
+});
+const VerticalWrapper = styled.div({
   display: 'flex',
   flexDirection: 'row',
-  alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '0px',
-  height: '24px',
-  marginTop: '8px',
-});
-const TextContent = styled.div({
-  display: 'flex',
   alignContent: 'center',
-  fontWeight: 400,
-  fontSize: '16px',
-  lineHeight: '20px',
-  ...darkColor,
 });
-
-const ExternalLink = styled.button({
-  backgroundColor: 'white',
-  textDecoration: 'underline',
-  cursor: 'pointer',
-  fontWeight: 400,
-  fontSize: '16px',
-  lineHeight: '20px',
-  ...darkColor,
+const HorizontalWrapper = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
 });
-
-const Header = styled.h4(darkColor);
-const Header3 = styled.h3(darkColor);
-
+const TextColor = {
+  color: 'var(--ion-color-primary-10)',
+};
 export function TransactionDetails({
   currentTransfer,
 }: {
   currentTransfer: ITransactionRecordForExtension;
 }) {
-  const { t } = useTranslation();
-  const isLayer2 = currentTransfer.layer === TransactionLayer.L2;
-
-  const statusString = (status: string | undefined) => {
-    switch (status) {
-      case 'Any':
-        return t('Any');
-      case TransactionStatus.CONFIRMED:
-        return t('Confirmed');
-      case TransactionStatus.PENDING:
-        return t('Pending');
-      case TransactionStatus.FAILED:
-        return t('Failed');
-      default:
-        return t('MissingTranslationError');
-    }
-  };
-
-  // TODO: once backend transaction are fetching:
-  // - nonce
-  // - gas limit
-  // - GasLimit
-  // - GasUsed
-  // - PriorityFee
-  // - MaxFeePerGas
-  // Remove this
-  const backendUpdated = false;
-
-  const displayChainName = (
-    currentTransfer: ITransactionRecordForExtension
-  ) => {
-    if (!currentTransfer?.currency?.chain) return;
-    if (currentTransfer.layer === TransactionLayer.L2)
-      return t('Chain.AkashicChain');
-    return t(`Chain.${currentTransfer.currency.chain.toUpperCase()}`);
-  };
-  const popover = useRef<HTMLIonPopoverElement>(null);
-  const [popoverOpen, setPopoverOpen] = useState(false);
-  const copyData = async (data: string, e: never) => {
-    await Clipboard.write({
-      string: data ?? '',
-    });
-
-    if (popover.current) {
-      popover.current.event = e;
-    }
-    setPopoverOpen(true);
-    setTimeout(() => {
-      setPopoverOpen(false);
-    }, 1000);
-  };
-
-  const openInBrowser = async (url: string) => {
-    await Browser.open({ url });
-  };
-
   return (
     <>
-      <DetailColumn>
-        <Header>{t('Status')}</Header>
-        <TextContent>{statusString(currentTransfer.status)}</TextContent>
-      </DetailColumn>
-      <DetailColumn>
-        <Header>{t('Chain.Title')}</Header>
-        <TextContent>{displayChainName(currentTransfer)}</TextContent>
-      </DetailColumn>
-      <DetailColumn>
-        <Header>{t('txHash')}</Header>
-        <TextContent>
-          <ExternalLink
-            onClick={() => openInBrowser(currentTransfer.l2TxnHashUrl)}
-          >
-            {displayLongText(currentTransfer.l2TxnHash)}
-          </ExternalLink>
-          <IonButton
-            style={{ height: '22px', width: '19px' }}
-            className="copy-button"
-            onClick={async (e: never) =>
-              copyData(currentTransfer.l2TxnHashUrl, e)
-            }
-          >
-            <IonIcon
-              slot="icon-only"
-              className="copy-icon"
-              src={`/shared-assets/images/copy-icon-dark.svg`}
-            />
-            <IonPopover
-              side="top"
-              alignment="center"
-              ref={popover}
-              isOpen={popoverOpen}
-              className={'copied-popover'}
-              onDidDismiss={() => setPopoverOpen(false)}
-            >
-              <IonContent class="ion-padding">{t('Copied')}</IonContent>
-            </IonPopover>
-          </IonButton>
-        </TextContent>
-      </DetailColumn>
-      <DetailColumn>
-        <Header>{t('From')}</Header>
-        <Header>{t('To')}</Header>
-      </DetailColumn>
-      <DetailColumn>
-        <TextContent>
-          <ExternalLink
-            onClick={() =>
-              openInBrowser(
-                currentTransfer.internalSenderUrl ??
-                  currentTransfer.senderAddressUrl
-              )
-            }
-          >
-            {displayLongText(currentTransfer.fromAddress)}
-          </ExternalLink>
-        </TextContent>
-        <TextContent>
-          <IonIcon icon={arrowForwardCircleOutline} />
-        </TextContent>
-        <TextContent>
-          <ExternalLink
-            onClick={() =>
-              openInBrowser(
-                currentTransfer.internalRecipientUrl ??
-                  currentTransfer.recipientAddressUrl
-              )
-            }
-          >
-            {displayLongText(currentTransfer.toAddress)}
-          </ExternalLink>
-        </TextContent>
-      </DetailColumn>
-      <Divider style={{ margin: '8px' }} />
-      <DetailColumn>
-        <Header3>{t('Transaction')}</Header3>
-      </DetailColumn>
-      {backendUpdated && (
-        <DetailColumn>
-          <TextContent>{'Nonce'}</TextContent>
-        </DetailColumn>
-      )}
-      {currentTransfer.transferType === TransactionType.WITHDRAWAL && (
-        <DetailColumn>
-          <TextContent>{t('InternalFee')}</TextContent>
-          <Header3>{currentTransfer.internalFee?.withdraw}</Header3>
-        </DetailColumn>
-      )}
-      <DetailColumn>
-        <TextContent>{t('Amount')}</TextContent>
-        <Header3>
-          {currentTransfer.amount +
-            ' ' +
-            currentTransfer?.currency?.displayName}
-        </Header3>
-      </DetailColumn>
-      {backendUpdated && (
-        <>
-          <DetailColumn>
-            <TextContent>{`${t('GasLimit')} (${t('Units')})`}</TextContent>
-          </DetailColumn>
-          <DetailColumn>
-            <TextContent>{`${t('GasUsed')} (${t('Units')})`}</TextContent>
-          </DetailColumn>
-        </>
-      )}
-      {currentTransfer.transferType === TransactionType.DEPOSIT || isLayer2 ? (
-        <></>
+      <BaseDetails currentTransfer={currentTransfer} />
+      <TransactionalDetailsDivider style={{ margin: '8px' }} />
+      {currentTransfer.transferType === TransactionType.DEPOSIT ? (
+        <DepositDetails currentTransfer={currentTransfer} />
       ) : (
-        <DetailColumn>
-          <TextContent>
-            <TextContent>{`${t('GasFee')}`}</TextContent>
-          </TextContent>
-          <TextContent>{currentTransfer.feesPaid ?? 0}</TextContent>
-        </DetailColumn>
-      )}
-      {backendUpdated && (
-        <>
-          <DetailColumn>
-            <TextContent>{t('PriorityFee')}</TextContent>
-          </DetailColumn>
-          <DetailColumn>
-            <TextContent>{`${t('Total')} ${t('GasFee')}`}</TextContent>
-          </DetailColumn>
-          <DetailColumn>
-            <TextContent>{t('MaxFeePerGas')}</TextContent>
-          </DetailColumn>
-        </>
-      )}
-      <DetailColumn style={{ marginTop: '20px' }}>
-        <TextContent>{t('Total')}</TextContent>
-        <Header3>
-          {currentTransfer.transferType === TransactionType.DEPOSIT
-            ? currentTransfer.amount +
-              ' ' +
-              currentTransfer?.currency?.displayName
-            : `${Big(currentTransfer.amount).add(
-                currentTransfer.feesPaid ?? 0
-              )} ${currentTransfer?.currency?.displayName}`}
-        </Header3>
-      </DetailColumn>
-      {isLayer2 && currentTransfer.initiatedToL1Address ? (
-        <>
-          <Divider style={{ margin: '8px' }} />
-          <DetailColumn style={{ marginTop: '20px' }}>
-            <Header>{t('Remark')}</Header>
-            <TextContent>
-              {t('SentTo')}
-              {': '}
-              {displayLongText(currentTransfer.initiatedToL1Address)}
-            </TextContent>
-          </DetailColumn>
-        </>
-      ) : (
-        <></>
+        <WithdrawDetails currentTransfer={currentTransfer} />
       )}
     </>
   );
 }
+const WithdrawDetails = ({
+  currentTransfer,
+}: {
+  currentTransfer: ITransactionRecordForExtension;
+}) => {
+  const { t } = useTranslation();
+  const isTransactionL2 = currentTransfer.layer === TransactionLayer.L2;
+  return (
+    <HorizontalWrapper>
+      <Header3>Send</Header3>
+      <VerticalWrapper>
+        <DetailColumn>
+          <span style={TextColor} className="ion-text-size-xs">
+            {isTransactionL2 ? 'Fee' : t('Gas fee')}
+          </span>
+        </DetailColumn>
+        <DetailColumn>
+          <Header3>
+            {formatAmount(
+              isTransactionL2
+                ? currentTransfer.internalFee?.withdraw ?? '0'
+                : currentTransfer.feesPaid ?? '0'
+            )}{' '}
+            {isTransactionL2
+              ? currentTransfer.tokenSymbol || currentTransfer.coinSymbol
+              : currentTransfer.coinSymbol}
+          </Header3>
+        </DetailColumn>
+      </VerticalWrapper>
+      <VerticalWrapper>
+        <DetailColumn>
+          <span style={TextColor} className="ion-text-size-xs">
+            {t('Amount')}
+          </span>
+        </DetailColumn>
+        <DetailColumn>
+          <Header3>
+            {formatAmount(currentTransfer.amount ?? 0)}{' '}
+            {currentTransfer.tokenSymbol || currentTransfer.coinSymbol}
+          </Header3>
+        </DetailColumn>
+      </VerticalWrapper>
+      <VerticalWrapper>
+        <DetailColumn>
+          <span style={TextColor} className="ion-text-size-xs">
+            {t('Total')}
+          </span>
+        </DetailColumn>
+        <DetailColumn style={{ display: 'flex', flexDirection: 'column' }}>
+          {isTransactionL2 ? (
+            <Header3>
+              {formatAmount(currentTransfer.amount ?? 0)}{' '}
+              {currentTransfer.tokenSymbol || currentTransfer.coinSymbol}
+            </Header3>
+          ) : (
+            <>
+              <Header3 style={{ width: '100%', textAlign: 'right' }}>
+                {currentTransfer.amount ?? 0} {currentTransfer.tokenSymbol}
+              </Header3>
+              <span className="ion-text-size-xxs" style={{ color: '#958E99' }}>
+                + {currentTransfer.feesPaid} {currentTransfer.coinSymbol}
+              </span>
+            </>
+          )}
+        </DetailColumn>
+      </VerticalWrapper>
+    </HorizontalWrapper>
+  );
+};
+const DepositDetails = ({
+  currentTransfer,
+}: {
+  currentTransfer: ITransactionRecordForExtension;
+}) => {
+  const { t } = useTranslation();
+  return (
+    <HorizontalWrapper>
+      <Header3>{t('Deposit')}</Header3>
+      <VerticalWrapper>
+        <DetailColumn>
+          <span className="ion-text-size-xs" style={TextColor}>
+            {t('Total')}
+          </span>
+        </DetailColumn>
+        <DetailColumn>
+          <Header3>
+            {currentTransfer.amount +
+              ' ' +
+              (currentTransfer.tokenSymbol || currentTransfer.coinSymbol)}
+          </Header3>
+        </DetailColumn>
+      </VerticalWrapper>
+    </HorizontalWrapper>
+  );
+};

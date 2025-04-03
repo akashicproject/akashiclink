@@ -1,15 +1,13 @@
 .nft-image-big::part(image) {
-  height: 149px;
-  width: 149px;
   border-radius: 12px;
 }
-
+.nft-img-size::part(image) {
+  width: '100%';
+  height: '100%';
+}
 .nft-image-small::part(image) {
-  height: 122px;
-  width: 122px;
   border-radius: 8px;
 }
-
 .chip-big {
   background: none;
   border: 1px solid #c297ff;

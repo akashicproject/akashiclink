@@ -7,6 +7,7 @@ import type {
 import type { Url } from '../constants/urls';
 import { urls } from '../constants/urls';
 import type { TransferResultType } from '../pages/nft/nft-transfer-result';
+import type { ITransactionRecordForExtension } from '../utils/formatTransfers';
 import { akashicPayPath } from './navigation-tabs';
 
 export const history = createMemoryHistory();
@@ -40,6 +41,9 @@ export interface LocationState {
   migrateWallet?: {
     username?: string;
     oldPassword?: string;
+  };
+  activityDetails?: {
+    currentTransfer?: ITransactionRecordForExtension;
   };
 }
 

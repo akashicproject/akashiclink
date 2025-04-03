@@ -1,7 +1,5 @@
 import './activity.scss';
 
-import { IonContent } from '@ionic/react';
-
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { NftDetail } from './nft-details';
 import { TransactionDetails } from './transactions-details';
@@ -12,12 +10,12 @@ export function ActivityDetail({
   currentTransfer: ITransactionRecordForExtension;
 }) {
   return (
-    <IonContent className="transfer-detail">
+    <div className="transfer-detail">
       {currentTransfer.nft ? (
         <NftDetail currentTransfer={currentTransfer} />
       ) : (
         <TransactionDetails currentTransfer={currentTransfer} />
       )}
-    </IonContent>
+    </div>
   );
 }

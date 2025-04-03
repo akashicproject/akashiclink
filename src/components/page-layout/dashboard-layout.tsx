@@ -40,12 +40,14 @@ export function DashboardLayout({
   showRefresh = false,
   showAddress = false,
   showBackButton = true,
+  showSetting = true,
 }: {
   children: ReactNode;
   footer?: ReactNode;
   showRefresh?: boolean;
   showAddress?: boolean;
   showBackButton?: boolean;
+  showSetting?: boolean;
 }) {
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
@@ -81,6 +83,7 @@ export function DashboardLayout({
           showAddress={showAddress}
           showRefresh={showRefresh}
           showBackButton={showBackButton}
+          showSetting={showSetting}
         />
         {children}
       </IonContent>

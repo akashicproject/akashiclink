@@ -1,13 +1,5 @@
 /** Styling of detailed transfer overview */
 .transfer-detail {
-  /** Stack the details one after another */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 10px;
-  height: 100%;
-
   /** Small borderless copy icon */
   .copy-button {
     width: 20px;

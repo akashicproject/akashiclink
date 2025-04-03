@@ -3,12 +3,12 @@ import { IonBackdrop } from '@ionic/react';
 import dayjs from 'dayjs';
 import { t } from 'i18next';
 import type { Dispatch, SetStateAction } from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useHistory } from 'react-router-dom';
 
 import { urls } from '../../constants/urls';
-import { ActivityDetailComponent } from '../../pages/activity/activity';
+import type { LocationState } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { formatMergeAndSortNftAndCryptoTransfers } from '../../utils/formatTransfers';
@@ -98,6 +98,7 @@ export function ActivityAndNftTab() {
     startDate: dayjs().subtract(1, 'month').toDate(),
   });
   const itemDisplayIndex = 3;
+  const history = useHistory<LocationState>();
   const [nftTab, setNftTab] = useState(false);
   const { transfers } = useTransfersMe({
     ...transferParams,
@@ -108,63 +109,54 @@ export function ActivityAndNftTab() {
     transfers,
     nftTransfers
   );
-  const [currentTransfer, setCurrentTransfer] =
-    useState<ITransactionRecordForExtension>();
-  const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      {isOpen ? (
-        <div style={{ height: '40vh' }}>
-          <IonBackdrop />
-          <ActivityDetailComponent
-            transfer={currentTransfer!}
-            setIsOpen={setIsOpen}
-          />
-        </div>
-      ) : (
-        <>
-          <ActivityAndNftTabComponent
-            nftTab={nftTab}
-            setNftTab={setNftTab}
-            fromNfts={false}
-          />
-          <div
-            className="vertical"
-            style={{ padding: '0px 24px', paddingTop: '16px' }}
+      <ActivityAndNftTabComponent
+        nftTab={nftTab}
+        setNftTab={setNftTab}
+        fromNfts={false}
+      />
+      <div
+        className="vertical"
+        style={{ padding: '0px 24px', paddingTop: '16px' }}
+      >
+        {!nftTab &&
+          walletFormatTransfers
+            .slice(0, itemDisplayIndex - 1)
+            .map((transfer, index) => {
+              return (
+                <OneActivity
+                  key={transfer.id}
+                  transfer={transfer}
+                  divider={index + 1 !== itemDisplayIndex - 1}
+                  showDetail={true}
+                  onClick={() => {
+                    history.push({
+                      pathname: akashicPayPath(urls.activityDetails),
+                      state: {
+                        activityDetails: {
+                          currentTransfer: transfer,
+                        },
+                      },
+                    });
+                  }}
+                />
+              );
+            })}
+        {walletFormatTransfers.length >= itemDisplayIndex && !nftTab && (
+          <SeeMore
+            style={{ marginTop: '8px' }}
+            to={akashicPayPath(urls.activity)}
           >
-            {!nftTab &&
-              walletFormatTransfers
-                .slice(0, itemDisplayIndex - 1)
-                .map((transfer, index) => {
-                  return (
-                    <OneActivity
-                      key={transfer.id}
-                      transfer={transfer}
-                      divider={index + 1 !== itemDisplayIndex - 1}
-                      showDetail={true}
-                      onClick={() => {
-                        setIsOpen(true);
-                        setCurrentTransfer(transfer);
-                      }}
-                    />
-                  );
-                })}
-            {walletFormatTransfers.length >= itemDisplayIndex && !nftTab && (
-              <SeeMore
-                style={{ marginTop: '8px' }}
-                to={akashicPayPath(urls.activity)}
-              >
-                {t('SeeMore')}
-              </SeeMore>
-            )}
-            {!walletFormatTransfers.length && (
-              <NoDataWrapper>
-                <NoDataDiv>{t('NoActivity')}</NoDataDiv>
-              </NoDataWrapper>
-            )}
-          </div>
-        </>
-      )}
+            {t('SeeMore')}
+          </SeeMore>
+        )}
+        {!walletFormatTransfers.length && (
+          <NoDataWrapper>
+            <NoDataDiv>{t('NoActivity')}</NoDataDiv>
+          </NoDataWrapper>
+        )}
+      </div>
     </>
   );
 }

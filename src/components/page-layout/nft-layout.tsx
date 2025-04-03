@@ -3,6 +3,7 @@ import './nft-layout.scss';
 import styled from '@emotion/styled';
 import { IonCol, IonContent, IonPage, IonRow } from '@ionic/react';
 import type { ReactNode } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
@@ -10,21 +11,13 @@ import { akashicPayPath } from '../../routing/navigation-tabs';
 import { Header } from '../layout/header';
 import { ChainDiv } from './dashboard-layout';
 
-const BackgroundDiv = styled.div({
-  display: 'block',
-  height: '25vh',
-  backgroundColor: 'var(--nft-background)',
-});
-
 export function NftLayout({
   children,
-  background = true,
 }: {
   children: ReactNode;
   backButton?: boolean;
   noFooter?: boolean;
   backButtonUrl?: string;
-  background?: boolean;
 }) {
   const { t } = useTranslation();
   return (
@@ -41,7 +34,6 @@ export function NftLayout({
             </ChainDiv>
           </IonCol>
         </IonRow>
-        {background && <BackgroundDiv />}
         {children}
       </IonContent>
     </IonPage>
