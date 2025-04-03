@@ -43,7 +43,9 @@ export const FromToAddressBlock: FC<FromToAddressBlockProps> = ({
           </p>
         </IonText>
       </div>
-      <div className={'ion-margin-horizontal ion-display-flex'}>
+      <div
+        className={'ion-margin-left-xs ion-margin-right-xs ion-display-flex'}
+      >
         <IonIcon
           className={'ion-text-size-xl'}
           color={'grey'}
