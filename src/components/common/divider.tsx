@@ -4,6 +4,7 @@ export const Divider = styled.div<{
   borderColor?: string;
   height?: string;
   borderWidth?: string;
+  horizontal?: boolean;
 }>((props) => ({
   boxSizing: 'border-box',
   height: `${props.height ?? '1px'}`,
@@ -12,4 +13,7 @@ export const Divider = styled.div<{
   }`,
   marginTop: '8px',
   marginBottom: '8px',
+  ...(props.horizontal && {
+    width: '100%',
+  }),
 }));

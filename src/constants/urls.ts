@@ -39,6 +39,8 @@ export const urls = {
   settingsAboutUs: 'settings-about-us',
   settingsBackup: 'settings-backup',
   settingsVersion: 'settings-version',
+  addressScreeningNewScan: 'address-screening-new-scan',
+  addressScreeningNewScanConfirm: 'address-screening-new-scan-confirm',
 } as const;
 
 export const SUPPORT_MAIL = 'support@akashiclink.com';
