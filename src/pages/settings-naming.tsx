@@ -343,8 +343,8 @@ export function SettingsNaming() {
             <IonRow style={{ marginTop: '16px' }}>
               <IonCol>
                 <AccountSelection
-                  changeSelection={(account) => setNewValue(account.identity)}
-                  removeCreateImport={true}
+                  onNewAccountClick={(account) => setNewValue(account.identity)}
+                  hideCreateImport={true}
                 />
               </IonCol>
             </IonRow>

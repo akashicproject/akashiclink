@@ -48,13 +48,12 @@ export function LoginForm() {
 
   /**
    * Selection is populated on load to match the account save in session
-   * TODO: still cannot figure out why the session is being read but can't be set
    */
   useEffect(() => {
     if (!selectedAccount) {
       if (activeAccount) {
         const matchingAccount = localAccounts?.find(
-          (a) => a.identity === activeAccount.identity
+          (a) => a.username === activeAccount.username
         );
         setSelectedAccount(matchingAccount);
       } else {
@@ -109,7 +108,7 @@ export function LoginForm() {
         {t('YourMostReliableWallet')}
       </h3>
       <AccountSelection
-        changeSelection={(a) => setSelectedAccount(a)}
+        onNewAccountClick={(a) => setSelectedAccount(a)}
         style={{ marginTop: '24px' }}
       />
       <IonRow>
@@ -130,7 +129,6 @@ export function LoginForm() {
           </PurpleButton>
         </IonCol>
       </IonRow>
-      {/* {isLoading && <Spinner />} */}
       {/* TODO: re-enable once password recovery loop is implemented */}
       {/* <IonRow style={{ marginTop: '-10px' }}>
         <IonCol>

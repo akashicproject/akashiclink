@@ -1,13 +1,6 @@
 import styled from '@emotion/styled';
-import {
-  IonCol,
-  IonGrid,
-  IonIcon,
-  IonRow,
-  IonSpinner,
-  isPlatform,
-} from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { IonCol, IonGrid, IonIcon, IonRow, isPlatform } from '@ionic/react';
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSWRConfig } from 'swr';
 
@@ -43,8 +36,6 @@ export function LoggedToolbar({
   const [storedTheme] = useTheme();
 
   const { setActiveAccount } = useAccountStorage();
-  // const [logoutTrigger, setLogoutTrigger] = useState<LocalAccount>();
-  const [pending, setPending] = useState(false);
 
   /** Track inactivity - user logged out if no movement has occured for 5 minutes */
   useEffect(() => {
@@ -100,31 +91,16 @@ export function LoggedToolbar({
             <HorizontalDivider />
           </>
         )}
-        {pending ? (
-          <IonCol size="1">
-            <IonSpinner />
-          </IonCol>
-        ) : (
-          <IonCol size="8">
-            <AccountSelection
-              isCopyButton={true}
-              onClickCallback={(selectedAccount) => {
-                setPending(true);
-                setActiveAccount(selectedAccount);
-                // This sequence ensures that the activeAccount
-                // has time to update before logout occurs
-                // This ensures that the selected account
-                // is filled in for login
-                setTimeout(() => {
-                  setPending(false);
-                  logout().then(
-                    () => isPlatform('mobile') && location.reload()
-                  );
-                }, 500);
-              }}
-            />
-          </IonCol>
-        )}
+        <IonCol size="8">
+          <AccountSelection
+            showCopyButton={true}
+            onNewAccountClick={async (selectedAccount) => {
+              // When a different account is clicked, set it as the active account and logout
+              setActiveAccount(selectedAccount);
+              logout().then(() => isPlatform('mobile') && location.reload());
+            }}
+          />
+        </IonCol>
         <IonCol size="auto" hidden={!isRefresh}>
           <SquareWhiteButton
             class="icon-button"

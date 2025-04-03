@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "serve -d build",
-    "build": "GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true craco build --verbose",
+    "build": "GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true craco build",
     "build:dev": "watch 'DISABLE_ESLINT_PLUGIN=true env-cmd -f .env craco build' ./src",
     "build:staging": "yarn lint:fix && env-cmd -f .env.staging.local craco build",
     "build:prod": "yarn lint:fix && env-cmd -f .env.production.local craco build",

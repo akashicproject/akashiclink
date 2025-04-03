@@ -4,7 +4,7 @@ import {
   userConst,
 } from '@helium-pay/backend';
 import type { Language } from '@helium-pay/common-i18n';
-import { IonCol, IonRow, isPlatform } from '@ionic/react';
+import { IonCol, IonRow } from '@ionic/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,6 +25,7 @@ import {
   StyledInputErrorPrompt,
 } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
+import { historyGoBack } from '../../routing/history-stack';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
@@ -199,7 +200,6 @@ export function CreateWallet() {
           username: createAccountResponse.username,
         };
         addLocalAccount(newAccount);
-        setActiveAccount(newAccount);
         setAlertRequest(formAlertResetState);
         setAlertActivate(formAlertResetState);
         await lastPageStorage.clear();
@@ -208,6 +208,7 @@ export function CreateWallet() {
         });
         history.push({
           pathname: akashicPayPath(urls.secret),
+          state: newAccount,
         });
       } catch (e) {
         let message = t('GenericFailureMsg');
@@ -221,20 +222,18 @@ export function CreateWallet() {
   }
 
   /**
-   * Drop any intermediate state and redirect to landing page
+   * Redirect user to previous page, and reset page state
    */
-  const ResetButton = (
+  const CancelButton = (
     <IonCol>
       <ResetPageButton
         expand="block"
         callback={() => {
-          if (!loginCheck.isLoading && !loginCheck.authenticated) {
-            history.push(akashicPayPath(urls.akashicPay));
-          } else {
-            history.push(akashicPayPath(urls.loggedFunction));
-          }
+          historyGoBack(
+            history,
+            !loginCheck.isLoading && !loginCheck.authenticated
+          );
           setView(CreateWalletView.RequestAccount);
-          isPlatform('mobile') && location.reload();
         }}
       />
     </IonCol>
@@ -289,7 +288,7 @@ export function CreateWallet() {
         {view === CreateWalletView.RequestAccount && (
           <>
             <IonRow>
-              {ResetButton}
+              {CancelButton}
               <IonCol>
                 <PurpleButton
                   expand="block"
@@ -371,7 +370,7 @@ export function CreateWallet() {
               </IonCol>
             </IonRow>
             <IonRow>
-              {ResetButton}
+              {CancelButton}
               <IonCol>
                 <PurpleButton
                   expand="block"

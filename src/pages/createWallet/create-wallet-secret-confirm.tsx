@@ -10,6 +10,7 @@ import { PublicLayout } from '../../components/layout/public-layout';
 import { SecretWords } from '../../components/secret-words/secret-words';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
+import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import {
   cacheCurrentPage,
   lastPageStorage,
@@ -26,7 +27,7 @@ export const StyledSpan = styled.span({
 
 export function CreateWalletSecretConfirm() {
   const { t } = useTranslation();
-  const history = useHistory<{ passPhrase: string }>();
+  const history = useHistory<LocalAccount>();
   const [passPhrase, setPassPhrase] = useState<string>('');
   const [secretWords, setSecretWords] = useState<Array<string>>([]);
   const [inputValue, setInputValue] = useState<Array<string>>([]);
@@ -100,7 +101,10 @@ export function CreateWalletSecretConfirm() {
                   onClick={async () => {
                     if (inputValue.join(' ') === passPhrase) {
                       await lastPageStorage.clear();
-                      history.push(akashicPayPath(urls.walletCreated));
+                      history.push({
+                        pathname: akashicPayPath(urls.walletCreated),
+                        state: history.location.state,
+                      });
                     }
                   }}
                 >
@@ -120,7 +124,10 @@ export function CreateWalletSecretConfirm() {
                         passPhraseWithEmptyWords: secretWords,
                       }
                     );
-                    history.push(akashicPayPath(urls.secret));
+                    history.push({
+                      pathname: akashicPayPath(urls.secret),
+                      state: history.location.state,
+                    });
                   }}
                 >
                   {t('GoBack')}

@@ -23,8 +23,5 @@ export function useLogout(callLogout = true) {
 
     // Trigger refresh of login status
     await mutate();
-
-    // Redirect to landing page
-    // window.location.href = landingPageUrl;
   };
 }

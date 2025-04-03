@@ -9,7 +9,9 @@ import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { SecretWords } from '../../components/secret-words/secret-words';
 import { urls } from '../../constants/urls';
+import { historyGoBack } from '../../routing/history-stack';
 import { akashicPayPath } from '../../routing/navigation-tree';
+import { useOwner } from '../../utils/hooks/useOwner';
 import {
   cacheCurrentPage,
   lastPageStorage,
@@ -38,6 +40,8 @@ const StyledDiv = styled.div<DivProps>`
 `;
 export const SecretPhraseImport = () => {
   const history = useHistory();
+  const loginCheck = useOwner(true);
+
   const [initialWords, setInitialWords] = useState(new Array(12).fill(''));
   const [phrase, setPhrase] = useState<string[]>([]);
   const [error, setError] = useState(false);
@@ -65,7 +69,6 @@ export const SecretPhraseImport = () => {
         NavigationPriority.IMMEDIATE,
         {
           view: View.SubmitSecretPhrase,
-          initialView: View.SubmitSecretPhrase,
           privateKey: privateKey.key.prv.pkcs8pem,
           passPhrase: phrase,
         }
@@ -166,7 +169,10 @@ export const SecretPhraseImport = () => {
                 setPhrase([]);
                 setInitialWords([]);
                 await lastPageStorage.clear();
-                history.push(akashicPayPath(urls.selectImportMethod));
+                historyGoBack(
+                  history,
+                  !loginCheck.isLoading && !loginCheck.authenticated
+                );
               }}
             >
               {t('Cancel')}

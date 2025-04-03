@@ -1,21 +1,16 @@
 import styled from '@emotion/styled';
-import { IonCol, IonIcon, IonRow } from '@ionic/react';
-import React from 'react';
+import { IonCol, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
-import {
-  PurpleButton,
-  SquareWhiteButton,
-  WhiteButton,
-} from '../../components/buttons';
+import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
-import { useTheme } from '../../components/PreferenceProvider';
 import { urls } from '../../constants/urls';
+import { historyGoBack } from '../../routing/history-stack';
 import { akashicPayPath } from '../../routing/navigation-tree';
-import { themeType } from '../../theme/const';
-import { lastPageStorage } from '../../utils/last-page-storage';
+import { useOwner } from '../../utils/hooks/useOwner';
+import { ResetPageButton } from '../../utils/last-page-storage';
 import { importAccountUrl, View } from '../import-wallet';
 
 export const StyledSpan = styled.span({
@@ -27,29 +22,12 @@ export const StyledSpan = styled.span({
 });
 
 export const SelectImportMethod = () => {
-  const [storedTheme] = useTheme();
   const { t } = useTranslation();
   const history = useHistory();
+  const loginCheck = useOwner(true);
+
   return (
     <PublicLayout contentStyle={{ padding: '0 30px' }}>
-      <SquareWhiteButton
-        className="icon-button"
-        style={{ position: 'fixed', left: '24px', marginTop: '16px' }}
-        onClick={async () => {
-          await lastPageStorage.clear();
-          history.push(akashicPayPath(urls.akashicPay));
-        }}
-      >
-        <IonIcon
-          class="icon-button-icon"
-          slot="icon-only"
-          src={`/shared-assets/images/${
-            storedTheme === themeType.DARK
-              ? 'back-arrow-white.svg'
-              : 'back-arrow-purple.svg'
-          }`}
-        />
-      </SquareWhiteButton>
       <MainGrid style={{ gap: '16px', padding: '142px 15px' }}>
         <IonRow>
           <IonCol>
@@ -65,7 +43,7 @@ export const SelectImportMethod = () => {
             expand="block"
             onClick={() => {
               history.push(akashicPayPath(importAccountUrl), {
-                initalView: View.Submit,
+                initalView: View.SubmitRequest,
               });
             }}
           >
@@ -82,6 +60,18 @@ export const SelectImportMethod = () => {
           >
             {t('12Words')}
           </WhiteButton>
+        </IonRow>
+        <IonRow>
+          <ResetPageButton
+            expand="block"
+            style={{ width: '100%' }}
+            callback={() =>
+              historyGoBack(
+                history,
+                !loginCheck.isLoading && !loginCheck.authenticated
+              )
+            }
+          />
         </IonRow>
       </MainGrid>
     </PublicLayout>

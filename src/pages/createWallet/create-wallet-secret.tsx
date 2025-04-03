@@ -10,6 +10,7 @@ import { PublicLayout } from '../../components/layout/public-layout';
 import { SecretWords } from '../../components/secret-words/secret-words';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
+import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import {
   cacheCurrentPage,
   lastPageStorage,
@@ -26,7 +27,7 @@ export const StyledSpan = styled.span({
 export function CreateWalletSecret() {
   const { t } = useTranslation();
   const [secretWords, setSecretWords] = useState<Array<string>>([]);
-  const history = useHistory<{ passPhrase: string }>();
+  const history = useHistory<LocalAccount>();
 
   useEffect(() => {
     cacheCurrentPage(urls.secret, NavigationPriority.IMMEDIATE, async () => {
@@ -49,6 +50,7 @@ export function CreateWalletSecret() {
     );
     history.push({
       pathname: akashicPayPath(urls.secretConfirm),
+      state: history.location.state,
     });
   };
 

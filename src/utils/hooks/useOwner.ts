@@ -23,7 +23,8 @@ export const useOwner = (noReload = false) => {
 
   return {
     owner,
-    authenticated: Object.keys(owner).length !== 0,
+    // TODO: Combine authenticated and isLoading
+    authenticated: !!owner.ownerIdentity,
     isLoading: !error && !data,
     isError: error,
     mutate,

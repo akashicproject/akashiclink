@@ -33,37 +33,35 @@ enum DropdownOptions {
 /**
  * Dropdown menu to offer the locally stored account
  *
- * @param onClickCallback to execute when an account is selected
- * @param changeSelection for data binding in external component
- * @param removeCreateImport to add the "CreateAccount" + "ImportAccount" options
+ * @param onNewAccountClick to execute when an account is selected
+ * @param hideCreateImport to add the "CreateAccount" + "ImportAccount" options
+ * @param showCopyButton to show a button next to the menu for copying the diplayed address
  */
 export function AccountSelection({
-  onClickCallback,
-  changeSelection,
-  isCopyButton,
+  onNewAccountClick,
+  showCopyButton,
+  hideCreateImport,
   style,
-  removeCreateImport,
 }: {
-  onClickCallback?: (selectedAccount: LocalAccount) => void;
-  changeSelection?: (selectedAccount: LocalAccount) => void;
-  isCopyButton?: boolean;
+  onNewAccountClick?: (selectedAccount: LocalAccount) => void;
+  showCopyButton?: boolean;
+  hideCreateImport?: boolean;
   style?: CSSProperties;
-  removeCreateImport?: boolean;
 }) {
   const history = useHistory();
   const { t } = useTranslation();
   const [storedTheme] = useTheme();
 
-  const popover = useRef<HTMLIonPopoverElement>(null);
+  const copyAddressPopover = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
 
-  const copyKey = async (e: never) => {
+  const copyAddress = async (e: never) => {
     await Clipboard.write({
       string: selectedAccount?.identity ?? '',
     });
 
-    if (popover.current) {
-      popover.current.event = e;
+    if (copyAddressPopover.current) {
+      copyAddressPopover.current.event = e;
     }
     setPopoverOpen(true);
     setTimeout(() => {
@@ -78,13 +76,13 @@ export function AccountSelection({
   const [selectedAccount, setSelectedAccount] = useState<LocalAccount>();
 
   /**
-   * Selection is populated on load to match the account save in session
-   * TODO: still cannot figure out why the session is being read but can't be set
+   * If there is an active account in the this browsing session
+   * preselect it in the dropdown menu
    */
   useEffect(() => {
     if (activeAccount) {
       const matchingAccount = localAccounts?.find(
-        (a) => a.identity === activeAccount.identity
+        (a) => a.username === activeAccount.username
       );
       setSelectedAccount(matchingAccount);
     } else {
@@ -108,23 +106,31 @@ export function AccountSelection({
         style={{ flexGrow: 1 }}
         value={selectedAccount}
         onIonChange={({ detail: { value } }) => {
-          setSelectedAccount(value);
-
-          // Handle button clicks
           if (value === DropdownOptions.CreateAccount) {
-            history.push(akashicPayPath(urls.createWalletUrl));
+            history.push(
+              akashicPayPath(urls.createWalletUrl),
+              // Pass in a state, to differentiate from the case when extension is closed and reopened
+              activeAccount
+            );
             return;
           }
           if (value === DropdownOptions.ImportAccount) {
-            history.push(akashicPayPath(urls.selectImportMethod));
+            history.push(
+              akashicPayPath(urls.selectImportMethod),
+              // Pass in a state, to differentiate from the case when extension is closed and reopened
+              activeAccount
+            );
             return;
           }
 
-          // Skip the callbacks until account selection is made
-          if (selectedAccount && onClickCallback) onClickCallback(value);
-
-          // Handle selection
-          if (changeSelection) changeSelection(value);
+          if (!selectedAccount) {
+            setSelectedAccount(value);
+          }
+          // When new account is selected trigger callback
+          if (selectedAccount && value !== selectedAccount) {
+            setSelectedAccount(value);
+            if (onNewAccountClick) onNewAccountClick(value);
+          }
         }}
         interface="popover"
         interfaceOptions={{
@@ -139,7 +145,7 @@ export function AccountSelection({
               {account.identity}
             </IonSelectOption>
           )),
-          ...(removeCreateImport
+          ...(hideCreateImport
             ? []
             : [
                 <IonSelectOption
@@ -157,8 +163,8 @@ export function AccountSelection({
               ]),
         ]}
       </IonSelect>
-      {isCopyButton ? (
-        <SquareWhiteButton class="icon-button" onClick={copyKey}>
+      {showCopyButton ? (
+        <SquareWhiteButton class="icon-button" onClick={copyAddress}>
           <IonIcon
             class="icon-button-icon"
             slot="icon-only"
@@ -171,7 +177,7 @@ export function AccountSelection({
           <IonPopover
             side="top"
             alignment="center"
-            ref={popover}
+            ref={copyAddressPopover}
             isOpen={popoverOpen}
             class={'copied-popover'}
             onDidDismiss={() => setPopoverOpen(false)}

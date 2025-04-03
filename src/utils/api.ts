@@ -85,14 +85,6 @@ export const OwnersAPI = {
 
     return response.data;
   },
-
-  logout: async (): Promise<void> => {
-    const response = await axiosOwnerBase.post(`/auth/logout`);
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-  },
   registerApiPassphrase: async (
     registerData: IRegisterApiPassphrase
   ): Promise<void> => {
