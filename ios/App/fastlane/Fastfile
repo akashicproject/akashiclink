@@ -20,7 +20,7 @@ platform :ios do
   desc "Build ipa file locally"
   lane :buildIpa do
     begin
-      previous_version_code = get_build_number()
+      previous_version_code = ENV['BUILD_VERSION'].to_i - 1
 
       next_version_code = previous_version_code.to_i + 1
       next_release_name = "#{ENV['MAJOR_VERSION']}.#{ENV['MINOR_VERSION']}.#{ENV['PATCH_VERSION']}"
@@ -81,7 +81,7 @@ platform :ios do
   desc "Build a new release and upload to Apple Connect"
   lane :internal do
     begin
-      previous_version_code = get_build_number()
+      previous_version_code = ENV['BUILD_VERSION'].to_i - 1
 
       next_version_code = previous_version_code.to_i + 1
       next_release_name = "#{ENV['MAJOR_VERSION']}.#{ENV['MINOR_VERSION']}.#{ENV['PATCH_VERSION']}"

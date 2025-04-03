@@ -11,10 +11,10 @@ import { useTranslation } from 'react-i18next';
 
 import type { WalletTransactionRecord } from '../../pages/activity';
 import { Divider } from '../../pages/activity';
+import { limitDecimalPlaces } from '../../utils/conversions';
 import { formatDate } from '../../utils/formatDate';
 import { displayLongCurrencyAmount } from '../../utils/long-amount';
 import { L2Icon } from '../../utils/supported-currencies';
-import { limitDecimalPlaces } from '../../utils/conversions';
 const OneTransfer = styled.div<{ hover: boolean }>((props) => ({
   display: 'flex',
   justifyContent: 'center',
