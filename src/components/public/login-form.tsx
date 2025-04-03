@@ -1,18 +1,13 @@
-import styled from '@emotion/styled';
 import { IonCol, IonRow, IonText, isPlatform } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
-import { AccountSelection } from '../../components/account-selection/account-selection';
-import {
-  Alert,
-  errorAlertShell,
-  formAlertResetState,
-} from '../../components/alert/alert';
-import { PurpleButton } from '../../components/buttons';
-import { StyledInput } from '../../components/styled-input';
-import { ContentText } from '../../components/text/context-text';
+import { AccountSelection } from '../account-selection/account-selection';
+import { Alert, errorAlertShell, formAlertResetState } from '../alert/alert';
+import { PurpleButton } from '../buttons';
+import { StyledInput } from '../styled-input';
+import { ContentText } from '../text/context-text';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { OwnersAPI } from '../../utils/api';
@@ -20,9 +15,10 @@ import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 
-const HelpLink = styled.a({
-  textDecoration: 'none',
-});
+// TODO: re-enable once password recovery loop is implemented
+// const HelpLink = styled.a({
+//   textDecoration: 'none',
+// });
 
 /**
  * Form allowing user to login
@@ -108,7 +104,8 @@ export function LoginForm() {
           </PurpleButton>
         </IonCol>
       </IonRow>
-      <IonRow style={{ marginTop: '-10px' }}>
+      {/* TODO: re-enable once password recovery loop is implemented */}
+      {/* <IonRow style={{ marginTop: '-10px' }}>
         <IonCol>
           <h3>
             <HelpLink href="https://akashicpay.com">
@@ -116,7 +113,7 @@ export function LoginForm() {
             </HelpLink>
           </h3>
         </IonCol>
-      </IonRow>
+      </IonRow> */}
     </>
   );
 }
