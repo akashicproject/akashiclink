@@ -39,11 +39,12 @@ export function makeWalletCurrency(
   chain: CoinSymbol,
   token?: CurrencySymbol
 ): IWalletCurrency {
-  if (!token)
+  if (!token) {
     return {
       displayName: NetworkDictionary[chain].nativeCoin.displayName,
       chain,
     };
+  }
 
   const tokenMetadata = NetworkDictionary[chain].tokens.find(
     ({ symbol }) => symbol === token
@@ -164,7 +165,7 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
   ...(process.env.REACT_APP_ENABLE_TESTNET_CURRENCIES === 'true'
     ? [
         {
-          chain: CoinSymbol.Sepolia,
+          chain: CoinSymbol.Ethereum_Sepolia,
           currencyIcon: '/shared-assets/images/eth.png',
           darkCurrencyIcon: '/shared-assets/images/eth-dark.png',
           greyCurrencyIcon: '/shared-assets/images/eth-grey.png',
@@ -176,7 +177,7 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
           greyCurrencyIcon: '/shared-assets/images/trx-grey.png',
         },
         {
-          chain: CoinSymbol.Sepolia,
+          chain: CoinSymbol.Ethereum_Sepolia,
           token: CurrencySymbol.USDT,
           currencyIcon: '/shared-assets/images/usdt.png',
           darkCurrencyIcon: '/shared-assets/images/usdt.png',

@@ -28,6 +28,7 @@ export interface LocationState {
     txns: ITransactionVerifyResponse[];
     signedTxns: (IBaseTransaction | ITerriTransaction)[];
     validatedAddressPair: ValidatedAddressPair;
+    amount: string;
   };
   sendResult?: {
     fromAddress: string;

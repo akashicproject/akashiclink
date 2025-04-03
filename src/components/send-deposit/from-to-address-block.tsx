@@ -2,7 +2,6 @@ import { Browser } from '@capacitor/browser';
 import { IonIcon, IonLabel, IonText } from '@ionic/react';
 import { arrowForwardCircleOutline } from 'ionicons/icons';
 import type { FC } from 'react';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { displayLongText } from '../../utils/long-text';
@@ -29,12 +28,12 @@ export const FromToAddressBlock: FC<FromToAddressBlockProps> = ({
   return (
     <div
       className={
-        'w-100 ion-display-flex ion-align-items-end ion-justify-content-between'
+        'w-100 ion-display-flex ion-align-items-end ion-justify-content-between ion-margin-bottom-xxs'
       }
     >
       <div className={'ion-display-flex ion-flex-1 ion-flex-direction-column'}>
         <IonLabel>
-          <b className={'ion-text-size-sm'}>{t('From')}</b>
+          <b className={'ion-text-size-xs'}>{t('From')}</b>
         </IonLabel>
         <IonText
           onClick={fromAddressUrl ? onAddressClick(fromAddressUrl) : undefined}
@@ -46,7 +45,7 @@ export const FromToAddressBlock: FC<FromToAddressBlockProps> = ({
       </div>
       <div className={'ion-margin-horizontal ion-display-flex'}>
         <IonIcon
-          className={'ion-text-size-xxl'}
+          className={'ion-text-size-xl'}
           color={'grey'}
           icon={arrowForwardCircleOutline}
         />
@@ -55,7 +54,7 @@ export const FromToAddressBlock: FC<FromToAddressBlockProps> = ({
         className={`ion-display-flex ion-flex-1 ion-flex-direction-column ion-align-items-end`}
       >
         <IonLabel>
-          <b className={'ion-text-size-sm'}>{t('To')}</b>
+          <b className={'ion-text-size-xs'}>{t('To')}</b>
         </IonLabel>
         <IonText
           onClick={toAddressUrl ? onAddressClick(toAddressUrl) : undefined}

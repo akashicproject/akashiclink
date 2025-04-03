@@ -13,6 +13,7 @@ type ListProps = JSX.IonList & {
 const StyledList = styled(IonList)<{ bordered: boolean; compact: boolean }>(
   ({ bordered, compact }) => ({
     margin: 0,
+    padding: 0,
     borderRadius: 8,
     border: bordered ? `1px solid var(--ion-color-grey)` : 'none',
     ['ion-item']: {

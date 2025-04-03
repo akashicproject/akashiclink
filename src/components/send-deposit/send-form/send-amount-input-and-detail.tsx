@@ -55,7 +55,8 @@ export const SendAmountInputAndDetail = ({
     nativeCoinSymbol,
   } = useFocusCurrencySymbolsAndBalances();
 
-  const isL2 = validatedAddressPair.convertedToAddress.match(L2Regex);
+  const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
+
   const calculateL2Fee = useCalculateFocusCurrencyL2WithdrawalFee();
 
   const isAmountLargerThanZero = amount !== '' && Big(amount).gt(0);
@@ -133,6 +134,7 @@ export const SendAmountInputAndDetail = ({
           <AmountInput
             placeholder={'0.00'}
             type="number"
+            inputmode={'decimal'}
             onIonInput={onAmountChange}
             value={amount}
           />
@@ -150,7 +152,7 @@ export const SendAmountInputAndDetail = ({
           </IonText>
           {!isL2 && isCurrencyTypeToken && (
             <IonText className={'ion-text-size-xs ion-text-align-center'}>
-              <b>{`${t('NativeCoinBalance')}: ${Big(nativeCoinBalance).toFixed(
+              <b>{`${t('AvailableGas')}: ${Big(nativeCoinBalance).toFixed(
                 4
               )} ${nativeCoinSymbol}`}</b>
             </IonText>

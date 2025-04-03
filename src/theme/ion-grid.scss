@@ -92,7 +92,7 @@ ion-col {
    gap to row.
    noted that gap is 2x the value as ionic add padding to all IonCol
 */
-.ion-grid-row-gap-xxs {
+.ion-grid-row-gap-xxxs {
   --ion-grid-row-padding: 2px;
 }
 .ion-grid-row-gap-xxs {
@@ -152,4 +152,34 @@ ion-col {
 }
 .ion-grid-column-gap-xxxl {
   --ion-grid-column-padding: 40px;
+}
+
+/** Normal css gap */
+.ion-gap-xxxs {
+  gap: 2px;
+}
+.ion-gap-xxs {
+  gap: 4px;
+}
+.ion-gap-xs {
+  gap: 8px;
+}
+.ion-gap-sm {
+  gap: 12px;
+}
+.ion-gap-column-gap,
+.ion-gap-md {
+  gap: 16px;
+}
+.ion-gap-lg {
+  gap: 20px;
+}
+.ion-gap-xl {
+  gap: 24px;
+}
+.ion-gap-xxl {
+  gap: 32px;
+}
+.ion-gap-xxxl {
+  gap: 40px;
 }

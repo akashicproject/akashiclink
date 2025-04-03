@@ -45,9 +45,7 @@ export const NoActivityText = styled.div({
 });
 export const TableWrapper = styled.div({
   fontSize: '10px',
-  padding: '0px 10px',
-  marginBottom: '-12px',
-  marginTop: '32px',
+  padding: '0px 8px',
   color: '#B0A9B3',
 });
 export const ColumnWrapper = styled.div({
@@ -110,8 +108,8 @@ export function Activity() {
         walletFormatTransfers.length ? (
           <Virtuoso
             style={{
-              margin: '20px 0px',
-              minHeight: '60vh',
+              margin: '8px 0px',
+              minHeight: 'calc(100vh - 200px)',
             }}
             data={walletFormatTransfers}
             components={{

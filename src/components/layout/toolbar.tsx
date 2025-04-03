@@ -44,7 +44,7 @@ export function Toolbar({
   return (
     <div
       style={{
-        padding: '16px 24px',
+        padding: '12px 24px',
         height: 'auto',
         display: 'flex',
         gap: '8px',

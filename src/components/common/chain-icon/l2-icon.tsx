@@ -3,7 +3,7 @@ import React from 'react';
 
 export const L2Icon = ({ size = 24 }: { size?: number }) => {
   return (
-    <div
+    <span
       style={{
         width: size,
         height: size,
@@ -14,6 +14,6 @@ export const L2Icon = ({ size = 24 }: { size?: number }) => {
         src={'/shared-assets/icons/L2_icon.svg'}
         style={{ width: 'auto ', height: '100%' }}
       />
-    </div>
+    </span>
   );
 };

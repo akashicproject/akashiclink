@@ -1,3 +1,4 @@
+import { Browser } from '@capacitor/browser';
 import { Clipboard } from '@capacitor/clipboard';
 import {
   IonContent,
@@ -5,8 +6,9 @@ import {
   IonLabel,
   IonNote,
   IonPopover,
+  IonText,
 } from '@ionic/react';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { displayLongText } from '../../utils/long-text';
@@ -36,6 +38,15 @@ export const ListCopyTxHashItem = ({
     }, 1000);
   };
 
+  const onClickCopyIcon = async (e: never) => txHash && copyData(txHash, e);
+
+  const onClickHash = async () => {
+    txHashUrl &&
+      (await Browser.open({
+        url: txHashUrl,
+      }));
+  };
+
   return (
     <div
       className={
@@ -48,17 +59,22 @@ export const ListCopyTxHashItem = ({
         </span>
       </IonLabel>
       <IonNote
-        onClick={async (e: never) => copyData(txHashUrl ?? txHash, e)}
         className={`ion-text-size-xs ion-display-flex ion-align-items-center`}
         color="dark"
         slot={'end'}
       >
-        <span>{displayLongText(txHash)}</span>
+        <IonText
+          className={txHashUrl ? 'ion-text-underline' : ''}
+          onClick={onClickHash}
+        >
+          {displayLongText(txHash)}
+        </IonText>
         <div
           style={{ height: '18px', width: '18px' }}
           className="ion-margin-left-xs"
         >
           <IonIcon
+            onClick={onClickCopyIcon}
             slot="icon-only"
             className="copy-icon"
             src={`/shared-assets/images/copy-icon-dark.svg`}

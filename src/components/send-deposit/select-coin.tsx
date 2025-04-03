@@ -53,9 +53,6 @@ export function SelectCoin() {
   const [storedTheme] = useTheme();
   const [focusCurrency, setFocusCurrency] = useFocusCurrency();
 
-  /**
-   * Balance information
-   */
   const [focusCurrencyUSDTBalance, setFocusCurrencyUSDTBalance] =
     useState<Big>();
 
@@ -69,9 +66,7 @@ export function SelectCoin() {
 
   const aggregatedBalances = useAggregatedBalances();
 
-  /**
-   * Update the USDT equivalent once exchange rates are loaded
-   */
+  /** Update the USDT equivalent once exchange rates are loaded */
   useEffect(
     () => {
       const defaultBig = Big(aggregatedBalances.get(focusCurrency) || 0);
@@ -82,9 +77,7 @@ export function SelectCoin() {
     [aggregatedBalances, exchangeRateLength]
   );
 
-  /**
-   * Tracking of swiper and currency under focus
-   */
+  /** Tracking of swiper and currency under focus  */
   const [swiperRef, setSwiperRef] = useState<SwiperCore>();
   const [swiperIdx, setSwiperIdx] = useState<number>(
     CURRENCIES_FOR_SWIPER.findIndex(({ walletCurrency }) =>
@@ -92,9 +85,7 @@ export function SelectCoin() {
     )
   );
 
-  /**
-   * Slide to last index
-   */
+  /** Slide to last index */
   useEffect(() => {
     if (!swiperRef || swiperRef.destroyed) return;
     swiperRef.slideToLoop(swiperIdx);
@@ -248,13 +239,15 @@ export function SelectCoin() {
         <IonCol class="ion-no-padding">
           <BalanceTitle>
             {formatAmount(aggregatedBalances.get(focusCurrency) || 0)}{' '}
-            {focusCurrency.displayName.toUpperCase()}
+            {focusCurrency.displayName}
           </BalanceTitle>
         </IonCol>
       </IonRow>
       <IonRow>
         <IonCol class="ion-no-padding">
-          <BalanceText>${`${focusCurrencyUSDTBalance} USD`}</BalanceText>
+          <BalanceText>
+            ${`${focusCurrencyUSDTBalance?.toFixed(2)} USD`}
+          </BalanceText>
         </IonCol>
       </IonRow>
     </>

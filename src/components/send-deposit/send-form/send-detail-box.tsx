@@ -1,4 +1,4 @@
-import { L2Regex } from '@helium-pay/backend';
+import { L2Regex, NetworkDictionary } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +25,7 @@ export const SendDetailBox = ({
   const { t } = useTranslation();
   const { chain, token } = useFocusCurrencyDetail();
 
-  const isL2 = !!validatedAddressPair.convertedToAddress?.match(L2Regex);
+  const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
   const isCurrencyTypeToken = typeof token !== 'undefined';
 
   const precision = !isL2 || !isCurrencyTypeToken ? 6 : 2;
@@ -45,7 +45,19 @@ export const SendDetailBox = ({
             )}
           <ListLabelValueItem
             label={t('Chain.Title')}
-            value={isL2 ? <L2Icon /> : <NetworkIcon chain={chain} />}
+            value={
+              isL2 ? (
+                <span className={'ion-display-flex ion-gap-xxs'}>
+                  <L2Icon />
+                  {t('Chain.AkashicChain')}
+                </span>
+              ) : (
+                <span className={'ion-display-flex ion-gap-xxs'}>
+                  <NetworkIcon chain={chain} />
+                  {NetworkDictionary[chain].displayName.replace(/Chain/g, '')}
+                </span>
+              )
+            }
             labelBold
           />
           <ListLabelValueItem
