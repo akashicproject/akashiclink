@@ -20,7 +20,13 @@ export const SendConfirmationForm = () => {
 
   const [txnFinal, setTxnFinal] = useState<
     SendConfirmationTxnFinal | undefined
-  >();
+  >(
+    history.location.state?.sendConfirm?.txnFinal
+      ? {
+          ...history.location.state?.sendConfirm.txnFinal,
+        }
+      : undefined
+  );
   const [txnsDetail, setTxnsDetail] = useState<
     SendConfirmationTxnsDetail | undefined
   >(

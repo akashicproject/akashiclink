@@ -7,7 +7,10 @@ import type {
 } from '@helium-pay/backend';
 import { createMemoryHistory } from 'history';
 
-import type { ValidatedAddressPair } from '../components/send-deposit/send-form/types';
+import type {
+  SendConfirmationTxnFinal,
+  ValidatedAddressPair,
+} from '../components/send-deposit/send-form/types';
 import type { Url } from '../constants/urls';
 import { urls } from '../constants/urls';
 import type { TransferResultType } from '../pages/nft/nft-transfer-result';
@@ -29,6 +32,7 @@ export interface LocationState {
     signedTxns: (IBaseTransaction | ITerriTransaction)[];
     validatedAddressPair: ValidatedAddressPair;
     amount: string;
+    txnFinal?: SendConfirmationTxnFinal;
   };
   sendResult?: {
     fromAddress: string;

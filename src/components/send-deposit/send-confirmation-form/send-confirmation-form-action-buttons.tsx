@@ -5,12 +5,16 @@ import { IonAlert, IonCol, IonRow } from '@ionic/react';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 
 import { ONE_DAY_MS, ONE_MINUTE_MS } from '../../../constants';
+import { urls } from '../../../constants/urls';
+import type { LocationState } from '../../../routing/history';
 import {
   historyGoBackOrReplace,
   historyResetStackAndRedirect,
 } from '../../../routing/history';
+import { akashicPayPath } from '../../../routing/navigation-tabs';
 import { OwnersAPI } from '../../../utils/api';
 import { useInterval } from '../../../utils/hooks/useInterval';
 import { useVerifyTxnAndSign } from '../../../utils/hooks/useVerifyTxnAndSign';
@@ -41,6 +45,7 @@ export const SendConfirmationFormActionButtons = ({
   >;
 }) => {
   const { t } = useTranslation();
+  const history = useHistory<LocationState>();
 
   const [forceAlert, setForceAlert] = useState(formAlertResetState);
   const [formAlert, setFormAlert] = useState(formAlertResetState);
@@ -132,6 +137,20 @@ export const SendConfirmationFormActionButtons = ({
         txHash: res.txHash,
         feesEstimate: res.feesEstimate,
       });
+      if (history.location.state.sendConfirm) {
+        history.push({
+          pathname: akashicPayPath(urls.sendConfirm),
+          state: {
+            sendConfirm: {
+              ...history.location.state.sendConfirm,
+              txnFinal: {
+                txHash: res.txHash,
+                feesEstimate: res.feesEstimate,
+              },
+            },
+          },
+        });
+      }
     } catch (error) {
       const errorShell = errorAlertShell(unpackRequestErrorMessage(error));
       if (
