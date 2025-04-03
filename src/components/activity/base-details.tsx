@@ -2,6 +2,9 @@ import styled from '@emotion/styled';
 import { TransactionStatus } from '@helium-pay/backend';
 import { IonImg } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from 'src/redux/app/hooks';
+import { selectTheme } from 'src/redux/slices/preferenceSlice';
+import { themeType } from 'src/theme/const';
 
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { List } from '../common/list/list';
@@ -27,6 +30,7 @@ export function BaseDetails({
   currentTransfer: ITransactionRecordForExtension;
 }) {
   const { t } = useTranslation();
+  const storedTheme = useAppSelector(selectTheme);
   const statusString = (status: string | undefined) => {
     switch (status) {
       case 'Any':
@@ -59,8 +63,10 @@ export function BaseDetails({
             {statusString(currentTransfer.status)}
           </h4>
           <IonImg
-            src={`/shared-assets/images/${currentTransfer.status?.toLocaleLowerCase()}.png`}
-            style={{ width: '16px', height: '16px' }}
+            src={`/shared-assets/images/${currentTransfer.status}-${
+              storedTheme === themeType.DARK ? 'dark' : 'white'
+            }.svg`}
+            style={{ width: '20px', height: '20px' }}
           />
         </div>
       </DetailColumn>

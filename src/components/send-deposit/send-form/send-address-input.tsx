@@ -125,6 +125,7 @@ export const SendAddressInput = ({
           return;
         } else {
           onAddressValidated({
+            acnsAlias,
             convertedToAddress: l2Address,
             userInputToAddress: userInput,
             userInputToAddressType: 'alias',

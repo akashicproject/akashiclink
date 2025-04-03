@@ -7,7 +7,6 @@ import { useAppSelector } from '../../../redux/app/hooks';
 import { selectFocusCurrencyDetail } from '../../../redux/slices/preferenceSlice';
 import { getPrecision } from '../../../utils/formatAmount';
 import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
-import { displayLongText } from '../../../utils/long-text';
 import type { ITransactionForSigning } from '../../../utils/nitr0gen/nitr0gen.interface';
 import { L2Icon } from '../../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../../common/chain-icon/network-icon';
@@ -177,11 +176,7 @@ export const SendConfirmationDetailList = ({
             className={'ion-margin-vertical'}
           />
         </IonItem>
-        <ListLabelValueItem
-          label={t('AkashicAlias')}
-          value={displayLongText(alias)}
-          labelBold
-        />
+        <ListLabelValueItem label={t('AkashicAlias')} value={alias} labelBold />
       </>
     </List>
   );
