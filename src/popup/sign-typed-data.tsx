@@ -1,3 +1,4 @@
+import type { ICallbackUrls } from '@helium-pay/backend';
 import { IonCol, IonRow, IonSpinner } from '@ionic/react';
 import { getSdkError } from '@walletconnect/utils';
 import { type Web3WalletTypes } from '@walletconnect/web3wallet';
@@ -21,6 +22,7 @@ import type { BecomeBpToSign } from '../utils/hooks/useSignBecomeBpMessage';
 import { useSignBecomeBpMessage } from '../utils/hooks/useSignBecomeBpMessage';
 import type { RetryCallbackToSign } from '../utils/hooks/useSignRetryCallback';
 import { useSignRetryCallback } from '../utils/hooks/useSignRetryCallback';
+import type { SetCallbackUrlsToSign } from '../utils/hooks/useSignSetupCallbackUrl';
 import { useSignSetupCallbackUrl } from '../utils/hooks/useSignSetupCallbackUrl';
 import { useWeb3Wallet } from '../utils/web3wallet';
 
@@ -92,9 +94,22 @@ export function SignTypedData() {
             expires: Number(toSign.expires),
           } as RetryCallbackToSign);
           break;
-        case TYPED_DATA_PRIMARY_TYPE.SETUP_CALLBACK_URL:
-          signedMsg = await signSetupCallbackUrl();
+        case TYPED_DATA_PRIMARY_TYPE.SETUP_CALLBACK_URL: {
+          const callbackUrls: ICallbackUrls = {};
+          if (toSign.deposit) {
+            callbackUrls.deposit = toSign.deposit as string;
+          }
+          if (toSign.payout) {
+            callbackUrls.payout = toSign.payout as string;
+          }
+
+          signedMsg = await signSetupCallbackUrl({
+            identity: toSign.identity,
+            expires: Number(toSign.expires),
+            callbackUrls,
+          } as SetCallbackUrlsToSign);
           break;
+        }
         default:
           throw new Error('Unreachable');
       }
