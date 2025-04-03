@@ -35,7 +35,9 @@ export function LoggedHeader({ loggedIn }: { loggedIn?: boolean }) {
           alt={''}
           src={
             (!loggedIn && storedTheme === themeType.DARK) ||
-            (loggedIn && storedTheme === themeType.LIGHT)
+            (loggedIn &&
+              (storedTheme === themeType.LIGHT ||
+                storedTheme === themeType.SYSTEM))
               ? '/shared-assets/images/wallet-logo-white.svg'
               : loggedIn && storedTheme === themeType.DARK
               ? '/shared-assets/images/wallet-logo-dark.svg'
