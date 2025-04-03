@@ -1,7 +1,6 @@
 import type { StorybookConfig } from '@storybook/react-webpack5';
 import { dirname, join } from 'path';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const webpackConfigExtender = require('../webpack-config-extender');
 
 /**

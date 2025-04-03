@@ -36,7 +36,6 @@ import type {
   SendConfirmationTxnsDetail,
 } from '../send-form/types';
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export const SendConfirmationFormActionButtons = ({
   txnFinal,
   txnsDetail,

@@ -152,7 +152,7 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
     },
     {
       chain: CoinSymbol.Tron,
-      // eslint-disable-next-line sonarjs/no-duplicate-string
+
       currencyIcon: '/shared-assets/images/trx.png',
       darkCurrencyIcon: '/shared-assets/images/trx.png',
       greyCurrencyIcon: '/shared-assets/images/trx-grey.png',
@@ -163,7 +163,7 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
       // eslint-disable-next-line sonarjs/no-duplicate-string
       currencyIcon: '/shared-assets/images/usdt.png',
       darkCurrencyIcon: '/shared-assets/images/usdt.png',
-      // eslint-disable-next-line sonarjs/no-duplicate-string
+
       greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
     },
     {
