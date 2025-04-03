@@ -117,8 +117,7 @@ export const useVerifyTxnAndSign = () => {
       const signedTxn = await signTxBody(preparedTxn, cacheOtk);
       const uiFeesEstimate = convertFromSmallestUnit(
         preparedTxn.$tx.metadata?.feesEstimate ?? '0',
-        coinSymbol,
-        tokenSymbol
+        coinSymbol
       );
       const txn: ITransactionForSigning = {
         identity: activeAccount.identity,
