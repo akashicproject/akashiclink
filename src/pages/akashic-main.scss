@@ -14,3 +14,14 @@ $image: var(--main-image);
   height: 140px;
   margin-top: 14px;
 }
+
+ion-checkbox {
+  --size: 24px;
+  --checkbox-background-checked: #7444b6;
+}
+
+ion-checkbox::part(container) {
+  border-radius: 8px;
+  padding: 4px;
+  border: 2px solid #7b757f;
+}

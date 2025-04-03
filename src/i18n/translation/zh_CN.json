@@ -215,5 +215,8 @@
   "PleaseChooseSecurityOptionToImportWallet": "请选择一个安全选项来导入您的钱包",
   "ImportSuccessful": "导入成功",
   "12Words": "12 个字",
-  "YouHaveOptionTo": "您现在可以选择"
+  "YouHaveOptionTo": "您现在可以选择",
+  "EmpoweringYourWealth": "赋能财富",
+  "IAgreeToTermsOfUse": "我同意 Akashic 钱包的",
+  "TermsOfUse": "使用条款"
 }

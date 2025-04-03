@@ -1,7 +1,8 @@
 import './akashic-main.scss';
 
-import { IonCol, IonImg, IonRow, isPlatform } from '@ionic/react';
-import { useEffect } from 'react';
+import styled from '@emotion/styled';
+import { IonCheckbox, IonCol, IonImg, IonRow, isPlatform } from '@ionic/react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -30,13 +31,18 @@ export function AkashicPayMain() {
   const { localAccounts } = useAccountStorage();
   const history = useHistory();
   const loginCheck = useOwner(true);
-
+  const [checked, setChecked] = useState(false);
   /**
    * Check if there is a forced page to redirect to
    * Sometimes a random loggedFunction with immediate priority sneaks in there (at least when moving between app versions)
    *  which causes unwanted push here, so we check for that.
    * TODO: Figure out root cause and address
    */
+  const StyledSpan = styled.span({
+    fontSize: '12px',
+    fontWeight: '700',
+    fontFamily: 'Nunito Sans',
+  });
   useEffect(() => {
     const loadPage = async () => {
       const lastPage = await lastPageStorage.get();
@@ -77,6 +83,10 @@ export function AkashicPayMain() {
                 : 'welcome-img-small'
             }
             alt=""
+            style={{
+              height: '130px',
+              width: '104px',
+            }}
           />
         </IonCol>
       </IonRow>
@@ -85,15 +95,45 @@ export function AkashicPayMain() {
         localAccounts.length ? (
           <LoginForm />
         ) : (
-          <>
-            <IonRow style={{ marginTop: '16px' }}>
+          <div
+            style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+          >
+            <IonRow style={{ marginTop: '24px', marginBottom: '40px' }}>
               <IonCol class="ion-center">
-                <h3>{t('BestWayToInvestYourMoney')}</h3>
+                <h3 style={{ margin: '0' }}>{t('EmpoweringYourWealth')}</h3>
               </IonCol>
             </IonRow>
-            <IonRow style={{ marginTop: '16px' }}>
+            <IonRow>
+              <IonCol
+                size="12"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <IonCheckbox
+                  style={{ marginRight: '8px' }}
+                  onIonChange={() => {
+                    setChecked(!checked);
+                  }}
+                />
+                <StyledSpan>
+                  {t('IAgreeToTermsOfUse')}{' '}
+                  <a
+                    rel="noreferrer"
+                    href="https://akashic-1.gitbook.io/akashicwallet/terms-of-use"
+                    target={'_blank'}
+                  >
+                    {t('TermsOfUse')}
+                  </a>
+                </StyledSpan>
+              </IonCol>
+            </IonRow>
+            <IonRow>
               <IonCol>
                 <PurpleButton
+                  disabled={!checked}
                   routerLink={akashicPayPath(urls.createWalletUrl)}
                   expand="block"
                 >
@@ -101,9 +141,10 @@ export function AkashicPayMain() {
                 </PurpleButton>
               </IonCol>
             </IonRow>
-            <IonRow style={{ marginTop: '16px' }}>
+            <IonRow>
               <IonCol>
                 <WhiteButton
+                  disabled={!checked}
                   routerLink={akashicPayPath(urls.selectImportMethod)}
                   expand="block"
                 >
@@ -111,7 +152,7 @@ export function AkashicPayMain() {
                 </WhiteButton>
               </IonCol>
             </IonRow>
-          </>
+          </div>
         )
       }
     </PublicLayout>

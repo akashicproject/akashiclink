@@ -215,5 +215,8 @@
   "PleaseChooseSecurityOptionToImportWallet": "Please choose a security option to Import your Wallet",
   "ImportSuccessful": "Import Successful",
   "12Words": "12 Words",
-  "YouHaveOptionTo": "You now have the option to"
+  "YouHaveOptionTo": "You now have the option to",
+  "EmpoweringYourWealth": "Empowering Your Wealth",
+  "IAgreeToTermsOfUse": "I agree to Akashic Wallet",
+  "TermsOfUse": "Terms Of Use"
 }
