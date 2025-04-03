@@ -55,7 +55,8 @@ export const useAccountStorage = () => {
       }
       return l;
     });
-    if (activeAccount) setActiveAccount({ ...activeAccount, aasName });
+    if (activeAccount && activeAccount.identity === identity)
+      setActiveAccount({ ...activeAccount, aasName });
     setLocalAccounts(updatedAccounts);
   };
 
@@ -67,7 +68,7 @@ export const useAccountStorage = () => {
       }
       return l;
     });
-    if (activeAccount) {
+    if (activeAccount && activeAccount.identity === identity) {
       setActiveAccount({ ...activeAccount, aasName: undefined });
     }
     setLocalAccounts(updatedAccounts);
