@@ -64,14 +64,12 @@ export async function signTxBody<T extends IBaseTransactionWithDbIndex>(
   otk: IKeyExtended
 ): Promise<T> {
   const txHandler = new TransactionHandler();
-  if (process.env.REACT_APP_ENV !== 'prod') {
-    if (!process.env.REACT_APP_REDIS_DB_INDEX) {
-      throw new Error(
-        'You must specify the variable `REACT_APP_REDIS_DB_INDEX` in your AW .env file or you will clobber staging!'
-      );
-    }
-    txBody.$tx._dbIndex = parseInt(process.env.REACT_APP_REDIS_DB_INDEX);
+  if (!process.env.REACT_APP_REDIS_DB_INDEX) {
+    throw new Error(
+      'You must specify the variable `REACT_APP_REDIS_DB_INDEX` in your AW .env file or you will clobber staging!'
+    );
   }
+  txBody.$tx._dbIndex = parseInt(process.env.REACT_APP_REDIS_DB_INDEX);
 
   return await txHandler.signTransaction(txBody, otk);
 }
