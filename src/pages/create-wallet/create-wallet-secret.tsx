@@ -44,7 +44,7 @@ export function CreateWalletSecret() {
   useEffect(() => {
     setAlert(
       createWalletError
-        ? errorAlertShell(t('GenericFailureMsg'))
+        ? errorAlertShell('GenericFailureMsg')
         : formAlertResetState
     );
   }, [createWalletError, t]);

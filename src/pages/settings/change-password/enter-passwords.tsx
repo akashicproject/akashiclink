@@ -64,7 +64,7 @@ export function ChangePassword() {
 
     // Can not change to same password
     if (oldPassword === newPassword) {
-      setAlertRequest(errorAlertShell(t('NewPasswordMustBeDifferent')));
+      setAlertRequest(errorAlertShell('NewPasswordMustBeDifferent'));
       return;
     }
 
@@ -97,7 +97,7 @@ export function ChangePassword() {
         history.push(akashicPayPath(urls.changePasswordConfirm));
         resetStates();
       } catch (error) {
-        setAlertRequest(errorAlertShell(t(unpackRequestErrorMessage(error))));
+        setAlertRequest(errorAlertShell(unpackRequestErrorMessage(error)));
       }
     }
   }

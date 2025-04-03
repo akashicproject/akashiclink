@@ -52,7 +52,7 @@ export function MigrateWalletOldPassword() {
       history.replace(akashicPayPath(urls.migrateWalletSecret));
     } catch (e) {
       setIsLoading(false);
-      setAlert(errorAlertShell(t(unpackRequestErrorMessage(e))));
+      setAlert(errorAlertShell(unpackRequestErrorMessage(e)));
     }
   }
 

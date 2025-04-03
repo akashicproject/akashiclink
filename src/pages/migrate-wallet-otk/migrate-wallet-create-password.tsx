@@ -108,9 +108,9 @@ export function MigrateWalletCreatePassword() {
       } catch (e) {
         datadogRum.addError(e);
         setIsLoading(false);
-        setAlert(errorAlertShell(t('GenericFailureMsg')));
+        setAlert(errorAlertShell('GenericFailureMsg'));
       }
-    } else setAlert(errorAlertShell(t('PasswordHelperText')));
+    } else setAlert(errorAlertShell('PasswordHelperText'));
   }
 
   return (

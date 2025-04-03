@@ -65,7 +65,7 @@ export const SendAddressInput = ({
 
     // Not allow sending to self address
     if (userInput === activeAccount?.identity) {
-      setAlert(errorAlertShell(t('NoSelfSend')));
+      setAlert(errorAlertShell('NoSelfSend'));
       return;
     }
 
@@ -78,7 +78,7 @@ export const SendAddressInput = ({
         });
 
         if (typeof l2Address === 'undefined') {
-          setAlert(errorAlertShell(t('invalidL2Address')));
+          setAlert(errorAlertShell('invalidL2Address'));
         } else {
           onAddressValidated({
             convertedToAddress: l2Address,
@@ -112,7 +112,7 @@ export const SendAddressInput = ({
           to: userInput,
         });
       if (typeof aliasL2Address === 'undefined') {
-        setAlert(errorAlertShell(t('AddressHelpText')));
+        setAlert(errorAlertShell('AddressHelpText'));
         return;
       }
 
@@ -125,7 +125,7 @@ export const SendAddressInput = ({
       setAlert(
         errorAlertShell(
           axios.isAxiosError(error)
-            ? t(unpackRequestErrorMessage(error))
+            ? unpackRequestErrorMessage(error)
             : 'GenericFailureMsg'
         )
       );

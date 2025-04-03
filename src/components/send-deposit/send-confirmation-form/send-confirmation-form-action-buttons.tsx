@@ -64,7 +64,7 @@ export const SendConfirmationFormActionButtons = ({
         setIsLoading(true);
 
         if (!txnsDetail.validatedAddressPair || !txnsDetail.amount) {
-          setFormAlert(errorAlertShell(t('GenericFailureMsg')));
+          setFormAlert(errorAlertShell('GenericFailureMsg'));
           return;
         }
 
@@ -74,7 +74,7 @@ export const SendConfirmationFormActionButtons = ({
         );
 
         if (typeof res === 'string') {
-          setFormAlert(errorAlertShell(t(res)));
+          setFormAlert(errorAlertShell(res));
           return;
         }
 
@@ -84,7 +84,7 @@ export const SendConfirmationFormActionButtons = ({
           signedTxns: res.signedTxns,
         });
       } catch (e) {
-        setFormAlert(errorAlertShell(t(unpackRequestErrorMessage(e))));
+        setFormAlert(errorAlertShell(unpackRequestErrorMessage(e)));
       } finally {
         setIsLoading(false);
       }
@@ -101,7 +101,7 @@ export const SendConfirmationFormActionButtons = ({
         !txnsDetail.txns[0] ||
         !txnsDetail?.signedTxns?.[0]
       ) {
-        setFormAlert(errorAlertShell(t('GenericFailureMsg')));
+        setFormAlert(errorAlertShell('GenericFailureMsg'));
         return;
       }
       setIsLoading(true);
@@ -133,7 +133,7 @@ export const SendConfirmationFormActionButtons = ({
         feesEstimate: res.feesEstimate,
       });
     } catch (error) {
-      const errorShell = errorAlertShell(t(unpackRequestErrorMessage(error)));
+      const errorShell = errorAlertShell(unpackRequestErrorMessage(error));
       if (
         [otherError.signingError, otherError.providerError].includes(
           (error as Error).message
@@ -164,7 +164,7 @@ export const SendConfirmationFormActionButtons = ({
       <IonAlert
         isOpen={forceAlert.visible}
         header={t('GenericFailureMsg')}
-        message={forceAlert.message}
+        message={t(forceAlert.message)}
         backdropDismiss={false}
         buttons={[
           {

@@ -207,7 +207,7 @@ export function SettingsNaming() {
       setIsResultModel(true);
     } catch (error) {
       datadogRum.addError(error);
-      setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+      setAlert(errorAlertShell(unpackRequestErrorMessage(error)));
     } finally {
       await mutateNftAcnsMe();
       setLoading(false);
@@ -248,7 +248,7 @@ export function SettingsNaming() {
       setShowEditToast(true);
     } catch (error) {
       datadogRum.addError(error);
-      setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+      setAlert(errorAlertShell(unpackRequestErrorMessage(error)));
     } finally {
       await mutateNftAcnsMe();
       setLoading(false);

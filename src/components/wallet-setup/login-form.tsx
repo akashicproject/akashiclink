@@ -80,7 +80,7 @@ export function LoginForm() {
       setIsLoading(true);
 
       if (!selectedAccount || !password) {
-        setAlert(errorAlertShell(t('ValidationError')));
+        setAlert(errorAlertShell('ValidationError'));
         return;
       }
 
@@ -129,7 +129,7 @@ export function LoginForm() {
       historyResetStackAndRedirect();
     } catch (error) {
       datadogRum.addError(error);
-      setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+      setAlert(errorAlertShell(unpackRequestErrorMessage(error)));
     } finally {
       setIsLoading(false);
     }

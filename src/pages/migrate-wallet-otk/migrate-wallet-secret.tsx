@@ -49,7 +49,7 @@ export function MigrateWalletSecret() {
   useEffect(() => {
     setAlert(
       migrateWalletError
-        ? errorAlertShell(t('GenericFailureMsg'))
+        ? errorAlertShell('GenericFailureMsg')
         : formAlertResetState
     );
   }, [migrateWalletError]);

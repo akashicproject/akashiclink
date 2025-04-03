@@ -96,7 +96,7 @@ export function CreateWalletSecretConfirm() {
     } catch (e) {
       datadogRum.addError(e);
       const error = e as Error;
-      let message = error.message || t('GenericFailureMsg');
+      let message = error.message || 'GenericFailureMsg';
       if (axios.isAxiosError(e)) message = e.response?.data?.message || message;
       setAlert(errorAlertShell(message));
     } finally {

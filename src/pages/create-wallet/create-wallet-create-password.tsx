@@ -60,10 +60,10 @@ export function CreateWalletPassword() {
         historyResetStackAndRedirect(urls.createWalletSecretPhrase);
       } catch (e) {
         datadogRum.addError(e);
-        setAlert(errorAlertShell(t('GenericFailureMsg')));
+        setAlert(errorAlertShell('GenericFailureMsg'));
       }
     } else {
-      setAlert(errorAlertShell(t('PasswordHelperText')));
+      setAlert(errorAlertShell('PasswordHelperText'));
     }
   }
 

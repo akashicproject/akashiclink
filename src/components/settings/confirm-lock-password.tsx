@@ -38,18 +38,18 @@ export function ConfirmLockPassword({
   const handleOnConfirm = async () => {
     try {
       if (typeof password === 'undefined') {
-        setAlert(errorAlertShell(t('InvalidPassword')));
+        setAlert(errorAlertShell('InvalidPassword'));
         return;
       }
       const otk = await getLocalOtk(activeAccount!.identity!, password);
       if (otk) {
         onPasswordCheckSuccess(otk);
       } else {
-        setAlert(errorAlertShell(t('PleaseConfirm')));
+        setAlert(errorAlertShell('PleaseConfirm'));
       }
     } catch (e) {
       datadogRum.addError(e);
-      setAlert(errorAlertShell(t('InvalidPassword')));
+      setAlert(errorAlertShell('InvalidPassword'));
     }
   };
 

@@ -26,18 +26,27 @@ export interface FormAlertState {
   success: boolean;
   visible: boolean;
   message: string;
+  messageProps?: Record<string, unknown>;
 }
 
-export const errorAlertShell = (message: string) => ({
+export const errorAlertShell = (
+  message: string,
+  messageProps?: Record<string, unknown>
+) => ({
   success: false,
   visible: true,
   message,
+  messageProps,
 });
 
-export const successAlertShell = (message: string) => ({
+export const successAlertShell = (
+  message: string,
+  messageProps?: Record<string, unknown>
+) => ({
   success: true,
   visible: true,
   message,
+  messageProps,
 });
 
 export const formAlertResetState: FormAlertState = {
@@ -131,7 +140,7 @@ export function CustomAlert({ state }: { state: CustomAlertState }) {
         />
         <IonText className="warning-text">
           <h2>{state.success ? `${t('Success')}` : `${t('Failure')}`}</h2>
-          {state.message}
+          {t(state.message)}
         </IonText>
         {state.onConfirm && (
           <PurpleButton onClick={state.onConfirm} style={{ width: '160px' }}>
@@ -155,6 +164,7 @@ export function AlertBox({
   state: FormAlertState;
   style?: React.CSSProperties;
 }) {
+  const { t } = useTranslation();
   const color = state.success
     ? 'var(--ion-color-success)'
     : 'var(--ion-color-danger)';
@@ -176,7 +186,7 @@ export function AlertBox({
           ...style,
         }}
       >
-        {state.message}
+        {t(state.message, state.messageProps)}
       </h4>
     </IonNote>
   );

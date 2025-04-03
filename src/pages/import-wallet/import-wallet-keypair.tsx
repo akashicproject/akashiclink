@@ -33,7 +33,7 @@ export function ImportWalletKeypair() {
   useEffect(() => {
     setAlert(
       importWalletError
-        ? errorAlertShell(t(unpackRequestErrorMessage(importWalletError)))
+        ? errorAlertShell(unpackRequestErrorMessage(importWalletError))
         : formAlertResetState
     );
   }, [importWalletError, t]);

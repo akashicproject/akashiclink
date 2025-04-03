@@ -70,7 +70,7 @@ export const SendAmountInputAndDetail = ({
 
     // amount must be larger then 0
     if (userInputAmount.lte(0)) {
-      setAlert(errorAlertShell(t('amountLargerThenZero')));
+      setAlert(errorAlertShell('amountLargerThenZero'));
       return;
     }
 
@@ -78,7 +78,7 @@ export const SendAmountInputAndDetail = ({
     if (isL2) {
       const fee = calculateL2Fee(input);
       if (userInputAmount.gt(Big(currencyBalance ?? 0).sub(fee))) {
-        setAlert(errorAlertShell(t('SavingsExceeded')));
+        setAlert(errorAlertShell('SavingsExceeded'));
         return;
       }
 
@@ -88,15 +88,13 @@ export const SendAmountInputAndDetail = ({
     // if L1, balance must be larger than amount,
     // and native coin balance must be larger than 0 (pay gas fee)
     if (userInputAmount.gt(Big(currencyBalance ?? 0))) {
-      setAlert(errorAlertShell(t('SavingsExceeded')));
+      setAlert(errorAlertShell('SavingsExceeded'));
     }
     if (Big(nativeCoinBalance).lte(0)) {
       setAlert(
-        errorAlertShell(
-          t('showNativeCoinNeededMsg', {
-            coinSymbol: nativeCoinSymbol,
-          })
-        )
+        errorAlertShell('showNativeCoinNeededMsg', {
+          coinSymbol: nativeCoinSymbol,
+        })
       );
     }
 

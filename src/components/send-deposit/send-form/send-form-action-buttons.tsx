@@ -44,11 +44,9 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
       const res = await verifyTxnAndSign(validatedAddressPair, amount);
       if (typeof res === 'string') {
         setAlert(
-          errorAlertShell(
-            t(res, {
-              coinSymbol: nativeCoinSymbol,
-            })
-          )
+          errorAlertShell(res, {
+            coinSymbol: nativeCoinSymbol,
+          })
         );
         return;
       }
@@ -67,7 +65,7 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
         },
       });
     } catch (e) {
-      setAlert(errorAlertShell(t('GenericFailureMsg')));
+      setAlert(errorAlertShell('GenericFailureMsg'));
     } finally {
       setIsLoading(false);
     }

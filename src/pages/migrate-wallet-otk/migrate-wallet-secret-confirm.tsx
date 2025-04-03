@@ -59,7 +59,7 @@ export function MigrateWalletSecretConfirm() {
       });
     } catch (e) {
       const error = e as Error;
-      const message = error.message || t('GenericFailureMsg');
+      const message = error.message || 'GenericFailureMsg';
       setAlert(errorAlertShell(message));
     }
   };

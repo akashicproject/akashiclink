@@ -57,7 +57,7 @@ export const ImportWalletSecret = () => {
   useEffect(() => {
     setAlert(
       importWalletError
-        ? errorAlertShell(t(unpackRequestErrorMessage(importWalletError)))
+        ? errorAlertShell(unpackRequestErrorMessage(importWalletError))
         : formAlertResetState
     );
   }, [importWalletError, t]);
@@ -70,7 +70,7 @@ export const ImportWalletSecret = () => {
       typeof importWalletForm.passPhrase === 'undefined' ||
       !validateSecretPhrase(importWalletForm.passPhrase)
     ) {
-      setAlert(errorAlertShell(t('InvalidSecretPhrase')));
+      setAlert(errorAlertShell('InvalidSecretPhrase'));
       return;
     }
 
@@ -81,7 +81,7 @@ export const ImportWalletSecret = () => {
         errorAlertShell(
           importWalletError?.message ||
             (e as Error).message ||
-            t('GenericFailureMsg')
+            'GenericFailureMsg'
         )
       );
     }

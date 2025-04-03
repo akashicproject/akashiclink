@@ -175,7 +175,7 @@ export function NftTransfer() {
       });
     } catch (error) {
       datadogRum.addError(error);
-      setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+      setAlert(errorAlertShell(unpackRequestErrorMessage(error)));
     } finally {
       setInputValue('');
       await mutateNftMe();
