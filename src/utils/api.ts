@@ -13,15 +13,15 @@ import type {
   IRegisterApiPassphrase,
   IRequestActivationCode,
   IRequestActivationCodeResponse,
+  ISearchAcnsResponse,
   ITempShowOtkPrv,
   ITempShowOtkPrvResponse,
   ITransactionProposal,
   ITransactionSettledResponse,
   ITransactionVerifyResponse,
+  ITransferNftByMintOperator,
   ITransferNftResponse,
   IUpdateAcns,
-  SearchAcnsResponse,
-  TransferNftByMintOperatorDto,
 } from '@helium-pay/backend';
 
 import { axiosBasePublic, axiosOwnerBase } from './axios-helper';
@@ -207,7 +207,7 @@ export const OwnersAPI = {
     return data as IActivateWalletAccountResponse;
   },
 
-  nftSearch: async (iAcnsSearch: IAcnsSearch): Promise<SearchAcnsResponse> => {
+  nftSearch: async (iAcnsSearch: IAcnsSearch): Promise<ISearchAcnsResponse> => {
     const requestUrl = `/nft/acns/search?searchValue=${iAcnsSearch.searchValue}`;
     const response = await axiosOwnerBase.get(requestUrl);
     const { data, status } = response;
@@ -218,7 +218,7 @@ export const OwnersAPI = {
   },
 
   nftTransfer: async (
-    transferNftByMintOperatorDto: TransferNftByMintOperatorDto
+    transferNftByMintOperatorDto: ITransferNftByMintOperator
   ): Promise<ITransferNftResponse> => {
     const response = await axiosOwnerBase.post(
       `/nft/transfer`,
