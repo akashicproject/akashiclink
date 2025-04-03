@@ -39,26 +39,26 @@ type WordInputProps = {
 };
 
 const WordInput = styled(IonInput)<WordInputProps>`
-  border-radius: 8px;
-  border: ${(props) =>
-    props.fillable
-      ? '2px solid var(--ion-color-primary-70)'
-      : '1px solid #7B757F'};
-  font-size: 0.625rem;
-  text-align: center;
-  color: var(--ion-color-primary-10);
-  width: 64px;
-  margin-left: 4px;
-  min-height: 24px !important;
-  opacity: unset !important;
-  --highlight-color-focused: none;
-  input {
-    height: 24px;
-    padding: 8px !important;
-    &:disabled {
-      opacity: 1 !important;
-    }
-  }
+   && {
+    border-radius: 8px;
+    border: ${(props) =>
+      props.fillable
+        ? '2px solid var(--ion-color-primary-70)'
+        : '1px solid #7B757F'};
+    font-size: 0.625rem;
+    text-align: center;
+    color: var(--ion-color-primary-10);
+    width: 64px;
+    margin-left: 4px;
+    min-height: 24px !important;
+    opacity: unset !important;
+    --highlight-color-focused: none;
+    input {
+      height: 24px;
+      padding: 8px !important;
+      &:disabled {
+        opacity: 1 !important;
+      }
 `;
 
 type MaskContainerProps = {

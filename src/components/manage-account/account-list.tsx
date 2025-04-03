@@ -9,12 +9,12 @@ import { AccountListItem } from './account-list-item';
 import { AccountManagementList } from './account-management-list';
 import { DeleteAccountModal } from './delete-account-modal';
 
-const StyledList = styled(IonList)({
-  backgroundColor: 'transparent',
-  marginBottom: 16,
-  paddingBottom: 8,
-  overflowY: 'scroll',
-});
+const StyledList = styled(IonList)(`
+  && {background-color: transparent;
+  margin-bottom: 16;
+  padding-bottom: 8;
+  overflowY: scroll;}
+`);
 
 interface AccountListProps {
   style?: React.CSSProperties;
