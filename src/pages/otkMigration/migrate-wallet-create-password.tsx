@@ -13,7 +13,7 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../../components/alert/alert';
-import { PurpleButton, WhiteButton } from '../../components/buttons';
+import { PurpleButton } from '../../components/buttons';
 import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import {
@@ -21,7 +21,6 @@ import {
   StyledInputErrorPrompt,
 } from '../../components/styled-input';
 import { urls } from '../../constants/urls';
-import { historyGoBack } from '../../routing/history-stack';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import {
   onInputChange,
@@ -186,8 +185,9 @@ export function MigrateWalletCreatePassword() {
               <AlertBox state={alert} />
             </IonCol>
           )}
-          <IonCol size="6">
+          <IonCol className={'ion-center ion-margin-top-xl'}>
             <PurpleButton
+              style={{ width: '149px' }}
               expand="block"
               onClick={confirmPasswordAndMigrateOtk}
               disabled={
@@ -198,17 +198,6 @@ export function MigrateWalletCreatePassword() {
             >
               {t('Confirm')}
             </PurpleButton>
-          </IonCol>
-          <IonCol size="6">
-            <WhiteButton
-              expand="block"
-              fill="clear"
-              onClick={() => {
-                historyGoBack(history, true);
-              }}
-            >
-              {t('Cancel')}
-            </WhiteButton>
           </IonCol>
         </IonRow>
       </MainGrid>
