@@ -34,7 +34,8 @@
     "ionic:build": "craco build",
     "ionic:serve": "craco start",
     "debug:android": "env-cmd -f .env.staging.local ionic cap run android -l --external",
-    "debug:ios": "env-cmd -f .env.staging.local ionic cap run ios -l --external"
+    "debug:ios": "env-cmd -f .env.staging.local ionic cap run ios -l --external",
+    "analyze-bundle": "craco build && source-map-explorer 'build/static/js/*.js'"
   },
   "dependencies": {
     "@activeledger/activecrypto": "^2.12.3",
@@ -84,6 +85,7 @@
     "redux-persist": "6.0.0",
     "redux-persist-capacitor": "1.1.0",
     "sass": "1.63.6",
+    "source-map-explorer": "2.5.3",
     "stream-browserify": "3.0.0",
     "stream-http": "3.2.0",
     "swiper": "9.2.4",
