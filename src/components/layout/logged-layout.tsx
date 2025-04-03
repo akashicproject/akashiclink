@@ -41,7 +41,7 @@ export function LoggedLayout({
 }) {
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
-  const ChainDivMarginBottom = isMobile ? '32px' : '0px';
+  const ChainDivMarginBottom = isMobile ? '5px' : '0px';
 
   const loginCheck = useOwner(true);
 

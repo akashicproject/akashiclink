@@ -1,13 +1,18 @@
 import './ntf.css';
 
 import styled from '@emotion/styled';
-import { IonCol, IonRow } from '@ionic/react';
+import { IonCol, IonIcon, IonRow } from '@ionic/react';
+import { arrowBack } from 'ionicons/icons';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import { CustomAlert } from '../../components/alert/alert';
-import { PurpleButton, WhiteButton } from '../../components/buttons';
+import {
+  PurpleButton,
+  SquareWhiteButton,
+  WhiteButton,
+} from '../../components/buttons';
 import { NftLayout } from '../../components/layout/nft-layout';
 import { OneNft } from '../../components/nft/one-nft';
 import { urls } from '../../constants/urls';
@@ -49,6 +54,18 @@ export function Nft() {
 
   return (
     <NftLayout>
+      <SquareWhiteButton
+        class="icon-button"
+        style={{
+          position: 'absolute',
+          float: 'left',
+          left: '5%',
+          top: '4rem',
+        }}
+        onClick={() => history.goBack()}
+      >
+        <IonIcon class="icon-button-icon" slot="icon-only" icon={arrowBack} />
+      </SquareWhiteButton>
       <CustomAlert
         state={{
           visible: isOpen,

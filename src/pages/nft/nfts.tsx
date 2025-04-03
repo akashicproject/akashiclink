@@ -2,15 +2,14 @@ import './ntf.css';
 
 import styled from '@emotion/styled';
 import type { INftResponse } from '@helium-pay/backend';
-import { IonIcon, IonSpinner, isPlatform } from '@ionic/react';
-import { alertCircleOutline } from 'ionicons/icons';
+import { IonIcon, IonSpinner } from '@ionic/react';
+import { arrowBack } from 'ionicons/icons';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import type { GridComponents } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
-import { HomeButton } from '../../components/home-button';
+import { SquareWhiteButton } from '../../components/buttons';
 import { ActivityAndNftTabComponent } from '../../components/layout/activity-and-nft-tab';
 import { NftLayout } from '../../components/layout/nft-layout';
 import { OneNft } from '../../components/nft/one-nft';
@@ -29,13 +28,6 @@ export const NoNtfWrapper = styled.div({
   height: '40vh',
 });
 
-const CenteredTextAndIcon = styled.div({
-  transform: 'translate(-50%, -50%)',
-  top: '50%',
-  left: '50%',
-  position: 'absolute',
-});
-
 export const NoNtfText = styled.div({
   fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
@@ -48,8 +40,10 @@ export const NoNtfText = styled.div({
 const ListContainer = styled.div({
   display: 'flex',
   flexWrap: 'wrap',
+  alignContent: 'center',
   position: 'absolute',
   justifyContent: 'center',
+  width: '100%',
 }) as GridComponents['List'];
 
 const ItemContainer = styled.div({
@@ -59,10 +53,7 @@ const ItemContainer = styled.div({
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function Nfts() {
-  const { t } = useTranslation();
   const history = useHistory();
-  const isMobile = isPlatform('mobile');
-
   const { nfts, isLoading } = useNftMe();
   const [_, setNft] = useLocalStorage('nft', '');
   const [nftTab, setNftTab] = useState(true);
@@ -78,30 +69,34 @@ export function Nfts() {
   };
   return (
     <>
-      <NftLayout>
+      <NftLayout backButton={false}>
         <ActivityAndNftTabComponent
           nftTab={nftTab}
           setNftTab={setNftTab}
           fromNfts={true}
         />
+        <SquareWhiteButton
+          class="icon-button"
+          style={{
+            position: 'absolute',
+            float: 'left',
+            left: '5%',
+            top: '6.5rem',
+          }}
+          onClick={() => history.goBack()}
+        >
+          <IonIcon class="icon-button-icon" slot="icon-only" icon={arrowBack} />
+        </SquareWhiteButton>
+
         {isLoading ? (
           <NoNtfWrapper>
             <IonSpinner name="circular"></IonSpinner>
           </NoNtfWrapper>
-        ) : nfts.length === 0 ? (
-          <>
-            <NoNtfWrapper>
-              <CenteredTextAndIcon>
-                <IonIcon icon={alertCircleOutline} class="alert-icon" />
-                <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
-              </CenteredTextAndIcon>
-            </NoNtfWrapper>
-          </>
         ) : (
           <>
             <Virtuoso
               style={{
-                marginTop: isMobile ? '40px' : '20px',
+                marginTop: '40px',
                 height: '55vh',
                 padding: '8px',
               }}
@@ -118,9 +113,6 @@ export function Nfts() {
             ></Virtuoso>
           </>
         )}
-        <div style={{ marginTop: '5px' }}>
-          <HomeButton />
-        </div>
       </NftLayout>
     </>
   );

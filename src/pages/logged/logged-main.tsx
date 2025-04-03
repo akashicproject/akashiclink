@@ -15,18 +15,16 @@ export function LoggedMain({
 }) {
   return (
     <LoggedLayout>
-      <div style={{ height: '35vh' }}>
-        {loading && (
-          <IonGrid>
-            <IonRow class="ion-justify-content-center ion-margin-vertical">
-              <IonCol size="auto" class="ion-margin-vertical">
-                <IonSpinner name="circular"></IonSpinner>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        )}
-        {!loading && children}
-      </div>
+      {loading && (
+        <IonGrid>
+          <IonRow class="ion-justify-content-center ion-margin-vertical">
+            <IonCol size="auto" class="ion-margin-vertical">
+              <IonSpinner name="circular"></IonSpinner>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      )}
+      {!loading && children}
       <ActivityAndNftTab />
     </LoggedLayout>
   );

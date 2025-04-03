@@ -97,6 +97,7 @@ export function AccountSelection({
       style={{
         display: 'flex',
         flexDirection: 'row',
+        height: '40px',
         justifyContent: 'space-between',
         gap: '15px',
         width: '100%',
