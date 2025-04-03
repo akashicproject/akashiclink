@@ -32,6 +32,24 @@ export const Divider = styled.div({
   width: '100%',
 });
 
+// @TODO can be used when we add text.
+// export const NoActivityWrapper = styled.div({
+//   width: '100%',
+//   display: 'inline-flex',
+//   flexDirection: 'column',
+//   alignItems: 'center',
+//   gap: '8px',
+//   marginTop: '200px',
+// });
+// export const NoActivityText = styled.div({
+//   fontFamily: 'Nunito Sans',
+//   fontStyle: 'normal',
+//   fontWeight: 700,
+//   fontSize: '16px',
+//   lineHeight: '24px',
+//   color: 'var(--ion-color-primary-10)',
+// });
+
 export function Activity() {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
@@ -40,14 +58,12 @@ export function Activity() {
   useEffect(() => {
     cacheCurrentPage(urls.activity);
   }, []);
-
   const [transferParams, _] = useState({
     startDate: dayjs().subtract(1, 'month').toDate(),
     endDate: dayjs().toDate(),
   });
-  const { transfers } = useTransfersMe(transferParams);
+  const { transfers, isLoading } = useTransfersMe(transferParams);
   const walletFormatTransfers = formatTransfers(transfers);
-
   return (
     <LoggedLayout>
       {isOpen && <IonBackdrop />}
@@ -70,26 +86,35 @@ export function Activity() {
           <ActivityDetail currentTransfer={currentTransfer} />
         </IonCard>
       )}
-      {walletFormatTransfers.length ? (
-        <Virtuoso
-          style={{
-            minHeight: '450px',
-            width: '100%',
-          }}
-          data={walletFormatTransfers}
-          itemContent={(index, transfer) => (
-            <OneActivity
-              transfer={transfer}
-              onClick={() => {
-                setIsOpen(true);
-                setCurrentTransfer(transfer);
-              }}
-              showDetail={true}
-              hasHoverEffect={true}
-              divider={index !== walletFormatTransfers.length - 1}
-            />
-          )}
-        />
+      {!isLoading ? (
+        walletFormatTransfers.length ? (
+          <Virtuoso
+            style={{
+              minHeight: '450px',
+              width: '100%',
+            }}
+            data={walletFormatTransfers}
+            itemContent={(index, transfer) => (
+              <OneActivity
+                transfer={transfer}
+                onClick={() => {
+                  setIsOpen(true);
+                  setCurrentTransfer(transfer);
+                }}
+                showDetail={true}
+                hasHoverEffect={true}
+                divider={index !== walletFormatTransfers.length - 1}
+              />
+            )}
+          />
+        ) : (
+          <></>
+          // @TODO can be used when we add text for no activities
+          // <NoActivityWrapper>
+          //   <IonIcon icon={alertCircleOutline} class="alert-icon" />
+          //   <NoActivityText>{t('NoActivities')}</NoActivityText>
+          // </NoActivityWrapper>
+        )
       ) : (
         <IonSpinner
           color="primary"
