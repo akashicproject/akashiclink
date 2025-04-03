@@ -60,8 +60,10 @@ export const AddressScreeningFormVerifyTxnButton: FC<{
 
       const res = await verifyTxnAndSign(
         {
-          convertedToAddress: config?.addressScreeningFeeCollectorAddress ?? '',
-          userInputToAddress: config?.addressScreeningFeeCollectorAddress ?? '',
+          convertedToAddress:
+            config?.addressScreeningFeeCollectorIdentity ?? '',
+          userInputToAddress:
+            config?.addressScreeningFeeCollectorIdentity ?? '',
           userInputToAddressType: 'l2',
           isL2: true,
         },

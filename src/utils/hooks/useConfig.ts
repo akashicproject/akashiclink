@@ -20,8 +20,8 @@ export const useConfig = () => {
           awLatestVersion: data.awLatestVersionIos,
           awUrl: data.awUrlIos,
           highlights: data.highlights?.ios,
-          addressScreeningFeeCollectorAddress:
-            data.addressScreeningFeeCollectorAddress,
+          addressScreeningFeeCollectorIdentity:
+            data.addressScreeningFeeCollectorIdentity,
           addressScreeningFee: data.addressScreeningFee,
         };
         break;
@@ -31,8 +31,8 @@ export const useConfig = () => {
           awLatestVersion: data.awLatestVersionAndroid,
           awUrl: data.awUrlAndroid,
           highlights: data.highlights?.android,
-          addressScreeningFeeCollectorAddress:
-            data.addressScreeningFeeCollectorAddress,
+          addressScreeningFeeCollectorIdentity:
+            data.addressScreeningFeeCollectorIdentity,
           addressScreeningFee: data.addressScreeningFee,
         };
         break;
@@ -42,8 +42,8 @@ export const useConfig = () => {
           awLatestVersion: data.awLatestVersionExtension,
           awUrl: data.awUrlExtension,
           highlights: data.highlights?.extension,
-          addressScreeningFeeCollectorAddress:
-            data.addressScreeningFeeCollectorAddress,
+          addressScreeningFeeCollectorIdentity:
+            data.addressScreeningFeeCollectorIdentity,
           addressScreeningFee: data.addressScreeningFee,
         };
     }
