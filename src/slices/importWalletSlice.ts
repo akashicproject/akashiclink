@@ -1,5 +1,7 @@
-import { IMPORT_CONST } from '@helium-pay/backend';
+import type { IKeyExtended } from '@activeledger/sdk-bip39';
+import { IMPORT_CONST, userError } from '@helium-pay/backend';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { isAxiosError } from 'axios';
 
 import { createAppSlice } from '../app/createAppSlice';
 import { urls } from '../constants/urls';
@@ -91,13 +93,34 @@ export const importWalletSlice = createAppSlice({
     restoreOtkFromKeypairAsync: create.asyncThunk(
       async (privateKey: string) => {
         // Restore OTK from keypair
-        const otk = restoreOtkFromKeypair(privateKey);
-
-        const { identity, username } = await OwnersAPI.importAccount({
-          publicKey: otk.key.pub.pkcs8pem,
-          signedAuth: signImportAuth(privateKey, IMPORT_CONST),
-          keyPairImport: true,
-        });
+        let otk: IKeyExtended = restoreOtkFromKeypair(privateKey);
+        let username: string | undefined;
+        let identity: string | undefined;
+        try {
+          const response = await OwnersAPI.importAccount({
+            publicKey: otk.key.pub.pkcs8pem,
+            signedAuth: signImportAuth(privateKey, IMPORT_CONST),
+            keyPairImport: true,
+          });
+          identity = response.identity;
+          username = response.username;
+        } catch (e) {
+          // This error could be because of a bug where we have some otks stored "compressed" and some "uncompressed"
+          // So if facing this error, we try again with "uncompressed"
+          if (
+            isAxiosError(e) &&
+            e.response?.data.message === userError.userNotFoundError
+          ) {
+            otk = restoreOtkFromKeypair(privateKey, 'uncompressed');
+            const response = await OwnersAPI.importAccount({
+              publicKey: otk.key.pub.pkcs8pem,
+              signedAuth: signImportAuth(privateKey, IMPORT_CONST),
+              keyPairImport: true,
+            });
+            identity = response.identity;
+            username = response.username;
+          }
+        }
         // The value we return becomes the `fulfilled` action payload
         if (identity) {
           history.push({

@@ -50,14 +50,18 @@ function parsePrvKey(prvKey: string): string {
   );
 }
 
-export function restoreOtkFromKeypair(keyPair: string): IKeyExtended {
+// Because client-side otks have been made compressed, while server-side have been uncompressed, we may need to try both types during import
+export function restoreOtkFromKeypair(
+  keyPair: string,
+  format: 'compressed' | 'uncompressed' = 'compressed'
+): IKeyExtended {
   const curve = crypto.createECDH('secp256k1');
   const otkPriv = parsePrvKey(keyPair);
   let publicKey;
 
   if (otkPriv.startsWith('0x')) {
     curve.setPrivateKey(keyPair.replace('0x', ''), 'hex');
-    publicKey = curve.getPublicKey('hex', 'compressed');
+    publicKey = curve.getPublicKey('hex', format);
     if (!publicKey.startsWith('0x')) {
       publicKey = '0x' + publicKey;
     }
