@@ -139,7 +139,7 @@ export function DepositPage() {
                 <IonImg
                   alt=""
                   src={`/shared-assets/images/${
-                    isCoinAllowed ? 'pending' : 'failed'
+                    isCoinAllowed ? 'Pending' : 'Failed'
                   }-white.svg`}
                 />
               )}
