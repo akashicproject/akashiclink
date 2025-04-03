@@ -137,6 +137,21 @@ const EqualsL2Box = styled.div({
   border: '1px solid #958e99',
 });
 
+export const Chain = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '0px',
+  gap: '8px',
+  width: '100%',
+  height: '32px',
+  borderRadius: '8px',
+  fontSize: '14px',
+  fontWeight: 700,
+  color: '#FFFFFF',
+});
+
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function SendTo() {
   const { t } = useTranslation();
@@ -421,18 +436,6 @@ export function SendTo() {
             <SendWrapper>
               <StyledInput
                 isHorizontal={true}
-                label={t('SendTo')}
-                placeholder={t('EnterAddress')}
-                type={'text'}
-                errorPrompt={StyledInputErrorPrompt.Address}
-                onIonInput={({ target: { value } }) =>
-                  validateRecipientAddressWithBackend(value as string)
-                }
-                submitOnEnter={verifyTransaction}
-                value={rawAddress}
-              />
-              <StyledInput
-                isHorizontal={true}
                 label={t('Amount')}
                 placeholder={t('EnterAmount')}
                 type="number"
@@ -452,6 +455,18 @@ export function SendTo() {
                 submitOnEnter={verifyTransaction}
                 value={amount}
               />
+              <StyledInput
+                isHorizontal={true}
+                label={t('SendTo')}
+                placeholder={t('EnterAddress')}
+                type={'text'}
+                errorPrompt={StyledInputErrorPrompt.Address}
+                onIonInput={({ target: { value } }) =>
+                  validateRecipientAddressWithBackend(value as string)
+                }
+                submitOnEnter={verifyTransaction}
+                value={rawAddress}
+              />
               {gasFree && (
                 <GasWrapper style={{ margin: '8px 0' }}>
                   <EqualsL2Box>
@@ -468,37 +483,55 @@ export function SendTo() {
                   />
                 </GasWrapper>
               )}
-              <Divider />
-              <GasWrapper>
-                <GasFreeMarker
+              {gasFree || !toAddress ? (
+                <Divider />
+              ) : (
+                <Chain
                   style={{
-                    background:
-                      !toAddress && storedTheme === themeType.LIGHT
-                        ? '#6750A41F'
-                        : !toAddress && storedTheme === themeType.DARK
-                        ? '#625B71'
-                        : gasFree
-                        ? '#41CC9A'
-                        : '#DE3730',
-
-                    color:
-                      toAddress && storedTheme === themeType.LIGHT
-                        ? '#FFFFFF'
-                        : '',
+                    gap: '8px',
+                    backgroundColor:
+                      storedTheme === themeType.DARK ? '#C297FF' : '#290056',
                   }}
                 >
-                  {t('GasFree')}
-                </GasFreeMarker>
+                  <IonImg
+                    src={
+                      storedTheme === themeType.DARK
+                        ? currentWalletMetadata.darkCurrencyIcon
+                        : currentWalletMetadata.currencyIcon
+                    }
+                    style={{ width: '20px', height: '26px' }}
+                  />
+                  {NetworkDictionary[currency.chain].displayName}
+                </Chain>
+              )}
+              <GasWrapper>
+                {gasFree && (
+                  <GasFreeMarker
+                    style={{
+                      background:
+                        !toAddress && storedTheme === themeType.LIGHT
+                          ? '#6750A41F'
+                          : !toAddress && storedTheme === themeType.DARK
+                          ? '#625B71'
+                          : '#41CC9A',
+
+                      color:
+                        toAddress && storedTheme === themeType.LIGHT
+                          ? '#FFFFFF'
+                          : '',
+                    }}
+                  >
+                    {t('GasFree')}
+                  </GasFreeMarker>
+                )}
+                {gasFree || !toAddress ? null : (
+                  <FeeMarker>{`+ ${t('GasFee')}`}</FeeMarker>
+                )}
                 <FeeMarker>{`${t('Fee')}: ${internalFee} ${
                   token || TEST_TO_MAIN.get(chain) || chain
                 }`}</FeeMarker>
               </GasWrapper>
-              {gasFree || !toAddress ? null : (
-                <GasWrapper>
-                  <FeeMarker>{t('Layer1Transaction')}</FeeMarker>
-                  <FeeMarker>{`+ ${t('GasFee')}`}</FeeMarker>
-                </GasWrapper>
-              )}
+
               {alertRequest.visible && <AlertBox state={alertRequest} />}
               <IonRow style={{ width: '100%' }}>
                 <IonCol size="6" style={{ paddingLeft: '0' }}>
