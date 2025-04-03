@@ -115,22 +115,17 @@ export function SendConfirm() {
         setLoading(true);
         let response: ITransactionSettledResponse[];
         if (!state?.gasFree) {
-          response = await OwnersAPI.sendL1Transaction(state?.transaction);
+          response = await OwnersAPI.sendL1TransactionUsingClientSideOtk(
+            state?.transaction
+          );
         } else {
           response = [
-            await OwnersAPI.sendL2Transaction({
+            await OwnersAPI.sendL2TransactionUsingClientSideOtk({
               ...state?.transaction[0],
               forceL1: undefined,
+              signedTx: state.transaction[0].signedTx ?? '',
             }),
           ];
-
-          // response = [
-          //   await OwnersAPI.sendL2TransactionUsingClientSideOtk({
-          //     ...state?.transaction[0],
-          //     forceL1: undefined,
-          //     signedTx: state.signedTx ?? '',
-          //   }),
-          // ];
         }
         if (!response[0].isSuccess) {
           setAlert(

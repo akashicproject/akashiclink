@@ -2,7 +2,10 @@ import './send.css';
 
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
-import type { ITransactionProposal } from '@helium-pay/backend';
+import type {
+  ISignedTransactionResponse,
+  ITransactionProposal,
+} from '@helium-pay/backend';
 import {
   keyError,
   L2Regex,
@@ -13,7 +16,7 @@ import { IonCol, IonImg, IonRow, IonSpinner } from '@ionic/react';
 import axios from 'axios';
 import Big from 'big.js';
 import { debounce } from 'lodash';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { SwiperSlide } from 'swiper/react';
@@ -26,6 +29,7 @@ import {
 } from '../../components/alert/alert';
 import { PurpleButton, WhiteButton } from '../../components/buttons';
 import {
+  CacheOtkContext,
   useFocusCurrency,
   useTheme,
 } from '../../components/PreferenceProvider';
@@ -45,6 +49,7 @@ import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { calculateInternalWithdrawalFee } from '../../utils/internal-fee';
 import { cacheCurrentPage } from '../../utils/last-page-storage';
 import { displayLongText } from '../../utils/long-text';
+import { Nitr0genApi } from '../../utils/nitrogen-api';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { SendMain } from './send-main';
 
@@ -351,8 +356,10 @@ export function SendTo() {
 
   const [loading, setLoading] = useState(false);
   const { activeAccount } = useAccountStorage();
+  const { cacheOtk } = useContext(CacheOtkContext);
 
   // Send transaction to the backend for verification
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   const verifyTransaction = async () => {
     if (!toAddress || !validateAddress(toAddress)) {
       setAlert(errorAlertShell(t('AddressHelpText')));
@@ -366,21 +373,18 @@ export function SendTo() {
     setLoading(true);
 
     const originalTxn: ITransactionProposal = {
-      fromAddress: currentWallet.address,
+      fromAddress: activeAccount?.identity,
       toAddress,
       amount,
       coinSymbol: chain,
       tokenSymbol: token ? token : undefined,
       forceL1: !gasFree,
       toL1Address: l1AddressWhenL2,
-      ownedIdentity: activeAccount?.identity,
     };
     try {
-      const response = await OwnersAPI.verifyTransaction(originalTxn);
-      // enable it when we switch to V1 apis
-      // const response = await OwnersAPI.verifyTransactionUsingClientSideOtk(
-      //   originalTxn
-      // );
+      const response = await OwnersAPI.verifyTransactionUsingClientSideOtk(
+        originalTxn
+      );
 
       // reject the request if /verify returns multiple transfers
       // for L2: multiple transactions from the same Nitr0gen identity can always be combined into a single one, so it should be fine
@@ -389,12 +393,26 @@ export function SendTo() {
         return;
       }
 
-      // enable it when we switch to V1 apis
-      // const signedTx = await Nitr0genApi.L2Transaction(
-      //   response[0],
-      //   localOtks,
-      //   activeAccount!
-      // );
+      const transaction: ISignedTransactionResponse[] = [];
+
+      // L2
+      if (gasFree) {
+        const signedTx = await Nitr0genApi.L2Transaction(
+          response[0],
+          cacheOtk!
+        );
+        transaction.push({ ...response[0], signedTx });
+      } else {
+        // L1
+        for (const res of response) {
+          const signedTx = await Nitr0genApi.L2ToL1SignTransaction(
+            res,
+            cacheOtk!
+          );
+          transaction.push({ ...res, signedTx });
+        }
+      }
+
       const feesEstimate = Number(response[0].feesEstimate || '0');
       const balance = Number(
         aggregatedBalances.get({
@@ -423,9 +441,8 @@ export function SendTo() {
           state: {
             sendConfirm: {
               currencyDisplayName: currency.displayName || '',
-              transaction: response,
+              transaction,
               gasFree,
-              // signedTx,
             },
           },
         });

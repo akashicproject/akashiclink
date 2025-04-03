@@ -22,6 +22,7 @@ import type {
   IRequestActivationCode,
   IRequestActivationCodeResponse,
   ISearchAcnsResponse,
+  ISignedTransactionResponse,
   ITempShowOtkPrv,
   ITempShowOtkPrvResponse,
   ITransactionBase,
@@ -70,6 +71,7 @@ export const OwnersAPI = {
     }
     return response.data;
   },
+
   loginV1: async (
     loginData: ILoginUserWithOtk
   ): Promise<IMinimalUserResponse> => {
@@ -83,6 +85,7 @@ export const OwnersAPI = {
     }
     return response.data;
   },
+
   login: async (loginData: ILoginUser): Promise<IMinimalUserResponse> => {
     const response = await axiosBase.post(
       `/auth/login`,
@@ -92,6 +95,7 @@ export const OwnersAPI = {
     if (status >= 400) {
       throw new Error(data.message);
     }
+
     return response.data;
   },
   confirmPassword: async (
@@ -152,6 +156,22 @@ export const OwnersAPI = {
 
     return response.data;
   },
+
+  sendL1TransactionUsingClientSideOtk: async (
+    transactionToSendData: ISignedTransactionResponse[]
+  ): Promise<ITransactionSettledResponse[]> => {
+    const response = await axiosBaseV1.post(
+      `/key/send/l1`,
+      JSON.stringify(transactionToSendData)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+
+    return response.data;
+  },
+
   sendL2Transaction: async (
     signedTransactionData: ITransactionProposal
   ): Promise<ITransactionSettledResponse> => {

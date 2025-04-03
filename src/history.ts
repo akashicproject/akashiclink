@@ -1,5 +1,8 @@
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
-import type { ITransactionVerifyResponse } from '@helium-pay/backend';
+import type {
+  ISignedTransactionResponse,
+  ITransactionVerifyResponse,
+} from '@helium-pay/backend';
 import { createMemoryHistory } from 'history';
 
 import type { View } from './pages/import-wallet';
@@ -17,10 +20,9 @@ export interface LocationState {
     errorMsg?: string;
   };
   sendConfirm?: {
-    transaction?: ITransactionVerifyResponse[];
+    transaction?: ISignedTransactionResponse[];
     currencyDisplayName?: string;
     gasFree?: boolean;
-    signedTx?: string;
   };
   sendResult?: {
     transaction?: ITransactionVerifyResponse[];

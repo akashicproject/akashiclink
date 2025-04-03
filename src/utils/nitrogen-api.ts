@@ -6,7 +6,6 @@ import type {
 } from '@helium-pay/backend';
 
 import { convertToFromDecimals } from './currency';
-import type { LocalAccount } from './hooks/useLocalAccounts';
 import type { FullOtk } from './otk-generation';
 
 enum Nitr0gen {
@@ -20,6 +19,10 @@ enum Nitr0gen {
 const nitr0genNativeCoin = '#native';
 const AP_FEE_IDENTITY =
   'be45ec32caf53998e4d8d51feca112c82d334007d2b8ea70e62798af82b5a1d2';
+const TERRI_NITR0_NODE = 'b83b7b3c559e1aa636391dadda9fc60ba330cddc';
+interface ITerriTransaction extends IBaseTransaction {
+  $territoriality: string;
+}
 /**
  * Class implements basic intereactions with the Nirt0gen network
  */
@@ -89,14 +92,9 @@ export const Nitr0genApi = {
 
   L2Transaction: async (
     details: ITransactionVerifyResponse,
-    localOtks: FullOtk[],
-    activeAccount: LocalAccount
+    otk: FullOtk
   ): Promise<string> => {
     const { amount, coinSymbol, tokenSymbol, internalFee } = details;
-    const otk = localOtks?.find((l) => l.identity === activeAccount?.identity);
-    if (!otk) throw Error(`Unable to find otk`);
-    const { phrase: _, ...object } = otk;
-    const signerOtk: FullOtk = object;
 
     // Convert fees and turn into one
     const internalDepositFee = BigInt(
@@ -120,7 +118,7 @@ export const Nitr0genApi = {
     ).toString();
     const $i = {
       owner: {
-        $stream: activeAccount.identity,
+        $stream: otk.identity,
         network: details.coinSymbol,
         token: details.tokenSymbol ?? nitr0genNativeCoin,
         amount: convertToFromDecimals(
@@ -149,7 +147,97 @@ export const Nitr0genApi = {
     };
     // Sign Transaction & Send
     const txHandler = new TransactionHandler();
-    return makeTxSafe(await txHandler.signTransaction(txBody, signerOtk));
+    return makeTxSafe(await txHandler.signTransaction(txBody, otk));
+  },
+
+  /**
+   * Generate signature for L1 transaction from Nitr0gen where wallet has funds registered to L2
+   * @param sendersRootKey If a non-root owner is sending L1, need a ledgerId of a key on the same network owned as root by the sender
+   */
+  L2ToL1SignTransaction: async (
+    transactions: ITransactionVerifyResponse,
+    otk: FullOtk
+  ): Promise<string> => {
+    const {
+      amount,
+      txSignature,
+      internalFee,
+      keyLedgerId,
+      coinSymbol,
+      tokenSymbol,
+    } = transactions;
+
+    const convertedAmount = convertToFromDecimals(
+      amount,
+      coinSymbol,
+      'to',
+      tokenSymbol
+    ).toString();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const txDetail: any = {
+      amount: convertedAmount,
+    };
+
+    if (!txSignature) throw Error(`Unable to find txSignature`);
+    // Used by Tron transactions
+    if ('hex' in txSignature) {
+      txDetail['hex'] = txSignature.hex;
+    }
+
+    // Used by ETH/BNB transactions
+    if ('nonce' in txSignature) {
+      txDetail['nonce'] = txSignature.nonce;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const $o: any = {};
+
+    const fee = {
+      fixed: (internalFee?.withdraw
+        ? BigInt(
+            convertToFromDecimals(
+              internalFee.withdraw,
+              coinSymbol,
+              'to',
+              tokenSymbol
+            )
+          )
+        : BigInt(0)
+      ).toString(),
+    };
+    if (fee) {
+      $o['feeto'] = { $stream: AP_FEE_IDENTITY };
+    }
+
+    if (!keyLedgerId) throw Error(`Unable to find keyLedgerId`);
+    $o[keyLedgerId] = txDetail;
+
+    const txBody: ITerriTransaction = {
+      $territoriality: TERRI_NITR0_NODE,
+      $tx: {
+        $namespace: Nitr0gen.Namespace,
+        $contract: Nitr0gen.CryptoTransfer,
+        $entry: 'sign',
+        $i: {
+          owner: {
+            $stream: otk.identity,
+            network: coinSymbol,
+            token: tokenSymbol ?? nitr0genNativeCoin,
+            amount: convertedAmount,
+            fee,
+            // TODO: complete once 2FA is available
+            // twoFa: "",
+            signtx: txSignature,
+          },
+        },
+        $o,
+      },
+      $sigs: {},
+      $selfsign: false,
+    };
+    // Sign Transaction & Send
+    const txHandler = new TransactionHandler();
+    return makeTxSafe(await txHandler.signTransaction(txBody, otk));
   },
 };
 
