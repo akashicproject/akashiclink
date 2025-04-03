@@ -89,10 +89,9 @@ const ActivityAndNftTabs = ({
         style={{ width: '50%', marginInline: '0' }}
         id="smart-scan"
         onClick={() => {
-          setOpenTab('smart-scan');
+          setOpenTab('activity');
           history.push(akashicPayPath(urls.addressScreening));
         }}
-        className={openTab === 'smart-scan' ? 'open' : ''}
       >
         {t('SmartScan')}
       </TabButton>
