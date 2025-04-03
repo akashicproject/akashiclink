@@ -70,6 +70,7 @@
     "workbox-streams": "5.1.4"
   },
   "devDependencies": {
+    "@capacitor/assets": "2.0.4",
     "@capacitor/cli": "^5.0.0",
     "@craco/craco": "7.1.0",
     "@craco/types": "7.1.0",

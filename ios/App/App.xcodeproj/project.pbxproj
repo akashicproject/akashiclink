@@ -122,8 +122,8 @@
 		504EC2FC1FED79650016851F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0920;
+				LastSwiftUpdateCheck = 920;
+				LastUpgradeCheck = 920;
 				TargetAttributes = {
 					504EC3031FED79650016851F = {
 						CreatedOnToolsVersion = 9.2;
@@ -357,8 +357,8 @@
 				MARKETING_VERSION = 0.0.3;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "fb460fe9-659a-4d1d-b887-f65fd77207ca";
-				PROVISIONING_PROFILE_SPECIFIER = "com.staging.akashicwallet.app AppStore";
+				PROVISIONING_PROFILE = "24568ce7-d19a-40ec-a93a-8f6825a50e4b";
+				PROVISIONING_PROFILE_SPECIFIER = "com.akashicwallet.app AppStore";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -381,8 +381,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 0.0.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "fb460fe9-659a-4d1d-b887-f65fd77207ca";
-				PROVISIONING_PROFILE_SPECIFIER = "com.staging.akashicwallet.app AppStore";
+				PROVISIONING_PROFILE = "24568ce7-d19a-40ec-a93a-8f6825a50e4b";
+				PROVISIONING_PROFILE_SPECIFIER = "com.akashicwallet.app AppStore";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
