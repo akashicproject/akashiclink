@@ -17,8 +17,8 @@ import {
 import { TextButton } from '../../common/buttons';
 import { L2Icon } from '../../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../../common/chain-icon/network-icon';
-import { SendL1TxnDetailBox } from './send-l1-txn-detail-box';
-import { SendL2TxnDetailBox } from './send-l2-txn-detail-box';
+import { SendTxnDetailBox } from './send-txn-detail-box';
+import { SendTxnDetailBoxWithDelegateOption } from './send-txn-detail-box-with-delegate-option';
 import type { ValidatedAddressPair } from './types';
 
 const CurrencyChip = styled(IonChip)({
@@ -166,8 +166,9 @@ export const SendAmountInputAndDetail = ({
           )}
         </IonCol>
       </IonRow>
-      {isAmountLargerThanZero && isL2 && (
-        <SendL2TxnDetailBox
+      {/* No delegate options if it is L2 OR L1 native coin */}
+      {isAmountLargerThanZero && (isL2 || (!isL2 && !isCurrencyTypeToken)) && (
+        <SendTxnDetailBox
           validatedAddressPair={validatedAddressPair}
           amount={amount}
           fee={calculateL2Fee()}
@@ -176,8 +177,9 @@ export const SendAmountInputAndDetail = ({
           onAddressReset={onAddressReset}
         />
       )}
-      {isAmountLargerThanZero && !isL2 && (
-        <SendL1TxnDetailBox
+      {/* Show delegate options if it is L1 /w token */}
+      {isAmountLargerThanZero && !isL2 && isCurrencyTypeToken && (
+        <SendTxnDetailBoxWithDelegateOption
           validatedAddressPair={validatedAddressPair}
           amount={amount}
           fee={calculateL2Fee()}
