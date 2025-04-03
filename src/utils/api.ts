@@ -1,6 +1,4 @@
 import type {
-  IDiffconKeysDto,
-  IDiffconKeysResponse,
   IEstimateGasFee,
   IEstimateGasFeeResponse,
   IL1ClientSideOtkTransactionBase,
@@ -94,20 +92,6 @@ export const OwnersAPI = {
       throw new Error(data.message);
     }
     return response.data;
-  },
-
-  diffconKeys: async (
-    payload: IDiffconKeysDto
-  ): Promise<IDiffconKeysResponse> => {
-    const response = await axiosBase.post(
-      `/auth/diffcon-keys`,
-      JSON.stringify(payload)
-    );
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-    return data as IDiffconKeysResponse;
   },
 
   verifyNftTransaction: async (

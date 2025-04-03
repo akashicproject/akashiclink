@@ -1,7 +1,9 @@
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
+import { datadogRum } from '@datadog/browser-rum';
 import {
   type CoinSymbol,
   type IBaseTransactionWithDbIndex,
+  type IDiffconTx,
   type IKeyCreateTx,
   type ITransactionProposalClientSideOtk,
   type ITransactionSettledResponse,
@@ -17,7 +19,7 @@ import { Nitr0genApi } from '../../utils/nitr0gen/nitr0gen-api';
 import { convertToFromASPrefix } from '../convert-as-prefix';
 import type { ActiveLedgerResponse } from '../nitr0gen/nitr0gen.interface';
 
-interface IKeysToCreate {
+export interface IKeysToCreate {
   coinSymbol: CoinSymbol;
   signedTx: IBaseTransactionWithDbIndex;
 }
@@ -30,6 +32,10 @@ interface IKeysToDiffcon {
   signedTx: IBaseTransactionWithDbIndex;
   coinSymbol: CoinSymbol;
   ledgerId: string;
+}
+
+interface IDiffconKeysResponse {
+  failedDiffcon: IKeysToCreate[];
 }
 
 export const useSendL2Transaction = () => {
@@ -156,6 +162,33 @@ export const useCreateKeys = () => {
       });
     }
     return { createdKeysToDiffcon };
+  };
+  return { trigger };
+};
+
+export const useDiffconKeys = () => {
+  const nitr0genApi = new Nitr0genApi();
+
+  const trigger = async (diffconKeysData: {
+    keyDiffconTxs: IDiffconTx[];
+    otk: IKeyExtended;
+  }): Promise<IDiffconKeysResponse> => {
+    const failedDiffconKeys: IKeysToCreate[] = [];
+    // Diffcon-check keys for user on nitr0gen
+    for (const keyDiffconTx of diffconKeysData.keyDiffconTxs) {
+      if (!(await nitr0genApi.diffconSignedTx(keyDiffconTx.signedTx))) {
+        datadogRum.addError(
+          new Error(`Key failed diffcon-check, ${keyDiffconTx.signedTx}`)
+        );
+
+        failedDiffconKeys.push({
+          coinSymbol: keyDiffconTx.coinSymbol,
+          signedTx: keyDiffconTx.signedTx,
+        });
+      }
+    }
+    // Return symbols which failed and transactions to try to re-create them
+    return { failedDiffcon: failedDiffconKeys };
   };
   return { trigger };
 };
