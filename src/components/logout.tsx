@@ -6,7 +6,7 @@ import { lastPageStorage } from '../utils/last-page-storage';
  * Hook that logs user out and clears all session settings
  */
 export function useLogout(callLogout = true) {
-  const { mutate } = useOwner();
+  const { mutate } = useOwner(true);
 
   return async () => {
     // callLogout will be false if getting 401 errors, prevents recursive calls

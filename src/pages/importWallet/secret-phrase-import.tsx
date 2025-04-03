@@ -33,8 +33,7 @@ const StyledSpan = styled.span({
 });
 type DivProps = { color: string };
 const StyledDiv = styled.div<DivProps>`
-  padding: 5px 8px;
-  font-size: 9px;
+  padding: 4px 8px;
   color: ${(props) => props.color};
   display: flex;
   align-items: center;
@@ -43,7 +42,7 @@ const StyledDiv = styled.div<DivProps>`
   border-radius: 8px;
   width: 100%;
   margin-bottom: 24px;
-  text-align: 'center';
+  text-align: center;
 `;
 export const SecretPhraseImport = () => {
   const history = useHistory();

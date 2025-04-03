@@ -9,7 +9,6 @@ import { MainGrid } from '../../components/layout/main-grid';
 import { PublicLayout } from '../../components/layout/public-layout';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
-import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { lastPageStorage } from '../../utils/last-page-storage';
 import { StyledSpan } from './migrate-wallet-secret';
 
@@ -24,7 +23,13 @@ export const StyledA = styled.a({
 
 export const WalletMigrated = () => {
   const { t } = useTranslation();
-  const history = useHistory<LocalAccount>();
+  const history = useHistory();
+
+  const handleOnClick = async () => {
+    await lastPageStorage.clear();
+    await mutate(`/owner/me`);
+    history.push(akashicPayPath(urls.loggedFunction));
+  };
 
   return (
     <PublicLayout contentStyle={{ padding: '0 30px' }}>
@@ -88,12 +93,7 @@ export const WalletMigrated = () => {
           <PurpleButton
             style={{ width: '149px' }}
             expand="block"
-            onClick={async () => {
-              await lastPageStorage.clear();
-              localStorage.setItem('spinner', 'true');
-              await mutate(`/owner/me`);
-              history.push(akashicPayPath(urls.loggedFunction));
-            }}
+            onClick={handleOnClick}
           >
             {t('GotIt')}
           </PurpleButton>

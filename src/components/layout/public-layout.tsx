@@ -1,9 +1,8 @@
 import './public-layout.scss';
 
-import { IonPage, useIonViewWillEnter } from '@ionic/react';
-import { type ReactNode, useState } from 'react';
+import { IonPage } from '@ionic/react';
+import { type ReactNode } from 'react';
 
-import { Spinner } from '../loader/spinner';
 import { Footer } from './footer';
 import { LoggedHeader } from './logged-header';
 
@@ -20,21 +19,8 @@ export function PublicLayout({
   children: ReactNode;
   contentStyle?: React.CSSProperties;
 }) {
-  const [spin, setSpin] = useState(false);
-  useIonViewWillEnter(() => {
-    const isSpinner = localStorage.getItem('spinner');
-    if (isSpinner === 'true') {
-      setSpin(true);
-      setTimeout(() => {
-        setSpin(false);
-        localStorage.removeItem('spinner');
-      }, 4500);
-    }
-  });
-
   return (
     <IonPage>
-      {spin && <Spinner header={'ImportingYourWallet'} />}
       <div className="vertical public-layout">
         <LoggedHeader />
         <div className={`content ${className}`} style={contentStyle}>

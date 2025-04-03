@@ -22,7 +22,7 @@ const StyledIonRow = styled(IonRow)`
   align-items: center;
 `;
 const StyledIonCol = styled(IonCol)`
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
   color: var(--ion-color-primary-10);
 `;

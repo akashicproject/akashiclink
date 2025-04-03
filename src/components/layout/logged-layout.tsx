@@ -5,9 +5,8 @@ import {
   IonPage,
   IonRouterLink,
   isPlatform,
-  useIonViewWillEnter,
 } from '@ionic/react';
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
@@ -49,38 +48,19 @@ export function LoggedLayout({
   const isMobile = isPlatform('mobile');
   const ChainDivMarginBottom = isMobile ? '5px' : '0px';
 
-  const loginCheck = useOwner(true);
+  const { isLoading, authenticated } = useOwner(true);
 
   /** If user auth has expired, redirect to login page */
-  useEffect(
-    () => {
-      const callLogout = async () => {
-        if (!loginCheck.isLoading && !loginCheck.authenticated) {
-          await lastPageStorage.clear();
-        }
-      };
-      callLogout();
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [loginCheck.isLoading]
-  );
-
-  const [spin, setSpin] = useState(false);
-
-  useIonViewWillEnter(() => {
-    const isSpinner = localStorage.getItem('spinner');
-    if (isSpinner === 'true') {
-      setSpin(true);
-      setTimeout(() => {
-        setSpin(false);
-        localStorage.removeItem('spinner');
-      }, 4500);
+  useEffect(() => {
+    if (!isLoading && !authenticated) {
+      lastPageStorage.clear();
     }
-  });
+  }, [isLoading, authenticated]);
+
+  if (isLoading) return <Spinner />;
 
   return (
     <IonPage>
-      {spin && <Spinner />}
       <LoggedHeader loggedIn={true} />
       <IonContent>
         <ChainDiv

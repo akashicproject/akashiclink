@@ -1,4 +1,4 @@
-import { IonCol, IonRow, isPlatform, useIonViewWillLeave } from '@ionic/react';
+import { IonCol, IonRow } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -22,6 +22,7 @@ import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { mutate } from 'swr';
 import { signImportAuth } from '../../utils/otk-generation';
+import { Spinner } from '../loader/spinner';
 
 /**
  * Form allowing user to login
@@ -70,53 +71,57 @@ export function LoginForm() {
 
   const login = async () => {
     try {
+      setAlert(formAlertResetState);
       setIsLoading(true);
-      // await delay(5000);
-      if (selectedAccount && password) {
-        const localSelectedOtk = await getLocalOtkAndCache(
-          selectedAccount.identity,
-          password
-        );
-        if (localSelectedOtk) {
-          await OwnersAPI.loginV1({
-            identity: localSelectedOtk.identity!,
-            signedAuth: signImportAuth(
-              localSelectedOtk.key.prv.pkcs8pem,
-              localSelectedOtk.identity!
-            ),
-          });
-        } else {
-          // @TODO remove once old accounts no longer supported
-          // Redirect to Migration-Flow
-          history.push({
-            pathname: akashicPayPath(urls.migrateWalletNotice),
-            state: {
-              migrateWallet: {
-                username: selectedAccount.username,
-                oldPassword: password,
-              },
-            },
-          });
-          setIsLoading(false);
-          return;
-        }
 
-        datadogRum.setUser({
-          id: selectedAccount.username,
-        });
-        // Set the login account
-        setIsLoading(false);
-        setActiveAccount(selectedAccount);
-        localStorage.setItem('spinner', 'true');
-        await mutate(`/owner/me`);
-        history.push(akashicPayPath(urls.loggedFunction));
+      if (!selectedAccount || !password) {
+        setAlert(errorAlertShell(t('ValidationError')));
+        return;
       }
+
+      const localSelectedOtk = await getLocalOtkAndCache(
+        selectedAccount.identity,
+        password
+      );
+      if (localSelectedOtk) {
+        await OwnersAPI.loginV1({
+          identity: localSelectedOtk.identity!,
+          signedAuth: signImportAuth(
+            localSelectedOtk.key.prv.pkcs8pem,
+            localSelectedOtk.identity!
+          ),
+        });
+      } else {
+        // @TODO remove once old accounts no longer supported
+        // Redirect to Migration-Flow
+        history.push({
+          pathname: akashicPayPath(urls.migrateWalletNotice),
+          state: {
+            migrateWallet: {
+              username: selectedAccount.username,
+              oldPassword: password,
+            },
+          },
+        });
+        return;
+      }
+
+      datadogRum.setUser({
+        id: selectedAccount.username,
+      });
+      // Set the login account
+      setActiveAccount(selectedAccount);
+      await mutate(`/owner/me`);
+      history.push(akashicPayPath(urls.loggedFunction));
     } catch (error) {
       datadogRum.addError(error);
-      setIsLoading(false);
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -131,6 +136,7 @@ export function LoginForm() {
         </IonCol>
         <IonCol size="12">
           <StyledInput
+            value={password}
             type={'password'}
             placeholder={t('Password')}
             onIonInput={({ target: { value } }) => setPassword(value as string)}
