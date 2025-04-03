@@ -4,6 +4,7 @@ import { TransactionLayer, TransactionType } from '@helium-pay/backend';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
 
+import { getPrecision } from '../../utils/formatAmount';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { Divider } from '../common/divider';
 import { List } from '../common/list/list';
@@ -35,17 +36,22 @@ const WithdrawDetails = ({
   const { t } = useTranslation();
   const isL2 = currentTransfer.layer === TransactionLayer.L2;
 
-  const precision = !isL2 || !currentTransfer.tokenSymbol ? 6 : 2;
+  const precision = getPrecision(
+    currentTransfer?.amount.toString(),
+    currentTransfer?.feesPaid?.toString() ?? '0'
+  );
 
   const currencySymbol =
-    currentTransfer.currency?.token ?? currentTransfer.currency?.displayName;
+    currentTransfer.currency?.token ?? currentTransfer.currency?.chain;
 
   // Calculate total Amount
   const totalAmount = Big(currentTransfer.amount);
   const totalFee = Big(currentTransfer?.feesPaid ?? '0');
 
   const internalFee = Big(currentTransfer.internalFee?.withdraw ?? '0');
-  const totalAmountWithFee = totalAmount.add(internalFee);
+  const totalAmountWithFee = totalAmount
+    .add(internalFee)
+    .add(currentTransfer.tokenSymbol ? Big(0) : totalFee);
 
   return (
     <List lines="none">
@@ -66,13 +72,9 @@ const WithdrawDetails = ({
       />
       <ListLabelValueItem
         label={t('Total')}
-        value={`${
-          isL2
-            ? totalAmountWithFee.toFixed(precision)
-            : totalAmount.toFixed(precision)
-        } ${currencySymbol}`}
+        value={`${totalAmountWithFee.toFixed(precision)} ${currencySymbol}`}
         remark={
-          isL2
+          isL2 || !currentTransfer.tokenSymbol
             ? undefined
             : `+${totalFee.toFixed(precision)} ${
                 currentTransfer.currency?.chain

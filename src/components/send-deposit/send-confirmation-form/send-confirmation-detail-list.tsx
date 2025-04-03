@@ -64,7 +64,9 @@ export const SendConfirmationDetailList = ({
     (accm, { internalFee }) => accm.add(internalFee?.withdraw ?? '0'),
     Big(0)
   );
-  const totalAmountWithFee = totalAmount.add(internalFee);
+  const totalAmountWithFee = totalAmount
+    .add(internalFee)
+    .add(isCurrencyTypeToken ? Big(0) : totalFee);
 
   const getUrl = (
     type: 'account' | 'transaction',
@@ -143,13 +145,9 @@ export const SendConfirmationDetailList = ({
       />
       <ListLabelValueItem
         label={t('Total')}
-        value={`${
-          isL2
-            ? totalAmountWithFee.toFixed(precision)
-            : totalAmount.toFixed(precision)
-        } ${currencySymbol}`}
+        value={`${totalAmountWithFee.toFixed(precision)} ${currencySymbol}`}
         remark={
-          isL2
+          isL2 || !isCurrencyTypeToken
             ? undefined
             : `+${totalFee.toFixed(precision)} ${nativeCoinSymbol}`
         }

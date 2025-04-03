@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import {
-  NetworkDictionary,
   TransactionLayer,
   TransactionStatus,
   TransactionType,
@@ -12,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { themeType } from '../../theme/const';
+import { getPrecision } from '../../utils/formatAmount';
 import { formatDate } from '../../utils/formatDate';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { displayLongText } from '../../utils/long-text';
@@ -154,6 +154,16 @@ export function OneActivity({
       ? currencyObj?.currencyIcon
       : currencyObj?.greyCurrencyIcon;
 
+  // Use separate precision for gas and amount so they both show with the
+  // minimum necessary (or 2)
+  const gasPrecision = getPrecision('0', transfer.feesPaid ?? '0');
+  const amountPrecision = getPrecision(transfer.amount, '0');
+  /**
+   * Style the icon displaying the chain information:
+   * - L2 transactions need to display the full AkashicChain text and so need less padding
+   * - If the more-info-chevron is displayed, reduce the spacing
+   */
+
   return (
     <>
       <ActivityWrapper
@@ -241,24 +251,25 @@ export function OneActivity({
                   : 'var(--ion-color-failed)',
               }}
             >
-              {`${isTxnDeposit ? '+' : '-'}${Big(transfer.amount).toFixed(2)} ${
+              {`${isTxnDeposit ? '+' : '-'}${Big(transfer.amount).toFixed(
+                amountPrecision
+              )} ${
                 transfer?.currency?.token
                   ? transfer?.currency?.token
                   : transfer?.currency?.chain
-                  ? NetworkDictionary[transfer?.currency?.chain].nativeCoin
-                      .displayName
-                  : transfer?.currency?.displayName
               }`}
             </Amount>
             {!isTxnDeposit && transfer.feesPaid && (
-              <GasFee>
-                {`${t('GasFee')}: ${Big(transfer.feesPaid).toFixed(6)} ${
-                  transfer?.currency?.chain
-                    ? NetworkDictionary[transfer?.currency?.chain].nativeCoin
-                        .displayName
-                    : ''
-                }`}
-              </GasFee>
+              <GasFee
+                style={{
+                  color:
+                    storedTheme === themeType.DARK
+                      ? 'var(--ion-dark-text)'
+                      : 'var(--ion-light-text)',
+                }}
+              >{`${t('GasFee')}: ≈${Big(
+                Big(transfer.feesPaid).toFixed(gasPrecision)
+              )} ${transfer?.currency?.chain}`}</GasFee>
             )}
           </AmountWrapper>
         )}
