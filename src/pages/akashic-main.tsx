@@ -5,12 +5,16 @@ import { IonCol, IonImg, IonRow, isPlatform } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { useAppDispatch } from '../app/hooks';
 import { PublicLayout } from '../components/layout/public-layout';
 import { Spinner } from '../components/loader/spinner';
 import { useLogout } from '../components/logout';
 import CreateOrImportForm from '../components/public/create-or-import-form';
 import { LoginForm } from '../components/public/login-form';
 import { LAST_PAGE_LOCATION } from '../constants';
+import { onClear as onClearCreate } from '../slices/createWalletSlice';
+import { onClear as onClearImport } from '../slices/importWalletSlice';
+import { onClear as onClearMigrate } from '../slices/migrateWalletSlice';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 
 /**
@@ -26,6 +30,7 @@ export function AkashicPayMain() {
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(true);
   const logout = useLogout();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const redirectToLastLocation = async () => {
@@ -36,6 +41,9 @@ export function AkashicPayMain() {
       const lastLocation = JSON.parse(lastLocationJson?.value || '{}');
       if (lastLocation?.pathname) {
         if (isPlatform('ios') || isPlatform('android')) {
+          dispatch(onClearCreate());
+          dispatch(onClearImport());
+          dispatch(onClearMigrate());
           logout();
         } else {
           history.replace(lastLocation.pathname, lastLocation.state);
