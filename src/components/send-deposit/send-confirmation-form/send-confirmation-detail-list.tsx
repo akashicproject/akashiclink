@@ -67,6 +67,22 @@ export const SendConfirmationDetailList = ({
   );
   const totalAmountWithFee = totalAmount.add(internalFee);
 
+  const getUrl = (
+    type: 'account' | 'transaction',
+    isL2: boolean,
+    value: string
+  ) => {
+    if (type === 'account') {
+      return isL2
+        ? `${process.env.REACT_APP_SCAN_BASE_URL}/accounts/${value}`
+        : `${NetworkDictionary[chain].addressUrl}/${value}`;
+    }
+    // Or if transaction
+    return isL2
+      ? `${process.env.REACT_APP_SCAN_BASE_URL}/transactions/${value}`
+      : `${NetworkDictionary[chain].txnUrl}/${value}`;
+  };
+
   return (
     <List lines="none">
       <IonItem className={'ion-margin-bottom-xs'}>
@@ -97,12 +113,14 @@ export const SendConfirmationDetailList = ({
             <FromToAddressBlock
               fromAddress={txns?.[0]?.fromAddress}
               toAddress={txns?.[0]?.toAddress}
+              fromAddressUrl={getUrl('account', !!isL2, txns?.[0]?.fromAddress)}
+              toAddressUrl={getUrl('account', !!isL2, txns?.[0]?.toAddress)}
             />
           </IonItem>
           <IonItem>
             <ListCopyTxHashItem
               txHash={txnFinal.txHash}
-              txHashUrl={`${NetworkDictionary[chain].txnUrl}/${txnFinal.txHash}`}
+              txHashUrl={getUrl('transaction', !!isL2, txnFinal.txHash)}
             />
           </IonItem>
         </>
