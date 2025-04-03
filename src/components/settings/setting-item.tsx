@@ -1,3 +1,5 @@
+import { Browser } from '@capacitor/browser';
+import { Capacitor } from '@capacitor/core';
 import styled from '@emotion/styled';
 import { IonIcon, IonItem, IonLabel, IonText } from '@ionic/react';
 import type { ReactNode } from 'react';
@@ -43,7 +45,19 @@ export type SettingItemProps = {
   backgroundColor?: string;
   subHeading?: string;
   ripple?: boolean;
+  link?: string;
 };
+
+const handleLink = async (link: string) => {
+  const isNative = Capacitor.isNativePlatform();
+
+  if (isNative) {
+    await Browser.open({ url: `mailto:${link}` });
+  } else {
+    window.location.href = `mailto:${link}`;
+  }
+};
+
 export function SettingItem({
   iconUrl,
   header,
@@ -55,8 +69,18 @@ export function SettingItem({
   backgroundColor,
   subHeading,
   ripple = true,
+  link,
 }: SettingItemProps) {
   const [showAccordionItem, setShowAccordionItem] = useState(false);
+  const handleClick = async () => {
+    if (link) {
+      await handleLink(link);
+    } else if (!isAccordion && onClick) {
+      onClick();
+    } else if (isAccordion) {
+      setShowAccordionItem(!showAccordionItem);
+    }
+  };
   return (
     <>
       <StyledIonItem
@@ -64,13 +88,7 @@ export function SettingItem({
         button={ripple}
         detail={false}
         className="ion-no-padding"
-        onClick={
-          !isAccordion
-            ? onClick
-            : () => {
-                setShowAccordionItem(!showAccordionItem);
-              }
-        }
+        onClick={handleClick}
       >
         {iconUrl && (
           <IonIcon

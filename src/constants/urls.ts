@@ -38,3 +38,5 @@ export const urls = {
   settingsBackup: 'settings-backup',
   settingsVersion: 'settings-version',
 } as const;
+
+export const SUPPORT_MAIL = 'support@akashiclink.com';

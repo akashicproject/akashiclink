@@ -14,7 +14,7 @@ import { DownArrow } from '../../components/settings/down-arrow';
 import type { SettingItemProps } from '../../components/settings/setting-item';
 import { SettingItem } from '../../components/settings/setting-item';
 import { SettingsRadio } from '../../components/settings/setting-radio';
-import { urls } from '../../constants/urls';
+import { SUPPORT_MAIL, urls } from '../../constants/urls';
 import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
 import {
   selectAutoLockTime,
@@ -167,6 +167,7 @@ export function Settings() {
     },
     {
       header: t('Support'),
+      link: SUPPORT_MAIL,
       iconUrl: getImageIconUrl('support_agent.svg'),
       endComponent: (
         <IonIcon
