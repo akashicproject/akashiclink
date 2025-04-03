@@ -1,5 +1,12 @@
 import styled from '@emotion/styled';
-import { IonCol, IonInput, IonItem, IonLabel, IonRow } from '@ionic/react';
+import {
+  IonCol,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonRow,
+  IonText,
+} from '@ionic/react';
 import { useState } from 'react';
 
 import { PurpleButton, WhiteButton } from '../components/buttons';
@@ -33,7 +40,9 @@ export function Recover() {
           <>
             <IonRow>
               <IonCol class="ion-center">
-                <Message>Please enter your email</Message>
+                <IonText>
+                  <h2>Please enter your email</h2>
+                </IonText>
               </IonCol>
             </IonRow>
             <IonRow>

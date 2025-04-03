@@ -7,7 +7,7 @@ import './selection-coin.css';
 import styled from '@emotion/styled';
 import type { CoinSymbol } from '@helium-pay/backend';
 import { TEST_TO_MAIN } from '@helium-pay/backend';
-import { IonCol, IonImg, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonImg, IonRow } from '@ionic/react';
 import Big from 'big.js';
 import { useEffect, useState } from 'react';
 import SwiperCore, { Navigation, Virtual } from 'swiper';
@@ -89,6 +89,10 @@ export function SelectCoin(props: Props) {
   );
   const [selectedCurrencyUSDT, setSelectedCurrencyUSDT] = useState<Big>();
 
+  useEffect(() => {
+    props.changeCurrency(WALLET_CURRENCIES[0].symbol);
+  }, []);
+
   const handleSlideChange = () => {
     setSwiperIdx(swiperRef?.activeIndex ?? 0);
     const wc = WALLET_CURRENCIES[swiperRef?.activeIndex ?? 0];
@@ -115,7 +119,7 @@ export function SelectCoin(props: Props) {
   }, [aggregatedBalances, exchangeRates]);
 
   return (
-    <>
+    <IonGrid>
       <IonRow style={{ marginTop: '15px' }}>
         <IonCol class="ion-center">
           <Swiper
@@ -157,6 +161,6 @@ export function SelectCoin(props: Props) {
           </BalanceWrapper>
         </IonCol>
       </IonRow>
-    </>
+    </IonGrid>
   );
 }

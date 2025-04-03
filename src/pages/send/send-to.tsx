@@ -114,11 +114,11 @@ interface WithdrawalTransaction {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface Props extends RouteComponentProps<{ currency: string }> {}
+interface Props extends RouteComponentProps<{ coinSymbol: string }> {}
 
 export function SendTo(props: Props) {
   const { t } = useTranslation();
-  const currentCurrency = props.match.params.currency;
+  const currentCurrency = props.match.params.coinSymbol;
   const [_proposedTransactions, _setProposedTransactions] = useState<
     WithdrawalTransaction[]
   >([]);

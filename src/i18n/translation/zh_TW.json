@@ -61,5 +61,9 @@
   "Success": "成功",
   "Failure": "抱歉",
   "MissingTranslationError": "缺少翻譯錯誤",
-  "ContractInteraction": "細節"
+  "ContractInteraction": "細節",
+  "Copied": "已複製",
+  "ErrorPageHeading": "喔！似乎出錯了",
+  "ErrorPageDesc": "非常抱歉，請聯絡客服或",
+  "ErrorPageBackButton": "返回主頁"
 }

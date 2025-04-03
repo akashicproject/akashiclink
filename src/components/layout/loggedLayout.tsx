@@ -1,7 +1,7 @@
 import './layout.css';
 
 import styled from '@emotion/styled';
-import { IonContent, IonGrid, IonPage } from '@ionic/react';
+import { IonContent, IonFooter, IonPage } from '@ionic/react';
 import type { ReactNode } from 'react';
 
 import { LoggedToolbar } from '../logged/logged-toolbar';
@@ -21,20 +21,22 @@ const ChainDiv = styled.div({
   justifyContent: 'center',
   padding: '10px 12px',
   borderBottom: '2px solid #C297FF',
+  marginBottom: 32,
 });
 
-export const LoggedLayout: React.FC<{ children: ReactNode; cls?: string }> = ({
-  children,
-  cls,
-}) => {
+export const LoggedLayout: React.FC<{
+  children: ReactNode;
+  footer?: ReactNode;
+}> = ({ children, footer }) => {
   return (
     <IonPage>
       <LoggedHeader />
       <IonContent>
         <ChainDiv>HeliumPay Chain</ChainDiv>
         <LoggedToolbar />
-        <IonGrid class={cls || 'logged-middle'}>{children}</IonGrid>
+        {children}
       </IonContent>
+      {footer && <IonFooter class={'ion-no-border'}>{footer}</IonFooter>}
     </IonPage>
   );
 };

@@ -18,11 +18,24 @@ ion-checkbox::part(container) {
   border: 2px solid;
 }
 
+ion-popover.copied-popover {
+  --width: 80px !important;
+  font-size: 14px;
+}
+
+ion-label {
+  font-size: 14px;
+}
+
 h1 {
   font-weight: 900;
   font-size: 32px;
   font-family: 'Nunito Sans';
   text-align: center;
+}
+
+h2 {
+  font-weight: 700;
 }
 
 h3 {

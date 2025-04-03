@@ -2,6 +2,8 @@ import type {
   ICoinSymbols,
   ILargestBalanceKeysResponse,
 } from '@helium-pay/backend';
+import { keyError } from '@helium-pay/backend';
+import type { AxiosRequestConfig } from 'axios';
 import useSWR from 'swr';
 
 import fetcher from '../ownerFetcher';
@@ -14,7 +16,13 @@ export const useLargestBalanceKeys = (params?: ICoinSymbols) => {
         params,
       },
     ],
-    fetcher
+    async (path: string, config?: AxiosRequestConfig) => {
+      const data = await fetcher(path, config);
+
+      return data.filter(
+        (key: { address: string }) => key.address !== keyError.notExistInNetwork
+      );
+    }
   );
   return {
     keys: (data || []) as ILargestBalanceKeysResponse[],

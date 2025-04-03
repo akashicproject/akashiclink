@@ -62,5 +62,9 @@
   "Result": "结果",
   "Failed": "失败",
   "MissingTranslationError": "缺少翻译错误",
-  "ContractInteraction": "细节"
+  "ContractInteraction": "细节",
+  "Copied": "已複製",
+  "ErrorPageHeading": "喔！似乎出錯了",
+  "ErrorPageDesc": "非常抱歉，請聯絡客服或",
+  "ErrorPageBackButton": "返回主頁"
 }

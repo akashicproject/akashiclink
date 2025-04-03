@@ -12,8 +12,9 @@ export const urls = {
   welcome: 'welcome',
   loggedFunction: 'logged-function',
   loggedCreate: 'logged-create',
-  loggedDeposit: 'logged-deposit',
-  sendTo: 'send-to',
+  loggedDeposit: 'logged-deposit/:coinSymbol',
+  sendFunction: 'send-function',
+  sendTo: 'send-to/:coinSymbol',
   sendConfirm: 'send-confirm',
   sendResult: 'send-result',
   activity: 'activity',
@@ -27,6 +28,7 @@ export const urls = {
   settingsNaming: 'settings-naming',
   settingsInfo: 'settings-info',
   settingsVersion: 'settings-version',
+  error: 'error',
 
   us2: 'us2',
 };

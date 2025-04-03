@@ -1,17 +1,13 @@
-ion-select::part(placeholder),
-ion-select::part(text) {
-  color: #290056;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 700;
-  font-family: 'Nunito Sans', serif;
+ion-select {
+  border: 1px solid #958e99;
+  border-radius: 8px;
 }
 
 .select-item {
   width: 214px;
   --min-height: 40px;
   --border-radius: 8px;
-  --border-width: 2px;
+  --border-width: 1px;
   --border-color: #7b757f;
 }
 
@@ -19,9 +15,9 @@ ion-select::part(text) {
   width: 40px;
   height: 40px;
   margin: 0;
-  --background: #ffffff;
+  --background: var(--ion-background-color);
   --border-color: #7b757f;
-  --border-width: 2px;
+  --border-width: 1px;
   --border-style: solid;
   --border-radius: 8px;
   --box-shadow: none;

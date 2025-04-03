@@ -7,10 +7,11 @@ import { BeforeCreateWallet } from '../pages/createWallet/before-create-wallet';
 import { CreateWallet } from '../pages/createWallet/create-wallet';
 import { CreatingWallet } from '../pages/createWallet/creating-wallet';
 import { WalletCreated } from '../pages/createWallet/wallet-created';
+import { ErrorPage } from '../pages/error';
 import { HeliumPayDashboard } from '../pages/hp-dashboard';
 import { HeliumPayMain } from '../pages/hp-main';
 import { ImportWallet } from '../pages/import-wallet';
-import { LoggedCreate } from '../pages/logged/Logged-create';
+import { LoggedCreate } from '../pages/logged/logged-create';
 import { LoggedDeposit } from '../pages/logged/logged-deposit';
 import { LoggedFunction } from '../pages/logged/logged-function';
 import { Login } from '../pages/login';
@@ -58,7 +59,14 @@ export function createNavigationSubtree(
         component={page}
       />
     ),
-    createPath: (url: string) => `${root}/${url}`,
+    createPath: (url: string, params?: Record<string, string>) => {
+      let base = `${root}/${url}`;
+      params &&
+        Object.entries(params).forEach((value) => {
+          base = base.replace(`:${value[0]}`, value[1]);
+        });
+      return base;
+    },
     tab: (
       <IonTabButton tab={subtreeName} href={root}>
         <IonLabel>{subtreeLabel}</IonLabel>
@@ -95,7 +103,7 @@ export function NavigationTree() {
       {hpSubtree.registerPage(LoggedCreate, urls.loggedCreate)}
       {hpSubtree.registerPage(LoggedDeposit, urls.loggedDeposit)}
       {hpSubtree.registerPage(SendConfirm, urls.sendConfirm)}
-      {hpSubtree.registerPage(SendTo, urls.sendTo + '/:currency')}
+      {hpSubtree.registerPage(SendTo, urls.sendTo)}
       {hpSubtree.registerPage(SendResult, urls.sendResult)}
       {hpSubtree.registerPage(Activity, urls.activity)}
       {hpSubtree.registerPage(Recover, urls.recover)}
@@ -107,6 +115,7 @@ export function NavigationTree() {
       {hpSubtree.registerPage(SettingsNaming, urls.settingsNaming)}
       {hpSubtree.registerPage(SettingsVersion, urls.settingsVersion)}
       {hpSubtree.registerPage(SettingsInfo, urls.settingsInfo)}
+      {hpSubtree.registerPage(ErrorPage, urls.error)}
 
       {/* US² tree */}
       {us2Subtree.registerPage(Us2Main)}

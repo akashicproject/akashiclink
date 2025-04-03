@@ -9,7 +9,7 @@ const cachedAccountField = 'cached-account';
 
 /**
  * Store a username-identity pair in the local storage list
- * When user attemps a new login, offer the choice from one of these wallets
+ * When user attempts a new login, offer the choice from one of these wallets
  */
 export function storeAccount(account: IImportWalletResponse) {
   const cachedAccounts = JSON.parse(

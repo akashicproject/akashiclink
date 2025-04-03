@@ -1,6 +1,6 @@
 import './logged.css';
 
-import { IonCol, IonIcon, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { arrowDownOutline, arrowForwardOutline } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,17 +17,19 @@ export function LoggedFunction() {
     console.log(document.getElementById('activity'));
     document.getElementById('activity')?.click();
   }, []);
-  const [currency, setCurrency] = useState('');
+  const [coinSymbol, setCoinSymbol] = useState('');
 
   return (
     <LoggedMain>
-      <>
-        <SelectCoin changeCurrency={(code) => setCurrency(code)} />
+      <SelectCoin changeCurrency={(code) => setCoinSymbol(code)} />
+      <IonGrid>
         <IonRow class="ion-justify-content-between">
           <IonCol>
             <PurpleButton
               expand="block"
-              routerLink={heliumPayPath(urls.sendTo) + `/${currency}`}
+              routerLink={heliumPayPath(urls.sendTo, {
+                coinSymbol: coinSymbol,
+              })}
             >
               {t('Send')}
               <IonIcon slot="end" icon={arrowForwardOutline}></IonIcon>
@@ -36,14 +38,16 @@ export function LoggedFunction() {
           <IonCol>
             <WhiteButton
               expand="block"
-              routerLink={heliumPayPath(urls.loggedDeposit)}
+              routerLink={heliumPayPath(urls.loggedDeposit, {
+                coinSymbol: coinSymbol,
+              })}
             >
               {t('Deposit')}
               <IonIcon slot="end" icon={arrowDownOutline}></IonIcon>
             </WhiteButton>
           </IonCol>
         </IonRow>
-      </>
+      </IonGrid>
     </LoggedMain>
   );
 }

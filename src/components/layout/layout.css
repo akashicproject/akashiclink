@@ -1,18 +1,11 @@
-ion-content {
-  --background: #f3f5f6;
-}
-
 .middle {
-  width: 304px;
   height: 100%;
   display: flex;
-  justify-content: center;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
 }
 
 .logged-middle {
-  width: 304px;
   height: calc(100% - 40px);
   display: flex;
   flex-direction: column;

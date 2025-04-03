@@ -61,5 +61,9 @@
   "Success": "Success",
   "Failure": "Failure",
   "Result": "Result",
-  "ContractInteraction": "ContractInteraction"
+  "ContractInteraction": "ContractInteraction",
+  "Copied": "Copied",
+  "ErrorPageHeading": "Ops, something went wrong.",
+  "ErrorPageDesc": "We are sorry about the inconvenience. Please contact our customer service, or",
+  "ErrorPageBackButton": "Go back to Home page"
 }
