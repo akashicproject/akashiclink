@@ -36,8 +36,6 @@ export const useVerifyTxnAndSign = () => {
         return 'GenericFailureMsg';
       }
 
-      let txns: ITransactionVerifyResponse[];
-
       if (isL2) {
         const l2TransactionData: ITransactionProposal = {
           initiatedToNonL2: !L2Regex.exec(
@@ -80,25 +78,48 @@ export const useVerifyTxnAndSign = () => {
           txns,
           signedTxns: [txBody],
         };
-      } else {
-        // Backend accepts "normal" units, so we don't convert
-        const transactionData: ITransactionProposal = {
-          toAddress: validatedAddressPair.convertedToAddress,
-          amount,
-          coinSymbol: chain,
-          tokenSymbol: token,
-        };
-
-        txns = await OwnersAPI.verifyTransactionUsingClientSideOtk(
-          transactionData
-        );
       }
+
+      const transactionData: ITransactionProposal = {
+        identity: activeAccount.identity,
+        toAddress: validatedAddressPair.convertedToAddress,
+        // Backend accepts "normal" units, so we don't convert
+        amount,
+        coinSymbol: chain,
+        tokenSymbol: token,
+      };
+
+      const { feesEstimate, withdrawalKeys } = await OwnersAPI.prepareL1Txn(
+        transactionData
+      );
+      const txns: ITransactionVerifyResponse[] = await Promise.all(
+        withdrawalKeys.map(
+          async (key) =>
+            ({
+              ownedIdentity: activeAccount.identity,
+              fromAddress: key.address,
+              fromLedgerId: key.ledgerId,
+              toAddress: validatedAddressPair.convertedToAddress,
+              amount: key.transferAmount,
+              coinSymbol: chain,
+              tokenSymbol: token,
+              feesEstimate,
+              layer: TransactionLayer.L1,
+              txToSign: await nitr0genApi.L2ToL1SignTransaction(
+                cacheOtk,
+                key.ledgerId,
+                chain,
+                // AC needs smallest units, so we convert
+                convertToDecimals(key.transferAmount, chain, token),
+                validatedAddressPair.convertedToAddress,
+                token
+              ),
+            } as ITransactionVerifyResponse)
+        )
+      );
 
       // reject the request if /verify returns multiple transfers
-      // for L2: multiple transactions from the same Nitr0gen identity can always be combined into a single one
-      if ((!isL2 && txns.length > 1) || txns.length === 0) {
-        return 'GenericFailureMsg';
-      }
+      if (txns.length !== 1) return 'GenericFailureMsg';
 
       // sign txns and move to final confirmation
       // Okay to assert since we have filtered out on the line before

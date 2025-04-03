@@ -1,16 +1,14 @@
 import type {
   IEstimateGasFee,
   IEstimateGasFeeResponse,
-  IL1ClientSideOtkTransactionBase,
   ILoginUserWithOtk,
   ILookForL2Address,
   ILookForL2AddressResponse,
   IMinimalUserResponse,
+  IPrepareL1TxnResponse,
   IRetrieveIdentity,
   IRetrieveIdentityResponse,
   ITransactionProposal,
-  ITransactionSettledResponse,
-  ITransactionVerifyResponse,
 } from '@helium-pay/backend';
 
 import { axiosBase, axiosBaseV1 } from './axios-helper';
@@ -43,36 +41,6 @@ export const OwnersAPI = {
     return response.data;
   },
 
-  verifyTransactionUsingClientSideOtk: async (
-    transactionData: ITransactionProposal
-  ): Promise<ITransactionVerifyResponse[]> => {
-    const response = await axiosBaseV1.post(
-      `/key/verify-txns`,
-      JSON.stringify(transactionData)
-    );
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-
-    return response.data;
-  },
-
-  sendL1TransactionUsingClientSideOtk: async (
-    transactionToSendData: IL1ClientSideOtkTransactionBase[]
-  ): Promise<ITransactionSettledResponse[]> => {
-    const response = await axiosBaseV1.post(
-      `/key/send/l1`,
-      JSON.stringify(transactionToSendData)
-    );
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-
-    return response.data;
-  },
-
   lookForL2Address: async (
     l2Check: ILookForL2Address
   ): Promise<ILookForL2AddressResponse> => {
@@ -97,6 +65,21 @@ export const OwnersAPI = {
     if (status >= 400) {
       throw new Error(data.message);
     }
+    return response.data;
+  },
+
+  prepareL1Txn: async (
+    transactionData: ITransactionProposal
+  ): Promise<IPrepareL1TxnResponse> => {
+    const response = await axiosBase.post(
+      `/key/prepare-l1-txn`,
+      JSON.stringify(transactionData)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+
     return response.data;
   },
 };

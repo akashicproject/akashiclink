@@ -85,6 +85,46 @@ export const useSendL2Transaction = () => {
   return { trigger };
 };
 
+export const useSendL1Transaction = () => {
+  const nitr0genApi = new Nitr0genApi();
+  const dispatch = useAppDispatch();
+
+  const trigger = async (
+    signedTransactionData: ITransactionProposalClientSideOtk
+  ): Promise<ITransactionSettledResponse> => {
+    try {
+      const l2TxnHash = (
+        await nitr0genApi.sendTransaction(() =>
+          nitr0genApi.sendSignedTx(signedTransactionData.signedTx)
+        )
+      ).$umid;
+
+      const { ownedIdentity } = signedTransactionData;
+      dispatch(
+        addLocalTransaction({
+          ...signedTransactionData,
+          status: TransactionStatus.PENDING,
+          date: new Date(),
+          layer: TransactionLayer.L1,
+          l2TxnHash,
+          senderIdentity: ownedIdentity,
+        })
+      );
+
+      return {
+        isSuccess: true,
+        txHash: l2TxnHash,
+      };
+    } catch (error) {
+      return {
+        isSuccess: false,
+        reason: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  };
+  return { trigger };
+};
+
 export const useNftTransfer = () => {
   const nitr0genApi = new Nitr0genApi();
 
