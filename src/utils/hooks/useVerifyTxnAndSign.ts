@@ -98,7 +98,7 @@ export const useVerifyTxnAndSign = () => {
       };
 
       const {
-        fees: { feesEstimate },
+        fees: { feesEstimate, delegatedFee },
         withdrawalKeys,
         ethGasPrice,
       } = await OwnersAPI.prepareL1Txn(transactionData);
@@ -138,7 +138,7 @@ export const useVerifyTxnAndSign = () => {
       // Okay to assert since we have filtered out on the line before
       const signedTxn = await signTxBody(txn.txToSign, cacheOtk);
 
-      return { txn, signedTxn };
+      return { txn, signedTxn, delegatedFee };
     } catch (error) {
       datadogRum.addError(error);
       return unpackRequestErrorMessage(error);
