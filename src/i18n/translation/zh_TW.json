@@ -71,6 +71,7 @@
   "Status": "狀態",
   "Confirmed": "已確認",
   "Pending": "待定",
+  "Queued": "佇列中",
   "Any": "任何",
   "txHash": "交易哈希",
   "CopyTxHash": "複製交易哈希",

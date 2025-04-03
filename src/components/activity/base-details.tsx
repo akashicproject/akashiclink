@@ -41,6 +41,8 @@ export function BaseDetails({
         return t('Pending');
       case TransactionStatus.FAILED:
         return t('Failed');
+      case TransactionStatus.QUEUED:
+        return t('Queued');
       default:
         return t('MissingTranslationError');
     }

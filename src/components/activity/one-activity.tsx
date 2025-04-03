@@ -248,6 +248,8 @@ export function OneActivity({
                   ? ` - ${t('Pending')}`
                   : transfer.status === TransactionStatus.FAILED
                   ? ` - ${t('Failed')}`
+                  : transfer.status === TransactionStatus.QUEUED
+                  ? ` - ${t('Queued')}`
                   : ''
               }`}
             </div>

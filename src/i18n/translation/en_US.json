@@ -72,6 +72,7 @@
   "Status": "Status",
   "Confirmed": "Confirmed",
   "Pending": "Pending",
+  "Queued": "Queued",
   "Any": "Any",
   "txHash": "Tx Hash",
   "CopyTxHash": "Copy Tx Hash",

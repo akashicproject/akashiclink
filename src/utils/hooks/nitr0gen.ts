@@ -4,6 +4,8 @@ import type { IBaseAcTransaction } from '@helium-pay/backend';
 import {
   type ITransactionProposalClientSideOtk,
   type ITransferNftResponse,
+  EthereumSymbol,
+  isCoinSymbol,
   nftErrors,
   TransactionLayer,
   TransactionStatus,
@@ -112,9 +114,10 @@ export const useSendL1Transaction = () => {
       );
 
       // Only store locally if we are not hiding the transaction
+      // And if not ETH/SEP as they get presigned and have the special "queued" transaction
       if (
-        (hideSmallTransactions && usdtValue.gte(1)) ||
-        !hideSmallTransactions
+        !isCoinSymbol(signedTransactionData.coinSymbol, EthereumSymbol) &&
+        ((hideSmallTransactions && usdtValue.gte(1)) || !hideSmallTransactions)
       ) {
         dispatch(
           addLocalTransaction({
