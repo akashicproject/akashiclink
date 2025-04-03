@@ -84,14 +84,16 @@ export interface WalletCurrencyMetadata {
 }
 export const L2Icon = '/shared-assets/images/PayLogo-all-white.svg';
 /** Declaration of supported currencies */
+
 const MAINNET_CURRENCIES: WalletCurrencyMetadata[] = [
-  {
-    symbol: 'BTC',
-    currency: makeWalletCurrency(CoinSymbol.Bitcoin),
-    logo: '/shared-assets/images/btc.png',
-    greyLogo: '/shared-assets/images/btc-grey.png',
-    icon: '/shared-assets/icons/btc_icon.png',
-  },
+  // TODO: re-enable when L2 transactions are supported for BTC
+  // {
+  //   symbol: 'BTC',
+  //   currency: makeWalletCurrency(CoinSymbol.Bitcoin),
+  //   logo: '/shared-assets/images/btc.png',
+  //   greyLogo: '/shared-assets/images/btc-grey.png',
+  //   icon: '/shared-assets/icons/btc_icon.png',
+  // },
   {
     symbol: 'ETH',
     currency: makeWalletCurrency(CoinSymbol.Ethereum_Mainnet),
@@ -125,13 +127,14 @@ const MAINNET_CURRENCIES: WalletCurrencyMetadata[] = [
 ];
 
 const TESTNET_CURRENCIES: WalletCurrencyMetadata[] = [
-  {
-    symbol: 'tBTC',
-    currency: makeWalletCurrency(CoinSymbol.Bitcoin_Testnet),
-    logo: '/shared-assets/images/btc.png',
-    greyLogo: '/shared-assets/images/btc-grey.png',
-    icon: '/shared-assets/icons/btc_icon.png',
-  },
+  // TODO: re-enable when L2 transactions are supported for BTC
+  // {
+  //   symbol: 'tBTC',
+  //   currency: makeWalletCurrency(CoinSymbol.Bitcoin_Testnet),
+  //   logo: '/shared-assets/images/btc.png',
+  //   greyLogo: '/shared-assets/images/btc-grey.png',
+  //   icon: '/shared-assets/icons/btc_icon.png',
+  // },
   {
     symbol: 'GOR',
     currency: makeWalletCurrency(CoinSymbol.Görli),

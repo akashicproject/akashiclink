@@ -3,7 +3,7 @@ import './activity.scss';
 import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import { TransactionStatus, TransactionType } from '@helium-pay/backend';
-import { IonButton, IonIcon, IonContent } from '@ionic/react';
+import { IonButton, IonContent, IonIcon } from '@ionic/react';
 import Big from 'big.js';
 import { arrowForwardCircleOutline, copyOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
