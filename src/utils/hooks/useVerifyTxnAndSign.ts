@@ -9,12 +9,10 @@ import type { ValidatedAddressPair } from '../../components/send-deposit/send-fo
 import { OwnersAPI } from '../api';
 import { signTxBody } from '../nitr0gen-api';
 import { unpackRequestErrorMessage } from '../unpack-request-error-message';
-import { useAccountStorage } from './useLocalAccounts';
 
 export const useVerifyTxnAndSign = () => {
   const { chain, token } = useFocusCurrencyDetail();
   const [cacheOtk, _] = useCacheOtk();
-  const { activeAccount } = useAccountStorage();
 
   return async (validatedAddressPair: ValidatedAddressPair, amount: string) => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
@@ -24,7 +22,6 @@ export const useVerifyTxnAndSign = () => {
         return 'GenericFailureMsg';
       }
       const txns = await OwnersAPI.verifyTransactionUsingClientSideOtk({
-        fromAddress: activeAccount?.identity,
         toAddress: validatedAddressPair.convertedToAddress,
         amount,
         coinSymbol: chain,
