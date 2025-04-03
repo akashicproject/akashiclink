@@ -1,8 +1,11 @@
 import './one-nft.scss';
 
+import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import type { INft, INftResponse } from '@helium-pay/backend';
-import { IonImg, IonRow } from '@ionic/react';
+import { IonContent, IonImg, IonPopover, IonRow } from '@ionic/react';
+import { t } from 'i18next';
+import { useRef, useState } from 'react';
 
 import { displayLongText } from '../../utils/long-text';
 interface Props {
@@ -35,9 +38,12 @@ const NftName = styled.div({
   fontWeight: 700,
   textAlign: 'center',
   lineHeight: '16px',
+  cursor: 'pointer',
 });
 
 export function OneNft(props: Props) {
+  const popover = useRef<HTMLIonPopoverElement>(null);
+  const [popoverOpen, setPopoverOpen] = useState(false);
   return (
     <NtfWrapper
       style={
@@ -71,9 +77,30 @@ export function OneNft(props: Props) {
           style={{
             fontSize: '14px',
           }}
+          title={`Copy ${props.nft?.account}`}
+          onClick={async (e) => {
+            await Clipboard.write({
+              string: props.nft?.account,
+            });
+            if (popover.current) popover.current.event = e;
+            setPopoverOpen(true);
+            setTimeout(() => {
+              setPopoverOpen(false);
+            }, 1000);
+          }}
         >
-          {displayLongText(props.nft?.account, 10)}
+          {displayLongText(props.nft?.account, 9, true)}
         </NftName>
+        <IonPopover
+          side="top"
+          alignment="center"
+          ref={popover}
+          isOpen={popoverOpen}
+          class={'copied-popover'}
+          onDidDismiss={() => setPopoverOpen(false)}
+        >
+          <IonContent class="ion-padding">{t('Copied')}</IonContent>
+        </IonPopover>
         <div hidden={!props?.nft?.acns?.value}>
           <div className={`chip-${props.isBig ? 'big' : 'small'}`}>AAS</div>
         </div>
@@ -94,7 +121,7 @@ export function OneNft(props: Props) {
             ...props.nftNameStyle,
           }}
         >
-          {displayLongText(props.nft?.name)}
+          {props.nft?.name}
         </NftName>
       </IonRow>
       <div hidden={props.isAccountNameHidden}>

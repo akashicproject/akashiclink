@@ -5,9 +5,17 @@
  *
  * @returns first 10 characters + ... +  5 last characters
  */
-export function displayLongText(long: string | undefined, length = 15): string {
+export function displayLongText(
+  long: string | undefined,
+  length = 15,
+  isPostfix?: boolean
+): string {
   if (long && long.length > length) {
-    return long.slice(0, length - 5) + '...' + long.slice(-5);
+    if (isPostfix) {
+      return long.slice(0, length - 2) + '..';
+    } else {
+      return long.slice(0, length - 5) + '...' + long.slice(-5);
+    }
   }
   return long || '';
 }

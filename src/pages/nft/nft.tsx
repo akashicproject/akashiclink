@@ -88,7 +88,11 @@ export function Nft() {
         </IonRow>
         <IonRow style={{ width: '215px' }}>
           <IonCol>
-            <PurpleButton expand="block" onClick={transferNft}>
+            <PurpleButton
+              expand="block"
+              style={{ width: '181px' }}
+              onClick={transferNft}
+            >
               {t('Transfer')}
             </PurpleButton>
           </IonCol>
