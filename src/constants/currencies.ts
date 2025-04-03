@@ -209,13 +209,8 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
 export const ALLOWED_NETWORKS =
   process.env.REACT_APP_ENABLE_TESTNET_CURRENCIES === 'true'
     ? [
-        CoinSymbol.Binance_Smart_Chain_Testnet,
         CoinSymbol.Ethereum_Sepolia,
         CoinSymbol.Tron_Nile,
         CoinSymbol.Tron_Shasta,
       ]
-    : [
-        CoinSymbol.Binance_Smart_Chain_Mainnet,
-        CoinSymbol.Ethereum_Mainnet,
-        CoinSymbol.Tron,
-      ];
+    : [CoinSymbol.Ethereum_Mainnet, CoinSymbol.Tron];
