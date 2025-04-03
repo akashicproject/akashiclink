@@ -32,6 +32,8 @@ import {
 import { LoggedLayout } from '../components/layout/logged-layout';
 import { MainGrid } from '../components/layout/main-grid';
 import { Tabs } from '../components/layout/tabs';
+import { useTheme } from '../components/PreferenceProvider';
+import { themeType } from '../theme/const';
 import { OwnersAPI } from '../utils/api';
 import { useNftAcnsMe } from '../utils/hooks/useNftAcnsMe';
 import { displayLongText } from '../utils/long-text';
@@ -162,6 +164,7 @@ export function SettingsNaming() {
   const [isConfirmModel, setIsConfirmModel] = useState(false);
   const [isResultModel, setIsResultModel] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [storedTheme] = useTheme();
 
   const removeAcns = async (name: string) => {
     await mutate(async () => {
@@ -267,7 +270,11 @@ export function SettingsNaming() {
                           >
                             <IonImg
                               alt="edit"
-                              src="/shared-assets/icons/pencil.svg"
+                              src={`/shared-assets/icons/${
+                                storedTheme === themeType.DARK
+                                  ? 'pencil-dark-mode'
+                                  : 'pencil'
+                              }.svg`}
                             />
                           </SquareWhiteButton>
                           <SquareWhiteButton
@@ -292,7 +299,11 @@ export function SettingsNaming() {
                           >
                             <IonImg
                               alt="edit"
-                              src="/shared-assets/icons/trash.svg"
+                              src={`/shared-assets/icons/${
+                                storedTheme === themeType.DARK
+                                  ? 'trash-dark-mode'
+                                  : 'trash'
+                              }.svg`}
                             />
                           </SquareWhiteButton>
                         </div>

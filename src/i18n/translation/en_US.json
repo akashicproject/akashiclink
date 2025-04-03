@@ -168,7 +168,7 @@
   },
   "Security": "Security",
   "Information": "Information",
-  "NamingService": "Naming Service",
+  "NamingService": "Akashic Alias Service (AAS)",
   "Lock": "Lock",
   "Remark": "Remark"
 }

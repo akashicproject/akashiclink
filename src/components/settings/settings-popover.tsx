@@ -195,14 +195,10 @@ export function SettingsPopover() {
             </SettingsList>
           </SettingSubmenu>
 
-          <SettingSubmenu displayText={t('NamingService')} id="naming-service">
-            <SettingsList isSubmenu={true}>
-              <SettingsItem
-                routerLink={`${akashicPayPath(urls.settingsNaming)}?service=hp`}
-                displayText="ACNS"
-              />
-            </SettingsList>
-          </SettingSubmenu>
+          <SettingsItem
+            routerLink={`${akashicPayPath(urls.settingsNaming)}?service=hp`}
+            displayText={t('NamingService')}
+          />
 
           <SettingSubmenu displayText={t('Security')} id="settings-security">
             <SettingsList isSubmenu={true}>
