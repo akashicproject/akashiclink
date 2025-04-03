@@ -18,11 +18,11 @@ import {
   formAlertResetState,
 } from '../../components/alert/alert';
 import { PurpleButton } from '../../components/buttons';
-import { Copy } from '../../components/copy/copy';
 import { MainGrid } from '../../components/layout/main-grid';
 import { MainTitle } from '../../components/layout/main-title';
 import { MainLayout } from '../../components/layout/mainLayout';
 import { useLogout } from '../../components/logout';
+import { OtkBox } from '../../components/otk-box/otk-box';
 import {
   StyledInput,
   StyledInputErrorPrompt,
@@ -333,13 +333,13 @@ export function CreateWallet() {
             <IonRow class="ion-justify-content-center">
               <IonCol>
                 <IonLabel position="stacked">{t('PublicAddress')}</IonLabel>
-                <Copy text={newAccount?.identity} />
+                <OtkBox text={newAccount?.identity} withCopy={false} />
               </IonCol>
             </IonRow>
             <IonRow class="ion-justify-content-center">
               <IonCol>
                 <IonLabel position="stacked">{t('PrivateKey')}</IonLabel>
-                <Copy text={newAccount?.privateKey} />
+                <OtkBox text={newAccount?.privateKey} />
               </IonCol>
             </IonRow>
             <IonRow>

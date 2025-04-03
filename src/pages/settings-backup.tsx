@@ -12,11 +12,11 @@ import {
 } from '../components/alert/alert';
 import { PurpleButton, WhiteButton } from '../components/buttons';
 import { ConfirmLockPassword } from '../components/confirm-lock-password';
-import { Copy } from '../components/copy/copy';
 import { DividerDiv } from '../components/layout/divider';
 import { LoggedLayout } from '../components/layout/logged-layout';
 import { MainGrid } from '../components/layout/main-grid';
 import { MainTitle } from '../components/layout/main-title';
+import { OtkBox } from '../components/otk-box/otk-box';
 import { OwnersAPI } from '../utils/api';
 
 const WarningText = styled.span({
@@ -74,7 +74,7 @@ export function SettingsBackup() {
           </IonRow>
           <IonRow>
             <IonCol>
-              <Copy text={keyPair} />
+              <OtkBox text={keyPair} />
             </IonCol>
           </IonRow>
           <IonRow>
