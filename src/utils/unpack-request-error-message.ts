@@ -29,7 +29,7 @@ export const unpackRequestErrorMessage = (error: unknown) => {
     case errorMsg.includes('Input Stream'):
       return otherError.providerError;
     case errorMsg.includes('unable to decrypt data'):
-      return userError.invalidPassErrorMsg;
+      return 'InvalidPassword';
     case errorMsg === userError.userNotFoundError:
       return 'UserDoesNotExist';
     case errorMsg === userError.activationCodeInvalid:
