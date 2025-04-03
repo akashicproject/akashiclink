@@ -9,7 +9,10 @@ interface Props {
   nft: INft | INftResponse;
   isBig?: boolean;
   select?: () => void;
+  style?: React.CSSProperties;
   isNameHidden?: boolean;
+  nftNameStyle?: React.CSSProperties;
+  isAccountNameHidden?: boolean;
 }
 
 const NtfWrapper = styled.div({
@@ -39,8 +42,20 @@ export function OneNft(props: Props) {
     <NtfWrapper
       style={
         props.isBig
-          ? { width: '181px', height: '245px', padding: '16px', gap: '16px' }
-          : { width: '138px', height: '190px', padding: '8px', gap: '10px' }
+          ? {
+              ...props.style,
+              width: '181px',
+              height: '245px',
+              padding: '16px',
+              gap: '16px',
+            }
+          : {
+              ...props.style,
+              width: '193px',
+              height: '254px',
+              padding: '8px',
+              gap: '10px',
+            }
       }
       onClick={props.select}
     >
@@ -72,11 +87,28 @@ export function OneNft(props: Props) {
       </div>
       <IonRow>
         <NftName
-          style={{ color: '#7B757F', fontWeight: '700', fontSize: '12px' }}
+          style={{
+            color: '#7B757F',
+            fontWeight: '700',
+            fontSize: '12px',
+            ...props.nftNameStyle,
+          }}
         >
           {displayLongText(props.nft?.name)}
         </NftName>
       </IonRow>
+      <div hidden={props.isAccountNameHidden}>
+        <NftName
+          style={{
+            textAlign: 'center',
+            width: '100%',
+            fontSize: '14px',
+            color: '#7B757F',
+          }}
+        >
+          {displayLongText(props.nft?.account)}
+        </NftName>
+      </div>
     </NtfWrapper>
   );
 }

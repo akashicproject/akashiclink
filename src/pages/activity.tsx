@@ -21,9 +21,11 @@ import { Virtuoso } from 'react-virtuoso';
 import { ActivityDetail } from '../components/activity/activity-detail';
 import { OneActivity } from '../components/activity/one-activity';
 import { LoggedLayout } from '../components/layout/logged-layout';
+import { OneNft } from '../components/nft/one-nft';
 import { urls } from '../constants/urls';
 import type { ITransactionRecordForExtension } from '../utils/formatTransfers';
-import { formatTransfers } from '../utils/formatTransfers';
+import { formatMergeAndSortNftAndCryptoTransfers } from '../utils/formatTransfers';
+import { useNftTransfersMe } from '../utils/hooks/useNftTransfersMe';
 import { useTransfersMe } from '../utils/hooks/useTransfersMe';
 import { cacheCurrentPage } from '../utils/last-page-storage';
 
@@ -80,20 +82,57 @@ export const ActivityDetailComponent = ({
 }) => {
   return (
     <IonCard class="activity-card unselectable">
-      <IonCardTitle>
-        <div className="spread">
-          <Header>{t('ContractInteraction')}</Header>
-          <IonButtons slot="end">
-            <IonButton onClick={() => setIsOpen(false)}>
-              <IonIcon
-                class="icon-button-icon icon-dark"
-                slot="icon-only"
-                icon={closeOutline}
-              />
-            </IonButton>
-          </IonButtons>
+      {transfer.nft ? (
+        <div>
+          <div style={{ position: 'absolute', top: 0, right: 0 }}>
+            <IonButtons slot="end">
+              <IonButton onClick={() => setIsOpen(false)}>
+                <IonIcon
+                  class="icon-button-icon icon-dark"
+                  slot="icon-only"
+                  icon={closeOutline}
+                />
+              </IonButton>
+            </IonButtons>
+          </div>
+          <OneNft
+            style={{
+              position: 'relative',
+              margin: '0 auto',
+              boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+              borderRadius: '18px',
+              display: 'block',
+            }}
+            nft={transfer.nft}
+            isNameHidden={true}
+            isAccountNameHidden={false}
+            isBig={true}
+            nftNameStyle={{
+              textAlign: 'center',
+              fontSize: '19px',
+              width: '100%',
+              margin: '10px',
+              color: 'rgb(41, 0, 86)',
+            }}
+          />
+          <Header>{t('TransactionDetails')}</Header>
         </div>
-      </IonCardTitle>
+      ) : (
+        <IonCardTitle>
+          <div className="spread">
+            <Header>{t('ContractInteraction')}</Header>
+            <IonButtons slot="end">
+              <IonButton onClick={() => setIsOpen(false)}>
+                <IonIcon
+                  class="icon-button-icon icon-dark"
+                  slot="icon-only"
+                  icon={closeOutline}
+                />
+              </IonButton>
+            </IonButtons>
+          </div>
+        </IonCardTitle>
+      )}
       <ActivityDetail currentTransfer={transfer} />
     </IonCard>
   );
@@ -110,7 +149,12 @@ export function Activity() {
     startDate: dayjs().subtract(1, 'month').toDate(),
   });
   const { transfers, isLoading } = useTransfersMe(transferParams);
-  const walletFormatTransfers = formatTransfers(transfers);
+  const { transfers: nftTransfers, isLoading: isLoadingNft } =
+    useNftTransfersMe(transferParams);
+  const walletFormatTransfers = formatMergeAndSortNftAndCryptoTransfers(
+    transfers,
+    nftTransfers
+  );
   return (
     <LoggedLayout>
       {isOpen && <IonBackdrop />}
@@ -120,7 +164,7 @@ export function Activity() {
           setIsOpen={setIsOpen}
         />
       )}
-      {!isLoading ? (
+      {!isLoading && !isLoadingNft ? (
         walletFormatTransfers.length ? (
           <Virtuoso
             style={{

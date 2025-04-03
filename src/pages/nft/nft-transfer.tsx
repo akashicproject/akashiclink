@@ -199,7 +199,11 @@ export function NftTransfer() {
           <NftWrapper style={{ top: isMobile ? '-10vh' : '-15vh' }}>
             <IonRow>
               <IonCol class="ion-center">
-                <OneNft nft={currentNft} isNameHidden={true} />
+                <OneNft
+                  nft={currentNft}
+                  isNameHidden={true}
+                  isAccountNameHidden={true}
+                />
               </IonCol>
             </IonRow>
             <IonRow>

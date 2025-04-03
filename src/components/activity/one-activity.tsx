@@ -99,7 +99,40 @@ const Amount = styled.div({
   justifyContent: 'center',
   overflow: 'hidden',
   padding: '4px 12px',
-  width: '86px',
+  width: '104px',
+  height: '40px',
+  fontSize: '10px',
+  fontWeight: 700,
+  color: 'var(--ion-color-primary-10)',
+});
+
+const NftItem = styled.div({
+  boxSizing: 'border-box',
+  border: '1px solid #958E99',
+  borderRadius: '8px',
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  overflow: 'hidden',
+  padding: '4px 12px',
+  width: '56px',
+  height: '40px',
+  fontSize: '10px',
+  fontWeight: 700,
+  color: 'var(--ion-color-primary-10)',
+});
+
+const NftImage = styled.div({
+  boxSizing: 'border-box',
+  border: '1px solid #958E99',
+  borderRadius: '20px',
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  overflow: 'hidden',
+  width: '40px',
   height: '40px',
   fontSize: '10px',
   fontWeight: 700,
@@ -119,6 +152,7 @@ const Icon = styled(IonIcon)({
  * @param showDetail arrow, inviting user to click and see full transfer information
  * @param divider separator after
  */
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export function OneActivity({
   transfer,
   onClick,
@@ -136,6 +170,7 @@ export function OneActivity({
 }) {
   const { t } = useTranslation();
   const isL2 = transfer.layer === TransactionLayer.L2;
+  const isNft = !!transfer?.nft;
   const transferType =
     transfer.transferType === TransactionType.DEPOSIT
       ? t('Deposit')
@@ -158,7 +193,7 @@ export function OneActivity({
    */
   const iconStyle = {
     gap: isL2 ? '0px' : showDetail ? '8px' : '12px',
-    background: isL2 ? '#290056' : '#7444B6',
+    background: isL2 || isNft ? '#290056' : '#7444B6',
   };
 
   return (
@@ -181,18 +216,28 @@ export function OneActivity({
           <Chain style={iconStyle}>
             <IonImg
               alt=""
-              src={isL2 ? L2Icon : transfer.networkIcon}
-              style={{ height: isL2 ? '20px' : '12px' }}
+              src={isL2 || isNft ? L2Icon : transfer.networkIcon}
+              style={{ height: isL2 || isNft ? '20px' : '12px' }}
             />
-            {isL2 ? null : label}
+            {isL2 || isNft ? null : label}
           </Chain>
-          {/* HACK: Reduce currency symbols to a single word to fit small screen */}
-          <Amount>
-            {displayLongCurrencyAmount(
-              limitDecimalPlaces(transfer.amount),
-              transfer.currency.displayName.split('-')[0]
-            )}
-          </Amount>
+
+          {isNft ? (
+            <>
+              <NftItem>NFT</NftItem>
+              <NftImage>
+                <IonImg src={transfer?.nft?.image}></IonImg>
+              </NftImage>
+            </>
+          ) : (
+            <Amount>
+              {/* HACK: Reduce currency symbols to a single word to fit small screen */}
+              {displayLongCurrencyAmount(
+                limitDecimalPlaces(transfer.amount || '0'),
+                transfer?.currency?.displayName?.split('-')[0] || ''
+              )}
+            </Amount>
+          )}
           {showDetail ? <Icon icon={chevronForwardOutline} /> : null}
         </ActivityWrapper>
       </OneTransfer>

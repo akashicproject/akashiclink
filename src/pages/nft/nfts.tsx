@@ -125,7 +125,12 @@ export function Nfts() {
               List: ListContainer,
             }}
             itemContent={(_index, nft) => (
-              <OneNft isBig={false} nft={nft} select={() => selectNft(nft)} />
+              <OneNft
+                isBig={false}
+                nft={nft}
+                isAccountNameHidden={true}
+                select={() => selectNft(nft)}
+              />
             )}
           ></Virtuoso>
         )}

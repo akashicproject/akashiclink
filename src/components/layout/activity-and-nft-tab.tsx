@@ -14,8 +14,9 @@ import { urls } from '../../constants/urls';
 import { ActivityDetailComponent } from '../../pages/activity';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
-import { formatTransfers } from '../../utils/formatTransfers';
+import { formatMergeAndSortNftAndCryptoTransfers } from '../../utils/formatTransfers';
 import { useNftMe } from '../../utils/hooks/useNftMe';
+import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { OneActivity } from '../activity/one-activity';
 import { TabButton } from '../buttons';
@@ -112,7 +113,11 @@ export function ActivityAndNftTab() {
   const [nftTab, setNftTab] = useState(false);
   const { nfts } = useNftMe();
   const { transfers } = useTransfersMe(transferParams);
-  const walletFormatTransfers = formatTransfers(transfers);
+  const { transfers: nftTransfers } = useNftTransfersMe(transferParams);
+  const walletFormatTransfers = formatMergeAndSortNftAndCryptoTransfers(
+    transfers,
+    nftTransfers
+  );
   const selectNft = (nft: INftResponse) => {
     history.push({
       pathname: akashicPayPath(urls.nft),

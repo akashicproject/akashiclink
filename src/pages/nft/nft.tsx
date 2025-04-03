@@ -83,7 +83,7 @@ export function Nft() {
       <NftWrapper style={{ top: isMobile ? '-10vh' : '-15vh' }}>
         <IonRow style={{ width: '215px' }}>
           <IonCol class="ion-center">
-            <OneNft nft={currentNft} isBig={true} />
+            <OneNft nft={currentNft} isBig={true} isAccountNameHidden={true} />
           </IonCol>
         </IonRow>
         <IonRow style={{ width: '215px' }}>

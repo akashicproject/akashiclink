@@ -177,6 +177,7 @@
   "AreYouSureDelete": "您确定要删除账户吗？",
   "FundsLeftNotRecoverable": "删除后，账户中的任何资金都无法恢复！",
   "DoNotClose": "创建时请不要关闭应用程序",
+  "TransactionDetails": "Transaction Details",
   "linkAlias": "连接你的 Akashic 链地址",
   "MakeSureNoBodyIsLooking": "请确保没有人在看",
   "RevealRecoveryPhase": "显示私钥恢复词汇",
