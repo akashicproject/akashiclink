@@ -75,7 +75,7 @@ export function ImportWallet() {
   /**
    * Track state of page
    */
-  const { addLocalAccount, setActiveAccount, addLocalOtk } =
+  const { addLocalAccount, setActiveAccount, addLocalOtkAndCache } =
     useAccountStorage();
 
   const [alert, setAlert] = useState(formAlertResetState);
@@ -158,7 +158,7 @@ export function ImportWallet() {
           username,
         };
         if (otk) {
-          addLocalOtk({ ...otk, identity });
+          addLocalOtkAndCache({ ...otk, identity: identity! }, passPhrase!);
         }
         addLocalAccount(importedAccount);
         setActiveAccount(importedAccount);

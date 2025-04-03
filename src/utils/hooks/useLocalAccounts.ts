@@ -1,12 +1,18 @@
-import type { IKeyExtended } from '@activeledger/sdk-bip39';
+import { SecureStorage } from '@aparajita/capacitor-secure-storage';
 import { L2Regex } from '@helium-pay/backend';
+import crypto from 'crypto';
 import { useContext } from 'react';
+
+const algorithm = 'aes-256-cbc';
+const secretIv = '6RxIESTJ1eJLpjpe';
 
 import {
   ActiveAccountContext,
+  CacheOtkContext,
   LocalAccountContext,
   LocalOtkContext,
 } from '../../components/PreferenceProvider';
+import type { FullOtk } from '../otk-generation';
 
 /**
  * When logging in, a user will select a wallet `identity`
@@ -27,6 +33,7 @@ export const useAccountStorage = () => {
   const { localAccounts, setLocalAccounts } = useContext(LocalAccountContext);
   const { activeAccount, setActiveAccount } = useContext(ActiveAccountContext);
   const { localOtks, setLocalOtks } = useContext(LocalOtkContext);
+  const { setCacheOtk } = useContext(CacheOtkContext);
 
   const addPrefixToAccounts = async () => {
     if (localAccounts.some((acc) => !L2Regex.exec(acc.identity))) {
@@ -63,35 +70,116 @@ export const useAccountStorage = () => {
     await setActiveAccount(null);
   };
 
-  const addLocalOtk = async (otk: IKeyExtended) => {
-    // Skip duplicate accounts
-    for (const { key } of localOtks ?? [])
-      if (key.pub.pkcs8pem === otk.key.pub.pkcs8pem) return;
-
-    await setLocalOtks([...(localOtks ?? []), otk]);
+  const getLocalOtk = async (
+    identity: string,
+    password: string
+  ): Promise<FullOtk | undefined> => {
+    const encryptedOtk = await SecureStorage.getItem(identity);
+    if (encryptedOtk) {
+      const encryptedOtkBuff = Buffer.from(encryptedOtk!, 'base64');
+      const key = genKeyFromPassword(password);
+      const decipher = crypto.createDecipheriv(algorithm, key, secretIv);
+      return JSON.parse(
+        decipher.update(encryptedOtkBuff.toString('utf8'), 'hex', 'utf8') +
+          decipher.final('utf8')
+      );
+    } else {
+      // Legacy
+      // get otk from localstorage if not found in keystore
+      // once get, set to keystore
+      // remove otk from localstorage
+      const otk = localOtks.find((l) => l.identity === activeAccount?.identity);
+      if (otk) {
+        await addLocalOtk(otk, password);
+        await removeLocalOtkFromLocalStorage(otk);
+        return otk;
+      } else {
+        return undefined;
+      }
+    }
   };
 
-  const removeLocalOtk = async (otk: IKeyExtended) => {
+  const getLocalOtkAndCache = async (
+    identity: string,
+    password: string
+  ): Promise<FullOtk | undefined> => {
+    const otk = await getLocalOtk(identity, password);
+    if (otk) {
+      setCacheOtk(otk);
+      return otk;
+    } else {
+      return undefined;
+    }
+  };
+
+  const addLocalOtk = async (otk: FullOtk, password: string) => {
+    const key = genKeyFromPassword(password);
+    const cipher = crypto.createCipheriv(algorithm, key, secretIv);
+    const encryptedOtk = Buffer.from(
+      cipher.update(JSON.stringify(otk), 'utf8', 'hex') + cipher.final('hex')
+    ).toString('base64');
+    await SecureStorage.setItem(otk.identity!, encryptedOtk);
+  };
+
+  const addLocalOtkAndCache = async (otk: FullOtk, password: string) => {
+    await addLocalOtk(otk, password);
+    setCacheOtk(otk);
+  };
+
+  const changeOtkPassword = async (
+    identity: string,
+    oldPassword: string,
+    newPassword: string
+  ) => {
+    const otk = await getLocalOtk(identity, oldPassword);
+    if (otk) {
+      await addLocalOtk(otk, newPassword);
+    }
+  };
+
+  const removeLocalOtk = async (otk: FullOtk) => {
+    await SecureStorage.removeItem(otk.identity!);
+
+    // Legacy
+    // remove otk from localstorage
+    await removeLocalOtkFromLocalStorage(otk);
+
+    setCacheOtk(null);
+  };
+
+  // Legacy
+  // remove otk from localstorage
+  const removeLocalOtkFromLocalStorage = async (otk: FullOtk) => {
     const otksToKeep = localOtks.reduce((p, c) => {
-      if (c.key.pub.pkcs8pem !== otk.key.pub.pkcs8pem) {
+      if (c.identity !== otk.identity) {
         p.push(c);
       }
       return p;
-    }, [] as IKeyExtended[]);
-
+    }, [] as FullOtk[]);
     await setLocalOtks(otksToKeep);
+  };
+
+  // key min length is 32 byte
+  const genKeyFromPassword = (password: string) => {
+    return crypto
+      .createHash('sha256')
+      .update(password)
+      .digest('hex')
+      .substring(0, 32);
   };
 
   return {
     localAccounts,
-    localOtks,
     addLocalAccount,
     removeLocalAccount,
     addPrefixToAccounts,
     activeAccount,
     setActiveAccount,
     clearActiveAccount,
-    addLocalOtk,
+    getLocalOtkAndCache,
+    addLocalOtkAndCache,
     removeLocalOtk,
+    changeOtkPassword,
+    getLocalOtk,
   };
 };

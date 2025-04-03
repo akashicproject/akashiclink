@@ -19,10 +19,6 @@ import {
   formAlertResetState,
 } from '../../components/alert/alert';
 import { PurpleButton, WhiteButton } from '../../components/buttons';
-import {
-  StyledInput,
-  StyledInputErrorPrompt,
-} from '../../components/styled-input';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
@@ -74,26 +70,8 @@ const TextContent = styled.div({
   color: 'var(--ion-color-primary-10)',
 });
 
-const InputPasswordWrapper = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: '0px',
-  width: '270px',
-  gap: '16px',
-});
-
-const InputPasswordText = styled.div({
-  fontStyle: 'normal',
-  fontWeight: 700,
-  fontSize: '14px',
-  lineHeight: '20px',
-  color: 'var(--ion-color-primary-10)',
-});
-
 export function SendConfirm() {
   const { t } = useTranslation();
-  const [password, setPassword] = useState<string>('');
   const [alert, setAlert] = useState(formAlertResetState);
   const [loading, setLoading] = useState(false);
   const history = useHistory<LocationState>();
@@ -102,9 +80,6 @@ export function SendConfirm() {
   /** Scrolling on IOS */
   const { isOpen } = useKeyboardState();
   useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
-
-  const validatePassword = (value: string) =>
-    !!value.match(userConst.passwordRegex);
 
   let totalAmount = Big(0);
 
@@ -121,7 +96,6 @@ export function SendConfirm() {
     : '0';
 
   const goToResult = (signError: string) => {
-    setPassword('');
     history.push({
       pathname: akashicPayPath(urls.sendResult),
       state: {
@@ -139,9 +113,6 @@ export function SendConfirm() {
     if (state?.transaction) {
       try {
         setLoading(true);
-        await OwnersAPI.confirmPassword({
-          password,
-        });
         let response: ITransactionSettledResponse[];
         if (!state?.gasFree) {
           response = await OwnersAPI.sendL1Transaction(state?.transaction);
@@ -245,25 +216,6 @@ export function SendConfirm() {
           </ContentWrapper>
         </IonCol>
       </IonRow>
-      <IonRow>
-        <IonCol class="ion-center">
-          <InputPasswordWrapper>
-            <InputPasswordText>{t('PleaseConfirm')}</InputPasswordText>
-            <StyledInput
-              style={{ width: '270px' }}
-              placeholder={t('PleaseEnterYourPassword') as string}
-              type={'password'}
-              onIonInput={({ target: { value } }) =>
-                setPassword(value as string)
-              }
-              validate={validatePassword}
-              errorPrompt={StyledInputErrorPrompt.Password}
-              submitOnEnter={signTransaction}
-              value={password}
-            ></StyledInput>
-          </InputPasswordWrapper>
-        </IonCol>
-      </IonRow>
       <IonRow
         class="ion-justify-content-between"
         style={{
@@ -292,7 +244,6 @@ export function SendConfirm() {
           <WhiteButton
             onClick={() => {
               history.push(akashicPayPath(urls.loggedFunction));
-              setPassword('');
             }}
           >
             {t('GoBack')}

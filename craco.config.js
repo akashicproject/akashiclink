@@ -38,6 +38,14 @@ module.exports = {
         }),
       ]);
 
+      // resolve issue which import module outside of /src
+      // https://github.com/dilanx/craco/issues/345
+      const scopePluginIndex = webpackConfig.resolve.plugins.findIndex(
+        ({ constructor }) =>
+          constructor && constructor.name === 'ModuleScopePlugin'
+      );
+      webpackConfig.resolve.plugins.splice(scopePluginIndex, 1);
+
       return {
         ...webpackConfigExtender.run(webpackConfig, __dirname),
         ...(process.env.REACT_APP_OPTIMISE === 'false'

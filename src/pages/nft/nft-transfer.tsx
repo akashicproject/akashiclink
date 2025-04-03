@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { debounce } from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -23,6 +23,7 @@ import {
 import { PurpleButton, WhiteButton } from '../../components/buttons';
 import { NftLayout } from '../../components/layout/nft-layout';
 import { OneNft } from '../../components/nft/one-nft';
+import { CacheOtkContext } from '../../components/PreferenceProvider';
 import {
   StyledInput,
   StyledInputErrorPrompt,
@@ -32,9 +33,10 @@ import { urls } from '../../constants/urls';
 import type { LocationState } from '../../history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { OwnersAPI } from '../../utils/api';
+import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
-import { useOwner } from '../../utils/hooks/useOwner';
 import { displayLongText } from '../../utils/long-text';
+import { Nitr0genApi } from '../../utils/nitrogen-api';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { NoNtfText, NoNtfWrapper } from './nfts';
 
@@ -93,7 +95,6 @@ export function NftTransfer() {
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
   const { nfts, isLoading, mutate } = useNftMe();
-  const { owner } = useOwner();
   const history = useHistory<LocationState>();
   const state = history.location.state?.nft;
   const currentNft = nfts.find((nft) => nft.name === state?.nftName)!;
@@ -103,10 +104,11 @@ export function NftTransfer() {
   const [searchedResultType, setSearchedResultType] = useState(
     SearchResult.NoResult
   );
+  const { activeAccount } = useAccountStorage();
 
   const [alert, setAlert] = useState(formAlertResetState);
   const [loading, setLoading] = useState(false);
-  // const { localOtks, activeAccount } = useAccountStorage(); // enable it when we switch to V1 apis
+  const { cacheOtk } = useContext(CacheOtkContext);
 
   // input username to address
   // TODO: we need to add more check constraint in the future, like l2 address start with "AS"
@@ -142,25 +144,21 @@ export function NftTransfer() {
     };
     setLoading(true);
     try {
-      const response = await OwnersAPI.nftTransfer(payload);
+      const verifiedNft = await OwnersAPI.verifyNftTransaction(payload);
+      const signedTx = await Nitr0genApi.transferNft(
+        verifiedNft,
+        toAddress,
+        cacheOtk!
+      );
 
-      // enable it when we switch to V1 apis
-      // const verifiedNft = await OwnersAPI.verifyNftTransaction(payload);
-      // const signedTx = await Nitr0genApi.transferNft(
-      //   verifiedNft,
-      //   toAddress,
-      //   localOtks,
-      //   activeAccount!
-      // );
-
-      // const response = await OwnersAPI.nftTransferUsingClientSideOtk({
-      //   signedTx,
-      //   nftName: currentNft.name,
-      //   toL2Address: toAddress,
-      // });
+      const response = await OwnersAPI.nftTransferUsingClientSideOtk({
+        signedTx,
+        nftName: currentNft.name,
+        toL2Address: toAddress,
+      });
 
       const result = {
-        sender: owner.ownerIdentity,
+        sender: activeAccount?.identity,
         receiver: toAddress,
         nftName: response.nftName,
         acnsAlias: response.acnsAlias,

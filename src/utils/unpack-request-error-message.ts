@@ -16,9 +16,11 @@ import axios from 'axios';
 export const unpackRequestErrorMessage = (error: unknown) => {
   const errorMsg = axios.isAxiosError(error)
     ? error?.response?.data?.message
+    : error instanceof Error
+    ? error.message
     : '';
 
-  switch (errorMsg) {
+  switch (true) {
     // TODO: the 3 errors below are most likely handled server-side - check and remove
     case errorMsg.includes('Stream(s) not found'):
       return keyError.invalidL2Address;
@@ -26,41 +28,43 @@ export const unpackRequestErrorMessage = (error: unknown) => {
       return keyError.savingsExceeded;
     case errorMsg.includes('Input Stream'):
       return otherError.providerError;
-    case userError.userNotFoundError:
+    case errorMsg.includes('unable to decrypt data'):
+      return userError.invalidPassErrorMsg;
+    case errorMsg === userError.userNotFoundError:
       return 'UserDoesNotExist';
-    case userError.activationCodeInvalid:
+    case errorMsg === userError.activationCodeInvalid:
       return 'ActivationCodeInvalid';
-    case authError.otkNotFoundError:
+    case errorMsg === authError.otkNotFoundError:
       return 'OTKNotFound';
-    case keyError.unownedKey:
+    case errorMsg === keyError.unownedKey:
       return 'UnownedKey';
-    case otherError.providerError:
+    case errorMsg === otherError.providerError:
       return 'ProviderError';
-    case keyError.noTransaction:
+    case errorMsg === keyError.noTransaction:
       return 'NoTransaction';
-    case otherError.unsupportedCoinError:
+    case errorMsg === otherError.unsupportedCoinError:
       return 'UnsupportedCoinError';
-    case otherError.transactionTooSmallError:
+    case errorMsg === otherError.transactionTooSmallError:
       return 'TransactionTooSmall';
-    case otherError.validationError:
+    case errorMsg === otherError.validationError:
       return 'ValidationError';
-    case userError.invalidApiPassOrPassword:
+    case errorMsg === userError.invalidApiPassOrPassword:
       return 'InvalidApiPassOrPassword';
-    case userError.invalidUserErrorMsg:
+    case errorMsg === userError.invalidUserErrorMsg:
       return 'InvalidUserOrPass';
-    case userError.invalidPassErrorMsg:
+    case errorMsg === userError.invalidPassErrorMsg:
       return 'InvalidPassword';
-    case authError.newPassIsSameAsOldError:
+    case errorMsg === authError.newPassIsSameAsOldError:
       return 'NewPassSameAsOld';
-    case keyError.savingsExceeded:
+    case errorMsg === keyError.savingsExceeded:
       return 'SavingsExceeded';
-    case keyError.tokenNotFound:
+    case errorMsg === keyError.tokenNotFound:
       return 'TokenNotFound';
-    case keyError.walletIsBusy:
+    case errorMsg === keyError.walletIsBusy:
       return 'WalletIsBusy';
-    case keyError.transactionTimedOut:
+    case errorMsg === keyError.transactionTimedOut:
       return 'TransactionTimeOut';
-    case otherError.signingError:
+    case errorMsg === otherError.signingError:
       return 'ProviderError';
     default:
       return 'GenericFailureMsg';

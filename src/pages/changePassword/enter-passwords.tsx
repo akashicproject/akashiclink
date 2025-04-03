@@ -1,5 +1,4 @@
-import { ActivationRequestType, userConst } from '@helium-pay/backend';
-import type { Language } from '@helium-pay/common-i18n';
+import { userConst } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -21,7 +20,7 @@ import {
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { OwnersAPI } from '../../utils/api';
-import { useOwner } from '../../utils/hooks/useOwner';
+import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import {
   cacheCurrentPage,
   ResetPageButton,
@@ -29,9 +28,9 @@ import {
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 
 export function ChangePassword() {
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
   const history = useHistory();
-  const { owner } = useOwner();
+  const { activeAccount } = useAccountStorage();
 
   const [oldPassword, setOldPassword] = useState<string>();
   const [newPassword, setNewPassword] = useState<string>();
@@ -41,51 +40,27 @@ export function ChangePassword() {
   const validateConfirmPassword = (value: string) => newPassword === value;
 
   const [alertRequest, setAlertRequest] = useState(formAlertResetState);
+  const { changeOtkPassword } = useAccountStorage();
 
   useEffect(() => {
     cacheCurrentPage(urls.changePassword);
   }, []);
-
-  /**
-   * Countdown showing validity of activation code
-   */
-  const [timerReset, setTimerReset] = useState(0);
   /**
      * Activation request is sent -> email with activation code is sent to user
   
      */
   async function requestImportAccount() {
-    try {
-      if (newPassword && oldPassword) {
-        const { email } = await OwnersAPI.requestActivationCode({
-          activationType: ActivationRequestType.PasswordChange,
-          payload: { email: owner.email },
-          lang: i18n.language as Language,
-        });
-        if (!email) {
-          setAlertRequest(errorAlertShell(t('UserDoesNotExist')));
-          return;
-        }
-        setTimerReset(timerReset + 1);
-        setNewPassword('');
-        setOldPassword('');
-        setConfirmPassword('');
-        history.push({
-          pathname: akashicPayPath(urls.changePassword2FA),
-          state: {
-            changePassTwoFa: {
-              oldPassword,
-              newPassword,
-              confirmPassword,
-              email,
-            },
-          },
-        });
+    if (newPassword && oldPassword) {
+      try {
+        await changeOtkPassword(
+          activeAccount!.identity!,
+          oldPassword,
+          newPassword
+        );
+        history.push(akashicPayPath(urls.changePasswordConfirm));
+      } catch (error) {
+        setAlertRequest(errorAlertShell(t(unpackRequestErrorMessage(error))));
       }
-    } catch (e) {
-      let message = t('GenericFailureMsg');
-      if (axios.isAxiosError(e)) message = e.response?.data?.message || message;
-      setAlertRequest(errorAlertShell(message));
     }
   }
 

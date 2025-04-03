@@ -208,12 +208,6 @@ export function SettingsPopover() {
                 displayText={t('ChangePassword')}
                 routerLink={akashicPayPath(urls.changePassword)}
               />
-              {/**
-               * <SettingsItem
-               * displayText="Recovery"
-               * routerLink={akashicPayPath(urls.recover)}
-               * />
-               */}
             </SettingsList>
           </SettingSubmenu>
 

@@ -80,7 +80,7 @@ export function CreateWallet() {
   };
   const [alertRequest, setAlertRequest] = useState(formAlertResetState);
   const [alertActivate, setAlertActivate] = useState(emailSentAlert);
-  const { addLocalAccount, setActiveAccount, addLocalOtk } =
+  const { addLocalAccount, setActiveAccount, addLocalOtkAndCache } =
     useAccountStorage();
 
   /**
@@ -230,7 +230,10 @@ export function CreateWallet() {
             createAccountResponse.identity || createAccountResponse.username,
           username: createAccountResponse.username,
         };
-        addLocalOtk({ ...otk, identity: createAccountResponse.identity });
+        addLocalOtkAndCache(
+          { ...otk, identity: createAccountResponse.identity! },
+          password
+        );
         addLocalAccount(newAccount);
         setAlertRequest(formAlertResetState);
         setAlertActivate(formAlertResetState);

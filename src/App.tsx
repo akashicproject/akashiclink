@@ -21,10 +21,15 @@ import { datadogRum } from '@datadog/browser-rum';
 import { IonAlert, IonApp, setupIonicReact } from '@ionic/react';
 import { IonReactMemoryRouter } from '@ionic/react-router';
 import { compareVersions } from 'compare-versions';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useIdleTimer } from 'react-idle-timer';
 
-import { PreferenceProvider } from './components/PreferenceProvider';
+import { useLogout } from './components/logout';
+import {
+  CacheOtkContext,
+  PreferenceProvider,
+} from './components/PreferenceProvider';
 import { history } from './history';
 import { NavigationTree } from './routing/navigation-tree';
 import { useConfig } from './utils/hooks/useConfig';
@@ -38,6 +43,8 @@ export default function App() {
   const { config } = useConfig();
   const [skipVersion, setSkipVersion] = useLocalStorage('skipVersion', '0.0.0');
   const [updateType, setUpdateType] = useState<'soft' | 'hard' | null>(null);
+  const logout = useLogout();
+  const { setCacheOtk } = useContext(CacheOtkContext);
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
   useEffect(() => {
@@ -67,6 +74,17 @@ export default function App() {
       xhr.send(null);
     }
   }, [config, skipVersion]);
+
+  useIdleTimer({
+    onIdle: () => {
+      logout().then(() => location.reload());
+      setCacheOtk(null);
+    },
+    // TODO
+    // Move this to preference and store in local storage
+    timeout: 10 * 60 * 1000,
+    throttle: 500,
+  });
 
   return (
     <IonApp>

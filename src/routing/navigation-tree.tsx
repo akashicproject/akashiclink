@@ -5,7 +5,6 @@ import { urls } from '../constants/urls';
 import { Activity } from '../pages/activity';
 import { AkashicPayMain } from '../pages/akashic-main';
 import { ChangePasswordConfirm } from '../pages/changePassword/confirm';
-import { ChangePasswordTwoFa } from '../pages/changePassword/email-2fa';
 import { ChangePassword } from '../pages/changePassword/enter-passwords';
 import { CreateWalletPassword } from '../pages/createWallet/create-password';
 import { CreateWallet } from '../pages/createWallet/create-wallet';
@@ -25,12 +24,8 @@ import { Nft } from '../pages/nft/nft';
 import { NftTransfer } from '../pages/nft/nft-transfer';
 import { NftTransferResult } from '../pages/nft/nft-transfer-result';
 import { Nfts } from '../pages/nft/nfts';
-import { Recover } from '../pages/recover';
 import { RecoverCode } from '../pages/recover-code';
 import { ChangePasswordAfterImport } from '../pages/Recovery/change-password-after-import';
-import { Recovery } from '../pages/Recovery/recovery';
-import { ResetPassword } from '../pages/Recovery/reset-password';
-import { Verification } from '../pages/Recovery/verification';
 import { SendConfirm } from '../pages/send/send-confirm';
 import { SendResult } from '../pages/send/send-result';
 import { SendTo } from '../pages/send/send-to';
@@ -53,9 +48,6 @@ export function NavigationTree() {
       {AkashicTab.registerPage(AkashicPayMain, urls.akashicPay)}
       {AkashicTab.registerPage(CreateWallet, urls.createWalletUrl)}
       {AkashicTab.registerPage(ManageAccounts, urls.manageAccounts)}
-      {AkashicTab.registerPage(Recovery, urls.recoveryUrl)}
-      {AkashicTab.registerPage(ResetPassword, urls.resetPassword)}
-      {AkashicTab.registerPage(Verification, urls.verification)}
       {AkashicTab.registerPage(ImportWallet, urls.importAccountUrl)}
       {AkashicTab.registerPage(Dashboard, urls.loggedFunction)}
       {AkashicTab.registerPage(LoggedCreate, urls.loggedCreate)}
@@ -68,7 +60,6 @@ export function NavigationTree() {
       {AkashicTab.registerPage(NftTransfer, urls.nftTransfer)}
       {AkashicTab.registerPage(NftTransferResult, urls.nftTransferResult)}
       {AkashicTab.registerPage(Activity, urls.activity)}
-      {AkashicTab.registerPage(Recover, urls.recover)}
       {AkashicTab.registerPage(Settings, urls.settings)}
       {AkashicTab.registerPage(RecoverCode, urls.recoverCode)}
       {AkashicTab.registerPage(SettingsBackup, urls.settingsBackup)}
@@ -76,7 +67,6 @@ export function NavigationTree() {
       {AkashicTab.registerPage(SettingsNaming, urls.settingsNaming)}
       {AkashicTab.registerPage(SettingsVersion, urls.settingsVersion)}
       {AkashicTab.registerPage(ChangePassword, urls.changePassword)}
-      {AkashicTab.registerPage(ChangePasswordTwoFa, urls.changePassword2FA)}
       {AkashicTab.registerPage(
         ChangePasswordConfirm,
         urls.changePasswordConfirm

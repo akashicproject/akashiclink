@@ -30,7 +30,7 @@ import { signImportAuth } from '../../utils/otk-generation';
  * - Upload button triggering login request and redirect is successfull
  */
 export function LoginForm() {
-  const {localOtks} = useAccountStorage();
+  const {getLocalOtkAndCache} = useAccountStorage();
   const history = useHistory();
   const { t } = useTranslation();
   const [alert, setAlert] = useState(formAlertResetState);
@@ -86,7 +86,7 @@ export function LoginForm() {
       setIsLoading(true);
       // await delay(5000);
       if (selectedAccount && password) {
-        const localSelectedOtk = localOtks.find(otk=>otk.identity === selectedAccount.identity);
+        const localSelectedOtk = await getLocalOtkAndCache(selectedAccount.identity, password);
         if(localSelectedOtk){
           await OwnersAPI.loginV1({
             identity: localSelectedOtk.identity!,

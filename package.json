@@ -39,6 +39,7 @@
   "dependencies": {
     "@activeledger/activecrypto": "^2.12.3",
     "@activeledger/sdk-bip39": "1.0.3",
+    "@aparajita/capacitor-secure-storage": "5.0.0",
     "@capacitor/android": "^5.0.0",
     "@capacitor/app": "^5.0.0",
     "@capacitor/browser": "5.1.0",
@@ -71,6 +72,7 @@
     "qrcode.react": "3.1.0",
     "react-countdown-circle-timer": "3.2.1",
     "react-i18next": "12.2.2",
+    "react-idle-timer": "5.7.2",
     "react-lottie": "1.2.3",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",

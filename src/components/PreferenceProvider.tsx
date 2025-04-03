@@ -1,6 +1,5 @@
-import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import type { Dispatch, ReactNode } from 'react';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 import type { IWalletCurrency } from '../constants/currencies';
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../constants/currencies';
@@ -8,6 +7,7 @@ import type { ThemeType } from '../theme/const';
 import { themeType } from '../theme/const';
 import type { LocalAccount } from '../utils/hooks/useLocalAccounts';
 import { useLocalStorage } from '../utils/hooks/useLocalStorage';
+import type { FullOtk } from '../utils/otk-generation';
 
 /**
  * Contexts that are passed down to all children components to avoid props drilling.
@@ -51,8 +51,8 @@ export const LocalAccountContext = createContext<{
 });
 
 export const LocalOtkContext = createContext<{
-  localOtks: IKeyExtended[];
-  setLocalOtks: Dispatch<IKeyExtended[]>;
+  localOtks: FullOtk[];
+  setLocalOtks: Dispatch<FullOtk[]>;
 }>({
   localOtks: [],
   setLocalOtks: () => {
@@ -67,6 +67,16 @@ export const ActiveAccountContext = createContext<{
   activeAccount: null,
   setActiveAccount: () => {
     console.warn('setActiveAccount not ready');
+  },
+});
+
+export const CacheOtkContext = createContext<{
+  cacheOtk: FullOtk | null;
+  setCacheOtk: Dispatch<FullOtk | null>;
+}>({
+  cacheOtk: null,
+  setCacheOtk: () => {
+    console.warn('setCacheOtks not ready');
   },
 });
 
@@ -86,10 +96,12 @@ export const PreferenceProvider = ({ children }: { children: ReactNode }) => {
     []
   );
 
-  const [localOtks, setLocalOtks] = useLocalStorage<IKeyExtended[]>('otks', []);
+  const [localOtks, setLocalOtks] = useLocalStorage<FullOtk[]>('otks', []);
 
   const [activeAccount, setActiveAccount] =
     useLocalStorage<LocalAccount | null>('session-account', null);
+
+  const [cacheOtk, setCacheOtk] = useState<FullOtk | null>(null);
 
   return (
     <ThemeContext.Provider
@@ -101,28 +113,35 @@ export const PreferenceProvider = ({ children }: { children: ReactNode }) => {
           setLocalAccounts,
         }}
       >
-        <LocalOtkContext.Provider
+        <CacheOtkContext.Provider
           value={{
-            localOtks,
-            setLocalOtks,
+            cacheOtk,
+            setCacheOtk,
           }}
         >
-          <ActiveAccountContext.Provider
+          <LocalOtkContext.Provider
             value={{
-              activeAccount,
-              setActiveAccount,
+              localOtks,
+              setLocalOtks,
             }}
           >
-            <CurrencyContext.Provider
+            <ActiveAccountContext.Provider
               value={{
-                focusCurrency: focusCurrency,
-                setFocusCurrency: setFocusCurrency,
+                activeAccount,
+                setActiveAccount,
               }}
             >
-              {children}
-            </CurrencyContext.Provider>
-          </ActiveAccountContext.Provider>
-        </LocalOtkContext.Provider>
+              <CurrencyContext.Provider
+                value={{
+                  focusCurrency: focusCurrency,
+                  setFocusCurrency: setFocusCurrency,
+                }}
+              >
+                {children}
+              </CurrencyContext.Provider>
+            </ActiveAccountContext.Provider>
+          </LocalOtkContext.Provider>
+        </CacheOtkContext.Provider>
       </LocalAccountContext.Provider>
     </ThemeContext.Provider>
   );

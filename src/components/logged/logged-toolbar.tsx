@@ -1,5 +1,4 @@
 import { IonCol, IonGrid, IonIcon, IonRow, isPlatform } from '@ionic/react';
-import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSWRConfig } from 'swr';
 
@@ -11,9 +10,6 @@ import { SquareWhiteButton } from '../buttons';
 import { useLogout } from '../logout';
 import { useTheme } from '../PreferenceProvider';
 import { SettingsPopover } from '../settings/settings-popover';
-
-// In seconds
-const TIMEOUT = 5 * 60;
 
 export function LoggedToolbar({
   backButtonUrl = urls.loggedFunction,
@@ -31,36 +27,6 @@ export function LoggedToolbar({
   const [storedTheme] = useTheme();
 
   const { setActiveAccount } = useAccountStorage();
-
-  /** Track inactivity - user logged out if no movement has occured for 5 minutes */
-  useEffect(() => {
-    let inactivityTimer: ReturnType<typeof setTimeout>;
-
-    // Function to reset the inactivity timer
-    const resetInactivityTimer = () => {
-      clearTimeout(inactivityTimer);
-      inactivityTimer = setTimeout(
-        () => logout().then(() => isPlatform('mobile') && location.reload()),
-        TIMEOUT * 1000
-      );
-    };
-
-    // Add event listeners when component mounts
-    window.addEventListener('mousemove', resetInactivityTimer);
-    window.addEventListener('keydown', resetInactivityTimer);
-    window.addEventListener('click', resetInactivityTimer);
-
-    // Start the inactivity timer when the component mounts
-    resetInactivityTimer();
-
-    // Remove event listeners and clear the timer when the component unmounts
-    return () => {
-      window.removeEventListener('mousemove', resetInactivityTimer);
-      window.removeEventListener('keydown', resetInactivityTimer);
-      window.removeEventListener('click', resetInactivityTimer);
-      clearTimeout(inactivityTimer);
-    };
-  }, []);
 
   return (
     <IonGrid

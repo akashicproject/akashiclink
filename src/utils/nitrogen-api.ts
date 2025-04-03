@@ -1,7 +1,5 @@
 import type { IBaseTransaction } from '@activeledger/sdk';
 import { TransactionHandler } from '@activeledger/sdk';
-import type { IKey } from '@activeledger/sdk/lib/interfaces';
-import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import type {
   ITransactionVerifyResponse,
   IVerifyNftResponse,
@@ -9,6 +7,7 @@ import type {
 
 import { convertToFromDecimals } from './currency';
 import type { LocalAccount } from './hooks/useLocalAccounts';
+import type { FullOtk } from './otk-generation';
 
 enum Nitr0gen {
   Namespace = 'notabox.keys',
@@ -18,24 +17,6 @@ enum Nitr0gen {
   CryptoTransfer = 'a48df2fd31400a9b69d9b8bdb699618faed2999ca08c559695a4b74597d3e895@2.0.2',
 }
 
-const MINTER_OTK: IKey = {
-  key: {
-    pub: {
-      pkcs8pem:
-        '-----BEGIN PUBLIC KEY-----\nMFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAENPxgRnXy5/cx/x2ZXMhXhRhlBLkhqoCV\nr4scYTCjzJDbmJYZt0hzRZw99tYAD2i7hco9cG+TKKh8CManJcvgKA==\n-----END PUBLIC KEY-----',
-      hash: 'd37fd3c06da3d2293b9102d0ab7d7b646770491fe40be53b0589071885135d75',
-    },
-    prv: {
-      pkcs8pem:
-        '-----BEGIN EC PRIVATE KEY-----\nMC4CAQEEIPpLySbN4hwlNfxsVV2wKYE56Kq+bc/n82+C5CKU0LNBoAcGBSuBBAAK\n-----END EC PRIVATE KEY-----',
-      hash: '096e56037cd94695daf23763992bf78efc25a5f01a018c57d359d5802768eb82',
-    },
-  },
-  name: 'otk',
-  type: 'secp256k1',
-};
-const MINTEE_IDENTITY =
-  'AS4c64c3c7b696aa275d0d2226538f22d5fdbe51ed31ec3b6e9910659cfa867348';
 const nitr0genNativeCoin = '#native';
 const AP_FEE_IDENTITY =
   'be45ec32caf53998e4d8d51feca112c82d334007d2b8ea70e62798af82b5a1d2';
@@ -46,21 +27,10 @@ export const Nitr0genApi = {
   transferNft: async (
     verifiedNft: IVerifyNftResponse,
     newOwnerIdentity: string,
-    localOtks: IKeyExtended[],
-    activeAccount: LocalAccount
+    otk: FullOtk
   ): Promise<string> => {
-    let signerOtk: IKey;
-    if (verifiedNft.nftOwnerIdentity === MINTEE_IDENTITY) {
-      signerOtk = MINTER_OTK;
-    } else {
-      const otk = localOtks?.find(
-        (l) => l.identity === activeAccount?.identity
-      );
-      if (!otk) throw Error(`Unable to find otk`);
-
-      const { phrase: _, ...object } = otk;
-      signerOtk = object;
-    }
+    const { phrase: _, ...object } = otk;
+    const signerOtk: FullOtk = object;
     signerOtk.identity = verifiedNft.nftOwnerIdentity;
     // Build Transaction
     const txBody: IBaseTransaction = {
@@ -88,7 +58,7 @@ export const Nitr0genApi = {
   },
 
   acnsRecord: async (
-    otk: IKey,
+    otk: FullOtk,
     acnsStreamId: string,
     recordType: string,
     recordKey: string,
@@ -119,14 +89,14 @@ export const Nitr0genApi = {
 
   L2Transaction: async (
     details: ITransactionVerifyResponse,
-    localOtks: IKeyExtended[],
+    localOtks: FullOtk[],
     activeAccount: LocalAccount
   ): Promise<string> => {
     const { amount, coinSymbol, tokenSymbol, internalFee } = details;
     const otk = localOtks?.find((l) => l.identity === activeAccount?.identity);
     if (!otk) throw Error(`Unable to find otk`);
     const { phrase: _, ...object } = otk;
-    const signerOtk: IKey = object;
+    const signerOtk: FullOtk = object;
 
     // Convert fees and turn into one
     const internalDepositFee = BigInt(
