@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import fetcher from '../ownerFetcher';
 
 export const useConfig = () => {
-  const { data, ...response } = useSWR<IConfigResponse, Error>(
+  const { data, isLoading } = useSWR<IConfigResponse, Error>(
     `/config`,
     fetcher
   );
@@ -32,6 +32,6 @@ export const useConfig = () => {
           awUrl: data.awUrlExtension,
           highlights: data.highlights?.extension,
         },
-    ...response,
+    isLoading,
   };
 };
