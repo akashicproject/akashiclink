@@ -21,6 +21,7 @@ import { View } from '../import-wallet';
 const StyledSpan = styled.span({
   fontSize: '12px',
   textAlign: 'center',
+  color: 'var(--ion-color-primary-10)',
 });
 type DivProps = { color: string };
 const StyledDiv = styled.div<DivProps>`

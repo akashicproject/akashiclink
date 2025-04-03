@@ -42,6 +42,7 @@ export function AkashicPayMain() {
     fontSize: '12px',
     fontWeight: '700',
     fontFamily: 'Nunito Sans',
+    color: 'var(--ion-color-primary-10)',
   });
   useEffect(() => {
     const loadPage = async () => {
