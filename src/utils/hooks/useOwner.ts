@@ -5,8 +5,10 @@ import fetcher from '../ownerFetcher';
 
 export const useOwner = () => {
   const { data, error, mutate } = useSWR(`/owner/me`, fetcher, {
-    shouldRetryOnError: false,
     revalidateOnFocus: false,
+    shouldRetryOnError: true,
+    errorRetryCount: 1,
+    errorRetryInterval: 1000,
   });
 
   const owner = (data || {}) as IOwnerInfoResponse;
