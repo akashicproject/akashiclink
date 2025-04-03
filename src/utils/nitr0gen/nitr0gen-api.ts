@@ -28,16 +28,13 @@ import type {
 } from './nitr0gen.interface';
 import {
   BadGatewayException,
+  chooseBestNodes,
   ForbiddenException,
   getRetryDelayInMS,
   NotFoundException,
+  PortType,
 } from './nitr0gen.utils';
 import { TronHelper } from './tron.service';
-
-const nitr0Config = {
-  generalPort: 5260,
-  nftPort: 8080,
-};
 
 // Used to index nitr0gen responses when getting info for native coin
 export const nitr0genNativeCoin = '#native';
@@ -140,12 +137,12 @@ export class Nitr0genApi {
     };
   }
 
-  protected createNitr0genUrl(port: 'general' | 'nft', path?: string): string {
+  protected async createNitr0genUrl(
+    port: PortType,
+    path?: string
+  ): Promise<string> {
     // TODO: Replace with user-stored selected node
-    let NITR0_URL =
-      'http://52.76.214.214' +
-      ':' +
-      (port === 'general' ? nitr0Config.generalPort : nitr0Config.nftPort);
+    let NITR0_URL = await chooseBestNodes(port);
 
     if (path) {
       NITR0_URL += `/${path}`;
@@ -162,11 +159,11 @@ export class Nitr0genApi {
   private async send<T>(
     tx?: object,
     path?: string,
-    port: 'general' | 'nft' = 'general',
+    port: PortType = PortType.CHAIN,
     method: 'get' | 'post' = 'post',
     timeout = 5000
   ): Promise<T> {
-    const NITR0_URL = this.createNitr0genUrl(port, path);
+    const NITR0_URL = await this.createNitr0genUrl(port, path);
 
     try {
       const requestFunction = method === 'post' ? axios.post : axios.get;
@@ -194,7 +191,7 @@ export class Nitr0genApi {
   public async post<T>(
     tx: object,
     path?: string,
-    port: 'general' | 'nft' = 'general'
+    port: PortType = PortType.CHAIN
   ): Promise<T> {
     return await this.send(tx, path, port);
   }
@@ -202,10 +199,11 @@ export class Nitr0genApi {
   /**
    * Helper method to get from Nitr0gen Gateway
    * @param timeout time in milliseconds
+   * @param port port type
    */
   public async get<T>(
     path: string,
-    port: 'general' | 'nft' = 'general',
+    port: PortType = PortType.CHAIN,
     timeout = 5000
   ): Promise<T> {
     return await this.send(undefined, path, port, 'get', timeout);
