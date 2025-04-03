@@ -204,7 +204,12 @@ export function SendConfirm(props: Props) {
       </IonRow>
       <IonRow
         class="ion-justify-content-between"
-        style={{ marginTop: '24px', padding: '0px 50px' }}
+        style={{
+          marginTop: '24px',
+          marginRight: '100px',
+          marginLeft: '100px',
+          padding: '0px 50px',
+        }}
       >
         <IonCol>
           <PurpleButton expand="block" onClick={signTransaction}>

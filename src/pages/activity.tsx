@@ -86,7 +86,9 @@ export function Activity() {
 
   return (
     <LoggedLayout>
-      <IonRow style={{ marginTop: '20px' }}>
+      <IonRow
+        style={{ marginTop: '20px', marginRight: '150px', marginLeft: '150px' }}
+      >
         <IonCol>
           <WhiteButton
             expand="block"
