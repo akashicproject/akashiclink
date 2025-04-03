@@ -99,7 +99,9 @@ export function BaseDetails({
             {t('txHash')} ({currentTransfer.coinSymbol})
           </Header>
           <TextContent style={{ display: 'flex', alignItems: 'center' }}>
-            {displayLongText(currentTransfer.txHash)}
+            <Link href={currentTransfer.txHashUrl}>
+              {displayLongText(currentTransfer.txHash)}
+            </Link>
             <IonButton
               style={{ height: 'auto', width: '19px' }}
               className="copy-button"
@@ -132,12 +134,16 @@ export function BaseDetails({
         </Header>
         <TextContent
           style={{
-            color: currentTransfer.txHash ? '#B0A9B3' : '',
             display: 'flex',
             alignItems: 'center',
           }}
         >
-          {displayLongText(currentTransfer.l2TxnHash)}
+          <Link
+            href={currentTransfer.l2TxnHashUrl}
+            style={{ color: currentTransfer.txHash ? '#B0A9B3' : '' }}
+          >
+            {displayLongText(currentTransfer.l2TxnHash)}
+          </Link>
           <IonButton
             style={{ height: '22px', width: '19px' }}
             className="copy-button"
@@ -179,7 +185,12 @@ export function BaseDetails({
           </DetailColumn>
           <DetailColumn>
             <TextContent>
-              <Link href={currentTransfer.internalSenderUrl}>
+              <Link
+                href={
+                  currentTransfer.internalSenderUrl ??
+                  currentTransfer.senderAddressUrl
+                }
+              >
                 {displayLongText(currentTransfer.fromAddress)}
               </Link>
             </TextContent>
@@ -188,7 +199,12 @@ export function BaseDetails({
               icon={arrowForwardCircleOutline}
             />
             <TextContent>
-              <Link href={currentTransfer.internalRecipientUrl}>
+              <Link
+                href={
+                  currentTransfer.internalRecipientUrl ??
+                  currentTransfer.recipientAddressUrl
+                }
+              >
                 {displayLongText(currentTransfer.toAddress)}
               </Link>
             </TextContent>
