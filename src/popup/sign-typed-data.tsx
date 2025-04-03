@@ -29,6 +29,7 @@ import {
 import { useGenerateSecondaryOtk } from '../utils/hooks/useGenerateSecondaryOtk';
 import { useSignAuthorizeActionMessage } from '../utils/hooks/useSignAuthorizeActionMessage';
 import { useVerifyTxnAndSign } from '../utils/hooks/useVerifyTxnAndSign';
+import type { ITransactionFailureResponse } from '../utils/nitr0gen/nitr0gen.interface';
 import { useWeb3Wallet } from '../utils/web3wallet';
 
 export function SignTypedData() {
@@ -87,6 +88,10 @@ export function SignTypedData() {
   );
 
   const onSessionRequestExpire = useCallback(async () => {
+    responseToSite({
+      method: ETH_METHOD.SIGN_TYPED_DATA,
+      error: EXTENSION_ERROR.REQUEST_EXPIRED,
+    });
     await closePopup();
   }, []);
 
@@ -146,7 +151,7 @@ export function SignTypedData() {
                 });
 
           if (!response.isSuccess) {
-            throw new Error(response.reason);
+            throw new Error((response as ITransactionFailureResponse).reason);
           }
 
           signedMsg = `0x${response.txHash}`;
