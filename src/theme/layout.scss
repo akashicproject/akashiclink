@@ -87,14 +87,38 @@ ion-footer > * {
 }
 
 /*  margin & padding */
-.ion-margin-top-lg {
-  margin-top: 24px;
+.ion-margin-0 {
+  margin: 0;
 }
 
 .ion-margin-top-xl {
   margin-top: 32px;
 }
 
-.ion-margin-0 {
-  margin: 0;
+.ion-margin-top-lg {
+  margin-top: 24px;
+}
+
+.ion-margin-bottom-xl {
+  margin-bottom: 32px;
+}
+
+.ion-margin-bottom-lg {
+  margin-bottom: 24px;
+}
+
+.ion-margin-bottom-md {
+  margin-bottom: 16px;
+}
+
+.ion-margin-bottom-sm {
+  margin-bottom: 12px;
+}
+
+.ion-margin-bottom-xs {
+  margin-bottom: 8px;
+}
+
+.ion-margin-bottom-xxs {
+  margin-bottom: 4px;
 }

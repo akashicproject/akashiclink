@@ -3,6 +3,8 @@ http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
 :root {
+  --ion-font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont,
+    'Helvetica Neue', 'Roboto', sans-serif;
   --ion-text-color: #290056;
 
   /** primary **/

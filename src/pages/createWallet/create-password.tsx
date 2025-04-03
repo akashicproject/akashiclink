@@ -34,18 +34,8 @@ import type { FullOtk } from '../../utils/otk-generation';
 import { generateOTK } from '../../utils/otk-generation';
 import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 
-export const CreatePasswordInfo = styled.span({
-  fontSize: '12px',
+export const CreatePasswordInfo = styled.p({
   fontWeight: '400',
-  color: 'var(--ion-color-primary-10)',
-  marginTop: '4px',
-  lineHeight: '16px',
-});
-
-const CheckBoxText = styled.span({
-  fontSize: '12px',
-  fontWeight: '700',
-  fontFamily: 'Nunito Sans',
   color: 'var(--ion-color-primary-10)',
 });
 
@@ -164,101 +154,77 @@ export function CreateWalletPassword() {
     } else setAlert(errorAlertShell(t('PasswordHelperText')));
   }
 
-  /**
-   * Redirect user to previous page, and reset page state
-   */
-  const CancelButton = (
-    <IonCol>
-      <ResetPageButton
-        expand="block"
-        callback={() => {
-          historyGoBack(history, true);
-        }}
-      />
-    </IonCol>
-  );
   return (
     <PublicLayout className="vertical-center">
       <MainGrid>
-        <IonRow>
-          <IonCol>
-            <h2>{t('CreatePassword')}</h2>
-            <IonRow>
-              <CreatePasswordInfo style={{ textAlign: 'center' }}>
-                {t('CreatePasswordInfo')}
-              </CreatePasswordInfo>
-            </IonRow>
+        <IonRow className="ion-grid-row-gap-lg">
+          <IonCol size="12">
+            <h2 className={'ion-margin-bottom-xxs'}>{t('CreatePassword')}</h2>
+            <CreatePasswordInfo
+              className={'ion-margin-0 ion-text-align-center ion-text-size-xs'}
+            >
+              {t('CreatePasswordInfo')}
+            </CreatePasswordInfo>
           </IonCol>
-        </IonRow>
-
-        <>
-          <IonRow>
-            <AlertBox state={alert} />
-          </IonRow>
-
-          <IonRow>
-            <IonCol>
-              <StyledInput
-                label={t('Password')}
-                placeholder={t('EnterPassword')}
-                type="password"
-                onIonInput={({ target: { value } }) =>
-                  setPassword(value as string)
-                }
-                value={password}
-                errorPrompt={StyledInputErrorPrompt.Password}
-                validate={validatePassword}
-              />
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <StyledInput
-                label={t('ConfirmPassword')}
-                type="password"
-                placeholder={t('ConfirmPassword')}
-                onIonInput={({ target: { value } }) =>
-                  setConfirmPassword(value as string)
-                }
-                value={confirmPassword}
-                errorPrompt={StyledInputErrorPrompt.ConfirmPassword}
-                validate={validateConfirmPassword}
-                submitOnEnter={confirmPasswordAndCreateOtk}
-              />
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol
-              size="12"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+          <IonCol size="12">
+            <StyledInput
+              label={t('Password')}
+              placeholder={t('EnterPassword')}
+              type="password"
+              onIonInput={({ target: { value } }) =>
+                setPassword(value as string)
+              }
+              value={password}
+              errorPrompt={StyledInputErrorPrompt.Password}
+              validate={validatePassword}
+            />
+            <StyledInput
+              label={t('ConfirmPassword')}
+              type="password"
+              placeholder={t('ConfirmPassword')}
+              onIonInput={({ target: { value } }) =>
+                setConfirmPassword(value as string)
+              }
+              value={confirmPassword}
+              errorPrompt={StyledInputErrorPrompt.ConfirmPassword}
+              validate={validateConfirmPassword}
+              submitOnEnter={confirmPasswordAndCreateOtk}
+            />
+          </IonCol>
+          <IonCol size="12" className={'ion-center'}>
+            <IonCheckbox
+              checked={checked}
+              labelPlacement={'end'}
+              onIonChange={() => {
+                setChecked(!checked);
               }}
             >
-              <IonCheckbox
-                style={{ marginRight: '8px' }}
-                onIonChange={() => {
-                  setChecked(!checked);
-                }}
-              />
-              <CheckBoxText>{t('CreatePasswordAgree')}</CheckBoxText>
+              {t('CreatePasswordAgree')}
+            </IonCheckbox>
+          </IonCol>
+          {alert.visible && (
+            <IonCol size="12">
+              <AlertBox state={alert} />
             </IonCol>
-          </IonRow>
-
-          <IonRow>
-            <IonCol>
-              <PurpleButton
-                expand="block"
-                onClick={confirmPasswordAndCreateOtk}
-                disabled={!password || !confirmPassword || !checked}
-              >
-                {t('Confirm')}
-              </PurpleButton>
-            </IonCol>
-            {CancelButton}
-          </IonRow>
-        </>
+          )}
+          <IonCol size="6">
+            <PurpleButton
+              expand="block"
+              onClick={confirmPasswordAndCreateOtk}
+              disabled={!password || !confirmPassword || !checked}
+            >
+              {t('Confirm')}
+            </PurpleButton>
+          </IonCol>
+          <IonCol size="6">
+            <ResetPageButton
+              expand="block"
+              callback={() => {
+                historyGoBack(history, true);
+              }}
+            />
+          </IonCol>
+        </IonRow>
       </MainGrid>
     </PublicLayout>
   );

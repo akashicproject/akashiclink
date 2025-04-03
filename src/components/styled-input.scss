@@ -40,7 +40,8 @@
   --box-shadow: none;
 
   ion-label {
-    font-size: 14px;
+    font-size: 0.75rem;
+    font-family: 'Nunito Sans', serif;
     color: var(--ion-color-primary-10) !important;
 
     line-height: 16px !important;
@@ -77,6 +78,7 @@
   width: 270px;
 
   ion-label {
+    font-family: 'Nunito Sans', serif;
     font-size: 10px !important;
     --color: #ffffff !important;
     background: #7444b6;

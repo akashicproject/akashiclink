@@ -2,4 +2,12 @@
 
 ion-checkbox {
   @extend %text-shared;
+  &::part(label) {
+    @extend %heading-shared;
+    font-size: 0.75rem;
+    font-family: 'Nunito Sans', serif;
+    margin-inline: 8px 0;
+    text-align: start;
+    white-space: pre-line;
+  }
 }
