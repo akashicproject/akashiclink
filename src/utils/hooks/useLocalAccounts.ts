@@ -11,7 +11,6 @@ import {
   setLocalAccounts,
 } from '../../redux/slices/accountSlice';
 import type { FullOtk } from '../otk-generation';
-import { useLocalStorage } from './useLocalStorage';
 import { useSecureStorage } from './useSecureStorage';
 
 const algorithm = 'aes-256-cbc';
@@ -46,39 +45,18 @@ export const useAccountStorage = () => {
   const dispatch = useAppDispatch();
   const { getItem, setItem, removeItem } = useSecureStorage();
 
-  const [legacyLocalAccounts, _c, removeLegacyLocalAccounts] = useLocalStorage<
-    LocalAccount[] | undefined
-  >('cached-accounts', undefined);
-
   const storedLocalAccounts = useAppSelector(selectLocalAccounts);
 
   const localAccounts = Object.values(
-    [...storedLocalAccounts, ...(legacyLocalAccounts ?? [])].reduce(
-      (acc, next) => {
-        next.identity && (acc[next.identity] = next);
-        return acc;
-      },
-      {} as Record<string, LocalAccount>
-    )
+    [...storedLocalAccounts].reduce((acc, next) => {
+      next.identity && (acc[next.identity] = next);
+      return acc;
+    }, {} as Record<string, LocalAccount>)
   );
 
   const cacheOtk = useAppSelector(selectCacheOtk);
 
-  const [legacyActiveAccount, _s, removeLegacyActiveAccount] =
-    useLocalStorage<LocalAccount | null>('session-account', null);
-
-  const activeAccount =
-    useAppSelector(selectActiveAccount) ?? legacyActiveAccount;
-
-  // After running this code we know we have migrated away from local storage
-  // and can thus null legacy-storage and force-update the redux account-list
-  if (legacyLocalAccounts && legacyLocalAccounts.length) {
-    dispatch(setLocalAccounts(localAccounts));
-    removeLegacyLocalAccounts();
-  }
-  if (legacyActiveAccount) {
-    removeLegacyActiveAccount();
-  }
+  const activeAccount = useAppSelector(selectActiveAccount);
 
   const addPrefixToAccounts = async () => {
     if (localAccounts.some((acc) => !L2Regex.exec(acc.identity))) {
