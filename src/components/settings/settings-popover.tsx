@@ -182,7 +182,7 @@ export function SettingsPopover() {
                   '--background': 'var(--ion-color-secondary)',
                 }}
               >
-                <SettingsText text="Languages" />
+                <SettingsText text={t('Languages')} />
               </IonItem>
               {LANGUAGE_LIST.map((l) => (
                 <SettingsItem

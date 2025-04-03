@@ -146,7 +146,7 @@ export function SendResult() {
                 </TextContent>
               </TextWrapper>
               <TextWrapper>
-                <TextTitle>{t('Fee')}</TextTitle>
+                <TextTitle>{t('InternalFee')}</TextTitle>
                 <TextContent>
                   {state?.transaction?.[0]?.internalFee?.withdraw ?? '-'}
                 </TextContent>

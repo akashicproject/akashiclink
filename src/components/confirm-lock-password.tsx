@@ -36,9 +36,9 @@ export function ConfirmLockPassword({
       <IonRow>
         <IonCol>
           <StyledInput
-            label={'Password'}
+            label={t('Password')}
             type="password"
-            placeholder={'Please confirm your password'}
+            placeholder={t('PleaseConfirmYourPassword')}
             onIonInput={({ target: { value } }) => setPassword(value as string)}
           />
         </IonCol>

@@ -489,7 +489,7 @@ export function SendTo() {
                 >
                   {t('GasFree')}
                 </GasFreeMarker>
-                <FeeMarker>{`Fee: ${internalFee} ${
+                <FeeMarker>{`${t('Fee')}: ${internalFee} ${
                   token || TEST_TO_MAIN.get(chain) || chain
                 }`}</FeeMarker>
               </GasWrapper>

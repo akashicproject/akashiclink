@@ -185,7 +185,7 @@ export function TransactionDetails({
       )}
       {currentTransfer.transferType === TransactionType.WITHDRAWAL && (
         <DetailColumn>
-          <TextContent>{t('L2 Gas Fee')}</TextContent>
+          <TextContent>{t('InternalFee')}</TextContent>
           <Header3>{currentTransfer.internalFee?.withdraw}</Header3>
         </DetailColumn>
       )}
