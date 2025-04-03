@@ -155,4 +155,7 @@ const TESTNET_CURRENCIES: WalletCurrencyMetadata[] = [
 ];
 
 /** All the currencies supported by the wallet */
-export const WALLET_CURRENCIES = [...MAINNET_CURRENCIES, ...TESTNET_CURRENCIES];
+export const WALLET_CURRENCIES = [
+  ...MAINNET_CURRENCIES,
+  ...(process.env.NODE_ENV !== 'production' ? TESTNET_CURRENCIES : []),
+];
