@@ -1,6 +1,6 @@
 {
   "name": "@helium-pay/wallet-extension",
-  "version": "0.0.1",
+  "version": "3.0.1",
   "private": true,
   "scripts": {
     "serve": "serve -d build",
