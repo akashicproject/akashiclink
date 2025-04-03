@@ -23,15 +23,16 @@ export const validatedAddressPairInitialState = {
   userInputToAddress: '',
 };
 
-export type SendConfirmationTxnsDetail = {
-  txns: ITransactionForSigning[];
-  signedTxns: (IBaseTransactionWithDbIndex | ITerriTransaction)[];
+export interface SendConfirmationTxnsDetail {
+  txn: ITransactionForSigning;
+  signedTxn: IBaseTransactionWithDbIndex | ITerriTransaction;
   validatedAddressPair: ValidatedAddressPair;
   amount: string;
-};
+  txnFinal?: SendConfirmationTxnFinal;
+}
 
-export type SendConfirmationTxnFinal = {
+export interface SendConfirmationTxnFinal {
   error?: string;
   txHash?: string;
   feesEstimate?: string;
-};
+}

@@ -90,8 +90,8 @@ export const SendConfirmationFormActionButtons = ({
 
         setTxnsDetail({
           ...txnsDetail,
-          txns: res.txns,
-          signedTxns: res.signedTxns,
+          txn: res.txn,
+          signedTxn: res.signedTxn,
         });
       } catch (e) {
         setFormAlert(errorAlertShell(unpackRequestErrorMessage(e)));
@@ -106,18 +106,14 @@ export const SendConfirmationFormActionButtons = ({
     try {
       setFormAlert(formAlertResetState);
 
-      if (
-        !txnsDetail.txns ||
-        !txnsDetail.txns[0] ||
-        !txnsDetail?.signedTxns?.[0]
-      ) {
+      if (!txnsDetail.txn || !txnsDetail.signedTxn) {
         setFormAlert(errorAlertShell('GenericFailureMsg'));
         return;
       }
       setIsLoading(true);
 
-      const { txToSign: _, ...txn } = txnsDetail.txns[0];
-      const signedTxn = txnsDetail?.signedTxns[0];
+      const { txToSign: _, ...txn } = txnsDetail.txn;
+      const signedTxn = txnsDetail.signedTxn;
 
       const response = isL2
         ? await triggerSendL2Transaction({

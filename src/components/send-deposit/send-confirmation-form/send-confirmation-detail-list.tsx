@@ -22,11 +22,11 @@ import type {
 } from '../send-form/types';
 
 export const SendConfirmationDetailList = ({
-  txns,
+  txn,
   txnFinal,
   validatedAddressPair,
 }: {
-  txns: ITransactionForSigning[];
+  txn: ITransactionForSigning;
   txnFinal?: SendConfirmationTxnFinal;
   validatedAddressPair: ValidatedAddressPair;
   // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -39,21 +39,11 @@ export const SendConfirmationDetailList = ({
   const isL2 = validatedAddressPair.isL2;
 
   // Calculate total Amount
-  const totalAmount =
-    txns?.reduce((accm, { amount }) => {
-      return accm.add(amount);
-    }, Big(0)) ?? Big(0);
   const totalFee = txnFinal?.feesEstimate
     ? Big(txnFinal?.feesEstimate)
-    : txns?.reduce(
-        (accm, { feesEstimate }) => accm.add(feesEstimate ?? '0'),
-        Big(0)
-      ) ?? Big(0);
-  const internalFee = txns?.reduce(
-    (accm, { internalFee }) => accm.add(internalFee?.withdraw ?? '0'),
-    Big(0)
-  );
-  const totalAmountWithFee = totalAmount
+    : Big(txn.feesEstimate ?? 0);
+  const internalFee = Big(txn.internalFee?.withdraw ?? 0);
+  const totalAmountWithFee = Big(txn.amount)
     .add(internalFee)
     .add(isCurrencyTypeToken ? Big(0) : totalFee);
 
@@ -64,7 +54,7 @@ export const SendConfirmationDetailList = ({
       ? internalFee.toString()
       : '0';
 
-  const precision = getPrecision(totalAmount.toString(), feeForPrecision);
+  const precision = getPrecision(txn.amount, feeForPrecision);
 
   const getUrl = (
     type: 'account' | 'transaction',
@@ -88,7 +78,7 @@ export const SendConfirmationDetailList = ({
     ? currencySymbol + (isL2 ? ` (${nativeCoinSymbol})` : '')
     : nativeCoinSymbol;
 
-  const alias = validatedAddressPair?.acnsAlias ?? '-';
+  const alias = validatedAddressPair.acnsAlias ?? '-';
 
   const feeCurrencyDisplayName =
     isCurrencyTypeToken && isL2
@@ -111,24 +101,24 @@ export const SendConfirmationDetailList = ({
         <div className="ion-margin-bottom-sm">
           <ListVerticalLabelValueItem
             label={t('InputAddress')}
-            value={validatedAddressPair?.userInputToAddress}
+            value={validatedAddressPair.userInputToAddress}
           />
         </div>
       }
       {!txnFinal && (
         <ListVerticalLabelValueItem
           label={t('SendTo')}
-          value={validatedAddressPair?.convertedToAddress}
+          value={validatedAddressPair.convertedToAddress}
         />
       )}
       {txnFinal?.txHash && (
         <>
           <IonItem>
             <FromToAddressBlock
-              fromAddress={txns?.[0]?.fromAddress}
-              toAddress={txns?.[0]?.toAddress}
-              fromAddressUrl={getUrl('account', !!isL2, txns?.[0]?.fromAddress)}
-              toAddressUrl={getUrl('account', !!isL2, txns?.[0]?.toAddress)}
+              fromAddress={txn.fromAddress}
+              toAddress={txn.toAddress}
+              fromAddressUrl={getUrl('account', !!isL2, txn.fromAddress)}
+              toAddressUrl={getUrl('account', !!isL2, txn.toAddress)}
             />
           </IonItem>
           <IonItem>
@@ -144,7 +134,7 @@ export const SendConfirmationDetailList = ({
       </IonItem>
       <ListLabelValueItem
         label={t('Amount')}
-        value={`${totalAmount.toFixed(precision)} ${currencyDisplayName}`}
+        value={`${Big(txn.amount).toFixed(precision)} ${currencyDisplayName}`}
         valueSize={'md'}
         valueBold
       />

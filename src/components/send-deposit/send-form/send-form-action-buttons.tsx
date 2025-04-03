@@ -57,8 +57,8 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
         pathname: akashicPayPath(urls.sendConfirm),
         state: {
           sendConfirm: {
-            txns: res.txns,
-            signedTxns: res.signedTxns,
+            txn: res.txn,
+            signedTxn: res.signedTxn,
             validatedAddressPair,
             amount,
           },

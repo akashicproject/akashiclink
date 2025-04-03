@@ -186,6 +186,7 @@ export class Nitr0genApi {
 
   /**
    * Helper method to get from Nitr0gen Gateway
+   * @param path
    * @param timeout time in milliseconds
    * @param port port type
    */

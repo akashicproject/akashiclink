@@ -29,13 +29,7 @@ export const SendConfirmationForm = () => {
   );
   const [txnsDetail, setTxnsDetail] = useState<
     SendConfirmationTxnsDetail | undefined
-  >(
-    history.location.state?.sendConfirm
-      ? {
-          ...history.location.state?.sendConfirm,
-        }
-      : undefined
-  );
+  >(history.location.state?.sendConfirm ?? undefined);
 
   // check if coming back from send page, and make ts happy
   if (!history.location.state?.sendConfirm) {
@@ -72,11 +66,11 @@ export const SendConfirmationForm = () => {
       )}
       <IonRow>
         <IonCol size={'12'}>
-          {txnsDetail?.txns && txnsDetail?.validatedAddressPair && (
+          {txnsDetail?.txn && txnsDetail?.validatedAddressPair && (
             <SendConfirmationDetailList
-              txns={txnsDetail?.txns}
+              txn={txnsDetail.txn}
               txnFinal={txnFinal}
-              validatedAddressPair={txnsDetail?.validatedAddressPair}
+              validatedAddressPair={txnsDetail.validatedAddressPair}
             />
           )}
         </IonCol>

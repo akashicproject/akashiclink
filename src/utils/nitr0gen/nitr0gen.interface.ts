@@ -86,7 +86,7 @@ export type ITransactionSettledResponse =
  */
 export interface ITransactionForSigning extends ITransactionBase {
   readonly internalFee?: IInternalFee;
-  readonly txToSign?: IBaseTransactionWithDbIndex | ITerriTransaction;
+  readonly txToSign: IBaseTransactionWithDbIndex | ITerriTransaction;
   readonly layer: TransactionLayer;
   // Presumably mandatory if layer-1... :/
   readonly feesEstimate?: string;

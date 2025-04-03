@@ -67,26 +67,24 @@ export const useVerifyTxnAndSign = () => {
           convertObjectCurrencies(l2TransactionData, convertToDecimals)
         );
 
-        const txns: ITransactionForSigning[] = [
-          {
-            ...l2TransactionData,
-            identity: activeAccount.identity,
-            internalFee: {
-              withdraw: calculateInternalWithdrawalFee(
-                exchangeRates,
-                coinSymbol,
-                tokenSymbol
-              ),
-            },
-            layer: TransactionLayer.L2,
-            fromAddress: activeAccount.identity,
-            txToSign: txBody,
+        const txn: ITransactionForSigning = {
+          ...l2TransactionData,
+          identity: activeAccount.identity,
+          internalFee: {
+            withdraw: calculateInternalWithdrawalFee(
+              exchangeRates,
+              coinSymbol,
+              tokenSymbol
+            ),
           },
-        ];
+          layer: TransactionLayer.L2,
+          fromAddress: activeAccount.identity,
+          txToSign: txBody,
+        };
 
         return {
-          txns,
-          signedTxns: [txBody],
+          txn,
+          signedTxn: txBody,
         };
       }
 
@@ -133,17 +131,14 @@ export const useVerifyTxnAndSign = () => {
       );
 
       // reject the request if /verify returns multiple transfers
-      if (txns.length !== 1) return 'GenericFailureMsg';
+      if (txns.length !== 1 || !txns[0].txToSign) return 'GenericFailureMsg';
+      const [txn] = txns;
 
       // sign txns and move to final confirmation
       // Okay to assert since we have filtered out on the line before
-      const signedTxns = await Promise.all(
-        txns
-          .filter((res) => !!res.txToSign)
-          .map((res) => signTxBody(res.txToSign!, cacheOtk))
-      );
+      const signedTxn = await signTxBody(txn.txToSign, cacheOtk);
 
-      return { txns, signedTxns };
+      return { txn, signedTxn };
     } catch (error) {
       datadogRum.addError(error);
       return unpackRequestErrorMessage(error);

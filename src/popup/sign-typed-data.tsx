@@ -162,8 +162,7 @@ export function SignTypedData() {
             toSign.addressInput as string
           );
 
-          const txn = res.txns[0];
-          const signedTx = res.signedTxns[0];
+          const { txn, signedTxn: signedTx } = res;
 
           const response =
             toSign.isL2 === 'true'

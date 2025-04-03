@@ -1,21 +1,13 @@
 import { Preferences } from '@capacitor/preferences';
-import type {
-  IBaseTransactionWithDbIndex,
-  ITerriTransaction,
-  ITransactionProposalClientSideOtk,
-} from '@helium-pay/backend';
+import type { ITransactionProposalClientSideOtk } from '@helium-pay/backend';
 import { createMemoryHistory } from 'history';
 
-import type {
-  SendConfirmationTxnFinal,
-  ValidatedAddressPair,
-} from '../components/send-deposit/send-form/types';
+import type { SendConfirmationTxnsDetail } from '../components/send-deposit/send-form/types';
 import { LAST_HISTORY_ENTRIES } from '../constants';
 import type { Url } from '../constants/urls';
 import { urls } from '../constants/urls';
 import type { TransferResultType } from '../pages/nft/nft-transfer-result';
 import type { ITransactionRecordForExtension } from '../utils/formatTransfers';
-import type { ITransactionForSigning } from '../utils/nitr0gen/nitr0gen.interface';
 import { akashicPayPath } from './navigation-tabs';
 
 export const history = createMemoryHistory();
@@ -28,13 +20,7 @@ export interface LocationState {
     transaction?: TransferResultType;
     errorMsg?: string;
   };
-  sendConfirm?: {
-    txns: ITransactionForSigning[];
-    signedTxns: (IBaseTransactionWithDbIndex | ITerriTransaction)[];
-    validatedAddressPair: ValidatedAddressPair;
-    amount: string;
-    txnFinal?: SendConfirmationTxnFinal;
-  };
+  sendConfirm?: SendConfirmationTxnsDetail;
   sendResult?: {
     fromAddress: string;
     transaction?: ITransactionProposalClientSideOtk[];
