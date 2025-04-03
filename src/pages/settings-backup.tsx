@@ -20,7 +20,6 @@ const WarningText = styled.span({
   fontWeight: 700,
   fontSize: '14px',
   lineHeight: '20px',
-  fontFamily: 'Nunito Sans',
   color: 'red',
 });
 

@@ -16,7 +16,6 @@ const buttonTextBaseCss: CSSInterpolation = {
   fontWeight: 700,
   fontSize: '14px',
   lineHeight: '20px',
-  fontFamily: 'Nunito Sans',
   textTransform: 'none',
 };
 

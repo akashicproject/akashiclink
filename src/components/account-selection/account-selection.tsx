@@ -93,9 +93,7 @@ export function AccountSelection({
         }}
         interface="popover"
         interfaceOptions={{
-          htmlAttributes: {
-            className: 'account-selection',
-          },
+          className: 'account-selection',
           side: 'bottom',
           size: 'cover',
         }}
@@ -130,8 +128,8 @@ export function AccountSelection({
           }
         >
           <IonIcon
-            slot="icon-only"
             class="icon-button-icon"
+            slot="icon-only"
             icon={copyOutline}
           />
         </IonButton>

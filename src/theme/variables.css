@@ -97,47 +97,21 @@ http://ionicframework.com/docs/theming/ */
   --ion-current-selection-opacity: 12%;
   --ion-select-border: #958e99;
 
+  /** settings popup background color **/
+  --settings-popup-background-color: #fff;
+  --settings-popup-background-focused: rgba(103, 80, 164, 0.12);
+
   /** iamges for swiper **/
   --swiper-button-prev-background-image: url('/public/shared-assets/images/arrow-back.png');
   --swiper-button-next-background-image: url('/public/shared-assets/images/arrow-forward.png');
-
-  /** iamges for swiper **/
-
-  --ion-font-family: 'Nunito Sans', serif;
 
   /** Image for main page **/
   --main-image: url('/public/shared-assets/images/main/main-img.png');
 }
 
-ion-button {
-  --box-shadow: none;
-}
-
-ion-select::part(placeholder),
-ion-select::part(text) {
-  color: var(--ion-color-dark);
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-ion-select::part(icon) {
-  color: var(--ion-color-dark);
-  opacity: 1;
-}
-
-.select-interface-option {
-  color: var(--ion-color-dark);
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-/*
-   * Dark Colors
-   * -------------------------------------------
-   */
-
+/**
+ * Dark Colors
+ */
 body.dark {
   --ion-color-primary: #f4f5f8;
   --ion-color-primary-rgb: 244, 245, 248;
@@ -224,6 +198,10 @@ body.dark {
   --ion-current-selection-opacity: 100%;
   --ion-select-border: #958e99;
 
+  /** settings popup background color **/
+  --settings-popup-background-color: #2c2c2c;
+  --settings-popup-background-focused: #625b71;
+
   /** iamges for swiper **/
   --swiper-button-prev-background-image: url('/public/shared-assets/images/arrow-back-dark.png');
   --swiper-button-next-background-image: url('/public/shared-assets/images/arrow-forward-dark.png');
@@ -232,11 +210,9 @@ body.dark {
   --main-image: url('/public/shared-assets/images/main/main-img-dark-mode.png');
 }
 
-/*
+/**
  * iOS Dark Theme
- * -------------------------------------------
  */
-
 .ios body.dark {
   --ion-background-color: #000000;
   --ion-background-color-rgb: 0, 0, 0;
@@ -275,11 +251,9 @@ body.dark {
   --ion-toolbar-border-color: var(--ion-color-step-250);
 }
 
-/*
-   * Material Design Dark Theme
-   * -------------------------------------------
-   */
-
+/**
+ * Material Design Dark Theme
+ */
 .md body.dark {
   --ion-background-color: #121212;
   --ion-background-color-rgb: 18, 18, 18;

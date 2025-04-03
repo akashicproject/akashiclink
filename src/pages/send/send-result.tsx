@@ -23,7 +23,6 @@ export const HeaderWrapper = styled.div({
 });
 
 export const HeaderTitle = styled.div({
-  fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 700,
   fontSize: '14px',
@@ -52,7 +51,6 @@ export const TextWrapper = styled.div({
 });
 
 export const TextTitle = styled.div({
-  fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 400,
   fontSize: '16px',
@@ -61,7 +59,6 @@ export const TextTitle = styled.div({
 });
 
 export const TextContent = styled.div({
-  fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 700,
   fontSize: '16px',

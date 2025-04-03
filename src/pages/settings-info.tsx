@@ -1,5 +1,4 @@
 import {
-  IonButton,
   IonCol,
   IonContent,
   IonGrid,
@@ -11,11 +10,10 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import { useHistory } from 'react-router-dom';
+
+import { BackButton } from '../components/back-button';
 
 export function SettingsInfo() {
-  const history = useHistory();
-
   return (
     <IonPage>
       <IonHeader>
@@ -30,7 +28,7 @@ export function SettingsInfo() {
         <IonGrid>
           <IonRow>
             <IonCol>
-              <IonButton onClick={() => history.goBack()}>Back</IonButton>
+              <BackButton />
             </IonCol>
           </IonRow>
         </IonGrid>

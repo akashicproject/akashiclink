@@ -67,7 +67,6 @@ const CurrencyWrapper = styled.div({
 });
 
 const BalanceText = styled.div({
-  fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 700,
   fontSize: '24px',
@@ -77,7 +76,6 @@ const BalanceText = styled.div({
 });
 
 const NativeCoinNeededText = styled.div({
-  fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 700,
   fontSize: '14px',
@@ -89,7 +87,6 @@ const NativeCoinNeededText = styled.div({
 });
 
 const Error = styled.div({
-  fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 700,
   fontSize: '20px',
@@ -118,7 +115,6 @@ const GasFreeMarker = styled.div({
   width: '127px',
   height: '28px',
   borderRadius: '8px',
-  fontFamily: 'Nunito Sans',
   fontWeight: '400',
   fontSize: '10px',
   lineHeight: '16px',
@@ -136,7 +132,6 @@ const FeeMarker = styled.div({
   width: '127px',
   height: '28px',
   borderRadius: '8px',
-  fontFamily: 'Nunito Sans',
   fontWeight: '400',
   fontSize: '10px',
   lineHeight: '16px',
@@ -153,7 +148,6 @@ const EqualsL2Box = styled.div({
   width: '270px',
   height: '40px',
   borderRadius: '8px',
-  fontFamily: 'Nunito Sans',
   fontWeight: '400',
   fontSize: '12px',
   lineHeight: '16px',
@@ -460,7 +454,6 @@ export function SendTo() {
           gasFree={gasFree}
           isResult={() => setPageView(SendView.Result)}
           getErrorMsg={(errorMsg) => setSignError(errorMsg)}
-          goBack={() => router.goBack()}
         />
       )}
       {pageView === SendView.Result && (

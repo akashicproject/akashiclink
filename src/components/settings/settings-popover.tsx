@@ -1,7 +1,8 @@
+import './settings-popover.scss';
+
 import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
 import {
   IonButton,
-  IonContent,
   IonIcon,
   IonItem,
   IonLabel,
@@ -20,31 +21,21 @@ import { useLogout } from '../logout';
 /** Styling the display text */
 function SettingsText({ text, id }: { text: string; id?: string }) {
   return (
-    <IonLabel
-      class="ion-text-right"
-      id={id}
-      style={{
-        fontWeight: 700,
-        fontSize: '14px',
-        lineHeight: '20px',
-        fontFamily: 'Nunito Sans',
-        color: 'var(--ion-color-primary-10)',
-      }}
-    >
+    <IonLabel class="ion-text-right settings-text" id={id}>
       {text}
     </IonLabel>
   );
 }
 
 /** Container for grouping related settings */
-function SettingsList(props: { children: ReactNode }) {
+function SettingsList(props: { children: ReactNode; isSubmenu?: boolean }) {
   return (
     <IonList
+      class="settings-list"
       lines="none"
       style={{
-        padding: 0,
-        border: '2px solid var(--ion-color-dark)',
-        borderRadius: '4px',
+        // Style corners depending on depth of setting
+        borderRadius: props.isSubmenu ? '4px 0px 0px 4px' : '4px',
       }}
     >
       {props.children}
@@ -56,7 +47,6 @@ function SettingsList(props: { children: ReactNode }) {
  * Popover exposing settings that user can toggle
  */
 export function SettingsPopover() {
-  const [focus, _] = useState<string>();
   const { t, i18n } = useTranslation();
 
   const logout = useLogout();
@@ -74,33 +64,19 @@ export function SettingsPopover() {
     displayText: string;
     id: string;
   }) {
-    // TODO: Inclued these to set focus manually
-    // onClick = {() => setFocus && setFocus(id)}
-    // onDidDismiss={() => (focus === id) && setFocus(undefined)}
-    // isOpen = { focus === id}
     return (
       <>
-        <IonItem button={true} detail={false} id={id}>
-          <IonIcon
-            slot="start"
-            icon={caretBackOutline}
-            style={{
-              color: 'var(--ion-settings-color)',
-              fontSize: '10px',
-              display: focus === id ? 'visible' : 'none',
-            }}
-          />
+        <IonItem class="settings-item" button={true} detail={false} id={id}>
+          <IonIcon class="settings-icon" icon={caretBackOutline} />
           <SettingsText text={displayText} />
         </IonItem>
         <IonPopover
+          className="settings-submenu"
           dismissOnSelect={true}
           side="left"
           alignment="start"
           size="cover"
           trigger={id}
-          style={{
-            '--offset-x': '-2px',
-          }}
         >
           {children}
         </IonPopover>
@@ -124,6 +100,7 @@ export function SettingsPopover() {
   }) {
     return (
       <IonItem
+        class="settings-item"
         button={true}
         detail={false}
         routerLink={routerLink}
@@ -166,6 +143,7 @@ export function SettingsPopover() {
         />
       </IonButton>
       <IonPopover
+        className="settings-main"
         backdrop-dismiss={true}
         isOpen={showPopover.open}
         event={showPopover.event}
@@ -173,75 +151,63 @@ export function SettingsPopover() {
         side="bottom"
         alignment="end"
       >
-        <IonContent>
-          <SettingsList>
-            <SettingSubmenu displayText={t('General')} id="general-menu">
-              <SettingsList>
-                <IonItem
-                  style={{
-                    '--ion-item-background': 'var(--ion-color-secondary)',
-                  }}
-                  detail={false}
-                >
-                  <SettingsText text="Languages" />
-                </IonItem>
-                {LANGUAGE_LIST.map((l) => (
-                  <SettingsItem
-                    key={l.locale}
-                    displayText={l.title}
-                    id={l.locale}
-                    onClick={(event) => changeLanguage(event)}
-                  />
-                ))}
-              </SettingsList>
-            </SettingSubmenu>
-
-            <SettingSubmenu displayText={t('Advanced')} id="settings-advanced">
-              <SettingsList>
+        <SettingsList>
+          <SettingSubmenu displayText={t('General')} id="general-menu">
+            <SettingsList isSubmenu={true}>
+              {LANGUAGE_LIST.map((l) => (
                 <SettingsItem
-                  displayText="Backup"
-                  routerLink={akashicPayPath(urls.settingsBackup)}
+                  key={l.locale}
+                  displayText={l.title}
+                  id={l.locale}
+                  onClick={(event) => changeLanguage(event)}
                 />
-              </SettingsList>
-            </SettingSubmenu>
+              ))}
+            </SettingsList>
+          </SettingSubmenu>
 
-            <SettingSubmenu displayText="Naming Service" id="nested-trigger">
-              <SettingsList>
-                <SettingsItem
-                  routerLink={`${akashicPayPath(
-                    urls.settingsNaming
-                  )}?service=hp`}
-                  displayText="ANs"
-                />
-                <SettingsItem displayText="SquareNs" disabled={true} />
-              </SettingsList>
-            </SettingSubmenu>
+          <SettingSubmenu displayText={t('Advanced')} id="settings-advanced">
+            <SettingsList isSubmenu={true}>
+              <SettingsItem
+                displayText="Backup"
+                routerLink={akashicPayPath(urls.settingsBackup)}
+              />
+            </SettingsList>
+          </SettingSubmenu>
 
-            <SettingSubmenu displayText="Security" id="settings-security">
-              <SettingsList>
-                <SettingsItem
-                  displayText="Recovery"
-                  routerLink={akashicPayPath(urls.recover)}
-                />
-              </SettingsList>
-            </SettingSubmenu>
+          <SettingSubmenu displayText="Naming Service" id="naming-service">
+            <SettingsList isSubmenu={true}>
+              <SettingsItem
+                routerLink={`${akashicPayPath(urls.settingsNaming)}?service=hp`}
+                displayText="ANs"
+              />
+              <SettingsItem displayText="SquareNs" disabled={true} />
+            </SettingsList>
+          </SettingSubmenu>
 
-            <SettingSubmenu displayText="Information" id="settings-information">
-              <SettingsList>
-                <SettingsItem
-                  displayText="Version Info"
-                  routerLink={akashicPayPath(urls.settingsVersion)}
-                />
-                <SettingsItem
-                  displayText="Links"
-                  routerLink={akashicPayPath(urls.settingsInfo)}
-                />
-              </SettingsList>
-            </SettingSubmenu>
+          <SettingSubmenu displayText="Security" id="settings-security">
+            <SettingsList isSubmenu={true}>
+              <SettingsItem
+                displayText="Recovery"
+                routerLink={akashicPayPath(urls.recover)}
+              />
+            </SettingsList>
+          </SettingSubmenu>
 
-            <SettingsItem displayText="Lock" onClick={logout} />
-          </SettingsList>
-        </IonContent>
+          <SettingSubmenu displayText="Information" id="settings-information">
+            <SettingsList isSubmenu={true}>
+              <SettingsItem
+                displayText="Version Info"
+                routerLink={akashicPayPath(urls.settingsVersion)}
+              />
+              <SettingsItem
+                displayText="Links"
+                routerLink={akashicPayPath(urls.settingsInfo)}
+              />
+            </SettingsList>
+          </SettingSubmenu>
+
+          <SettingsItem displayText="Lock" onClick={logout} />
+        </SettingsList>
       </IonPopover>
     </>
   );

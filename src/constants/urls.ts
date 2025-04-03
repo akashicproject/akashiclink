@@ -27,7 +27,6 @@ export const urls = {
   dashboard: 'dashboard',
   settings: 'settings',
   send: 'send',
-  settingsLanguage: 'settings-language',
   settingsBackup: 'settings-backup',
   settingsNaming: 'settings-naming',
   settingsInfo: 'settings-info',

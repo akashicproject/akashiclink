@@ -1,5 +1,3 @@
-import './activity.css';
-
 import styled from '@emotion/styled';
 import type { ITransactionRecord } from '@helium-pay/backend';
 import type { ITransactionRecordForTable } from '@helium-pay/owners/src/components/tables/formatter';
@@ -7,8 +5,6 @@ import { transferToTableFormat } from '@helium-pay/owners/src/components/tables/
 import {
   IonButton,
   IonButtons,
-  IonCol,
-  IonContent,
   IonHeader,
   IonModal,
   IonRow,
@@ -22,10 +18,9 @@ import { Virtuoso } from 'react-virtuoso';
 
 import { ActivityDetail } from '../components/activity/activity-detail';
 import { OneActivity } from '../components/activity/one-activity';
-import { WhiteButton } from '../components/buttons';
+import { BackButton } from '../components/back-button';
 import { LoggedLayout } from '../components/layout/logged-layout';
 import { urls } from '../constants/urls';
-import { akashicPayPath } from '../routing/navigation-tree';
 import { useTransfersMe } from '../utils/hooks/useTransfersMe';
 import { lastPageStorage } from '../utils/last-page-storage';
 import { WALLET_CURRENCIES } from '../utils/supported-currencies';
@@ -86,22 +81,12 @@ export function Activity() {
 
   return (
     <LoggedLayout>
-      <IonRow
-        style={{ marginTop: '20px', marginRight: '150px', marginLeft: '150px' }}
-      >
-        <IonCol>
-          <WhiteButton
-            expand="block"
-            routerLink={akashicPayPath(urls.loggedFunction)}
-          >
-            {t('GoBack')}
-          </WhiteButton>
-        </IonCol>
+      <IonRow class="ion-justify-content-center">
+        <BackButton />
       </IonRow>
       <Divider style={{ margin: '20px 0px' }} />
       <Virtuoso
         style={{
-          marginTop: '40px',
           height: '450px',
           width: '100%',
         }}
@@ -132,9 +117,7 @@ export function Activity() {
               </IonButtons>
             </IonToolbar>
           </IonHeader>
-          <IonContent class={'dialog-content'}>
-            <ActivityDetail currentTransfer={currentTransfer} />
-          </IonContent>
+          <ActivityDetail currentTransfer={currentTransfer} />
         </IonModal>
       )}
     </LoggedLayout>

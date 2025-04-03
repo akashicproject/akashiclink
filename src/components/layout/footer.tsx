@@ -3,7 +3,6 @@ import { IonFooter } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
 const FooterText = styled.span({
-  fontFamily: 'Nunito Sans',
   color: 'var(--ion-color-primary-10)',
   fontSize: '14px',
   lineHeight: '20px',

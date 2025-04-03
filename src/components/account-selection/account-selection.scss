@@ -1,4 +1,7 @@
 .account-selection {
+  /* Shift popovers to have vertical padding relative to trigger element */
+  top: 8px;
+
   /**
    * Add a frame to the selection menu and round the corners
    */
@@ -12,8 +15,6 @@
    * under the selection button
    */
   ion-list {
-    padding-top: 0px;
-    padding-bottom: 0px;
     border-radius: 3px;
     max-height: 120px;
     overflow: scroll;

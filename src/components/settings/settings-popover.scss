@@ -1,0 +1,40 @@
+/** Styling of the popover containers */
+%settings-common {
+  --min-width: fit-content;
+  --max-width: 160px;
+}
+
+ion-popover {
+  &.settings-main {
+    @extend %settings-common;
+    top: 8px;
+  }
+  &.settings-submenu {
+    @extend %settings-common;
+    --offset-x: -1px;
+  }
+}
+
+/** Styling of the vertical list inside popover  */
+.settings-list {
+  border: 1px solid var(--ion-color-dark-ontline);
+  background: var(--settings-popup-background-color);
+}
+
+/** Styling of the individual setting entry */
+.settings-item {
+  /** The carret (<) symbol displayed when setting is hovered over */
+  &:hover .settings-icon {
+    visibility: visible;
+  }
+  .settings-icon {
+    visibility: hidden;
+    color: var(--ion-settings-color);
+    font-size: 10px;
+  }
+
+  /** Styling of the display text */
+  .settings-text {
+    font-weight: 700;
+  }
+}

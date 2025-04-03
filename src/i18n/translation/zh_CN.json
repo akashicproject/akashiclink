@@ -147,5 +147,6 @@
   "RemoveAcnsSuccess": "( {{acnsName}} ) 已经从列表中删除。",
   "NoData": "没有数据",
   "EditAcnsSuccess": "注册成功",
-  "NftName": "Nft名称"
+  "NftName": "Nft名称",
+  "Languages": "语言"
 }

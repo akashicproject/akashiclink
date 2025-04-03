@@ -18,6 +18,7 @@ import {
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 
+import { BackButton } from '../components/back-button';
 import { urls } from '../constants/urls';
 import { akashicPayPath } from '../routing/navigation-tree';
 
@@ -52,7 +53,7 @@ export function RecoverCode() {
         <IonGrid>
           <IonRow>
             <IonCol>
-              <IonButton onClick={() => history.goBack()}>Back</IonButton>
+              <BackButton />
             </IonCol>
             <IonCol>
               <IonButton>Confirm</IonButton>

@@ -31,7 +31,6 @@ const ActivityDiv = styled.div({
 });
 
 const SeeMore = styled(Link)({
-  fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 700,
   fontSize: '14px',

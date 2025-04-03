@@ -1,0 +1,20 @@
+/**
+ * Remove default shadow on buttons
+ */
+ion-button {
+  --box-shadow: none;
+
+  &.icon-button {
+    min-width: 40px;
+    min-height: 40px;
+    margin: 0;
+    --background: var(--ion-background-color);
+    --border-color: #7b757f;
+    --border-width: 1px;
+    --border-style: solid;
+    --border-radius: 8px;
+    --box-shadow: none;
+    --padding-start: 0;
+    --padding-end: 0;
+  }
+}

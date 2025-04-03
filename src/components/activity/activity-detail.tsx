@@ -1,7 +1,9 @@
+import './activity.scss';
+
 import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import { TransactionStatus, TransactionType } from '@helium-pay/backend';
-import { IonButton, IonIcon } from '@ionic/react';
+import { IonButton, IonIcon, IonContent } from '@ionic/react';
 import Big from 'big.js';
 import { arrowForwardCircleOutline, copyOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
@@ -9,29 +11,18 @@ import { useTranslation } from 'react-i18next';
 import type { WalletTransactionRecord } from '../../pages/activity';
 import { displayLongText } from '../../utils/long-text';
 
-const TransferDetail = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-start',
-  padding: '0',
-  gap: '16px',
-  width: '350px',
-});
-
 const DetailColumn = styled.div({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
   padding: '0px',
-  width: '350px',
   height: '24px',
 });
 
 const TextContent = styled.div({
   display: 'flex',
   alignContent: 'center',
-  fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 400,
   fontSize: '16px',
@@ -43,18 +34,11 @@ const Link = styled.a({
   color: 'var(--ion-color-primary-10)',
 });
 
-const TextTitle = styled.div({
-  fontFamily: 'Nunito Sans',
-  fontStyle: 'normal',
-  fontWeight: 700,
-  fontSize: '16px',
-  lineHeight: '24px',
-  color: 'var(--ion-color-primary-10)',
-});
-
-export const ActivityDetail: React.FC<{
+export function ActivityDetail({
+  currentTransfer,
+}: {
   currentTransfer: WalletTransactionRecord;
-}> = ({ currentTransfer }) => {
+}) {
   const { t } = useTranslation();
 
   const statusString = (status: string | undefined) => {
@@ -83,13 +67,13 @@ export const ActivityDetail: React.FC<{
   const backendUpdated = false;
 
   return (
-    <TransferDetail>
+    <IonContent class="ion-padding" className="transfer-detail">
       <DetailColumn>
-        <TextTitle>{t('Status')}</TextTitle>
+        <h3>{t('Status')}</h3>
         <TextContent>{statusString(currentTransfer.status)}</TextContent>
       </DetailColumn>
       <DetailColumn style={{ marginTop: '20px' }}>
-        <TextTitle>{t('txHash')}</TextTitle>
+        <h3>{t('txHash')}</h3>
         <TextContent>
           <Link href={currentTransfer.txHashUrl}>
             {displayLongText(currentTransfer.txHash)}
@@ -107,8 +91,8 @@ export const ActivityDetail: React.FC<{
         </TextContent>
       </DetailColumn>
       <DetailColumn style={{ marginTop: '20px' }}>
-        <TextTitle>{t('From')}</TextTitle>
-        <TextTitle>{t('To')}</TextTitle>
+        <h3>{t('From')}</h3>
+        <h3>{t('To')}</h3>
       </DetailColumn>
       <DetailColumn>
         <TextContent>
@@ -146,7 +130,7 @@ export const ActivityDetail: React.FC<{
         </TextContent>
       </DetailColumn>
       <DetailColumn style={{ marginTop: '20px' }}>
-        <TextTitle>{t('Transaction')}</TextTitle>
+        <h3>{t('Transaction')}</h3>
       </DetailColumn>
       {backendUpdated && (
         <DetailColumn>
@@ -155,9 +139,9 @@ export const ActivityDetail: React.FC<{
       )}
       <DetailColumn>
         <TextContent>{t('Amount')}</TextContent>
-        <TextTitle>
+        <h3>
           {currentTransfer.amount + ' ' + currentTransfer.currency.displayName}
-        </TextTitle>
+        </h3>
       </DetailColumn>
       {backendUpdated && (
         <DetailColumn>
@@ -192,7 +176,7 @@ export const ActivityDetail: React.FC<{
       )}
       <DetailColumn style={{ marginTop: '20px' }}>
         <TextContent>{'Total'}</TextContent>
-        <TextTitle>
+        <h3>
           {currentTransfer.transferType === TransactionType.DEPOSIT
             ? currentTransfer.amount +
               ' ' +
@@ -200,8 +184,8 @@ export const ActivityDetail: React.FC<{
             : `${Big(currentTransfer.amount).add(
                 currentTransfer.feesPaid ?? 0
               )} ${currentTransfer.currency.displayName}`}
-        </TextTitle>
+        </h3>
       </DetailColumn>
-    </TransferDetail>
+    </IonContent>
   );
-};
+}

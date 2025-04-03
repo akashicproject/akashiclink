@@ -147,5 +147,6 @@
   "RemoveAcnsSuccess": "( {{acnsName}} ) has been removed from your list.",
   "NoData": "No Data",
   "EditAcnsSuccess": "Successfully Registered",
-  "NftName": "Nft Name"
+  "NftName": "Nft Name",
+  "Languages": "Languages"
 }

@@ -47,7 +47,6 @@ const enum View {
 const MenuSlider = styled(IonLabel)({
   fontWeight: 700,
   fontSize: '16px',
-  fontFamily: 'Nunito Sans',
   lineHeight: '24px',
   textAlign: 'center',
   align: 'center',

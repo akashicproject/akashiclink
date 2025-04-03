@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { IonCol, IonGrid, IonRow, IonSpinner, isPlatform } from '@ionic/react';
 import { useState } from 'react';
 
@@ -6,12 +5,6 @@ import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { AccountSelection } from '../account-selection/account-selection';
 import { useLogout } from '../logout';
 import { SettingsPopover } from '../settings/settings-popover';
-
-const Divider = styled.div({
-  width: '2px',
-  height: '100%',
-  background: '#D9D9D9',
-});
 
 export function LoggedToolbar() {
   const logout = useLogout();
@@ -48,9 +41,6 @@ export function LoggedToolbar() {
             />
           </IonCol>
         )}
-        <IonCol size="1" class="ion-center">
-          <Divider />
-        </IonCol>
         <IonCol size="auto">
           <SettingsPopover />
         </IonCol>

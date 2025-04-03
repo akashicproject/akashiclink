@@ -17,7 +17,8 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../../components/alert/alert';
-import { PurpleButton, WhiteButton } from '../../components/buttons';
+import { BackButton } from '../../components/back-button';
+import { PurpleButton } from '../../components/buttons';
 import {
   StyledInput,
   StyledInputErrorPrompt,
@@ -54,7 +55,6 @@ const TextWrapper = styled.div({
 });
 
 const TextTitle = styled.div({
-  fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 700,
   fontSize: '16px',
@@ -63,7 +63,6 @@ const TextTitle = styled.div({
 });
 
 const TextContent = styled.div({
-  fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 400,
   fontSize: '16px',
@@ -81,7 +80,6 @@ const InputPasswordWrapper = styled.div({
 });
 
 const InputPasswordText = styled.div({
-  fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 700,
   fontSize: '14px',
@@ -95,7 +93,6 @@ interface Props {
   gasFree: boolean;
   isResult: () => void;
   getErrorMsg: (msg: string) => void;
-  goBack: () => void;
 }
 
 export function SendConfirm(props: Props) {
@@ -226,9 +223,7 @@ export function SendConfirm(props: Props) {
           </PurpleButton>
         </IonCol>
         <IonCol>
-          <WhiteButton expand="block" onClick={props.goBack}>
-            {t('GoBack')}
-          </WhiteButton>
+          <BackButton />
         </IonCol>
       </IonRow>
     </SendMain>

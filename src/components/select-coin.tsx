@@ -36,7 +36,6 @@ const BalanceWrapper = styled.div({
 });
 
 const BalanceTitle = styled.div({
-  fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 700,
   fontSize: '24px',
@@ -46,7 +45,6 @@ const BalanceTitle = styled.div({
 });
 
 const BalanceText = styled.div({
-  fontFamily: 'Nunito Sans',
   fontStyle: 'normal',
   fontWeight: 500,
   fontSize: '14px',

@@ -8,6 +8,5 @@ export const ContentText = styled.span({
   fontWeight: 700,
   fontSize: '16px',
   lineHeight: '24px',
-  fontFamily: 'Nunito Sans',
   color: 'var(--ion-color-primary-10)',
 });

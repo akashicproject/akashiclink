@@ -16,7 +16,6 @@ import {
   IonPopover,
   IonRow,
   IonText,
-  useIonRouter,
 } from '@ionic/react';
 import { copyOutline } from 'ionicons/icons';
 import { QRCodeSVG } from 'qrcode.react';
@@ -24,7 +23,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 
-import { WhiteButton } from '../../components/buttons';
+import { BackButton } from '../../components/back-button';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { useLargestBalanceKeys } from '../../utils/hooks/useLargestBalanceKeys';
@@ -43,7 +42,6 @@ const CoinWrapper = styled.div({
 
 export function DepositPage() {
   const { t } = useTranslation();
-  const router = useIonRouter();
 
   const [currency, ..._] = useLocalStorage(
     'currency',
@@ -138,20 +136,8 @@ export function DepositPage() {
             </IonPopover>
           </IonCol>
         </IonRow>
-        <IonRow
-          class="ion-justify-content-between"
-          style={{
-            marginTop: '10px',
-            marginRight: '100px',
-            marginLeft: '100px',
-            padding: '0px 50px',
-          }}
-        >
-          <IonCol>
-            <WhiteButton expand="block" onClick={() => router.goBack()}>
-              {t('GoBack')}
-            </WhiteButton>
-          </IonCol>
+        <IonRow class="ion-justify-content-center">
+          <BackButton />
         </IonRow>
       </IonGrid>
     </LoggedMain>

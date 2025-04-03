@@ -16,13 +16,12 @@ import { L2Icon } from '../../utils/supported-currencies';
 const OneTransfer = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
   justifyContent: 'center',
   padding: 0,
   gap: '16px',
   height: '58px',
-  width: '370px',
-  margin: '24px auto',
+  margin: '24px 2px',
+  width: '98%',
 });
 
 const ActivityWrapper = styled.div({
@@ -45,7 +44,6 @@ const TimeWrapper = styled.div({
   fontSize: '10px',
   lineHeight: '16px',
   fontWeight: 400,
-  fontFamily: 'Nunito Sans',
   color: 'var(--ion-color-primary-10)',
 });
 
@@ -89,7 +87,6 @@ const Chain = styled.div({
   borderRadius: '8px',
   fontSize: '14px',
   fontWeight: 700,
-  fontFamily: 'Nunito Sans',
   color: '#FFFFFF',
 });
 
@@ -107,7 +104,6 @@ const Amount = styled.div({
   height: '40px',
   fontSize: '10px',
   fontWeight: 700,
-  fontFamily: 'Nunito Sans',
   color: 'var(--ion-color-primary-10)',
 });
 

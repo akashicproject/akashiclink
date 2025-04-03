@@ -161,13 +161,15 @@ export function ImportWallet() {
           </IonRow>
           <IonRow>
             {ResetButton}
-            <PurpleButton
-              disabled={!privateKey}
-              onClick={requestImportAccount}
-              expand="block"
-            >
-              {t('SendCode')}
-            </PurpleButton>
+            <IonCol>
+              <PurpleButton
+                disabled={!privateKey}
+                onClick={requestImportAccount}
+                expand="block"
+              >
+                {t('SendCode')}
+              </PurpleButton>
+            </IonCol>
           </IonRow>
           <IonRow>
             <AlertBox state={alert} />

@@ -15,7 +15,6 @@ export const ChainDiv = styled.div({
   fontSize: '14px',
   lineHeight: '20px',
   fontWeight: 700,
-  fontFamily: 'Nunito Sans',
   color: '#C297FF',
   display: 'flex',
   flexDirection: 'column',
