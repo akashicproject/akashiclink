@@ -4,14 +4,12 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { historyResetStackAndRedirect } from '../../routing/history';
-import { OwnersAPI } from '../../utils/api';
 import { useAccountMe } from '../../utils/hooks/useAccountMe';
 import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemapAASToAddress';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useMyTransfers } from '../../utils/hooks/useMyTransfers';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
-import { signAuthenticationData } from '../../utils/otk-generation';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { AccountSelection } from '../account-selection/account-selection';
 import {
@@ -70,15 +68,7 @@ export function LoginForm({ isPopup = false }) {
         activeAccount.identity,
         password
       );
-      if (localSelectedOtk) {
-        await OwnersAPI.loginV1({
-          identity: localSelectedOtk.identity,
-          signedAuth: signAuthenticationData(
-            localSelectedOtk.key.prv.pkcs8pem,
-            localSelectedOtk.identity
-          ),
-        });
-      } else {
+      if (!localSelectedOtk) {
         throw new Error(
           `localSelectedOtk not found may due to old account not migrated, ${activeAccount.identity}`
         );

@@ -1,17 +1,15 @@
 import type {
   IEstimateGasFee,
   IEstimateGasFeeResponse,
-  ILoginUserWithOtk,
   ILookForL2Address,
   ILookForL2AddressResponse,
-  IMinimalUserResponse,
   IPrepareL1TxnResponse,
   IRetrieveIdentity,
   IRetrieveIdentityResponse,
   ITransactionProposal,
 } from '@helium-pay/backend';
 
-import { axiosBase, axiosBaseV1 } from './axios-helper';
+import { axiosBase } from './axios-helper';
 
 export const OwnersAPI = {
   retrieveIdentity: async (
@@ -25,19 +23,6 @@ export const OwnersAPI = {
       throw new Error(data.message);
     }
 
-    return response.data;
-  },
-  loginV1: async (
-    loginData: ILoginUserWithOtk
-  ): Promise<IMinimalUserResponse> => {
-    const response = await axiosBaseV1.post(
-      `/auth/login`,
-      JSON.stringify(loginData)
-    );
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
     return response.data;
   },
 

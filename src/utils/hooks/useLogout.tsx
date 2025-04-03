@@ -5,22 +5,12 @@ import { LAST_HISTORY_ENTRIES } from '../../constants';
 import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
-import { axiosBase } from '../axios-helper';
 import { EXTENSION_EVENT, responseToSite } from '../chrome';
 
-export function useLogout(callLogout = true) {
+export function useLogout() {
   const { setCacheOtk } = useAccountStorage();
 
   return async () => {
-    // callLogout will be false if getting 401 errors, prevents recursive calls
-    if (callLogout) {
-      try {
-        await axiosBase.post(`/auth/logout`);
-      } catch {
-        console.error('Account already logged out');
-      }
-    }
-
     // Clear session variables
     setCacheOtk(null);
     await Preferences.remove({
