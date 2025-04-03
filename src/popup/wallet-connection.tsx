@@ -75,6 +75,8 @@ export function WalletConnection() {
         method: ETH_METHOD.REQUEST_ACCOUNTS,
         error: EXTENSION_ERROR.WC_SESSION_NOT_FOUND,
       });
+      window.removeEventListener('beforeunload', onPopupClosed);
+      await closePopup();
     }
   };
 
@@ -133,6 +135,7 @@ export function WalletConnection() {
 
   // Do NOT remove useCallback for removeEventListener to work
   const onPopupClosed = useCallback(() => {
+    // TODO: explore chrome.windows.onRemoved.addListener
     responseToSite({
       method: ETH_METHOD.REQUEST_ACCOUNTS,
       event: EXTENSION_EVENT.USER_CLOSED_POPUP,
@@ -144,9 +147,12 @@ export function WalletConnection() {
   };
 
   const onClickRejectConnect = async () => {
-    await reject();
-    window.removeEventListener('beforeunload', onPopupClosed);
-    await closePopup();
+    try {
+      await reject();
+    } finally {
+      window.removeEventListener('beforeunload', onPopupClosed);
+      await closePopup();
+    }
   };
 
   useEffect(() => {
@@ -167,6 +173,11 @@ export function WalletConnection() {
 
       await web3wallet?.pair({ uri });
     };
+
+    responseToSite({
+      method: ETH_METHOD.REQUEST_ACCOUNTS,
+      event: EXTENSION_EVENT.POPUP_READY,
+    });
 
     web3wallet.on('session_proposal', onSessionProposal);
     web3wallet.on('session_request', onSessionRequest);

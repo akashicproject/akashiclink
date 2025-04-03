@@ -4,8 +4,8 @@ import { mutate } from 'swr';
 import { LAST_HISTORY_ENTRIES } from '../../constants';
 import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
-import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { EXTENSION_EVENT, responseToSite } from '../chrome';
+import { useAccountStorage } from './useLocalAccounts';
 
 export function useLogout() {
   const { setCacheOtk } = useAccountStorage();
@@ -18,13 +18,13 @@ export function useLogout() {
     });
 
     // Clear the SWR cache for every key
-    mutate((_key) => true, undefined, { revalidate: false });
+    await mutate((_key) => true, undefined, { revalidate: false });
 
-    responseToSite({
+    await responseToSite({
       event: EXTENSION_EVENT.USER_LOCKED_WALLET,
     });
 
     // completely reset router history
-    historyResetStackAndRedirect(urls.akashicPay);
+    await historyResetStackAndRedirect(urls.akashicPay);
   };
 }

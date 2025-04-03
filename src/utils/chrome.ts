@@ -20,6 +20,7 @@ export const ETH_METHOD = {
 
 export const WALLET_METHOD = {
   UNLOCK_WALLET: 'UNLOCK_WALLET',
+  LOCK_WALLET: 'LOCK_WALLET',
 };
 
 export const TYPED_DATA_PRIMARY_TYPE = {
@@ -32,6 +33,18 @@ export const TYPED_DATA_PRIMARY_TYPE = {
 export const closePopup = async () => {
   const current = await window?.chrome?.windows?.getCurrent();
   current.id && (await window?.chrome?.windows?.remove(current.id));
+};
+
+export const closeAllPopup = async () => {
+  const context = await chrome?.runtime?.getContexts({
+    // @ts-ignore
+    contextTypes: ['TAB'],
+  });
+
+  // @ts-ignore
+  context?.forEach((ctx) => {
+    chrome.windows.remove(ctx.windowId);
+  });
 };
 
 export const responseToSite = async (response: unknown) => {
