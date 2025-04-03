@@ -65,7 +65,7 @@ export function SelectCoin({ changeCurrency }: SelectCoinProps) {
 
   useEffect(() => {
     changeCurrency(WALLET_CURRENCIES[0].symbol);
-  }, [changeCurrency]);
+  }, []);
 
   /** Handling choosing another currency and convert to USDT */
   const handleSlideChange = () => {
