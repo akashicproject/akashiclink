@@ -125,8 +125,8 @@ export const SendAmountInputAndDetail = ({
           <CurrencyChip disabled>
             {networkCurrencyCombinedDisplayName}
           </CurrencyChip>
-          {isL2 && <L2Icon size={28} />}
-          {!isL2 && <NetworkIcon chain={chain} size={28} />}
+          {isL2 && <L2Icon size={32} />}
+          {!isL2 && <NetworkIcon chain={chain} size={32} />}
         </IonCol>
       </IonRow>
       <IonRow className={'ion-grid-row-gap-xxxs'}>
