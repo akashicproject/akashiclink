@@ -25,7 +25,6 @@ export const useVerifyTxnAndSign = () => {
         amount,
         coinSymbol: chain,
         tokenSymbol: token,
-        forceL1: !isL2,
       });
 
       // reject the request if /verify returns multiple transfers

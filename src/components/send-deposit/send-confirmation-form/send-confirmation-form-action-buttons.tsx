@@ -117,7 +117,6 @@ export const SendConfirmationFormActionButtons = ({
       const response = isL2
         ? await OwnersAPI.sendL2TransactionUsingClientSideOtk({
             ...txn,
-            forceL1: undefined,
             signedTx: signedTxn as IBaseTransaction,
             initiatedToNonL2:
               txnsDetail.validatedAddressPair.userInputToAddressType !== 'l2'
