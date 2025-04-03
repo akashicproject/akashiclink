@@ -221,6 +221,7 @@ export function SendTo() {
 
   const [toAddress, setToAddress] = useState<string>('');
   const [inputAddress, setInputAddress] = useState<string>('');
+  const [l1AddressWhenL2, setL1AddressWhenL2] = useState<string>('');
 
   const [gasFree, setGasFree] = useState(false);
 
@@ -231,10 +232,17 @@ export function SendTo() {
     });
     if (l2address) {
       setToAddress(l2address);
+      if (
+        value.match(
+          NetworkDictionary[currentWalletCurrency.currency[0]].regex.address
+        )
+      )
+        setL1AddressWhenL2(value);
       setGasFree(true);
     } else {
       setShowNativeCoinNeeded(tokenSymbol !== undefined);
       setToAddress(value);
+      setL1AddressWhenL2('');
       setGasFree(false);
     }
     return l2address;
@@ -289,13 +297,14 @@ export function SendTo() {
       coinSymbol,
       tokenSymbol: tokenSymbol ? tokenSymbol : undefined,
       forceL1: !gasFree,
+      toL1Address: l1AddressWhenL2,
     };
     try {
       const response = await OwnersAPI.verifyTransaction(originalTxn);
       setVerifiedTransaction(response[0]);
       const feesEstimate = Number(response[0].feesEstimate || '0');
       const balance = Number(currentWallet.balance);
-      // if do not have enough balance to pay the estimated gas, can not to next step
+      // if user does not have enough balance to pay the estimated gas, can not go to next step
       if (balance < feesEstimate) {
         setVerifyError(
           t('insufficientBalance', {
