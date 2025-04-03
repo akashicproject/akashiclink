@@ -64,7 +64,11 @@ export function Nft() {
           backgroundColor: 'transparent',
           borderColor: 'white',
         }}
-        onClick={() => history.goBack()}
+        onClick={() =>
+          history.length > 1
+            ? history.goBack()
+            : history.replace(akashicPayPath(urls.loggedFunction))
+        }
       >
         <IonIcon
           style={{ color: 'white' }}
