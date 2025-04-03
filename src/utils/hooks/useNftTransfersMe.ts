@@ -12,7 +12,9 @@ export const useNftTransfersMe = (params?: INftTransactionRecordRequest) => {
   const { data, error } = useSWR(
     buildURL(`/nft/transfers/me`, params),
     fetcher,
-    {}
+    {
+      refreshInterval: 1000 * 10, // refresh interval every 10secs
+    }
   );
   // HACK: filter out pending transactions
   const filteredData = data?.filter(

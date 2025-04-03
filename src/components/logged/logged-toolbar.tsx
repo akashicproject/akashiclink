@@ -85,6 +85,10 @@ export function LoggedToolbar({
                 (key) =>
                   typeof key === 'string' && key.startsWith('/key/transfers/me')
               );
+              mutate(
+                (key) =>
+                  typeof key === 'string' && key.startsWith('/nft/transfers/me')
+              );
               mutate('/owner/agg-balances');
             }}
           >
