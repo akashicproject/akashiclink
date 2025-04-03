@@ -23,13 +23,9 @@ export const useTransfersMe = (params?: IClientTransactionRecord) => {
     date: new Date(d.date),
   }));
 
-  // HACK: filter out pending transactions
-  const filteredData = dataWithDates.filter(
-    (t) => t.status !== TransactionStatus.PENDING
-  );
   // HACK: set transactions with result = Failure to status = Failed
   // temporary solution until we finish the status code
-  const transformedFails = filteredData.map((t) =>
+  const transformedFails = dataWithDates.map((t) =>
     t.result === TransactionResult.FAILURE
       ? { ...t, status: TransactionStatus.FAILED }
       : t

@@ -5,6 +5,10 @@ import {
   TransactionType,
 } from '@helium-pay/backend';
 import { IonImg } from '@ionic/react';
+// TODO: Replace these by non-mui things
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import RotateRightOutlinedIcon from '@mui/icons-material/RotateRightOutlined';
 import type { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -44,7 +48,22 @@ const TimeWrapper = styled.div({
 });
 
 const Type = styled.div({
-  fontSize: '8px',
+  fontSize: '10px',
+  fontWeight: '700',
+  boxSizing: 'border-box',
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '45px',
+  width: '100%',
+  height: '23px',
+  border: '1px solid #958E99',
+  borderRadius: '8px 0px 0px 0px',
+  whiteSpace: 'nowrap',
+});
+
+const TypeIcon = styled.div({
   boxSizing: 'border-box',
   display: 'flex',
   flexDirection: 'row',
@@ -52,10 +71,10 @@ const Type = styled.div({
   justifyContent: 'center',
   padding: '3px 8px',
   gap: '45px',
-  width: '100%',
+  width: '22px',
   height: '23px',
   border: '1px solid #958E99',
-  borderRadius: '8px 8px 0px 0px',
+  borderRadius: '0px 8px 0px 0px',
 });
 
 const Time = styled.div({
@@ -186,7 +205,7 @@ export function OneActivity({
    */
   const iconStyle = {
     gap: isL2 ? '0px' : showDetail ? '8px' : '12px',
-    background:
+    backgroundColor:
       isL2 || isNft
         ? storedTheme === themeType.DARK
           ? '#C297FF'
@@ -203,14 +222,76 @@ export function OneActivity({
         hover={hasHoverEffect || false}
       >
         <TimeWrapper>
-          <Type>
-            {transfer.status === TransactionStatus.FAILED
-              ? `${transferType} - ${t('Failed')}`
-              : transferType}
-          </Type>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+            }}
+          >
+            <Type>
+              {transfer.status === TransactionStatus.FAILED ? (
+                <span
+                  style={{
+                    color: '#DE3730',
+                  }}
+                >
+                  {`${transferType} - ${t('Failed')}`}
+                </span>
+              ) : transfer.status === TransactionStatus.PENDING ? (
+                <span
+                  style={{
+                    color: '#DE3730',
+                  }}
+                >
+                  {`${transferType} - ${t('Pending')}`}
+                </span>
+              ) : (
+                transferType
+              )}
+            </Type>
+            <TypeIcon>
+              {transfer.status === TransactionStatus.FAILED ? (
+                <ErrorOutlineIcon
+                  sx={{
+                    fontSize: 'medium',
+                    color: 'error.main',
+                  }}
+                />
+              ) : transfer.status === TransactionStatus.PENDING ? (
+                <RotateRightOutlinedIcon
+                  sx={{
+                    fontSize: 'medium',
+                    color: 'error.main',
+                  }}
+                />
+              ) : (
+                <CheckOutlinedIcon
+                  sx={{
+                    fontSize: 'medium',
+                    color: '#41CC9A',
+                  }}
+                />
+              )}
+            </TypeIcon>
+          </div>
           <Time>{formatDate(new Date(transfer.date))}</Time>
         </TimeWrapper>
-        <Chain style={iconStyle}>
+        <Chain
+          style={
+            transfer.status !== TransactionStatus.CONFIRMED
+              ? {
+                  ...iconStyle,
+                  filter: 'brightness(100%)',
+                  backgroundColor:
+                    storedTheme === themeType.LIGHT ? '#B0A9B3' : '#4A454E',
+                }
+              : {
+                  ...iconStyle,
+                }
+          }
+        >
           <IonImg
             alt=""
             src={isL2 || isNft ? L2Icon : transfer.networkIcon}
@@ -240,7 +321,16 @@ export function OneActivity({
             </NftImage>
           </div>
         ) : (
-          <Amount>
+          <Amount
+            style={{
+              color:
+                transfer.status !== TransactionStatus.CONFIRMED
+                  ? '#B0A9B3'
+                  : storedTheme === themeType.LIGHT
+                  ? '#290056'
+                  : 'inherit',
+            }}
+          >
             {/* HACK: Reduce currency symbols to a single word to fit small screen */}
             {displayLongCurrencyAmount(
               limitDecimalPlaces(transfer.amount || '0'),
