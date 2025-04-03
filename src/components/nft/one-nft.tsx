@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import type { INft } from '@helium-pay/backend';
 import { IonContent, IonIcon, IonImg, IonPopover, IonRow } from '@ionic/react';
 import { t } from 'i18next';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { displayLongText } from '../../utils/long-text';
 import { getNftImage } from '../../utils/nft-image-link';
@@ -83,6 +83,7 @@ const AASListTag = styled.div({
   maxWidth: '80%',
   padding: '4px 20px',
 });
+
 export function OneNft(props: Props) {
   const handleCopy = async (accountName: string) => {
     await Clipboard.write({
@@ -96,6 +97,7 @@ export function OneNft(props: Props) {
   const popover = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [nftUrl, setNftUrl] = useState('');
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     async function getNft() {
@@ -104,6 +106,20 @@ export function OneNft(props: Props) {
     }
     getNft();
   }, []);
+
+  const placeholderSrc = useMemo(() => {
+    if (props.isAASDarkStyle) {
+      return '/shared-assets/images/img-placeholder-dark.svg';
+    }
+    return '/shared-assets/images/img-placeholder-light.svg';
+  }, [props.isAASDarkStyle]);
+
+  const imageClass = useMemo(() => {
+    if (props.isBig) {
+      return 'nft-image-big nft-img-size';
+    }
+    return 'nft-image-small nft-img-size';
+  }, [props.isBig]);
 
   return (
     <OneNFTContainer>
@@ -130,15 +146,39 @@ export function OneNft(props: Props) {
         isAASDarkStyle={props.isAASDarkStyle}
         isBig={props.isBig}
       >
-        <IonImg
-          alt={props.nft?.description}
-          src={nftUrl}
-          class={
-            props.isBig
-              ? 'nft-image-big nft-img-size'
-              : 'nft-image-small nft-img-size'
-          }
-        />
+        <div style={{ position: 'relative', width: '312px', height: '312px' }}>
+          <IonImg
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '20%',
+              height: '20%',
+            }}
+            alt="image-loading"
+            src={placeholderSrc}
+            class={imageClass}
+          />
+
+          {nftUrl && (
+            <IonImg
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                opacity: imageLoaded ? 1 : 0,
+                transition: 'opacity 0.5s ease-in-out',
+              }}
+              alt={props.nft?.description}
+              src={nftUrl}
+              class={imageClass}
+              onIonImgDidLoad={() => setImageLoaded(true)}
+            />
+          )}
+        </div>
         <AccountNameWrapper>
           <h5
             style={{
