@@ -161,7 +161,7 @@ export function ChangePassword() {
                 label={t('OldPassword')}
                 placeholder={t('EnterPassword')}
                 type="password"
-                onIonInput={({ target: { value } }) => {
+                onIonInput={({ detail: { value } }) => {
                   setOldPassword(value as string);
                   validatePasswordChange(
                     value as string,
@@ -179,7 +179,7 @@ export function ChangePassword() {
                 label={t('NewPassword')}
                 placeholder={t('EnterPassword')}
                 type="password"
-                onIonInput={({ target: { value } }) => {
+                onIonInput={({ detail: { value } }) => {
                   setNewPassword(value as string);
                   validatePasswordChange(
                     oldPassword,
@@ -197,7 +197,7 @@ export function ChangePassword() {
                 label={t('ConfirmPassword')}
                 type="password"
                 placeholder={t('ConfirmPassword')}
-                onIonInput={({ target: { value } }) => {
+                onIonInput={({ detail: { value } }) => {
                   setConfirmPassword(value as string);
                   validatePasswordChange(
                     oldPassword,

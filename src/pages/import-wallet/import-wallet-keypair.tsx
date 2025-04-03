@@ -76,7 +76,7 @@ export function ImportWalletKeypair() {
             type={'text'}
             value={importWalletForm.privateKey}
             placeholder={t('EnterKeyPair')}
-            onIonInput={({ target: { value } }) => {
+            onIonInput={({ detail: { value } }) => {
               dispatch(onClear());
               dispatch(
                 onInputChange({

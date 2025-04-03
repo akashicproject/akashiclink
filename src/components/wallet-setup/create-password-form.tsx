@@ -85,7 +85,7 @@ export function CreatePasswordForm({
                 label={t('NewPassword')}
                 placeholder={t('EnterPassword')}
                 type="password"
-                onIonInput={({ target: { value } }) => {
+                onIonInput={({ detail: { value } }) => {
                   dispatch(
                     onInputChange({
                       password: String(value),
@@ -102,7 +102,7 @@ export function CreatePasswordForm({
                 label={t('ConfirmPassword')}
                 type="password"
                 placeholder={t('ConfirmPassword')}
-                onIonInput={({ target: { value } }) => {
+                onIonInput={({ detail: { value } }) => {
                   dispatch(
                     onInputChange({
                       confirmPassword: String(value),

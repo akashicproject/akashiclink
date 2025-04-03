@@ -296,7 +296,7 @@ export function NftTransfer() {
                     placeholder={t('EnterAddress')}
                     type={'text'}
                     errorPrompt={StyledInputErrorPrompt.Address}
-                    onIonInput={({ target: { value } }) => {
+                    onIonInput={({ detail: { value } }) => {
                       !value && setSearchedResultType(SearchResult.NoInput);
                       typeof value === 'string' && inputToAddress(value);
                       typeof value === 'string' && setInputValue(value);

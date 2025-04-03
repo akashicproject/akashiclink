@@ -228,7 +228,7 @@ export function SecretWords({
                         type={visibility ? 'text' : 'password'}
                         disabled={disableInput ? initialWords[i] !== '' : false}
                         fillable={disableInput ? initialWords[i] === '' : true}
-                        onIonInput={({ target: { value } }) =>
+                        onIonInput={({ detail: { value } }) =>
                           onInputChange(value as string, i)
                         }
                       ></WordInput>
