@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { IonCol, IonRow } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,8 +22,8 @@ export function SettingsVersion() {
           const manifestData = JSON.parse(xhr.responseText);
           setVersion(manifestData.version);
           setReleaseDate(manifestData.releaseDate);
-        } catch {
-          setVersion('VersionInfoUnavailable');
+        } catch (error) {
+          datadogRum.addError(error);
         }
       }
     };

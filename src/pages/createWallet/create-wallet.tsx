@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import type { IActivateWalletAccountResponse } from '@helium-pay/backend';
 import {
   activationCodeRegex,
@@ -165,6 +166,7 @@ export function CreateWallet() {
         setAlertRequest(formAlertResetState);
         setAlertActivate(emailSentAlert);
       } catch (e) {
+        datadogRum.addError(e);
         setAlertRequest(errorAlertShell(t('GenericFailureMsg')));
       }
     } else setAlertRequest(errorAlertShell(t('InvalidEmail')));
@@ -215,6 +217,7 @@ export function CreateWallet() {
           createAccountResponse
         );
       } catch (e) {
+        datadogRum.addError(e);
         let message = t('GenericFailureMsg');
         if (axios.isAxiosError(e))
           message = e.response?.data?.message || message;

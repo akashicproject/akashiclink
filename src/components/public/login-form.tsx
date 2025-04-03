@@ -101,6 +101,7 @@ export function LoginForm() {
         history.push(akashicPayPath(urls.loggedFunction));
       }
     } catch (error) {
+      datadogRum.addError(error);
       setIsLoading(false);
       setAlert(errorAlertShell(t(unpackRequestErrorMessage(error))));
     }
