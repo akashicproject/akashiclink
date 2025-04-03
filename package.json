@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "yarn lint:fix && craco build",
-    "start:dev": "DISABLE_ESLINT_PLUGIN=true craco start",
+    "start:dev": "DISABLE_ESLINT_PLUGIN=true PORT=3001 craco start",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx,.cjs,.mjs,.mdx,.graphql --cache --cache-location ../../.cache/eslint/nextjs-app.eslintcache",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx,.cjs,.mjs,.mdx,.graphql --fix",
     "typecheck": "tsc --project ./tsconfig.json --noEmit"
