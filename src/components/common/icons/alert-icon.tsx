@@ -5,7 +5,7 @@ import { alertCircleOutline } from 'ionicons/icons';
 const StyledIcon = styled(IonIcon)`
   width: 48px;
   height: 48px;
-  color: var(--ion-color-light);
+  color: var(--ion-color-primary-70);
 `;
 
 export const AlertIcon = () => {
