@@ -24,11 +24,7 @@ export function Footer() {
           position: 'sticky',
           bottom: 0,
         }}
-      >
-        <FooterText>
-          {t('NeedHelp')} <a href={'url'}>{t('AkashicWalletSupport')}</a>
-        </FooterText>
-      </IonFooter>
+      ></IonFooter>
     </>
   );
 }
