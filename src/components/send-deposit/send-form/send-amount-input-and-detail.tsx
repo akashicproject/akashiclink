@@ -110,8 +110,12 @@ export const SendAmountInputAndDetail = ({
   };
 
   const onClickUseMax = () => {
-    const maxFee = calculateL2Fee(currencyBalance);
-    setAmount(Big(currencyBalance).sub(maxFee).toString());
+    setAlert(formAlertResetState);
+    setAmount(
+      Big(currencyBalance)
+        .sub(isL2 ? calculateL2Fee(currencyBalance) : '0')
+        .toString()
+    );
   };
 
   return (
