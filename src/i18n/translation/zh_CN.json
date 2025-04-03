@@ -126,5 +126,6 @@
   "Layer1": "Layer 1",
   "TransactionFee": "交易费",
   "showNativeCoinNeededMsg": "请确保你有足够的{{coinSymbol}}以支付矿工费。",
-  "insufficientBalance": "对不起，你没有足够的{{coinSymbol}}以支付矿工费。"
+  "insufficientBalance": "对不起，你没有足够的{{coinSymbol}}以支付矿工费。",
+  "invalidL2Address": "请提供正确的Layer L2接收地址。"
 }

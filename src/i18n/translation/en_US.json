@@ -126,5 +126,6 @@
   "Layer1": "Layer 1",
   "TransactionFee": "Transaction Fee",
   "showNativeCoinNeededMsg": "Please make sure you have enough {{coinSymbol}} to pay the gas.",
-  "insufficientBalance": "Sorry, your {{coinSymbol}} is not enough to pay the gas."
+  "insufficientBalance": "Sorry, your {{coinSymbol}} is not enough to pay the gas.",
+  "invalidL2Address": "Please provide a valid Layer 2 recipient address."
 }

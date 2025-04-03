@@ -19,6 +19,13 @@ export const unpackRequestErrorMessage = (error: unknown) => {
     : '';
 
   switch (errorMsg) {
+    // TODO: the 3 errors below are most likely handled server-side - check and remove
+    case errorMsg.includes('Stream(s) not found'):
+      return keyError.invalidL2Address;
+    case errorMsg.includes('Part-Balance to low'):
+      return keyError.savingsExceeded;
+    case errorMsg.includes('Input Stream'):
+      return otherError.providerError;
     case userError.userNotFoundError:
       return 'UserDoesNotExist';
     case userError.activationCodeInvalid:

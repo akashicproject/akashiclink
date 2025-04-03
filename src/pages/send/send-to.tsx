@@ -7,7 +7,6 @@ import {
   TEST_TO_MAIN,
 } from '@helium-pay/backend';
 import { IonCol, IonImg, IonRow, IonSpinner, useIonRouter } from '@ionic/react';
-import axios from 'axios';
 import Big from 'big.js';
 import { debounce } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
@@ -33,6 +32,7 @@ import { useKeyMe } from '../../utils/hooks/useKeyMe';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { lastPageStorage } from '../../utils/last-page-storage';
 import { WALLET_CURRENCIES } from '../../utils/supported-currencies';
+import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { SendConfirm } from './send-confirm';
 import { SendMain } from './send-main';
 import { SendResult } from './send-result';
@@ -315,9 +315,7 @@ export function SendTo() {
         setPageView(SendView.Confirm);
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setVerifyError(error?.response?.data?.message);
-      }
+      setVerifyError(t(unpackRequestErrorMessage(error)) as string);
     } finally {
       setLoading(false);
     }
