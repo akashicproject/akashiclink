@@ -27,4 +27,4 @@ const meta: Meta<typeof WalletConnection> = {
 export default meta;
 type Story = StoryObj<typeof WalletConnection>;
 
-export const WalletConnectionPage: Story = {};
+export const WalletConnectionPopup: Story = {};

@@ -10,8 +10,12 @@ const meta: Meta<typeof AkashicPayMain> = {
     isPopup: false,
   },
   parameters: {
-    hasLocalAccounts: false,
-    isLoggedIn: false,
+    store: {
+      account: {
+        hasLocalAccounts: false,
+        isLoggedIn: false,
+      },
+    },
   },
 };
 

@@ -11,7 +11,11 @@ const meta: Meta<typeof AkashicPayMain> = {
     isPopup: false,
   },
   parameters: {
-    isLoggedIn: false,
+    store: {
+      account: {
+        isLoggedIn: false,
+      },
+    },
   },
 };
 
