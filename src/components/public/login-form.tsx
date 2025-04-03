@@ -2,6 +2,7 @@ import { IonCol, IonRow, isPlatform } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
+import { datadogRum } from '@datadog/browser-rum';
 
 import { AccountSelection } from '../account-selection/account-selection';
 import {
@@ -66,6 +67,10 @@ export function LoginForm() {
         await OwnersAPI.login({
           username: selectedAccount.username,
           password,
+        });
+
+        datadogRum.setUser({
+          id: selectedAccount.username,
         });
         // Set the login account
         setActiveAccount(selectedAccount);
