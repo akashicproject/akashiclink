@@ -54,7 +54,6 @@ const Time = styled.div({
 });
 
 const Amount = styled.div({
-  fontSize: '0.75rem',
   fontWeight: 700,
   color: 'var(--ion-color-primary-10)',
 });
@@ -249,6 +248,7 @@ export function OneActivity({
         ) : (
           <AmountWrapper>
             <Amount
+              className="ion-text-size-xs"
               style={{
                 color: !isTxnConfirmed
                   ? 'var(--activity-dim-text)'
@@ -257,9 +257,13 @@ export function OneActivity({
                   : 'var(--ion-color-failed)',
               }}
             >
-              {`${isTxnDeposit ? '+' : '-'}${Big(transfer.amount).toFixed(
-                amountPrecision
-              )} ${currencyDisplayName}`}
+              {displayLongText(
+                `${isTxnDeposit ? '+' : '-'}${Big(transfer.amount).toFixed(
+                  amountPrecision
+                )} ${currencyDisplayName}`,
+                26,
+                true
+              )}
             </Amount>
             {!isTxnDeposit && transfer.feesPaid && (
               <GasFee

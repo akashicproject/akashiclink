@@ -109,7 +109,7 @@ export function ActivityAndNftTab() {
       />
       <div
         className="vertical"
-        style={{ padding: '0px 24px', paddingTop: '16px' }}
+        style={{ padding: '0px 16px', paddingTop: '24px' }}
       >
         {!nftTab &&
           walletFormatTransfers
