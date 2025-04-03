@@ -33,10 +33,11 @@ const StyledDiv = styled.div<DivProps>`
   display: flex;
   align-items: center;
   gap: 4px;
-  border: 2px solid var(--ion-color-light);
+  border: 2px solid #c297ff;
   border-radius: 8px;
   width: 100%;
   margin-bottom: 24px;
+  text-align: 'center';
 `;
 export const SecretPhraseImport = () => {
   const history = useHistory();
@@ -92,7 +93,7 @@ export const SecretPhraseImport = () => {
   return (
     <PublicLayout contentStyle={{ padding: '0 10px' }}>
       <MainGrid style={{ gap: '15px', padding: '0px 15px' }}>
-        <IonRow>
+        <IonRow style={{ justifyContent: 'center' }}>
           <h2
             style={{
               fontSize: '20px',
@@ -105,7 +106,7 @@ export const SecretPhraseImport = () => {
             <a
               href="https://akashic-1.gitbook.io/akashicwallet/"
               target={'_blank'}
-              style={{ textDecoration: 'none' }}
+              style={{ textDecoration: 'none', color: '#7444B6' }}
               rel="noreferrer"
             >
               {t('LearnMore')}

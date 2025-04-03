@@ -30,7 +30,7 @@ export const SelectImportMethod = () => {
     <PublicLayout contentStyle={{ padding: '0 30px' }}>
       <MainGrid style={{ gap: '16px', padding: '142px 15px' }}>
         <IonRow>
-          <IonCol>
+          <IonCol style={{ textAlign: 'center' }}>
             <h2 style={{ marginBottom: '8px' }}>{t('ImportWallet')}</h2>
             <StyledSpan style={{ textAlign: 'center' }}>
               {t('PleaseChooseSecurityOptionToImportWallet')}

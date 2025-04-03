@@ -103,8 +103,8 @@ export function LoginForm() {
   return (
     <>
       <CustomAlert state={alert} />
-      <h1 style={{margin: '0px'}} className="ion-justify-content-center">{t('WelcomeBack')}</h1>
-      <h3 style={{marginTop: '8px'}} className="ion-justify-content-center">
+      <h1 className="ion-justify-content-center">{t('WelcomeBack')}</h1>
+      <h3 className="ion-justify-content-center">
         {t('EmpoweringYourWealth')}
       </h3>
       <AccountSelection
@@ -124,7 +124,12 @@ export function LoginForm() {
       </IonRow>
       <IonRow>
         <IonCol>
-          <PurpleButton onClick={login} style={{width: '100%'}} expand="block" disabled={!password}>
+          <PurpleButton
+            onClick={login}
+            style={{ width: '100%' }}
+            expand="block"
+            disabled={!password}
+          >
             {t('Unlock')}
           </PurpleButton>
         </IonCol>
