@@ -284,6 +284,9 @@ export function SendTo() {
               token
             )
           );
+        } else if (L2Regex.exec(recipientAddress)) {
+          // If matches L2 format, but none found, show error
+          setAlertRequest(errorAlertShell(t('invalidL2Address')));
         } else {
           setL1AddressWhenL2(undefined);
           setToAddress(recipientAddress);
@@ -299,7 +302,12 @@ export function SendTo() {
   const debouncedHandleGasFee = useCallback(
     // Call the API to estimate gas fee when the user stops typing
     debounce(async (amountValue: string, toAddress: string) => {
-      if (amountValue && Big(amountValue).gt(0) && toAddress) {
+      if (
+        amountValue &&
+        Big(amountValue).gt(0) &&
+        toAddress &&
+        NetworkDictionary[chain].regex.address.exec(toAddress)
+      ) {
         const gas = await OwnersAPI.estimateGasFee({
           fromAddress: currentWallet.address,
           toAddress,
