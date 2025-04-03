@@ -38,6 +38,7 @@ import type {
   IUpdateAcns,
   IUpdateAcnsResponse,
   IUpdateAcnsUsingClientSideOtk,
+  IValidatePassword,
   IVerifyNftResponse,
   IVerifyUpdateAcnsResponse,
 } from '@helium-pay/backend';
@@ -99,7 +100,7 @@ export const OwnersAPI = {
 
     return response.data;
   },
-  validatePassword: async (loginData: ILoginUser): Promise<void> => {
+  validatePassword: async (loginData: IValidatePassword): Promise<void> => {
     const response = await axiosBase.post(
       `/auth/validatePassword`,
       JSON.stringify(loginData)
