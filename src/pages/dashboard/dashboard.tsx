@@ -20,7 +20,7 @@ export function Dashboard() {
           width: '100%',
           height: '40vh',
           margin: '0px',
-          padding: '32px 48px',
+          padding: '24px 48px',
         }}
       >
         <SelectCoin />

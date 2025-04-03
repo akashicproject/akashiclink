@@ -7,7 +7,7 @@ import type {
   ITransactionSettledResponse,
 } from '@helium-pay/backend';
 import { userConst } from '@helium-pay/backend';
-import { IonCol, IonIcon, IonRow, IonSpinner } from '@ionic/react';
+import { IonCol, IonIcon, IonRow } from '@ionic/react';
 import axios from 'axios';
 import Big from 'big.js';
 import { arrowForwardCircleOutline } from 'ionicons/icons';
@@ -24,56 +24,36 @@ import { PurpleButton, WhiteButton } from '../../components/common/buttons';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
 import type { LocationState } from '../../routing/history';
+import { historyGoBackOrReplace } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { OwnersAPI } from '../../utils/api';
+import { useDisableDeviceBackButton } from '../../utils/hooks/useDisableDeviceBackButton';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import { displayLongText } from '../../utils/long-text';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { SendMain } from './send-main';
+import { TextContent, TextTitle, TextWrapper } from './send-result';
 
 const ContentWrapper = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  padding: '0px',
-  gap: '24px',
-  width: '270px',
+  padding: '0',
+  gap: '8px',
+  width: '100%',
 });
 
 const Divider = styled.div({
   borderTop: '1px solid #D9D9D9',
   boxSizing: 'border-box',
   height: '2px',
-  width: '270px',
-});
-
-const TextWrapper = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '0px',
-  width: '270px',
-});
-
-const TextTitle = styled.div({
-  fontStyle: 'normal',
-  fontWeight: 700,
-  fontSize: '16px',
-  lineHeight: '24px',
-  color: 'var(--ion-color-primary-10)',
-});
-
-const TextContent = styled.div({
-  fontStyle: 'normal',
-  fontWeight: 400,
-  fontSize: '16px',
-  lineHeight: '20px',
-  color: 'var(--ion-color-primary-10)',
+  width: '100%',
 });
 
 export function SendConfirm() {
   useIosScrollPasswordKeyboardIntoView();
+  useDisableDeviceBackButton();
+
   const { t } = useTranslation();
   const [alert, setAlert] = useState(formAlertResetState);
   const [loading, setLoading] = useState(false);
@@ -95,7 +75,7 @@ export function SendConfirm() {
     : '0';
 
   const goToResult = (signError: string) => {
-    history.push({
+    history.replace({
       pathname: akashicPayPath(urls.sendResult),
       state: {
         sendResult: {
@@ -155,93 +135,105 @@ export function SendConfirm() {
       }
     }
   }
+
   return (
     <SendMain>
       <CustomAlert state={alert} />
-      <IonRow style={{ marginTop: '40px' }}>
+      <IonRow>
         <IonCol class="ion-center">
           <ContentWrapper>
             <TextWrapper>
-              <TextContent>
+              <TextTitle>
+                <span className={'ion-text-size-xs ion-text-bold'}>
+                  {t('From')}
+                </span>
                 {displayLongText(
                   state?.transaction
                     ? (state?.transaction[0] as IL1ClientSideOtkTransactionBase)
                         ?.fromAddress ?? state.fromAddress
                     : ''
                 )}
-              </TextContent>
+              </TextTitle>
               <IonIcon icon={arrowForwardCircleOutline} />
-              <TextContent>
+              <TextTitle className={'ion-align-items-end'}>
+                <span className={'ion-text-size-xs ion-text-bold'}>
+                  {t('To')}
+                </span>
                 {displayLongText(
                   state?.transaction ? state?.transaction[0].toAddress : ''
                 )}
-              </TextContent>
-            </TextWrapper>
-            <TextWrapper>
-              <TextTitle>{t('Amount')}</TextTitle>
-              <TextTitle>
-                {totalAmount.toString()} {state?.currencyDisplayName}
               </TextTitle>
             </TextWrapper>
-            <Divider />
+          </ContentWrapper>
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol size={'12'}>
+          <Divider />
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol size={'12'}>
+          <ContentWrapper>
+            <TextWrapper>
+              <TextTitle>{t('Amount')}</TextTitle>
+              <TextContent>
+                {Big(totalAmount).toFixed(2)} {state?.currencyDisplayName}
+              </TextContent>
+            </TextWrapper>
             <TextWrapper>
               <TextTitle>{t('SendTo')}</TextTitle>
               <TextContent>
-                {displayLongText(
-                  state?.transaction ? state?.transaction[0].toAddress : ''
-                )}
+                {displayLongText(state?.transaction?.[0]?.toAddress ?? '-')}
               </TextContent>
             </TextWrapper>
             <TextWrapper>
               <TextTitle>{t('EsTGasFee')}</TextTitle>
               <TextContent>
-                {displayLongText(
-                  state?.transaction ? state?.transaction[0].feesEstimate : ''
-                )}
+                {state?.transaction?.[0]?.feesEstimate
+                  ? Big(state?.transaction?.[0]?.feesEstimate).toFixed(2)
+                  : '-'}
               </TextContent>
             </TextWrapper>
             <TextWrapper>
               <TextTitle>{t('Fee')}</TextTitle>
               <TextContent>
-                {state?.transaction?.[0]?.internalFee?.withdraw ?? '-'}
+                {state?.transaction?.[0]?.internalFee?.withdraw
+                  ? Big(state?.transaction?.[0]?.internalFee?.withdraw).toFixed(
+                      2
+                    )
+                  : '-'}
               </TextContent>
             </TextWrapper>
             <TextWrapper>
               <TextTitle>{t('Total')}</TextTitle>
-              <TextContent>{totalAmountWithFees.toString()}</TextContent>
+              <TextContent>{Big(totalAmountWithFees).toFixed(2)}</TextContent>
             </TextWrapper>
-            <Divider />
           </ContentWrapper>
         </IonCol>
       </IonRow>
-      <IonRow
-        class="ion-justify-content-between"
-        style={{
-          marginTop: '24px',
-          padding: '0px 50px',
-        }}
-      >
-        <IonCol>
+      <IonRow>
+        <IonCol size={'12'}>
+          <Divider />
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol size={'6'}>
           <PurpleButton
             expand="block"
             onClick={signTransaction}
             disabled={loading}
+            isLoading={loading}
           >
             {t('Confirm')}
-            {loading ? (
-              <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
-            ) : null}
           </PurpleButton>
         </IonCol>
-        <IonCol
-          style={{
-            display: 'flex',
-            justifyContent: 'end',
-          }}
-        >
+        <IonCol size={'6'}>
           <WhiteButton
+            expand="block"
+            disabled={loading}
             onClick={() => {
-              history.push(akashicPayPath(urls.dashboard));
+              historyGoBackOrReplace();
             }}
           >
             {t('GoBack')}

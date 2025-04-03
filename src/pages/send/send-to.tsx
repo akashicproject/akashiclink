@@ -15,14 +15,12 @@ import {
   NetworkDictionary,
   TEST_TO_MAIN,
 } from '@helium-pay/backend';
-import { IonCol, IonImg, IonRow, IonSpinner } from '@ionic/react';
+import { IonCol, IonImg, IonRow } from '@ionic/react';
 import axios from 'axios';
 import Big from 'big.js';
-import { debounce } from 'lodash';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { SwiperSlide } from 'swiper/react';
 
 import {
   AlertBox,
@@ -42,6 +40,7 @@ import {
 } from '../../components/providers/PreferenceProvider';
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { urls } from '../../constants/urls';
+import { historyGoBackOrReplace } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 import { OwnersAPI } from '../../utils/api';
@@ -55,20 +54,19 @@ import { signTxBody } from '../../utils/nitr0gen-api';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { SendMain } from './send-main';
 
-/** Styled components */
 const SendWrapper = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   padding: 0,
-  gap: '8px',
-  width: '270px',
+  gap: '12px',
 });
 
 export const Divider = styled.div({
   borderTop: '1px solid #D9D9D9',
   boxSizing: 'border-box',
   height: '2px',
+  width: '100%',
 });
 
 const CurrencyWrapper = styled.div({
@@ -78,7 +76,6 @@ const CurrencyWrapper = styled.div({
   padding: 0,
   gap: '8px',
   width: '100%',
-  height: '76px',
 });
 
 const BalanceText = styled.div({
@@ -95,8 +92,8 @@ const GasWrapper = styled.div({
   flexDirection: 'row',
   alignItems: 'center',
   padding: '0',
-  gap: '16px',
-  width: '270px',
+  width: '100%',
+  gap: '8px',
   height: '28px',
 });
 
@@ -107,7 +104,7 @@ const GasFreeMarker = styled.div({
   alignItems: 'center',
   padding: '6px 16px',
   gap: '8px',
-  width: '127px',
+  width: '100%',
   height: '28px',
   borderRadius: '8px',
   fontWeight: '400',
@@ -122,7 +119,7 @@ const FeeMarker = styled.div({
   alignItems: 'center',
   padding: '6px 16px',
   gap: '8px',
-  width: '127px',
+  width: '100%',
   height: '28px',
   borderRadius: '8px',
   fontWeight: '400',
@@ -139,9 +136,9 @@ const EqualsL2Box = styled.div({
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
+  flex: 1,
 
   gap: '8px',
-  width: '270px',
   height: '40px',
 
   borderRadius: '8px',
@@ -463,16 +460,15 @@ export function SendTo() {
     <>
       <CustomAlert state={alert} />
       <SendMain>
-        <IonRow style={{ marginTop: '36px' }}>
-          <IonCol class="ion-center">
+        <IonRow>
+          <IonCol>
             <CurrencyWrapper>
-              <SwiperSlide
+              <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexDirection: 'row',
-                  height: '80%',
                 }}
               >
                 <IonImg
@@ -502,16 +498,22 @@ export function SendTo() {
                     }}
                   />
                 )}
-              </SwiperSlide>
+              </div>
               <BalanceText>
-                {aggregatedBalances.get(currentWalletMetadata.walletCurrency)}{' '}
-                {currentWalletMetadata.walletCurrency.displayName}
+                {Big(
+                  aggregatedBalances.get(
+                    currentWalletMetadata.walletCurrency
+                  ) ?? '0'
+                ).toFixed(2)}{' '}
+                <span className={'ion-text-size-md'}>
+                  {currentWalletMetadata.walletCurrency.displayName}
+                </span>
               </BalanceText>
             </CurrencyWrapper>
           </IonCol>
         </IonRow>
-        <IonRow style={{ marginTop: '28px' }}>
-          <IonCol class="ion-center">
+        <IonRow>
+          <IonCol>
             <SendWrapper>
               <StyledInput
                 isHorizontal={true}
@@ -550,7 +552,7 @@ export function SendTo() {
                         ? '/shared-assets/images/right-light.svg'
                         : '/shared-assets/images/right-dark.svg'
                     }
-                    style={{ width: '40px', height: '40px' }}
+                    style={{ width: '32px', height: '32px' }}
                   />
                 )}
               </GasWrapper>
@@ -566,7 +568,7 @@ export function SendTo() {
                   <IonImg
                     alt={''}
                     src={'/shared-assets/images/right.png'}
-                    style={{ width: '40px', height: '40px' }}
+                    style={{ width: '32px', height: '32px' }}
                   />
                 </GasWrapper>
               )}
@@ -590,7 +592,7 @@ export function SendTo() {
                   )}
                 </Chain>
               )}
-              <GasWrapper>
+              <GasWrapper className={'ion-justify-content-between'}>
                 {gasFree && (
                   <GasFreeMarker
                     style={{
@@ -637,19 +639,17 @@ export function SendTo() {
                       amountAlertRequest.visible ||
                       recipientAlertRequest.visible
                     }
+                    isLoading={loading}
                   >
                     {t('Send')}
-                    {loading ? (
-                      <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
-                    ) : null}
                   </PurpleButton>
                 </IonCol>
                 <IonCol size="6" style={{ paddingRight: '0' }}>
                   <WhiteButton
                     style={{ width: '100%', marginRight: '0' }}
                     expand="block"
-                    routerLink={akashicPayPath(urls.dashboard)}
-                    onClick={() => history.goBack()}
+                    disabled={loading}
+                    onClick={() => historyGoBackOrReplace()}
                   >
                     {t('Cancel')}
                   </WhiteButton>

@@ -73,7 +73,8 @@
   border-radius: 8px;
   --min-height: 40px;
   height: 40px;
-  width: 270px;
+  width: 100%;
+  min-width: 270px;
 
   ion-label {
     font-family: 'Nunito Sans', serif;

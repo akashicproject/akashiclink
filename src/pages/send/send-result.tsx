@@ -1,17 +1,18 @@
 import styled from '@emotion/styled';
 import type { IL1ClientSideOtkTransactionBase } from '@helium-pay/backend';
-import { IonCol, IonImg, IonRow } from '@ionic/react';
+import { IonCol, IonIcon, IonImg, IonRow } from '@ionic/react';
 import Big from 'big.js';
+import { arrowForwardCircleOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
 import { PurpleButton } from '../../components/common/buttons';
 import { DividerDivWithoutMargin } from '../../components/common/divider';
 import { errorMsgs } from '../../constants/error-messages';
-import { urls } from '../../constants/urls';
 import type { LocationState } from '../../routing/history';
-import { akashicPayPath } from '../../routing/navigation-tabs';
+import { historyResetStackAndRedirect } from '../../routing/history';
 import { useBalancesMe } from '../../utils/hooks/useBalancesMe';
+import { useDisableDeviceBackButton } from '../../utils/hooks/useDisableDeviceBackButton';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { displayLongText } from '../../utils/long-text';
 import { SendMain } from './send-main';
@@ -25,14 +26,12 @@ export const HeaderWrapper = styled.div({
   padding: 0,
   gap: '16px',
   height: '80px',
-  width: '150px',
-  marginTop: '20px',
 });
 
 export const HeaderTitle = styled.div({
   fontStyle: 'normal',
   fontWeight: 700,
-  fontSize: '14px',
+  fontSize: '16px',
   lineHeight: '20px',
   color: 'var(--ion-color-primary-10)',
   textAlign: 'center',
@@ -43,8 +42,8 @@ export const ResultContent = styled.div({
   flexDirection: 'column',
   alignItems: 'flex-start',
   padding: '0px',
-  gap: '16px',
-  width: '270px',
+  gap: '8px',
+  width: '100%',
 });
 
 export const TextWrapper = styled.div({
@@ -53,16 +52,18 @@ export const TextWrapper = styled.div({
   alignItems: 'center',
   justifyContent: 'space-between',
   padding: '0px',
-  width: '270px',
-  height: '24px',
+  minHeight: '24px',
+  width: '100%',
 });
 
 export const TextTitle = styled.div({
   fontStyle: 'normal',
   fontWeight: 400,
-  fontSize: '16px',
+  fontSize: '12px',
   lineHeight: '20px',
   color: 'var(--ion-color-primary-10)',
+  display: 'flex',
+  flexDirection: 'column',
 });
 
 export const TextContent = styled.div({
@@ -74,6 +75,8 @@ export const TextContent = styled.div({
 });
 
 export function SendResult() {
+  useDisableDeviceBackButton();
+
   const { t } = useTranslation();
   const { mutateBalancesMe } = useBalancesMe();
   const { mutateTransfersMe } = useTransfersMe();
@@ -105,22 +108,28 @@ export function SendResult() {
               }
               style={{ width: '40px', height: '40px' }}
             />
-            <HeaderTitle style={{ width: '213px' }}>
+            <HeaderTitle>
               {wrongResult
                 ? state?.errorMsg
                 : t('TransactionSuccessful') + Layer}
             </HeaderTitle>
-            <DividerDivWithoutMargin />
           </HeaderWrapper>
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol>
+          <DividerDivWithoutMargin />
         </IonCol>
       </IonRow>
       {wrongResult ? null : (
         <IonRow>
-          <IonCol class="ion-center" style={{ marginTop: '20px' }}>
+          <IonCol size={'12'}>
             <ResultContent>
               <TextWrapper>
-                <TextTitle>{t('Send')}</TextTitle>
-                <TextContent>
+                <TextTitle>
+                  <span className={'ion-text-size-xs ion-text-bold'}>
+                    {t('From')}
+                  </span>
                   {displayLongText(
                     state?.transaction
                       ? (
@@ -129,15 +138,16 @@ export function SendResult() {
                         )?.fromAddress ?? state.fromAddress
                       : ''
                   )}
-                </TextContent>
-              </TextWrapper>
-              <TextWrapper>
-                <TextTitle>{t('Receiver')}</TextTitle>
-                <TextContent>
+                </TextTitle>
+                <IonIcon icon={arrowForwardCircleOutline} />
+                <TextTitle className={'ion-align-items-end'}>
+                  <span className={'ion-text-size-xs ion-text-bold'}>
+                    {t('To')}
+                  </span>
                   {displayLongText(
                     state?.transaction ? state?.transaction[0].toAddress : ''
                   )}
-                </TextContent>
+                </TextTitle>
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('Coin')}</TextTitle>
@@ -145,34 +155,38 @@ export function SendResult() {
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('Amount')}</TextTitle>
-                <TextContent>{totalAmount}</TextContent>
+                <TextContent>{Big(totalAmount).toFixed(2)}</TextContent>
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('EsTGasFee')}</TextTitle>
                 <TextContent>
-                  {displayLongText(
-                    state?.transaction ? state?.transaction[0].feesEstimate : ''
-                  )}
+                  {state?.transaction?.[0]?.feesEstimate
+                    ? Big(state?.transaction?.[0]?.feesEstimate).toFixed(2)
+                    : '-'}
                 </TextContent>
               </TextWrapper>
               <TextWrapper>
                 <TextTitle>{t('InternalFee')}</TextTitle>
                 <TextContent>
-                  {state?.transaction?.[0]?.internalFee?.withdraw ?? '-'}
+                  {state?.transaction?.[0]?.internalFee?.withdraw
+                    ? Big(
+                        state?.transaction?.[0]?.internalFee?.withdraw
+                      ).toFixed(2)
+                    : '-'}
                 </TextContent>
               </TextWrapper>
             </ResultContent>
           </IonCol>
         </IonRow>
       )}
-      <IonRow style={{ marginTop: '50px', padding: '0px 50px' }}>
-        <IonCol>
+      <IonRow className={'ion-center'}>
+        <IonCol size={'6'}>
           <PurpleButton
             expand="block"
             onClick={async () => {
               await mutateBalancesMe();
               await mutateTransfersMe();
-              history.push(akashicPayPath(urls.dashboard));
+              historyResetStackAndRedirect();
             }}
           >
             {t('Confirm')}

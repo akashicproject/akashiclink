@@ -74,7 +74,7 @@ export function Toolbar({
           className="ion-no-padding"
           style={{
             width: '71%',
-            flex: '0 0 71%',
+            flex: '1 0 71%',
           }}
         >
           {showAddress && (
