@@ -1,6 +1,8 @@
 import { datadogRum } from '@datadog/browser-rum';
 import {
+  type ITransactionProposal,
   type ITransactionVerifyResponse,
+  keyError,
   L2Regex,
   TransactionLayer,
 } from '@helium-pay/backend';
@@ -10,57 +12,81 @@ import { useAppSelector } from '../../redux/app/hooks';
 import { selectCacheOtk } from '../../redux/slices/accountSlice';
 import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
 import { OwnersAPI } from '../api';
-import type { L2TxDetail } from '../nitr0gen/nitr0gen.interface';
+import { convertObjectCurrencies, convertToFromDecimals } from '../currency';
+import { calculateInternalWithdrawalFee } from '../internal-fee';
 import { Nitr0genApi, signTxBody } from '../nitr0gen/nitr0gen-api';
 import { unpackRequestErrorMessage } from '../unpack-request-error-message';
+import { useAccountMe } from './useAccountMe';
+import { useExchangeRates } from './useExchangeRates';
 import { useAccountStorage } from './useLocalAccounts';
 
 export const useVerifyTxnAndSign = () => {
   const { chain, token } = useAppSelector(selectFocusCurrencyDetail);
   const cacheOtk = useAppSelector(selectCacheOtk);
   const { activeAccount } = useAccountStorage();
+  const { exchangeRates } = useExchangeRates();
+  const { data: account } = useAccountMe();
 
   return async (validatedAddressPair: ValidatedAddressPair, amount: string) => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
     const nitr0genApi = new Nitr0genApi();
 
     try {
-      if (!cacheOtk || !activeAccount) {
+      if (!cacheOtk || !activeAccount || !account) {
         return 'GenericFailureMsg';
       }
 
       let txns: ITransactionVerifyResponse[];
-      try {
-        txns = await OwnersAPI.verifyTransactionUsingClientSideOtk({
+
+      if (isL2) {
+        // AC needs smallest units, so we convert
+        const transactionData: ITransactionProposal = {
+          toAddress: validatedAddressPair.convertedToAddress,
+          amount: convertToFromDecimals(amount, chain, 'to', token),
+          coinSymbol: chain,
+          tokenSymbol: token,
+        };
+        if (activeAccount.identity === transactionData.toAddress)
+          throw new Error(keyError.noSelfSend);
+
+        const txBody = await nitr0genApi.L2Transaction(
+          cacheOtk,
+          transactionData
+        );
+        // Convert back to "normal" units for displaying to user
+        txns = [
+          {
+            ...convertObjectCurrencies(transactionData, 'from'),
+            internalFee: {
+              withdraw: calculateInternalWithdrawalFee(
+                amount,
+                exchangeRates,
+                chain,
+                token
+              ),
+            },
+            layer: TransactionLayer.L2,
+            fromAddress: activeAccount.identity,
+            txToSign: txBody,
+          },
+        ];
+
+        return {
+          txns,
+          signedTxns: [txBody],
+        };
+      } else {
+        // Backend accepts "normal" units, so we don't convert
+        const transactionData: ITransactionProposal = {
           toAddress: validatedAddressPair.convertedToAddress,
           amount,
           coinSymbol: chain,
           tokenSymbol: token,
-        });
-      } catch (error) {
-        datadogRum.addError(error);
+        };
 
-        // fallback to build transaction locally
-        if (isL2) {
-          const l2TxDetail: L2TxDetail = {
-            toAddress: validatedAddressPair.convertedToAddress,
-            amount,
-            coinSymbol: chain,
-            tokenSymbol: token,
-          };
-          const txBody = await nitr0genApi.L2Transaction(cacheOtk, l2TxDetail);
-          txns = [
-            {
-              ...l2TxDetail,
-              layer: TransactionLayer.L2,
-              fromAddress: activeAccount.identity,
-              txToSign: txBody,
-            },
-          ];
-        } else {
-          // TODO: build L1 transaction locally
-          return 'GenericFailureMsg';
-        }
+        txns = await OwnersAPI.verifyTransactionUsingClientSideOtk(
+          transactionData
+        );
       }
 
       // reject the request if /verify returns multiple transfers
