@@ -1,21 +1,20 @@
 import './switch.css';
 
-// import type { IKey } from '@activeledger/sdk/lib/interfaces';
 import styled from '@emotion/styled';
-// import type {
-//   IUpdateAcns,
-//   IUpdateAcnsUsingClientSideOtk,
-//   IVerifyUpdateAcnsResponse,
-// } from '@helium-pay/backend/dist/apps/backend';
+import type {
+  IUpdateAcns,
+  IVerifyUpdateAcnsResponse,
+} from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import axios from 'axios';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { OwnersAPI } from '../../utils/api';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
-// import { Nitr0genApi } from '../../utils/nitrogen-api';
+import { Nitr0genApi } from '../../utils/nitrogen-api';
+import { CacheOtkContext } from '../PreferenceProvider';
 import { Toggle } from '../toggle/toggle';
 
 const StyledIonRow = styled(IonRow)`
@@ -39,6 +38,7 @@ export const AasListingSwitch = ({
   customAlertHandle: React.Dispatch<React.SetStateAction<boolean>>;
   customAlertMessage: React.Dispatch<React.SetStateAction<string>>;
 }) => {
+  const { cacheOtk } = useContext(CacheOtkContext);
   const { activeAccount } = useAccountStorage();
   const { mutate } = useNftMe();
   const { t } = useTranslation();
@@ -48,46 +48,26 @@ export const AasListingSwitch = ({
     try {
       setIsLoading(true);
       if (name) {
-        await OwnersAPI.updateAcns({
+        const newValue = !isListed ? activeAccount!.identity : undefined;
+        const verifyUpdateAcnsResponse: IVerifyUpdateAcnsResponse =
+          await OwnersAPI.verifyUpdateAcns({
+            name: name,
+            newValue: newValue,
+          } as IUpdateAcns);
+
+        const signedTx = await Nitr0genApi.acnsRecord(
+          cacheOtk!,
+          verifyUpdateAcnsResponse.nftAcnsStreamId,
+          verifyUpdateAcnsResponse.nftAcnsRecordType,
+          verifyUpdateAcnsResponse.nftAcnsRecordKey,
+          newValue ?? null
+        );
+
+        await OwnersAPI.updateAcnsUsingClientSideOtk({
+          signedTx: signedTx,
           name: name,
-          newValue: !isListed ? activeAccount!.identity : null,
+          newValue: newValue,
         });
-        // TODO: Enable when migrating to otk
-        //   const newValue = !isListed ? activeAccount!.identity : undefined;
-        //   const verifyUpdateAcnsResponse: IVerifyUpdateAcnsResponse =
-        //     await OwnersAPI.verifyUpdateAcns({
-        //       name: name,
-        //       newValue: newValue,
-        //     } as IUpdateAcns);
-
-        //   // TODO: need to get a otk from Keystore Service
-        //   const otk: IKey = {
-        //     key: {
-        //       pub: {
-        //         pkcs8pem: 'dummy',
-        //         hash: 'dummy',
-        //       },
-        //       prv: {
-        //         pkcs8pem: 'dummy',
-        //         hash: 'dummy',
-        //       },
-        //     },
-        //     name: 'dummy',
-        //     type: 'dummy',
-        //   };
-        //   const signedTx = await Nitr0genApi.acnsRecord(
-        //     otk,
-        //     verifyUpdateAcnsResponse.nftAcnsStreamId,
-        //     verifyUpdateAcnsResponse.nftAcnsRecordType,
-        //     verifyUpdateAcnsResponse.nftAcnsRecordKey,
-        //     newValue ?? null
-        //   );
-
-        //   await OwnersAPI.updateAcnsUsingClientSideOtk({
-        //     signedTx: signedTx,
-        //     name: name,
-        //     newValue: newValue,
-        //   });
       }
 
       await mutate();

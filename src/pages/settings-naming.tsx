@@ -1,13 +1,12 @@
 import './settings.css';
 
-// import type { IKey } from '@activeledger/sdk/lib/interfaces';
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
 import type {
   IAcnsResponse,
-  // IUpdateAcns,
-  // IUpdateAcnsUsingClientSideOtk,
-  // IVerifyUpdateAcnsResponse,
+  IUpdateAcns,
+  IUpdateAcnsUsingClientSideOtk,
+  IVerifyUpdateAcnsResponse,
 } from '@helium-pay/backend';
 import {
   IonCol,
@@ -21,7 +20,7 @@ import {
   IonToast,
 } from '@ionic/react';
 import { checkmarkCircleOutline } from 'ionicons/icons';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { AccountSelection } from '../components/account-selection/account-selection';
@@ -39,13 +38,13 @@ import {
 import { LoggedLayout } from '../components/layout/logged-layout';
 import { MainGrid } from '../components/layout/main-grid';
 import { Tabs } from '../components/layout/tabs';
-import { useTheme } from '../components/PreferenceProvider';
+import { CacheOtkContext, useTheme } from '../components/PreferenceProvider';
 import { themeType } from '../theme/const';
 import { OwnersAPI } from '../utils/api';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useNftAcnsMe } from '../utils/hooks/useNftAcnsMe';
 import { displayLongText } from '../utils/long-text';
-// import { Nitr0genApi } from '../utils/nitrogen-api';
+import { Nitr0genApi } from '../utils/nitrogen-api';
 import { unpackRequestErrorMessage } from '../utils/unpack-request-error-message';
 
 const enum View {
@@ -160,6 +159,7 @@ const NoDataDiv = styled.div({
 
 export function SettingsNaming() {
   const { t } = useTranslation();
+  const { cacheOtk } = useContext(CacheOtkContext);
   const { activeAccount } = useAccountStorage();
   const { acns, mutate } = useNftAcnsMe();
   const namedAcns = acns.filter((a) => !!a.value);
@@ -179,39 +179,23 @@ export function SettingsNaming() {
     setLoading(true);
     try {
       await OwnersAPI.updateAcns({ name, newValue: null });
-      // TODO: Enable when migrating to client-side otk
-      // const verifyUpdateAcnsResponse: IVerifyUpdateAcnsResponse =
-      //   await OwnersAPI.verifyUpdateAcns({
-      //     name: name,
-      //   } as IUpdateAcns);
+      const verifyUpdateAcnsResponse: IVerifyUpdateAcnsResponse =
+        await OwnersAPI.verifyUpdateAcns({
+          name: name,
+        } as IUpdateAcns);
 
-      // // TODO: need to get a otk from Keystore Service
-      // const otk: IKey = {
-      //   key: {
-      //     pub: {
-      //       pkcs8pem: 'dummy',
-      //       hash: 'dummy',
-      //     },
-      //     prv: {
-      //       pkcs8pem: 'dummy',
-      //       hash: 'dummy',
-      //     },
-      //   },
-      //   name: 'dummy',
-      //   type: 'dummy',
-      // };
-      // const signedTx = await Nitr0genApi.acnsRecord(
-      //   otk,
-      //   verifyUpdateAcnsResponse.nftAcnsStreamId,
-      //   verifyUpdateAcnsResponse.nftAcnsRecordType,
-      //   verifyUpdateAcnsResponse.nftAcnsRecordKey,
-      //   null /* forces a null value */
-      // );
+      const signedTx = await Nitr0genApi.acnsRecord(
+        cacheOtk!,
+        verifyUpdateAcnsResponse.nftAcnsStreamId,
+        verifyUpdateAcnsResponse.nftAcnsRecordType,
+        verifyUpdateAcnsResponse.nftAcnsRecordKey,
+        null /* forces a null value */
+      );
 
-      // await OwnersAPI.updateAcnsUsingClientSideOtk({
-      //   signedTx: signedTx,
-      //   name: name,
-      // } as IUpdateAcnsUsingClientSideOtk);
+      await OwnersAPI.updateAcnsUsingClientSideOtk({
+        signedTx: signedTx,
+        name: name,
+      } as IUpdateAcnsUsingClientSideOtk);
 
       setIsConfirmModel(false);
       setIsResultModel(true);
@@ -231,41 +215,25 @@ export function SettingsNaming() {
         name: selectedName,
         newValue: newValue,
       });
-      // TODO: Enable when going client-side otk
-      // const verifyUpdateAcnsResponse: IVerifyUpdateAcnsResponse =
-      //   await OwnersAPI.verifyUpdateAcns({
-      //     name: selectedName,
-      //     newValue: newValue,
-      //   } as IUpdateAcns);
+      const verifyUpdateAcnsResponse: IVerifyUpdateAcnsResponse =
+        await OwnersAPI.verifyUpdateAcns({
+          name: selectedName,
+          newValue: newValue,
+        } as IUpdateAcns);
 
-      // // TODO: need to get a otk from Keystore Service
-      // const otk: IKey = {
-      //   key: {
-      //     pub: {
-      //       pkcs8pem: 'dummy',
-      //       hash: 'dummy',
-      //     },
-      //     prv: {
-      //       pkcs8pem: 'dummy',
-      //       hash: 'dummy',
-      //     },
-      //   },
-      //   name: 'dummy',
-      //   type: 'dummy',
-      // };
-      // const signedTx = await Nitr0genApi.acnsRecord(
-      //   otk,
-      //   verifyUpdateAcnsResponse.nftAcnsStreamId,
-      //   verifyUpdateAcnsResponse.nftAcnsRecordType,
-      //   verifyUpdateAcnsResponse.nftAcnsRecordKey,
-      //   newValue
-      // );
+      const signedTx = await Nitr0genApi.acnsRecord(
+        cacheOtk!,
+        verifyUpdateAcnsResponse.nftAcnsStreamId,
+        verifyUpdateAcnsResponse.nftAcnsRecordType,
+        verifyUpdateAcnsResponse.nftAcnsRecordKey,
+        newValue
+      );
 
-      // await OwnersAPI.updateAcnsUsingClientSideOtk({
-      //   signedTx: signedTx,
-      //   name: selectedName,
-      //   newValue: newValue,
-      // } as IUpdateAcnsUsingClientSideOtk);
+      await OwnersAPI.updateAcnsUsingClientSideOtk({
+        signedTx: signedTx,
+        name: selectedName,
+        newValue: newValue,
+      } as IUpdateAcnsUsingClientSideOtk);
 
       setView(View.list);
       setShowEditToast(true);
