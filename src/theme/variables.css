@@ -101,6 +101,9 @@ http://ionicframework.com/docs/theming/ */
   /** iamges for swiper **/
 
   --ion-font-family: 'Nunito Sans', serif;
+
+  /** Image for main page **/
+  --main-image: url('/public/shared-assets/images/main/main-img.png');
 }
 
 ion-button {
@@ -227,6 +230,9 @@ body.dark {
   /** iamges for swiper **/
   --swiper-button-prev-background-image: url('/public/shared-assets/images/arrow-back-dark.png');
   --swiper-button-next-background-image: url('/public/shared-assets/images/arrow-forward-dark.png');
+
+  /** Image for main page **/
+  --main-image: url('/public/shared-assets/images/main/main-img-dark-mode.png');
 }
 
 /*
@@ -313,4 +319,8 @@ body.dark {
   --ion-tab-bar-background: #1f1f1f;
 
   --ion-card-background: #1e1e1e;
+
+  /** buttons **/
+  --ion-white-button-text: #eddcff;
+  --ion-white-button-background: #121212;
 }

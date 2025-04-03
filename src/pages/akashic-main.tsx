@@ -66,18 +66,14 @@ export function AkashicPayMain() {
           <LoggedHeader loggedIn={false} />
           <IonRow>
             <IonCol class="ion-center">
-              <IonImg
-                class={isMobile ? 'main-img' : 'main-img-web'}
-                alt={''}
-                src="/shared-assets/images/main/main-img.png"
-              />
+              <IonImg class={isMobile ? 'main-img' : 'main-img-web'} alt={''} />
             </IonCol>
           </IonRow>
           {localAccounts.length ? (
             <Login />
           ) : (
             <>
-              <IonRow style={{ marginTop: '40px' }}>
+              <IonRow style={{ marginTop: '10px' }}>
                 <IonCol class="ion-center">
                   <ContentText>{t('BestWayToInvestYourMoney')}</ContentText>
                 </IonCol>

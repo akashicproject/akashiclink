@@ -21,11 +21,14 @@
   width: 231px;
   height: 288px;
   margin-top: 30px;
+  content: var(--main-image);
 }
 
 .main-img-web {
   width: 140px;
   height: 209px;
+  margin-top: 50px;
+  content: var(--main-image);
 }
 
 .main-wrapper {
