@@ -83,7 +83,9 @@ export function AccountSelection({
   useEffect(() => {
     if (activeAccount) {
       const matchingAccount = localAccounts?.find(
-        (a) => a.username === activeAccount.username
+        (a) =>
+          a.username === activeAccount.username ||
+          a.identity === activeAccount.identity
       );
       setSelectedAccount(matchingAccount);
     } else {

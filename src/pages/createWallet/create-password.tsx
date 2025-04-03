@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { userConst } from '@helium-pay/backend';
 import { IonCheckbox, IonCol, IonRow } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
