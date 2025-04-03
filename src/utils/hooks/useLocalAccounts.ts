@@ -17,7 +17,7 @@ import { useSecureStorage } from './useSecureStorage';
 //  with GCM (or similar), but we'll need to be careful about backwards
 //  compatibility. https://sonarsource.atlassian.net/browse/RSPEC-5542
 const algorithm = 'aes-256-cbc';
-const secretIv = '6RxIESTJ1eJLpjpe';
+const secretIv = process.env.REACT_APP_SECRETIV ?? '6RxIESTJ1eJLpjpe';
 
 /**
  * When logging in, a user will select a wallet `identity`
