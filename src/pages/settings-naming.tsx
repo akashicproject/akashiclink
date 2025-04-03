@@ -44,7 +44,8 @@ const enum View {
 
 const OneAcnsWrapper = styled.div({
   display: 'flex',
-  alignItems: 'flex-start',
+  justifyContent: 'center',
+  width: '100%',
 });
 
 /** Container displaying information in row format */
@@ -87,9 +88,10 @@ function AcnsName({ name }: { name: string }) {
         justifyContent: 'left',
         alignItems: 'center',
 
-        width: '117px',
+        width: '130px',
         height: '40px',
-        paddingLeft: '16px',
+        paddingLeft: '12px',
+        paddingRight: '12px',
 
         borderRadius: '8px 0px 0px 8px',
         border: '1px solid #D9D9D9',
@@ -102,11 +104,12 @@ function AcnsName({ name }: { name: string }) {
 
 const AcnsAddress = styled.div({
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'space-between',
   alignItems: 'center',
 
+  width: '180px',
   height: '40px',
-  paddingLeft: '16px',
+  paddingLeft: '12px',
 
   border: '1px solid #D9D9D9',
   borderRadius: '0px 8px 8px 0px',
@@ -222,7 +225,7 @@ export function SettingsNaming() {
           {t('NewEdit')}
         </TabButton>
       </Tabs>
-      <MainGrid className="force-center">
+      <MainGrid className="force-center" style={{ maxWidth: '90%' }}>
         {view === View.list &&
           (namedAcns.length === 0 ? (
             <IonRow>
@@ -236,61 +239,63 @@ export function SettingsNaming() {
                 <IonRow style={{ marginTop: '16px' }} key={oneAcns.name}>
                   <IonCol class="ion-center">
                     <OneAcnsWrapper>
-                      <AcnsName name={oneAcns.name} />
+                      <AcnsName name={displayLongText(oneAcns.name, 11)} />
                       <AcnsAddress>
                         <AcnsTextContainer
                           value={
                             oneAcns.value
-                              ? displayLongText(oneAcns.value)
+                              ? displayLongText(oneAcns.value, 10)
                               : 'N/A'
                           }
                           walletOrName="Wallet"
                         />
-                        <SquareWhiteButton
-                          class="icon-button"
-                          onClick={() => updateAcns(oneAcns)}
-                          forceStyle={{
-                            height: '24px',
-                            width: '24px',
-                            padding: '3px',
-                          }}
-                          style={{
-                            paddingLeft: '16px',
-                            minWidth: '24px',
-                            minHeight: '24px',
-                            height: 'auto',
-                          }}
-                        >
-                          <IonImg
-                            alt="edit"
-                            src="/shared-assets/icons/pencil.svg"
-                          />
-                        </SquareWhiteButton>
-                        <SquareWhiteButton
-                          class="icon-button"
-                          onClick={() => {
-                            setEditAcns(oneAcns);
-                            setIsConfirmModel(true);
-                          }}
-                          disabled={!oneAcns.value}
-                          forceStyle={{
-                            height: '24px',
-                            width: '24px',
-                            padding: '3px',
-                          }}
-                          style={{
-                            paddingLeft: '4px',
-                            paddingRight: '8px',
-                            minWidth: '24px',
-                            minHeight: '24px',
-                            height: 'auto',
-                          }}
-                        >
-                          <IonImg
-                            alt="edit"
-                            src="/shared-assets/icons/trash.svg"
-                          />
-                        </SquareWhiteButton>
+                        <div>
+                          <SquareWhiteButton
+                            class="icon-button"
+                            onClick={() => updateAcns(oneAcns)}
+                            forceStyle={{
+                              height: '24px',
+                              width: '24px',
+                              padding: '4px',
+                            }}
+                            style={{
+                              paddingLeft: '12px',
+                              minWidth: '24px',
+                              minHeight: '24px',
+                              height: 'auto',
+                            }}
+                          >
+                            <IonImg
+                              alt="edit"
+                              src="/shared-assets/icons/pencil.svg"
+                            />
+                          </SquareWhiteButton>
+                          <SquareWhiteButton
+                            class="icon-button"
+                            onClick={() => {
+                              setEditAcns(oneAcns);
+                              setIsConfirmModel(true);
+                            }}
+                            disabled={!oneAcns.value}
+                            forceStyle={{
+                              height: '24px',
+                              width: '24px',
+                              padding: '4px',
+                            }}
+                            style={{
+                              paddingLeft: '4px',
+                              paddingRight: '8px',
+                              minWidth: '24px',
+                              minHeight: '24px',
+                              height: 'auto',
+                            }}
+                          >
+                            <IonImg
+                              alt="edit"
+                              src="/shared-assets/icons/trash.svg"
+                            />
+                          </SquareWhiteButton>
+                        </div>
                       </AcnsAddress>
                     </OneAcnsWrapper>
                   </IonCol>

@@ -164,5 +164,10 @@
     "TRX-SHASTA": "Tron SHASTA Testnet",
     "BTC": "比特币链",
     "TBTC": "Bitcoin Testnet"
-  }
+  },
+  "General": "一般",
+  "Security": "安全",
+  "Information": "信息",
+  "NamingService": "域名服务",
+  "Lock": "锁"
 }

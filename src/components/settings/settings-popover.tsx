@@ -176,7 +176,7 @@ export function SettingsPopover() {
             </SettingsList>
           </SettingSubmenu>
 
-          <SettingSubmenu displayText="Naming Service" id="naming-service">
+          <SettingSubmenu displayText={t('NamingService')} id="naming-service">
             <SettingsList isSubmenu={true}>
               <SettingsItem
                 routerLink={`${akashicPayPath(urls.settingsNaming)}?service=hp`}
@@ -185,10 +185,10 @@ export function SettingsPopover() {
             </SettingsList>
           </SettingSubmenu>
 
-          <SettingSubmenu displayText="Security" id="settings-security">
+          <SettingSubmenu displayText={t('Security')} id="settings-security">
             <SettingsList isSubmenu={true}>
               <SettingsItem
-                displayText="Key Pair Backup"
+                displayText={t('KeyPairBackup')}
                 routerLink={akashicPayPath(urls.settingsBackup)}
               />
               {/**
@@ -200,16 +200,19 @@ export function SettingsPopover() {
             </SettingsList>
           </SettingSubmenu>
 
-          <SettingSubmenu displayText="Information" id="settings-information">
+          <SettingSubmenu
+            displayText={t('Information')}
+            id="settings-information"
+          >
             <SettingsList isSubmenu={true}>
               <SettingsItem
-                displayText="Version Info"
+                displayText={t('VersionInfo')}
                 routerLink={akashicPayPath(urls.settingsVersion)}
               />
             </SettingsList>
           </SettingSubmenu>
 
-          <SettingsItem displayText="Lock" onClick={logout} />
+          <SettingsItem displayText={t('Lock')} onClick={logout} />
         </SettingsList>
       </IonPopover>
     </>
