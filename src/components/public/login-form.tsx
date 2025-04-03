@@ -6,7 +6,11 @@ import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import { datadogRum } from '@datadog/browser-rum';
 
 import { AccountSelection } from '../account-selection/account-selection';
-import { CustomAlert, errorAlertShell, formAlertResetState, } from '../alert/alert';
+import {
+  CustomAlert,
+  errorAlertShell,
+  formAlertResetState,
+} from '../alert/alert';
 import { PurpleButton } from '../buttons';
 import { StyledInput } from '../styled-input';
 import { urls } from '../../constants/urls';
@@ -110,6 +114,7 @@ export function LoginForm() {
       setActiveAccount(selectedAccount);
       await mutate(`/owner/me`);
       history.push(akashicPayPath(urls.loggedFunction));
+      setSelectedAccount(undefined);
       setPassword('');
     } catch (error) {
       datadogRum.addError(error);

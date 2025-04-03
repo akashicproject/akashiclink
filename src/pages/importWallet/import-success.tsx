@@ -54,7 +54,7 @@ export const ImportSuccess = () => {
               }}
             >
               <PurpleButton
-                onClick={async () => {
+                onClick={() => {
                   dispatch(onClear());
                   history.push(akashicPayPath(urls.loggedFunction));
                 }}

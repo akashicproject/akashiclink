@@ -75,7 +75,7 @@ export function LoggedToolbar({
           {showAddress && (
             <AccountSelection
               showCopyButton={true}
-              onNewAccountClick={async (selectedAccount) => {
+              onNewAccountClick={(selectedAccount) => {
                 // When a different account is clicked, set it as the active account and logout
                 setActiveAccount(selectedAccount);
                 logout();

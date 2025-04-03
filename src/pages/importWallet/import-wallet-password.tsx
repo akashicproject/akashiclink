@@ -29,7 +29,8 @@ export function ImportWalletPassword() {
   /** Tracking user input */
   const validatePassword = (value: string) =>
     !!value.match(userConst.passwordRegex);
-  const { addLocalOtkAndCache, addLocalAccount } = useAccountStorage();
+  const { addLocalOtkAndCache, addLocalAccount, setActiveAccount } =
+    useAccountStorage();
   const importWalletForm = useAppSelector(selectImportWalletForm);
   const otk = useAppSelector(selectOtk);
   const dispatch = useAppDispatch();
@@ -63,6 +64,9 @@ export function ImportWalletPassword() {
       addLocalOtkAndCache(otk, importWalletForm.password);
       // need to add local account
       addLocalAccount({
+        identity: otk.identity,
+      });
+      setActiveAccount({
         identity: otk.identity,
       });
 
