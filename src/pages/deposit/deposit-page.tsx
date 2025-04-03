@@ -65,11 +65,11 @@ export function DepositPage() {
                       ? currentWalletMetadata.darkCurrencyIcon
                       : currentWalletMetadata.currencyIcon
                   }
-                  style={{ height: '30px' }}
+                  style={{ height: '30px', width: '30px' }}
                 />
               )}
               <IonText>
-                <h3>
+                <h3 className="ion-no-margin">
                   {currentWalletMetadata.walletCurrency.displayName ?? '-'}
                 </h3>
               </IonText>
