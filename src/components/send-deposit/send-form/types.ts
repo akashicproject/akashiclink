@@ -12,6 +12,9 @@ export type ValidatedAddressPair = {
   initiatedToNonL2?: string;
   acnsAlias?: string;
   userInputToAddressType?: 'l2' | 'l1' | 'alias';
+  /** LedgerId of L1 wallet if that was input but result was an L2. Helps effectivize some
+   * fee-proceedings for specific L2s on AC */
+  initiatedToL1LedgerId?: string;
 };
 
 export const validatedAddressPairInitialState = {

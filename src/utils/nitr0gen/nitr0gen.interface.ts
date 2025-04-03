@@ -17,6 +17,9 @@ export interface L2TxDetail {
   tokenSymbol?: CurrencySymbol;
   amount: string;
   initiatedToNonL2?: string;
+  /** LedgerId of L1 wallet if that was input but result was an L2. Helps effectivize some
+   * fee-proceedings for specific L2s on AC */
+  initiatedToL1LedgerId?: string;
 }
 
 export interface L1TxDetail {

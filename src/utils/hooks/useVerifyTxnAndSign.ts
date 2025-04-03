@@ -1,9 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
-import type {
-  CoinSymbol,
-  CurrencySymbol,
-  IL2TransactionDetails,
-} from '@helium-pay/backend';
+import type { CoinSymbol, CurrencySymbol } from '@helium-pay/backend';
 import {
   type IWithdrawalProposal,
   keyError,
@@ -17,7 +13,10 @@ import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
 import { OwnersAPI } from '../api';
 import { convertObjectCurrencies, convertToDecimals } from '../currency';
 import { calculateInternalWithdrawalFee } from '../internal-fee';
-import type { ITransactionForSigning } from '../nitr0gen/nitr0gen.interface';
+import type {
+  ITransactionForSigning,
+  L2TxDetail,
+} from '../nitr0gen/nitr0gen.interface';
 import { Nitr0genApi, signTxBody } from '../nitr0gen/nitr0gen-api';
 import { unpackRequestErrorMessage } from '../unpack-request-error-message';
 import { useAccountMe } from './useAccountMe';
@@ -46,13 +45,14 @@ export const useVerifyTxnAndSign = () => {
       }
 
       if (isL2) {
-        const l2TransactionData: IL2TransactionDetails = {
+        const l2TransactionData: L2TxDetail = {
           initiatedToNonL2: !L2Regex.exec(
             validatedAddressPair.userInputToAddress
           )
             ? validatedAddressPair.userInputToAddress
             : undefined,
           toAddress: validatedAddressPair.convertedToAddress,
+          initiatedToL1LedgerId: validatedAddressPair.initiatedToL1LedgerId,
           // Backend accepts "normal" units, so we don't convert
           amount,
           coinSymbol,
