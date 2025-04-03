@@ -19,6 +19,7 @@ import type { LocationState } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 import { formatMergeAndSortNftAndCryptoTransfers } from '../../utils/formatTransfers';
+import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 
@@ -61,8 +62,11 @@ export function Activity() {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
   const [storedTheme] = useTheme();
+  const [transferParams] = useState({
+    startDate: dayjs().subtract(1, 'month').toDate(),
+  });
   const { transfers, isLoading } = useTransfersMe({
-    hideSmallTransactions: true,
+    ...transferParams,
   });
   const { transfers: nftTransfers, isLoading: isLoadingNft } =
     useNftTransfersMe();
@@ -71,7 +75,7 @@ export function Activity() {
     nftTransfers
   );
   return (
-    <DashboardLayout showSetting={false}>
+    <DashboardLayout>
       <TableWrapper>
         <TableHeads>
           <div

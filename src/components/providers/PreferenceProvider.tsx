@@ -1,10 +1,12 @@
 import type { Dispatch, ReactNode } from 'react';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useEffect } from 'react';
+import { IdleTimerProvider, useIdleTimer } from 'react-idle-timer';
 
 import type { IWalletCurrency } from '../../constants/currencies';
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import type { ThemeType } from '../../theme/const';
 import { themeType } from '../../theme/const';
+import { useIdleTime } from '../../utils/hooks/useIdleTime';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import type { FullOtk } from '../../utils/otk-generation';
@@ -70,7 +72,23 @@ export const CacheOtkContext = createContext<{
   },
 });
 
+const AutoLockContext = createContext<{
+  autoLockTime: number;
+  setAutoLockTime: Dispatch<number>;
+}>({
+  autoLockTime: 0,
+  setAutoLockTime: () => {
+    console.warn('setAutoLock not ready');
+  },
+});
+
+export const toggleDarkTheme = (setDark: boolean) => {
+  document.body.classList.toggle('dark', setDark);
+  document.body.classList.toggle('light', !setDark);
+};
 export const PreferenceProvider = ({ children }: { children: ReactNode }) => {
+  const [lockTime, setLockTime] = useLocalStorage<number>('auto-lock', 10);
+  useIdleTime(lockTime);
   const [storedTheme, setStoredTheme] = useLocalStorage<ThemeType>(
     'theme',
     themeType.SYSTEM as ThemeType
@@ -122,7 +140,14 @@ export const PreferenceProvider = ({ children }: { children: ReactNode }) => {
                 setFocusCurrency: setFocusCurrency,
               }}
             >
-              {children}
+              <AutoLockContext.Provider
+                value={{
+                  autoLockTime: lockTime,
+                  setAutoLockTime: setLockTime,
+                }}
+              >
+                {children}
+              </AutoLockContext.Provider>
             </CurrencyContext.Provider>
           </ActiveAccountContext.Provider>
         </CacheOtkContext.Provider>
@@ -138,6 +163,18 @@ export const useTheme: () => [
   const { theme: storedTheme, setTheme: setStoredTheme } =
     useContext(ThemeContext);
 
+  if (storedTheme !== themeType.SYSTEM) {
+    // Theme is explicitly light or dark
+    toggleDarkTheme(storedTheme === themeType.DARK);
+  } else {
+    // Infer theme to set based on users OS
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    toggleDarkTheme(prefersDark.matches);
+    prefersDark.addEventListener('change', (mediaQuery) => {
+      toggleDarkTheme(mediaQuery.matches);
+    });
+  }
+
   // Match the theme set by system
   if (storedTheme === themeType.SYSTEM) {
     return [
@@ -149,6 +186,12 @@ export const useTheme: () => [
   }
 
   return [storedTheme, setStoredTheme];
+};
+
+export const useLockTime: () => [number, Dispatch<number>] = () => {
+  const { autoLockTime: autoLockTime, setAutoLockTime: setAutoLockTime } =
+    useContext(AutoLockContext);
+  return [autoLockTime, setAutoLockTime];
 };
 
 export const useFocusCurrency: () => [

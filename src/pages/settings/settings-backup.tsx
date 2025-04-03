@@ -1,11 +1,14 @@
-import { IonCol, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { AlertBox } from '../../components/common/alert/alert';
-import { MainGrid } from '../../components/layout/main-grid';
 import { OtkBox } from '../../components/otk-box/otk-box';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
+import {
+  PageHeader,
+  SettingsWrapper,
+} from '../../components/settings/base-components';
 import { ConfirmLockPassword } from '../../components/settings/confirm-lock-password';
 import type { FullOtk } from '../../utils/otk-generation';
 
@@ -26,34 +29,36 @@ export function SettingsBackup() {
   };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout
+      showToolbar={true}
+      showBackButton={true}
+      showChainDiv={false}
+    >
       {view === BackupKeyPairState.ConfirmPassword && (
         <ConfirmLockPassword onPasswordCheckSuccess={onPasswordCheckSuccess} />
       )}
       {view === BackupKeyPairState.ViewKeyPair && (
-        <MainGrid>
-          <IonRow>
-            <IonCol>
-              <h2>{t('ThisIsYourKeyPair')}</h2>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <OtkBox label="" text={keyPair} />
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol class="ion-center">
-              <AlertBox
-                state={{
-                  visible: true,
-                  success: false,
-                  message: 'KeyPairWarning',
-                }}
-              />
-            </IonCol>
-          </IonRow>
-        </MainGrid>
+        <SettingsWrapper>
+          <PageHeader>{t('ThisIsYourKeyPair')}</PageHeader>
+          <IonGrid fixed className="ion-no-padding">
+            <IonRow>
+              <IonCol className="ion-no-padding">
+                <OtkBox label="" text={keyPair} />
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol class="ion-center ion-no-padding">
+                <AlertBox
+                  state={{
+                    visible: true,
+                    success: false,
+                    message: t('KeyPairWarning'),
+                  }}
+                />
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </SettingsWrapper>
       )}
     </DashboardLayout>
   );

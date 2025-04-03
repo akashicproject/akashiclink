@@ -6,38 +6,13 @@ import { useEffect } from 'react';
 
 import { themeType } from '../../theme/const';
 import { Toggle } from '../common/toggle/toggle';
-import { useTheme } from '../providers/PreferenceProvider';
+import { toggleDarkTheme, useTheme } from '../providers/PreferenceProvider';
 
 /**
  * Slider prototyped of stack overflow answer, for toggling theme
  */
 export function ThemeSelect() {
   const [storedTheme, setStoredTheme] = useTheme();
-
-  /**
-   * Add 'dark' to all elements on the page
-   */
-  const toggleDarkTheme = (setDark: boolean) => {
-    document.body.classList.toggle('dark', setDark);
-    document.body.classList.toggle('light', !setDark);
-  };
-
-  /**
-   * Respond to a new theme being set
-   */
-  useEffect(() => {
-    if (storedTheme !== themeType.SYSTEM) {
-      // Theme is explicitly light or dark
-      toggleDarkTheme(storedTheme === themeType.DARK);
-    } else {
-      // Infer theme to set based on users OS
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-      toggleDarkTheme(prefersDark.matches);
-      prefersDark.addEventListener('change', (mediaQuery) => {
-        toggleDarkTheme(mediaQuery.matches);
-      });
-    }
-  }, [storedTheme]);
 
   /**
    * Callback to call when slider is switched
@@ -66,8 +41,12 @@ export function ThemeSelect() {
         backgroundColor: isDarkMode ? '#7444B6' : '#C297FF',
       }}
       switchStyle={{ width: '60px' }}
-      firstIcon={<IonIcon style={{ left: '1px' }} icon={sunny} />}
-      secondIcon={<IonIcon style={{ right: '1px' }} icon={moon} />}
+      firstIcon={
+        <IonIcon style={{ left: '1px', color: '#290056' }} icon={sunny} />
+      }
+      secondIcon={
+        <IonIcon style={{ right: '1px', color: '#290056' }} icon={moon} />
+      }
     />
   );
 }

@@ -1,6 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { IonCol, IonRow } from '@ionic/react';
-import { useState } from 'react';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -12,9 +12,9 @@ import {
   errorAlertShell,
   formAlertResetState,
 } from '../common/alert/alert';
-import { PurpleButton, WhiteButton } from '../common/buttons';
+import { PurpleButton } from '../common/buttons';
 import { StyledInput } from '../common/input/styled-input';
-import { MainGrid } from '../layout/main-grid';
+import { PageHeader, SettingsWrapper } from './base-components';
 
 /**
  * Initiates a confirmation procedure using supplied method
@@ -54,45 +54,40 @@ export function ConfirmLockPassword({
   };
 
   return (
-    <MainGrid className={'ion-grid-row-gap-sm'}>
-      <IonRow>
-        <IonCol>
-          <h2 style={{ marginBottom: '8px' }}>{t('KeyPairBackup')}</h2>
-          <h6 style={{ margin: '0px' }}>{t('PleaseEnterYourPassword')}</h6>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol size="12">
-          <StyledInput
-            label={t('Password')}
-            type="password"
-            placeholder={t('PleaseConfirmYourPassword')}
-            onIonInput={({ target: { value } }) => {
-              setAlert(formAlertResetState);
-              setPassword(value as string);
-            }}
-          />
-        </IonCol>
-        {alert.visible && (
-          <IonCol size="12">
-            <AlertBox state={alert} />
+    <SettingsWrapper>
+      <div>
+        <h2 className="ion-margin-top-xl ion-margin-left-xxs ion-margin-right-xxs">
+          {t('KeyPairBackup')}
+        </h2>
+        <h6 className="ion-margin-top-xs">{t('PleaseEnterYourPassword')}</h6>
+      </div>
+      <IonGrid fixed className="ion-no-padding">
+        <IonRow className={'ion-grid-row-gap-lg'}>
+          <IonCol size="12" className="ion-no-padding">
+            <StyledInput
+              label={t('Password')}
+              type="password"
+              placeholder={t('PleaseConfirmYourPassword')}
+              onIonInput={({ target: { value } }) => {
+                setAlert(formAlertResetState);
+                setPassword(value as string);
+              }}
+            />
           </IonCol>
-        )}
-        <IonCol size="6">
-          <WhiteButton expand="block" onClick={() => history.goBack()}>
-            {t('Cancel')}
-          </WhiteButton>
-        </IonCol>
-        <IonCol size="6">
-          <PurpleButton
-            expand="block"
-            disabled={!password}
-            onClick={handleOnConfirm}
-          >
-            {t('Confirm')}
-          </PurpleButton>
-        </IonCol>
-      </IonRow>
-    </MainGrid>
+          {alert.visible && (
+            <IonCol size="12">
+              <AlertBox state={alert} />
+            </IonCol>
+          )}
+        </IonRow>
+      </IonGrid>
+      <PurpleButton
+        expand="block"
+        disabled={!password}
+        onClick={handleOnConfirm}
+      >
+        {t('Confirm')}
+      </PurpleButton>
+    </SettingsWrapper>
   );
 }

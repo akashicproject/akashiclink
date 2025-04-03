@@ -1,9 +1,9 @@
-import { userConst } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
+import { userConst } from '../../../../../backend';
 import {
   AlertBox,
   errorAlertShell,

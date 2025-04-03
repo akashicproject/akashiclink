@@ -1,8 +1,10 @@
+import { Preferences } from '@capacitor/preferences';
 import type {
   IClientTransactionRecord,
   ITransactionRecord,
 } from '@helium-pay/backend';
 import { TransactionResult, TransactionStatus } from '@helium-pay/backend';
+import type { AxiosRequestConfig } from 'axios';
 import buildURL from 'axios/unsafe/helpers/buildURL';
 import useSWR from 'swr';
 
@@ -10,13 +12,24 @@ import { REFRESH_INTERVAL } from '../../constants';
 import fetcher from '../ownerFetcher';
 import { useOwner } from './useOwner';
 
+const transferMeFetcher = async (path: string, config?: AxiosRequestConfig) => {
+  const hideSmallTransactions = await Preferences.get({
+    key: 'hide-small-balances',
+  });
+  const url = path
+    ? buildURL(path, { hideSmallTransactions: hideSmallTransactions.value })
+    : '';
+  return await fetcher(url, config);
+};
+
 export const useTransfersMe = (params?: IClientTransactionRecord) => {
   const { authenticated } = useOwner();
   const { data, error, mutate } = useSWR(
-    authenticated ? buildURL(`/key/transfers/me`, params) : '',
-    fetcher,
+    authenticated ? buildURL(`/key/transfers/me`, { ...params }) : '',
+    transferMeFetcher,
     {
       refreshInterval: REFRESH_INTERVAL,
+      keepPreviousData: false,
     }
   );
 

@@ -68,7 +68,7 @@ export function Nft() {
           backgroundColor: 'var(--nft-background)',
         }}
       >
-        <Toolbar showSetting={false} backButtonReplaceTarget={urls.nfts} />
+        <Toolbar backButtonReplaceTarget={urls.nfts} />
       </div>
 
       <CustomAlert

@@ -263,5 +263,14 @@
   "PressToReveal": "Press to reveal",
   "AlreadyMigratedPleaseReImport": "Wallet has already been migrated, please remove your account and use your new recovery method to import",
   "AALinked": "AA-Linked",
-  "OnlyOneAAS": "You have already linked another Akashic Alias to your address. Only one AAS Link is allowed per address."
+  "OnlyOneAAS": "You have already linked another Akashic Alias to your address. Only one AAS Link is allowed per address.",
+  "Settings": "Settings",
+  "PrivacyPolicy": "Privacy Policy",
+  "VisitOurWebsite": "Visit our website",
+  "UpdateNow": "Update Now",
+  "UpdatesAvailable": "Updates Available",
+  "Theme": "Theme",
+  "LockAkashicWallet": "Lock Akashic Wallet",
+  "AutoLock": "Auto Lock",
+  "HideSmallBalances": "Hide Small Balances"
 }

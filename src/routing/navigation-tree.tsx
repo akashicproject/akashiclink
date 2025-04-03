@@ -34,8 +34,11 @@ import { SendConfirmationPage } from '../pages/send/send-confirmation';
 import { ChangePasswordConfirm } from '../pages/settings/change-password/confirm';
 import { ChangePassword } from '../pages/settings/change-password/enter-passwords';
 import { Settings } from '../pages/settings/settings';
+import { SettingsAboutUs } from '../pages/settings/settings-about-us';
 import { SettingsBackup } from '../pages/settings/settings-backup';
+import { SettingsGeneral } from '../pages/settings/settings-general';
 import { SettingsNaming } from '../pages/settings/settings-naming';
+import { SettingsSecurity } from '../pages/settings/settings-security';
 import { SettingsVersion } from '../pages/settings/settings-version';
 import { Us2Main } from '../pages/us2-main';
 import { AkashicTab, Us2Tab } from './navigation-tabs';
@@ -60,9 +63,12 @@ export function NavigationTree() {
       {AkashicTab.registerPage(NftTransferResult, urls.nftTransferResult)}
       {AkashicTab.registerPage(Activity, urls.activity)}
       {AkashicTab.registerPage(Settings, urls.settings)}
+      {AkashicTab.registerPage(SettingsGeneral, urls.settingsGeneral)}
+      {AkashicTab.registerPage(SettingsSecurity, urls.settingsSecurity)}
       {AkashicTab.registerPage(SettingsBackup, urls.settingsBackup)}
       {AkashicTab.registerPage(SettingsNaming, urls.settingsNaming)}
       {AkashicTab.registerPage(SettingsVersion, urls.settingsVersion)}
+      {AkashicTab.registerPage(SettingsAboutUs, urls.settingsAboutUs)}
       {AkashicTab.registerPage(ChangePassword, urls.changePassword)}
       {AkashicTab.registerPage(ActivityDetails, urls.activityDetails)}
       {AkashicTab.registerPage(
@@ -124,7 +130,6 @@ export function NavigationTree() {
       )}
       {/* US² tree */}
       {Us2Tab.registerPage(Us2Main)}
-
       {/* Default redirect */}
       {/* https://github.com/ionic-team/ionic-framework/issues/24855 */}
       <Redirect to={AkashicTab.root} />

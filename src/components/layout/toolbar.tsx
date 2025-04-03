@@ -15,19 +15,16 @@ import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
 import { AccountSelection } from '../account-selection/account-selection';
 import { SquareWhiteButton } from '../common/buttons';
 import { useTheme } from '../providers/PreferenceProvider';
-import { SettingsPopover } from './settings-popover/settings-popover';
 
 export function Toolbar({
   showRefresh = false,
   showAddress = false,
   showBackButton = true,
-  showSetting = true,
   backButtonReplaceTarget = urls.dashboard,
 }: {
   showRefresh?: boolean;
   showAddress?: boolean;
   showBackButton?: boolean;
-  showSetting?: boolean;
   backButtonReplaceTarget?: Url;
 }) {
   const { mutateTransfersMe } = useTransfersMe();
@@ -117,15 +114,6 @@ export function Toolbar({
               }`}
             />
           </SquareWhiteButton>
-        </div>
-      )}
-      {showSetting && (
-        <div
-          style={{
-            flex: 0,
-          }}
-        >
-          <SettingsPopover />
         </div>
       )}
     </div>

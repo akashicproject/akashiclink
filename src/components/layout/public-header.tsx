@@ -2,8 +2,8 @@ import { IonHeader, IonImg, IonRouterLink } from '@ionic/react';
 
 import { themeType } from '../../theme/const';
 import { useTheme } from '../providers/PreferenceProvider';
+import { SettingSelect } from '../settings/setting-select';
 import { LanguageDropdown } from './language-select';
-import { ThemeSelect } from './theme-select';
 
 export function PublicHeader() {
   const [storedTheme] = useTheme();
@@ -28,7 +28,7 @@ export function PublicHeader() {
           style={{ height: '100%' }}
         />
       </IonRouterLink>
-      <ThemeSelect />
+      <SettingSelect loggedIn={false} />
     </IonHeader>
   );
 }

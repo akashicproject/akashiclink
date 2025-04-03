@@ -68,7 +68,7 @@ export function Nfts() {
     <>
       <NftLayout>
         <IonRow>
-          <Toolbar showAddress={false} showSetting={false} />
+          <Toolbar showAddress={false} />
         </IonRow>
         {isLoading ? (
           <IonSpinner name="circular"></IonSpinner>

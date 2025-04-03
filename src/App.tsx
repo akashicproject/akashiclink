@@ -19,8 +19,7 @@ import './theme/common.scss';
 import { Preferences } from '@capacitor/preferences';
 import { IonApp, setupIonicReact } from '@ionic/react';
 import { IonReactMemoryRouter } from '@ionic/react-router';
-import { useEffect } from 'react';
-import { useIdleTimer } from 'react-idle-timer';
+import { useEffect, useRef, useState } from 'react';
 
 import VersionUpdateAlert from './components/layout/version-update-alert';
 import { PreferenceProvider } from './components/providers/PreferenceProvider';
@@ -29,7 +28,6 @@ import { useAppSelector } from './redux/app/hooks';
 import type { RootState } from './redux/app/store';
 import { history } from './routing/history';
 import { NavigationTree } from './routing/navigation-tree';
-import { useLogout } from './utils/hooks/useLogout';
 
 setupIonicReact();
 
@@ -38,16 +36,6 @@ export default function App() {
   const lastLocation = useAppSelector(
     (state: RootState) => state?.router?.location
   );
-  const logout = useLogout();
-
-  useIdleTimer({
-    onIdle: () => logout(),
-    // TODO
-    // Move this to preference and store in local storage
-    timeout: 10 * 60 * 1000,
-    throttle: 500,
-  });
-
   useEffect(() => {
     const cacheLastLocation = async () => {
       // below indicates an event of opening a soft closed app
@@ -62,7 +50,6 @@ export default function App() {
     };
     cacheLastLocation();
   }, [lastLocation.pathname]);
-
   return (
     <IonApp>
       <PreferenceProvider>

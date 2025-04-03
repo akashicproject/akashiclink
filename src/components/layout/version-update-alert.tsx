@@ -12,8 +12,18 @@ import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 export default function VersionUpdateAlert() {
   const { t } = useTranslation();
   const { config } = useConfig();
+
+  const [, setCurrentAppVersion] = useLocalStorage(
+    'current-app-version',
+    '0.0.0'
+  );
+  const [, setAvailableVersion] = useLocalStorage(
+    'available-app-version',
+    '0.0.0'
+  );
+  const [, setUpdateUrl] = useLocalStorage('update_url', '');
   const [skipVersion, setSkipVersion] = useLocalStorage('skipVersion', '0.0.0');
-  const [updateType, setUpdateType] = useState<'soft' | 'hard' | null>(null);
+  const [updateType, setUpdateType] = useLocalStorage('update-type', '');
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
   useEffect(() => {
@@ -26,6 +36,9 @@ export default function VersionUpdateAlert() {
           try {
             const manifestData = JSON.parse(xhr.responseText);
             const appVersion = manifestData.version.split('-')[0];
+            setCurrentAppVersion(appVersion);
+            setAvailableVersion(config.awLatestVersion);
+            setUpdateUrl(config.awUrl);
             if (compareVersions(appVersion, config.awMinVersion) === -1) {
               setUpdateType('hard');
             } else if (
@@ -47,7 +60,7 @@ export default function VersionUpdateAlert() {
   return (
     <IonAlert
       isOpen={updateType === 'soft' || updateType === 'hard'}
-      onDidDismiss={() => updateType === 'soft' && setUpdateType(null)}
+      onDidDismiss={() => updateType === 'soft' && setUpdateType('')}
       backdropDismiss={false}
       header={t('NewVersionAvailable')!}
       message={t('NewVersionAvailableMessage')!}

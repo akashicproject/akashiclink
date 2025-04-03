@@ -263,5 +263,14 @@
   "PressToReveal": "按下显示",
   "AlreadyMigratedPleaseReImport": "钱包已迁移，请删除您的帐户并使用新的恢复方法导入",
   "AALinked": "AA-綁定",
-  "OnlyOneAAS": "您已经将另一个 Akashic 域名连结到您的地址。每个地址仅允许一个 AAS 连结。"
+  "OnlyOneAAS": "您已经将另一个 Akashic 域名连结到您的地址。每个地址仅允许一个 AAS 连结。",
+  "Settings": "设置",
+  "PrivacyPolicy": "隐私政策",
+  "VisitOurWebsite": "访问我们的网站",
+  "UpdateNow": "現在更新",
+  "UpdatesAvailable": "可用更新",
+  "Theme": "主题",
+  "LockAkashicWallet": "锁定 Akashic 钱包",
+  "AutoLock": "自动锁",
+  "HideSmallBalances": "隐藏小额余额"
 }

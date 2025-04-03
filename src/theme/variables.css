@@ -117,6 +117,8 @@ http://ionicframework.com/docs/theming/ */
   --swiper-button-prev-background-image: url('/public/shared-assets/images/arrow-back.png');
   --swiper-button-next-background-image: url('/public/shared-assets/images/arrow-forward.png');
 
+  /**/
+  --search-icon-color: #290056;
   /** Image for main page **/
   --main-image: url('/public/shared-assets/images/main/main-img.png');
 
@@ -228,6 +230,7 @@ body.dark {
   --swiper-button-prev-background-image: url('/public/shared-assets/images/arrow-back-dark.png');
   --swiper-button-next-background-image: url('/public/shared-assets/images/arrow-forward-dark.png');
 
+  --search-icon-color: white;
   /** Image for main page **/
   --main-image: url('/public/shared-assets/images/main/main-img-dark-mode.png');
 

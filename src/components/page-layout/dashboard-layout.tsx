@@ -1,6 +1,12 @@
 import { Preferences } from '@capacitor/preferences';
 import styled from '@emotion/styled';
-import { IonContent, IonFooter, IonPage, IonRouterLink } from '@ionic/react';
+import {
+  IonContent,
+  IonFooter,
+  IonPage,
+  IonRouterLink,
+  isPlatform,
+} from '@ionic/react';
 import { type ReactNode, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -34,17 +40,19 @@ export function DashboardLayout({
   showRefresh = false,
   showAddress = false,
   showBackButton = true,
-  showSetting = true,
+  showChainDiv = true,
+  showToolbar = true,
 }: {
   children: ReactNode;
   footer?: ReactNode;
   showRefresh?: boolean;
   showAddress?: boolean;
   showBackButton?: boolean;
-  showSetting?: boolean;
+  showChainDiv?: boolean;
+  showToolbar?: boolean;
 }) {
   const { t } = useTranslation();
-
+  const isMobile = isPlatform('mobile');
   const { isLoading, authenticated } = useOwner();
 
   /** If user auth has expired, redirect to login page */
@@ -66,15 +74,21 @@ export function DashboardLayout({
     <IonPage>
       <Header />
       <IonContent>
-        <ChainDiv routerLink={akashicPayPath(urls.dashboard)}>
-          {t('AkashicChain')}
-        </ChainDiv>
-        <Toolbar
-          showAddress={showAddress}
-          showRefresh={showRefresh}
-          showBackButton={showBackButton}
-          showSetting={showSetting}
-        />
+        {showChainDiv && (
+          <ChainDiv
+            style={{ marginBottom: isMobile ? '8px' : '0px' }}
+            routerLink={akashicPayPath(urls.dashboard)}
+          >
+            {t('AkashicChain')}
+          </ChainDiv>
+        )}
+        {showToolbar && (
+          <Toolbar
+            showAddress={showAddress}
+            showRefresh={showRefresh}
+            showBackButton={showBackButton}
+          />
+        )}
         {children}
       </IonContent>
       {footer && <IonFooter class={'ion-no-border'}>{footer}</IonFooter>}

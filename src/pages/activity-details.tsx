@@ -89,7 +89,7 @@ export const ActivityDetails = () => {
         ];
 
   return (
-    <DashboardLayout showSetting={false}>
+    <DashboardLayout>
       <ActivityContainer>
         {transfer.nft ? (
           <NftDetail currentTransfer={transfer} />

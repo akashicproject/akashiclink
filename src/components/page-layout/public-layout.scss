@@ -8,7 +8,8 @@
 
   /** Anchor the footer at bottom of page */
   & > .footer {
-    margin: auto;
-    margin-bottom: 16px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
   }
 }
