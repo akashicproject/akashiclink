@@ -5,62 +5,62 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="00: default_platform" time="0.000181">
+      <testcase classname="fastlane.lanes" name="00: default_platform" time="0.000242">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="01: Switch to ios getNextVersionCode lane" time="7.5e-05">
+      <testcase classname="fastlane.lanes" name="01: Switch to ios getNextVersionCode lane" time="9.9e-05">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="02: Switch to ios getNextReleaseName lane" time="5.2e-05">
+      <testcase classname="fastlane.lanes" name="02: Switch to ios getNextReleaseName lane" time="7.2e-05">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="03: get_info_plist_value" time="0.000698">
+      <testcase classname="fastlane.lanes" name="03: get_info_plist_value" time="0.001442">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="04: set_info_plist_value" time="0.000696">
+      <testcase classname="fastlane.lanes" name="04: set_info_plist_value" time="0.001256">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="05: set_info_plist_value" time="0.0006">
+      <testcase classname="fastlane.lanes" name="05: set_info_plist_value" time="0.001228">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="06: set_info_plist_value" time="0.00058">
+      <testcase classname="fastlane.lanes" name="06: set_info_plist_value" time="0.001187">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="07: set_info_plist_value" time="0.000573">
+      <testcase classname="fastlane.lanes" name="07: set_info_plist_value" time="0.001036">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="08: cert" time="0.979231">
+      <testcase classname="fastlane.lanes" name="08: cert" time="1.14472">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="09: sigh" time="1.701128">
+      <testcase classname="fastlane.lanes" name="09: sigh" time="1.495891">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="10: update_project_provisioning" time="0.029358">
+      <testcase classname="fastlane.lanes" name="10: update_project_provisioning" time="0.397259">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="11: build_app" time="34.909001">
+      <testcase classname="fastlane.lanes" name="11: build_app" time="64.601271">
         
       </testcase>
     
