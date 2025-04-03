@@ -83,5 +83,6 @@
   "InvalidEmail": "Please enter a valid email address",
   "PasswordHelperText": "Password must be at least 10 characters long, contain 1 capital letter and 1 number",
   "SaveKey": "This is the only copy and cannot be restored if lost (but can be replaced)",
-  "InvalidPassword": "Password is incorrect!"
+  "InvalidPassword": "Password is incorrect!",
+  "SeeMore": "See More"
 }

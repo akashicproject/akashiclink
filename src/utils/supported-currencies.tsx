@@ -67,34 +67,40 @@ export interface WalletCurrencyMetadata {
   currency: WalletCurrency;
   symbol: string;
   logo: string;
+  icon: string;
 }
-
+export const L2Icon = '/shared-assets/icons/akashic_icon.png';
 /** Declaration of supported currencies */
 const MAINNET_CURRENCIES: WalletCurrencyMetadata[] = [
   {
     symbol: 'BTC',
     currency: makeWalletCurrency(CoinSymbol.Bitcoin),
     logo: '/shared-assets/images/btc.png',
+    icon: '/shared-assets/icons/btc_icon.png',
   },
   {
     symbol: 'ETH',
     currency: makeWalletCurrency(CoinSymbol.Ethereum_Mainnet),
     logo: '/shared-assets/images/eth.png',
+    icon: '/shared-assets/icons/eth_icon.png',
   },
   {
     symbol: 'TRX',
     currency: makeWalletCurrency(CoinSymbol.Tron),
     logo: '/shared-assets/images/trx.png',
+    icon: '/shared-assets/icons/trx_icon.png',
   },
   {
     symbol: 'USDT-ERC20',
     currency: makeWalletCurrency(CoinSymbol.Ethereum_Mainnet, 'USDT'),
     logo: '/shared-assets/images/erc-usdt.png',
+    icon: '/shared-assets/icons/eth_icon.png',
   },
   {
     symbol: 'USDT-TRC20',
     currency: makeWalletCurrency(CoinSymbol.Tron, 'USDT'),
     logo: '/shared-assets/images/trc-usdt.png',
+    icon: '/shared-assets/icons/trx_icon.png',
   },
 ];
 
@@ -103,31 +109,37 @@ const TESTNET_CURRENCIES: WalletCurrencyMetadata[] = [
     symbol: 'tBTC',
     currency: makeWalletCurrency(CoinSymbol.Bitcoin_Testnet),
     logo: '/shared-assets/images/btc.png',
+    icon: '/shared-assets/icons/btc_icon.png',
   },
   {
     symbol: 'GOR',
     currency: makeWalletCurrency(CoinSymbol.Görli),
     logo: '/shared-assets/images/eth.png',
+    icon: '/shared-assets/icons/eth_icon.png',
   },
   {
     symbol: 'Nile',
     currency: makeWalletCurrency(CoinSymbol.Tron_Nile),
     logo: '/shared-assets/images/trx.png',
+    icon: '/shared-assets/icons/trx_icon.png',
   },
   {
     symbol: 'Shasta',
     currency: makeWalletCurrency(CoinSymbol.Tron_Shasta),
     logo: '/shared-assets/images/trx.png',
+    icon: '/shared-assets/icons/trx_icon.png',
   },
   {
     symbol: 'tUSDT-ERC20',
     currency: makeWalletCurrency(CoinSymbol.Görli, 'USDT'),
     logo: '/shared-assets/images/erc-usdt.png',
+    icon: '/shared-assets/icons/eth_icon.png',
   },
   {
     symbol: 'tUSDT-TRC20',
     currency: makeWalletCurrency(CoinSymbol.Tron_Nile, 'USDT'),
     logo: '/shared-assets/images/trc-usdt.png',
+    icon: '/shared-assets/icons/trx_icon.png',
   },
 ];
 

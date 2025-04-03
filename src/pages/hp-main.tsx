@@ -46,7 +46,7 @@ export function HeliumPayMain() {
   useEffect(() => {
     if (!loginCheck.isLoading && !loginCheck.isError)
       history.push(heliumPayPath(urls.loggedFunction));
-  }, [loginCheck]);
+  }, []);
 
   return (
     <IonPage>

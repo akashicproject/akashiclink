@@ -1,42 +1,14 @@
 import styled from '@emotion/styled';
-import { CoinSymbol } from '@helium-pay/backend';
-import { IonImg, IonItem } from '@ionic/react';
-import Big from 'big.js';
-import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useExchangeRates } from '../../utils/hooks/useExchangeRates';
-import { makeWalletCurrency } from '../../utils/supported-currencies';
+import { urls } from '../../constants/urls';
+import { Divider, formatWalletTransfer } from '../../pages/activity';
+import { heliumPayPath } from '../../routing/navigation-tree';
+import { useTransfersMe } from '../../utils/hooks/useTransfersMe';
+import { OneActivity } from '../activity/one-activity';
 import { TabButton } from '../buttons';
-import { useAggregatedBalances } from '../select-coin';
-
-const ItemBalanceWrapper = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-start',
-  padding: 0,
-  gap: '8px',
-  height: '48px',
-  marginLeft: '30px',
-});
-
-const ItemBalanceTitle = styled.div({
-  fontFamily: 'Nunito Sans',
-  fontStyle: 'normal',
-  fontWeight: 700,
-  fontSize: '16px',
-  lineHeight: '24px',
-  color: '#290056',
-});
-
-const ItemBalanceText = styled.div({
-  fontFamily: 'Nunito Sans',
-  fontStyle: 'normal',
-  fontWeight: 400,
-  fontSize: '12px',
-  lineHeight: '16px',
-  color: '#290056',
-});
 
 const Tabs = styled.div({
   display: 'flex',
@@ -46,48 +18,39 @@ const Tabs = styled.div({
 });
 
 const NFTDiv = styled.div({
-  height: '160px',
+  height: '200px',
+});
+
+const ActivityDiv = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  height: '200px',
+});
+
+const SeeMore = styled.a({
+  fontFamily: 'Nunito Sans',
+  fontStyle: 'normal',
+  fontWeight: 700,
+  fontSize: '14px',
+  lineHeight: '20px',
+  color: '#958E99',
+  textDecorationLine: 'underline',
+  marginTop: '10px',
+  '&:hover': {
+    cursor: 'pointer',
+  },
 });
 
 export const ActivityAndNFTTab = () => {
   const [tab, setTab] = useState('activity');
   const { t } = useTranslation();
-  const aggregatedBalances = useAggregatedBalances();
-  /**
-   * TODO: refactor this by tracking state of an object rather than each currency and conversion individually
-   * Suggested (feel free to restructure/rename) base objects that can replace BTC, ETH, USDT_BTC, USDT_ETH:
-   type MainBalance = {
-        balance: Big;
-        convertedBalance: Big;
-      };
-   const [balances, setBalances] = useState<CurrencyMap<MainBalance>[]>([]);
-   */
-  const { keys: exchangeRates } = useExchangeRates();
-  const [BTC, setBTC] = useState<Big>();
-  const [ETH, setETH] = useState<Big>();
-  const [USDT_BTC, setUSDT_BTC] = useState<Big>();
-  const [USDT_ETH, setUSDT_ETH] = useState<Big>();
-
-  useEffect(() => {
-    const BTC = Big(
-      aggregatedBalances.get(makeWalletCurrency(CoinSymbol.Bitcoin)) || 0
-    );
-    const ETH = Big(
-      aggregatedBalances.get(makeWalletCurrency(CoinSymbol.Ethereum_Mainnet)) ||
-        0
-    );
-    setBTC(BTC);
-    setETH(ETH);
-    const BTC_exchange =
-      exchangeRates.find((ex) => ex.coinSymbol === CoinSymbol.Bitcoin)?.price ||
-      1;
-    const ETH_exchange =
-      exchangeRates.find((ex) => ex.coinSymbol === CoinSymbol.Ethereum_Mainnet)
-        ?.price || 1;
-    setUSDT_BTC(Big(BTC_exchange).times(BTC));
-    setUSDT_ETH(Big(ETH_exchange).times(ETH));
-    document.getElementById('activity')?.click();
-  }, [aggregatedBalances, exchangeRates]);
+  const [transferParams, _] = useState({
+    startDate: dayjs().subtract(1, 'month').toDate(),
+    endDate: dayjs().toDate(),
+  });
+  const { transfers } = useTransfersMe(transferParams);
+  const walletFormatTransfers = formatWalletTransfer(transfers);
 
   return (
     <div>
@@ -108,46 +71,28 @@ export const ActivityAndNFTTab = () => {
         </TabButton>
       </Tabs>
       {tab === 'activity' ? (
-        <>
-          <IonItem
-            class="activity-list-item"
-            detail={true}
-            onClick={() => console.log('Redirect')}
-            style={{
-              '--detail-icon-color': '#7444b6',
-              '--detail-icon-opacity': 1,
-            }}
-          >
-            <IonImg
-              alt="Bitcoin activity"
-              src="/shared-assets/images/bitcoin.png"
-              style={{ width: '40px', height: '40px' }}
-            />
-            <ItemBalanceWrapper>
-              <ItemBalanceTitle>{`${BTC} BTC`}</ItemBalanceTitle>
-              <ItemBalanceText>{`${USDT_BTC} USD`}</ItemBalanceText>
-            </ItemBalanceWrapper>
-          </IonItem>
-          <IonItem
-            class="activity-list-item"
-            detail={true}
-            onClick={() => console.log('Redirect')}
-            style={{
-              '--detail-icon-color': '#7444b6',
-              '--detail-icon-opacity': 1,
-            }}
-          >
-            <IonImg
-              alt="Ethereum Activity"
-              src="/shared-assets/images/eth.png"
-              style={{ width: '40px', height: '40px' }}
-            />
-            <ItemBalanceWrapper>
-              <ItemBalanceTitle>{`${ETH} ETH`}</ItemBalanceTitle>
-              <ItemBalanceText>{`${USDT_ETH} USD`}</ItemBalanceText>
-            </ItemBalanceWrapper>
-          </IonItem>
-        </>
+        <ActivityDiv>
+          {walletFormatTransfers.slice(0, 2).map((transfer, index) => {
+            return (
+              <OneActivity
+                key={transfer.id}
+                transfer={transfer}
+                style={
+                  index === 0
+                    ? { height: '40px', margin: '30px auto 15px' }
+                    : { height: '40px', margin: '10px auto 5px' }
+                }
+              >
+                <Divider />
+              </OneActivity>
+            );
+          })}
+          {walletFormatTransfers.length >= 1 ? (
+            <SeeMore href={heliumPayPath(urls.activity)}>
+              {t('SeeMore')}
+            </SeeMore>
+          ) : null}
+        </ActivityDiv>
       ) : (
         <NFTDiv> nft</NFTDiv>
       )}
