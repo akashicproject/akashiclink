@@ -1,6 +1,5 @@
-import { Spinner } from '../components/common/loader/spinner';
 import { ETH_METHOD } from '../utils/chrome';
-import { useOwner } from '../utils/hooks/useOwner';
+import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { PopupUnlockOrCreateAndImportWallet } from './popup-unlock-create-import-wallet';
 import { SignTypedData } from './sign-typed-data';
 import { WalletConnection } from './wallet-connection';
@@ -8,13 +7,7 @@ import { WalletConnection } from './wallet-connection';
 export function PopupTree() {
   const query = new URLSearchParams(window.location.search);
   const method = query.get('method');
-
-  // TODO: update with new unlock mechanism
-  const { isLoading, authenticated } = useOwner();
-
-  if (isLoading) {
-    return <Spinner />;
-  }
+  const { authenticated } = useAccountStorage();
 
   if (!authenticated) {
     return <PopupUnlockOrCreateAndImportWallet />;

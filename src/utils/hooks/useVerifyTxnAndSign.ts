@@ -9,7 +9,6 @@ import {
 
 import type { ValidatedAddressPair } from '../../components/send-deposit/send-form/types';
 import { useAppSelector } from '../../redux/app/hooks';
-import { selectCacheOtk } from '../../redux/slices/accountSlice';
 import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
 import { OwnersAPI } from '../api';
 import { convertObjectCurrencies, convertToDecimals } from '../currency';
@@ -22,10 +21,10 @@ import { useAccountStorage } from './useLocalAccounts';
 
 export const useVerifyTxnAndSign = () => {
   const { chain, token } = useAppSelector(selectFocusCurrencyDetail);
-  const cacheOtk = useAppSelector(selectCacheOtk);
   const { activeAccount } = useAccountStorage();
   const { exchangeRates } = useExchangeRates();
   const { data: account } = useAccountMe();
+  const { cacheOtk } = useAccountStorage();
 
   return async (validatedAddressPair: ValidatedAddressPair, amount: string) => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);

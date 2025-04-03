@@ -13,7 +13,6 @@ import { useAccountMe } from '../../utils/hooks/useAccountMe';
 import { useMyTransfers } from '../../utils/hooks/useMyTransfers';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
-import { useOwner } from '../../utils/hooks/useOwner';
 
 export const StyledA = styled.a({
   fontSize: '12px',
@@ -27,7 +26,6 @@ export const StyledA = styled.a({
 
 export const CreateWalletSuccessful = () => {
   const { t } = useTranslation();
-  const { mutateOwner } = useOwner();
   const { mutateMyTransfers } = useMyTransfers();
   const { mutateNftTransfersMe } = useNftTransfersMe();
   const { mutate: mutateAccountMe } = useAccountMe();
@@ -36,7 +34,6 @@ export const CreateWalletSuccessful = () => {
 
   const handleOnConfirm = async () => {
     dispatch(onClear());
-    await mutateOwner();
     await mutateMyTransfers();
     await mutateNftTransfersMe();
     await mutateAccountMe();

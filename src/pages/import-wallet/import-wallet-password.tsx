@@ -20,7 +20,6 @@ import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useMyTransfers } from '../../utils/hooks/useMyTransfers';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
-import { useOwner } from '../../utils/hooks/useOwner';
 
 export function ImportWalletPassword({ isPopup = false }) {
   useIosScrollPasswordKeyboardIntoView();
@@ -35,7 +34,6 @@ export function ImportWalletPassword({ isPopup = false }) {
   const dispatch = useAppDispatch();
   const validateConfirmPassword = (value: string) =>
     importWalletForm.password === value;
-  const { mutateOwner } = useOwner();
   const { mutateMyTransfers } = useMyTransfers();
   const { mutateNftTransfersMe } = useNftTransfersMe();
   const { mutate: mutateAccountMe } = useAccountMe();
@@ -84,7 +82,6 @@ export function ImportWalletPassword({ isPopup = false }) {
         return;
       }
 
-      await mutateOwner();
       await mutateMyTransfers();
       await mutateNftTransfersMe();
       await mutateAccountMe();

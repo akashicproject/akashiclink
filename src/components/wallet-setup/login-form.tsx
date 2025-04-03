@@ -11,7 +11,6 @@ import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosSc
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useMyTransfers } from '../../utils/hooks/useMyTransfers';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
-import { useOwner } from '../../utils/hooks/useOwner';
 import { signAuthenticationData } from '../../utils/otk-generation';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { AccountSelection } from '../account-selection/account-selection';
@@ -42,7 +41,6 @@ export function LoginForm({ isPopup = false }) {
     setActiveAccount,
   } = useAccountStorage();
   const [password, setPassword] = useState<string>('');
-  const { mutateOwner } = useOwner();
   const { mutateMyTransfers } = useMyTransfers();
   const { mutateNftTransfersMe } = useNftTransfersMe();
   const { mutate: mutateAccountMe } = useAccountMe();
@@ -90,7 +88,6 @@ export function LoginForm({ isPopup = false }) {
         id: activeAccount.username,
       });
       // Set the login account
-      await mutateOwner();
       await mutateMyTransfers();
       await mutateNftTransfersMe();
       await mutateAccountMe();

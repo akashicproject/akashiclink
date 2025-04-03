@@ -28,7 +28,6 @@ import { NftLayout } from '../../components/page-layout/nft-layout';
 import { errorMsgs } from '../../constants/error-messages';
 import { urls } from '../../constants/urls';
 import { useAppSelector } from '../../redux/app/hooks';
-import { selectCacheOtk } from '../../redux/slices/accountSlice';
 import { selectTheme } from '../../redux/slices/preferenceSlice';
 import {
   type LocationState,
@@ -140,12 +139,11 @@ export function NftTransfer() {
   const [searchedResultType, setSearchedResultType] = useState(
     SearchResult.NoInput
   );
-  const { activeAccount } = useAccountStorage();
+  const { activeAccount, cacheOtk } = useAccountStorage();
   const { trigger: triggerNftTransfer } = useNftTransfer();
 
   const [alert, setAlert] = useState(formAlertResetState);
   const [loading, setLoading] = useState(false);
-  const cacheOtk = useAppSelector(selectCacheOtk);
   const storedTheme = useAppSelector(selectTheme);
   const isDarkMode = storedTheme === themeType.DARK;
 

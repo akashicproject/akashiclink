@@ -20,7 +20,6 @@ export const urls = {
   error: 'error',
   us2: 'us2',
   manageAccounts: 'manage-account',
-  changePasswordAfterImport: 'change-password-after-import',
   createWalletPassword: 'create-wallet-password',
   createWalletSecretPhrase: 'create-wallet-secret',
   createWalletSecretPhraseConfirm: 'create-wallet-secret-confirm',

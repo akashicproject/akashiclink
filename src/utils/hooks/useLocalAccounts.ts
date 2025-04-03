@@ -5,9 +5,10 @@ import crypto from 'crypto';
 import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
 import {
   selectActiveAccount,
+  selectCacheOtk,
   selectLocalAccounts,
   setActiveAccount as setActiveAccountState,
-  setCacheOtk,
+  setCacheOtk as setCacheOtkState,
   setLocalAccounts,
 } from '../../redux/slices/accountSlice';
 import type { FullOtk } from '../otk-generation';
@@ -59,6 +60,8 @@ export const useAccountStorage = () => {
       {} as Record<string, LocalAccount>
     )
   );
+
+  const cacheOtk = useAppSelector(selectCacheOtk);
 
   const [legacyActiveAccount, _s, removeLegacyActiveAccount] =
     useLocalStorage<LocalAccount | null>('session-account', null);
@@ -175,7 +178,7 @@ export const useAccountStorage = () => {
   ): Promise<FullOtk | undefined> => {
     const otk = await getLocalOtk(identity, password);
     if (otk) {
-      dispatch(setCacheOtk(otk));
+      dispatch(setCacheOtkState(otk));
       return otk;
     } else {
       return undefined;
@@ -193,7 +196,7 @@ export const useAccountStorage = () => {
 
   const addLocalOtkAndCache = async (otk: FullOtk, password: string) => {
     await addLocalOtk(otk, password);
-    dispatch(setCacheOtk(otk));
+    dispatch(setCacheOtkState(otk));
   };
 
   const changeOtkPassword = async (
@@ -210,7 +213,7 @@ export const useAccountStorage = () => {
   const removeLocalOtk = async (identity: string) => {
     await SecureStorage.removeItem(identity);
 
-    dispatch(setCacheOtk(null));
+    dispatch(setCacheOtkState(null));
   };
 
   // key min length is 32 byte
@@ -233,6 +236,10 @@ export const useAccountStorage = () => {
     dispatch(setActiveAccountState(account));
   };
 
+  const setCacheOtk = (otk: FullOtk | null) => {
+    dispatch(setCacheOtkState(otk));
+  };
+
   return {
     localAccounts: localAccountsWithName,
     addLocalAccount,
@@ -248,5 +255,8 @@ export const useAccountStorage = () => {
     getLocalOtk,
     addAasToAccountByIdentity,
     removeAasFromAccountByIdentity,
+    cacheOtk,
+    authenticated: !!cacheOtk,
+    setCacheOtk,
   };
 };

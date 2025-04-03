@@ -3,14 +3,13 @@ import { mutate } from 'swr';
 
 import { LAST_HISTORY_ENTRIES } from '../../constants';
 import { urls } from '../../constants/urls';
-import { useAppDispatch } from '../../redux/app/hooks';
-import { setCacheOtk } from '../../redux/slices/accountSlice';
 import { historyResetStackAndRedirect } from '../../routing/history';
+import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { axiosBase } from '../axios-helper';
 import { EXTENSION_EVENT, responseToSite } from '../chrome';
 
 export function useLogout(callLogout = true) {
-  const dispatch = useAppDispatch();
+  const { setCacheOtk } = useAccountStorage();
 
   return async () => {
     // callLogout will be false if getting 401 errors, prevents recursive calls
@@ -23,7 +22,7 @@ export function useLogout(callLogout = true) {
     }
 
     // Clear session variables
-    dispatch(setCacheOtk(null));
+    setCacheOtk(null);
     await Preferences.remove({
       key: LAST_HISTORY_ENTRIES,
     });

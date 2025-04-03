@@ -9,8 +9,6 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAppSelector } from '../../redux/app/hooks';
-import { selectCacheOtk } from '../../redux/slices/accountSlice';
 import { useUpdateAcns } from '../../utils/hooks/nitr0gen';
 import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemapAASToAddress';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
@@ -89,8 +87,7 @@ export const AasListingSwitch = ({
   aas: IAcns;
   setAlert: React.Dispatch<React.SetStateAction<FormAlertState>>;
 }) => {
-  const cacheOtk = useAppSelector(selectCacheOtk);
-  const { activeAccount } = useAccountStorage();
+  const { activeAccount, cacheOtk } = useAccountStorage();
   const { nfts, mutateNftMe } = useNftMe();
   const { t } = useTranslation();
   const [isListed, setIsListed] = useState<boolean>(!!aas.value);

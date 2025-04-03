@@ -9,10 +9,10 @@ import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 import { PublicLayout } from '../../components/page-layout/public-layout';
 import { urls } from '../../constants/urls';
 import { historyGoBackOrReplace } from '../../routing/history';
-import { useOwner } from '../../utils/hooks/useOwner';
+import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 
 export function ManageAccounts() {
-  const { authenticated } = useOwner();
+  const { authenticated } = useAccountStorage();
 
   const { t } = useTranslation();
 
