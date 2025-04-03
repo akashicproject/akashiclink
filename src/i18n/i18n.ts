@@ -6,13 +6,13 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 import translationEN from './translation/en_US.json';
-import translationES from './translation/es_ES.json';
-import translationID from './translation/id_ID.json';
-import translationKR from './translation/ko_KR.json';
-import translationPT from './translation/pt_PT.json';
-import translationTH from './translation/th_TH.json';
 import translationCN from './translation/zh_CN.json';
 import translationTW from './translation/zh_TW.json';
+// import translationES from './translation/es_ES.json';
+// import translationID from './translation/id_ID.json';
+// import translationKR from './translation/ko_KR.json';
+// import translationPT from './translation/pt_PT.json';
+// import translationTH from './translation/th_TH.json';
 
 type Translation = typeof translationEN;
 
@@ -26,21 +26,21 @@ const resources: { [key in Language]: { translation: Translation } } = {
   [Language.zhCN]: {
     translation: translationCN,
   },
-  [Language.idID]: {
-    translation: translationID,
-  },
-  [Language.thTH]: {
-    translation: translationTH,
-  },
-  [Language.esES]: {
-    translation: translationES,
-  },
-  [Language.ptPT]: {
-    translation: translationPT,
-  },
-  [Language.koKR]: {
-    translation: translationKR,
-  },
+  // [Language.idID]: {
+  //   translation: translationID,
+  // },
+  // [Language.thTH]: {
+  //   translation: translationTH,
+  // },
+  // [Language.esES]: {
+  //   translation: translationES,
+  // },
+  // [Language.ptPT]: {
+  //   translation: translationPT,
+  // },
+  // [Language.koKR]: {
+  //   translation: translationKR,
+  // },
 };
 
 i18n.use(initReactI18next).init({
