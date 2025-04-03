@@ -47,7 +47,7 @@ enum ProductionContracts {
 enum TestNetContracts {
   Namespace = 'akashic',
   Create = 'c4f1186c58f49db2fdba401a1b36832902325d11a2e69ac6ef800836274c6894@5.1.4',
-  CryptoTransfer = 'd1903e29ea83413ecc759d129f7a21e4f8039ac5650360cf83d993343b5ffaa6@5.1.21',
+  CryptoTransfer = 'd1903e29ea83413ecc759d129f7a21e4f8039ac5650360cf83d993343b5ffaa6@5.1.25',
   DiffConsensus = '76869d5f632c283324b0cb7c8e16ba14eec2cf5d6d7b3f4521cc9b6a12818623@3.0.3',
   Onboard = 'b089a212ac22f57e2bef7d8a7f25702ebda98173939be2eba1ac0c2523d77383@5.0.3',
   NFTNamespace = 'candypig',
@@ -299,7 +299,8 @@ export class Nitr0genApi {
     amount: string,
     toAddress: string,
     feesEstimate: string,
-    token?: CurrencySymbol
+    token?: CurrencySymbol,
+    ethGasPrice?: string
   ): Promise<IBaseTransactionWithDbIndex> {
     const $o: { [keyLedgerId: string]: L1TxDetail } = {
       [keyLedgerId]: { amount },
@@ -322,6 +323,7 @@ export class Nitr0genApi {
             amount,
             to: toAddress,
             contractAddress,
+            gas: ethGasPrice,
           },
         },
         $o,

@@ -102,6 +102,7 @@ export const useVerifyTxnAndSign = () => {
       const {
         fees: { feesEstimate },
         withdrawalKeys,
+        ethGasPrice,
       } = await OwnersAPI.prepareL1Txn(transactionData);
       const txns: ITransactionForSigning[] = await Promise.all(
         withdrawalKeys.map(
@@ -124,7 +125,8 @@ export const useVerifyTxnAndSign = () => {
                 convertToDecimals(key.transferAmount, coinSymbol, tokenSymbol),
                 validatedAddressPair.convertedToAddress,
                 convertToDecimals(feesEstimate, coinSymbol),
-                tokenSymbol
+                tokenSymbol,
+                ethGasPrice
               ),
             } as ITransactionForSigning)
         )
