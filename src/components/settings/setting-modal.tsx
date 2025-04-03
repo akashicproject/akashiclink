@@ -44,7 +44,6 @@ export function SettingsModal({
       handle={false}
       className="setting-modal"
       ref={modal}
-      trigger="open-modal"
       initialBreakpoint={0.3}
       breakpoints={[0, 0.25, 0.3, 0.6, 0.72]}
       isOpen={isOpen}

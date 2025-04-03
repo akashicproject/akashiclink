@@ -18,10 +18,25 @@ export function useIdleTime() {
   const { reset } = useIdleTimer({
     timeout: autoLockTime * 60000,
     onIdle: logout,
-    throttle: 10000,
+    throttle: 200,
+    events: [
+      'click',
+      'dblclick',
+      'keydown',
+      'wheel',
+      'DOMMouseScroll',
+      'mousewheel',
+      'mousedown',
+      'touchstart',
+      'touchmove',
+      'MSPointerDown',
+      'MSPointerMove',
+      'visibilitychange',
+    ],
     onAction: async () => {
       const newVal = Date.now() + autoLockTime * 60 * 1000;
       await setAutoLockBy(newVal);
+
       try {
         // Also saving this to chrome extension for direct access
         await chrome?.storage?.session?.set({
