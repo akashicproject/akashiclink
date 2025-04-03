@@ -7,7 +7,7 @@ type IonButtonProps = React.ComponentProps<typeof IonButton>;
 
 const squareButtonBaseCss: CSSInterpolation = {
   border: '1px solid transparent',
-  borderRadius: '4px !important',
+  borderRadius: '4px',
   textAlign: 'center',
   height: '32px',
 };
@@ -105,15 +105,19 @@ export const OutlineButton = styled(IonButton)({
 });
 
 export const SquareWhiteButton = styled(IonButton, {
-  shouldForwardProp: (props) => props !== 'forceStyle',
-})<{ forceStyle?: CSSProperties }>(({ forceStyle }) => ({
-  ['&::part(native)']: {
-    ...squareButtonBaseCss,
-    ...whiteButtonBase,
-    ...buttonTextBaseCss,
-    ...(forceStyle ? forceStyle : {}),
-  },
-}));
+  shouldForwardProp: (props) =>
+    props !== 'forceStyle' && props !== 'borderRadius',
+})<{ forceStyle?: CSSProperties; borderRadius?: string | number }>(
+  ({ forceStyle, borderRadius }) => ({
+    ['&::part(native)']: {
+      ...squareButtonBaseCss,
+      ...whiteButtonBase,
+      ...buttonTextBaseCss,
+      ...(forceStyle ? forceStyle : {}),
+      borderRadius: borderRadius || squareButtonBaseCss.borderRadius,
+    },
+  })
+);
 
 export const TabButton = styled(IonButton)({
   ...tabButtonCss,

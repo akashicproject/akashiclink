@@ -34,6 +34,7 @@ export const urls = {
   settings: 'settings',
   settingsGeneral: 'settings-general',
   settingsSecurity: 'settings-security',
+  settingsNetwork: 'settings-network',
   settingsAboutUs: 'settings-about-us',
   settingsBackup: 'settings-backup',
   settingsVersion: 'settings-version',

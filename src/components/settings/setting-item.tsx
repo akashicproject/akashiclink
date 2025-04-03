@@ -2,7 +2,7 @@ import { Browser } from '@capacitor/browser';
 import { Capacitor } from '@capacitor/core';
 import styled from '@emotion/styled';
 import { IonIcon, IonItem, IonLabel, IonText } from '@ionic/react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { useState } from 'react';
 
 import { Divider } from '../common/divider';
@@ -46,6 +46,8 @@ export type SettingItemProps = {
   subHeading?: string;
   ripple?: boolean;
   link?: string;
+  headerStyle?: CSSProperties;
+  icon?: React.ReactNode;
 };
 
 const handleLink = async (link: string) => {
@@ -70,6 +72,8 @@ export function SettingItem({
   subHeading,
   ripple = true,
   link,
+  headerStyle,
+  icon,
 }: SettingItemProps) {
   const [showAccordionItem, setShowAccordionItem] = useState(false);
   const handleClick = async () => {
@@ -98,11 +102,12 @@ export function SettingItem({
             src={iconUrl}
           />
         )}
+        {icon ? icon : <div style={{ width: '24px', height: '24px' }}></div>}
         <IonLabel
           className="ion-no-margin"
           style={{ display: 'flex', flexDirection: 'column' }}
         >
-          <Header>{header}</Header>
+          <Header style={headerStyle}>{header}</Header>
           {subHeading && <SubHeader>{subHeading}</SubHeader>}
         </IonLabel>
         {endComponent ? endComponent : <ForwardArrow />}

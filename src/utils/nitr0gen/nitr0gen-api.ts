@@ -29,7 +29,9 @@ import type {
 import {
   BadGatewayException,
   chooseBestNodes,
+  fetchNodesPing,
   ForbiddenException,
+  getChainNode,
   getRetryDelayInMS,
   NotFoundException,
   PortType,
@@ -149,13 +151,16 @@ export class Nitr0genApi {
 
   protected async createNitr0genUrl(
     port: PortType,
-    path?: string
+    path?: string,
+    node?: string
   ): Promise<string> {
-    // TODO: Replace with user-stored selected node
-    let NITR0_URL = await chooseBestNodes(port);
+    const isProd = process.env.REACT_APP_ENV === 'prod';
+    let NITR0_URL = node
+      ? getChainNode(isProd, port, node)
+      : await chooseBestNodes(port);
 
     if (path) {
-      NITR0_URL += `/${path}`;
+      NITR0_URL += `${path}`;
     }
     return NITR0_URL;
   }
@@ -173,39 +178,82 @@ export class Nitr0genApi {
     method: 'get' | 'post' = 'post',
     timeout = 5000
   ): Promise<T> {
-    const NITR0_URL = await this.createNitr0genUrl(port, path);
-
+    let NITR0_URL: string | undefined;
     try {
-      const requestFunction = method === 'post' ? axios.post : axios.get;
-
-      let version;
-      try {
-        const appInfo = await App.getInfo();
-        version = appInfo.version;
-      } catch (e) {
-        const manifestData = await getManifestJson();
-        version = manifestData.version;
-      }
-      const headers = {
-        'Ap-Version': version,
-        'Ap-Client': Capacitor.getPlatform(),
-      };
-
-      const response = await requestFunction(NITR0_URL, tx, {
-        ...(method === 'get' ? { timeout, headers } : { headers }),
-      });
-
-      // Prefix "AS" to umids so that "L2-hashes" have the prefix
-      if (response.data.$umid) {
-        response.data.$umid = 'AS' + response.data.$umid;
-      }
-
-      return response.data;
+      NITR0_URL = await this.createNitr0genUrl(port, path);
+      return await this.executeSend<T>(NITR0_URL, tx, method, timeout);
     } catch (e: unknown) {
-      console.error(e);
-      throw e;
-      // TODO: Handle error with retry-logic in-app
+      console.error(
+        `Attempt with ${NITR0_URL} (preferred or bestNode) failed: `,
+        e
+      );
+
+      const nodesWithPing = await fetchNodesPing(false);
+
+      const sortedNodes = nodesWithPing.sort((a, b) => a.ping - b.ping);
+
+      const nodesWithUrl = await Promise.all(
+        sortedNodes.map(async (node) => ({
+          ...node,
+          url: await this.createNitr0genUrl(port, path, node.key),
+        }))
+      );
+
+      const nodeUrls = nodesWithUrl.reduce((urls: string[], node) => {
+        if (node.url && node.url !== NITR0_URL) {
+          urls.push(node.url);
+        }
+        return urls;
+      }, []);
+
+      let lastError: unknown;
+      for (const nodeUrl of nodeUrls) {
+        try {
+          return await this.executeSend<T>(nodeUrl, tx, method, timeout);
+        } catch (e: unknown) {
+          console.error(`Attempt with ${nodeUrl} failed: `, e);
+          lastError = e;
+        }
+      }
+      console.error('All nodes failed:', lastError);
+      throw lastError;
     }
+  }
+
+  protected async executeSend<T>(
+    url: string,
+    tx: object | undefined,
+    method: 'get' | 'post',
+    timeout: number
+  ): Promise<T> {
+    const requestFunction = method === 'post' ? axios.post : axios.get;
+
+    let version;
+    try {
+      const appInfo = await App.getInfo();
+      version = appInfo.version;
+    } catch (e) {
+      const manifestData = await getManifestJson();
+      version = manifestData.version;
+    }
+
+    const headers = {
+      'Ap-Version': version,
+      'Ap-Client': Capacitor.getPlatform(),
+    };
+
+    const response = await requestFunction(url, tx, {
+      ...(method === 'get' ? { timeout, headers } : { headers }),
+    });
+
+    // Prefix "AS" to umids for "L2-hashes"
+    if (response.data.$umid) {
+      response.data.$umid = 'AS' + response.data.$umid;
+    }
+    if (response.data.$summary?.errors?.length > 0) {
+      throw new Error(response.data.$summary.errors[0]);
+    }
+    return response.data;
   }
 
   /**

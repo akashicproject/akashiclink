@@ -145,6 +145,13 @@ export function Settings() {
       },
     },
     {
+      header: t('Chain.Title'),
+      iconUrl: getImageIconUrl('network.svg'),
+      onClick: () => {
+        history.push(akashicPayPath(urls.settingsNetwork));
+      },
+    },
+    {
       header: t('AutoLock'),
       iconUrl: getImageIconUrl('lock-light.svg'),
       endComponent: (
