@@ -2,7 +2,7 @@ import './styled-input.scss';
 
 import { IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
 import type { ComponentProps } from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type Translation from '../i18n/translation/en_US.json';

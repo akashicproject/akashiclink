@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { IonIcon, IonRow } from '@ionic/react';
+import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -18,6 +19,7 @@ import {
   NavigationPriority,
 } from '../../utils/last-page-storage';
 import { restoreOtk, validateSecretPhrase } from '../../utils/otk-generation';
+import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 import { View } from '../import-wallet';
 
 const StyledSpan = styled.span({
@@ -47,6 +49,10 @@ export const SecretPhraseImport = () => {
   const [phrase, setPhrase] = useState<string[]>([]);
   const [error, setError] = useState(false);
   const { t } = useTranslation();
+
+  /** Scrolling on IOS */
+  const { isOpen } = useKeyboardState();
+  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   useEffect(() => {
     cacheCurrentPage(

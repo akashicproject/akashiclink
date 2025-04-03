@@ -2,6 +2,7 @@ import { IonCol, IonRow, isPlatform, useIonViewWillLeave } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
+import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 
 import { AccountSelection } from '../account-selection/account-selection';
 import {
@@ -14,15 +15,11 @@ import { StyledInput } from '../styled-input';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { OwnersAPI } from '../../utils/api';
+import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { mutate } from 'swr';
-
-// TODO: re-enable once password recovery loop is implemented
-// const HelpLink = styled.a({
-//   textDecoration: 'none',
-// });
 
 /**
  * Form allowing user to login
@@ -45,6 +42,9 @@ export function LoginForm() {
   const [password, setPassword] = useState<string>();
 
   addPrefixToAccounts();
+
+  const { isOpen } = useKeyboardState();
+  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   /**
    * Selection is populated on load to match the account save in session
@@ -119,6 +119,7 @@ export function LoginForm() {
             placeholder={t('PleaseEnterYourPassword')}
             onIonInput={({ target: { value } }) => setPassword(value as string)}
             submitOnEnter={login}
+            enterkeyhint="go"
           />
         </IonCol>
       </IonRow>

@@ -1,8 +1,10 @@
 import { IonCol, IonRow } from '@ionic/react';
-import { useState } from 'react';
+import { useKeyboardState } from '@ionic/react-hooks/keyboard';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
+import { scrollWhenPasswordKeyboard } from '../utils/scroll-when-password-keyboard';
 import { PurpleButton, WhiteButton } from './buttons';
 import { MainGrid } from './layout/main-grid';
 import { StyledInput } from './styled-input';
@@ -20,6 +22,9 @@ export function ConfirmLockPassword({
   const { t } = useTranslation();
   const [password, setPassword] = useState<string>();
   const history = useHistory();
+
+  const { isOpen } = useKeyboardState();
+  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   return (
     <MainGrid className="force-center">

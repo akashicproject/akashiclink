@@ -1,4 +1,5 @@
 import type { CapacitorConfig } from '@capacitor/cli';
+import { KeyboardResize, KeyboardStyle } from '@capacitor/keyboard';
 
 const config: CapacitorConfig = {
   appId: process.env.PACKAGE_NAME,
@@ -10,6 +11,11 @@ const config: CapacitorConfig = {
     },
     CapacitorHttp: {
       enabled: true,
+    },
+    Keyboard: {
+      resize: KeyboardResize.Native,
+      style: KeyboardStyle.Dark,
+      // resizeOnFullScreen: true,
     },
   },
   server: {

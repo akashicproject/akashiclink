@@ -5,6 +5,7 @@ import {
 } from '@helium-pay/backend';
 import type { Language } from '@helium-pay/common-i18n';
 import { IonCol, IonRow } from '@ionic/react';
+import { useKeyboardState } from '@ionic/react-hooks/keyboard';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -37,6 +38,7 @@ import {
   ResetPageButton,
 } from '../../utils/last-page-storage';
 import { generateOTK } from '../../utils/otk-generation';
+import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 
 enum CreateWalletView {
   RequestAccount = 'RequestAccount',
@@ -66,6 +68,10 @@ export function CreateWallet() {
 
   /** Tracking response from server after account is created */
   const [creatingAccount, setCreatingAccount] = useState(false);
+
+  /** Scrolling on IOS */
+  const { isOpen } = useKeyboardState();
+  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   const emailSentAlert = {
     success: true,

@@ -10,7 +10,7 @@ PODS:
   - CapacitorCordova (5.0.5)
   - CapacitorHaptics (5.0.2):
     - Capacitor
-  - CapacitorKeyboard (5.0.2):
+  - CapacitorKeyboard (5.0.6):
     - Capacitor
   - CapacitorPreferences (5.0.6):
     - Capacitor
@@ -55,10 +55,10 @@ SPEC CHECKSUMS:
   CapacitorClipboard: 46f3959735fa0d96b9989dafcc4aed52e624d163
   CapacitorCordova: f8c06b897c74ee8f7701fe10e6443b40822bc83a
   CapacitorHaptics: 864585542a435bd41eaabf7f30d9ff5ec03024d3
-  CapacitorKeyboard: e628d4e66d621c69e449945ebabded17c5b9c2e8
+  CapacitorKeyboard: b978154b024a5f65e044908e37d15b7de58b9d12
   CapacitorPreferences: f03954bcb0ff09c792909e46bff88e3183c16b10
   CapacitorStatusBar: 48f2899f6846cc7d8431b251ebfc58e1c10e3d58
 
 PODFILE CHECKSUM: f8f90d8927854c258a82ddde0b0dfb8ef54f8443
 
-COCOAPODS: 1.13.0
+COCOAPODS: 1.14.3

@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { IonCol, IonRow } from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { useKeyboardState } from '@ionic/react-hooks/keyboard';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -16,6 +17,7 @@ import {
   lastPageStorage,
   NavigationPriority,
 } from '../../utils/last-page-storage';
+import { scrollWhenPasswordKeyboard } from '../../utils/scroll-when-password-keyboard';
 
 export const StyledSpan = styled.span({
   fontSize: '12px',
@@ -28,6 +30,10 @@ export function CreateWalletSecret() {
   const { t } = useTranslation();
   const [secretWords, setSecretWords] = useState<Array<string>>([]);
   const history = useHistory<LocalAccount>();
+
+  /** Scrolling on IOS */
+  const { isOpen } = useKeyboardState();
+  useEffect(() => scrollWhenPasswordKeyboard(isOpen, document), [isOpen]);
 
   useEffect(() => {
     cacheCurrentPage(urls.secret, NavigationPriority.IMMEDIATE, async () => {
