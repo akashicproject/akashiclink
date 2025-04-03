@@ -175,7 +175,10 @@ export function SendTo() {
   const aggregatedBalances = useAggregatedBalances();
   const { keys: userWallets } = useKeyMe();
   const [alert, setAlert] = useState(formAlertResetState);
-  const [alertRequest, setAlertRequest] = useState(formAlertResetState);
+  const [recipientAlertRequest, setRecipientAlertRequest] =
+    useState(formAlertResetState);
+  const [amountAlertRequest, setAmountAlertRequest] =
+    useState(formAlertResetState);
   const { keys: exchangeRates } = useExchangeRates();
   const [currency] = useFocusCurrency();
   const [storedTheme] = useTheme();
@@ -218,6 +221,7 @@ export function SendTo() {
   const [timeoutHandle, setTimeoutHandle] =
     useState<ReturnType<typeof setTimeout>>();
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   const validateRecipientAddressWithBackend = (recipientAddress: string) => {
     // Reset pending
     clearTimeout(timeoutHandle);
@@ -225,12 +229,13 @@ export function SendTo() {
     // Reset form
     setRawAddress(recipientAddress);
     setToAddress(undefined);
-    setAlertRequest(formAlertResetState);
+    setRecipientAlertRequest(formAlertResetState);
     setGasFree(false);
     if (!recipientAddress) return;
 
     if (recipientAddress === activeAccount?.identity) {
-      setAlertRequest(errorAlertShell(t('NoSelfSend')));
+      setRecipientAlertRequest(errorAlertShell(t('NoSelfSend')));
+      return;
     }
     if (
       !recipientAddress.match(NetworkDictionary[chain].regex.address) &&
@@ -249,8 +254,16 @@ export function SendTo() {
           if (acnsResult.l2Address) {
             setToAddress(acnsResult.l2Address);
             setGasFree(true);
+            setInternalFee(
+              calculateInternalWithdrawalFee(
+                amount ?? '0',
+                exchangeRates,
+                chain,
+                token
+              )
+            );
           } else {
-            setAlertRequest({
+            setRecipientAlertRequest({
               success: false,
               visible: true,
               message: t('AddressHelpText'),
@@ -287,7 +300,7 @@ export function SendTo() {
           );
         } else if (L2Regex.exec(recipientAddress)) {
           // If matches L2 format, but none found, show error
-          setAlertRequest(errorAlertShell(t('invalidL2Address')));
+          setRecipientAlertRequest(errorAlertShell(t('invalidL2Address')));
         } else {
           setL1AddressWhenL2(undefined);
           setToAddress(recipientAddress);
@@ -327,10 +340,10 @@ export function SendTo() {
   const [amount, setAmount] = useState<string>('');
   const validateAmount = (value: string) => {
     if (Big(value).gt(Big(availableBalance ?? 0).sub(internalFee))) {
-      setAlertRequest(errorAlertShell(t('SavingsExceeded')));
+      setAmountAlertRequest(errorAlertShell(t('SavingsExceeded')));
       return false;
     } else {
-      setAlertRequest(formAlertResetState);
+      setAmountAlertRequest(formAlertResetState);
     }
 
     // If sending token on L1, check balances for native coin of the chain (for paying gas-fee)
@@ -345,7 +358,7 @@ export function SendTo() {
         }) ?? '0'
       ).lte(gasFee)
     ) {
-      setAlertRequest({
+      setAmountAlertRequest({
         success: false,
         visible: true,
         message: t('showNativeCoinNeededMsg', {
@@ -354,7 +367,7 @@ export function SendTo() {
       });
       return false;
     } else {
-      setAlertRequest(formAlertResetState);
+      setAmountAlertRequest(formAlertResetState);
     }
     return !(!value || value.charAt(0) === '-' || Big(value).lte(0));
   };
@@ -398,7 +411,7 @@ export function SendTo() {
       // reject the request if /verify returns multiple transfers
       // for L2: multiple transactions from the same Nitr0gen identity can always be combined into a single one, so it should be fine
       if (response.length > 1 && !gasFree) {
-        setAlertRequest(errorAlertShell(t('GenericFailureMsg')));
+        setRecipientAlertRequest(errorAlertShell(t('GenericFailureMsg')));
         return;
       }
 
@@ -436,7 +449,7 @@ export function SendTo() {
       );
       // if user does not have enough balance to pay the estimated gas, can not go to next step
       if (balance < feesEstimate) {
-        setAlertRequest(
+        setAmountAlertRequest(
           errorAlertShell(
             t('insufficientBalance', {
               coinSymbol: chain,
@@ -473,7 +486,7 @@ export function SendTo() {
           coinSymbol: chain,
         });
       }
-      setAlertRequest(errorAlertShell(message));
+      setAmountAlertRequest(errorAlertShell(message));
     } finally {
       setLoading(false);
     }
@@ -573,7 +586,9 @@ export function SendTo() {
                 {!gasFree && toAddress && (
                   <IonImg
                     src={
-                      !alertRequest.message && toAddress
+                      !amountAlertRequest.message &&
+                      !recipientAlertRequest.message &&
+                      toAddress
                         ? '/shared-assets/images/right.png'
                         : storedTheme === themeType.LIGHT
                         ? '/shared-assets/images/right-light.svg'
@@ -648,14 +663,24 @@ export function SendTo() {
                   token || TEST_TO_MAIN.get(chain) || chain
                 }`}</FeeMarker>
               </GasWrapper>
-              {alertRequest.visible && <AlertBox state={alertRequest} />}
+              {amountAlertRequest.visible && (
+                <AlertBox state={amountAlertRequest} />
+              )}
+              {recipientAlertRequest.visible && (
+                <AlertBox state={recipientAlertRequest} />
+              )}
               <IonRow style={{ width: '100%' }}>
                 <IonCol size="6" style={{ paddingLeft: '0' }}>
                   <PurpleButton
                     style={{ width: '100%', marginLeft: '0' }}
                     expand="block"
                     onClick={verifyTransaction}
-                    disabled={loading || !toAddress || alertRequest.visible}
+                    disabled={
+                      loading ||
+                      !toAddress ||
+                      amountAlertRequest.visible ||
+                      recipientAlertRequest.visible
+                    }
                   >
                     {t('Send')}
                     {loading ? (
