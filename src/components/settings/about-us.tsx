@@ -26,7 +26,7 @@ function UpdateModal({
 }) {
   const info = useCurrentAppInfo();
   const [availableVersion] = useLocalStorage('available-app-version', '0.0.0');
-  const [updateUrl] = useLocalStorage('update_url', '');
+  const [updateUrl] = useLocalStorage('update-url', '');
   const { t } = useTranslation();
   return (
     <IonModal

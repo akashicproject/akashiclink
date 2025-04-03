@@ -1,6 +1,5 @@
 import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
 import { IonRadioGroup } from '@ionic/react';
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Toggle } from '../../components/common/toggle/toggle';
@@ -14,15 +13,8 @@ import { DownArrow } from '../../components/settings/down-arrow';
 import { SettingItem } from '../../components/settings/setting-item';
 import { SettingsRadio } from '../../components/settings/setting-radio';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
+import { useSetGlobalLanguage } from '../../utils/hooks/useSetGlobalLanguage';
 import { getImageIconUrl } from '../../utils/url-utils';
-
-const getLocalizationLanguage = (): string => {
-  const browserLanguage = window.navigator.language;
-  for (const lang of LANGUAGE_LIST)
-    if (lang.locale === browserLanguage) return lang.locale;
-  // Default to english
-  return LANGUAGE_LIST[0].locale;
-};
 
 function getLanguageTitle(locale: string) {
   const language = LANGUAGE_LIST.find((l) => l.locale === locale);
@@ -78,14 +70,8 @@ export function SettingsGeneral() {
     'hide-small-balances',
     true
   );
-  const { t, i18n } = useTranslation();
-  const [selectedLanguage, setSelectedLanguage] = useLocalStorage(
-    'language',
-    getLocalizationLanguage()
-  );
-  useEffect(() => {
-    i18n.changeLanguage(selectedLanguage);
-  }, [selectedLanguage, i18n]);
+  const { t } = useTranslation();
+  const [globalLanguage, setGlobalLanguage] = useSetGlobalLanguage();
 
   const generalMenuItems = [
     {
@@ -93,11 +79,11 @@ export function SettingsGeneral() {
       iconUrl: getImageIconUrl('language.svg'),
       children: (
         <LanguageRadio
-          selectedLanguage={selectedLanguage}
-          setSelectedLanguage={setSelectedLanguage}
+          selectedLanguage={globalLanguage}
+          setSelectedLanguage={setGlobalLanguage}
         />
       ),
-      endComponent: <LanguageTextCaret selectedLanguage={selectedLanguage} />,
+      endComponent: <LanguageTextCaret selectedLanguage={globalLanguage} />,
       isAccordion: true,
     },
     {

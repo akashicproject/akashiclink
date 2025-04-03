@@ -1,35 +1,37 @@
-import './language-select.scss';
-
+import styled from '@emotion/styled';
 import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
 import { IonButton, IonIcon, IonItem, IonList, IonPopover } from '@ionic/react';
 import { caretDownOutline, globeOutline } from 'ionicons/icons';
 import type { SyntheticEvent } from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useRef, useState } from 'react';
 
-import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
+import { useSetGlobalLanguage } from '../../utils/hooks/useSetGlobalLanguage';
+
+const LanguagePopover = styled(IonPopover)({
+  '--max-width': 'fit-content',
+  ['ion-list']: {
+    backgroundColor: 'var(--ion-color-dark-contrast)',
+  },
+});
+
+const LanguageButton = styled(IonButton)({
+  /* Padding removed around button  */
+  '--padding-start': '0 !important',
+  '--padding-end': '0 !important',
+  '--padding-top': '0 !important',
+  '--padding-bottom': '0 !important',
+
+  /* Dark colouring  */
+  color: 'var(--ion-color-primary-10)',
+  '--background-hover': 'none',
+  '--ripple-color': 'transparent',
+});
 
 export const LanguageDropdown = () => {
-  const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  /**
-   * Get language of the user's browser
-   */
-  const getLocalisationLanguage = (): string => {
-    const browserLanguage = window.navigator.language;
-    for (const lang of LANGUAGE_LIST)
-      if (lang.locale === browserLanguage) return lang.locale;
-    // Default to english
-    return LANGUAGE_LIST[0].locale;
-  };
-  const [selectedLanguage, setSelectedLanguage] = useLocalStorage(
-    'language',
-    getLocalisationLanguage()
-  );
   const popover = useRef<HTMLIonPopoverElement>(null);
-  useEffect(() => {
-    i18n.changeLanguage(selectedLanguage);
-  }, [selectedLanguage, i18n]);
+
+  const [globalLanguage, setGlobalLanguage] = useSetGlobalLanguage();
 
   const openPopover = (e: SyntheticEvent) => {
     if (popover.current) popover.current.event = e;
@@ -37,7 +39,7 @@ export const LanguageDropdown = () => {
   };
   return (
     <div>
-      <IonButton
+      <LanguageButton
         className="language-button"
         fill="clear"
         onClick={(e) => {
@@ -50,8 +52,8 @@ export const LanguageDropdown = () => {
           icon={globeOutline}
         />
         <IonIcon style={{ fontSize: 14 }} slot="end" icon={caretDownOutline} />
-      </IonButton>
-      <IonPopover
+      </LanguageButton>
+      <LanguagePopover
         side="bottom"
         alignment="end"
         className="language-popover"
@@ -70,17 +72,17 @@ export const LanguageDropdown = () => {
         >
           {LANGUAGE_LIST.map((item) => (
             <IonItem
-              className={item.locale === selectedLanguage ? 'ion-focused' : ''}
+              className={item.locale === globalLanguage ? 'ion-focused' : ''}
               key={item.locale}
               button={true}
               detail={false}
-              onClick={(_) => setSelectedLanguage(item.locale)}
+              onClick={(_) => setGlobalLanguage(item.locale)}
             >
               {item.title.toUpperCase()}
             </IonItem>
           ))}
         </IonList>
-      </IonPopover>
+      </LanguagePopover>
     </div>
   );
 };

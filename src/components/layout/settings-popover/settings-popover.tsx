@@ -3,15 +3,20 @@ import './settings-popover.scss';
 import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
 import { IonIcon, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
 import { caretBackOutline } from 'ionicons/icons';
-import type { MouseEventHandler, ReactNode } from 'react';
+import type {
+  Dispatch,
+  MouseEventHandler,
+  ReactNode,
+  SetStateAction,
+} from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../../constants/urls';
 import { akashicPayPath } from '../../../routing/navigation-tabs';
 import { themeType } from '../../../theme/const';
-import { useLocalStorage } from '../../../utils/hooks/useLocalStorage';
 import { useLogout } from '../../../utils/hooks/useLogout';
+import { useSetGlobalLanguage } from '../../../utils/hooks/useSetGlobalLanguage';
 import { SquareWhiteButton } from '../../common/buttons';
 import { useTheme } from '../../providers/PreferenceProvider';
 
@@ -40,6 +45,69 @@ function SettingsList(props: { children: ReactNode; isSubmenu?: boolean }) {
   );
 }
 
+function SettingsItem({
+  routerLink,
+  displayText,
+  disabled,
+  onClick,
+  id,
+  setShowPopover,
+}: {
+  routerLink?: string;
+  displayText: string;
+  disabled?: boolean;
+  onClick?: MouseEventHandler;
+  id?: string;
+  setShowPopover: Dispatch<
+    SetStateAction<{ open: boolean; event: Event | undefined }>
+  >;
+}) {
+  return (
+    <IonItem
+      className="settings-item ion-no-padding"
+      button={true}
+      detail={false}
+      routerLink={routerLink}
+      disabled={disabled}
+      onClick={(e) => {
+        if (onClick) onClick(e);
+        setShowPopover({ open: false, event: e.nativeEvent });
+      }}
+    >
+      <SettingsText text={displayText} id={id} />
+    </IonItem>
+  );
+}
+
+function SettingSubmenu({
+  displayText,
+  id,
+  children,
+}: {
+  children: ReactNode;
+  displayText: string;
+  id: string;
+}) {
+  return (
+    <>
+      <IonItem className="settings-item" button={true} detail={false} id={id}>
+        <IonIcon className="settings-icon" icon={caretBackOutline} />
+        <SettingsText text={displayText} />
+      </IonItem>
+      <IonPopover
+        className="settings-submenu"
+        dismissOnSelect={true}
+        side="left"
+        alignment="start"
+        size="cover"
+        trigger={id}
+      >
+        {children}
+      </IonPopover>
+    </>
+  );
+}
+
 /**
  * Popover exposing settings that user can toggle
  */
@@ -52,65 +120,7 @@ export function SettingsPopover() {
    * @param displayText
    * @param unique id to handle clicks and visibility
    */
-  function SettingSubmenu({
-    displayText,
-    id,
-    children,
-  }: {
-    children: ReactNode;
-    displayText: string;
-    id: string;
-  }) {
-    return (
-      <>
-        <IonItem className="settings-item" button={true} detail={false} id={id}>
-          <IonIcon className="settings-icon" icon={caretBackOutline} />
-          <SettingsText text={displayText} />
-        </IonItem>
-        <IonPopover
-          className="settings-submenu"
-          dismissOnSelect={true}
-          side="left"
-          alignment="start"
-          size="cover"
-          trigger={id}
-        >
-          {children}
-        </IonPopover>
-      </>
-    );
-  }
 
-  /** Single settings entry */
-  function SettingsItem({
-    routerLink,
-    displayText,
-    disabled,
-    onClick,
-    id,
-  }: {
-    routerLink?: string;
-    displayText: string;
-    disabled?: boolean;
-    onClick?: MouseEventHandler;
-    id?: string;
-  }) {
-    return (
-      <IonItem
-        className="settings-item ion-no-padding"
-        button={true}
-        detail={false}
-        routerLink={routerLink}
-        disabled={disabled}
-        onClick={(e) => {
-          if (onClick) onClick(e);
-          setShowPopover({ open: false, event: e.nativeEvent });
-        }}
-      >
-        <SettingsText text={displayText} id={id} />
-      </IonItem>
-    );
-  }
   const [buttonBackground, setButtonBackground] = useState(false);
 
   const handleButtonClick = () => {
@@ -124,21 +134,7 @@ export function SettingsPopover() {
     event: undefined,
   });
 
-  const getLocalisationLanguage = (): string => {
-    const browserLanguage = window.navigator.language;
-    for (const lang of LANGUAGE_LIST)
-      if (lang.locale === browserLanguage) return lang.locale;
-    // Default to english
-    return LANGUAGE_LIST[0].locale;
-  };
-  const [selectedLanguage, setSelectedLanguage] = useLocalStorage(
-    'language',
-    getLocalisationLanguage()
-  );
-
-  useEffect(() => {
-    i18n.changeLanguage(selectedLanguage);
-  }, [selectedLanguage, i18n]);
+  const [_, setGlobalLanguage] = useSetGlobalLanguage();
 
   return (
     <>
@@ -189,7 +185,8 @@ export function SettingsPopover() {
                   key={l.locale}
                   displayText={l.title}
                   id={l.locale}
-                  onClick={(_) => setSelectedLanguage(l.locale)}
+                  onClick={(_) => setGlobalLanguage(l.locale)}
+                  setShowPopover={setShowPopover}
                 />
               ))}
             </SettingsList>
@@ -199,10 +196,12 @@ export function SettingsPopover() {
               <SettingsItem
                 displayText={t('KeyPairBackup')}
                 routerLink={akashicPayPath(urls.settingsBackup)}
+                setShowPopover={setShowPopover}
               />
               <SettingsItem
                 displayText={t('ChangePassword')}
                 routerLink={akashicPayPath(urls.changePassword)}
+                setShowPopover={setShowPopover}
               />
             </SettingsList>
           </SettingSubmenu>
@@ -215,11 +214,16 @@ export function SettingsPopover() {
               <SettingsItem
                 displayText={t('AboutUs')}
                 routerLink={akashicPayPath(urls.settingsVersion)}
+                setShowPopover={setShowPopover}
               />
             </SettingsList>
           </SettingSubmenu>
 
-          <SettingsItem displayText={t('Lock')} onClick={logout} />
+          <SettingsItem
+            displayText={t('Lock')}
+            setShowPopover={setShowPopover}
+            onClick={logout}
+          />
         </SettingsList>
       </IonPopover>
     </>

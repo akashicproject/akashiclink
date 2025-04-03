@@ -8,23 +8,25 @@ import { useConfig } from '../../utils/hooks/useConfig';
 import { useCurrentAppInfo } from '../../utils/hooks/useCurrentAppInfo';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 
-// eslint-disable-next-line import/no-default-export
-export default function VersionUpdateAlert() {
+export const VersionUpdateAlert = () => {
   const { t } = useTranslation();
   const { config } = useConfig();
 
-  const [, setAvailableVersion] = useLocalStorage(
-    'available-app-version',
-    '0.0.0'
-  );
-  const [, setUpdateUrl] = useLocalStorage('update_url', '');
-  const [skipVersion, setSkipVersion] = useLocalStorage('skipVersion', '0.0.0');
+  const [, setAvailableVersion] = useLocalStorage('available-app-version', '');
+  const [, setUpdateUrl] = useLocalStorage('update-url', '');
+  const [skipVersion, setSkipVersion] = useLocalStorage('skip-version', '');
   const [updateType, setUpdateType] = useLocalStorage('update-type', '');
 
   const info = useCurrentAppInfo();
 
   useEffect(() => {
     const appVersion = info?.version?.split('-')[0];
+
+    // compare when all versions are loaded
+    if (!appVersion || !config.awMinVersion || !config.awLatestVersion) {
+      setUpdateType('');
+      return;
+    }
 
     setAvailableVersion(config.awLatestVersion);
     setUpdateUrl(config.awUrl);
@@ -74,4 +76,4 @@ export default function VersionUpdateAlert() {
       ]}
     />
   );
-}
+};

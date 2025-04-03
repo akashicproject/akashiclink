@@ -21,13 +21,14 @@ import { IonApp, setupIonicReact } from '@ionic/react';
 import { IonReactMemoryRouter } from '@ionic/react-router';
 import { useEffect } from 'react';
 
-import VersionUpdateAlert from './components/layout/version-update-alert';
+import { VersionUpdateAlert } from './components/layout/version-update-alert';
 import { PreferenceProvider } from './components/providers/PreferenceProvider';
 import { LAST_PAGE_LOCATION } from './constants';
 import { useAppSelector } from './redux/app/hooks';
 import type { RootState } from './redux/app/store';
 import { history } from './routing/history';
 import { NavigationTree } from './routing/navigation-tree';
+import { useSetGlobalLanguage } from './utils/hooks/useSetGlobalLanguage';
 
 setupIonicReact();
 
@@ -50,6 +51,9 @@ export default function App() {
     };
     cacheLastLocation();
   }, [lastLocation.pathname]);
+
+  useSetGlobalLanguage();
+
   return (
     <IonApp>
       <PreferenceProvider>
