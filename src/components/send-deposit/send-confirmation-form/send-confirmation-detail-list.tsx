@@ -1,7 +1,4 @@
-import {
-  type ITransactionVerifyResponse,
-  NetworkDictionary,
-} from '@helium-pay/backend';
+import { NetworkDictionary } from '@helium-pay/backend';
 import { IonItem, IonText } from '@ionic/react';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +8,7 @@ import { selectFocusCurrencyDetail } from '../../../redux/slices/preferenceSlice
 import { getPrecision } from '../../../utils/formatAmount';
 import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
 import { displayLongText } from '../../../utils/long-text';
+import type { ITransactionForSigning } from '../../../utils/nitr0gen/nitr0gen.interface';
 import { L2Icon } from '../../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../../common/chain-icon/network-icon';
 import { Divider } from '../../common/divider';
@@ -29,7 +27,7 @@ export const SendConfirmationDetailList = ({
   txnFinal,
   validatedAddressPair,
 }: {
-  txns: ITransactionVerifyResponse[];
+  txns: ITransactionForSigning[];
   txnFinal?: SendConfirmationTxnFinal;
   validatedAddressPair: ValidatedAddressPair;
   // eslint-disable-next-line sonarjs/cognitive-complexity

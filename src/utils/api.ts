@@ -4,7 +4,7 @@ import type {
   IPrepareL1TxnResponse,
   IRetrieveIdentity,
   IRetrieveIdentityResponse,
-  ITransactionProposal,
+  IWithdrawalProposal,
 } from '@helium-pay/backend';
 
 import { axiosBase } from './axios-helper';
@@ -38,7 +38,7 @@ export const OwnersAPI = {
   },
 
   prepareL1Txn: async (
-    transactionData: ITransactionProposal
+    transactionData: IWithdrawalProposal
   ): Promise<IPrepareL1TxnResponse> => {
     const response = await axiosBase.post(
       `/l1-txn-orchestrator/prepare-withdrawal`,

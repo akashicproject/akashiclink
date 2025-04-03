@@ -1,10 +1,8 @@
 import { Preferences } from '@capacitor/preferences';
 import type {
   IBaseTransactionWithDbIndex,
-  IL1ClientSideOtkTransactionBase,
   ITerriTransaction,
   ITransactionProposalClientSideOtk,
-  ITransactionVerifyResponse,
 } from '@helium-pay/backend';
 import { createMemoryHistory } from 'history';
 
@@ -17,6 +15,7 @@ import type { Url } from '../constants/urls';
 import { urls } from '../constants/urls';
 import type { TransferResultType } from '../pages/nft/nft-transfer-result';
 import type { ITransactionRecordForExtension } from '../utils/formatTransfers';
+import type { ITransactionForSigning } from '../utils/nitr0gen/nitr0gen.interface';
 import { akashicPayPath } from './navigation-tabs';
 
 export const history = createMemoryHistory();
@@ -30,7 +29,7 @@ export interface LocationState {
     errorMsg?: string;
   };
   sendConfirm?: {
-    txns: ITransactionVerifyResponse[];
+    txns: ITransactionForSigning[];
     signedTxns: (IBaseTransactionWithDbIndex | ITerriTransaction)[];
     validatedAddressPair: ValidatedAddressPair;
     amount: string;
@@ -38,10 +37,7 @@ export interface LocationState {
   };
   sendResult?: {
     fromAddress: string;
-    transaction?: (
-      | IL1ClientSideOtkTransactionBase
-      | ITransactionProposalClientSideOtk
-    )[];
+    transaction?: ITransactionProposalClientSideOtk[];
     errorMsg?: string;
     currencyDisplayName?: string;
   };

@@ -1,8 +1,9 @@
 import type {
   IBaseTransactionWithDbIndex,
   ITerriTransaction,
-  ITransactionVerifyResponse,
 } from '@helium-pay/backend';
+
+import type { ITransactionForSigning } from '../../../utils/nitr0gen/nitr0gen.interface';
 
 export type ValidatedAddressPair = {
   convertedToAddress: string;
@@ -20,7 +21,7 @@ export const validatedAddressPairInitialState = {
 };
 
 export type SendConfirmationTxnsDetail = {
-  txns: ITransactionVerifyResponse[];
+  txns: ITransactionForSigning[];
   signedTxns: (IBaseTransactionWithDbIndex | ITerriTransaction)[];
   validatedAddressPair: ValidatedAddressPair;
   amount: string;

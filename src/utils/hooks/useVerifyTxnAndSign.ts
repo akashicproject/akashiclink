@@ -1,8 +1,11 @@
 import { datadogRum } from '@datadog/browser-rum';
-import type { CoinSymbol, CurrencySymbol } from '@helium-pay/backend';
+import type {
+  CoinSymbol,
+  CurrencySymbol,
+  IL2TransactionDetails,
+} from '@helium-pay/backend';
 import {
-  type ITransactionProposal,
-  type ITransactionVerifyResponse,
+  type IWithdrawalProposal,
   keyError,
   L2Regex,
   TransactionLayer,
@@ -14,6 +17,7 @@ import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
 import { OwnersAPI } from '../api';
 import { convertObjectCurrencies, convertToDecimals } from '../currency';
 import { calculateInternalWithdrawalFee } from '../internal-fee';
+import type { ITransactionForSigning } from '../nitr0gen/nitr0gen.interface';
 import { Nitr0genApi, signTxBody } from '../nitr0gen/nitr0gen-api';
 import { unpackRequestErrorMessage } from '../unpack-request-error-message';
 import { useAccountMe } from './useAccountMe';
@@ -42,7 +46,7 @@ export const useVerifyTxnAndSign = () => {
       }
 
       if (isL2) {
-        const l2TransactionData: ITransactionProposal = {
+        const l2TransactionData: IL2TransactionDetails = {
           initiatedToNonL2: !L2Regex.exec(
             validatedAddressPair.userInputToAddress
           )
@@ -63,9 +67,10 @@ export const useVerifyTxnAndSign = () => {
           convertObjectCurrencies(l2TransactionData, convertToDecimals)
         );
 
-        const txns: ITransactionVerifyResponse[] = [
+        const txns: ITransactionForSigning[] = [
           {
             ...l2TransactionData,
+            identity: activeAccount.identity,
             internalFee: {
               withdraw: calculateInternalWithdrawalFee(
                 exchangeRates,
@@ -85,7 +90,7 @@ export const useVerifyTxnAndSign = () => {
         };
       }
 
-      const transactionData: ITransactionProposal = {
+      const transactionData: IWithdrawalProposal = {
         identity: activeAccount.identity,
         toAddress: validatedAddressPair.convertedToAddress,
         // Backend accepts "normal" units, so we don't convert
@@ -98,11 +103,11 @@ export const useVerifyTxnAndSign = () => {
         fees: { feesEstimate },
         withdrawalKeys,
       } = await OwnersAPI.prepareL1Txn(transactionData);
-      const txns: ITransactionVerifyResponse[] = await Promise.all(
+      const txns: ITransactionForSigning[] = await Promise.all(
         withdrawalKeys.map(
           async (key) =>
             ({
-              ownedIdentity: activeAccount.identity,
+              identity: activeAccount.identity,
               fromAddress: key.address,
               fromLedgerId: key.ledgerId,
               toAddress: validatedAddressPair.convertedToAddress,
@@ -121,7 +126,7 @@ export const useVerifyTxnAndSign = () => {
                 convertToDecimals(feesEstimate, coinSymbol),
                 tokenSymbol
               ),
-            } as ITransactionVerifyResponse)
+            } as ITransactionForSigning)
         )
       );
 

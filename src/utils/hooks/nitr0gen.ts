@@ -2,7 +2,6 @@ import { Preferences } from '@capacitor/preferences';
 import { datadogRum } from '@datadog/browser-rum';
 import {
   type ITransactionProposalClientSideOtk,
-  type ITransactionSettledResponse,
   type ITransferNftResponse,
   type ITransferNftUsingClientSideOtk,
   type IUpdateAcnsUsingClientSideOtk,
@@ -13,7 +12,8 @@ import {
 
 import { useAppDispatch } from '../../redux/app/hooks';
 import { addLocalTransaction } from '../../redux/slices/localTransactionSlice';
-import { Nitr0genApi } from '../../utils/nitr0gen/nitr0gen-api';
+import type { ITransactionSettledResponse } from '../nitr0gen/nitr0gen.interface';
+import { Nitr0genApi } from '../nitr0gen/nitr0gen-api';
 import { useValueOfAmountInUSDT } from './useExchangeRates';
 
 export const useSendL2Transaction = () => {
@@ -104,7 +104,7 @@ export const useSendL1Transaction = () => {
         key: 'hide-small-balances',
       });
 
-      const { ownedIdentity } = signedTransactionData;
+      const { identity } = signedTransactionData;
 
       const usdtValue = valueOfAmountInUSDT(
         signedTransactionData.amount,
@@ -124,7 +124,7 @@ export const useSendL1Transaction = () => {
             date: new Date(),
             layer: TransactionLayer.L1,
             l2TxnHash,
-            senderIdentity: ownedIdentity,
+            senderIdentity: identity,
           })
         );
       }

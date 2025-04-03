@@ -1,5 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { CoinSymbol, CurrencySymbol } from '@helium-pay/backend';
+import type {
+  CoinSymbol,
+  CurrencySymbol,
+  IBaseTransactionWithDbIndex,
+  IInternalFee,
+  ITerriTransaction,
+  ITransactionBase,
+  TransactionLayer,
+} from '@helium-pay/backend';
 
 /** ********* Internal Arguments/Responses ********* **/
 
@@ -18,12 +26,6 @@ export interface L1TxDetail {
 
 export interface IOnboardedIdentity {
   ledgerId: string;
-}
-
-export interface ICreatedKey {
-  ledgerId: string;
-  address: string;
-  hashes: string[];
 }
 
 /** ********* AC Responses ********* **/
@@ -56,29 +58,33 @@ export interface IKeyCreationResponse {
 
 /** ********* L1 Stuff ********* **/
 
-/**
- * Nitr0gen Contract for signing ethereum coin and token transfers
- */
-export interface Nitr0EthereumTrx {
-  nonce: number;
-  gas: string;
-  contractAddress?: string;
+export interface ITransactionSuccessResponse {
+  isSuccess: true;
+  txHash: string;
+  // Should probably not be optional. But fuck me this code is a mess.
+  feesEstimate?: string;
 }
+export interface ITransactionFailureResponse {
+  isSuccess: false;
+  reason: string;
+}
+/**
+ * Describes response object returned by the backend when a transaction is sent
+ * to the blockchain and the transaction's promise is resolved/rejected
+ */
+export type ITransactionSettledResponse =
+  | ITransactionSuccessResponse
+  | ITransactionFailureResponse;
 
 /**
- * Nitr0gen contract for signing tron coin and token transfers
+ * Describes a transaction proposal with anticipated gas fee that still needs to:
+ * - Be signed
+ * - Be sent to AC
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Nitr0TronTrx {}
-
-/**
- * Nitr0gen contract for signing btc transfers
- */
-
-export type Nitr0Transaction = Nitr0EthereumTrx | Nitr0TronTrx;
-
-export interface INewNitr0genKey {
-  ledgerId: string;
-  address: string;
-  hashes: string[];
+export interface ITransactionForSigning extends ITransactionBase {
+  readonly internalFee?: IInternalFee;
+  readonly txToSign?: IBaseTransactionWithDbIndex | ITerriTransaction;
+  readonly layer: TransactionLayer;
+  // Presumably mandatory if layer-1... :/
+  readonly feesEstimate?: string;
 }
