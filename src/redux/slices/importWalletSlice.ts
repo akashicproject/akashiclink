@@ -72,7 +72,6 @@ export const importWalletSlice = createAppSlice({
       async (passPhrase: string[]) => {
         // Reconstruct OTK
         const reconstructedOtk = await restoreOtk(passPhrase.join(' '));
-        let username: string | undefined;
         let identity: string | undefined;
         try {
           const response = await OwnersAPI.importAccount({
@@ -83,7 +82,6 @@ export const importWalletSlice = createAppSlice({
             ),
           });
           identity = response.identity;
-          username = response.username;
         } catch (e) {
           // Axios-errors don't get mapped nicely to SerializezError so we
           // re-throw as Error
@@ -97,13 +95,6 @@ export const importWalletSlice = createAppSlice({
         if (identity) {
           historyResetStackAndRedirect(urls.importWalletPassword);
           return { ...reconstructedOtk, identity };
-        } else if (username) {
-          historyResetStackAndRedirect(urls.migrateWalletNotice, {
-            migrateWallet: {
-              username,
-            },
-          });
-          return null;
         } else {
           throw new Error('GenericFailureMsg');
         }
@@ -123,7 +114,6 @@ export const importWalletSlice = createAppSlice({
       async (privateKey: string) => {
         // Restore OTK from keypair
         let otk: IKeyExtended = restoreOtkFromKeypair(privateKey);
-        let username: string | undefined;
         let identity: string | undefined;
         try {
           try {
@@ -132,7 +122,6 @@ export const importWalletSlice = createAppSlice({
               signedAuth: signImportAuth(privateKey, IMPORT_CONST),
             });
             identity = response.identity;
-            username = response.username;
           } catch (e) {
             // This error could be because of a bug where we have some otks stored "compressed" and some "uncompressed"
             // So if facing this error, we try again with "uncompressed"
@@ -146,7 +135,6 @@ export const importWalletSlice = createAppSlice({
                 signedAuth: signImportAuth(privateKey, IMPORT_CONST),
               });
               identity = response.identity;
-              username = response.username;
             } else {
               throw e;
             }
@@ -164,14 +152,6 @@ export const importWalletSlice = createAppSlice({
         if (identity) {
           historyResetStackAndRedirect(urls.importWalletPassword);
           return { ...otk, identity };
-        } else if (username) {
-          // reset history and force user to migrate wallet
-          historyResetStackAndRedirect(urls.migrateWalletNotice, {
-            migrateWallet: {
-              username,
-            },
-          });
-          return null;
         } else {
           throw new Error('GenericFailureMsg');
         }

@@ -3,7 +3,6 @@ import { IonCol, IonRow } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
 import { OwnersAPI } from '../../utils/api';
 import { useAccountMe } from '../../utils/hooks/useAccountMe';
@@ -82,20 +81,9 @@ export function LoginForm() {
           ),
         });
       } else {
-        // Check if supplied password is correct
-        await OwnersAPI.validatePassword({
-          username: activeAccount.username ?? '',
-          password,
-        });
-        // @TODO remove once old accounts no longer supported
-        // Redirect to Migration-Flow
-        historyResetStackAndRedirect(urls.migrateWalletNotice, {
-          migrateWallet: {
-            username: activeAccount.username,
-            oldPassword: password,
-          },
-        });
-        return;
+        throw new Error(
+          `localSelectedOtk not found may due to old account not migrated, ${activeAccount.identity}`
+        );
       }
 
       datadogRum.setUser({

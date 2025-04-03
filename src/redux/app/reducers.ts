@@ -5,7 +5,6 @@ import { combineReducers } from 'redux';
 import { accountSlice } from '../slices/accountSlice';
 import { createWalletSlice } from '../slices/createWalletSlice';
 import { importWalletSlice } from '../slices/importWalletSlice';
-import { migrateWalletSlice } from '../slices/migrateWalletSlice';
 import { preferenceSlice } from '../slices/preferenceSlice';
 
 // use `combineReducers` instead of `combineSlices`
@@ -15,7 +14,6 @@ const createRootReducer = (history: History) =>
     router: connectRouter(history),
     createWalletSlice: createWalletSlice.reducer,
     importWalletSlice: importWalletSlice.reducer,
-    migrateWalletSlice: migrateWalletSlice.reducer,
     preferenceSlice: preferenceSlice.reducer,
     accountSlice: accountSlice.reducer,
   });

@@ -21,10 +21,6 @@ import type {
   IMinimalUserResponse,
   IRequestActivationCode,
   IRequestActivationCodeResponse,
-  ISwapEotkDto,
-  ISwapEotkResponse,
-  ITempShowOtkPrv,
-  ITempShowOtkPrvResponse,
   ITransactionBase,
   ITransactionProposal,
   ITransactionProposalClientSideOtk,
@@ -58,20 +54,6 @@ export const OwnersAPI = {
 
     return response.data;
   },
-  fetchKeyPair: async (
-    importData: ITempShowOtkPrv
-  ): Promise<ITempShowOtkPrvResponse> => {
-    const response = await axiosBase.post(
-      `/auth/temp/show-otk-prv`,
-      JSON.stringify(importData)
-    );
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-    return response.data;
-  },
-
   loginV1: async (
     loginData: ILoginUserWithOtk
   ): Promise<IMinimalUserResponse> => {
@@ -393,21 +375,6 @@ export const OwnersAPI = {
       `/key/estimate-gas-fee`,
       JSON.stringify(transactionData)
     );
-    const { data, status } = response;
-    if (status >= 400) {
-      throw new Error(data.message);
-    }
-    return response.data;
-  },
-
-  swapEotkToOtk: async (publicKey: string): Promise<ISwapEotkResponse> => {
-    const response = await axiosBase.post(
-      `/auth/swap/eotk`,
-      JSON.stringify({
-        publicKey,
-      } as ISwapEotkDto)
-    );
-
     const { data, status } = response;
     if (status >= 400) {
       throw new Error(data.message);

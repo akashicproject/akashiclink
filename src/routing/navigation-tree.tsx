@@ -24,12 +24,6 @@ import { ImportWalletSelectMethod } from '../pages/import-wallet/import-wallet-s
 import { ImportWalletSuccessful } from '../pages/import-wallet/import-wallet-successful';
 import { ChangePasswordAfterImport } from '../pages/import-wallet/recovery/change-password-after-import';
 import { ManageAccounts } from '../pages/manage-accounts/manage-accounts';
-import { MigrateWalletCreatePassword } from '../pages/migrate-wallet-otk/migrate-wallet-create-password';
-import { MigrateWalletOldPassword } from '../pages/migrate-wallet-otk/migrate-wallet-enter-old-password';
-import { MigrateWalletNotice } from '../pages/migrate-wallet-otk/migrate-wallet-notice';
-import { MigrateWalletSecret } from '../pages/migrate-wallet-otk/migrate-wallet-secret';
-import { MigrateWalletSecretConfirm } from '../pages/migrate-wallet-otk/migrate-wallet-secret-confirm';
-import { MigrateWalletSuccessful } from '../pages/migrate-wallet-otk/migrate-wallet-successful';
 import { Nft } from '../pages/nft/nft';
 import { NftTransfer } from '../pages/nft/nft-transfer';
 import { NftTransferResult } from '../pages/nft/nft-transfer-result';
@@ -48,7 +42,6 @@ import { useAppDispatch, useAppSelector } from '../redux/app/hooks';
 import type { RootState } from '../redux/app/store';
 import { onClear as onClearCreate } from '../redux/slices/createWalletSlice';
 import { onClear as onClearImport } from '../redux/slices/importWalletSlice';
-import { onClear as onClearMigrate } from '../redux/slices/migrateWalletSlice';
 import { useLogout } from '../utils/hooks/useLogout';
 import { history } from './history';
 import { AkashicTab } from './navigation-tabs';
@@ -74,7 +67,6 @@ export function NavigationTree() {
       if (isPlatform('ios') || isPlatform('android')) {
         dispatch(onClearCreate());
         dispatch(onClearImport());
-        dispatch(onClearMigrate());
         await logout();
         setIsLoading(false);
         return;
@@ -166,25 +158,6 @@ export function NavigationTree() {
       {AkashicTab.registerPage(
         ChangePasswordAfterImport,
         urls.changePasswordAfterImport
-      )}
-      {/* migrate wallet flow */}
-      {AkashicTab.registerPage(MigrateWalletNotice, urls.migrateWalletNotice)}
-      {AkashicTab.registerPage(MigrateWalletSecret, urls.migrateWalletSecret)}
-      {AkashicTab.registerPage(
-        MigrateWalletSecretConfirm,
-        urls.migrateWalletSecretConfirm
-      )}
-      {AkashicTab.registerPage(
-        MigrateWalletOldPassword,
-        urls.migrateWalletOldPassword
-      )}
-      {AkashicTab.registerPage(
-        MigrateWalletCreatePassword,
-        urls.migrateWalletPassword
-      )}
-      {AkashicTab.registerPage(
-        MigrateWalletSuccessful,
-        urls.migrateWalletComplete
       )}
       {/* US² tree */}
       {/* {Us2Tab.registerPage(Us2Main)} */}

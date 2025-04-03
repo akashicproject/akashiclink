@@ -45,10 +45,6 @@ export interface LocationState {
     errorMsg?: string;
     currencyDisplayName?: string;
   };
-  migrateWallet?: {
-    username?: string;
-    oldPassword?: string;
-  };
   activityDetails?: {
     currentTransfer?: ITransactionRecordForExtension;
   };
