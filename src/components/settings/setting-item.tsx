@@ -36,7 +36,7 @@ const StyledIonItem = styled(IonItem)<{ backgroundColor?: string }>`
 
 export type SettingItemProps = {
   header: string;
-  iconUrl?: string;
+  icon?: string;
   onClick?: () => void;
   isAccordion?: boolean;
   children?: ReactNode;
@@ -47,7 +47,6 @@ export type SettingItemProps = {
   ripple?: boolean;
   link?: string;
   headerStyle?: CSSProperties;
-  icon?: React.ReactNode;
 };
 
 const handleLink = async (link: string) => {
@@ -61,7 +60,7 @@ const handleLink = async (link: string) => {
 };
 
 export function SettingItem({
-  iconUrl,
+  icon,
   header,
   isAccordion = false,
   endComponent,
@@ -73,7 +72,6 @@ export function SettingItem({
   ripple = true,
   link,
   headerStyle,
-  icon,
 }: SettingItemProps) {
   const [showAccordionItem, setShowAccordionItem] = useState(false);
   const handleClick = async () => {
@@ -94,15 +92,12 @@ export function SettingItem({
         className="ion-no-padding"
         onClick={handleClick}
       >
-        {iconUrl && (
-          <IonIcon
-            className="ion-no-margin ion-margin-left-xxs"
-            slot="start"
-            size="24px"
-            src={iconUrl}
-          />
-        )}
-        {icon ? icon : <div style={{ width: '24px', height: '24px' }}></div>}
+        <IonIcon
+          className="ion-no-margin ion-margin-left-xxs"
+          slot="start"
+          size="24px"
+          src={icon}
+        />
         <IonLabel
           className="ion-no-margin"
           style={{ display: 'flex', flexDirection: 'column' }}

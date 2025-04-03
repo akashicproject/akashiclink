@@ -129,15 +129,7 @@ export function SettingsNetwork() {
                 </PingStatus>
               }
               isAccordion={false}
-              icon={
-                preferredNodeKey === node.key && (
-                  <IonIcon
-                    icon={checkmark}
-                    className="ion-text-size-md"
-                    style={{ color: 'var(--ion-text-color)', padding: '4px' }}
-                  />
-                )
-              }
+              icon={preferredNodeKey === node.key ? checkmark : ''}
               headerStyle={{
                 color: 'var(--ion-color-secondary-text)',
                 fontSize: '0.875rem',

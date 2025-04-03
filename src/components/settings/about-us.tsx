@@ -221,7 +221,7 @@ export function AboutUs({
             <SettingItem
               /* eslint-disable-next-line sonarjs/no-array-index-key */
               key={index}
-              iconUrl={abm.iconUrl}
+              icon={abm.icon}
               header={abm.header}
               onClick={abm.onClick}
               endComponent={abm.endComponent}

@@ -128,7 +128,7 @@ export function SettingsGeneral() {
                 key={index}
                 backgroundColor="var(--ion-background)"
                 header={gMenuItems.header}
-                iconUrl={gMenuItems.iconUrl}
+                icon={gMenuItems.iconUrl}
                 isAccordion={gMenuItems.isAccordion}
                 endComponent={gMenuItems.endComponent}
               >

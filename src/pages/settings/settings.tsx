@@ -129,28 +129,28 @@ export function Settings() {
   const menuItems: SettingItemProps[] = [
     {
       header: t('General'),
-      iconUrl: getImageIconUrl('settings.svg'),
+      icon: getImageIconUrl('settings.svg'),
       onClick: () => {
         history.push(akashicPayPath(urls.settingsGeneral));
       },
     },
     {
       header: t('Security'),
-      iconUrl: getImageIconUrl('security.svg'),
+      icon: getImageIconUrl('security.svg'),
       onClick: () => {
         history.push(akashicPayPath(urls.settingsSecurity));
       },
     },
     {
       header: t('Chain.Title'),
-      iconUrl: getImageIconUrl('network.svg'),
+      icon: getImageIconUrl('network.svg'),
       onClick: () => {
         history.push(akashicPayPath(urls.settingsNetwork));
       },
     },
     {
       header: t('AutoLock'),
-      iconUrl: getImageIconUrl('lock-light.svg'),
+      icon: getImageIconUrl('lock-light.svg'),
       endComponent: (
         <AutoLockTextCaret
           autoLockTime={`${autoLock.label} ${t(autoLock.unit)}`}
@@ -163,7 +163,7 @@ export function Settings() {
     },
     {
       header: t('AboutUs'),
-      iconUrl: getImageIconUrl('people.svg'),
+      icon: getImageIconUrl('people.svg'),
       onClick: () => {
         history.push(akashicPayPath(urls.settingsAboutUs));
       },
@@ -172,7 +172,7 @@ export function Settings() {
     {
       header: t('Support'),
       link: SUPPORT_MAIL,
-      iconUrl: getImageIconUrl('support_agent.svg'),
+      icon: getImageIconUrl('support_agent.svg'),
       endComponent: (
         <IonIcon
           className="ion-no-margin ion-margin-left-xs"
@@ -203,7 +203,7 @@ export function Settings() {
               <SettingItem
                 /* eslint-disable-next-line sonarjs/no-array-index-key */
                 key={index}
-                iconUrl={menuItem.iconUrl}
+                icon={menuItem.icon}
                 backgroundColor={'var(--ion-background)'}
                 header={menuItem.header}
                 onClick={menuItem.onClick}

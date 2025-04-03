@@ -26,12 +26,12 @@ export function SettingsModal({
   const settingsMenu: SettingItemProps[] = [
     {
       header: t('Theme'),
-      iconUrl: '/shared-assets/images/theme.svg',
+      icon: '/shared-assets/images/theme.svg',
       endComponent: <ThemeSelect />,
     },
     {
       header: t('AboutUs'),
-      iconUrl: getImageIconUrl('people.svg'),
+      icon: getImageIconUrl('people.svg'),
       onClick: () => {
         modal.current?.setCurrentBreakpoint(updateType === 'soft' ? 0.72 : 0.6);
         setIsAboutUs(true);
@@ -86,7 +86,7 @@ export function SettingsModal({
                 <SettingItem
                   /* eslint-disable-next-line sonarjs/no-array-index-key */
                   key={index}
-                  iconUrl={m.iconUrl}
+                  icon={m.icon}
                   header={m.header}
                   onClick={m.onClick}
                   endComponent={m.endComponent}
