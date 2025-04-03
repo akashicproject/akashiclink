@@ -3,9 +3,10 @@ import './activity.scss';
 import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import { TransactionStatus, TransactionType } from '@helium-pay/backend';
-import { IonButton, IonContent, IonIcon } from '@ionic/react';
+import { IonButton, IonContent, IonIcon, IonPopover } from '@ionic/react';
 import Big from 'big.js';
 import { arrowForwardCircleOutline, copyOutline } from 'ionicons/icons';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { WalletTransactionRecord } from '../../pages/activity';
@@ -67,6 +68,23 @@ export function ActivityDetail({
   // Remove this
   const backendUpdated = false;
 
+  const popover = useRef<HTMLIonPopoverElement>(null);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+
+  const copyData = async (data: string, e: never) => {
+    await Clipboard.write({
+      string: data ?? '',
+    });
+
+    if (popover.current) {
+      popover.current.event = e;
+    }
+    setPopoverOpen(true);
+    setTimeout(() => {
+      setPopoverOpen(false);
+    }, 1000);
+  };
+
   return (
     <IonContent className="transfer-detail">
       <DetailColumn>
@@ -81,13 +99,19 @@ export function ActivityDetail({
           </Link>
           <IonButton
             class="copy-button"
-            onClick={async () =>
-              await Clipboard.write({
-                string: currentTransfer.txHashUrl ?? '',
-              })
-            }
+            onClick={async (e: never) => copyData(currentTransfer.txHashUrl, e)}
           >
             <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />
+            <IonPopover
+              side="top"
+              alignment="center"
+              ref={popover}
+              isOpen={popoverOpen}
+              class={'copied-popover'}
+              onDidDismiss={() => setPopoverOpen(false)}
+            >
+              <IonContent class="ion-padding">{t('Copied')}</IonContent>
+            </IonPopover>
           </IonButton>
         </TextContent>
       </DetailColumn>
@@ -102,10 +126,8 @@ export function ActivityDetail({
           </Link>
           <IonButton
             class="copy-button"
-            onClick={async () =>
-              await Clipboard.write({
-                string: currentTransfer.senderAddressUrl ?? '',
-              })
+            onClick={async (e: never) =>
+              copyData(currentTransfer.senderAddressUrl, e)
             }
           >
             <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />
@@ -120,10 +142,8 @@ export function ActivityDetail({
           </Link>
           <IonButton
             class="copy-button"
-            onClick={async () =>
-              await Clipboard.write({
-                string: currentTransfer.recipientAddressUrl ?? '',
-              })
+            onClick={async (e: never) =>
+              copyData(currentTransfer.recipientAddressUrl, e)
             }
           >
             <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />

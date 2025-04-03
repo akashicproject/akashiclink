@@ -2,10 +2,16 @@ import './account-selection.scss';
 import '../../pages/logged/logged.css';
 
 import { Clipboard } from '@capacitor/clipboard';
-import { IonButton, IonIcon, IonSelect, IonSelectOption } from '@ionic/react';
+import {
+  IonContent,
+  IonIcon,
+  IonPopover,
+  IonSelect,
+  IonSelectOption,
+} from '@ionic/react';
 import { copyOutline } from 'ionicons/icons';
 import type { CSSProperties } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -13,6 +19,7 @@ import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { SquareWhiteButton } from '../buttons';
 
 /**
  * Options in the dropdown menu in addition to regular account selection
@@ -41,6 +48,23 @@ export function AccountSelection({
 }) {
   const history = useHistory();
   const { t } = useTranslation();
+
+  const popover = useRef<HTMLIonPopoverElement>(null);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+
+  const copyKey = async (e: never) => {
+    await Clipboard.write({
+      string: selectedAccount?.identity ?? '',
+    });
+
+    if (popover.current) {
+      popover.current.event = e;
+    }
+    setPopoverOpen(true);
+    setTimeout(() => {
+      setPopoverOpen(false);
+    }, 1000);
+  };
 
   /**
    * Tracking of accounts
@@ -123,20 +147,23 @@ export function AccountSelection({
         ]}
       </IonSelect>
       {isCopyButton ? (
-        <IonButton
-          class="icon-button"
-          onClick={async () =>
-            await Clipboard.write({
-              string: selectedAccount?.identity ?? '',
-            })
-          }
-        >
+        <SquareWhiteButton class="icon-button" onClick={copyKey}>
           <IonIcon
             class="icon-button-icon"
             slot="icon-only"
             icon={copyOutline}
           />
-        </IonButton>
+          <IonPopover
+            side="top"
+            alignment="center"
+            ref={popover}
+            isOpen={popoverOpen}
+            class={'copied-popover'}
+            onDidDismiss={() => setPopoverOpen(false)}
+          >
+            <IonContent class="ion-padding">{t('Copied')}</IonContent>
+          </IonPopover>
+        </SquareWhiteButton>
       ) : null}
     </div>
   );

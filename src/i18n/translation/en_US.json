@@ -91,7 +91,7 @@
   "transactionTimeOut": "Transaction has timed out. Please try again",
   "ActivationCodeInvalid": "Activation code has timed out or is invalid - please try again.",
   "Copied": "Copied",
-  "ErrorPageHeading": "Ops, something went wrong.",
+  "ErrorPageHeading": "Oops, something went wrong.",
   "ErrorPageDesc": "We are sorry about the inconvenience. Please contact our customer service, or",
   "Coin": "Coin",
   "EsTGasFee": "Est. Gas Fee",
@@ -147,6 +147,7 @@
   "RemoveAcnsSuccess": "( {{acnsName}} ) has been removed from your list.",
   "NoData": "No Data",
   "EditAcnsSuccess": "Successfully Registered",
-  "NftName": "Nft Name",
-  "Languages": "Languages"
+  "NftName": "NFT Name",
+  "Languages": "Languages",
+  "NoActivity": "No Activity yet"
 }

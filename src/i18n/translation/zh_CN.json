@@ -148,5 +148,6 @@
   "NoData": "没有数据",
   "EditAcnsSuccess": "注册成功",
   "NftName": "Nft名称",
-  "Languages": "语言"
+  "Languages": "语言",
+  "NoActivity": "未被激活"
 }

@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { useLogout } from '../components/logout';
+
 const AppConfig = {
   apiBaseUrl: process.env.REACT_APP_API_BASE_URL,
 };
@@ -17,3 +19,17 @@ export const axiosOwnerBase = axios.create({
   baseURL: AppConfig.apiBaseUrl,
   headers: { 'Content-Type': 'application/json' },
 });
+
+// Call logout if 401 received from the API
+axiosOwnerBase.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (401 === error.response.status) {
+      useLogout(false);
+    } else {
+      return Promise.reject(error);
+    }
+  }
+);

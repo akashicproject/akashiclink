@@ -1,8 +1,17 @@
 import './otk-box.scss';
 
 import { Clipboard } from '@capacitor/clipboard';
-import { IonButton, IonIcon, IonItem, IonLabel } from '@ionic/react';
+import {
+  IonButton,
+  IonContent,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonPopover,
+} from '@ionic/react';
 import { copyOutline } from 'ionicons/icons';
+import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Simple box storing wrapped text with optional copy button on the side
@@ -11,21 +20,29 @@ export function OtkBox({
   label,
   text,
   withCopy = true,
-  onClick,
   padding = true,
 }: {
   label: string;
   text?: string;
   withCopy?: boolean;
-  onClick?: () => void;
   padding?: boolean;
 }) {
-  const handleCopy = async () => {
+  const { t } = useTranslation();
+
+  const handleCopy = async (e: never) => {
     await Clipboard.write({
       string: text || '',
     });
-    onClick && onClick();
+
+    if (popover.current) popover.current.event = e;
+    setPopoverOpen(true);
+    setTimeout(() => {
+      setPopoverOpen(false);
+    }, 1000);
   };
+
+  const popover = useRef<HTMLIonPopoverElement>(null);
+  const [popoverOpen, setPopoverOpen] = useState(false);
 
   return (
     <>
@@ -59,6 +76,16 @@ export function OtkBox({
               class="icon-button-icon"
               icon={copyOutline}
             />
+            <IonPopover
+              side="top"
+              alignment="center"
+              ref={popover}
+              isOpen={popoverOpen}
+              class={'copied-popover'}
+              onDidDismiss={() => setPopoverOpen(false)}
+            >
+              <IonContent class="ion-padding">{t('Copied')}</IonContent>
+            </IonPopover>
           </IonButton>
         )}
       </IonItem>

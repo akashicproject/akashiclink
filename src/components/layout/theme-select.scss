@@ -1,5 +1,7 @@
 /** Rounded toggle button, which we style ourselves (inbuilt toggle is inflexible) */
 .slider-button {
+  cursor: pointer;
+
   /* Dimensions */
   width: 60px;
   height: 30px;

@@ -32,6 +32,7 @@ import {
   formAlertResetState,
 } from '../components/alert/alert';
 import { PurpleButton, WhiteButton } from '../components/buttons';
+import { HomeButton } from '../components/home-button';
 import { LoggedLayout } from '../components/layout/logged-layout';
 import { StyledInput } from '../components/styled-input';
 import { OwnersAPI } from '../utils/api';
@@ -165,10 +166,7 @@ const NoDataDiv = styled.div({
   lineHeight: '24px',
   color: 'var(--ion-color-primary-10)',
   width: '100%',
-  height: '100%',
   textAlign: 'center',
-  top: '400px',
-  position: 'fixed',
 });
 
 export function SettingsNaming() {
@@ -230,8 +228,9 @@ export function SettingsNaming() {
 
   return (
     <LoggedLayout>
+      <Divider style={{ margin: '20px 0px 0px' }} />
       <Alert state={alert} />
-      <IonRow style={{ marginTop: '30px', marginBottom: '30px' }}>
+      <IonRow style={{ marginBottom: '30px' }}>
         <IonCol size="12">
           <IonSegment
             value={view}
@@ -255,116 +254,139 @@ export function SettingsNaming() {
           </IonSegment>
         </IonCol>
       </IonRow>
-      {view === View.list &&
-        (namedAcns.length > 0 ? (
-          <IonRow style={{ marginTop: '30px' }}>
-            <IonCol class="ion-center">
-              <AcnsWrapper>
-                {acns.map((oneAcns, index) => (
-                  <OneAcns key={oneAcns.name}>
-                    <OneAcnsWrapper>
-                      <AcnsName>{oneAcns.name}</AcnsName>
-                      <AcnsAddress>
-                        {oneAcns.value ? displayLongText(oneAcns.value) : 'N/A'}
-                      </AcnsAddress>
-                      <EditBox>
-                        <IonButton
-                          class="acns-icon"
-                          onClick={() => updateAcns(oneAcns)}
-                        >
-                          <IonIcon
-                            slot="icon-only"
-                            icon={pencilOutline}
-                          ></IonIcon>
-                        </IonButton>
-                      </EditBox>
-                      <DeleteBox>
-                        <IonButton
-                          class="acns-icon"
-                          onClick={() => {
-                            setEditAcns(oneAcns);
-                            setIsConfirmModel(true);
-                          }}
-                          disabled={!oneAcns.value}
-                        >
-                          <IonIcon
-                            slot="icon-only"
-                            icon={trashBinOutline}
-                          ></IonIcon>
-                        </IonButton>
-                      </DeleteBox>
-                    </OneAcnsWrapper>
-                    {index === acns.length - 1 ? null : <Divider />}
-                  </OneAcns>
-                ))}
-              </AcnsWrapper>
-            </IonCol>
-          </IonRow>
-        ) : (
-          <NoDataDiv>{t('NoData')}</NoDataDiv>
-        ))}
-      {view === View.edit && (
-        <IonGrid style={{ width: '270px' }}>
-          <IonRow>
-            <IonCol>
-              <IonSelect
-                style={{
-                  border: '1px solid var(--m-3-sys-dark-outline, #958E99)',
-                  borderRadius: '8px',
-                  padding: '6px 8px 6px 16px',
-                  width: '100%',
-                  height: '40px',
-                }}
-                value={selectedName}
-                interface="popover"
-                placeholder="Available names"
-                onIonChange={({ detail: { value } }) => setSelectedName(value)}
-              >
-                {acns.map((a) => (
-                  <IonSelectOption key={a.name} value={a.name}>
-                    {a.name}
-                  </IonSelectOption>
-                ))}
-              </IonSelect>
-            </IonCol>
-          </IonRow>
-          <IonRow style={{ marginTop: '20px' }}>
-            <IonCol>
-              <StyledInput
-                placeholder={'x'}
-                onIonInput={({ target: { value } }) => {
-                  setNewValue(value as string);
-                }}
-                style={{ width: '100%' }}
-              />
-            </IonCol>
-          </IonRow>
-          <IonRow style={{ marginTop: '20px' }}>
-            <IonCol>
-              <PurpleButton
-                expand="block"
-                onClick={() => confirmUpdate()}
-                disabled={loading}
-              >
-                {t('Confirm')}
-                {loading ? (
-                  <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
-                ) : null}
-              </PurpleButton>
-            </IonCol>
-            <IonCol>
-              <WhiteButton
-                expand="block"
-                onClick={() => {
-                  setView(View.list);
-                }}
-              >
-                {t('Cancel')}
-              </WhiteButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      )}
+      <IonGrid>
+        {view === View.list &&
+          (namedAcns.length > 0 ? (
+            <IonRow style={{ marginTop: '30px' }}>
+              <IonCol class="ion-center">
+                <AcnsWrapper>
+                  {acns.map((oneAcns, index) => (
+                    <OneAcns key={oneAcns.name}>
+                      <OneAcnsWrapper>
+                        <AcnsName>{oneAcns.name}</AcnsName>
+                        <AcnsAddress>
+                          {oneAcns.value
+                            ? displayLongText(oneAcns.value)
+                            : 'N/A'}
+                        </AcnsAddress>
+                        <EditBox>
+                          <IonButton
+                            class="acns-icon"
+                            onClick={() => updateAcns(oneAcns)}
+                          >
+                            <IonIcon
+                              slot="icon-only"
+                              icon={pencilOutline}
+                            ></IonIcon>
+                          </IonButton>
+                        </EditBox>
+                        <DeleteBox>
+                          <IonButton
+                            class="acns-icon"
+                            onClick={() => {
+                              setEditAcns(oneAcns);
+                              setIsConfirmModel(true);
+                            }}
+                            disabled={!oneAcns.value}
+                          >
+                            <IonIcon
+                              slot="icon-only"
+                              icon={trashBinOutline}
+                            ></IonIcon>
+                          </IonButton>
+                        </DeleteBox>
+                      </OneAcnsWrapper>
+                      {index === acns.length - 1 ? null : <Divider />}
+                    </OneAcns>
+                  ))}
+                </AcnsWrapper>
+              </IonCol>
+            </IonRow>
+          ) : (
+            <IonRow>
+              <IonCol>
+                <NoDataDiv>{t('NoData')}</NoDataDiv>
+              </IonCol>
+            </IonRow>
+          ))}
+        {view === View.edit && (
+          <IonGrid style={{ width: '270px' }}>
+            <IonRow>
+              <IonCol>
+                <IonSelect
+                  style={{
+                    border: '1px solid var(--m-3-sys-dark-outline, #958E99)',
+                    borderRadius: '8px',
+                    padding: '6px 8px 6px 16px',
+                    width: '100%',
+                    height: '40px',
+                  }}
+                  value={selectedName}
+                  interface="popover"
+                  placeholder="Available names"
+                  onIonChange={({ detail: { value } }) =>
+                    setSelectedName(value)
+                  }
+                >
+                  {acns.map((a) => (
+                    <IonSelectOption key={a.name} value={a.name}>
+                      {a.name}
+                    </IonSelectOption>
+                  ))}
+                </IonSelect>
+              </IonCol>
+            </IonRow>
+            <IonRow style={{ marginTop: '20px' }}>
+              <IonCol>
+                <StyledInput
+                  placeholder={'x'}
+                  onIonInput={({ target: { value } }) => {
+                    setNewValue(value as string);
+                  }}
+                  style={{ width: '100%' }}
+                />
+              </IonCol>
+            </IonRow>
+            <IonRow style={{ marginTop: '20px' }}>
+              <IonCol>
+                <PurpleButton
+                  expand="block"
+                  onClick={() => confirmUpdate()}
+                  disabled={loading}
+                >
+                  {t('Confirm')}
+                  {loading ? (
+                    <IonSpinner style={{ marginLeft: '10px' }}></IonSpinner>
+                  ) : null}
+                </PurpleButton>
+              </IonCol>
+              <IonCol>
+                <WhiteButton
+                  expand="block"
+                  onClick={() => {
+                    setView(View.list);
+                  }}
+                >
+                  {t('Cancel')}
+                </WhiteButton>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        )}
+      </IonGrid>
+      <IonRow
+        class="ion-justify-content-center"
+        style={{
+          marginTop: '20px',
+          position: 'relative',
+          bottom: '20px',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <HomeButton />
+      </IonRow>
       <IonModal
         id="settings-model"
         isOpen={isConfirmModel}

@@ -6,32 +6,31 @@ import {
 } from '@helium-pay/backend';
 import { IonIcon, IonImg } from '@ionic/react';
 import { chevronForwardOutline } from 'ionicons/icons';
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { WalletTransactionRecord } from '../../pages/activity';
+import { Divider } from '../../pages/activity';
 import { formatDate } from '../../utils/formatDate';
 import { displayLongCurrencyAmount } from '../../utils/long-amount';
 import { L2Icon } from '../../utils/supported-currencies';
-const OneTransfer = styled.div({
+const OneTransfer = styled.div<{ hover: boolean }>((props) => ({
   display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  padding: 0,
   gap: '16px',
-  height: '58px',
-  margin: '9px 2px',
-  width: '98%',
-});
+  cursor: props.hover ? 'pointer' : 'auto',
+  transition: 'background ease-in-out 0.3s',
+  '&:hover': {
+    background: props.hover ? 'rgba(103, 80, 164, 0.14)' : 'transparent',
+  },
+}));
 
 const ActivityWrapper = styled.div({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  alignContent: 'center',
-  padding: '0',
+  padding: '8px 0',
+  // Gap between the elements
   gap: '8px',
-  height: '40px',
 });
 
 const TimeWrapper = styled.div({
@@ -63,13 +62,8 @@ const Type = styled.div({
 
 const Time = styled.div({
   boxSizing: 'border-box',
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  alignContent: 'center',
-  padding: '3px 8px',
-  gap: '45px',
   width: '122px',
+  textAlign: 'center',
   height: '18px',
   border: '1px solid #958E99',
   borderRadius: '0px 0px 8px 8px',
@@ -118,19 +112,22 @@ const Icon = styled(IonIcon)({
  * @param onClick callback
  * @param style addition to apply to the bounding vox
  * @param showDetail arrow, inviting user to click and see full transfer information
+ * @param divider separator after
  */
 export function OneActivity({
   transfer,
-  children,
   onClick,
   style,
   showDetail,
+  hasHoverEffect,
+  divider,
 }: {
   transfer: WalletTransactionRecord;
-  children?: ReactNode;
   onClick?: () => void;
   style?: CSSProperties;
   showDetail?: boolean;
+  hasHoverEffect?: boolean;
+  divider?: boolean;
 }) {
   const { t } = useTranslation();
   const isL2 = transfer.layer === TransactionLayer.L2;
@@ -158,35 +155,43 @@ export function OneActivity({
     gap: isL2 ? '0px' : showDetail ? '8px' : '12px',
     background: isL2 ? '#290056' : '#7444B6',
   };
+
   return (
-    <OneTransfer key={transfer.id} onClick={onClick} style={style}>
-      <ActivityWrapper>
-        <TimeWrapper>
-          <Type>
-            {transfer.status === TransactionStatus.FAILED
-              ? `${transferType} - ${t('Failed')}`
-              : transferType}
-          </Type>
-          <Time>{formatDate(new Date(transfer.date))}</Time>
-        </TimeWrapper>
-        <Chain style={iconStyle}>
-          <IonImg
-            alt=""
-            src={isL2 ? L2Icon : transfer.icon}
-            style={{ height: isL2 ? '20px' : '12px' }}
-          />
-          {isL2 ? null : label}
-        </Chain>
-        {/* HACK: Reduce currency symbols to a single word to fit small screen */}
-        <Amount>
-          {displayLongCurrencyAmount(
-            transfer.amount,
-            transfer.currency.displayName.split('-')[0]
-          )}
-        </Amount>
-        {showDetail ? <Icon icon={chevronForwardOutline} /> : null}
-      </ActivityWrapper>
-      {children}
-    </OneTransfer>
+    <>
+      <OneTransfer
+        key={transfer.id}
+        onClick={onClick}
+        style={style}
+        hover={hasHoverEffect as boolean}
+      >
+        <ActivityWrapper>
+          <TimeWrapper>
+            <Type>
+              {transfer.status === TransactionStatus.FAILED
+                ? `${transferType} - ${t('Failed')}`
+                : transferType}
+            </Type>
+            <Time>{formatDate(new Date(transfer.date))}</Time>
+          </TimeWrapper>
+          <Chain style={iconStyle}>
+            <IonImg
+              alt=""
+              src={isL2 ? L2Icon : transfer.icon}
+              style={{ height: isL2 ? '20px' : '12px' }}
+            />
+            {isL2 ? null : label}
+          </Chain>
+          {/* HACK: Reduce currency symbols to a single word to fit small screen */}
+          <Amount>
+            {displayLongCurrencyAmount(
+              transfer.amount,
+              transfer.currency.displayName.split('-')[0]
+            )}
+          </Amount>
+          {showDetail ? <Icon icon={chevronForwardOutline} /> : null}
+        </ActivityWrapper>
+      </OneTransfer>
+      {divider && <Divider />}
+    </>
   );
 }

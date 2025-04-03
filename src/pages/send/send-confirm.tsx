@@ -237,7 +237,12 @@ export function SendConfirm(props: Props) {
             ) : null}
           </PurpleButton>
         </IonCol>
-        <IonCol>
+        <IonCol
+          style={{
+            display: 'flex',
+            justifyContent: 'end',
+          }}
+        >
           <BackButton />
         </IonCol>
       </IonRow>

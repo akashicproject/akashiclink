@@ -10,18 +10,22 @@ import {
   IonButtons,
   IonCard,
   IonCardTitle,
+  IonHeader,
   IonIcon,
 } from '@ionic/react';
 import dayjs from 'dayjs';
 import { closeOutline } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import { Virtuoso } from 'react-virtuoso';
 
 import { ActivityDetail } from '../components/activity/activity-detail';
 import { OneActivity } from '../components/activity/one-activity';
+import { TopTabButton, TopTabButtonActive } from '../components/buttons';
 import { LoggedLayout } from '../components/layout/logged-layout';
 import { urls } from '../constants/urls';
+import { akashicPayPath } from '../routing/navigation-tree';
 import { useTransfersMe } from '../utils/hooks/useTransfersMe';
 import { lastPageStorage } from '../utils/last-page-storage';
 import { WALLET_CURRENCIES } from '../utils/supported-currencies';
@@ -31,6 +35,13 @@ export const Divider = styled.div({
   height: '2px',
   border: '1px solid #D9D9D9',
   width: '100%',
+});
+
+const Tabs = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'flex-start',
+  height: '40px',
 });
 
 export interface WalletTransactionRecord extends ITransactionRecordForTable {
@@ -65,6 +76,8 @@ export function formatWalletTransfer(
 }
 
 export function Activity() {
+  const history = useHistory();
+
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [currentTransfer, setCurrentTransfer] =
@@ -102,9 +115,32 @@ export function Activity() {
           <ActivityDetail currentTransfer={currentTransfer} />
         </IonCard>
       )}
+      <IonHeader class={'ion-no-border'}>
+        <Tabs>
+          <TopTabButtonActive
+            style={{
+              width: '50%',
+              marginInline: '0',
+            }}
+            id={'activity'}
+          >
+            {t('Activity')}
+          </TopTabButtonActive>
+          <TopTabButton
+            style={{
+              width: '50%',
+              marginInline: '0',
+            }}
+            id={'nft'}
+            onClick={() => history.push(akashicPayPath(urls.nfts))}
+          >
+            NFT
+          </TopTabButton>
+        </Tabs>
+      </IonHeader>
       <Virtuoso
         style={{
-          height: '450px',
+          minHeight: '450px',
           width: '100%',
         }}
         data={walletFormatTransfers}
@@ -116,12 +152,11 @@ export function Activity() {
               setCurrentTransfer(transfer);
             }}
             showDetail={true}
-          >
-            {index === walletFormatTransfers.length - 1 ? null : <Divider />}
-          </OneActivity>
+            hasHoverEffect={true}
+            divider={index !== walletFormatTransfers.length - 1}
+          />
         )}
-      ></Virtuoso>
-      <Divider style={{ marginTop: '20px' }} />
+      />
     </LoggedLayout>
   );
 }

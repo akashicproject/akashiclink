@@ -32,6 +32,23 @@ const SeeMore = styled(Link)({
   },
 });
 
+const NoDataDiv = styled.div({
+  fontSize: '16px',
+  fontFamily: 'Nunito Sans',
+  fontWeight: '700',
+  lineHeight: '24px',
+  color: 'var(--ion-color-primary-10)',
+  width: '100%',
+  textAlign: 'center',
+});
+
+const NoDataWrapper = styled.div({
+  height: '100%',
+  justifyContent: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+});
+
 export const ActivityAndNftTab = () => {
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
@@ -46,7 +63,12 @@ export const ActivityAndNftTab = () => {
   return (
     <>
       <Tabs>
-        <TabButton style={{ width: '50%', marginInline: '0' }} id="activity">
+        <TabButton
+          style={{ width: '50%', marginInline: '0' }}
+          id="activity"
+          class="open"
+          onClick={() => history.push(akashicPayPath(urls.activity))}
+        >
           {t('Activity')}
         </TabButton>
         <TabButton
@@ -54,7 +76,7 @@ export const ActivityAndNftTab = () => {
           id={'nft'}
           onClick={() => history.push(akashicPayPath(urls.nfts))}
         >
-          Nft
+          NFT
         </TabButton>
       </Tabs>
       <div
@@ -79,7 +101,11 @@ export const ActivityAndNftTab = () => {
         })}
         {walletFormatTransfers.length >= 1 ? (
           <SeeMore to={akashicPayPath(urls.activity)}>{t('SeeMore')}</SeeMore>
-        ) : null}
+        ) : (
+          <NoDataWrapper>
+            <NoDataDiv>{t('NoActivity')}</NoDataDiv>
+          </NoDataWrapper>
+        )}
       </div>
     </>
   );

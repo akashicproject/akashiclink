@@ -1,5 +1,4 @@
 import {
-  IonButton,
   IonCol,
   IonGrid,
   IonIcon,
@@ -13,6 +12,7 @@ import { useHistory } from 'react-router-dom';
 
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { AccountSelection } from '../account-selection/account-selection';
+import { SquareWhiteButton } from '../buttons';
 import { useLogout } from '../logout';
 import { SettingsPopover } from '../settings/settings-popover';
 
@@ -28,15 +28,17 @@ export function LoggedToolbar() {
     <IonGrid fixed>
       <IonRow class="ion-justify-content-around">
         <IonCol size="auto">
-          <IonButton class="icon-button" onClick={() => history.goBack()}>
+          <SquareWhiteButton
+            class="icon-button"
+            onClick={() => history.goBack()}
+          >
             <IonIcon
               class="icon-button-icon"
-              icon={arrowBack}
               slot="icon-only"
+              icon={arrowBack}
             />
-          </IonButton>
+          </SquareWhiteButton>
         </IonCol>
-
         {pending ? (
           <IonCol size="1">
             <IonSpinner />

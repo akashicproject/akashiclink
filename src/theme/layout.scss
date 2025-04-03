@@ -65,3 +65,14 @@ ion-content {
   -ms-user-select: none;
   user-select: none;
 }
+
+/** Some theme magic */
+.ion-page {
+  & body.light {
+    background: #f3f5f6;
+  }
+
+  & body.dark {
+    background: black;
+  }
+}

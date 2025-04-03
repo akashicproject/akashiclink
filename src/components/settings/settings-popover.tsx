@@ -1,14 +1,7 @@
 import './settings-popover.scss';
 
 import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
-import {
-  IonButton,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonPopover,
-} from '@ionic/react';
+import { IonIcon, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
 import { caretBackOutline, settingsOutline } from 'ionicons/icons';
 import type { MouseEventHandler, ReactNode } from 'react';
 import { useState } from 'react';
@@ -16,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
+import { SquareWhiteButton } from '../buttons';
 import { useLogout } from '../logout';
 
 /** Styling the display text */
@@ -132,7 +126,7 @@ export function SettingsPopover() {
 
   return (
     <>
-      <IonButton
+      <SquareWhiteButton
         class="icon-button"
         onClick={(e) => setShowPopover({ open: true, event: e.nativeEvent })}
       >
@@ -141,7 +135,7 @@ export function SettingsPopover() {
           class="icon-button-icon"
           icon={settingsOutline}
         />
-      </IonButton>
+      </SquareWhiteButton>
       <IonPopover
         className="settings-main"
         backdrop-dismiss={true}
@@ -165,27 +159,21 @@ export function SettingsPopover() {
             </SettingsList>
           </SettingSubmenu>
 
-          <SettingSubmenu displayText={t('Advanced')} id="settings-advanced">
-            <SettingsList isSubmenu={true}>
-              <SettingsItem
-                displayText="Backup"
-                routerLink={akashicPayPath(urls.settingsBackup)}
-              />
-            </SettingsList>
-          </SettingSubmenu>
-
           <SettingSubmenu displayText="Naming Service" id="naming-service">
             <SettingsList isSubmenu={true}>
               <SettingsItem
                 routerLink={`${akashicPayPath(urls.settingsNaming)}?service=hp`}
-                displayText="ANs"
+                displayText="ACNS"
               />
-              <SettingsItem displayText="SquareNs" disabled={true} />
             </SettingsList>
           </SettingSubmenu>
 
           <SettingSubmenu displayText="Security" id="settings-security">
             <SettingsList isSubmenu={true}>
+              <SettingsItem
+                displayText="Key Pair Backup"
+                routerLink={akashicPayPath(urls.settingsBackup)}
+              />
               <SettingsItem
                 displayText="Recovery"
                 routerLink={akashicPayPath(urls.recover)}
@@ -198,10 +186,6 @@ export function SettingsPopover() {
               <SettingsItem
                 displayText="Version Info"
                 routerLink={akashicPayPath(urls.settingsVersion)}
-              />
-              <SettingsItem
-                displayText="Links"
-                routerLink={akashicPayPath(urls.settingsInfo)}
               />
             </SettingsList>
           </SettingSubmenu>

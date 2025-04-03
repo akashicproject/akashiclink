@@ -2,13 +2,14 @@ import './ntf.css';
 
 import styled from '@emotion/styled';
 import type { INftResponse } from '@helium-pay/backend';
-import { IonIcon, IonSpinner } from '@ionic/react';
+import { IonIcon, IonRow, IonSpinner } from '@ionic/react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import type { GridComponents } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
+import { HomeButton } from '../../components/home-button';
 import { NftLayout } from '../../components/layout/nft-layout';
 import { OneNft } from '../../components/nft/one-nft';
 import { urls } from '../../constants/urls';
@@ -95,6 +96,9 @@ export function Nfts() {
           )}
         ></Virtuoso>
       )}
+      <IonRow class="ion-justify-content-center">
+        <HomeButton />
+      </IonRow>
     </NftLayout>
   );
 }

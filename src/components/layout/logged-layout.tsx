@@ -6,7 +6,7 @@ import {
   IonRouterLink,
   isPlatform,
 } from '@ionic/react';
-import type { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
