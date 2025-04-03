@@ -48,7 +48,7 @@ export function LoggedLayout({
   const isMobile = isPlatform('mobile');
   const ChainDivMarginBottom = isMobile ? '5px' : '0px';
 
-  const loginCheck = useOwner();
+  const loginCheck = useOwner(true);
 
   /** If user auth has expired, redirect to login page */
   useEffect(

@@ -18,8 +18,7 @@ import { OwnersAPI } from '../../utils/api';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
-import { Spinner } from '../loader/spinner';
-import { delay } from '../../utils/timer-function';
+import { mutate } from 'swr';
 
 // TODO: re-enable once password recovery loop is implemented
 // const HelpLink = styled.a({
@@ -98,6 +97,7 @@ export function LoginForm() {
         setIsLoading(false);
         setActiveAccount(selectedAccount);
         localStorage.setItem('spinner', 'true');
+        mutate(`/owner/me`);
         history.push(akashicPayPath(urls.loggedFunction));
       }
     } catch (error) {
