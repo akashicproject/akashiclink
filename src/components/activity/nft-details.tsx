@@ -30,7 +30,6 @@ const TextContent = styled.div({
   ...darkColor,
 });
 const Header = styled.h4(darkColor);
-const Link = styled.a(darkColor);
 export function NftDetail({
   currentTransfer,
 }: {
@@ -107,19 +106,13 @@ export function NftDetail({
       </DetailColumn>
       <DetailColumn>
         <TextContent>
-          <Link href={currentTransfer.internalSenderUrl}>
-            {displayLongText(currentTransfer.fromAddress)}
-          </Link>
+          {displayLongText(currentTransfer.fromAddress)}
         </TextContent>
 
         <TextContent>
           <IonIcon icon={arrowForwardCircleOutline} />
         </TextContent>
-        <TextContent>
-          <Link href={currentTransfer.internalRecipientUrl}>
-            {displayLongText(currentTransfer.toAddress)}
-          </Link>
-        </TextContent>
+        <TextContent>{displayLongText(currentTransfer.toAddress)}</TextContent>
       </DetailColumn>
     </>
   );

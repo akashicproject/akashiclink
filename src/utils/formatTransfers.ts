@@ -8,14 +8,11 @@ import {
   formatNftTransactionForFrontend,
   formatTransactionForFrontend,
   NetworkDictionary,
-  TransactionLayer,
 } from '@helium-pay/backend';
 
 import type { IWalletCurrency } from '../constants/currencies';
 import { makeWalletCurrency } from '../constants/currencies';
 
-const akashicScanAccountsUrl = `${process.env.REACT_APP_SCAN_BASE_URL}/accounts`;
-const akashicScanTransactionsUrl = `${process.env.REACT_APP_SCAN_BASE_URL}/transactions`;
 export interface ITransactionRecordForExtension
   extends ITransactionRecordForFrontend {
   networkIcon?: string;
@@ -35,25 +32,7 @@ export function formatTransfers(transfers: ITransactionRecord[]) {
       ...formatTransactionForFrontend(t, id),
       networkIcon: NetworkDictionary[t.coinSymbol].networkIcon,
       currency: makeWalletCurrency(t.coinSymbol, t?.tokenSymbol),
-      fromAddress:
-        t.layer === TransactionLayer.L2
-          ? t.fromAddress
-          : t.fromOwner?.oneTimePublicKeys.at(-1)?.identity ?? t.fromAddress,
-      toAddress:
-        t.layer === TransactionLayer.L2
-          ? t.toAddress
-          : t.toOwner?.oneTimePublicKeys.at(-1)?.identity ?? t.toAddress,
-      internalSenderUrl: `${akashicScanAccountsUrl}/${
-        t?.layer === TransactionLayer.L2
-          ? t.fromAddress
-          : t?.fromOwner?.oneTimePublicKeys.at(-1)?.identity
-      }`,
-      internalRecipientUrl: `${akashicScanAccountsUrl}/${
-        t?.layer === TransactionLayer.L2
-          ? t.toAddress
-          : t.toOwner?.oneTimePublicKeys?.at(-1)?.identity
-      }`,
-      l2TxnHashUrl: `${akashicScanTransactionsUrl}/${t?.l2TxnHash ?? ''}`,
+      l2TxnHashUrl: t?.l2TxnHash ?? '', // TODO: url will be added in hyperlink branch
     })
   );
 
@@ -67,8 +46,7 @@ export function formatNftTransfers(transfers: INftTransactionRecord[]) {
   const formattedTransfers = transfers.map(
     (t, id): ITransactionRecordForExtension => ({
       ...formatNftTransactionForFrontend(t, id),
-      internalSenderUrl: `${akashicScanAccountsUrl}/${t.fromAddress}`,
-      internalRecipientUrl: `${akashicScanAccountsUrl}/${t.toAddress}`,
+      l2TxnHashUrl: t.l2TxnHash, // TODO: Add url later
     })
   );
 
