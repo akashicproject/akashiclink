@@ -119,8 +119,8 @@ export function SettingsNetwork() {
                         node.ping >= 500
                           ? 'var(--ion-color-warning-text)'
                           : node.ping >= 200
-                          ? '#F7931A'
-                          : 'var(--ion-color-success)',
+                            ? '#F7931A'
+                            : 'var(--ion-color-success)',
                     }}
                   />
                   <span style={{ color: 'var(--ion-color-secondary-text)' }}>
