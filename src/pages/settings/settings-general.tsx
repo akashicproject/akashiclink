@@ -43,7 +43,7 @@ const LanguageRadio = ({
             width={'100%'}
             mode="md"
           >
-            <h5 className="ion-no-margin">{item.title.toUpperCase()}</h5>
+            <h5 className="ion-no-margin">{item.title}</h5>
           </SettingsRadio>
         );
       })}
