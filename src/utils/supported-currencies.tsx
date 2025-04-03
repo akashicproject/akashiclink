@@ -71,14 +71,16 @@ export class CurrencyMap<T> extends Map {
    Will need to include parsing and dynamic typechecks and make use of `parseWalletCurrency`
  *
  * @param symbol of the currency WITHIN the wallet extension.
- * @param currency indenity, see WalletCurrency: [CoinSymbol (chain currency is on), Token(does not exist for native coins)]
+ * @param currency identity, see WalletCurrency: [CoinSymbol (chain currency is on), Token(does not exist for native coins)]
  * @param logo of currency
  */
 export interface WalletCurrencyMetadata {
   currency: WalletCurrency;
   symbol: string;
-  logo: string;
+  logo: string; // main logo
   icon: string;
+  darkLogo?: string; // dedicated dark theme logo
+  greyLogo?: string; // dedicated grey logo for dark theme
 }
 export const L2Icon = '/shared-assets/images/PayLogo-all-white.svg';
 /** Declaration of supported currencies */
@@ -87,30 +89,37 @@ const MAINNET_CURRENCIES: WalletCurrencyMetadata[] = [
     symbol: 'BTC',
     currency: makeWalletCurrency(CoinSymbol.Bitcoin),
     logo: '/shared-assets/images/btc.png',
+    greyLogo: '/shared-assets/images/btc-grey.png',
     icon: '/shared-assets/icons/btc_icon.png',
   },
   {
     symbol: 'ETH',
     currency: makeWalletCurrency(CoinSymbol.Ethereum_Mainnet),
     logo: '/shared-assets/images/eth.png',
+    darkLogo: '/shared-assets/images/eth-dark.png',
+    greyLogo: '/shared-assets/images/eth-grey.png',
     icon: '/shared-assets/icons/eth_icon.png',
   },
   {
     symbol: 'TRX',
     currency: makeWalletCurrency(CoinSymbol.Tron),
     logo: '/shared-assets/images/trx.png',
+    darkLogo: '/shared-assets/images/trx.png',
+    greyLogo: '/shared-assets/images/trx-grey.png',
     icon: '/shared-assets/icons/trx_icon.png',
   },
   {
     symbol: 'USDT-ERC20',
     currency: makeWalletCurrency(CoinSymbol.Ethereum_Mainnet, 'USDT'),
     logo: '/shared-assets/images/usdt.png',
+    greyLogo: '/shared-assets/images/usdt-grey.png',
     icon: '/shared-assets/icons/eth_icon.png',
   },
   {
     symbol: 'USDT-TRC20',
     currency: makeWalletCurrency(CoinSymbol.Tron, 'USDT'),
     logo: '/shared-assets/images/usdt.png',
+    greyLogo: '/shared-assets/images/usdt-grey.png',
     icon: '/shared-assets/icons/trx_icon.png',
   },
 ];
@@ -120,36 +129,43 @@ const TESTNET_CURRENCIES: WalletCurrencyMetadata[] = [
     symbol: 'tBTC',
     currency: makeWalletCurrency(CoinSymbol.Bitcoin_Testnet),
     logo: '/shared-assets/images/btc.png',
+    greyLogo: '/shared-assets/images/btc-grey.png',
     icon: '/shared-assets/icons/btc_icon.png',
   },
   {
     symbol: 'GOR',
     currency: makeWalletCurrency(CoinSymbol.Görli),
     logo: '/shared-assets/images/eth.png',
+    darkLogo: '/shared-assets/images/eth-dark.png',
+    greyLogo: '/shared-assets/images/eth-grey.png',
     icon: '/shared-assets/icons/eth_icon.png',
   },
   {
     symbol: 'Nile',
     currency: makeWalletCurrency(CoinSymbol.Tron_Nile),
     logo: '/shared-assets/images/trx.png',
+    greyLogo: '/shared-assets/images/trx-grey.png',
     icon: '/shared-assets/icons/trx_icon.png',
   },
   {
     symbol: 'Shasta',
     currency: makeWalletCurrency(CoinSymbol.Tron_Shasta),
     logo: '/shared-assets/images/trx.png',
+    greyLogo: '/shared-assets/images/trx-grey.png',
     icon: '/shared-assets/icons/trx_icon.png',
   },
   {
     symbol: 'tUSDT-ERC20',
     currency: makeWalletCurrency(CoinSymbol.Görli, 'USDT'),
     logo: '/shared-assets/images/usdt.png',
+    greyLogo: '/shared-assets/images/usdt-grey.png',
     icon: '/shared-assets/icons/eth_icon.png',
   },
   {
     symbol: 'tUSDT-TRC20',
     currency: makeWalletCurrency(CoinSymbol.Tron_Nile, 'USDT'),
     logo: '/shared-assets/images/usdt.png',
+    greyLogo: '/shared-assets/images/usdt-grey.png',
     icon: '/shared-assets/icons/trx_icon.png',
   },
 ];

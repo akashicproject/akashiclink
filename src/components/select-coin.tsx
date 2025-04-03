@@ -12,10 +12,15 @@ import { useEffect, useState } from 'react';
 import SwiperCore, { Navigation, Virtual } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import type { ThemeType } from '../theme/const';
+import { themeType } from '../theme/const';
 import { useAggregatedBalances } from '../utils/hooks/useAggregatedBalances';
 import { useExchangeRates } from '../utils/hooks/useExchangeRates';
 import { useLocalStorage } from '../utils/hooks/useLocalStorage';
-import type { WalletCurrencyMetadata } from '../utils/supported-currencies';
+import type {
+  WalletCurrency,
+  WalletCurrencyMetadata,
+} from '../utils/supported-currencies';
 import { WALLET_CURRENCIES } from '../utils/supported-currencies';
 
 // install Virtual module
@@ -60,6 +65,11 @@ export function SelectCoin() {
   const [currency, setCurrency, _] = useLocalStorage(
     'currency',
     WALLET_CURRENCIES[0].symbol
+  );
+
+  const [__, ___, storedTheme] = useLocalStorage(
+    'theme',
+    themeType.SYSTEM as ThemeType
   );
 
   /**
@@ -136,6 +146,36 @@ export function SelectCoin() {
     setCurrency(wc.symbol);
   };
 
+  // select the relevant icon path
+  const currentLogo = (
+    logo: string | undefined,
+    darkLogo: string | undefined,
+    greyLogo: string | undefined,
+    idx: number
+  ) => {
+    if (swiperIdx !== idx && greyLogo !== undefined) {
+      return greyLogo;
+    } else if (storedTheme === 'dark' && darkLogo !== undefined) {
+      return darkLogo;
+    } else {
+      return logo;
+    }
+  };
+
+  // select the relevant chain icon to construct the USDT logo
+  const usdtChainIcon = (currency: WalletCurrency, idx: number) => {
+    const chain = WALLET_CURRENCIES.find(
+      (wc) => wc.currency[0] === currency[0]
+    );
+    if (swiperIdx !== idx && chain?.greyLogo !== undefined) {
+      return chain.greyLogo;
+    } else if (storedTheme === 'dark' && chain?.darkLogo !== undefined) {
+      return chain.darkLogo;
+    } else {
+      return chain?.logo;
+    }
+  };
+
   return (
     <IonGrid style={{ width: '280px' }}>
       <IonRow style={{ marginTop: '15px' }}>
@@ -145,67 +185,60 @@ export function SelectCoin() {
             onSlideChange={handleSlideChange}
             slidesPerView={3}
             centeredSlides={true}
-            // spaceBetween={0}
             navigation={{
               enabled: true,
             }}
             style={{ position: 'relative' }}
             loop={true}
           >
-            {WALLET_CURRENCIES.map(({ logo, symbol, currency }, idx) => {
-              return (
-                <SwiperSlide
-                  key={symbol}
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                  }}
-                >
-                  <IonImg
-                    alt={''}
-                    src={logo}
-                    style={
-                      swiperIdx == idx
-                        ? { height: '56px', width: '56px' }
-                        : {
-                            width: '32px',
-                            height: '32px',
-                            opacity: 0.2,
-                            filter: 'grayscale(100%)',
-                          }
-                    }
-                  />
-                  {currency[1] && (
+            {WALLET_CURRENCIES.map(
+              ({ logo, darkLogo, greyLogo, symbol, currency }, idx) => {
+                return (
+                  <SwiperSlide
+                    key={symbol}
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'row',
+                    }}
+                  >
                     <IonImg
-                      src={
-                        WALLET_CURRENCIES.find(
-                          (wc) => wc.currency[0] === currency[0]
-                        )?.logo
-                      }
+                      alt={''}
+                      src={currentLogo(logo, darkLogo, greyLogo, idx)}
                       style={
-                        swiperIdx == idx
-                          ? {
-                              height: '30px',
-                              position: 'absolute',
-                              top: 0,
-                              left: '56px',
-                            }
+                        swiperIdx === idx
+                          ? { height: '56px', width: '56px' }
                           : {
-                              width: '16px',
-                              height: '16px',
-                              opacity: 0.2,
-                              filter: 'grayscale(100%)',
-                              position: 'absolute',
-                              top: 0,
-                              left: '49px',
+                              width: '32px',
+                              height: '32px',
                             }
                       }
                     />
-                  )}
-                </SwiperSlide>
-              );
-            })}
+                    {currency[1] && (
+                      <IonImg
+                        src={usdtChainIcon(currency, idx)}
+                        style={
+                          swiperIdx === idx
+                            ? {
+                                height: '30px',
+                                position: 'absolute',
+                                top: 0,
+                                left: '56px',
+                              }
+                            : {
+                                width: '16px',
+                                height: '16px',
+                                position: 'absolute',
+                                top: 0,
+                                left: '49px',
+                              }
+                        }
+                      />
+                    )}
+                  </SwiperSlide>
+                );
+              }
+            )}
           </Swiper>
         </IonCol>
       </IonRow>
