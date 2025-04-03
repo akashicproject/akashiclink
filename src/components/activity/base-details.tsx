@@ -56,9 +56,9 @@ export function BaseDetails({
       }}
     >
       <DetailColumn>
-        <h4 className="ion-margin-0">{t('Status')}</h4>
+        <h4 className="ion-margin-0 ion-text-size-xs">{t('Status')}</h4>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <h4 className="ion-no-margin">
+          <h4 className="ion-no-margin ion-text-size-xs">
             {statusString(currentTransfer.status)}
           </h4>
           <IonImg

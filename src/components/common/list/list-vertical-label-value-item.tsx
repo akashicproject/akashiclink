@@ -20,7 +20,7 @@ export const ListVerticalLabelValueItem: FC<ListLabelValueRowProps> = ({
         className={`w-100 ion-text-color-primary-10 ion-display-flex ion-flex-direction-column ion-text-wrap`}
       >
         <span
-          className={'ion-text-size-sm ion-text-bold ion-margin-bottom-xxs'}
+          className={'ion-text-size-xs ion-text-bold ion-margin-bottom-xxs'}
         >
           {label}
         </span>

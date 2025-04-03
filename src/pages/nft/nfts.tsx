@@ -22,8 +22,6 @@ export const NoNtfWrapper = styled(IonCol)({
 });
 
 const StyledNftWrapper = styled.div({
-  height: '408px',
-  width: '328px',
   margin: '16px 8px',
   ['&:last-child']: {
     marginBottom: '40px',
@@ -106,6 +104,7 @@ export function Nfts() {
               nft={nft}
               select={() => selectNft(nft)}
               isAASDarkStyle={!isDarkMode}
+              nftImgWrapper="nft-wrapper-list"
             />
           )}
         ></Virtuoso>

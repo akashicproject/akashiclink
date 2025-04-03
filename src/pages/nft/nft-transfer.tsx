@@ -42,6 +42,12 @@ import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-mess
 import { NftWrapper } from './nft';
 import { NoNtfText, NoNtfWrapper } from './nfts';
 
+const StyledNftWrapper = styled.div({
+  margin: 'auto',
+  padding: 0,
+  marginBottom: 2,
+});
+
 const SendWrapper = styled.div({
   display: 'flex',
   flexDirection: 'column',
@@ -242,6 +248,16 @@ export function NftTransfer() {
         </NoNtfWrapper>
       )}
       <NftLayout>
+        <div
+          style={{
+            backgroundColor: 'var(--nft-header-background)',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '160px',
+          }}
+        />
         {isLoading ? (
           <NoNtfWrapper>
             <IonSpinner name="circular"></IonSpinner>
@@ -254,24 +270,19 @@ export function NftTransfer() {
         ) : (
           <NftWrapper
             style={{
-              gap: '1.5rem',
-              background: `linear-gradient(
-            to bottom,
-            var(--nft-background) 0%,
-            var(--nft-background) 28%,
-            var(--ion-background-color) 28%,
-            var(--ion-background-color) 100%
-          )`,
+              gap: '1rem',
             }}
           >
             <IonRow className="w-100">
-              <NftContainer>
+              <StyledNftWrapper>
                 <OneNft
                   nft={currentNft}
                   isBig={true}
                   isAASDarkStyle={!isDarkMode}
+                  nftImgWrapper="nft-wrapper-transfer"
+                  screen="transfer"
                 />
-              </NftContainer>
+              </StyledNftWrapper>
             </IonRow>
             <IonRow>
               <IonCol class="ion-center">
