@@ -135,11 +135,7 @@ export function ActivityDetail({
                 <IonIcon
                   slot="icon-only"
                   class="copy-icon"
-                  src={`/shared-assets/images/${
-                    storedTheme === themeType.DARK
-                      ? 'copy-icon-white.svg'
-                      : 'copy-icon-dark.svg'
-                  }`}
+                  src={`/shared-assets/images/copy-icon-dark.svg`}
                 />
                 <IonPopover
                   side="top"
@@ -168,7 +164,7 @@ export function ActivityDetail({
         ) : (
           <TextContent>
             <Link href={currentTransfer.senderAddressUrl}>
-              {displayLongText(currentTransfer.senderAddressUrl)}
+              {displayLongText(currentTransfer.fromAddress)}
             </Link>
             <IonButton
               class="copy-button"
@@ -179,11 +175,7 @@ export function ActivityDetail({
               <IonIcon
                 slot="icon-only"
                 class="copy-icon"
-                src={`/shared-assets/images/${
-                  storedTheme === themeType.DARK
-                    ? 'copy-icon-white.svg'
-                    : 'copy-icon-dark.svg'
-                }`}
+                src={`/shared-assets/images/copy-icon-dark.svg`}
               />
             </IonButton>
           </TextContent>
@@ -198,7 +190,7 @@ export function ActivityDetail({
         ) : (
           <TextContent>
             <Link href={currentTransfer.recipientAddressUrl}>
-              {displayLongText(currentTransfer.recipientAddressUrl)}
+              {displayLongText(currentTransfer.toAddress)}
             </Link>
             <IonButton
               class="copy-button"
@@ -228,6 +220,12 @@ export function ActivityDetail({
           <TextContent>{'Nonce'}</TextContent>
         </DetailColumn>
       )}
+      {currentTransfer.transferType === TransactionType.WITHDRAWAL && (
+        <DetailColumn>
+          <TextContent>{t('L2 Gas Fee')}</TextContent>
+          <Header3>{currentTransfer.internalFee?.withdraw}</Header3>
+        </DetailColumn>
+      )}
       <DetailColumn>
         <TextContent>{t('Amount')}</TextContent>
         <Header3>
@@ -244,12 +242,16 @@ export function ActivityDetail({
           <TextContent>{`${t('GasUsed')} (${t('Units')})`}</TextContent>
         </DetailColumn>
       )}
-      <DetailColumn>
-        <TextContent>
-          <TextContent>{`${t('GasFee')}`}</TextContent>
-        </TextContent>
-        <TextContent>{currentTransfer.feesPaid ?? 0}</TextContent>
-      </DetailColumn>
+      {currentTransfer.transferType === TransactionType.DEPOSIT || isLayer2 ? (
+        <></>
+      ) : (
+        <DetailColumn>
+          <TextContent>
+            <TextContent>{`${t('GasFee')}`}</TextContent>
+          </TextContent>
+          <TextContent>{currentTransfer.feesPaid ?? 0}</TextContent>
+        </DetailColumn>
+      )}
       {backendUpdated && (
         <DetailColumn>
           <TextContent>{t('PriorityFee')}</TextContent>
@@ -277,6 +279,21 @@ export function ActivityDetail({
               )} ${currentTransfer.currency.displayName}`}
         </Header3>
       </DetailColumn>
+      {isLayer2 && currentTransfer.initiatedToL1Address ? (
+        <>
+          <Divider style={{ margin: '8px' }} />
+          <DetailColumn style={{ marginTop: '20px' }}>
+            <Header>{t('Remark')}</Header>
+            <TextContent>
+              {t('SentTo')}
+              {': '}
+              {displayLongText(currentTransfer.initiatedToL1Address)}
+            </TextContent>
+          </DetailColumn>
+        </>
+      ) : (
+        <></>
+      )}
     </IonContent>
   );
 }

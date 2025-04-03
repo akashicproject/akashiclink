@@ -49,6 +49,7 @@
   "Unlock": "Unlock",
   "ForgotYourPassword": "Forgot your password?",
   "SendTo": "Send to",
+  "SentTo": "Sent to",
   "Total": "Total",
   "Amount": "Amount",
   "MissingTranslationError": "Missing Translation Error",
@@ -168,5 +169,6 @@
   "Security": "Security",
   "Information": "Information",
   "NamingService": "Naming Service",
-  "Lock": "Lock"
+  "Lock": "Lock",
+  "Remark": "Remark"
 }

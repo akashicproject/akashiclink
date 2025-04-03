@@ -50,6 +50,7 @@
   "Unlock": "解锁",
   "ForgotYourPassword": "忘记密码?",
   "SendTo": "发送至",
+  "SentTo": "已发送至",
   "Total": "总共",
   "Amount": "总额",
   "PleaseConfirm": "请输入密码以便确认",
@@ -168,5 +169,6 @@
   "Security": "安全",
   "Information": "信息",
   "NamingService": "域名服务",
-  "Lock": "锁"
+  "Lock": "锁",
+  "Remark": "备注"
 }
