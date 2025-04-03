@@ -91,17 +91,20 @@ export function CreateWalletPassword() {
   }, []);
 
   useEffect(() => {
-    if (password || confirmPassword) {
-      lastPageStorage.store(
-        urls.createWalletPassword,
-        NavigationPriority.IMMEDIATE,
-        {
-          password: password,
-          confirmPassword: confirmPassword,
-          otk: otk || null,
-        }
-      );
-    }
+    const savePassword = async () => {
+      if (password || confirmPassword) {
+        await lastPageStorage.store(
+          urls.createWalletPassword,
+          NavigationPriority.IMMEDIATE,
+          {
+            password: password,
+            confirmPassword: confirmPassword,
+            otk: otk || null,
+          }
+        );
+      }
+    };
+    savePassword();
   }, [password, confirmPassword]);
   /**
    * Validates Password, creates OTK and sends on to OTK-confirmation (Create)
@@ -143,7 +146,7 @@ export function CreateWalletPassword() {
         await lastPageStorage.clear();
 
         // Navigate to pages to see and confirm the 12-words from the otk
-        lastPageStorage.store(urls.secret, NavigationPriority.IMMEDIATE, {
+        await lastPageStorage.store(urls.secret, NavigationPriority.IMMEDIATE, {
           passPhrase: otk.phrase,
           password,
           otk,

@@ -10,14 +10,13 @@ ion-note {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0% 10%;
+  padding: 0 10%;
 }
 
 .custom-alert {
-  --width: 333px;
+  --width: 320px;
   --height: min-content;
   --border-radius: 16px;
-  --background: #fff;
   align-items: center;
   display: inline-flex;
 
@@ -31,13 +30,12 @@ ion-note {
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    padding: 0px 40px 30px 40px;
+    padding: 0 40px 32px 40px;
   }
   .warning-text {
     display: flex;
     flex-direction: column;
     text-align: center;
-    font-family: 'Nunito Sans';
     font-weight: 700;
     font-size: 16px;
     line-height: 24px;

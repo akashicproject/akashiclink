@@ -3,9 +3,6 @@ import { L2Regex } from '@helium-pay/backend';
 import crypto from 'crypto';
 import { useContext } from 'react';
 
-const algorithm = 'aes-256-cbc';
-const secretIv = '6RxIESTJ1eJLpjpe';
-
 import {
   ActiveAccountContext,
   CacheOtkContext,
@@ -13,6 +10,9 @@ import {
   LocalOtkContext,
 } from '../../components/PreferenceProvider';
 import type { FullOtk } from '../otk-generation';
+
+const algorithm = 'aes-256-cbc';
+const secretIv = '6RxIESTJ1eJLpjpe';
 
 /**
  * When logging in, a user will select a wallet `identity`
@@ -52,7 +52,7 @@ export const useAccountStorage = () => {
     for (const { identity } of localAccounts ?? [])
       if (identity === account.identity) return;
 
-    await setLocalAccounts([...(localAccounts ?? []), account]);
+    setLocalAccounts([...(localAccounts ?? []), account]);
   };
 
   const removeLocalAccount = async (account: LocalAccount) => {
@@ -63,12 +63,12 @@ export const useAccountStorage = () => {
       return p;
     }, [] as LocalAccount[]);
 
-    await setLocalAccounts(accsToKeep);
+    setLocalAccounts(accsToKeep);
     await removeLocalOtk(account.identity);
   };
 
   const clearActiveAccount = async () => {
-    await setActiveAccount(null);
+    setActiveAccount(null);
   };
 
   const getLocalOtk = async (

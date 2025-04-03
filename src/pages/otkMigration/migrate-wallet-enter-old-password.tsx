@@ -68,7 +68,7 @@ export function MigrateWalletOldPassword() {
       setAlert(formAlertResetState);
       await lastPageStorage.clear();
 
-      lastPageStorage.store(
+      await lastPageStorage.store(
         urls.migrateWalletSecret,
         NavigationPriority.IMMEDIATE,
         {

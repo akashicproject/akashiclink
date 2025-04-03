@@ -1,6 +1,6 @@
 import { IonCol, IonRow, IonText } from '@ionic/react';
 import { useKeyboardState } from '@ionic/react-hooks/keyboard';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -28,7 +28,7 @@ export function MigrateWalletNotice() {
     const otk = await generateOTK();
     // If no password provided, send to page to get old password (used to login and decrypt old eOtk for migration)
     if (!history.location.state.migrateWallet?.oldPassword) {
-      lastPageStorage.store(
+      await lastPageStorage.store(
         urls.migrateWalletOldPassword,
         NavigationPriority.IMMEDIATE,
         {
@@ -39,7 +39,7 @@ export function MigrateWalletNotice() {
       );
       history.push(urls.migrateWalletOldPassword);
     } else {
-      lastPageStorage.store(
+      await lastPageStorage.store(
         urls.migrateWalletSecret,
         NavigationPriority.IMMEDIATE,
         {

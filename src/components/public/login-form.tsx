@@ -63,7 +63,7 @@ export function LoginForm() {
           a.username === activeAccount.username ||
           a.identity === activeAccount.identity
       );
-      setSelectedAccount(matchingAccount);
+      setSelectedAccount(matchingAccount ?? localAccounts?.[0]);
     } else {
       setSelectedAccount(localAccounts?.[0]);
     }

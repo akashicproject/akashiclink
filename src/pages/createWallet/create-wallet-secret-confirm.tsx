@@ -64,11 +64,15 @@ export function CreateWalletSecretConfirm() {
             sWords[e] = '';
           });
           setSecretWords(sWords);
-          lastPageStorage.store(urls.secret, NavigationPriority.IMMEDIATE, {
-            ...data,
-            passPhrase: data.passPhrase,
-            passPhraseWithEmptyWords: sWords,
-          });
+          await lastPageStorage.store(
+            urls.secret,
+            NavigationPriority.IMMEDIATE,
+            {
+              ...data,
+              passPhrase: data.passPhrase,
+              passPhraseWithEmptyWords: sWords,
+            }
+          );
         } else if (data.passPhraseWithEmptyWords) {
           setPassPhrase(data.passPhrase);
           setSecretWords(data.passPhraseWithEmptyWords);

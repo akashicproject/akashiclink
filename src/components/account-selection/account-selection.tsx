@@ -9,7 +9,6 @@ import {
   IonSelect,
   IonSelectOption,
 } from '@ionic/react';
-import type { CSSProperties } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -22,9 +21,6 @@ import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { SquareWhiteButton } from '../buttons';
 import { useTheme } from '../PreferenceProvider';
 
-/**
- * Options in the dropdown menu in addition to regular account selection
- */
 enum DropdownOptions {
   CreateAccount,
   ImportAccount,
@@ -42,12 +38,10 @@ export function AccountSelection({
   onNewAccountClick,
   showCopyButton,
   hideCreateImport,
-  style,
 }: {
   onNewAccountClick?: (selectedAccount: LocalAccount) => void;
   showCopyButton?: boolean;
   hideCreateImport?: boolean;
-  style?: CSSProperties;
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -70,16 +64,10 @@ export function AccountSelection({
     }, 1000);
   };
 
-  /**
-   * Tracking of accounts
-   */
   const { localAccounts, activeAccount } = useAccountStorage();
   const [selectedAccount, setSelectedAccount] = useState<LocalAccount>();
 
-  /**
-   * If there is an active account in the this browsing session
-   * preselect it in the dropdown menu
-   */
+  // preselect active account in this browsing session in the dropdown menu
   useEffect(() => {
     if (activeAccount) {
       const matchingAccount = localAccounts?.find(
@@ -87,7 +75,7 @@ export function AccountSelection({
           a.username === activeAccount.username ||
           a.identity === activeAccount.identity
       );
-      setSelectedAccount(matchingAccount);
+      setSelectedAccount(matchingAccount ?? localAccounts?.[0]);
     } else {
       setSelectedAccount(localAccounts?.[0]);
     }
@@ -101,7 +89,6 @@ export function AccountSelection({
         gap: '8px',
         justifyContent: 'space-between',
         width: '100%',
-        ...style,
       }}
     >
       <IonSelect
