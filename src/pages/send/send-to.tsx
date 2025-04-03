@@ -1,12 +1,16 @@
 import './send.css';
 
 import styled from '@emotion/styled';
-import type { ITransactionVerifyResponse as VerifiedTransaction } from '@helium-pay/backend';
-import { NetworkDictionary } from '@helium-pay/backend';
+import {
+  type ITransactionVerifyResponse as VerifiedTransaction,
+  NetworkDictionary,
+  TEST_TO_MAIN,
+} from '@helium-pay/backend';
 import { IonCol, IonImg, IonRow, IonSpinner, useIonRouter } from '@ionic/react';
 import axios from 'axios';
 import Big from 'big.js';
-import { useEffect, useState } from 'react';
+import { debounce } from 'lodash';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -24,6 +28,7 @@ import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tree';
 import { OwnersAPI } from '../../utils/api';
 import { useAggregatedBalances } from '../../utils/hooks/useAggregatedBalances';
+import { useExchangeRates } from '../../utils/hooks/useExchangeRates';
 import { useKeyMe } from '../../utils/hooks/useKeyMe';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { lastPageStorage } from '../../utils/last-page-storage';
@@ -38,8 +43,15 @@ const SendWrapper = styled.div({
   flexDirection: 'column',
   alignItems: 'center',
   padding: 0,
-  gap: '5px',
+  gap: '24px',
   minHeight: '180px',
+  width: '270px',
+});
+
+const Divider = styled.div({
+  borderTop: '1px solid #D9D9D9',
+  boxSizing: 'border-box',
+  height: '2px',
   width: '270px',
 });
 
@@ -73,6 +85,69 @@ const Error = styled.div({
   textAlign: 'center',
 });
 
+const GasWrapper = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  padding: '0',
+  gap: '16px',
+  width: '270px',
+  height: '28px',
+});
+
+const GasFreeMarker = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '6px 16px',
+  gap: '8px',
+  width: '127px',
+  height: '28px',
+  borderRadius: '8px',
+  fontFamily: 'Nunito Sans',
+  fontWeight: '400',
+  fontSize: '10px',
+  lineHeight: '16px',
+  background: '#41CC9A',
+  color: '#FFFFFF',
+});
+
+const FeeMarker = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '6px 16px',
+  gap: '8px',
+  width: '127px',
+  height: '28px',
+  borderRadius: '8px',
+  fontFamily: 'Nunito Sans',
+  fontWeight: '400',
+  fontSize: '10px',
+  lineHeight: '16px',
+  border: '1px solid #958E99',
+  color: 'var(--ion-color-primary-10)',
+});
+
+const EqualsL2Box = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '8px',
+  width: '270px',
+  height: '40px',
+  borderRadius: '8px',
+  fontFamily: 'Nunito Sans',
+  fontWeight: '400',
+  fontSize: '5px',
+  lineHeight: '16px',
+  color: '#290056',
+  border: '1px solid #958e99',
+});
+
 /** Corresponds to steps taken by user as they make a withdrawal */
 enum SendView {
   Send = 'Send',
@@ -80,12 +155,14 @@ enum SendView {
   Result = 'Result',
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export function SendTo() {
   const { t } = useTranslation();
   const router = useIonRouter();
   const aggregatedBalances = useAggregatedBalances();
   const { keys: userWallets } = useKeyMe();
   const [alert, setAlert] = useState(formAlertResetState);
+  const { keys: exchangeRates } = useExchangeRates();
 
   const [_, __, currency] = useLocalStorage(
     'currency',
@@ -102,6 +179,22 @@ export function SendTo() {
     WALLET_CURRENCIES.find((c) => c.symbol === currency) ||
     WALLET_CURRENCIES[0];
 
+  const currentWallet = userWallets.filter((wallet) => {
+    return wallet.coinSymbol === currentWalletCurrency.currency[0];
+  })[0];
+  const coinSymbol = currentWalletCurrency.currency[0];
+  const tokenSymbol = currentWalletCurrency.currency[1];
+
+  const internalFee = Big(0.1).div(
+    Big(
+      exchangeRates.find(
+        (ex) =>
+          !tokenSymbol &&
+          ex.coinSymbol === (TEST_TO_MAIN.get(coinSymbol) || coinSymbol)
+      )?.price || 1
+    )
+  );
+
   // Keeps track of which page the user is at
   const [pageView, setPageView] = useState(SendView.Send);
 
@@ -109,14 +202,49 @@ export function SendTo() {
     useState<VerifiedTransaction>();
 
   const [toAddress, setToAddress] = useState<string>('');
-  const validateAddress = (value: string) =>
-    !!value.match(
-      NetworkDictionary[currentWalletCurrency.currency[0]].regex.address
-    );
+  const [inputAddress, setInputAddress] = useState<string>('');
+
+  const [gasFree, setGasFree] = useState(false);
+
+  const inputToAddress = async (value: string) => {
+    const l2address = await OwnersAPI.checkL2Address({
+      to: value,
+      coinSymbol: currentWalletCurrency.currency[0],
+    });
+    if (l2address) {
+      setToAddress(l2address);
+      setGasFree(true);
+    } else {
+      setToAddress(value);
+      setGasFree(false);
+    }
+    return l2address;
+  };
+
+  // Use "debounced" function, i.e. only call the relevant function (inputToAddress) if >= 500 ms have passed since the last function call.
+  // This ensures the backend is not spammed with calls for every key-stroke in the send-to box
+  const debouncedSearchHandler = useMemo(
+    () => debounce(inputToAddress, 500),
+    []
+  );
+
+  useEffect(() => {
+    return () => {
+      debouncedSearchHandler.cancel();
+    };
+  }, []);
 
   const [amount, setAmount] = useState<string>('');
   const validateAmount = (value: string) =>
-    !(value.charAt(0) === '-' || Big(value).lte(0));
+    !(!value || value.charAt(0) === '-' || Big(value).lte(0));
+  const validateAddress = (value: string) => {
+    return (
+      gasFree ||
+      !!value.match(
+        NetworkDictionary[currentWalletCurrency.currency[0]].regex.address
+      )
+    );
+  };
 
   const [signError, setSignError] = useState(errorMsgs.NoError);
   const [verifyError, setVerifyError] = useState(errorMsgs.NoError);
@@ -124,7 +252,7 @@ export function SendTo() {
 
   // Send transaction to the backend for verification
   const verifyTransaction = async () => {
-    if (!validateAddress(toAddress)) {
+    if (!gasFree && !validateAddress(toAddress)) {
       setAlert(errorAlertShell(t('AddressHelpText')));
       return;
     }
@@ -134,17 +262,14 @@ export function SendTo() {
     }
 
     setLoading(true);
-    const currentWallet = userWallets.filter((wallet) => {
-      return wallet.coinSymbol === currentWalletCurrency.currency[0];
-    })[0];
-    const coinSymbol = currentWalletCurrency.currency[0];
-    const tokenSymbol = currentWalletCurrency.currency[1];
+
     const originalTxn = {
       fromAddress: currentWallet.address,
       toAddress: toAddress,
       amount: amount,
       coinSymbol: coinSymbol,
       tokenSymbol: tokenSymbol ? tokenSymbol : undefined,
+      forceL1: !gasFree,
     };
     try {
       const response = await OwnersAPI.verifyTransaction(originalTxn);
@@ -188,10 +313,10 @@ export function SendTo() {
                   placeholder={t('EnterAddress')}
                   type={'text'}
                   errorPrompt={StyledInputErrorPrompt.Address}
-                  onIonInput={({ target: { value } }) =>
-                    setToAddress(value as string)
-                  }
-                  validate={validateAddress}
+                  onIonInput={({ target: { value } }) => {
+                    debouncedSearchHandler(value as string);
+                    setInputAddress(value as string);
+                  }}
                 />
                 <StyledInput
                   isHorizontal={true}
@@ -204,6 +329,39 @@ export function SendTo() {
                   }}
                   validate={validateAmount}
                 />
+                {gasFree && inputAddress !== toAddress && (
+                  <GasWrapper>
+                    <EqualsL2Box>{`${inputAddress} = ${toAddress}`}</EqualsL2Box>
+                    <IonImg
+                      alt={''}
+                      src={'/shared-assets/images/right.png'}
+                      style={{ width: '40px', height: '40px' }}
+                    />
+                  </GasWrapper>
+                )}
+                <Divider />
+                <GasWrapper>
+                  <GasFreeMarker
+                    style={{
+                      background: !toAddress
+                        ? 'rgba(103, 80, 164, 0.08)'
+                        : gasFree
+                        ? '#41CC9A'
+                        : '#DE3730',
+                    }}
+                  >
+                    {t('GasFree')}
+                  </GasFreeMarker>
+                  <FeeMarker>{`Fee: ${internalFee.toFixed(2)} ${
+                    TEST_TO_MAIN.get(coinSymbol) || coinSymbol
+                  }`}</FeeMarker>
+                </GasWrapper>
+                {gasFree || !toAddress ? null : (
+                  <GasWrapper>
+                    <FeeMarker>{t('Layer1Transaction')}</FeeMarker>
+                    <FeeMarker>{`+ ${t('GasFee')}`}</FeeMarker>
+                  </GasWrapper>
+                )}
               </SendWrapper>
             </IonCol>
           </IonRow>
@@ -216,7 +374,7 @@ export function SendTo() {
           )}
           <IonRow
             class="ion-justify-content-between"
-            style={{ padding: '0px 50px' }}
+            style={{ padding: '20px 50px' }}
           >
             <IonCol>
               <PurpleButton
@@ -245,6 +403,7 @@ export function SendTo() {
         <SendConfirm
           coinSymbol={currency || ''}
           transaction={verifiedTransaction}
+          gasFree={gasFree}
           isResult={() => setPageView(SendView.Result)}
           getErrorMsg={(errorMsg) => setSignError(errorMsg)}
           goBack={() => router.goBack()}

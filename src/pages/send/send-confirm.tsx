@@ -3,8 +3,9 @@ import './send.css';
 import styled from '@emotion/styled';
 import type { ITransactionVerifyResponse as VerifiedTransaction } from '@helium-pay/backend';
 import { userConst } from '@helium-pay/backend';
-import { IonCol, IonRow } from '@ionic/react';
+import { IonCol, IonIcon, IonRow } from '@ionic/react';
 import axios from 'axios';
+import { arrowForwardCircleOutline } from 'ionicons/icons';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -14,7 +15,6 @@ import {
   formAlertResetState,
 } from '../../components/alert/alert';
 import { PurpleButton, WhiteButton } from '../../components/buttons';
-import { DividerDivWithoutMargin } from '../../components/layout/divider';
 import {
   StyledInput,
   StyledInputErrorPrompt,
@@ -31,6 +31,13 @@ const ContentWrapper = styled.div({
   alignItems: 'center',
   padding: '0px',
   gap: '24px',
+  width: '270px',
+});
+
+const Divider = styled.div({
+  borderTop: '1px solid #D9D9D9',
+  boxSizing: 'border-box',
+  height: '2px',
   width: '270px',
 });
 
@@ -82,6 +89,7 @@ const InputPasswordText = styled.div({
 interface Props {
   transaction: VerifiedTransaction | undefined;
   coinSymbol: string;
+  gasFree: boolean;
   isResult: () => void;
   getErrorMsg: (msg: string) => void;
   goBack: () => void;
@@ -103,10 +111,15 @@ export function SendConfirm(props: Props) {
           username: owner.username,
           password,
         });
-        const signedTransaction = await OwnersAPI.signTransaction([
-          props.transaction,
-        ]);
-        const response = await OwnersAPI.sendTransaction(signedTransaction);
+        let response;
+        if (!props.gasFree) {
+          const signedTransaction = await OwnersAPI.signTransaction([
+            props.transaction,
+          ]);
+          response = await OwnersAPI.sendL1Transaction(signedTransaction);
+        } else {
+          response = [await OwnersAPI.sendL2Transaction([props.transaction])];
+        }
         if (!response[0].isSuccess) {
           setAlert(
             errorAlertShell(
@@ -141,11 +154,21 @@ export function SendConfirm(props: Props) {
         <IonCol class="ion-center">
           <ContentWrapper>
             <TextWrapper>
+              <TextContent>
+                {displayLongText(props.transaction?.fromAddress)}
+              </TextContent>
+              <IonIcon icon={arrowForwardCircleOutline} />
+              <TextContent>
+                {displayLongText(props.transaction?.toAddress)}
+              </TextContent>
+            </TextWrapper>
+            <TextWrapper>
+              <TextTitle>{t('Amount')}</TextTitle>
               <TextTitle>
                 {props.transaction?.amount} {props.coinSymbol}
               </TextTitle>
             </TextWrapper>
-            <DividerDivWithoutMargin />
+            <Divider />
             <TextWrapper>
               <TextTitle>{t('SendTo')}</TextTitle>
               <TextContent>
@@ -160,7 +183,7 @@ export function SendConfirm(props: Props) {
               <TextTitle>{t('Total')}</TextTitle>
               <TextContent>{props.transaction?.amount}</TextContent>
             </TextWrapper>
-            <DividerDivWithoutMargin />
+            <Divider />
           </ContentWrapper>
         </IonCol>
       </IonRow>

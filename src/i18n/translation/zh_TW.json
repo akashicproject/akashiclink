@@ -120,5 +120,9 @@
   "GasLimit": "礦工上限",
   "GasUsed": "使用的礦工",
   "PriorityFee": "優先收費",
-  "MaxFeePerGas": "每單位礦工的最高费用"
+  "GasFree": "Gas-Free",
+  "Layer1Transaction": "Layer 1 Transaction",
+  "MaxFeePerGas": "每單位礦工的最高费用",
+  "Layer1": "Layer 1",
+  "TransactionFee": "交易費"
 }

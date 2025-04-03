@@ -2,6 +2,7 @@ import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import { TransactionStatus } from '@helium-pay/backend';
 import { IonButton, IonIcon } from '@ionic/react';
+import Big from 'big.js';
 import { arrowForwardCircleOutline, copyOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 
@@ -170,7 +171,7 @@ export const ActivityDetail: React.FC<{
       )}
       <DetailColumn>
         <TextContent>{`${t('GasFee')}`}</TextContent>
-        <TextContent>{currentTransfer.feesPaid}</TextContent>
+        <TextContent>{currentTransfer.feesPaid ?? 0}</TextContent>
       </DetailColumn>
       {backendUpdated && (
         <DetailColumn>
@@ -190,9 +191,9 @@ export const ActivityDetail: React.FC<{
       <DetailColumn style={{ marginTop: '20px' }}>
         <TextContent>{'Total'}</TextContent>
         <TextTitle>
-          {`${
-            Number(currentTransfer.amount) + Number(currentTransfer.feesPaid)
-          } ${currentTransfer.currency.displayName}`}
+          {`${Big(currentTransfer.amount).add(currentTransfer.feesPaid ?? 0)} ${
+            currentTransfer.currency.displayName
+          }`}
         </TextTitle>
       </DetailColumn>
     </TransferDetail>

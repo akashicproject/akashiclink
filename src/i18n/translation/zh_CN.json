@@ -115,10 +115,14 @@
   "NeedHelp": "需要帮助？请联系",
   "AkashicWalletSupport": "AkashicWallet支持",
   "Transaction": "交易",
-  "Units": "units",
+  "Units": "单位",
   "GasFee": "矿工费",
-  "GasLimit": "Gas Limit",
-  "GasUsed": "Gas used",
-  "PriorityFee": "Priority fee",
-  "MaxFeePerGas": "Max fee per Gas"
+  "GasLimit": "矿工上限",
+  "GasUsed": "使用的矿工",
+  "PriorityFee": "优先收费",
+  "GasFree": "Gas-Free",
+  "Layer1Transaction": "Layer 1 Transaction",
+  "MaxFeePerGas": "每单位矿工的最高费用",
+  "Layer1": "Layer 1",
+  "TransactionFee": "交易费"
 }

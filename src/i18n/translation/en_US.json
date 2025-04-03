@@ -120,5 +120,9 @@
   "GasLimit": "Gas limit",
   "GasUsed": "Gas used",
   "PriorityFee": "Priority fee",
-  "MaxFeePerGas": "Max fee per Gas"
+  "GasFree": "Gas-Free",
+  "Layer1Transaction": "Layer 1 Transaction",
+  "MaxFeePerGas": "Max fee per Gas",
+  "Layer1": "Layer 1",
+  "TransactionFee": "Transaction Fee"
 }

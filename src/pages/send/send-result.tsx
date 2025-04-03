@@ -74,6 +74,7 @@ interface Props {
 export function SendResult(props: Props) {
   const { t } = useTranslation();
   const wrongResult = props.errorMsg !== errorMsgs.NoError;
+  const Layer = props.transaction?.forceL1 ? ' - ' + t('Layer1') : '';
 
   return (
     <SendMain>
@@ -89,8 +90,10 @@ export function SendResult(props: Props) {
               }
               style={{ width: '40px', height: '40px' }}
             />
-            <HeaderTitle>
-              {wrongResult ? props.errorMsg : t('TransactionSuccessful')}
+            <HeaderTitle style={{ width: '213px' }}>
+              {wrongResult
+                ? props.errorMsg
+                : t('TransactionSuccessful') + Layer}
             </HeaderTitle>
             <DividerDivWithoutMargin />
           </HeaderWrapper>

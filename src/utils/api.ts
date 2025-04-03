@@ -2,6 +2,7 @@ import type {
   IActivateWalletAccount,
   IActivateWalletAccountResponse,
   IChangePassword,
+  ICheckL2Address,
   IImportWallet,
   IImportWalletResponse,
   IKeyGeneration,
@@ -125,11 +126,11 @@ export const OwnersAPI = {
 
     return response.data;
   },
-  sendTransaction: async (
+  sendL1Transaction: async (
     signedTransactionData: IL1TransactionSigned[]
   ): Promise<ITransactionSettledResponse[]> => {
     const response = await axiosOwnerBase.post(
-      `/key/send`,
+      `/key/send/l1`,
       JSON.stringify(signedTransactionData)
     );
     const { data, status } = response;
@@ -137,6 +138,30 @@ export const OwnersAPI = {
       throw new Error(data.message);
     }
 
+    return response.data;
+  },
+  sendL2Transaction: async (
+    signedTransactionData: ITransactionVerifyResponse[]
+  ): Promise<ITransactionSettledResponse> => {
+    const response = await axiosOwnerBase.post(
+      `/key/send/l2`,
+      JSON.stringify(signedTransactionData)
+    );
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
+
+    return response.data;
+  },
+  checkL2Address: async (l2Check: ICheckL2Address): Promise<string | null> => {
+    let requestUrl = `/owner/check-l2-address?to=${l2Check.to}`;
+    if (l2Check.coinSymbol) requestUrl += `&coinSymbol=${l2Check.coinSymbol}`;
+    const response = await axiosOwnerBase.get(requestUrl);
+    const { data, status } = response;
+    if (status >= 400) {
+      throw new Error(data.message);
+    }
     return response.data;
   },
   changePassword: async (
