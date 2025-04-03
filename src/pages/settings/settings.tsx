@@ -139,7 +139,7 @@ export function Settings() {
       onClick: () => {
         history.push(akashicPayPath(urls.settingsAboutUs));
       },
-      endComponent: <AboutUsCaret appVersion={info.version} />,
+      endComponent: <AboutUsCaret appVersion={info.version ?? '0.0.0'} />,
     },
   ];
   return (

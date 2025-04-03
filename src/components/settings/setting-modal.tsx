@@ -36,7 +36,7 @@ export function SettingsModal({
         modal.current?.setCurrentBreakpoint(updateType === 'soft' ? 0.72 : 0.6);
         setAboutUs(true);
       },
-      endComponent: <AboutUsCaret appVersion={info.version} />,
+      endComponent: <AboutUsCaret appVersion={info.version ?? '0.0.0'} />,
     },
   ];
   return (

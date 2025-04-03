@@ -4,7 +4,7 @@ import { datadogRum } from '@datadog/browser-rum';
 import { useEffect, useState } from 'react';
 
 export const useCurrentAppInfo = () => {
-  const [version, setVersion] = useState<string>('0.0.0');
+  const [version, setVersion] = useState<string>();
   const [appInfo, setAppInfo] = useState<AppInfo>();
 
   useEffect(() => {
