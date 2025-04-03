@@ -5,11 +5,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Akashic Wallet</string>
+	<string>Akashic Wallet Staging</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.akashicwallet.app</string>
+	<string>com.staging.akashicpay.wallet</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>0.0.5</string>
 	<key>CFBundleVersion</key>
-	<string>15</string>
+	<string>28</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

@@ -68,8 +68,8 @@ platform :ios do
         output_name: "#{ENV['FLAVORS']}-#{next_release_name}-(#{next_version_code})",
         export_options: {
           provisioningProfiles: {
-            "com.staging.akashicwallet.app" => "com.staging.akashicwallet.app AppStore",
-            "com.akashicwallet.app" => "com.akashicwallet.app AppStore"
+            "com.staging.akashicpay.wallet" => "com.staging.akashicpay.wallet AppStore",
+            "com.akashicpay.wallet" => "com.akashicpay.wallet AppStore"
           }
         }
       )
