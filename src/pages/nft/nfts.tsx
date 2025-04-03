@@ -2,7 +2,7 @@ import './ntf.css';
 
 import styled from '@emotion/styled';
 import type { INftResponse } from '@helium-pay/backend';
-import { IonIcon, IonRow, IonSpinner } from '@ionic/react';
+import { IonIcon, IonRow, IonSpinner, isPlatform } from '@ionic/react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -53,6 +53,7 @@ const ItemContainer = styled.div({
 export function Nfts() {
   const { t } = useTranslation();
   const history = useHistory();
+  const isMobile = isPlatform('mobile');
 
   const { nfts, isLoading } = useNftMe();
   const [_, setNft, __] = useLocalStorage('nft', '');
@@ -80,8 +81,8 @@ export function Nfts() {
       ) : (
         <Virtuoso
           style={{
-            marginTop: '40px',
-            height: '500px',
+            marginTop: isMobile ? '40px' : '20px',
+            height: isMobile ? '500px' : '400px',
             padding: '8px',
           }}
           overscan={900}
@@ -96,7 +97,14 @@ export function Nfts() {
           )}
         ></Virtuoso>
       )}
-      <IonRow class="ion-justify-content-center">
+      <IonRow
+        class="ion-justify-content-center"
+        style={{
+          position: 'fixed',
+          bottom: isMobile ? '100px' : '5px',
+          width: '100%',
+        }}
+      >
         <HomeButton />
       </IonRow>
     </NftLayout>

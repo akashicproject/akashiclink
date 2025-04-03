@@ -3,6 +3,8 @@ import './one-nft.css';
 import styled from '@emotion/styled';
 import type { INft, INftResponse } from '@helium-pay/backend';
 import { IonImg } from '@ionic/react';
+
+import { displayLongText } from '../../utils/long-text';
 interface Props {
   nft: INft | INftResponse;
   isBig?: boolean;
@@ -28,6 +30,7 @@ const NftName = styled.div({
   fontStyle: 'normal',
   fontWeight: 700,
   textAlign: 'center',
+  lineHeight: '16px',
 });
 
 export function OneNft(props: Props) {
@@ -35,8 +38,8 @@ export function OneNft(props: Props) {
     <NtfWrapper
       style={
         props.isBig
-          ? { width: '168px', height: '234px', padding: '12px', gap: '15px' }
-          : { width: '112px', height: '156px', padding: '8px', gap: '10px' }
+          ? { width: '168px', height: '234px', padding: '12px' }
+          : { width: '112px', height: '156px', padding: '8px' }
       }
       onClick={props.select}
     >
@@ -62,7 +65,7 @@ export function OneNft(props: Props) {
               }
         }
       >
-        {props.nft.name}
+        {displayLongText(props.nft.acns?.name)}
       </NftName>
     </NtfWrapper>
   );

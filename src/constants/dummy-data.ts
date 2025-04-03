@@ -287,7 +287,7 @@ export const transfersDate = [
 export const nftsData: INft[] = [
   {
     chainType: ChainType.AkashicChain,
-    name: 'nft1',
+    name: 'Candypig First Edition #177',
     description: 'ntf1 des',
     account: 'account1',
     image:
@@ -307,7 +307,7 @@ export const nftsData: INft[] = [
       ownerIdentity: 'ownerIdentity',
       recordType: 'recordType',
       recordKey: 'recordKey',
-      name: 'nft1',
+      name: 'nft1 nftStreamId #10001',
       value: null,
     } as IAcns,
   } as INft,
