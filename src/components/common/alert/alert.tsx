@@ -1,5 +1,3 @@
-import './alert.scss';
-
 import {
   IonAlert,
   IonButton,

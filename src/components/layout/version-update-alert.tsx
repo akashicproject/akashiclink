@@ -58,6 +58,7 @@ export const VersionUpdateAlert = () => {
       backdropDismiss={false}
       header={t('NewVersionAvailable')}
       message={t('NewVersionAvailableMessage')}
+      cssClass={'force-update-alert'}
       buttons={[
         ...(config && updateType === 'soft'
           ? [
