@@ -15,7 +15,7 @@
     "default_title": "AkashicLink Staging",
     "default_popup": "index.html"
   },
-  "permissions": ["activeTab", "storage", "scripting", "tabs", "alarms"],
+  "permissions": ["storage", "alarms"],
   "background": {
     "service_worker": "serviceWorker.js",
     "type": "module"
