@@ -17,6 +17,7 @@ import {
   responseToSite,
   TYPED_DATA_PRIMARY_TYPE,
 } from '../utils/chrome';
+import type { BecomeBpToSign } from '../utils/hooks/useSignBecomeBpMessage';
 import { useSignBecomeBpMessage } from '../utils/hooks/useSignBecomeBpMessage';
 import { useSignSetupCallbackUrl } from '../utils/hooks/useSignSetupCallbackUrl';
 import { useWeb3Wallet } from '../utils/web3wallet';
@@ -34,6 +35,7 @@ export function SignTypedData() {
     topic: '',
     primaryType: '',
     message: {} as Record<string, string>,
+    toSign: {} as Record<string, unknown>,
     response: {},
   });
 
@@ -48,12 +50,15 @@ export function SignTypedData() {
       if (request.method === ETH_METHOD.SIGN_TYPED_DATA) {
         const typedData = JSON.parse(request.params[1]);
 
+        const { toSign, ...message } = typedData.message;
+
         setRequestContent({
           id,
           method: request.method,
-          message: typedData.message,
+          message: message,
           primaryType: typedData.primaryType,
           topic,
+          toSign: toSign,
           response: {},
         });
       }
@@ -66,14 +71,16 @@ export function SignTypedData() {
   }, []);
 
   const acceptSessionRequest = async () => {
-    const { topic, id, primaryType } = requestContent;
+    const { topic, id, primaryType, toSign } = requestContent;
 
     try {
-      // TODO: sign message here
       let signedMsg = '';
 
       if (primaryType === TYPED_DATA_PRIMARY_TYPE.BECOME_BP) {
-        signedMsg = await signBecomeBpMessage();
+        signedMsg = await signBecomeBpMessage({
+          identity: toSign.identity,
+          expires: Number(toSign.expires),
+        } as BecomeBpToSign);
       } else {
         signedMsg = await signSetupCallbackUrl();
       }
@@ -83,7 +90,7 @@ export function SignTypedData() {
         response: {
           id,
           jsonrpc: '2.0',
-          result: signedMsg, // TODO: pass out signed message here, must start with 0x
+          result: signedMsg,
         },
       });
     } catch (e) {

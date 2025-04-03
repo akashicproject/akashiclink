@@ -294,6 +294,7 @@
   "Popup": {
     "identity": "Akashic Address",
     "content": "Message",
+    "expires": "Expires",
     "payoutCallbackUrl": "Payout Callback Url",
     "depositCallbackUrl": "Deposit Callback Url",
     "withdrawalCallbackUrl": "Withdrawal Callback Url"

@@ -12,7 +12,7 @@ import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useMyTransfers } from '../../utils/hooks/useMyTransfers';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { useOwner } from '../../utils/hooks/useOwner';
-import { signImportAuth } from '../../utils/otk-generation';
+import { signAuthenticationData } from '../../utils/otk-generation';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { AccountSelection } from '../account-selection/account-selection';
 import {
@@ -75,7 +75,7 @@ export function LoginForm({ isPopup = false }) {
       if (localSelectedOtk) {
         await OwnersAPI.loginV1({
           identity: localSelectedOtk.identity,
-          signedAuth: signImportAuth(
+          signedAuth: signAuthenticationData(
             localSelectedOtk.key.prv.pkcs8pem,
             localSelectedOtk.identity
           ),

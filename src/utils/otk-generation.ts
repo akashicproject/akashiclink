@@ -87,7 +87,10 @@ export function restoreOtkFromKeypair(
 }
 
 // Sign a piece of data using the private key to be verified by the backend
-export function signImportAuth(otkPriv: string, data: string) {
+export function signAuthenticationData(
+  otkPriv: string,
+  data: string | Record<string, unknown>
+) {
   try {
     // Have to but private key into correct format
     const pemPrivate =
