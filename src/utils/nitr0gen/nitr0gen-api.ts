@@ -9,7 +9,13 @@ import type {
   IBaseAcTransaction,
   ITerriAcTransaction,
 } from '@helium-pay/backend';
-import { keyError, NetworkDictionary, otherError } from '@helium-pay/backend';
+import {
+  EthLikeSymbol,
+  isCoinSymbol,
+  keyError,
+  NetworkDictionary,
+  otherError,
+} from '@helium-pay/backend';
 import axios from 'axios';
 
 import { convertToFromASPrefix } from '../convert-as-prefix';
@@ -359,6 +365,10 @@ export class Nitr0genApi {
       (t) => t.symbol === token
     )?.contract;
 
+    const $o = isCoinSymbol(network, EthLikeSymbol)
+      ? { [keyLedgerId]: {} }
+      : undefined;
+
     const txBody: IBaseAcTransaction = {
       $tx: {
         $namespace: Nitr0gen.Namespace,
@@ -375,6 +385,7 @@ export class Nitr0genApi {
             gas: ethGasPrice,
           },
         },
+        $o,
         $r: {
           wallet: keyLedgerId,
         },
