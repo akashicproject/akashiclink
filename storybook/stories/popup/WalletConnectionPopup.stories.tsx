@@ -7,11 +7,11 @@ const meta: Meta<typeof WalletConnection> = {
   title: 'Popups',
   component: WalletConnection,
   args: {
-    isPopup: false,
+    isPopup: true,
   },
   parameters: {
     query: {
-      uri: 'testURI',
+      appUrl: 'MockApp.app',
     },
     viewport: {
       defaultViewport: 'popup',
