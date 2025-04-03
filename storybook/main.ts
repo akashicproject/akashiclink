@@ -21,10 +21,11 @@ const config: StorybookConfig = {
   },
 
   addons: [
+    getAbsolutePath('@storybook/preset-create-react-app'),
     getAbsolutePath('@storybook/addon-essentials'),
     getAbsolutePath('@storybook/addon-interactions'),
     getAbsolutePath('@storybook/addon-queryparams'),
-    getAbsolutePath('@storybook/preset-create-react-app'),
+    getAbsolutePath('@storybook/addon-coverage'),
   ],
 
   /**

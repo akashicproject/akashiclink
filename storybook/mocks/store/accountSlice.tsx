@@ -1,15 +1,15 @@
 import {
   PRESET_L2_ADDRESS,
   PRESET_L2_ADDRESS_2,
-  PRESET_NFT_ALIAS,
   PRESET_NFT_LEDGER_ID,
+  PRESET_OWNER_AAS_ALIAS,
 } from '@helium-pay/api-mocks';
 
 import { makeStore } from '../../../src/redux/app/store';
 
 export const mockActiveAccount = {
   identity: PRESET_L2_ADDRESS,
-  alias: PRESET_NFT_ALIAS,
+  alias: PRESET_OWNER_AAS_ALIAS,
   ledgerId: PRESET_NFT_LEDGER_ID,
 };
 

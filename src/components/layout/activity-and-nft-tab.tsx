@@ -62,7 +62,7 @@ export const ActivityAndNftTabs = ({
   const { t } = useTranslation();
   const history = useHistory();
   return (
-    <Tabs>
+    <Tabs data-testid={'activity-nft-tabs'}>
       <TabButton
         style={{ width: '50%', marginInline: '0' }}
         id="activity"

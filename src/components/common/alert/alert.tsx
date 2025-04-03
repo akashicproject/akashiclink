@@ -121,7 +121,10 @@ export function CustomAlert({ state }: { state: CustomAlertState }) {
     >
       <IonToolbar color="#ffffff">
         <IonButtons slot="end">
-          <IonButton onClick={() => setIsOpen(false)}>
+          <IonButton
+            data-testid={'custom-alert-close-button'}
+            onClick={() => setIsOpen(false)}
+          >
             <IonIcon
               className="icon-button-icon"
               slot="icon-only"
