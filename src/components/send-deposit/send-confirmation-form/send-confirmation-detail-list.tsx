@@ -43,6 +43,9 @@ export const SendConfirmationDetailList = ({
   const isUserInputAddressL1 = NetworkDictionary[chain].regex.address.exec(
     validatedAddressPair?.userInputToAddress
   );
+  const isUserInputAddressL2 = L2Regex.exec(
+    validatedAddressPair?.userInputToAddress
+  );
 
   const precision = !isL2 || !isCurrencyTypeToken ? 6 : 2;
 
@@ -136,7 +139,7 @@ export const SendConfirmationDetailList = ({
         valueSize={'md'}
         valueBold
       />
-      {isL2 && !isUserInputAddressL1 && (
+      {isL2 && !isUserInputAddressL1 && !isUserInputAddressL2 && (
         <>
           <IonItem>
             <Divider
