@@ -1,5 +1,5 @@
 import { IonAlert, IonCol, IonRow } from '@ionic/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
@@ -32,6 +32,7 @@ export function ChangePassword() {
   const logout = useLogout();
   const history = useHistory<LocationState>();
 
+  const [passwordsMatched, setPasswordsMatched] = useState(true);
   const [oldPassword, setOldPassword] = useState<string>();
   const [newPassword, setNewPassword] = useState<string>();
   const [confirmPassword, setConfirmPassword] = useState<string>();
@@ -40,10 +41,22 @@ export function ChangePassword() {
   const validatePassword = (value: string) =>
     !!value.match(userConst.passwordRegex);
 
-  const validateConfirmPassword = (value: string) => newPassword === value;
-
   const [alertRequest, setAlertRequest] = useState(formAlertResetState);
   const { changeOtkPassword } = useAccountStorage();
+
+  // Check if passwords match
+  const validatePasswordsMatch = (
+    password?: string,
+    confirmPassword?: string
+  ) => {
+    if (!confirmPassword) return true;
+    return password === confirmPassword;
+  };
+
+  // Update passwords match state whenever either password changes
+  useEffect(() => {
+    setPasswordsMatched(validatePasswordsMatch(newPassword, confirmPassword));
+  }, [newPassword, confirmPassword]);
 
   // When confirming or cancelling
   const resetStates = () => {
@@ -194,7 +207,7 @@ export function ChangePassword() {
                 }}
                 value={confirmPassword}
                 errorPrompt={StyledInputErrorPrompt.ConfirmPassword}
-                validate={validateConfirmPassword}
+                isValid={passwordsMatched}
                 submitOnEnter={changePassword}
               />
             </IonCol>
