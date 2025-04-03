@@ -33,26 +33,14 @@ export function formatTransfers(transfers: ITransactionRecord[]) {
   const formattedTransfers = transfers.map(
     (t, id): ITransactionRecordForExtension => {
       const l2Sender =
-        t?.layer === TransactionLayer.L2
-          ? t.fromAddress
-          : t?.fromOwner?.oneTimePublicKeys.at(-1)?.identity;
+        t?.layer === TransactionLayer.L2 ? t.fromAddress : t.senderIdentity;
 
       const l2Receiver =
-        t?.layer === TransactionLayer.L2
-          ? t.toAddress
-          : t.toOwner?.oneTimePublicKeys?.at(-1)?.identity;
+        t?.layer === TransactionLayer.L2 ? t.toAddress : t.receiverIdentity;
       return {
         ...formatTransactionForFrontend(t, id),
         networkIcon: NetworkDictionary[t.coinSymbol].networkIcon,
         currency: makeWalletCurrency(t.coinSymbol, t?.tokenSymbol),
-        fromAddress:
-          t.layer === TransactionLayer.L2
-            ? t.fromAddress ?? t.fromOwner?.oneTimePublicKeys.at(-1)?.identity
-            : t.fromAddress,
-        toAddress:
-          t.layer === TransactionLayer.L2
-            ? t.toAddress ?? t.toOwner?.oneTimePublicKeys.at(-1)?.identity
-            : t.toAddress,
         internalSenderUrl: l2Sender
           ? `${akashicScanAccountsUrl}/${l2Sender}`
           : undefined, // Keep undefined so we can default to L1 URL if there is no L2 URL
