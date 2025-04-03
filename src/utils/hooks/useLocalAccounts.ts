@@ -1,4 +1,3 @@
-import { SecureStorage } from '@aparajita/capacitor-secure-storage';
 import { L2Regex } from '@helium-pay/backend';
 import crypto from 'crypto';
 
@@ -13,6 +12,7 @@ import {
 } from '../../redux/slices/accountSlice';
 import type { FullOtk } from '../otk-generation';
 import { useLocalStorage } from './useLocalStorage';
+import { useSecureStorage } from './useSecureStorage';
 
 const algorithm = 'aes-256-cbc';
 const secretIv = '6RxIESTJ1eJLpjpe';
@@ -44,6 +44,7 @@ export const useAccountStorage = () => {
   // TODO: Delete the legacy-stuff when backwards-compatibility to local storage
   // no longer necessary
   const dispatch = useAppDispatch();
+  const { getItem, setItem, removeItem } = useSecureStorage();
 
   const [legacyLocalAccounts, _c, removeLegacyLocalAccounts] = useLocalStorage<
     LocalAccount[] | undefined
@@ -157,7 +158,7 @@ export const useAccountStorage = () => {
     identity: string,
     password: string
   ): Promise<FullOtk | undefined> => {
-    const encryptedOtk = await SecureStorage.getItem(identity);
+    const encryptedOtk = await getItem(identity);
 
     if (!encryptedOtk) {
       return undefined;
@@ -191,7 +192,7 @@ export const useAccountStorage = () => {
     const encryptedOtk = Buffer.from(
       cipher.update(JSON.stringify(otk), 'utf8', 'hex') + cipher.final('hex')
     ).toString('base64');
-    await SecureStorage.setItem(otk.identity, encryptedOtk);
+    await setItem(otk.identity, encryptedOtk);
   };
 
   const addLocalOtkAndCache = async (otk: FullOtk, password: string) => {
@@ -211,7 +212,7 @@ export const useAccountStorage = () => {
   };
 
   const removeLocalOtk = async (identity: string) => {
-    await SecureStorage.removeItem(identity);
+    await removeItem(identity);
 
     dispatch(setCacheOtkState(null));
   };
