@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { TransactionStatus } from '@helium-pay/backend';
 import { IonButton, IonIcon } from '@ionic/react';
-import { copyOutline } from 'ionicons/icons';
+import { arrowForwardCircleOutline, copyOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 
 import type { WalletTransactionRecord } from '../../pages/activity';
@@ -51,7 +51,7 @@ const TextTitle = styled.div({
 });
 
 export const ActivityDetail: React.FC<{
-  currentTransfer: WalletTransactionRecord | undefined;
+  currentTransfer: WalletTransactionRecord;
 }> = ({ currentTransfer }) => {
   const { t } = useTranslation();
 
@@ -70,57 +70,70 @@ export const ActivityDetail: React.FC<{
     }
   };
 
+  // TODO: once backend transaction are fetching:
+  // - nonce
+  // - gas limit
+  // - GasLimit
+  // - GasUsed
+  // - PriorityFee
+  // - MaxFeePerGas
+  // Remove this
+  const backendUpdated = false;
+
   return (
     <TransferDetail>
       <DetailColumn>
         <TextTitle>{t('Status')}</TextTitle>
-        <TextContent>{statusString(currentTransfer?.status)}</TextContent>
+        <TextContent>{statusString(currentTransfer.status)}</TextContent>
       </DetailColumn>
-      <DetailColumn>
+      <DetailColumn style={{ marginTop: '20px' }}>
         <TextTitle>{t('txHash')}</TextTitle>
         <TextContent>
-          <Link href={currentTransfer?.txHashUrl}>
-            {displayLongText(currentTransfer?.txHash)}
+          <Link href={currentTransfer.txHashUrl}>
+            {displayLongText(currentTransfer.txHash)}
           </Link>
           <IonButton
             class="copy-button"
             onClick={() =>
-              navigator.clipboard.writeText(currentTransfer?.txHashUrl ?? '')
+              navigator.clipboard.writeText(currentTransfer.txHashUrl ?? '')
             }
           >
             <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />
           </IonButton>
         </TextContent>
       </DetailColumn>
-      <DetailColumn>
+      <DetailColumn style={{ marginTop: '20px' }}>
         <TextTitle>{t('From')}</TextTitle>
-        <TextContent>
-          <Link href={currentTransfer?.senderAddressUrl}>
-            {displayLongText(currentTransfer?.senderAddressUrl)}
-          </Link>
-          <IonButton
-            class="copy-button"
-            onClick={() =>
-              navigator.clipboard.writeText(
-                currentTransfer?.senderAddressUrl ?? ''
-              )
-            }
-          >
-            <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />
-          </IonButton>
-        </TextContent>
-      </DetailColumn>
-      <DetailColumn>
         <TextTitle>{t('To')}</TextTitle>
+      </DetailColumn>
+      <DetailColumn>
         <TextContent>
-          <Link href={currentTransfer?.recipientAddressUrl}>
-            {displayLongText(currentTransfer?.recipientAddressUrl)}
+          <Link href={currentTransfer.senderAddressUrl}>
+            {displayLongText(currentTransfer.senderAddressUrl)}
           </Link>
           <IonButton
             class="copy-button"
             onClick={() =>
               navigator.clipboard.writeText(
-                currentTransfer?.recipientAddressUrl ?? ''
+                currentTransfer.senderAddressUrl ?? ''
+              )
+            }
+          >
+            <IonIcon slot="icon-only" class="copy-icon" icon={copyOutline} />
+          </IonButton>
+        </TextContent>
+        <TextContent>
+          <IonIcon icon={arrowForwardCircleOutline} />
+        </TextContent>
+        <TextContent>
+          <Link href={currentTransfer.recipientAddressUrl}>
+            {displayLongText(currentTransfer.recipientAddressUrl)}
+          </Link>
+          <IonButton
+            class="copy-button"
+            onClick={() =>
+              navigator.clipboard.writeText(
+                currentTransfer.recipientAddressUrl ?? ''
               )
             }
           >
@@ -128,16 +141,55 @@ export const ActivityDetail: React.FC<{
           </IonButton>
         </TextContent>
       </DetailColumn>
-      <DetailColumn>
-        <TextTitle>{'Gas ' + t('Fee')}</TextTitle>
-        <TextContent>{currentTransfer?.feesPaid}</TextContent>
+      <DetailColumn style={{ marginTop: '20px' }}>
+        <TextTitle>{t('Transaction')}</TextTitle>
       </DetailColumn>
-      <DetailColumn style={{ marginTop: '50px' }}>
+      {backendUpdated && (
+        <DetailColumn>
+          <TextContent>{'Nonce'}</TextContent>
+        </DetailColumn>
+      )}
+      <DetailColumn>
         <TextContent>{t('Amount')}</TextContent>
         <TextTitle>
-          {currentTransfer?.amount +
-            ' ' +
-            currentTransfer?.currency.displayName}
+          {currentTransfer.amount + ' ' + currentTransfer.currency.displayName}
+        </TextTitle>
+      </DetailColumn>
+      {backendUpdated && (
+        <DetailColumn>
+          <TextContent>{`${t('GasLimit')} (${t('Units')})`}</TextContent>
+        </DetailColumn>
+      )}
+      {backendUpdated && (
+        <DetailColumn>
+          <TextContent>{`${t('GasUsed')} (${t('Units')})`}</TextContent>
+        </DetailColumn>
+      )}
+      <DetailColumn>
+        <TextContent>{`${t('GasFee')}`}</TextContent>
+        <TextContent>{currentTransfer.feesPaid}</TextContent>
+      </DetailColumn>
+      {backendUpdated && (
+        <DetailColumn>
+          <TextContent>{t('PriorityFee')}</TextContent>
+        </DetailColumn>
+      )}
+      {backendUpdated && (
+        <DetailColumn>
+          <TextContent>{`${t('Total')} ${t('GasFee')}`}</TextContent>
+        </DetailColumn>
+      )}
+      {backendUpdated && (
+        <DetailColumn>
+          <TextContent>{t('MaxFeePerGas')}</TextContent>
+        </DetailColumn>
+      )}
+      <DetailColumn style={{ marginTop: '20px' }}>
+        <TextContent>{'Total'}</TextContent>
+        <TextTitle>
+          {`${
+            Number(currentTransfer.amount) + Number(currentTransfer.feesPaid)
+          } ${currentTransfer.currency.displayName}`}
         </TextTitle>
       </DetailColumn>
     </TransferDetail>

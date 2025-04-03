@@ -113,5 +113,12 @@
   "EmailAlreadyUsed": "該電子郵件已與一個帳戶關聯 - 請使用其他電子郵件。",
   "BestWayToInvestYourMoney": "投資金錢的最佳方式！",
   "NeedHelp": "需要幫助？請聯繫",
-  "AkashicWalletSupport": "AkashicWallet支持"
+  "AkashicWalletSupport": "AkashicWallet支持",
+  "Transaction": "交易",
+  "Units": "單位",
+  "GasFee": "礦工費",
+  "GasLimit": "礦工上限",
+  "GasUsed": "使用的礦工",
+  "PriorityFee": "優先收費",
+  "MaxFeePerGas": "每單位礦工的最高费用"
 }

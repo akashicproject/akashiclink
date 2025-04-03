@@ -117,21 +117,24 @@ export function Activity() {
           </OneActivity>
         )}
       ></Virtuoso>
-      <IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>{t('ContractInteraction')}</IonTitle>
-            <IonButtons slot="end">
-              <IonButton onClick={() => setIsOpen(false)}>
-                {t('Close')}
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent class={'dialog-content'}>
-          <ActivityDetail currentTransfer={currentTransfer} />
-        </IonContent>
-      </IonModal>
+      <Divider style={{ marginTop: '20px' }} />
+      {currentTransfer && (
+        <IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>{t('ContractInteraction')}</IonTitle>
+              <IonButtons slot="end">
+                <IonButton onClick={() => setIsOpen(false)}>
+                  {t('Close')}
+                </IonButton>
+              </IonButtons>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent class={'dialog-content'}>
+            <ActivityDetail currentTransfer={currentTransfer} />
+          </IonContent>
+        </IonModal>
+      )}
     </LoggedLayout>
   );
 }

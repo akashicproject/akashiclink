@@ -113,5 +113,12 @@
   "EmailAlreadyUsed": "该电子邮件已与一个账户关联 - 请使用其他电子邮件",
   "BestWayToInvestYourMoney": "投资金钱的最佳方式！",
   "NeedHelp": "需要帮助？请联系",
-  "AkashicWalletSupport": "AkashicWallet支持"
+  "AkashicWalletSupport": "AkashicWallet支持",
+  "Transaction": "交易",
+  "Units": "units",
+  "GasFee": "矿工费",
+  "GasLimit": "Gas Limit",
+  "GasUsed": "Gas used",
+  "PriorityFee": "Priority fee",
+  "MaxFeePerGas": "Max fee per Gas"
 }

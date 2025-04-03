@@ -113,5 +113,12 @@
   "EmailAlreadyUsed": "This email is already associated with an account - please use a different email",
   "BestWayToInvestYourMoney": "Best way to invest Your Money!",
   "NeedHelp": "Need help? Contact",
-  "AkashicWalletSupport": "AkashicWallet support"
+  "AkashicWalletSupport": "AkashicWallet support",
+  "Transaction": "Transaction",
+  "Units": "units",
+  "GasFee": "Gas fee",
+  "GasLimit": "Gas limit",
+  "GasUsed": "Gas used",
+  "PriorityFee": "Priority fee",
+  "MaxFeePerGas": "Max fee per Gas"
 }
