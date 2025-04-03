@@ -45,7 +45,9 @@ export const SendAmountInputAndDetail = ({
   const { t } = useTranslation();
   const [alert, setAlert] = useState(formAlertResetState);
   const [amount, setAmount] = useState<string>('');
-
+  const [isFocused, setIsFocused] = useState(false);
+  const handleBlur = () => setIsFocused(false);
+  const handleFocus = () => setIsFocused(true);
   const {
     isCurrencyTypeToken,
     networkCurrencyCombinedDisplayName,
@@ -136,11 +138,13 @@ export const SendAmountInputAndDetail = ({
           size={'8'}
         >
           <AmountInput
-            placeholder={'0.00'}
+            placeholder={isFocused ? '' : '0.00'}
             type="number"
             inputmode={'decimal'}
             onIonInput={onAmountChange}
             value={amount}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
           <TextButton
             onClick={onClickUseMax}
