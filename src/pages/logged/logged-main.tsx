@@ -3,7 +3,7 @@ import './logged.css';
 import { IonCol, IonGrid, IonRow, IonSpinner } from '@ionic/react';
 import type { ReactNode } from 'react';
 
-import { ActivityAndNFTTab } from '../../components/layout/activity-and-nft-tab';
+import { ActivityAndNftTab } from '../../components/layout/activity-and-nft-tab';
 import { LoggedLayout } from '../../components/layout/logged-layout';
 
 export const LoggedMain: React.FC<{
@@ -11,7 +11,7 @@ export const LoggedMain: React.FC<{
   loading?: boolean;
 }> = ({ children, loading = false }) => {
   return (
-    <LoggedLayout footer={<ActivityAndNFTTab />}>
+    <LoggedLayout footer={<ActivityAndNftTab />}>
       {loading && (
         <IonGrid>
           <IonRow class="ion-justify-content-center ion-margin-vertical">

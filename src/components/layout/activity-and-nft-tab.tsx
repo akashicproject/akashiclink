@@ -19,7 +19,7 @@ const Tabs = styled.div({
   height: '40px',
 });
 
-const NFTDiv = styled.div({
+const NftDiv = styled.div({
   height: '200px',
 });
 
@@ -44,7 +44,7 @@ const SeeMore = styled(Link)({
   },
 });
 
-export const ActivityAndNFTTab = () => {
+export const ActivityAndNftTab = () => {
   const [tab, setTab] = useState('activity');
   const { t } = useTranslation();
   const isMobile = isPlatform('mobile');
@@ -70,7 +70,7 @@ export const ActivityAndNFTTab = () => {
           id={'nft'}
           onClick={() => setTab('nft')}
         >
-          NFT
+          Nft
         </TabButton>
       </Tabs>
       {tab === 'activity' ? (
@@ -95,7 +95,7 @@ export const ActivityAndNFTTab = () => {
           ) : null}
         </ActivityDiv>
       ) : (
-        <NFTDiv style={{ height: isMobile ? '200px' : '180px' }}> nft</NFTDiv>
+        <NftDiv style={{ height: isMobile ? '200px' : '180px' }}> nft</NftDiv>
       )}
     </div>
   );
