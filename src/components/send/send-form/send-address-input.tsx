@@ -157,7 +157,9 @@ export const SendAddressInput = ({
     <IonRow className={'ion-center ion-grid-row-gap-xxs'}>
       <IonCol className={'ion-text-align-center'} size={'12'}>
         <IonText>
-          <h2 className="ion-margin-0">{t('SendTo')}</h2>
+          <h2 className="ion-margin-bottom-0 ion-margin-top-md">
+            {t('SendTo')}
+          </h2>
         </IonText>
       </IonCol>
       <IonCol size={'12'}>

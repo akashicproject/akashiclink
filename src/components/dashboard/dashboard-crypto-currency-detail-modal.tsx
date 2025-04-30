@@ -32,7 +32,7 @@ export function DashboardCryptoCurrencyDetailModal({
         '--border-radius': '24px',
       }}
     >
-      <IonContent className="ion-padding-top-xl">
+      <IonContent className="ion-padding-top-xl" scrollY={false}>
         <DashboardCryptoCurrencyDetail
           walletCurrency={walletCurrency}
           setIsModalOpen={setIsModalOpen}

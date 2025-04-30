@@ -1,4 +1,4 @@
-import { IonText } from '@ionic/react';
+import { IonText, isPlatform } from '@ionic/react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -20,6 +20,7 @@ import {
 
 export const DashboardCryptoCurrencyList = () => {
   const { t } = useTranslation();
+  const isMobile = isPlatform('ios') || isPlatform('android');
 
   const [detailWalletCurrency, setDetailWalletCurrency] = useState<
     IWalletCurrency | undefined
@@ -64,7 +65,7 @@ export const DashboardCryptoCurrencyList = () => {
       </div>
       <div
         style={{
-          height: 'calc(100vh - 392px  - var(--ion-safe-area-bottom)',
+          height: `calc(100vh - ${isMobile ? '456px - var(--ion-safe-area-bottom)' : '392px'})`,
         }}
       >
         <CryptoCurrencyList

@@ -40,7 +40,7 @@ export const CryptoCurrencyIcon = ({
       <IonImg
         alt={currency.displayName}
         src={currencyIcon}
-        style={{ position: 'absolute', width: 'auto', height: '100%', left: 0 }}
+        style={{ position: 'absolute', width: '100%', height: '100%', left: 0 }}
       />
       {currency.token && (
         <IonImg

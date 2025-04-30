@@ -1,5 +1,5 @@
 import type { JSX } from '@ionic/core/components';
-import { IonLabel, isPlatform } from '@ionic/react';
+import { IonLabel } from '@ionic/react';
 import type { MouseEvent } from 'react';
 
 import { type DepositChainOption } from '../../../utils/hooks/useAccountL1Address';
@@ -15,36 +15,37 @@ export const AddressQuickAccessDropdownItem = ({
   chain,
   address,
   triggerId,
+  isTrigger,
   style,
   onClickIcon,
-  onHoverLabel,
+  onClickLabel,
   ...props
 }: {
   displayName: string;
   triggerId?: string;
+  isTrigger?: boolean;
   chain: DepositChainOption;
   address: string;
   onClickIcon?: (e: MouseEvent<Element>) => void;
-  onHoverLabel?: (e: MouseEvent<Element>) => void;
+  onClickLabel?: (e: MouseEvent<Element>) => void;
   id?: string;
   style?: React.CSSProperties;
 } & JSX.IonItem) => {
-  const isMobile = isPlatform('ios') || isPlatform('android');
-
   return (
     <IconAndLabel
       style={style}
       lines={'none'}
       detail={false}
       className="ion-padding-left-xs"
+      isTrigger={isTrigger}
       {...props}
     >
       <div
         className={
-          'w-100 ion-align-items-center ion-display-flex ion-gap-xs cursor-pointer'
+          'w-100 ion-align-items-center ion-display-flex cursor-pointer'
         }
       >
-        <IconButton size={32} onClick={onClickIcon}>
+        <IconButton size={40} onClick={onClickIcon}>
           {chain === 'AkashicChain' ? (
             <L2Icon size={32} />
           ) : (
@@ -53,13 +54,8 @@ export const AddressQuickAccessDropdownItem = ({
         </IconButton>
         <IonLabel
           id={triggerId}
-          onMouseEnter={(e) => {
-            if (isMobile) return;
-            onHoverLabel && onHoverLabel(e);
-          }}
           onClick={(e) => {
-            if (!isMobile) return;
-            onHoverLabel && onHoverLabel(e);
+            isTrigger && onClickLabel && onClickLabel(e);
           }}
         >
           <h3 className={'ion-text-align-left ion-margin-bottom-0'}>
