@@ -11,8 +11,7 @@ export const Divider = styled.div<{
   borderTop: `${props.borderWidth ?? '1px'} solid ${
     props.borderColor ?? '#D9D9D9'
   }`,
-  marginTop: '8px',
-  marginBottom: '8px',
+  margin: '8px 0',
   ...(props.horizontal && {
     width: '100%',
   }),

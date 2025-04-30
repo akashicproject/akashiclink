@@ -1,5 +1,3 @@
-import './activity.scss';
-
 import { TransactionLayer, TransactionType } from '@helium-pay/backend';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
