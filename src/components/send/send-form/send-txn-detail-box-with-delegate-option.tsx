@@ -12,9 +12,9 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import { OwnersAPI } from 'src/utils/api';
-import { getPrecision } from 'src/utils/formatAmount';
 
+import { OwnersAPI } from '../../../utils/api';
+import { getPrecision } from '../../../utils/formatAmount';
 import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
 import { useVerifyTxnAndSign } from '../../../utils/hooks/useVerifyTxnAndSign';
 import { errorAlertShell, type FormAlertState } from '../../common/alert/alert';

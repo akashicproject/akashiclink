@@ -131,6 +131,7 @@ export const SendConfirmationFormActionButtons = () => {
       setSendConfirm({
         ...txnsDetail,
         txnFinal: {
+          isPresigned: response.isPresigned,
           txHash: response.txHash,
           feesEstimate: response.feesEstimate,
           delegatedFee: txnsDetail.delegatedFee,

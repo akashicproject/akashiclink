@@ -74,6 +74,7 @@ export const useSendL2Transaction = () => {
       }
 
       return {
+        isPresigned: false,
         isSuccess: true,
         txHash,
       };
@@ -96,11 +97,11 @@ export const useSendL1Transaction = () => {
     signedTransactionData: ITransactionProposalClientSideOtk
   ): Promise<ITransactionSettledResponse> => {
     try {
-      const l2TxnHash = (
-        await nitr0genApi.sendTransaction(() =>
-          nitr0genApi.sendSignedTx(signedTransactionData.signedTx)
-        )
-      ).$umid;
+      const result = await nitr0genApi.sendTransaction(() =>
+        nitr0genApi.sendSignedTx(signedTransactionData.signedTx)
+      );
+
+      const l2TxnHash = result.$umid;
 
       const hideSmallTransactions = await Preferences.get({
         key: 'hide-small-balances',
@@ -137,6 +138,7 @@ export const useSendL1Transaction = () => {
 
       return {
         isSuccess: true,
+        isPresigned: !!result.$streams.new.find((s) => s.name === 'l1.presign'),
         txHash: l2TxnHash,
       };
     } catch (error) {
