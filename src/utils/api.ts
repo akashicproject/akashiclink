@@ -3,6 +3,8 @@ import type {
   ILookForL2Address,
   ILookForL2AddressResponse,
   IPrepareL1TxnResponse,
+  IPrepareL2Withdrawal,
+  IPrepareL2WithdrawalResponse,
   IRetrieveIdentity,
   IRetrieveIdentityResponse,
   IWithdrawalProposal,
@@ -50,7 +52,15 @@ export const OwnersAPI = {
       JSON.stringify(transactionData)
     );
   },
-
+  prepareL2Txn: async (
+    transactionData: IPrepareL2Withdrawal
+  ): Promise<IPrepareL2WithdrawalResponse> => {
+    return await apiCall<IPrepareL2WithdrawalResponse>(
+      `/l2-txn-orchestrator/prepare-l2-withdrawal`,
+      'POST',
+      JSON.stringify(transactionData)
+    );
+  },
   generateSecondaryOtk: async (
     signedReq: ICreateSecondaryOtk
   ): Promise<void> => {

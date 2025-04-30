@@ -75,11 +75,19 @@ export const useVerifyTxnAndSign = () => {
         if (activeAccount.identity === l2TransactionData.toAddress)
           return 'NoSelfSend';
 
-        const txBody = await nitr0genApi.l2Transaction(
+        let txBody = await nitr0genApi.l2Transaction(
           cacheOtk,
           // AC needs smallest units, so we convert
           convertObjectCurrencies(l2TransactionData, convertToSmallestUnit)
         );
+        // add check for FX Bp
+        if (account.isFxBp) {
+          // sign transaction from backend
+          const { preparedTxn } = await OwnersAPI.prepareL2Txn({
+            signedTxn: txBody,
+          });
+          txBody = preparedTxn;
+        }
 
         const txn: ITransactionForSigning = {
           ...l2TransactionData,
