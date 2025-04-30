@@ -20,8 +20,8 @@
     "deploy:prod:ios": "yarn updateVersion:prod:ios && PLATFORM=ios yarn sync:prod:device && cd ios/App && bundle exec fastlane internal --env production",
     "serve:android": "npx cap open android",
     "serve:ios": "npx cap open ios",
-    "deploy:extension": "yarn build:staging && cd extension && env-cmd -f .env.staging node deploy.mjs",
-    "deploy:prod:extension": "yarn build:prod && cd extension && env-cmd -f .env.production node deploy.mjs",
+    "deploy:chrome-extension": "yarn build:staging && cd extension && env-cmd -f .env.staging node deploy.mjs",
+    "deploy:prod:chrome-extension": "yarn build:prod && cd extension && env-cmd -f .env.production node deploy.mjs",
     "updateVersion:android": "cd android && bundle exec fastlane updateManifest --env staging",
     "updateVersion:prod:android": "cd android && bundle exec fastlane updateManifest --env production",
     "updateVersion:ios": "cd ios/App && bundle exec fastlane updateManifest --env staging",
@@ -39,7 +39,8 @@
     "debug:ios": "env-cmd -f .env.staging.local ionic cap run ios -l --external",
     "analyze-bundle": "craco build && source-map-explorer 'build/static/js/*.js'",
     "semantic-release:android": "semantic-release --tag-format android-v\\${version}",
-    "semantic-release:ios": "semantic-release --tag-format ios-v\\${version}"
+    "semantic-release:ios": "semantic-release --tag-format ios-v\\${version}",
+    "semantic-release:chrome-extension": "semantic-release --tag-format chrome-extension-v\\${version}"
   },
   "dependencies": {
     "@activeledger/activecrypto": "^2.12.3",
