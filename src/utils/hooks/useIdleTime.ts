@@ -3,15 +3,14 @@ import { useIdleTimer } from 'react-idle-timer';
 
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectAutoLockTime } from '../../redux/slices/preferenceSlice';
+import { APP_AUTO_LOCK_BY } from '../preference-keys';
 import { useLocalStorage } from './useLocalStorage';
 import { useLogout } from './useLogout';
 
-const AUTOLOCKBY_STORAGE_KEY = 'autoLockBy';
-
 export function useIdleTime() {
   const autoLockTime = useAppSelector(selectAutoLockTime);
-  const [autoLockBy, setAutoLockBy] = useLocalStorage(
-    AUTOLOCKBY_STORAGE_KEY,
+  const { value: autoLockBy, setValue: setAutoLockBy } = useLocalStorage(
+    APP_AUTO_LOCK_BY,
     0
   );
   const logout = useLogout();
@@ -40,7 +39,7 @@ export function useIdleTime() {
       try {
         // Also saving this to chrome extension for direct access
         await chrome?.storage?.session?.set({
-          [AUTOLOCKBY_STORAGE_KEY]: newVal,
+          [APP_AUTO_LOCK_BY]: newVal,
         });
       } catch (e) {
         console.warn(e);
@@ -53,9 +52,8 @@ export function useIdleTime() {
       try {
         // Check if chrome?.storage?.session still exist
         // if not, indicated that user has quited chrome before
-        const extensionAutoLockVal = await chrome?.storage?.session?.get(
-          AUTOLOCKBY_STORAGE_KEY
-        );
+        const extensionAutoLockVal =
+          await chrome?.storage?.session?.get(APP_AUTO_LOCK_BY);
 
         if (!extensionAutoLockVal?.autoLockBy) {
           logout();

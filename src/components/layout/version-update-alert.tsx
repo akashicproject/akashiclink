@@ -7,16 +7,33 @@ import { useTranslation } from 'react-i18next';
 import { useConfig } from '../../utils/hooks/useConfig';
 import { useCurrentAppInfo } from '../../utils/hooks/useCurrentAppInfo';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
+import {
+  AVAILABLE_APP_VERSION,
+  UPDATE_HIGHLIGHTS,
+  UPDATE_SKIP_VERSION,
+  UPDATE_TYPE,
+  UPDATE_URL,
+} from '../../utils/preference-keys';
 
 export const VersionUpdateAlert = () => {
   const { t } = useTranslation();
   const { config, isLoading } = useConfig();
 
-  const [, setAvailableVersion] = useLocalStorage('available-app-version', '');
-  const [, setUpdateUrl] = useLocalStorage('update-url', '');
-  const [skipVersion, setSkipVersion] = useLocalStorage('skip-version', '');
-  const [updateType, setUpdateType] = useLocalStorage('update-type', '');
-  const [, setHighlights] = useLocalStorage('highlights', ['']);
+  const { setValue: setAvailableVersion } = useLocalStorage(
+    AVAILABLE_APP_VERSION,
+    ''
+  );
+  const { setValue: setUpdateUrl } = useLocalStorage(UPDATE_URL, '');
+  const { value: skipVersion, setValue: setSkipVersion } = useLocalStorage(
+    UPDATE_SKIP_VERSION,
+    ''
+  );
+  const { value: updateType, setValue: setUpdateType } = useLocalStorage(
+    UPDATE_TYPE,
+    ''
+  );
+  const { setValue: setHighlights } = useLocalStorage(UPDATE_HIGHLIGHTS, ['']);
+
   const info = useCurrentAppInfo();
 
   useEffect(() => {

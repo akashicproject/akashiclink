@@ -12,7 +12,6 @@ const Container = styled.div({
   borderRadius: '8px',
   border: '1px solid var(--ion-item-alt-border-color)',
   boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
-  width: '325px',
   height: '52px',
   justifyContent: 'space-between',
   '&:hover': {

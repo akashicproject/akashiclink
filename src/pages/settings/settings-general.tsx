@@ -15,6 +15,7 @@ import { SettingItem } from '../../components/settings/setting-item';
 import { SettingsRadio } from '../../components/settings/setting-radio';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { useSetGlobalLanguage } from '../../utils/hooks/useSetGlobalLanguage';
+import { HIDE_SMALL_BALANCES } from '../../utils/preference-keys';
 import { getImageIconUrl } from '../../utils/url-utils';
 
 function getLanguageTitle(locale: string) {
@@ -69,10 +70,8 @@ const LanguageTextCaret = ({
 };
 
 export function SettingsGeneral() {
-  const [hideSmallTransactions, setHideSmallTransactions] = useLocalStorage(
-    'hide-small-balances',
-    true
-  );
+  const { value: hideSmallTransactions, setValue: setHideSmallTransactions } =
+    useLocalStorage(HIDE_SMALL_BALANCES, true);
   const { t } = useTranslation();
   const [globalLanguage, setGlobalLanguage] = useSetGlobalLanguage();
 

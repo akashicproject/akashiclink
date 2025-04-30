@@ -1,10 +1,9 @@
-/**
- * Styling of the selection boxes
- */
-
 @use 'typography';
 
 ion-select {
+  border: 1px solid var(--ion-select-border);
+  border-radius: 8px;
+
   /** The text in the selection box */
   &::part(placeholder),
   &::part(text) {

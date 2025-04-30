@@ -28,7 +28,10 @@ export const SendChooseCurrencyForm = () => {
       <IonRow>
         <IonCol size={'12'}>
           <CryptoCurrencyList
-            currencies={SUPPORTED_CURRENCIES_FOR_EXTENSION.list}
+            minHeight={'80vh'}
+            currencies={SUPPORTED_CURRENCIES_FOR_EXTENSION.list.map(
+              (c) => c.walletCurrency
+            )}
             showUSDValue
             onClick={(walletCurrency) => handleChooseCurrency(walletCurrency)}
           />

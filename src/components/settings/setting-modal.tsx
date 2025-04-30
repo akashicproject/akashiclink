@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useCurrentAppInfo } from '../../utils/hooks/useCurrentAppInfo';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
+import { UPDATE_TYPE } from '../../utils/preference-keys';
 import { getImageIconUrl } from '../../utils/url-utils';
 import { ThemeSelect } from '../layout/toolbar/theme-select';
 import { AboutUs, AboutUsCaret } from './about-us';
@@ -22,7 +23,7 @@ export function SettingModal({
   const info = useCurrentAppInfo();
   const { t } = useTranslation();
   const [isAboutUs, setIsAboutUs] = useState(false);
-  const [updateType] = useLocalStorage('update-type', '');
+  const { value: updateType } = useLocalStorage(UPDATE_TYPE, '');
   const settingsMenu: SettingItemProps[] = [
     {
       header: t('Theme'),

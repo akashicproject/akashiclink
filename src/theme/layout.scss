@@ -269,30 +269,37 @@ ion-footer > * {
 
 .ion-padding-top-xl {
   padding-top: 32px;
+  --padding-top: 32px;
 }
 
 .ion-padding-top-lg {
   padding-top: 24px;
+  --padding-top: 24px;
 }
 
 .ion-padding-top-md {
   padding-top: 16px;
+  --padding-top: 16px;
 }
 
 .ion-padding-top-sm {
   padding-top: 12px;
+  --padding-top: 12px;
 }
 
 .ion-padding-top-xs {
   padding-top: 8px;
+  --padding-top: 8px;
 }
 
 .ion-padding-top-xxs {
   padding-top: 4px;
+  --padding-top: 4px;
 }
 
 .ion-padding-top-0 {
   padding-top: 0;
+  --padding-top: 0;
 }
 
 .ion-padding-bottom-xl {

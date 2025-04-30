@@ -10,6 +10,12 @@ import { useTranslation } from 'react-i18next';
 import { LINK_TYPE, useI18nInfoUrls } from '../../i18n/links';
 import { useCurrentAppInfo } from '../../utils/hooks/useCurrentAppInfo';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
+import {
+  AVAILABLE_APP_VERSION,
+  UPDATE_HIGHLIGHTS,
+  UPDATE_TYPE,
+  UPDATE_URL,
+} from '../../utils/preference-keys';
 import { getImageIconUrl } from '../../utils/url-utils';
 import { PrimaryButton, WhiteButton } from '../common/buttons';
 import { ForwardArrow } from './forward-arrow';
@@ -26,9 +32,12 @@ function UpdateModal({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const info = useCurrentAppInfo();
-  const [availableVersion] = useLocalStorage('available-app-version', '0.0.0');
-  const [updateUrl] = useLocalStorage('update-url', '');
-  const [highlights] = useLocalStorage('highlights', ['']);
+  const { value: availableVersion } = useLocalStorage(
+    'available-app-version',
+    '0.0.0'
+  );
+  const { value: updateUrl } = useLocalStorage(UPDATE_URL, '');
+  const { value: highlights } = useLocalStorage(UPDATE_HIGHLIGHTS, ['']);
   const { t } = useTranslation();
   const [isMoreInfo, setIsMoreInfo] = useState(false);
   return (
@@ -115,7 +124,7 @@ export function AboutUsCaret({ appVersion }: { appVersion: string }) {
 const StyledWhiteButton = styled(WhiteButton)<{ backgroundColor?: string }>`
   ::part(native) {
     padding: 8px 20px;
-    background-color: ${(props) => props.backgroundColor || ''};
+    background-color: ${(props) => props.backgroundColor ?? ''};
   }
 `;
 export function AboutUs({
@@ -127,13 +136,14 @@ export function AboutUs({
 }) {
   const { t } = useTranslation();
   const info = useCurrentAppInfo();
-  const [availableAppVersion] = useLocalStorage(
-    'available-app-version',
+  const { value: availableAppVersion } = useLocalStorage(
+    AVAILABLE_APP_VERSION,
     '0.0.0'
   );
+  const { value: updateType } = useLocalStorage(UPDATE_TYPE, '');
+
   const updateModalRef = useRef<HTMLIonModalElement>(null);
   const [updateModal, setUpdateModal] = useState(false);
-  const [updateType] = useLocalStorage('update-type', '');
 
   const infoUrls = useI18nInfoUrls();
 

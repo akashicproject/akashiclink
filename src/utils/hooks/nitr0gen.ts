@@ -18,6 +18,7 @@ import { addLocalTransaction } from '../../redux/slices/localTransactionSlice';
 import { prefixWithAS } from '../convert-as-prefix';
 import type { ITransactionSettledResponse } from '../nitr0gen/nitr0gen.interface';
 import { Nitr0genApi } from '../nitr0gen/nitr0gen-api';
+import { HIDE_SMALL_BALANCES } from '../preference-keys';
 import { useValueOfAmountInUSDT } from './useExchangeRates';
 
 export const useSendL2Transaction = () => {
@@ -36,7 +37,7 @@ export const useSendL2Transaction = () => {
       ).$umid;
 
       const hideSmallTransactions = await Preferences.get({
-        key: 'hide-small-balances',
+        key: HIDE_SMALL_BALANCES,
       });
 
       const {
@@ -114,7 +115,7 @@ export const useSendL1Transaction = () => {
       const l2TxnHash = result.$umid;
 
       const hideSmallTransactions = await Preferences.get({
-        key: 'hide-small-balances',
+        key: HIDE_SMALL_BALANCES,
       });
 
       const { identity } = signedTransactionData;

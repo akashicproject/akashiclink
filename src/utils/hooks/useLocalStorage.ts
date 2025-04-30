@@ -16,32 +16,52 @@ import { useEffect, useState } from 'react';
  * The value of the requested item, and the helper function to update the item
  * and a direct read of the local Preferences value (useful when hook is used in multiple components)
  */
-export const useLocalStorage = <T>(
+export function useLocalStorage<T>(
   key: string,
   initialValue: T
-): [T, (newValue: T) => Promise<void>, () => Promise<void>] => {
+): {
+  value: T;
+  setValue: (newValue: T) => Promise<void>;
+  removeValue: () => Promise<void>;
+  refreshValue: () => Promise<void>;
+};
+
+export function useLocalStorage<T>(
+  key: string,
+  initialValue?: T
+): {
+  value: T;
+  setValue: (newValue: T) => Promise<void>;
+  removeValue: () => Promise<void>;
+  refreshValue: () => Promise<void>;
+};
+export function useLocalStorage<T>(
+  key: string,
+  initialValue?: T
+): {
+  value: T | undefined;
+  setValue: (newValue: T) => Promise<void>;
+  removeValue: () => Promise<void>;
+  refreshValue: () => Promise<void>;
+} {
   const [stateValue, setStateValue] = useState<T>();
 
-  useEffect(() => {
-    async function loadValue() {
-      try {
-        const result = await Preferences.get({ key });
+  async function loadValue() {
+    try {
+      const result = await Preferences.get({ key });
 
-        if (result.value == undefined && initialValue != undefined) {
-          await setPreferenceAndStateValue(initialValue as T);
-        } else if (result.value) {
-          JSON.stringify(stateValue) !== result.value &&
-            setStateValue(JSON.parse(result.value));
-        } else {
-          console.warn(key + ' preference value & initialValue not found');
-        }
-      } catch (e) {
-        datadogRum.addError(e);
-        return initialValue;
+      if (result.value == undefined && initialValue != undefined) {
+        await setPreferenceAndStateValue(initialValue as T);
+      } else if (result.value) {
+        JSON.stringify(stateValue) !== result.value &&
+          setStateValue(JSON.parse(result.value));
+      } else {
+        console.warn(key + ' preference value & initialValue not found');
       }
+    } catch (e) {
+      datadogRum.addError(e);
     }
-    loadValue();
-  }, [initialValue, key]);
+  }
 
   const setPreferenceAndStateValue = async (value: T) => {
     try {
@@ -67,9 +87,15 @@ export const useLocalStorage = <T>(
       console.error(e);
     }
   };
-  return [
-    stateValue ?? initialValue,
-    setPreferenceAndStateValue,
-    removePreference,
-  ];
-};
+
+  useEffect(() => {
+    loadValue();
+  }, [initialValue, key]);
+
+  return {
+    value: stateValue ?? initialValue,
+    setValue: setPreferenceAndStateValue,
+    removeValue: removePreference,
+    refreshValue: loadValue,
+  };
+}

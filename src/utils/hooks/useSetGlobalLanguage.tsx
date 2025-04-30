@@ -5,6 +5,7 @@ import {
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { APP_LANGUAGE } from '../preference-keys';
 import { useLocalStorage } from './useLocalStorage';
 
 const getLocalisationLanguage = (): Language => {
@@ -21,10 +22,8 @@ export const useSetGlobalLanguage = (): [
 ] => {
   const { i18n } = useTranslation();
   const localLanguage = getLocalisationLanguage();
-  const [selectedLanguage, setSelectedLanguage] = useLocalStorage<Language>(
-    'language',
-    localLanguage
-  );
+  const { value: selectedLanguage, setValue: setSelectedLanguage } =
+    useLocalStorage<Language>(APP_LANGUAGE, localLanguage);
 
   useEffect(() => {
     if (selectedLanguage !== i18n.language) {

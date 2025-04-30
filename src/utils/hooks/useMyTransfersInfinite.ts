@@ -16,6 +16,7 @@ import {
   selectLocalTransactions,
 } from '../../redux/slices/localTransactionSlice';
 import fetcher from '../ownerFetcher';
+import { HIDE_SMALL_BALANCES } from '../preference-keys';
 import { useAccountStorage } from './useLocalAccounts';
 
 const transferMeFetcher = async (
@@ -23,7 +24,7 @@ const transferMeFetcher = async (
   config?: AxiosRequestConfig
 ): Promise<IOwnerTransactionsResponse> => {
   const hideSmallTransactions = await Preferences.get({
-    key: 'hide-small-balances',
+    key: HIDE_SMALL_BALANCES,
   });
 
   const url = path
