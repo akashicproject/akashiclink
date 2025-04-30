@@ -28,11 +28,13 @@ const config: CapacitorConfig = {
           allowNavigation: [
             'api.akashicscan.com',
             'api.staging-akashicscan.com',
+            'api.testnet.akashicscan.com',
           ],
           ...(process.env.PLATFORM === 'ios' && {
             hostname:
               process.env.FLAVORS === 'staging'
-                ? 'api.staging-akashicpay.com'
+                ? // DO NOT CHANGE THIS, IOS STORAGE USES THIS TO SAVE DATA
+                  'api.staging-akashicpay.com'
                 : 'api.akashicpay.com',
           }),
         },

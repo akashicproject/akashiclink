@@ -26,7 +26,7 @@
     "ids": ["*"],
     "matches": [
       "https://*.akashicpay.com/*",
-      "https://*.staging-akashicpay.com/*",
+      "https://*.testnet.akashicpay.com/*",
       "https://*.akashicfx.com/*",
       "https://*.testnet.akashicfx.com/*",
       "http://localhost:3000/*",
