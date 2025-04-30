@@ -6,6 +6,7 @@ const INFO_SITE_LINKS = {
   [Language.enUS]: 'https://www.akashiclink.com/en',
   [Language.zhCN]: 'https://www.akashiclink.com/zh-TW',
   [Language.zhTW]: 'https://www.akashiclink.com/zh-TW',
+  [Language.bnBD]: 'https://www.akashiclink.com/bd-BD',
 };
 
 const TERMS_OF_USE_LINKS = {
@@ -15,6 +16,8 @@ const TERMS_OF_USE_LINKS = {
     'https://docs.akashiclink.com/traditionalchinese/shi-yong-tiao-kuan-yu-yin-si-quan-zheng-ce',
   [Language.zhTW]:
     'https://docs.akashiclink.com/traditionalchinese/shi-yong-tiao-kuan-yu-yin-si-quan-zheng-ce',
+  [Language.bnBD]:
+    'https://docs.akashiclink.com/terms-of-use-and-privacy-policy',
 };
 
 const PRIVACY_POLICY_LINKS = {
@@ -24,12 +27,15 @@ const PRIVACY_POLICY_LINKS = {
     'https://docs.akashiclink.com/traditionalchinese/shi-yong-tiao-kuan-yu-yin-si-quan-zheng-ce',
   [Language.zhTW]:
     'https://docs.akashiclink.com/traditionalchinese/shi-yong-tiao-kuan-yu-yin-si-quan-zheng-ce',
+  [Language.bnBD]:
+    'https://docs.akashiclink.com/terms-of-use-and-privacy-policy',
 };
 
 const QUICK_GUIDE_LINKS = {
   [Language.enUS]: 'https://docs.akashiclink.com/',
   [Language.zhCN]: 'https://docs.akashiclink.com/traditionalchinese',
   [Language.zhTW]: 'https://docs.akashiclink.com/traditionalchinese',
+  [Language.bnBD]: 'https://docs.akashiclink.com',
 };
 
 export const LINK_TYPE = {

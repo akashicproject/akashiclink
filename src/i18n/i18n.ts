@@ -5,6 +5,7 @@ import {
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
+import translationBD from './translation/bn_BD.json';
 import translationEN from './translation/en_US.json';
 import translationCN from './translation/zh_CN.json';
 import translationTW from './translation/zh_TW.json';
@@ -25,6 +26,9 @@ const resources: { [key in Language]: { translation: Translation } } = {
   },
   [Language.zhCN]: {
     translation: translationCN,
+  },
+  [Language.bnBD]: {
+    translation: translationBD,
   },
   // [Language.idID]: {
   //   translation: translationID,
