@@ -37,6 +37,7 @@
   "WalletAddress": "Account Address",
   "OptionBackup": "Option Backup",
   "DepositAddress": "Deposit Address",
+  "DepositHint": "Use this address to receive tokens on {{chain}} network.",
   "Activity": "Activity",
   "PleaseEnterYourEmail": "Please enter your email",
   "SetYourLockPassword": "Set your Lock Password",

@@ -28,6 +28,7 @@
   "Sender": "Sender",
   "SendCode": "Send a Code",
   "Deposit": "Deposit",
+  "DepositHint": "Use this address to receive tokens on {{chain}} network.",
   "ClickToGenerateAddress": "Click to Generate Address",
   "VerificationCode": "Verification Code",
   "EnterTheCodeSent": "Enter the code sent",

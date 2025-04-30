@@ -1,17 +1,11 @@
-import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
-import { arrowDownOutline } from 'ionicons/icons';
-import { useTranslation } from 'react-i18next';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
 
-import { WhiteButton } from '../../components/common/buttons';
+import { DepositModalTriggerButton } from '../../components/deposit/deposit-modal-trigger-button';
 import { LayoutWithActivityTab } from '../../components/page-layout/layout-with-activity-tab';
 import { SelectCoin } from '../../components/send/select-coin';
-import { SendFormTriggerButton } from '../../components/send-deposit/send-form-trigger-button';
-import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tabs';
+import { SendFormTriggerButton } from '../../components/send/send-form-trigger-button';
 
 export function Dashboard() {
-  const { t } = useTranslation();
-
   return (
     <LayoutWithActivityTab>
       <IonGrid
@@ -28,13 +22,7 @@ export function Dashboard() {
             <SendFormTriggerButton />
           </IonCol>
           <IonCol size={'6'}>
-            <WhiteButton
-              expand="block"
-              routerLink={akashicPayPath(urls.deposit)}
-            >
-              {t('Deposit')}
-              <IonIcon slot="end" icon={arrowDownOutline} />
-            </WhiteButton>
+            <DepositModalTriggerButton />
           </IonCol>
         </IonRow>
       </IonGrid>

@@ -28,6 +28,7 @@
   "Sender": "發送人",
   "SendCode": "發送代碼",
   "Deposit": "存款",
+  "DepositHint": "使用此地址接收 {{chain}} 網路上的代幣。",
   "ClickToGenerateAddress": "按一下產生地址",
   "VerificationCode": "驗證碼",
   "EnterTheCodeSent": "輸入驗證碼",

@@ -1,9 +1,4 @@
-import { type IOwnerOldestKeysResponse } from '@helium-pay/backend';
-
-import {
-  type ICurrencyForExtension,
-  SUPPORTED_CURRENCIES_FOR_EXTENSION,
-} from '../../constants/currencies';
+import { ALLOWED_NETWORKS } from '../../constants/currencies';
 import {
   type LocalStoredL1AddressType,
   useAccountStorage,
@@ -15,41 +10,23 @@ export const useFetchAndRemapL1Address = () => {
   const { setLocalStoredL1Addresses } = useAccountStorage();
   const { keys: addresses } = useOwnerKeys(activeAccount?.identity ?? '');
 
-  const mapAddressToWallet = (
-    addresses: IOwnerOldestKeysResponse[],
-    currencies: ICurrencyForExtension
-  ) => {
-    const walletCurrency = currencies.walletCurrency;
-    const address = addresses?.find(
-      (addr) =>
-        addr.coinSymbol.toLowerCase() === walletCurrency.chain.toLowerCase()
-    )?.address;
-
-    return address;
-  };
-
   return async () => {
-    if (addresses.length && activeAccount) {
-      const addresses: LocalStoredL1AddressType[] = [];
-      // stores L1 addresses for active user
-      SUPPORTED_CURRENCIES_FOR_EXTENSION.list.forEach((currencies) => {
-        const foundLocalL1Address = activeAccount.localStoredL1Addresses?.find(
-          (addr) => addr.coinSymbol === currencies.walletCurrency.chain
-        );
-        // if not found, add it
-        if (
-          !foundLocalL1Address &&
-          addresses.findIndex(
-            (e) => e.coinSymbol === currencies.walletCurrency.chain
-          ) === -1
-        ) {
-          addresses.push({
-            coinSymbol: currencies.walletCurrency.chain,
-            address: mapAddressToWallet(addresses, currencies) ?? '',
-          });
-        }
-      });
-      setLocalStoredL1Addresses(addresses, activeAccount.identity);
-    }
+    if (!addresses?.length || !activeAccount) return;
+
+    const newAddresses = ALLOWED_NETWORKS.map((chain) => {
+      const l1 = addresses.find(
+        (a) => a.coinSymbol.toLowerCase() === chain.toLowerCase()
+      );
+      const localL1 = activeAccount?.localStoredL1Addresses?.find(
+        (a) => a.coinSymbol.toLowerCase() === chain.toLowerCase()
+      );
+
+      return {
+        coinSymbol: chain,
+        address: l1?.address ?? localL1 ?? '', // addresses return from endpoint take higher priority
+      } as LocalStoredL1AddressType;
+    });
+
+    setLocalStoredL1Addresses(activeAccount.identity, newAddresses);
   };
 };

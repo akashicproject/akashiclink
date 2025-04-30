@@ -1,5 +1,4 @@
 import './account-selection.scss';
-import '../page-layout/layout-with-activity-tab.scss';
 
 import type { IonSelectCustomEvent } from '@ionic/core/dist/types/components';
 import type { SelectChangeEventDetail } from '@ionic/react';
