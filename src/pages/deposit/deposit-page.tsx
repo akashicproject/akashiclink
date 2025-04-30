@@ -52,7 +52,8 @@ const QRCodeWrapper = styled.div({
 export function DepositPage() {
   const { t } = useTranslation();
   const storedTheme = useAppSelector(selectTheme);
-  const { activeAccount, cacheOtk } = useAccountStorage();
+  const { activeAccount, cacheOtk, setLocalStoredL1Address } =
+    useAccountStorage();
 
   const [isGeneratingAddress, setIsGeneratingAddress] = useState(false);
   const [generatedAddress, setGeneratedAddress] = useState<string | undefined>(
@@ -74,13 +75,19 @@ export function DepositPage() {
       currentWalletMetadata.walletCurrency.chain.toLowerCase()
   );
 
-  const existingAddress = walletAddressDetail?.address;
+  // store L1 address in Account Slice.
+  const localStoredL1Address = activeAccount?.localStoredL1Addresses?.find(
+    (e) => e.coinSymbol === currentWalletMetadata.walletCurrency.chain
+  )?.address;
+
+  const existingAddress = walletAddressDetail?.address ?? localStoredL1Address;
 
   const isCoinAllowed = ALLOWED_NETWORKS.includes(
     currentWalletMetadata.walletCurrency.chain
   );
 
-  const hasAddress = !!generatedAddress || !!existingAddress;
+  const hasAddress =
+    !!generatedAddress || !!existingAddress || !!localStoredL1Address;
 
   const handleGetAddress = () => {
     const createAddress = async () => {
@@ -92,8 +99,13 @@ export function DepositPage() {
             cacheOtk,
             currentWalletMetadata.walletCurrency.chain
           );
-          await mutate();
+          // store the address in local-storage
+          setLocalStoredL1Address(
+            currentWalletMetadata.walletCurrency.chain,
+            generatedAddress ?? ''
+          );
           setGeneratedAddress(generatedAddress);
+          await mutate();
         }
       } catch (e) {
         console.warn(e as Error);

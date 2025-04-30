@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { historyResetStackAndRedirect } from '../../routing/history';
 import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemapAASToAddress';
+import { useFetchAndRemapL1Address } from '../../utils/hooks/useFetchAndRemapL1address';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
@@ -37,6 +38,8 @@ export function LoginForm({ isPopup = false }) {
   } = useAccountStorage();
   const [password, setPassword] = useState<string>('');
   const fetchAndRemapAASToAddress = useFetchAndRemapAASToAddress();
+
+  const fetchAndRemapL1Address = useFetchAndRemapL1Address();
 
   addPrefixToAccounts();
   useIosScrollPasswordKeyboardIntoView();
@@ -73,7 +76,8 @@ export function LoginForm({ isPopup = false }) {
       });
       // Set the login account
       await fetchAndRemapAASToAddress(activeAccount.identity);
-
+      // stores L1 addresses for active user
+      await fetchAndRemapL1Address();
       setPassword('');
       historyResetStackAndRedirect();
     } catch (error) {

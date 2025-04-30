@@ -1,4 +1,4 @@
-import { L2Regex } from '@helium-pay/backend';
+import { type CoinSymbol, L2Regex } from '@helium-pay/backend';
 import crypto from 'crypto';
 
 import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
@@ -30,8 +30,12 @@ export interface LocalAccount {
   alias?: string;
   accountName?: string;
   ledgerId?: string;
+  localStoredL1Addresses?: LocalStoredL1AddressType[];
 }
-
+export type LocalStoredL1AddressType = {
+  coinSymbol: CoinSymbol;
+  address: string;
+};
 /**
  * Storage and lookup of a users:
  * - activeAccount: session account set when user is logged in
@@ -225,6 +229,66 @@ export const useAccountStorage = () => {
     dispatch(setCacheOtkState(otk));
   };
 
+  const setLocalStoredL1Addresses = (
+    localStoredL1Addresses: LocalStoredL1AddressType[],
+    identity: string
+  ) => {
+    const updatedAccounts = localAccounts.map((l) => {
+      if (l.identity === identity) {
+        return {
+          ...l,
+          localStoredL1Addresses: localStoredL1Addresses,
+        };
+      }
+      return l;
+    });
+    if (localStoredL1Addresses.length !== 0) {
+      if (activeAccount && activeAccount.identity === identity) {
+        dispatch(
+          setActiveAccountState({
+            ...activeAccount,
+            localStoredL1Addresses: localStoredL1Addresses,
+          })
+        );
+      }
+      dispatch(setLocalAccounts(updatedAccounts));
+    }
+  };
+
+  const setLocalStoredL1Address = (
+    coinSymbol: CoinSymbol,
+    identity: string
+  ) => {
+    const updatedAccounts = localAccounts.map((l) => {
+      if (l.identity === identity) {
+        return {
+          ...l,
+          localStoredL1Addresses: [
+            ...(l.localStoredL1Addresses ?? []).filter(
+              (item) => item.coinSymbol !== coinSymbol
+            ),
+            { coinSymbol, address: identity },
+          ],
+        };
+      }
+      return l;
+    });
+    if (activeAccount && activeAccount.identity === identity) {
+      dispatch(
+        setActiveAccountState({
+          ...activeAccount,
+          localStoredL1Addresses: [
+            ...(activeAccount.localStoredL1Addresses ?? []).filter(
+              (item) => item.coinSymbol !== coinSymbol
+            ),
+            { coinSymbol, address: identity },
+          ],
+        })
+      );
+    }
+    dispatch(setLocalAccounts(updatedAccounts));
+  };
+
   return {
     localAccounts: localAccountsWithName,
     addLocalAccount,
@@ -243,5 +307,7 @@ export const useAccountStorage = () => {
     cacheOtk,
     authenticated: !!cacheOtk,
     setCacheOtk,
+    setLocalStoredL1Address,
+    setLocalStoredL1Addresses,
   };
 };

@@ -10,6 +10,7 @@ import { LINK_TYPE, useI18nInfoUrls } from '../../i18n/links';
 import { useAppDispatch } from '../../redux/app/hooks';
 import { onClear } from '../../redux/slices/createWalletSlice';
 import { historyResetStackAndRedirect } from '../../routing/history';
+import { useFetchAndRemapL1Address } from '../../utils/hooks/useFetchAndRemapL1address';
 
 export const StyledA = styled.a({
   fontSize: '12px',
@@ -25,8 +26,11 @@ export const CreateWalletSuccessful = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const infoUrls = useI18nInfoUrls();
+  const fetchAndRemapL1Address = useFetchAndRemapL1Address();
 
   const handleOnConfirm = async () => {
+    // stores L1 addresses for active user
+    await fetchAndRemapL1Address();
     dispatch(onClear());
     // creation flow is finished, completely reset router history
     await historyResetStackAndRedirect();
