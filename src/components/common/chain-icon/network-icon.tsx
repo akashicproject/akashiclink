@@ -4,6 +4,7 @@ import { IonImg } from '@ionic/react';
 import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../../constants/currencies';
 import { useAppSelector } from '../../../redux/app/hooks';
 import { selectTheme } from '../../../redux/slices/preferenceSlice';
+import { themeType } from '../../../theme/const';
 
 export const NetworkIcon = ({
   chain: targetChain,
@@ -14,14 +15,9 @@ export const NetworkIcon = ({
 }) => {
   const storedTheme = useAppSelector(selectTheme);
 
-  const currency = SUPPORTED_CURRENCIES_FOR_EXTENSION.list.find(
+  const currencyIcon = SUPPORTED_CURRENCIES_FOR_EXTENSION.list.find(
     ({ walletCurrency: { chain } }) => chain === targetChain
-  );
-
-  const icon =
-    storedTheme === 'dark'
-      ? currency?.darkCurrencyIcon
-      : currency?.currencyIcon;
+  )?.[storedTheme === themeType.DARK ? 'darkCurrencyIcon' : 'currencyIcon'];
 
   return (
     <span
@@ -31,7 +27,7 @@ export const NetworkIcon = ({
         borderRadius: '50%',
       }}
     >
-      <IonImg src={icon} style={{ width: 'auto', height: '100%' }} />
+      <IonImg src={currencyIcon} style={{ width: 'auto', height: '100%' }} />
     </span>
   );
 };
