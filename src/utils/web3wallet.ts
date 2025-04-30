@@ -15,7 +15,7 @@ export const initWeb3Wallet = async () => {
     metadata: {
       name: 'Akashic Wallet',
       description: 'Akashic Wallet',
-      url: 'https://www.akashicwallet.com',
+      url: 'https://www.akashiclink.com',
       icons: ['https://avatars.githubusercontent.com/u/37784886'],
     },
   });
