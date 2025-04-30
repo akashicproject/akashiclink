@@ -60,7 +60,7 @@ export const SendTxnDetailBox = ({
     };
   }, [fetchNetworkFee]);
 
-  const compareBalance = Big(nativeCoinBalance).gt(networkFee ?? 0);
+  const canNonDelegate = Big(nativeCoinBalance).gt(networkFee ?? 0);
   const precision = getPrecision(amount, networkFee ?? '0');
 
   const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
@@ -94,9 +94,9 @@ export const SendTxnDetailBox = ({
                   value={
                     Big(networkFee ?? 0).eq(0)
                       ? '-'
-                      : compareBalance
+                      : canNonDelegate
                         ? Big(networkFee ?? '0').toFixed(precision)
-                        : t('CannotNonDelegate')
+                        : t('InsufficientBalance')
                   }
                   valueDim
                   labelBold

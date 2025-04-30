@@ -4,19 +4,10 @@ import type {
 } from '@helium-pay/backend';
 import { otherError } from '@helium-pay/backend';
 import { IonAlert, IonCol, IonRow } from '@ionic/react';
-import type { Dispatch, SetStateAction } from 'react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 
 import { ONE_DAY_MS, ONE_MINUTE_MS } from '../../../constants';
-import { urls } from '../../../constants/urls';
-import type { LocationState } from '../../../routing/history';
-import {
-  historyGoBackOrReplace,
-  historyReplace,
-  historyResetStackAndRedirect,
-} from '../../../routing/history';
 import {
   useSendL1Transaction,
   useSendL2Transaction,
@@ -31,28 +22,22 @@ import {
   formAlertResetState,
 } from '../../common/alert/alert';
 import { PrimaryButton, WhiteButton } from '../../common/buttons';
-import type {
-  SendConfirmationTxnFinal,
-  SendConfirmationTxnsDetail,
-} from '../send-form/types';
+import { SendFormContext } from '../send-form-trigger-button';
 
-export const SendConfirmationFormActionButtons = ({
-  txnFinal,
-  txnsDetail,
-  setTxnFinal,
-  setTxnsDetail,
-}: {
-  txnFinal?: SendConfirmationTxnFinal;
-  txnsDetail: SendConfirmationTxnsDetail;
-  setTxnFinal: Dispatch<SetStateAction<SendConfirmationTxnFinal | undefined>>;
-  setTxnsDetail: Dispatch<
-    SetStateAction<SendConfirmationTxnsDetail | undefined>
-  >;
-}) => {
+export const SendConfirmationFormActionButtons = () => {
   const { t } = useTranslation();
-  const history = useHistory<LocationState>();
   const { trigger: triggerSendL2Transaction } = useSendL2Transaction();
   const { trigger: triggerSendL1Transaction } = useSendL1Transaction();
+  const {
+    setStep,
+    setSendConfirm,
+    setIsModalOpen,
+    sendConfirm,
+    setIsModalLock,
+  } = useContext(SendFormContext);
+
+  const txnsDetail = sendConfirm;
+  const txnFinal = sendConfirm?.txnFinal;
 
   const [forceAlert, setForceAlert] = useState(formAlertResetState);
   const [formAlert, setFormAlert] = useState(formAlertResetState);
@@ -67,7 +52,13 @@ export const SendConfirmationFormActionButtons = ({
     async () => {
       try {
         // skip when there was an error / txn request in progress / txn completed
-        if (forceAlert.visible || formAlert.visible || isLoading || txnFinal) {
+        if (
+          forceAlert.visible ||
+          formAlert.visible ||
+          isLoading ||
+          txnFinal ||
+          !txnsDetail
+        ) {
           return;
         }
 
@@ -91,8 +82,8 @@ export const SendConfirmationFormActionButtons = ({
           return;
         }
 
-        setTxnsDetail({
-          ...txnsDetail,
+        setSendConfirm({
+          ...sendConfirm,
           txn: res.txn,
           signedTxn: res.signedTxn,
           delegatedFee: res.delegatedFee,
@@ -110,11 +101,12 @@ export const SendConfirmationFormActionButtons = ({
     try {
       setFormAlert(formAlertResetState);
 
-      if (!txnsDetail.txn || !txnsDetail.signedTxn) {
+      if (!txnsDetail?.txn || !txnsDetail?.signedTxn) {
         setFormAlert(errorAlertShell('GenericFailureMsg'));
         return;
       }
       setIsLoading(true);
+      setIsModalLock(true);
 
       const { txToSign: _, ...txn } = txnsDetail.txn;
       const signedTxn = txnsDetail.signedTxn;
@@ -132,26 +124,19 @@ export const SendConfirmationFormActionButtons = ({
             feeDelegationStrategy: txnsDetail.feeDelegationStrategy,
           });
 
-      if (!response.isSuccess) {
+      if (!response?.isSuccess) {
         throw new Error((response as ITransactionFailureResponse).reason);
       }
 
-      setTxnFinal({
-        txHash: response.txHash,
-        feesEstimate: response.feesEstimate,
-        delegatedFee: txnsDetail.delegatedFee,
+      setSendConfirm({
+        ...txnsDetail,
+        txnFinal: {
+          txHash: response.txHash,
+          feesEstimate: response.feesEstimate,
+          delegatedFee: txnsDetail.delegatedFee,
+        },
       });
-      if (history.location.state.sendConfirm) {
-        historyReplace(urls.sendConfirm, {
-          sendConfirm: {
-            ...history.location.state.sendConfirm,
-            txnFinal: {
-              txHash: response.txHash,
-              feesEstimate: response.feesEstimate,
-            },
-          },
-        });
-      }
+      setIsModalLock(false);
     } catch (error) {
       const errorShell = errorAlertShell(unpackRequestErrorMessage(error));
       if (
@@ -160,23 +145,24 @@ export const SendConfirmationFormActionButtons = ({
         )
       ) {
         setFormAlert(errorShell);
-        setTxnFinal({
-          error: unpackRequestErrorMessage(error),
-        });
       } else {
         setForceAlert(errorShell);
       }
     } finally {
       setIsLoading(false);
+      setIsModalLock(false);
     }
   };
 
   const onCancel = () => {
-    historyGoBackOrReplace();
+    setStep(0);
+    setSendConfirm(undefined);
   };
 
   const onFinish = () => {
-    historyResetStackAndRedirect();
+    setStep(0);
+    setSendConfirm(undefined);
+    setIsModalOpen(false);
   };
 
   return (
@@ -191,7 +177,7 @@ export const SendConfirmationFormActionButtons = ({
             text: t('OK'),
             role: 'confirm',
             handler: async () => {
-              historyResetStackAndRedirect();
+              onFinish();
               return false; // make it non dismissable
             },
           },

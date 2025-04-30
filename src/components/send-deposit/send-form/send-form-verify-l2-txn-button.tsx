@@ -1,21 +1,24 @@
 import { FeeDelegationStrategy } from '@helium-pay/backend';
-import type { Dispatch, FC, SetStateAction } from 'react';
-import { useState } from 'react';
+import {
+  type Dispatch,
+  type FC,
+  type SetStateAction,
+  useContext,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { urls } from '../../../constants/urls';
 import { useAppSelector } from '../../../redux/app/hooks';
 import { selectFocusCurrencyDetail } from '../../../redux/slices/preferenceSlice';
-import { history } from '../../../routing/history';
-import { akashicPayPath } from '../../../routing/navigation-tabs';
 import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
 import { useVerifyTxnAndSign } from '../../../utils/hooks/useVerifyTxnAndSign';
 import type { FormAlertState } from '../../common/alert/alert';
 import { errorAlertShell } from '../../common/alert/alert';
 import { PrimaryButton } from '../../common/buttons';
+import { SendFormContext } from '../send-form-trigger-button';
 import type { ValidatedAddressPair } from './types';
 
-type SendFormActionButtonsProps = {
+type SendFormVerifyL2TxnButtonProps = {
   validatedAddressPair: ValidatedAddressPair;
   amount: string;
   disabled: boolean;
@@ -23,7 +26,7 @@ type SendFormActionButtonsProps = {
   setAlert: Dispatch<SetStateAction<FormAlertState>>;
 };
 
-export const SendFormVerifyL2TxnButton: FC<SendFormActionButtonsProps> = ({
+export const SendFormVerifyL2TxnButton: FC<SendFormVerifyL2TxnButtonProps> = ({
   validatedAddressPair,
   amount,
   disabled,
@@ -33,6 +36,7 @@ export const SendFormVerifyL2TxnButton: FC<SendFormActionButtonsProps> = ({
   const { t } = useTranslation();
   const { nativeCoinSymbol } = useFocusCurrencySymbolsAndBalances();
   const { chain, token } = useAppSelector(selectFocusCurrencyDetail);
+  const { setStep, setSendConfirm, step } = useContext(SendFormContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,17 +64,13 @@ export const SendFormVerifyL2TxnButton: FC<SendFormActionButtonsProps> = ({
 
       // once user leave this page, reset the form
       onAddressReset();
-      history.push({
-        pathname: akashicPayPath(urls.sendConfirm),
-        state: {
-          sendConfirm: {
-            txn: res.txn,
-            signedTxn: res.signedTxn,
-            delegatedFee: res.delegatedFee,
-            validatedAddressPair,
-            amount,
-          },
-        },
+      setStep(step + 1);
+      setSendConfirm({
+        txn: res.txn,
+        signedTxn: res.signedTxn,
+        delegatedFee: res.delegatedFee,
+        validatedAddressPair,
+        amount,
       });
     } catch {
       setAlert(errorAlertShell('GenericFailureMsg'));

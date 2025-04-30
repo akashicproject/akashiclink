@@ -1,12 +1,11 @@
-import '../../components/page-layout/layout-with-activity-tab.scss';
-
 import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
-import { arrowDownOutline, arrowForwardOutline } from 'ionicons/icons';
+import { arrowDownOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 
-import { PrimaryButton, WhiteButton } from '../../components/common/buttons';
+import { WhiteButton } from '../../components/common/buttons';
 import { LayoutWithActivityTab } from '../../components/page-layout/layout-with-activity-tab';
 import { SelectCoin } from '../../components/send-deposit/select-coin';
+import { SendFormTriggerButton } from '../../components/send-deposit/send-form-trigger-button';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 
@@ -26,13 +25,7 @@ export function Dashboard() {
         <SelectCoin />
         <IonRow className={'ion-grid-row-gap-xs'}>
           <IonCol size={'6'}>
-            <PrimaryButton
-              expand="block"
-              routerLink={akashicPayPath(urls.sendTo)}
-            >
-              {t('Send')}
-              <IonIcon slot="end" icon={arrowForwardOutline}></IonIcon>
-            </PrimaryButton>
+            <SendFormTriggerButton />
           </IonCol>
           <IonCol size={'6'}>
             <WhiteButton
@@ -40,7 +33,7 @@ export function Dashboard() {
               routerLink={akashicPayPath(urls.deposit)}
             >
               {t('Deposit')}
-              <IonIcon slot="end" icon={arrowDownOutline}></IonIcon>
+              <IonIcon slot="end" icon={arrowDownOutline} />
             </WhiteButton>
           </IonCol>
         </IonRow>

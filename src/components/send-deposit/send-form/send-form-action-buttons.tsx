@@ -1,14 +1,10 @@
 import { FeeDelegationStrategy } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
-import type { FC } from 'react';
-import { useState } from 'react';
+import { type FC, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { urls } from '../../../constants/urls';
 import { useAppSelector } from '../../../redux/app/hooks';
 import { selectFocusCurrencyDetail } from '../../../redux/slices/preferenceSlice';
-import { history, historyGoBackOrReplace } from '../../../routing/history';
-import { akashicPayPath } from '../../../routing/navigation-tabs';
 import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
 import { useVerifyTxnAndSign } from '../../../utils/hooks/useVerifyTxnAndSign';
 import {
@@ -17,6 +13,7 @@ import {
   formAlertResetState,
 } from '../../common/alert/alert';
 import { PrimaryButton, WhiteButton } from '../../common/buttons';
+import { SendFormContext } from '../send-form-trigger-button';
 import type { ValidatedAddressPair } from './types';
 
 type SendFormActionButtonsProps = {
@@ -37,6 +34,8 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
   const { t } = useTranslation();
   const { nativeCoinSymbol } = useFocusCurrencySymbolsAndBalances();
   const { chain, token } = useAppSelector(selectFocusCurrencyDetail);
+  const { setStep, setSendConfirm, setIsModalOpen, step } =
+    useContext(SendFormContext);
 
   const [alert, setAlert] = useState(formAlertResetState);
   const [isLoading, setIsLoading] = useState(false);
@@ -67,17 +66,13 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
 
       // once user leave this page, reset the form
       onAddressReset();
-      history.push({
-        pathname: akashicPayPath(urls.sendConfirm),
-        state: {
-          sendConfirm: {
-            txn: res.txn,
-            signedTxn: res.signedTxn,
-            delegatedFee: res.delegatedFee,
-            validatedAddressPair,
-            amount,
-          },
-        },
+      setStep(step + 1);
+      setSendConfirm({
+        txn: res.txn,
+        signedTxn: res.signedTxn,
+        delegatedFee: res.delegatedFee,
+        validatedAddressPair,
+        amount,
       });
     } catch {
       setAlert(errorAlertShell('GenericFailureMsg'));
@@ -87,7 +82,9 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
   };
 
   const onCancel = () => {
-    historyGoBackOrReplace();
+    setStep(0);
+    setSendConfirm(undefined);
+    setIsModalOpen(false);
   };
 
   return (
