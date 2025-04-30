@@ -1,9 +1,19 @@
 import { L2Regex } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import Big from 'big.js';
-import type { Dispatch, SetStateAction } from 'react';
+import { debounce } from 'lodash';
+import {
+  type Dispatch,
+  type SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { OwnersAPI } from '../../../utils/api';
+import { getPrecision } from '../../../utils/formatAmount';
+import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
 import { displayLongText } from '../../../utils/long-text';
 import type { FormAlertState } from '../../common/alert/alert';
 import { List } from '../../common/list/list';
@@ -28,6 +38,30 @@ export const SendTxnDetailBox = ({
   onAddressReset: () => void;
 }) => {
   const { t } = useTranslation();
+  const { chain, nativeCoinBalance } = useFocusCurrencySymbolsAndBalances();
+  const [networkFee, setNetworkFee] = useState<string | null>(null);
+
+  const fetchNetworkFee = useCallback(
+    debounce(async () => {
+      const feeResponse = await OwnersAPI.estimateNetworkFees({
+        toAddress: validatedAddressPair.convertedToAddress,
+        amount,
+        coinSymbol: chain,
+      });
+      setNetworkFee(feeResponse.networkFee);
+    }, 500),
+    [validatedAddressPair, amount, chain]
+  );
+
+  useEffect(() => {
+    fetchNetworkFee();
+    return () => {
+      fetchNetworkFee.cancel(); // Cleanup function to cancel pending calls
+    };
+  }, [fetchNetworkFee]);
+
+  const compareBalance = Big(nativeCoinBalance).gt(networkFee ?? 0);
+  const precision = getPrecision(amount, networkFee ?? '0');
 
   const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
 
@@ -57,7 +91,13 @@ export const SendTxnDetailBox = ({
               {!isL2 && (
                 <ListLabelValueItem
                   label={t('GasFee')}
-                  value={t('CalculateOnNextStep')}
+                  value={
+                    Big(networkFee ?? 0).eq(0)
+                      ? '-'
+                      : compareBalance
+                        ? Big(networkFee ?? '0').toFixed(precision)
+                        : t('CannotNonDelegate')
+                  }
                   valueDim
                   labelBold
                 />

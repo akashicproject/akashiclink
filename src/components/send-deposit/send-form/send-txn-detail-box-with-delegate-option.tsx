@@ -2,8 +2,17 @@ import styled from '@emotion/styled';
 import { FeeDelegationStrategy } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import Big from 'big.js';
-import { type Dispatch, type SetStateAction, useState } from 'react';
+import { debounce } from 'lodash';
+import {
+  type Dispatch,
+  type SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
+import { OwnersAPI } from 'src/utils/api';
+import { getPrecision } from 'src/utils/formatAmount';
 
 import { urls } from '../../../constants/urls';
 import { history } from '../../../routing/history';
@@ -50,8 +59,29 @@ export const SendTxnDetailBoxWithDelegateOption = ({
   } = useFocusCurrencySymbolsAndBalances();
 
   const canDelegate = isCurrencyTypeToken;
-  // TODO: perform a more accurate checking to see if nativeCoinBalance is enough to pay gas fee
-  const canNonDelegate = Big(nativeCoinBalance).gt(0);
+  const [networkFee, setNetworkFee] = useState<string | null>(null);
+
+  const fetchNetworkFee = useCallback(
+    debounce(async () => {
+      const feeResponse = await OwnersAPI.estimateNetworkFees({
+        toAddress: validatedAddressPair.convertedToAddress,
+        amount,
+        coinSymbol: chain,
+        tokenSymbol: token,
+      });
+      setNetworkFee(feeResponse.networkFee);
+    }, 500),
+    [validatedAddressPair, amount, chain, token]
+  );
+  useEffect(() => {
+    fetchNetworkFee();
+    return () => {
+      fetchNetworkFee.cancel(); // Cleanup function to cancel pending calls
+    };
+  }, [fetchNetworkFee]);
+
+  const canNonDelegate = Big(nativeCoinBalance).gt(networkFee ?? 0);
+  const precision = getPrecision(amount, networkFee ?? '0');
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -163,10 +193,13 @@ export const SendTxnDetailBoxWithDelegateOption = ({
               )}
               <ListLabelValueItem
                 label={t('GasFee')}
-                value={t(
-                  canNonDelegate ? 'CalculateOnNextStep' : 'CannotNonDelegate'
-                )}
-                valueDim
+                value={
+                  Big(networkFee ?? 0).eq(0)
+                    ? '-'
+                    : canNonDelegate
+                      ? Big(networkFee ?? '0').toFixed(precision)
+                      : t('CannotNonDelegate')
+                }
                 labelBold
                 valueShorten
               />
