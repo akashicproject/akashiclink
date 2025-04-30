@@ -490,7 +490,8 @@ export class Nitr0genApi {
    */
   async l2Transaction(
     otk: IKeyExtended,
-    details: L2TxDetail
+    details: L2TxDetail,
+    isFxBp = false
   ): Promise<IBaseAcTransaction> {
     const $i = {
       owner: {
@@ -499,10 +500,12 @@ export class Nitr0genApi {
         token: details.tokenSymbol ?? nitr0genNativeCoin,
         amount: details.amount,
       },
-      afx: {
-        $stream: fxMultiSignIdentity,
-        $sigOnly: true,
-      },
+      ...(isFxBp && {
+        afx: {
+          $stream: fxMultiSignIdentity,
+          $sigOnly: true,
+        },
+      }),
     };
 
     const txBody: IBaseAcTransaction = {
