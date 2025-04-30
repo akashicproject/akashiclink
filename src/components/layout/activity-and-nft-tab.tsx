@@ -59,7 +59,6 @@ const ActivityAndNftTabs = ({
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
-
   return (
     <Tabs data-testid={'activity-nft-tabs'}>
       <TabButton
@@ -86,18 +85,16 @@ const ActivityAndNftTabs = ({
       >
         NFT
       </TabButton>
-      {process.env.REACT_APP_ENABLE_SMART_SCAN === 'true' && (
-        <TabButton
-          style={{ width: '50%', marginInline: '0' }}
-          id="smart-scan"
-          onClick={() => {
-            setOpenTab('activity');
-            history.push(akashicPayPath(urls.addressScreening));
-          }}
-        >
-          {t('SmartScan')}
-        </TabButton>
-      )}
+      <TabButton
+        style={{ width: '50%', marginInline: '0' }}
+        id="smart-scan"
+        onClick={() => {
+          setOpenTab('activity');
+          history.push(akashicPayPath(urls.addressScreening));
+        }}
+      >
+        {t('SmartScan')}
+      </TabButton>
     </Tabs>
   );
 };
