@@ -106,7 +106,7 @@ export const useMyTransfersInfinite = (limit = 100, query = {}) => {
       (t) =>
         t.l2TxnHash &&
         !duplicatedLocalTxnHashes.includes(t.l2TxnHash) &&
-        t.senderIdentity === activeAccount?.identity // take only txns belong to active account
+        t.senderInfo?.identity === activeAccount?.identity // take only txns belong to active account
     ),
     ...(result?.transactions ?? []),
   ].map((d) => ({
@@ -124,7 +124,7 @@ export const useMyTransfersInfinite = (limit = 100, query = {}) => {
     }),
     // Condition to determine the transaction type: if it's senderIdentity then withdraw else deposit
     type:
-      d.senderIdentity === activeAccount?.identity
+      d.senderInfo?.identity === activeAccount?.identity
         ? TransactionType.WITHDRAWAL
         : TransactionType.DEPOSIT,
     // Checking if the tokenSymbol field exists and is not null and status is 'confirmed'

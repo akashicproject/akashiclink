@@ -33,10 +33,14 @@ export function formatTransfers(transfers: ITransactionRecord[]) {
   const formattedTransfers = transfers.map(
     (t, id): ITransactionRecordForExtension => {
       const l2Sender =
-        t?.layer === TransactionLayer.L2 ? t.fromAddress : t.senderIdentity;
+        t?.layer === TransactionLayer.L2
+          ? t.fromAddress
+          : t.senderInfo?.identity;
 
       const l2Receiver =
-        t?.layer === TransactionLayer.L2 ? t.toAddress : t.receiverIdentity;
+        t?.layer === TransactionLayer.L2
+          ? t.toAddress
+          : t.receiverInfo?.identity;
       return {
         ...formatTransactionForFrontend(t, id),
         networkIcon: NetworkDictionary[t.coinSymbol].networkIcon,
