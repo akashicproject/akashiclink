@@ -499,6 +499,10 @@ export class Nitr0genApi {
         token: details.tokenSymbol ?? nitr0genNativeCoin,
         amount: details.amount,
       },
+      afx: {
+        $stream: fxMultiSignIdentity,
+        $sigOnly: true,
+      },
     };
 
     const txBody: IBaseAcTransaction = {
