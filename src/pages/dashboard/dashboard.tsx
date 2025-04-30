@@ -1,8 +1,8 @@
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 
+import { TotalBalance } from '../../components/dashboard/total-balance';
 import { DepositModalTriggerButton } from '../../components/deposit/deposit-modal-trigger-button';
 import { LayoutWithActivityTab } from '../../components/page-layout/layout-with-activity-tab';
-import { SelectCoin } from '../../components/send/select-coin';
 import { SendFormTriggerButton } from '../../components/send/send-form-trigger-button';
 
 export function Dashboard() {
@@ -13,15 +13,17 @@ export function Dashboard() {
           width: '100%',
           height: '40vh',
           margin: 0,
-          padding: '8px 48px',
+          padding: '0 16px',
         }}
       >
-        <SelectCoin />
         <IonRow className={'ion-grid-row-gap-xs'}>
-          <IonCol size={'6'}>
+          <IonCol size={'12'}>
+            <TotalBalance />
+          </IonCol>
+          <IonCol size={'5'} offset={'1'}>
             <SendFormTriggerButton />
           </IonCol>
-          <IonCol size={'6'}>
+          <IonCol size={'5'}>
             <DepositModalTriggerButton />
           </IonCol>
         </IonRow>

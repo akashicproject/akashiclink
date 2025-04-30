@@ -356,5 +356,6 @@
   "LastSeen": "最后见到 (UTC)",
   "IncomingCount": "传入计数",
   "OutgoingCount": "传出计数",
-  "ReceivingCryptoWarning": "我们不建议从该账号接收任何加密货币"
+  "ReceivingCryptoWarning": "我们不建议从该账号接收任何加密货币",
+  "TotalBalance": "总余额"
 }

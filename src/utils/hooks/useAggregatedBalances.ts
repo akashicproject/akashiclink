@@ -1,9 +1,10 @@
-import { NetworkDictionary, TEST_TO_MAIN } from '@helium-pay/backend';
+import { NetworkDictionary } from '@helium-pay/backend';
 import { useEffect, useState } from 'react';
 
 import { makeWalletCurrency } from '../../constants/currencies';
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
+import { getMainnetEquivalent } from '../chain';
 import { CurrencyMap } from '../currencyMap';
 import { useAccountMe } from './useAccountMe';
 import { useL1TxnDelegatedFees } from './useL1TxnDelegatedFees';
@@ -34,16 +35,13 @@ export function useAggregatedBalances() {
 export function useFocusCurrencySymbolsAndBalances() {
   const aggregatedBalances = useAggregatedBalances();
   const { delegatedFeeList } = useL1TxnDelegatedFees();
-  useCryptoCurrencyBalances();
   const walletCurrency = useAppSelector(selectFocusCurrencyDetail);
 
   const isCurrencyTypeToken = typeof walletCurrency.token !== 'undefined';
   const nativeCoin = NetworkDictionary[walletCurrency.chain].nativeCoin;
   const delegatedFee =
     delegatedFeeList.find(
-      (fee) =>
-        fee.coinSymbol ===
-        (TEST_TO_MAIN.get(walletCurrency.chain) || walletCurrency.chain)
+      (fee) => fee.coinSymbol === getMainnetEquivalent(walletCurrency.chain)
     )?.delegatedFee ?? '0';
 
   return {
@@ -71,21 +69,4 @@ export function useFocusCurrencySymbolsAndBalances() {
       }) ?? '0',
     delegatedFee: delegatedFee,
   };
-}
-
-export function useCryptoCurrencyBalances() {
-  const aggregatedBalances = useAggregatedBalances();
-  const chainBalances = new CurrencyMap<string>();
-  const tokenBalances = new CurrencyMap<string>();
-
-  aggregatedBalances.forEach((balance, key) => {
-    const parsedKey = JSON.parse(key);
-    if (parsedKey.token) {
-      tokenBalances.set(parsedKey, balance);
-    } else {
-      chainBalances.set(parsedKey, balance);
-    }
-  });
-  const sortedBalances = new Map([...chainBalances, ...tokenBalances]);
-  return sortedBalances;
 }
