@@ -111,11 +111,13 @@ function UpdateModal({
   );
 }
 
-export function AboutUsCaret({ appVersion }: { appVersion: string }) {
+export function AboutUsCaret() {
+  const info = useCurrentAppInfo();
+
   return (
     <>
       <h5 className="ion-no-margin ion-text-size-xs ion-margin-right-xs">
-        {appVersion}
+        {info.version ?? '0.0.0'}
       </h5>
       <ForwardArrow />
     </>
@@ -155,7 +157,6 @@ export function AboutUs({
           url: infoUrls[LINK_TYPE.PrivacyPolicy],
         });
       },
-      endComponent: <ForwardArrow />,
     },
     {
       header: t('TermsOfUse'),
@@ -164,7 +165,6 @@ export function AboutUs({
           url: infoUrls[LINK_TYPE.TermsOfUse],
         });
       },
-      endComponent: <ForwardArrow />,
       isDivider: true,
     },
     {
@@ -174,7 +174,6 @@ export function AboutUs({
           url: infoUrls[LINK_TYPE.InfoSite],
         });
       },
-      endComponent: <ForwardArrow />,
     },
   ];
 
@@ -210,7 +209,7 @@ export function AboutUs({
             key={1}
             header={t('UpdatesAvailable')}
             ripple={false}
-            endComponent={
+            EndComponent={() => (
               <StyledWhiteButton
                 backgroundColor={backgroundColor}
                 onClick={() => {
@@ -219,7 +218,7 @@ export function AboutUs({
               >
                 {t('UpdateNow')}
               </StyledWhiteButton>
-            }
+            )}
             isAccordion={false}
             isDivider={true}
             backgroundColor={backgroundColor}
@@ -234,7 +233,7 @@ export function AboutUs({
               icon={abm.icon}
               header={abm.header}
               onClick={abm.onClick}
-              endComponent={abm.endComponent}
+              EndComponent={abm.EndComponent}
               isAccordion={abm.isAccordion}
               isDivider={abm.isDivider}
               backgroundColor={'var(--ion-background)'}

@@ -13,8 +13,8 @@ export function useCryptoCurrencyBalancesList() {
     const balance =
       totalBalances?.find(
         (c) =>
-          `${c.coinSymbol}${c.tokenSymbol}` ===
-          `${currency.walletCurrency.chain}${currency.walletCurrency.token}`
+          `${c.coinSymbol}${c.tokenSymbol ?? ''}` ===
+          `${currency.walletCurrency.chain}${currency.walletCurrency.token ?? ''}`
       )?.balance ?? '0';
 
     const balanceInUsd = Big(

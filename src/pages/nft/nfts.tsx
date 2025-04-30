@@ -8,7 +8,7 @@ import { Virtuoso } from 'react-virtuoso';
 
 import { AlertIcon } from '../../components/common/icons/alert-icon';
 import { OneNft } from '../../components/nft/one-nft';
-import { NftLayout } from '../../components/page-layout/nft-layout';
+import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 import { urls } from '../../constants/urls';
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectTheme } from '../../redux/slices/preferenceSlice';
@@ -22,7 +22,7 @@ export const NoNtfWrapper = styled(IonCol)({
 });
 
 const StyledNftWrapper = styled.div({
-  margin: '16px 8px',
+  margin: '16px',
   ['&:last-child']: {
     marginBottom: '40px',
   },
@@ -53,6 +53,7 @@ export function Nfts() {
   const isDarkMode = storedTheme === themeType.DARK;
   const history = useHistory();
   const { nfts, isLoading } = useNftMe();
+
   const sortedNfts = [...nfts].sort(
     (a, b) => (b.aas?.linked ? 1 : 0) - (a.aas?.linked ? 1 : 0)
   );
@@ -69,44 +70,56 @@ export function Nfts() {
   };
 
   return (
-    <NftLayout>
-      {isLoading && <IonSpinner name="circular"></IonSpinner>}
-      {!isLoading && nfts.length === 0 && (
-        <IonGrid>
-          <IonRow className="ion-justify-content-center">
-            <IonCol className="ion-center">
-              <div style={{ marginTop: '50%' }}>
-                <AlertIcon />
-                <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
-              </div>
-            </IonCol>
+    <DashboardLayout>
+      <IonGrid>
+        {nfts.length === 0 && (
+          <IonRow
+            className="ion-justify-content-center"
+            style={{ marginTop: '25vh' }}
+          >
+            {isLoading && (
+              <IonCol size={'12'} className="ion-center">
+                <IonSpinner name="circular"></IonSpinner>
+              </IonCol>
+            )}
+            {!isLoading && (
+              <>
+                <IonCol size={'12'} className="ion-center">
+                  <AlertIcon />
+                </IonCol>
+                <IonCol size={'12'} className="ion-center">
+                  <NoNtfText>{t('DoNotOwnNfts')}</NoNtfText>
+                </IonCol>
+              </>
+            )}
           </IonRow>
-        </IonGrid>
-      )}
-      {!isLoading && nfts.length > 0 && (
-        <Virtuoso
-          style={{
-            minHeight: 'calc(100vh - 100px - var(--ion-safe-area-bottom)',
-            width: '100%',
-          }}
-          overscan={900}
-          totalCount={nfts.length}
-          data={sortedNfts}
-          components={{
-            Item: StyledNftWrapper,
-            List: ListContainer,
-          }}
-          itemContent={(_index, nft) => (
-            <OneNft
-              isBig={true}
-              nft={nft}
-              select={() => selectNft(nft)}
-              isAASDarkStyle={!isDarkMode}
-              nftImgWrapper="nft-wrapper-list"
+        )}
+        {!isLoading && nfts.length > 0 && (
+          <IonRow className="ion-padding-0 ion-justify-content-center">
+            <Virtuoso
+              style={{
+                minHeight: 'calc(100vh - 120px - var(--ion-safe-area-bottom)',
+                width: '360px',
+              }}
+              totalCount={nfts.length}
+              data={sortedNfts}
+              components={{
+                List: ListContainer,
+              }}
+              itemContent={(_index, nft) => (
+                <StyledNftWrapper key={nft.name}>
+                  <OneNft
+                    isBig={true}
+                    nft={nft}
+                    select={() => selectNft(nft)}
+                    isAASDarkStyle={!isDarkMode}
+                  />
+                </StyledNftWrapper>
+              )}
             />
-          )}
-        ></Virtuoso>
-      )}
-    </NftLayout>
+          </IonRow>
+        )}
+      </IonGrid>
+    </DashboardLayout>
   );
 }

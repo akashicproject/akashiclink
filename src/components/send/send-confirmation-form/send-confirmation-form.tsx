@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ErrorIconWithTitle } from '../../common/state-icon-with-title/error-icon-with-title';
 import { SuccessfulIconWithTitle } from '../../common/state-icon-with-title/successful-icon-with-title';
-import { SendFormContext } from '../send-form-trigger-button';
+import { SendFormContext } from '../send-modal-context-provider';
 import { SendConfirmationDetailList } from './send-confirmation-detail-list';
 import { SendConfirmationFormActionButtons } from './send-confirmation-form-action-buttons';
 

@@ -106,7 +106,7 @@ export const ShareActionButton = ({
           className={'copied-popover'}
           onDidDismiss={() => setPopoverOpen(false)}
         >
-          <IonContent class="ion-padding">{t('Copied')}</IonContent>
+          <IonContent>{t('Copied')}</IonContent>
         </IonPopover>
       )}
       {/* action sheet for mobile, let user choose what they want to share */}

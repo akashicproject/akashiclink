@@ -45,6 +45,3 @@ export function createTab(tabPath: string, tabLabel: string) {
 
 export const AkashicTab = createTab(urls.akashicPay, 'AkashicPay Chain');
 export const { createPath: akashicPayPath, root: akashicPayRoot } = AkashicTab;
-
-export const Us2Tab = createTab(urls.us2, 'Square (US²)');
-export const { createPath: us2Path } = Us2Tab;

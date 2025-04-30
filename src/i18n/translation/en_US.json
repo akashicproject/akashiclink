@@ -361,5 +361,13 @@
   "All": "All",
   "NFT": "NFT",
   "Coin": "Coin",
-  "TotalBalance": "Total Balance"
+  "TotalBalance": "Total Balance",
+  "Assets": "Assets",
+  "SortBy": "Sort By",
+  "Preferences": "Preferences",
+  "Custom": "Custom",
+  "Filter": "Filter",
+  "Alphabetical": "Alphabetical A-Z",
+  "Value": "Value",
+  "PreferencesDesc": "Untick to hide token from the dashboard"
 }

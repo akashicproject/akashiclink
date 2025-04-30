@@ -22,7 +22,7 @@ export function calculateInternalWithdrawalFee(
   const exchangeRate = Big(
     exchangeRates.find(
       (ex) => !tokenSymbol && ex.coinSymbol === getMainnetEquivalent(coinSymbol)
-    )?.price || 1
+    )?.price ?? 1
   );
 
   return Big(internalFeeBase).div(exchangeRate).toPrecision(2);

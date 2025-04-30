@@ -70,6 +70,6 @@ export const { setTheme, setAutoLockTime, setFocusCurrency } =
 export const {
   selectTheme,
   selectAutoLockTime,
-  selectFocusCurrency,
-  selectFocusCurrencyDetail,
+  selectFocusCurrency, // TODO: remove this
+  selectFocusCurrencyDetail, // TODO: remove this
 } = preferenceSlice.selectors;

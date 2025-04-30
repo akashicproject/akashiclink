@@ -10,11 +10,8 @@ import Big from 'big.js';
 import { type FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import {
-  ALLOWED_ADDRESS_SCAN_CURRENCY,
-  makeWalletCurrency,
-} from '../../constants/currencies';
-import { useAggregatedBalances } from '../../utils/hooks/useAggregatedBalances';
+import { ALLOWED_ADDRESS_SCAN_CURRENCY } from '../../constants/currencies';
+import { useCryptoCurrencyBalance } from '../../utils/hooks/useCryptoCurrencyBalance';
 import {
   AlertBox,
   errorAlertShell,
@@ -40,15 +37,9 @@ export const AddressScreeningSelectCurrency: FC<{
   const [selectedFeeCurrency, setSelectedFeeCurrency] = useState(
     ALLOWED_ADDRESS_SCAN_CURRENCY[0]
   );
-
-  const aggregatedBalances = useAggregatedBalances();
+  const { balance } = useCryptoCurrencyBalance(selectedFeeCurrency);
 
   useEffect(() => {
-    const balance =
-      (aggregatedBalances.get(
-        makeWalletCurrency(selectedFeeCurrency.chain, selectedFeeCurrency.token)
-      ) as string) ?? '0';
-
     const isNotEnoughBalance = Big(balance).lte(0);
     setAlert(
       isNotEnoughBalance
@@ -56,7 +47,7 @@ export const AddressScreeningSelectCurrency: FC<{
         : formAlertResetState
     );
     setDisabled(isNotEnoughBalance);
-  }, [selectedFeeCurrency, aggregatedBalances]);
+  }, [selectedFeeCurrency]);
 
   return (
     <>
@@ -81,7 +72,7 @@ export const AddressScreeningSelectCurrency: FC<{
         </IonCol>
         <IonCol className={'ion-center ion-padding-block-0'} size={'10'}>
           <IonSegment
-            value={`${selectedFeeCurrency.chain}-${selectedFeeCurrency.token}`}
+            value={`${selectedFeeCurrency.chain}-${selectedFeeCurrency.token ?? ''}`}
             style={{
               height: '32px',
               '--background': 'transparent',
@@ -90,8 +81,8 @@ export const AddressScreeningSelectCurrency: FC<{
           >
             {ALLOWED_ADDRESS_SCAN_CURRENCY.map((currency) => (
               <IonSegmentButton
-                key={`${currency.chain}-${currency.token}`}
-                value={`${currency.chain}-${currency.token}`}
+                key={`${currency.chain}-${currency.token ?? ''}`}
+                value={`${currency.chain}-${currency.token ?? ''}`}
                 onClick={() => setSelectedFeeCurrency(currency)}
                 style={{
                   height: '32px',
@@ -110,7 +101,7 @@ export const AddressScreeningSelectCurrency: FC<{
                     display: 'flex',
                     alignItems: 'center',
                   }}
-                >{`${currency.token} (${currency.chain})`}</IonLabel>
+                >{`${currency.token ?? ''} (${currency.chain})`}</IonLabel>
               </IonSegmentButton>
             ))}
           </IonSegment>
@@ -125,7 +116,7 @@ export const AddressScreeningSelectCurrency: FC<{
                   <ListLabelValueItem
                     labelBold
                     label={t('Fee')}
-                    value={`${SCAN_FEE_AMOUNT} ${selectedFeeCurrency.token} (${selectedFeeCurrency.chain})`}
+                    value={`${SCAN_FEE_AMOUNT} ${selectedFeeCurrency.token ?? ''} (${selectedFeeCurrency.chain})`}
                   />
                 </div>
               </IonCol>

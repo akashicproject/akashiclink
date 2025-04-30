@@ -5,25 +5,18 @@ import { type ReactNode, useEffect } from 'react';
 import { LAST_HISTORY_ENTRIES } from '../../constants';
 import { history } from '../../routing/history';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { DepositModalContextProvider } from '../deposit/deposit-modal-context-provider';
 import { Header } from '../layout/header';
-import { AccountNameBar } from '../layout/toolbar/account-name-bar';
-import { Toolbar } from '../layout/toolbar/toolbar';
+import { NavigationTabs } from '../layout/navigation-tabs';
 import { VersionUpdateAlert } from '../layout/version-update-alert';
-
-// TODO: move the exported component to a separate file since it is used in other places
+import { SendFormContextProvider } from '../send/send-modal-context-provider';
 
 export function DashboardLayout({
   children,
   footer,
-  showRefresh = false,
-  showSwitchAccountBar = false,
-  showAddress = false,
 }: {
   children: ReactNode;
   footer?: ReactNode;
-  showRefresh?: boolean;
-  showSwitchAccountBar?: boolean;
-  showAddress?: boolean;
 }) {
   const { authenticated } = useAccountStorage();
 
@@ -47,16 +40,17 @@ export function DashboardLayout({
 
   return (
     <IonPage>
-      <Header />
-      <IonContent>
-        {showSwitchAccountBar && <AccountNameBar />}
-        {showAddress && <Toolbar showRefresh={showRefresh} />}
-        {children}
-      </IonContent>
-      {footer && <IonFooter class={'ion-no-border'}>{footer}</IonFooter>}
-      {process.env.REACT_APP_SKIP_UPDATE_CHECK !== 'true' && (
-        <VersionUpdateAlert />
-      )}
+      <DepositModalContextProvider>
+        <SendFormContextProvider>
+          <Header />
+          <IonContent>{children}</IonContent>
+          {footer && <IonFooter class={'ion-no-border'}>{footer}</IonFooter>}
+          {process.env.REACT_APP_SKIP_UPDATE_CHECK !== 'true' && (
+            <VersionUpdateAlert />
+          )}
+          <NavigationTabs />
+        </SendFormContextProvider>
+      </DepositModalContextProvider>
     </IonPage>
   );
 }

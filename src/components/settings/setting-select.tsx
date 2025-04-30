@@ -4,11 +4,12 @@ import styled from '@emotion/styled';
 import { IonContent, IonIcon, IonItem, IonPopover } from '@ionic/react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 
-import { akashicPayPath } from '../../routing/navigation-tabs';
+import { urls } from '../../constants/urls';
+import { historyResetStackAndRedirect } from '../../routing/history';
 import { useLogout } from '../../utils/hooks/useLogout';
 import { getImageIconUrl } from '../../utils/url-utils';
+import { SquareWhiteButton } from '../common/buttons';
 
 const SettingsDropDownItem = styled(IonItem)`
   --min-height: 32px;
@@ -19,28 +20,31 @@ export function SettingSelect() {
   const logout = useLogout();
   const settingPopoverRef = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const history = useHistory();
 
   const { t } = useTranslation();
   return (
     <>
-      <IonIcon
-        className="ion-padding-top-xs ion-padding-bottom-xs ion-padding-left-xs ion-padding-right-xs"
-        style={{
-          height: '24px',
-          width: '24px',
-          cursor: 'pointer',
-          marginRight: -8,
-        }}
-        src={getImageIconUrl('setting-menu.svg')}
+      <SquareWhiteButton
+        className="icon-button"
         onClick={(e) => {
           if (settingPopoverRef.current) {
             settingPopoverRef.current.event = e;
             setPopoverOpen(!popoverOpen);
           }
         }}
-      />
-      <IonPopover ref={settingPopoverRef} isOpen={popoverOpen}>
+      >
+        <IonIcon
+          slot="icon-only"
+          className="icon-button-icons"
+          src={getImageIconUrl('setting-menu-primary.svg')}
+        />
+      </SquareWhiteButton>
+
+      <IonPopover
+        ref={settingPopoverRef}
+        isOpen={popoverOpen}
+        onDidDismiss={() => setPopoverOpen(false)}
+      >
         <IonContent
           className="ion-padding-left"
           style={{ backgroundColor: 'var(--ion-modal-background)' }}
@@ -49,7 +53,7 @@ export function SettingSelect() {
             className="ion-no-margin"
             button
             onClick={() => {
-              history.push(akashicPayPath('settings'));
+              historyResetStackAndRedirect(urls.settings);
               setPopoverOpen(false);
             }}
           >

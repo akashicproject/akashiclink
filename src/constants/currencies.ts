@@ -31,9 +31,9 @@ export type ICurrencyForFrontend = Omit<ICurrency, 'network'> & {
 /**
  * A currency on the wallet extension (called the wallet currency) is uniquely characterised by
  *
- * @param the chain it is on
- * @param (optional) token
- * @param displayName
+ * @param chain the chain it is on
+ * @param token (optional) token
+ * @param displayName the display name of the currency
  *
  * Users interact with each currency individually - thus USDT-ETH and ETH will appear as
  * separate wallet currencies
@@ -147,13 +147,12 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
   ...[
     {
       chain: CoinSymbol.Ethereum_Mainnet,
-      currencyIcon: '/shared-assets/images/eth.png',
-      darkCurrencyIcon: '/shared-assets/images/eth-dark.png',
-      greyCurrencyIcon: '/shared-assets/images/eth-grey.png',
+      currencyIcon: '/shared-assets/images/eth.svg',
+      darkCurrencyIcon: '/shared-assets/images/eth.svg',
+      greyCurrencyIcon: '/shared-assets/images/eth-grey.svg',
     },
     {
       chain: CoinSymbol.Tron,
-
       currencyIcon: '/shared-assets/images/trx.png',
       darkCurrencyIcon: '/shared-assets/images/trx.png',
       greyCurrencyIcon: '/shared-assets/images/trx-grey.png',
@@ -179,9 +178,9 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
     ? [
         {
           chain: CoinSymbol.Ethereum_Sepolia,
-          currencyIcon: '/shared-assets/images/eth.png',
-          darkCurrencyIcon: '/shared-assets/images/eth-dark.png',
-          greyCurrencyIcon: '/shared-assets/images/eth-grey.png',
+          currencyIcon: '/shared-assets/images/eth.svg',
+          darkCurrencyIcon: '/shared-assets/images/eth.svg',
+          greyCurrencyIcon: '/shared-assets/images/eth-grey.svg',
         },
         {
           chain: CoinSymbol.Tron_Shasta,
@@ -212,23 +211,41 @@ export const ALLOWED_NETWORKS: CoinSymbol[] =
     ? [CoinSymbol.Ethereum_Sepolia, CoinSymbol.Tron_Shasta]
     : [CoinSymbol.Ethereum_Mainnet, CoinSymbol.Tron];
 
-export const ALLOWED_ADDRESS_SCAN_CURRENCY: {
-  chain: CoinSymbol;
-  token: CryptoCurrencySymbol;
-}[] =
+// TODO: refactor tgt with NetworkDictionary
+export const ALLOWED_ADDRESS_SCAN_CURRENCY: IWalletCurrency[] =
   process.env.REACT_APP_ENABLE_TESTNET_CURRENCIES === 'true'
     ? [
-        { chain: CoinSymbol.Tron_Shasta, token: CryptoCurrencySymbol.TETHER },
+        {
+          chain: CoinSymbol.Tron_Shasta,
+          token: CryptoCurrencySymbol.TETHER,
+          displayName: NetworkDictionary[CoinSymbol.Tron_Shasta].tokens.find(
+            ({ symbol }) => symbol === CryptoCurrencySymbol.TETHER
+          )!.displayName,
+        },
         {
           chain: CoinSymbol.Ethereum_Sepolia,
           token: CryptoCurrencySymbol.USDT,
+          displayName: NetworkDictionary[
+            CoinSymbol.Ethereum_Sepolia
+          ].tokens.find(({ symbol }) => symbol === CryptoCurrencySymbol.USDT)!
+            .displayName,
         },
       ]
     : [
-        { chain: CoinSymbol.Tron, token: CryptoCurrencySymbol.USDT },
+        {
+          chain: CoinSymbol.Tron,
+          token: CryptoCurrencySymbol.USDT,
+          displayName: NetworkDictionary[CoinSymbol.Tron].tokens.find(
+            ({ symbol }) => symbol === CryptoCurrencySymbol.USDT
+          )!.displayName,
+        },
         {
           chain: CoinSymbol.Ethereum_Mainnet,
           token: CryptoCurrencySymbol.USDT,
+          displayName: NetworkDictionary[
+            CoinSymbol.Ethereum_Mainnet
+          ].tokens.find(({ symbol }) => symbol === CryptoCurrencySymbol.USDT)!
+            .displayName,
         },
       ];
 

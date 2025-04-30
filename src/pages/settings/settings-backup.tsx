@@ -35,7 +35,7 @@ export function SettingsBackup() {
   }, [history.location]);
 
   return (
-    <DashboardLayout showSwitchAccountBar>
+    <DashboardLayout>
       {view === BackupKeyPairState.ConfirmPassword && (
         <ConfirmLockPassword onPasswordCheckSuccess={onPasswordCheckSuccess} />
       )}

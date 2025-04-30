@@ -1,14 +1,13 @@
 import styled from '@emotion/styled';
 
 import { type IWalletCurrency } from '../../constants/currencies';
-import { formatAmount } from '../../utils/formatAmount';
+import { formatAmountWithCommas } from '../../utils/formatAmountWithCommas';
 import { useCryptoCurrencyBalance } from '../../utils/hooks/useCryptoCurrencyBalance';
 import { CryptoCurrencyIcon } from '../common/chain-icon/crypto-currency-icon';
 
 const Container = styled.div({
   display: 'flex',
   alignItems: 'center',
-  backgroundColor: 'var(--ion-seconday-background)',
   borderRadius: '8px',
   border: '1px solid var(--ion-item-alt-border-color)',
   boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
@@ -22,11 +21,7 @@ const Container = styled.div({
 const ContentWrapper = styled.div({
   display: 'flex',
   alignItems: 'center',
-  gap: '8px',
-});
-
-const UsdValue = styled.div({
-  color: 'var(--ion-text-color-alt)',
+  gap: '12px',
 });
 
 const TextContainer = styled.div({
@@ -48,7 +43,7 @@ const CryptoCurrencyListItem = ({
 
   return (
     <Container
-      className="ion-padding-top-xs ion-padding-bottom-xs ion-padding-left-md ion-padding-right-md"
+      className="ion-padding-top-xs ion-padding-bottom-xs ion-padding-left-sm ion-padding-right-sm"
       onClick={() => onClick && onClick(walletCurrency)}
       style={{ cursor: onClick ? 'pointer' : 'default' }}
     >
@@ -64,13 +59,16 @@ const CryptoCurrencyListItem = ({
           <div
             className="ion-text-size-xxs"
             style={{ color: 'var(--ion-text-color-alt)' }}
-          >{`${formatAmount(balance ?? '0')} ${walletCurrency.chain}`}</div>
+          >{`${formatAmountWithCommas(balance ?? '0', 2)} ${walletCurrency.chain}`}</div>
         </TextContainer>
       </ContentWrapper>
       {showUSDValue && (
-        <UsdValue className="ion-text-size-md ion-text-bold">
-          {`$ ${balanceInUsd.toFixed(2)}`}
-        </UsdValue>
+        <div
+          className="ion-text-size-md ion-text-bold"
+          style={{ color: 'var(--ion-text-color-alt)' }}
+        >
+          {`$${formatAmountWithCommas(balanceInUsd.toString(), 2)}`}
+        </div>
       )}
     </Container>
   );

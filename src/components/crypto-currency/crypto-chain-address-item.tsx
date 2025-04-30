@@ -94,12 +94,7 @@ const CryptoChainAddressItem = ({
       </div>
       <div className={'ion-display-flex ion-align-items-center ion-gap-xs'}>
         <IonIcon icon={qrCodeOutline} />
-        <CopyIcon
-          slot="icon-only"
-          size={'small'}
-          style={{ cursor: 'pointer' }}
-          onClick={(e) => copyAddress(e, address)}
-        />
+        <CopyIcon slot="icon-only" onClick={(e) => copyAddress(e, address)} />
         <IonPopover
           side="top"
           alignment="center"
@@ -109,7 +104,7 @@ const CryptoChainAddressItem = ({
           reference={'event'}
           onDidDismiss={() => setPopoverOpen(false)}
         >
-          <IonContent class="ion-padding">{t('Copied')}</IonContent>
+          <IonContent>{t('Copied')}</IonContent>
         </IonPopover>
       </div>
     </Container>

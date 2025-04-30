@@ -145,7 +145,7 @@ export function ChangePassword() {
           },
         ]}
       />
-      <DashboardLayout showSwitchAccountBar>
+      <DashboardLayout>
         <MainGrid className="ion-padding-top-0 ion-padding-bottom-0 ion-padding-left-lg ion-padding-right-lg">
           <IonRow className={'ion-grid-row-gap-lg'}>
             <IonCol size="12">

@@ -46,7 +46,12 @@ ion-popover {
 
 /* copybox */
 ion-popover.copied-popover {
-  --width: 80px !important;
-  --height: 48px !important;
-  font-size: 14px;
+  --width: 48px !important;
+  --height: 20px !important;
+  font-size: 12px;
+  &::part(content) {
+    padding: 4px;
+    align-items: center;
+    justify-content: center;
+  }
 }

@@ -34,3 +34,11 @@
 .button-transparent::part(native) {
   background: transparent;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-default {
+  cursor: default;
+}

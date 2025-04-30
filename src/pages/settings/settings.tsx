@@ -1,129 +1,33 @@
-import { IonIcon, IonRadioGroup } from '@ionic/react';
-import type { Dispatch, SetStateAction } from 'react';
-import { useState } from 'react';
+import { IonIcon } from '@ionic/react';
+import { exitOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 import { AboutUsCaret } from '../../components/settings/about-us';
 import {
+  AutoLockAccordion,
+  AutoLockTextCaret,
+} from '../../components/settings/autolock-accordion';
+import {
   PageHeader,
   SettingsWrapper,
 } from '../../components/settings/base-components';
-import { DownArrow } from '../../components/settings/down-arrow';
 import type { SettingItemProps } from '../../components/settings/setting-item';
 import { SettingItem } from '../../components/settings/setting-item';
-import { SettingsRadio } from '../../components/settings/setting-radio';
 import { SUPPORT_MAIL, urls } from '../../constants/urls';
-import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
-import {
-  selectAutoLockTime,
-  selectTheme,
-  setAutoLockTime,
-} from '../../redux/slices/preferenceSlice';
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectTheme } from '../../redux/slices/preferenceSlice';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
-import { useCurrentAppInfo } from '../../utils/hooks/useCurrentAppInfo';
+import { useLogout } from '../../utils/hooks/useLogout';
 import { getImageIconUrl } from '../../utils/url-utils';
 
-const autoLockTimeMap: AutoLockProp[] = [
-  {
-    label: '10',
-    unit: 'minutes',
-    value: 10,
-  },
-  {
-    label: '30',
-    unit: 'minutes',
-    value: 30,
-  },
-  {
-    label: '1',
-    unit: 'hour',
-    value: 60,
-  },
-  {
-    label: '2',
-    unit: 'hours',
-    value: 60 * 2,
-  },
-  {
-    label: '4',
-    unit: 'hours',
-    value: 60 * 4,
-  },
-  {
-    label: '8',
-    unit: 'hours',
-    value: 60 * 8,
-  },
-];
-
-const AutoLockTextCaret = ({ autoLockTime }: { autoLockTime: string }) => {
-  return (
-    <>
-      <h5 className="ion-no-margin ion-text-size-xs ion-margin-right-xs">
-        {autoLockTime}
-      </h5>
-      <DownArrow />
-    </>
-  );
-};
-type AutoLockProp = {
-  label: string;
-  unit: string;
-  value: number;
-};
-const AutoLockAccordion = ({
-  autoLock,
-  setAutoLock,
-}: {
-  autoLock: AutoLockProp;
-  setAutoLock: Dispatch<SetStateAction<AutoLockProp>>;
-}) => {
-  const { t } = useTranslation();
-  const dispatch = useAppDispatch();
-
-  return (
-    <IonRadioGroup
-      value={autoLock.value}
-      className="ion-padding-top-0 ion-padding-bottom-0 ion-padding-left-xs ion-padding-right-xs"
-    >
-      {autoLockTimeMap.map((item, i) => {
-        return (
-          <SettingsRadio
-            /* eslint-disable-next-line sonarjs/no-array-index-key */
-            key={i}
-            labelPlacement="end"
-            justify="start"
-            value={item.value}
-            onClick={() => {
-              setAutoLock(item);
-              dispatch(setAutoLockTime(item.value));
-            }}
-            width={'33.33%'}
-            mode="md"
-          >
-            <h5 className="ion-no-margin">{`${item.label} ${t(item.unit)}`}</h5>
-          </SettingsRadio>
-        );
-      })}
-    </IonRadioGroup>
-  );
-};
-
 export function Settings() {
+  const logout = useLogout();
   const history = useHistory();
   const { t } = useTranslation();
-  const autoLockTime = useAppSelector(selectAutoLockTime);
-  const info = useCurrentAppInfo();
-  const [autoLock, setAutoLock] = useState<AutoLockProp>(
-    autoLockTimeMap.find((e) => {
-      if (e.value == autoLockTime) {
-        return e;
-      }
-    }) || autoLockTimeMap[0]
-  );
+
   const storedTheme = useAppSelector(selectTheme);
 
   const menuItems: SettingItemProps[] = [
@@ -151,15 +55,9 @@ export function Settings() {
     {
       header: t('AutoLock'),
       icon: getImageIconUrl('lock-light.svg'),
-      endComponent: (
-        <AutoLockTextCaret
-          autoLockTime={`${autoLock.label} ${t(autoLock.unit)}`}
-        />
-      ),
+      EndComponent: AutoLockTextCaret,
       isAccordion: true,
-      children: (
-        <AutoLockAccordion autoLock={autoLock} setAutoLock={setAutoLock} />
-      ),
+      children: <AutoLockAccordion />,
     },
     {
       header: t('AboutUs'),
@@ -167,16 +65,16 @@ export function Settings() {
       onClick: () => {
         history.push(akashicPayPath(urls.settingsAboutUs));
       },
-      endComponent: <AboutUsCaret appVersion={info.version ?? '0.0.0'} />,
+      EndComponent: AboutUsCaret,
     },
     {
       header: t('Support'),
       link: SUPPORT_MAIL,
       icon: getImageIconUrl('support_agent.svg'),
-      endComponent: (
+      EndComponent: () => (
         <IonIcon
           className="ion-no-margin ion-margin-left-xs"
-          size="45px"
+          size={'large'}
           src={getImageIconUrl(
             storedTheme === themeType.DARK
               ? 'speech-bubbles-dark.svg'
@@ -185,29 +83,38 @@ export function Settings() {
         />
       ),
     },
+    {
+      header: t('LockAkashicWallet'),
+      onClick: () => {
+        logout();
+      },
+      EndComponent: () => (
+        <IonIcon
+          icon={exitOutline}
+          color="var(--ion-color-primary-shade)"
+          className="ion-no-margin ion-margin-left-xs"
+        />
+      ),
+    },
   ];
   return (
-    <DashboardLayout showSwitchAccountBar>
+    <DashboardLayout>
       <SettingsWrapper>
         <PageHeader>{t('Settings')}</PageHeader>
         <div
-          style={{
-            display: 'flex',
-            width: '100%',
-            flexDirection: 'column',
-            gap: '4px',
-          }}
+          className={
+            'ion-display-flex ion-flex-direction-column w-100 ion-gap-sm'
+          }
         >
-          {menuItems.map((menuItem, index) => {
+          {menuItems.map((menuItem) => {
             return (
               <SettingItem
-                /* eslint-disable-next-line sonarjs/no-array-index-key */
-                key={index}
+                key={menuItem.header}
                 icon={menuItem.icon}
                 backgroundColor={'var(--ion-background)'}
                 header={menuItem.header}
                 onClick={menuItem.onClick}
-                endComponent={menuItem.endComponent}
+                EndComponent={menuItem.EndComponent}
                 isAccordion={menuItem.isAccordion}
                 link={menuItem.link}
               >

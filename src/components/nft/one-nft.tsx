@@ -1,26 +1,13 @@
-import './one-nft.css';
-
 import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import type { INft } from '@helium-pay/backend';
 import { IonContent, IonImg, IonPopover, IonRow } from '@ionic/react';
-import { t } from 'i18next';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { displayLongText } from '../../utils/long-text';
 import { getNftImage } from '../../utils/nft-image-link';
 import { CopyIcon } from '../common/icons/copy-icon';
-interface Props {
-  nft: INft;
-  isLinked?: boolean;
-  select?: () => void;
-  style?: React.CSSProperties;
-  isBig?: boolean;
-  isAASDarkStyle?: boolean;
-  isAASBackgroundDark?: boolean;
-  nftImgWrapper?: string;
-  screen?: string;
-}
 
 const AccountNameWrapper = styled.div`
   display: flex;
@@ -35,24 +22,20 @@ const NtfWrapper = styled.div<{
   isAASLinked: boolean;
   isAASDarkStyle?: boolean;
   isBig?: boolean;
-}>((props) => ({
+}>(({ isBig, isAASLinked }) => ({
   position: 'relative',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'stretch',
   justifyContent: 'flex-end',
   padding: '8px',
-  borderRadius: props.isBig ? '24px' : '8px',
-  borderTopRightRadius: props.isAASLinked
-    ? '0px'
-    : props.isBig
-      ? '24px'
-      : '8px',
-  marginTop: props.isAASLinked ? '0px' : '20px',
+  borderRadius: isBig ? '24px' : '8px',
+  borderTopRightRadius: isAASLinked ? '0px' : isBig ? '24px' : '8px',
+  marginTop: isAASLinked ? '0px' : '20px',
   background: 'var(--nft-background)',
   boxShadow: '6px 6px 20px rgba(0,0,0,0.10000000149011612)',
   ['& ion-img::part(image)']: {
-    borderRadius: props.isBig ? '20px' : '10px',
+    borderRadius: isBig ? '20px' : '10px',
   },
 }));
 
@@ -87,7 +70,31 @@ const AASListTag = styled.div({
   padding: '4px 20px',
 });
 
-export function OneNft(props: Props) {
+type OneNftProps = {
+  nft: INft;
+  isLinked?: boolean;
+  select?: () => void;
+  style?: React.CSSProperties;
+  isBig?: boolean;
+  isAASDarkStyle?: boolean;
+  screen?: string;
+};
+
+export function OneNft({
+  nft,
+  isLinked,
+  select,
+  style = {},
+  isBig = false,
+  isAASDarkStyle = false,
+  screen,
+}: OneNftProps) {
+  const { t } = useTranslation();
+  const popover = useRef<HTMLIonPopoverElement>(null);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [nftUrl, setNftUrl] = useState('');
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   const handleCopy = async (accountName: string) => {
     await Clipboard.write({
       string: accountName,
@@ -97,35 +104,16 @@ export function OneNft(props: Props) {
       setPopoverOpen(false);
     }, 1000);
   };
-  const popover = useRef<HTMLIonPopoverElement>(null);
-  const [popoverOpen, setPopoverOpen] = useState(false);
-  const [nftUrl, setNftUrl] = useState('');
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     async function getNft() {
-      const nftUrl = await getNftImage(props.nft?.ledgerId);
+      const nftUrl = await getNftImage(nft?.ledgerId);
       setNftUrl(nftUrl);
     }
     getNft();
-  }, [props.nft?.ledgerId]);
+  }, [nft?.ledgerId]);
 
-  const placeholderSrc = useMemo(() => {
-    if (props.isAASDarkStyle) {
-      return '/shared-assets/images/img-placeholder-dark.svg';
-    }
-    return '/shared-assets/images/img-placeholder-light.svg';
-  }, [props.isAASDarkStyle]);
-
-  const imageClass = useMemo(() => {
-    if (props.isBig) {
-      return 'nft-image-big nft-img-size';
-    }
-    return 'nft-image-small nft-img-size';
-  }, [props.isBig]);
-
-  const isLinked =
-    props.isLinked !== undefined ? props.isLinked : !!props.nft.aas.linked;
+  const isAASLinked = isLinked !== undefined ? isLinked : !!nft.aas.linked;
 
   return (
     <OneNFTContainer>
@@ -135,7 +123,7 @@ export function OneNft(props: Props) {
             <h5
               className="ion-no-margin .ion-text-size-sm"
               style={
-                props.isAASDarkStyle
+                isAASDarkStyle
                   ? { color: 'var(--ion-color-white)' }
                   : { color: '#202020' }
               }
@@ -146,12 +134,15 @@ export function OneNft(props: Props) {
         </div>
       )}
       <NtfWrapper
-        isAASLinked={isLinked}
-        style={props.style}
-        onClick={props.select}
-        isAASDarkStyle={props.isAASDarkStyle}
-        isBig={props.isBig}
-        className={props.nftImgWrapper}
+        isAASLinked={isAASLinked}
+        style={{
+          minHeight: isBig ? '320px' : '280px',
+          minWidth: isBig ? '320px' : '280px',
+          ...style,
+        }}
+        onClick={select}
+        isAASDarkStyle={isAASDarkStyle}
+        isBig={isBig}
       >
         {!imageLoaded && (
           <IonImg
@@ -164,8 +155,8 @@ export function OneNft(props: Props) {
               height: '20%',
             }}
             alt="image-loading"
-            src={placeholderSrc}
-            class={imageClass}
+            src={`/shared-assets/images/img-placeholder-${isAASDarkStyle ? 'dark' : 'light'}.svg`}
+            className={`nft-image-${isBig ? 'big' : 'small'} nft-img-size`}
           />
         )}
 
@@ -176,38 +167,33 @@ export function OneNft(props: Props) {
               opacity: imageLoaded ? 1 : 0,
               transition: 'opacity 0.5s ease-in-out',
             }}
-            alt={props.nft?.description}
+            alt={nft?.description}
             src={nftUrl}
-            class={imageClass}
+            className={`nft-image-${isBig ? 'big' : 'small'} nft-img-size`}
             onIonImgDidLoad={() => setImageLoaded(true)}
           />
         )}
         <AccountNameWrapper>
           <h5
             style={{
-              color: props.isAASDarkStyle
+              color: isAASDarkStyle
                 ? 'var(--ion-color-primary-dark)'
                 : 'var(--ion-color-primary-light)',
             }}
-            title={props.nft?.alias}
+            title={nft?.alias}
             className={`ion-no-margin ${
-              props.screen === 'transfer'
-                ? 'ion-text-size-xs'
-                : 'ion-text-size-sm'
+              screen === 'transfer' ? 'ion-text-size-xs' : 'ion-text-size-sm'
             }`}
           >
-            {displayLongText(props.nft?.alias, 32)}
+            {displayLongText(nft?.alias, 32)}
           </h5>
           <CopyIcon
+            size={20}
             slot="icon-only"
             className="copy-icon ion-margin-left-xxs"
-            style={{
-              width: '20px',
-              height: '20px',
-            }}
             onClick={async (e) => {
               e.stopPropagation();
-              handleCopy(props.nft?.alias);
+              handleCopy(nft?.alias);
             }}
           />
           <IonPopover
@@ -218,7 +204,7 @@ export function OneNft(props: Props) {
             className={'copied-popover'}
             onDidDismiss={() => setPopoverOpen(false)}
           >
-            <IonContent class="ion-padding">{t('Copied')}</IonContent>
+            <IonContent>{t('Copied')}</IonContent>
           </IonPopover>
         </AccountNameWrapper>
         <IonRow>
@@ -229,12 +215,10 @@ export function OneNft(props: Props) {
               width: '100%',
             }}
             className={`${
-              props.screen === 'transfer'
-                ? 'ion-text-size-xxs'
-                : 'ion-text-size-xs'
+              screen === 'transfer' ? 'ion-text-size-xxs' : 'ion-text-size-xs'
             }`}
           >
-            {props.nft?.name}
+            {nft?.name}
           </NftName>
         </IonRow>
       </NtfWrapper>

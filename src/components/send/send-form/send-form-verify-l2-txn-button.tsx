@@ -8,14 +8,12 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAppSelector } from '../../../redux/app/hooks';
-import { selectFocusCurrencyDetail } from '../../../redux/slices/preferenceSlice';
-import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
+import { useCryptoCurrencySymbolsAndBalances } from '../../../utils/hooks/useCryptoCurrencySymbolsAndBalances';
 import { useVerifyTxnAndSign } from '../../../utils/hooks/useVerifyTxnAndSign';
 import type { FormAlertState } from '../../common/alert/alert';
 import { errorAlertShell } from '../../common/alert/alert';
 import { PrimaryButton } from '../../common/buttons';
-import { SendFormContext } from '../send-form-trigger-button';
+import { SendFormContext } from '../send-modal-context-provider';
 import type { ValidatedAddressPair } from './types';
 
 type SendFormVerifyL2TxnButtonProps = {
@@ -34,9 +32,10 @@ export const SendFormVerifyL2TxnButton: FC<SendFormVerifyL2TxnButtonProps> = ({
   setAlert,
 }) => {
   const { t } = useTranslation();
-  const { nativeCoinSymbol } = useFocusCurrencySymbolsAndBalances();
-  const { chain, token } = useAppSelector(selectFocusCurrencyDetail);
-  const { setStep, setSendConfirm, step } = useContext(SendFormContext);
+  const { setStep, setSendConfirm, step, currency } =
+    useContext(SendFormContext);
+  const { nativeCoinSymbol } = useCryptoCurrencySymbolsAndBalances(currency);
+  const { chain, token } = currency;
 
   const [isLoading, setIsLoading] = useState(false);
 

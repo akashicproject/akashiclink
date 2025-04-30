@@ -10,9 +10,10 @@ import {
   formAlertResetState,
 } from '../../components/common/alert/alert';
 import { PrimaryButton } from '../../components/common/buttons';
+import { AlertIcon } from '../../components/common/icons/alert-icon';
 import { AasListingSwitch } from '../../components/nft/aas-listing-switch';
 import { OneNft } from '../../components/nft/one-nft';
-import { NftLayout } from '../../components/page-layout/nft-layout';
+import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 import { urls } from '../../constants/urls';
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectTheme } from '../../redux/slices/preferenceSlice';
@@ -20,6 +21,7 @@ import type { LocationState } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 import { useNftMe } from '../../utils/hooks/useNftMe';
+import { NoNtfText } from './nfts';
 
 export const NftWrapper = styled.div({
   display: 'flex',
@@ -30,11 +32,6 @@ export const NftWrapper = styled.div({
   position: 'relative',
 });
 
-export const NftContainer = styled.div({
-  position: 'relative',
-  margin: '0 auto',
-});
-
 export function Nft() {
   const { t } = useTranslation();
   const history = useHistory<LocationState>();
@@ -42,6 +39,7 @@ export function Nft() {
   const [alert, setAlert] = useState(formAlertResetState);
   const { nfts } = useNftMe();
   const currentNft = nfts.find((nft) => nft.name === state?.nftName);
+
   const storedTheme = useAppSelector(selectTheme);
   const isDarkMode = storedTheme === themeType.DARK;
 
@@ -61,55 +59,60 @@ export function Nft() {
   };
 
   return (
-    <NftLayout>
-      <div
-        style={{
-          backgroundColor: 'var(--nft-header-background)',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '160px',
-        }}
-      />
-
-      <CustomAlert state={alert} />
-      <NftWrapper>
-        <IonGrid fixed={true}>
-          <IonRow>
-            {currentNft && (
-              <NftContainer>
-                <OneNft
-                  nft={currentNft}
-                  isBig={true}
-                  isAASDarkStyle={!isDarkMode}
-                  nftImgWrapper="nft-wrapper-one"
-                  isLinked={isLinked}
-                />
-              </NftContainer>
-            )}
-          </IonRow>
-          <IonRow className="ion-margin-top-xs ion-margin-bottom-xxs">
-            <IonCol size="10" offset="1">
-              <PrimaryButton
-                style={{ width: '254px' }}
-                expand="block"
-                onClick={transferNft}
-              >
-                {t('Transfer')}
-              </PrimaryButton>
+    <DashboardLayout>
+      <IonGrid>
+        {!currentNft && (
+          <IonRow
+            className="ion-justify-content-center"
+            style={{ marginTop: '25vh' }}
+          >
+            <IonCol size={'12'} className="ion-center">
+              <AlertIcon />
+            </IonCol>
+            <IonCol size={'12'} className="ion-center">
+              <NoNtfText>{t('NoData')}</NoNtfText>
             </IonCol>
           </IonRow>
-
-          {currentNft && (
-            <AasListingSwitch
-              nft={currentNft}
-              setAlert={setAlert}
-              setParentLinkage={setIsLinked}
+        )}
+        {currentNft && (
+          <>
+            <div
+              style={{
+                backgroundColor: 'var(--nft-header-background)',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '160px',
+              }}
             />
-          )}
-        </IonGrid>
-      </NftWrapper>
-    </NftLayout>
+            <IonRow>
+              <IonCol size="10" offset="1">
+                <OneNft
+                  nft={currentNft}
+                  isAASDarkStyle={!isDarkMode}
+                  isLinked={isLinked}
+                />
+              </IonCol>
+            </IonRow>
+            <IonRow className="ion-margin-top-xs ion-margin-bottom-xxs">
+              <IonCol size="10" offset="1">
+                <PrimaryButton expand="block" onClick={transferNft}>
+                  {t('Transfer')}
+                </PrimaryButton>
+              </IonCol>
+              <IonCol size="10" offset="1">
+                <AasListingSwitch
+                  nft={currentNft}
+                  setAlert={setAlert}
+                  setParentLinkage={setIsLinked}
+                />
+              </IonCol>
+            </IonRow>
+            <CustomAlert state={alert} />
+          </>
+        )}
+      </IonGrid>
+    </DashboardLayout>
   );
 }

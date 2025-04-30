@@ -3,13 +3,13 @@ import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { DashboardCryptoCurrencyList } from '../../components/dashboard/dashboard-crypto-currency-list';
 import { TotalBalance } from '../../components/dashboard/total-balance';
 import { DepositModalTriggerButton } from '../../components/deposit/deposit-modal-trigger-button';
-import { LayoutWithActivityTab } from '../../components/page-layout/layout-with-activity-tab';
+import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 import { SendFormTriggerButton } from '../../components/send/send-form-trigger-button';
 
 export function Dashboard() {
   return (
-    <LayoutWithActivityTab>
-      <IonGrid>
+    <DashboardLayout>
+      <IonGrid className={'ion-padding-top-md ion-padding-bottom-0'}>
         <IonRow className={'ion-grid-row-gap-xs'}>
           <IonCol size={'12'}>
             <TotalBalance />
@@ -21,13 +21,12 @@ export function Dashboard() {
             <DepositModalTriggerButton />
           </IonCol>
         </IonRow>
-        <IonRow style={{ height: '31vh' }}>
+        <IonRow>
           <IonCol size={'12'}>
-            {/* the 32vh will be updated in #1429 */}
             <DashboardCryptoCurrencyList />
           </IonCol>
         </IonRow>
       </IonGrid>
-    </LayoutWithActivityTab>
+    </DashboardLayout>
   );
 }

@@ -5,11 +5,11 @@ type RadioProps = {
   width: string;
 };
 export const SettingsRadio = styled(IonRadio)<RadioProps>`
-  height: 16px;
+  height: 24px;
   width: ${(props) => props.width};
-  padding-left: 1px;
   --color-checked: var(--ion-color-primary-70);
   margin-bottom: 8px;
+  padding-left: 0;
   ::part(container) {
     height: 16px;
     width: 16px;

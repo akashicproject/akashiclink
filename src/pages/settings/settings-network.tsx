@@ -73,14 +73,14 @@ export function SettingsNetwork() {
   };
 
   return (
-    <DashboardLayout showSwitchAccountBar>
+    <DashboardLayout>
       <SettingsWrapper>
-        <div className="ion-margin-top-xl" style={{ position: 'relative' }}>
+        <div style={{ position: 'relative' }}>
           <SquareWhiteButton
             className="icon-button ion-padding-top-sm"
             id="refresh-button"
             onClick={loadNodes}
-            style={{ position: 'absolute', top: 0, right: 4 }}
+            style={{ position: 'absolute', bottom: 0, right: 0 }}
             borderRadius="8px"
           >
             <IonIcon
@@ -109,7 +109,7 @@ export function SettingsNetwork() {
                 node.key === preferredNodeKey ? t('Preferred') : ''
               }`}
               onClick={() => handleNodeSelect(node)}
-              endComponent={
+              EndComponent={() => (
                 <PingStatus className="ion-text-size-xs">
                   <IonIcon
                     className="ion-text-size-xxs"
@@ -127,7 +127,7 @@ export function SettingsNetwork() {
                     {node.ping === 0 ? t('Unreachable') : `${node.ping}ms`}
                   </span>
                 </PingStatus>
-              }
+              )}
               isAccordion={false}
               icon={preferredNodeKey === node.key ? checkmark : ''}
               headerStyle={{

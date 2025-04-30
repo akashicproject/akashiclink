@@ -19,11 +19,6 @@ import { useSecureStorage } from './useSecureStorage';
 const algorithm = 'aes-256-cbc';
 const secretIv = process.env.REACT_APP_SECRETIV ?? '6RxIESTJ1eJLpjpe';
 
-/**
- * When logging in, a user will select a wallet `identity`
- * This is translated to a `username` that is sent with the `password`
- * to the /login endpoint
- */
 export interface LocalAccount {
   identity: string;
   username?: string;
@@ -91,7 +86,13 @@ export const useAccountStorage = () => {
       return l;
     });
     if (activeAccount && activeAccount.identity === identity) {
-      dispatch(setActiveAccountState({ ...activeAccount, alias, ledgerId }));
+      dispatch(
+        setActiveAccountState({
+          ...activeAccount,
+          alias,
+          ledgerId,
+        })
+      );
     }
     dispatch(setLocalAccounts(updatedAccounts));
   };
@@ -222,7 +223,12 @@ export const useAccountStorage = () => {
   );
 
   const setActiveAccount = (account: LocalAccount) => {
-    dispatch(setActiveAccountState(account));
+    dispatch(
+      setActiveAccountState({
+        ...account,
+        accountName: `Account ${account.identity.slice(-8)}`,
+      })
+    );
   };
 
   const setCacheOtk = (otk: FullOtk | null) => {

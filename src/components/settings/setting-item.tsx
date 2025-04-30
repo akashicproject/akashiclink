@@ -2,7 +2,7 @@ import { Browser } from '@capacitor/browser';
 import { Capacitor } from '@capacitor/core';
 import styled from '@emotion/styled';
 import { IonIcon, IonItem, IonLabel, IonText } from '@ionic/react';
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, FC, ReactNode } from 'react';
 import { useState } from 'react';
 
 import { Divider } from '../common/divider';
@@ -40,7 +40,7 @@ export type SettingItemProps = {
   onClick?: () => void;
   isAccordion?: boolean;
   children?: ReactNode;
-  endComponent?: ReactNode;
+  EndComponent?: FC<{ showAccordionItem?: boolean }>;
   isDivider?: boolean;
   backgroundColor?: string;
   subHeading?: string;
@@ -64,7 +64,7 @@ export function SettingItem({
   icon,
   header,
   isAccordion = false,
-  endComponent,
+  EndComponent,
   children,
   isDivider,
   onClick,
@@ -98,20 +98,21 @@ export function SettingItem({
           className="ion-no-margin ion-margin-left-xxs"
           slot="start"
           size="24px"
-          src={icon || ''}
+          src={icon ?? ''}
           style={{
             visibility: icon ? 'visible' : 'hidden',
             ...iconStyle,
           }}
         />
-        <IonLabel
-          className="ion-no-margin"
-          style={{ display: 'flex', flexDirection: 'column' }}
-        >
+        <IonLabel className="ion-no-margin ion-display-flex ion-flex-direction-column">
           <Header style={headerStyle}>{header}</Header>
           {subHeading && <SubHeader>{subHeading}</SubHeader>}
         </IonLabel>
-        {endComponent ? endComponent : <ForwardArrow />}
+        {EndComponent ? (
+          <EndComponent showAccordionItem={showAccordionItem} />
+        ) : (
+          <ForwardArrow />
+        )}
       </StyledIonItem>
       {isAccordion && showAccordionItem && children}
       {isDivider && <Divider />}

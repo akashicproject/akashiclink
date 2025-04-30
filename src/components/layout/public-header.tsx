@@ -1,18 +1,10 @@
-import { IonHeader, IonImg, IonRouterLink } from '@ionic/react';
+import { IonHeader, IonRouterLink } from '@ionic/react';
 
-import { useAppSelector } from '../../redux/app/hooks';
-import { selectTheme } from '../../redux/slices/preferenceSlice';
-import { themeType } from '../../theme/const';
 import { SettingModalWithTriggerButton } from '../settings/setting-modal-with-trigger-button';
+import { HeaderLogo } from './header-logo';
 import { LanguageDropdown } from './toolbar/language-select';
 
 export function PublicHeader() {
-  const storedTheme = useAppSelector(selectTheme);
-  const logoName =
-    storedTheme === themeType.DARK
-      ? 'wallet-logo-dark-public-header.svg'
-      : 'wallet-logo-light-public-header.svg';
-
   return (
     <IonHeader
       className="ion-no-border"
@@ -23,11 +15,7 @@ export function PublicHeader() {
     >
       <LanguageDropdown />
       <IonRouterLink>
-        <IonImg
-          alt={''}
-          src={`/shared-assets/images/${logoName}`}
-          style={{ height: '100%' }}
-        />
+        <HeaderLogo />
       </IonRouterLink>
       <SettingModalWithTriggerButton />
     </IonHeader>

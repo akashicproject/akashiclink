@@ -171,11 +171,9 @@ export const AasListingSwitch = ({
   return (
     <AASListSwitchContainer>
       <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
+        className={
+          'ion-display-flex ion-flex-direction-column ion-align-items-start'
+        }
       >
         <h5 className="ion-no-margin ion-text-size-xxs">{t('linkAlias')}</h5>
         <p className={'ion-text-color-grey ion-text-bold ion-text-size-xxs'}>

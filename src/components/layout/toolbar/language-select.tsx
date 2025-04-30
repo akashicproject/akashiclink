@@ -47,11 +47,11 @@ export const LanguageDropdown = () => {
         }}
       >
         <IonIcon
-          style={{ fontSize: 24 }}
+          style={{ fontSize: 20 }}
           slot="icon-only"
           icon={globeOutline}
         />
-        <IonIcon style={{ fontSize: 14 }} slot="end" icon={caretDownOutline} />
+        <IonIcon style={{ fontSize: 10 }} slot="end" icon={caretDownOutline} />
       </LanguageButton>
       <LanguagePopover
         side="bottom"

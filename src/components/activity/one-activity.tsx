@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 import styled from '@emotion/styled';
 import {
   TransactionLayer,
@@ -19,6 +18,7 @@ import { formatDate } from '../../utils/formatDate';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { displayLongText } from '../../utils/long-text';
 import { getNftImage } from '../../utils/nft-image-link';
+import { L2Icon } from '../common/chain-icon/l2-icon';
 import { Divider } from '../common/divider';
 
 const ActivityWrapper = styled.div<{ hover: boolean }>((props) => ({
@@ -75,6 +75,7 @@ const GasFee = styled.div({
   overflow: 'hidden',
   fontSize: '0.625rem',
   fontWeight: 400,
+  // eslint-disable-next-line sonarjs/no-duplicate-string
   color: 'var(--activity-dim-text)',
 });
 
@@ -151,15 +152,6 @@ export function OneActivity({
     (c) => c.walletCurrency.chain === transfer.currency?.chain
   );
 
-  const iconImg =
-    isL2 || isNft
-      ? storedTheme === themeType.DARK
-        ? `/shared-assets/images/akashic-activity-dark.svg`
-        : `/shared-assets/images/akashic-activity-light.svg`
-      : isTxnConfirmed
-        ? currencyObj?.currencyIcon
-        : currencyObj?.greyCurrencyIcon;
-
   const gasFee = transfer.feesPaid ?? transfer.feesEstimate;
 
   const isDelegated = !!transfer.feeIsDelegated;
@@ -215,14 +207,23 @@ export function OneActivity({
       >
         <IconWrapper>
           <TypeIcon>
-            <IonImg
-              alt=""
-              src={iconImg}
-              style={{
-                height: '32px',
-                width: '32px',
-              }}
-            />
+            {isL2 || isNft ? (
+              <L2Icon size={32} />
+            ) : (
+              <IonImg
+                alt=""
+                src={
+                  isTxnConfirmed
+                    ? currencyObj?.currencyIcon
+                    : currencyObj?.greyCurrencyIcon
+                }
+                style={{
+                  height: '32px',
+                  width: '32px',
+                }}
+              />
+            )}
+
             <IonImg
               alt=""
               src={`/shared-assets/images/${transfer.status}-${

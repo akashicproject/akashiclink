@@ -3,7 +3,6 @@ import { closeOutline } from 'ionicons/icons';
 import React, { type RefObject, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useCurrentAppInfo } from '../../utils/hooks/useCurrentAppInfo';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { UPDATE_TYPE } from '../../utils/preference-keys';
 import { getImageIconUrl } from '../../utils/url-utils';
@@ -20,7 +19,6 @@ export function SettingModal({
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const info = useCurrentAppInfo();
   const { t } = useTranslation();
   const [isAboutUs, setIsAboutUs] = useState(false);
   const { value: updateType } = useLocalStorage(UPDATE_TYPE, '');
@@ -28,7 +26,7 @@ export function SettingModal({
     {
       header: t('Theme'),
       icon: '/shared-assets/images/theme.svg',
-      endComponent: <ThemeSelect />,
+      EndComponent: ThemeSelect,
     },
     {
       header: t('AboutUs'),
@@ -37,7 +35,7 @@ export function SettingModal({
         modal.current?.setCurrentBreakpoint(updateType === 'soft' ? 0.72 : 0.6);
         setIsAboutUs(true);
       },
-      endComponent: <AboutUsCaret appVersion={info.version ?? '0.0.0'} />,
+      EndComponent: AboutUsCaret,
     },
   ];
   return (
@@ -82,15 +80,14 @@ export function SettingModal({
             />
           </div>
           {!isAboutUs &&
-            settingsMenu.map((m, index) => {
+            settingsMenu.map((m) => {
               return (
                 <SettingItem
-                  /* eslint-disable-next-line sonarjs/no-array-index-key */
-                  key={index}
+                  key={m.header}
                   icon={m.icon}
                   header={m.header}
                   onClick={m.onClick}
-                  endComponent={m.endComponent}
+                  EndComponent={m.EndComponent}
                   isAccordion={m.isAccordion}
                   backgroundColor={'var(--background-alt)'}
                 >

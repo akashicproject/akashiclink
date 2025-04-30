@@ -50,13 +50,7 @@ export function AddressCopyBlock(props: Props) {
         >
           {displayLongText(props.address, 18)}
         </div>
-        <CopyIcon
-          slot="icon-only"
-          style={{
-            height: '16px',
-            width: '16px',
-          }}
-        />
+        <CopyIcon size={16} slot="icon-only" />
         <IonPopover
           side="top"
           alignment="center"
@@ -65,7 +59,7 @@ export function AddressCopyBlock(props: Props) {
           className={'copied-popover'}
           onDidDismiss={() => setPopoverOpen(false)}
         >
-          <IonContent class="ion-padding">{t('Copied')}</IonContent>
+          <IonContent>{t('Copied')}</IonContent>
         </IonPopover>
       </AddressWrapper>
     </SquareWhiteButton>

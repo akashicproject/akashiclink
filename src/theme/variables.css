@@ -23,7 +23,9 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-primary-70: #a2a2ff;
   --ion-color-primary-dark: #0b006b;
   --ion-color-inverse-surface: #313034;
+  --ion-color-inverse-primary: #c2c1ff;
   --ion-color-on-surface-light: #b2b1b8;
+  --ion-color-on-surface-variant: #47464a;
   --ion-color-outline: #787677;
 
   /** secondary **/
@@ -111,12 +113,12 @@ http://ionicframework.com/docs/theming/ */
   --ion-disabled-button-color: rgba(31, 31, 31, 1);
 
   /** header-background also used in setting-naming as icon color**/
-  --ion-header-background: #1b1547;
+  --ion-header-background: #ffffff;
   --ion-slider: #c297ff;
   --ion-seconday-background: #ffffff;
 
   /** grid **/
-  --ion-grid-padding: 16px;
+  --ion-grid-padding: 8px;
   --ion-grid-column-padding: 8px;
   --ion-grid-row-padding: 4px;
 
@@ -194,6 +196,7 @@ body.dark {
   --ion-color-primary-70: #a2a2ff;
   --ion-color-primary-dark: #0b006b;
   --ion-color-inverse-surface: #e2e1e8;
+  --ion-color-inverse-primary: #4d49d8;
   --ion-color-outline: #929091;
 
   --ion-color-secondary: #625b71;
@@ -275,7 +278,7 @@ body.dark {
   --ion-disabled-button-color: rgba(229, 226, 225, 1);
 
   /** header-background also used in setting-naming as icon color**/
-  --ion-header-background: #a2a2ff;
+  --ion-header-background: #ffffff;
   --ion-slider: #0b006b;
 
   /** setting **/

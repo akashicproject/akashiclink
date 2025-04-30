@@ -5,24 +5,21 @@ import {
   type IWalletCurrency,
   SUPPORTED_CURRENCIES_FOR_EXTENSION,
 } from '../../../constants/currencies';
-import { useAppDispatch } from '../../../redux/app/hooks';
-import { setFocusCurrency } from '../../../redux/slices/preferenceSlice';
 import { CryptoCurrencyList } from '../../crypto-currency/crypto-currency-list';
-import { SendFormContext } from '../send-form-trigger-button';
+import { SendFormContext } from '../send-modal-context-provider';
 
 export const SendChooseCurrencyForm = () => {
-  const dispatch = useAppDispatch();
-  const { setStep, step } = useContext(SendFormContext);
+  const { setStep, step, setCurrency } = useContext(SendFormContext);
 
   const handleChooseCurrency = (walletCurrency: IWalletCurrency) => {
-    dispatch(setFocusCurrency(walletCurrency));
+    setCurrency(walletCurrency);
     setStep(step + 1);
   };
 
   return (
     <IonGrid
       className={
-        'ion-padding-top-0 ion-padding-bottom-xxs ion-padding-left-md ion-padding-right-md'
+        'ion-padding-top-md ion-padding-bottom-xxs ion-padding-left-md ion-padding-right-md'
       }
     >
       <IonRow>

@@ -361,5 +361,13 @@
   "History": "记录",
   "All": "全部",
   "NFT": "NFT",
-  "TotalBalance": "总余额"
+  "TotalBalance": "总余额",
+  "Assets": "资产",
+  "SortBy": "排序方式",
+  "Alphabetical": "按字母顺序 A-Z",
+  "Value": "价值",
+  "Filter": "筛选",
+  "Preferences": "偏好设置",
+  "Custom": "自定义",
+  "PreferencesDesc": "取消勾选即可在仪表板中隐藏代币"
 }

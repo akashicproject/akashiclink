@@ -264,15 +264,7 @@ export function SecretWords({
                 className="ion-no-margin"
                 onClick={handleCopy}
               >
-                <CopyIcon
-                  isDim
-                  slot="icon-only"
-                  style={{
-                    fontSize: '0.75rem',
-                    height: '20px',
-                    width: '20px',
-                  }}
-                />
+                <CopyIcon isDim size={20} slot="icon-only" />
                 {t('CopyToClipboard')}
               </CopyClipBoardLabel>
               <IonPopover
@@ -283,7 +275,7 @@ export function SecretWords({
                 className={'copied-popover'}
                 onDidDismiss={() => setPopoverOpen(false)}
               >
-                <IonContent class="ion-padding">{t('Copied')}</IonContent>
+                <IonContent>{t('Copied')}</IonContent>
               </IonPopover>
             </CopyActionButton>
           </IonCol>

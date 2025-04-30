@@ -1,40 +1,16 @@
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useContext, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 
-import { ALLOWED_NETWORKS } from '../../constants/currencies';
+import { useAccountL1Address } from '../../utils/hooks/useAccountAllAddresses';
 import type { DepositChainOption } from '../../utils/hooks/useAccountL1Address';
 import { useFetchAndRemapL1Address } from '../../utils/hooks/useFetchAndRemapL1address';
-import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import CryptoChainAddressItem from '../crypto-currency/crypto-chain-address-item';
-import { DepositModalContext } from './deposit-modal-trigger-button';
+import { DepositModalContext } from './deposit-modal-context-provider';
 
 export const ChooseCurrencyList = () => {
-  const { t } = useTranslation();
   const { setStep, step, setChain } = useContext(DepositModalContext);
   const fetchAndRemapL1Address = useFetchAndRemapL1Address();
-
-  const { activeAccount } = useAccountStorage();
-
-  const currencies: {
-    displayName: string;
-    chain: DepositChainOption;
-    address: string;
-  }[] = [
-    {
-      displayName: t('Chain.AkashicChain'),
-      chain: 'AkashicChain',
-      address: activeAccount?.identity ?? '',
-    },
-    ...ALLOWED_NETWORKS.map((chain) => ({
-      displayName: t(`Chain.${chain.toUpperCase()}`),
-      chain,
-      address:
-        activeAccount?.localStoredL1Addresses?.find(
-          (address) => address.coinSymbol.toLowerCase() === chain.toLowerCase()
-        )?.address ?? '',
-    })),
-  ];
+  const allAddresses = useAccountL1Address();
 
   useEffect(() => {
     fetchAndRemapL1Address();
@@ -54,7 +30,7 @@ export const ChooseCurrencyList = () => {
               'ion-gap-sm ion-display-flex ion-flex-wrap ion-align-items-center ion-flex-direction-column'
             }
           >
-            {currencies.map(({ chain }) => (
+            {allAddresses.map(({ chain }) => (
               <CryptoChainAddressItem
                 key={chain}
                 chain={chain}

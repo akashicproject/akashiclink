@@ -13,11 +13,9 @@ import {
 import axios from 'axios';
 import { closeOutline } from 'ionicons/icons';
 import { debounce } from 'lodash';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAppSelector } from '../../../redux/app/hooks';
-import { selectFocusCurrencyDetail } from '../../../redux/slices/preferenceSlice';
 import { OwnersAPI } from '../../../utils/api';
 import { useAccountStorage } from '../../../utils/hooks/useLocalAccounts';
 import { useOwnerKeys } from '../../../utils/hooks/useOwnerKeys';
@@ -28,6 +26,7 @@ import {
   formAlertResetState,
 } from '../../common/alert/alert';
 import { StyledInput } from '../../common/input/styled-input';
+import { SendFormContext } from '../send-modal-context-provider';
 import type { ValidatedAddressPair } from './types';
 
 const LockedAddress = styled(IonItem)({
@@ -56,7 +55,9 @@ export const SendAddressInput = ({
 
   const [alert, setAlert] = useState(formAlertResetState);
   const { activeAccount } = useAccountStorage();
-  const { chain } = useAppSelector(selectFocusCurrencyDetail);
+  const {
+    currency: { chain },
+  } = useContext(SendFormContext);
   const addresses = useOwnerKeys(activeAccount?.identity ?? '').keys;
 
   const validateAddress = debounce(async (input: string) => {

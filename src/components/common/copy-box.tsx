@@ -20,7 +20,7 @@ export function CopyBox({
   const { t } = useTranslation();
   const handleCopy = async (e: never) => {
     await Clipboard.write({
-      string: copyText || text || '',
+      string: copyText ?? text ?? '',
     });
 
     if (popover.current) popover.current.event = e;
@@ -35,21 +35,30 @@ export function CopyBox({
 
   return (
     <>
-      {label && <IonLabel class="ion-text-size-xs">{label}</IonLabel>}
+      {label && (
+        <IonLabel className="ion-text-size-xs ion-margin-bottom-xxs">
+          {label}
+        </IonLabel>
+      )}
       <BorderedBox compact={compact} lines="full" onClick={handleCopy}>
-        <p className="ion-text-size-sm ion-text-bold">{text}</p>
-        <CopyIcon size={'small'} slot="end" />
-        <IonPopover
-          side="top"
-          alignment="center"
-          ref={popover}
-          isOpen={popoverOpen}
-          className={'copied-popover'}
-          onDidDismiss={() => setPopoverOpen(false)}
+        <p
+          style={{ width: 'calc(100% - 20px)' }}
+          className="ion-text-size-sm ion-text-bold"
         >
-          <IonContent class="ion-padding">{t('Copied')}</IonContent>
-        </IonPopover>
+          {text}
+        </p>
+        <CopyIcon size={16} className={'ion-margin-left-auto'} />
       </BorderedBox>
+      <IonPopover
+        side="top"
+        alignment="center"
+        ref={popover}
+        isOpen={popoverOpen}
+        className={'copied-popover'}
+        onDidDismiss={() => setPopoverOpen(false)}
+      >
+        <IonContent>{t('Copied')}</IonContent>
+      </IonPopover>
     </>
   );
 }

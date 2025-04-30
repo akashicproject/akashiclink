@@ -4,10 +4,8 @@ import Big from 'big.js';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAppSelector } from '../../../redux/app/hooks';
-import { selectFocusCurrencyDetail } from '../../../redux/slices/preferenceSlice';
 import { getPrecision } from '../../../utils/formatAmount';
-import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
+import { useCryptoCurrencySymbolsAndBalances } from '../../../utils/hooks/useCryptoCurrencySymbolsAndBalances';
 import { useInterval } from '../../../utils/hooks/useInterval';
 import { useTxnPresigned } from '../../../utils/hooks/useTxnPresigned';
 import { ShareActionButton } from '../../activity/share-action-button';
@@ -20,15 +18,16 @@ import { ListVerticalLabelValueItem } from '../../common/list/list-vertical-labe
 import { ListCopyTxHashItem } from '../copy-tx-hash';
 import { FromToAddressBlock } from '../from-to-address-block';
 import { QueuedChip } from '../queued-chip';
-import { SendFormContext } from '../send-form-trigger-button';
+import { SendFormContext } from '../send-modal-context-provider';
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const SendConfirmationDetailList = () => {
   const { t } = useTranslation();
-  const { chain } = useAppSelector(selectFocusCurrencyDetail);
+  const { sendConfirm, currency } = useContext(SendFormContext);
   const { isCurrencyTypeToken, currencySymbol, nativeCoinSymbol } =
-    useFocusCurrencySymbolsAndBalances();
-  const { sendConfirm } = useContext(SendFormContext);
+    useCryptoCurrencySymbolsAndBalances(currency);
+  const { chain } = currency;
+
   const { data: signedL1Txn, trigger } = useTxnPresigned();
 
   const txn = sendConfirm?.txn;

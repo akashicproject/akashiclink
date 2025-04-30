@@ -1,4 +1,4 @@
-import { IonImg } from '@ionic/react';
+import { IonIcon } from '@ionic/react';
 
 export const L2Icon = ({ size = 24 }: { size?: number }) => {
   return (
@@ -9,9 +9,9 @@ export const L2Icon = ({ size = 24 }: { size?: number }) => {
         borderRadius: '50%',
       }}
     >
-      <IonImg
+      <IonIcon
         src={'/shared-assets/icons/L2_icon.svg'}
-        style={{ width: 'auto ', height: '100%' }}
+        style={{ width: size, height: size }}
       />
     </span>
   );

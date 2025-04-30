@@ -3,7 +3,7 @@ import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 
 export function AddressScreeningDetails() {
   return (
-    <DashboardLayout showSwitchAccountBar showAddress>
+    <DashboardLayout>
       <AddressScreeningDetail />
     </DashboardLayout>
   );

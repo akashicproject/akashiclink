@@ -10,7 +10,7 @@ import {
 export function SettingsAboutUs() {
   const { t } = useTranslation();
   return (
-    <DashboardLayout showSwitchAccountBar>
+    <DashboardLayout>
       <SettingsWrapper>
         <PageHeader>{t('AboutUs')}</PageHeader>
         <AboutUs backgroundColor="var(--ion-background)" />

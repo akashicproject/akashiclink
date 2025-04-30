@@ -39,7 +39,6 @@ export function NftDetail({
           nft={currentTransfer.nft}
           isBig={true}
           isAASDarkStyle={!isDarkMode}
-          nftImgWrapper="nft-wrapper-transfer"
           screen="transfer"
         />
       </StyledNftWrapper>

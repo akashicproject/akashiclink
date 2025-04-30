@@ -13,7 +13,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useFocusCurrencySymbolsAndBalances } from '../../utils/hooks/useAggregatedBalances';
 import { useConfig } from '../../utils/hooks/useConfig';
 import { useVerifyTxnAndSign } from '../../utils/hooks/useVerifyTxnAndSign';
 import type { FormAlertState } from '../common/alert/alert';
@@ -35,7 +34,7 @@ export const AddressScreeningFormVerifyTxnButton: FC<{
   onAddressReset: () => void;
   setAlert: Dispatch<SetStateAction<FormAlertState>>;
   chain: CoinSymbol;
-  token: CryptoCurrencySymbol;
+  token?: CryptoCurrencySymbol;
 }> = ({
   validatedScanAddress,
   disabled,
@@ -45,7 +44,7 @@ export const AddressScreeningFormVerifyTxnButton: FC<{
   token,
 }) => {
   const { t } = useTranslation();
-  const { nativeCoinSymbol } = useFocusCurrencySymbolsAndBalances();
+
   const { config, isLoading: isLoadingConfig } = useConfig();
   const { setStep, setAddressScanConfirm } = useContext(
     AddressScreeningContext
@@ -79,11 +78,7 @@ export const AddressScreeningFormVerifyTxnButton: FC<{
         FeeDelegationStrategy.None
       );
       if (typeof res === 'string') {
-        setAlert(
-          errorAlertShell(res, {
-            coinSymbol: nativeCoinSymbol,
-          })
-        );
+        setAlert(errorAlertShell(res));
         return;
       }
 

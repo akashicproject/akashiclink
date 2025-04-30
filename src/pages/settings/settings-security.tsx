@@ -32,7 +32,7 @@ export function SettingsSecurity() {
     },
   ];
   return (
-    <DashboardLayout showSwitchAccountBar>
+    <DashboardLayout>
       <SettingsWrapper>
         <PageHeader>{t('Security')}</PageHeader>
         <div
@@ -52,7 +52,7 @@ export function SettingsSecurity() {
                 icon={securityMenuItem.icon}
                 header={securityMenuItem.header}
                 onClick={securityMenuItem.onClick}
-                endComponent={securityMenuItem.endComponent}
+                EndComponent={securityMenuItem.EndComponent}
                 isAccordion={securityMenuItem.isAccordion}
               >
                 {securityMenuItem.children}
