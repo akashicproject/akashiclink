@@ -205,6 +205,8 @@
   "FundsLeftNotRecoverable": "刪除後，帳號中的任何資金都無法恢復！",
   "DoNotClose": "創立時請不要關閉應用程式",
   "TransactionDetails": "交易詳情",
+  "ShareLink": "分享連結",
+  "ShareScreenshot": "分享截圖",
   "ChangePassword": "更改密碼",
   "ChangePasswordInfo": "輸入新密碼並確認，以取代舊密碼。",
   "OldPassword": "舊密碼",

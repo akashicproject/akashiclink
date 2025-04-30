@@ -4,12 +4,16 @@ import { TransactionLayer, TransactionType } from '@helium-pay/backend';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
 
+import { ActivityContainer } from '../../pages/activity/activity-details';
 import { getPrecision, isGasFeeAccurate } from '../../utils/formatAmount';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
+import { L2Icon } from '../common/chain-icon/l2-icon';
+import { NetworkIcon } from '../common/chain-icon/network-icon';
 import { Divider } from '../common/divider';
 import { List } from '../common/list/list';
 import { ListLabelValueItem } from '../common/list/list-label-value-item';
 import { BaseDetails } from './base-details';
+import { ShareActionButton } from './share-action-button';
 
 export function TransactionDetails({
   currentTransfer,
@@ -17,8 +21,40 @@ export function TransactionDetails({
   currentTransfer: ITransactionRecordForExtension;
 }) {
   const { t } = useTranslation();
+
+  const chainName =
+    currentTransfer.layer === TransactionLayer.L2
+      ? t('Chain.AkashicChain')
+      : t(`Chain.${currentTransfer.currency?.chain.toUpperCase()}`);
+
   return (
-    <>
+    <ActivityContainer>
+      <div className={'w-100'}>
+        <div>
+          <div
+            className={
+              'ion-display-flex ion-align-items-center ion-justify-content-between ion-gap-sm'
+            }
+          >
+            <h2>{t('TransactionDetails')}</h2>
+            <ShareActionButton
+              filename={currentTransfer.l2TxnHash}
+              link={currentTransfer.l2TxnHashUrl}
+            />
+          </div>
+          <div className={'ion-display-flex ion-align-items-center ion-gap-sm'}>
+            {currentTransfer.currency?.chain &&
+              (currentTransfer.layer === TransactionLayer.L2 ? (
+                <L2Icon />
+              ) : (
+                <NetworkIcon chain={currentTransfer.currency?.chain} />
+              ))}
+            <span className="ion-text-size-xs" style={{ color: '#958E99' }}>
+              {chainName}
+            </span>
+          </div>
+        </div>
+      </div>
       <BaseDetails currentTransfer={currentTransfer} />
       <Divider style={{ width: '100%' }} className={'ion-margin-vertical'} />
       {currentTransfer.transferType === TransactionType.DEPOSIT ? (
@@ -45,7 +81,7 @@ export function TransactionDetails({
           />
         </List>
       }
-    </>
+    </ActivityContainer>
   );
 }
 const WithdrawDetails = ({

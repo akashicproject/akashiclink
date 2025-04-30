@@ -210,6 +210,8 @@
   "OldPasswordIncorrect": "이전 비밀번호가 올바르지 않습니다. 확인 후 다시 시도하세요.",
   "PasswordChangeSuccess": "비밀번호가 성공적으로 변경되었습니다.",
   "TransactionDetails": "거래 세부 정보",
+  "ShareLink": "Share Link",
+  "ShareScreenshot": "Share Screenshot",
   "linkAlias": "별칭을 Akashic 주소에 연결하기",
   "unlinkNftWarning": "(연결 해제된 NFT를 다시 연결하려면 72시간이 소요됩니다)",
   "MakeSureNoBodyIsLooking": "아무도 보고 있지 않은지 확인",

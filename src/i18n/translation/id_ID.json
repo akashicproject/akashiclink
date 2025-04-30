@@ -210,6 +210,8 @@
   "OldPasswordIncorrect": "Your Old Password is incorrect, please check it and try again",
   "PasswordChangeSuccess": "Password has been successfully changed",
   "TransactionDetails": "Transaction Details",
+  "ShareLink": "Share Link",
+  "ShareScreenshot": "Share Screenshot",
   "linkAlias": "Link your Alias to your Akashic Address",
   "unlinkNftWarning": "(Unlinked NFT requires 72 hours to re-link)",
   "MakeSureNoBodyIsLooking": "Make Sure No Body Is Looking",

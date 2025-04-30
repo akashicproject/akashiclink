@@ -50,7 +50,7 @@ export function BaseDetails({
 
   return (
     <div
-      className="transfer-detail ion-margin-top-lg"
+      className="transfer-detail ion-margin-top-md"
       style={{
         display: 'flex',
         gap: '8px',

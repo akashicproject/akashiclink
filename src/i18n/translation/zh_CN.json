@@ -205,6 +205,8 @@
   "FundsLeftNotRecoverable": "删除后，帐号中的任何资金都无法恢复！",
   "DoNotClose": "创建时请不要关闭应用程序",
   "TransactionDetails": "交易详情",
+  "ShareLink": "分享链接",
+  "ShareScreenshot": "分享截图",
   "ChangePassword": "更改密码",
   "ChangePasswordInfo": "输入新密码并确认，以取代旧密码。",
   "OldPassword": "旧密码",

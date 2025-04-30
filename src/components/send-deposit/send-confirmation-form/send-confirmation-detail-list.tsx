@@ -8,6 +8,7 @@ import { selectFocusCurrencyDetail } from '../../../redux/slices/preferenceSlice
 import { getPrecision } from '../../../utils/formatAmount';
 import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
 import type { ITransactionForSigning } from '../../../utils/nitr0gen/nitr0gen.interface';
+import { ShareActionButton } from '../../activity/share-action-button';
 import { L2Icon } from '../../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../../common/chain-icon/network-icon';
 import { Divider } from '../../common/divider';
@@ -96,6 +97,14 @@ export const SendConfirmationDetailList = ({
               : NetworkDictionary[chain].displayName.replace(/Chain/g, '')}
           </h3>
         </IonText>
+        {txnFinal?.txHash && (
+          <div className={'ion-margin-left-auto'}>
+            <ShareActionButton
+              filename={txnFinal.txHash}
+              link={getUrl('transaction', !!isL2, txnFinal.txHash)}
+            />
+          </div>
+        )}
       </IonItem>
       {
         <div className="ion-margin-bottom-sm">
