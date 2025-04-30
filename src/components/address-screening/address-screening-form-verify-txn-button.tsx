@@ -4,19 +4,22 @@ import {
   type CryptoCurrencySymbol,
   FeeDelegationStrategy,
 } from '@helium-pay/backend';
-import type { Dispatch, FC, SetStateAction } from 'react';
-import { useState } from 'react';
+import {
+  type Dispatch,
+  type FC,
+  type SetStateAction,
+  useContext,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { urls } from '../../constants/urls';
-import { history } from '../../routing/history';
-import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useFocusCurrencySymbolsAndBalances } from '../../utils/hooks/useAggregatedBalances';
 import { useConfig } from '../../utils/hooks/useConfig';
 import { useVerifyTxnAndSign } from '../../utils/hooks/useVerifyTxnAndSign';
 import type { FormAlertState } from '../common/alert/alert';
 import { errorAlertShell } from '../common/alert/alert';
 import { PrimaryButton } from '../common/buttons';
+import { AddressScreeningContext } from './address-screening-new-scan-modal';
 import type { ValidatedScanAddress } from './types';
 
 const StyledPrimaryButton = styled(PrimaryButton)`
@@ -44,6 +47,9 @@ export const AddressScreeningFormVerifyTxnButton: FC<{
   const { t } = useTranslation();
   const { nativeCoinSymbol } = useFocusCurrencySymbolsAndBalances();
   const { config, isLoading: isLoadingConfig } = useConfig();
+  const { setStep, setAddressScanConfirm } = useContext(
+    AddressScreeningContext
+  );
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -83,20 +89,16 @@ export const AddressScreeningFormVerifyTxnButton: FC<{
 
       // once user leave this page, reset the form
       onAddressReset();
-      history.push({
-        pathname: akashicPayPath(urls.addressScreeningNewScanConfirm),
-        state: {
-          addressScanConfirm: {
-            txn: res.txn,
-            signedTxn: res.signedTxn,
-            validatedScanAddress: {
-              ...validatedScanAddress,
-              feeChain: chain,
-              feeToken: token,
-            },
-          },
+      setAddressScanConfirm({
+        txn: res.txn,
+        signedTxn: res.signedTxn,
+        validatedScanAddress: {
+          ...validatedScanAddress,
+          feeChain: chain,
+          feeToken: token,
         },
       });
+      setStep(1);
     } catch {
       setAlert(errorAlertShell('GenericFailureMsg'));
     } finally {

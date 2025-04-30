@@ -1,15 +1,11 @@
 import type { IBaseAcTransaction } from '@helium-pay/backend';
 import { otherError } from '@helium-pay/backend';
 import { IonAlert, IonCol, IonRow } from '@ionic/react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
-import {
-  historyGoBackOrReplace,
-  historyReplace,
-  historyResetStackAndRedirect,
-} from '../../routing/history';
+import { historyGo } from '../../routing/history';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { usePayToScreen } from '../../utils/hooks/usePayToScreen';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
@@ -19,6 +15,7 @@ import {
   formAlertResetState,
 } from '../common/alert/alert';
 import { PrimaryButton, WhiteButton } from '../common/buttons';
+import { AddressScreeningContext } from './address-screening-new-scan-modal';
 import { type AddressScanConfirmationTxnsDetail } from './types';
 
 export const AddressScreeningConfirmationFormActionButtons = ({
@@ -30,6 +27,9 @@ export const AddressScreeningConfirmationFormActionButtons = ({
   const { trigger } = usePayToScreen();
   const { activeAccount } = useAccountStorage();
 
+  const { setStep, setAddressScanConfirm, setIsModalOpen } = useContext(
+    AddressScreeningContext
+  );
   const [forceAlert, setForceAlert] = useState(formAlertResetState);
   const [formAlert, setFormAlert] = useState(formAlertResetState);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,11 +57,12 @@ export const AddressScreeningConfirmationFormActionButtons = ({
         signedPaymentTx: txnsDetail.signedTxn as IBaseAcTransaction,
       });
 
-      historyReplace(urls.addressScreeningDetails, {
+      historyGo(urls.addressScreeningDetails, {
         addressScreeningSearch: {
           id: response._id,
         },
       });
+      setIsModalOpen(false);
     } catch (error) {
       const errorShell = errorAlertShell(unpackRequestErrorMessage(error));
       if (
@@ -79,7 +80,8 @@ export const AddressScreeningConfirmationFormActionButtons = ({
   };
 
   const onCancel = () => {
-    historyGoBackOrReplace();
+    setStep(0);
+    setAddressScanConfirm(undefined);
   };
 
   return (
@@ -94,7 +96,9 @@ export const AddressScreeningConfirmationFormActionButtons = ({
             text: t('OK'),
             role: 'confirm',
             handler: async () => {
-              historyResetStackAndRedirect();
+              setStep(0);
+              setAddressScanConfirm(undefined);
+              setIsModalOpen(false);
               return false; // make it non dismissable
             },
           },

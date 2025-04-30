@@ -22,7 +22,7 @@ export const AddressScreeningForm = () => {
   return (
     <IonGrid
       className={
-        'ion-padding-top-0 ion-padding-bottom-xxs ion-padding-left-md ion-padding-right-md'
+        'ion-padding-top-0 ion-padding-bottom-xxs ion-padding-left-sm ion-padding-right-sm'
       }
     >
       <AddressScreeningAddressInput

@@ -11,8 +11,6 @@ import { Activity } from '../pages/activity/activity';
 import { ActivityDetails } from '../pages/activity/activity-details';
 import { AddressScreeningDetails } from '../pages/address-screening/address-screening-detail';
 import { AddressScreeningHistory } from '../pages/address-screening/address-screening-history';
-import { AddressScreeningNewScan } from '../pages/address-screening/address-screening-new-scan';
-import { AddressScreeningNewScanConfirmation } from '../pages/address-screening/address-screening-new-scan-confirmation';
 import { AkashicPayMain } from '../pages/akashic-main';
 import { CreateWalletPassword } from '../pages/create-wallet/create-wallet-create-password';
 import { CreateWalletSecret } from '../pages/create-wallet/create-wallet-secret';
@@ -160,14 +158,6 @@ export function NavigationTree() {
       {AkashicTab.registerPage(ImportWalletKeypair, urls.importWalletKeypair)}
       {/* address scan flow */}
       {AkashicTab.registerPage(AddressScreeningHistory, urls.addressScreening)}
-      {AkashicTab.registerPage(
-        AddressScreeningNewScan,
-        urls.addressScreeningNewScan
-      )}
-      {AkashicTab.registerPage(
-        AddressScreeningNewScanConfirmation,
-        urls.addressScreeningNewScanConfirm
-      )}
       {AkashicTab.registerPage(
         AddressScreeningDetails,
         urls.addressScreeningDetails

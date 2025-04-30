@@ -2,17 +2,16 @@ import styled from '@emotion/styled';
 import { type IWalletScreening } from '@helium-pay/backend';
 import { IonIcon, IonSpinner, IonText } from '@ionic/react';
 import { addOutline } from 'ionicons/icons';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 import { type GridComponents, Virtuoso } from 'react-virtuoso';
 import { AlertIcon } from 'src/components/common/icons/alert-icon';
 
 import { AddressScreeningHistoryItem } from '../../components/address-screening/address-screening-history-item';
+import { AddressScreeningNewScanModal } from '../../components/address-screening/address-screening-new-scan-modal';
 import { PrimaryButton, WhiteButton } from '../../components/common/buttons';
 import { Divider } from '../../components/common/divider';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
-import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tabs';
 import { useWalletScreenHistory } from '../../utils/hooks/useWalletScreenHistory';
 import { NoActivityText, NoActivityWrapper } from '../activity/activity';
 
@@ -73,7 +72,10 @@ const ListFooter: GridComponents['Footer'] = ({
 
 export const AddressScreeningHistory = () => {
   const { t } = useTranslation();
-  const history = useHistory();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const modalRef = useRef<HTMLIonModalElement>(null);
+
   const { screenings, count, isLoading, isLoadingMore, setSize, size } =
     useWalletScreenHistory();
 
@@ -106,7 +108,9 @@ export const AddressScreeningHistory = () => {
         />
       )}
       {!isLoading && count === 0 && (
-        <NoActivityWrapper>
+        <NoActivityWrapper
+          style={{ marginTop: '100px', marginBottom: '100px' }}
+        >
           <AlertIcon />
           <NoActivityText>{t('NoActivity')}</NoActivityText>
         </NoActivityWrapper>
@@ -145,13 +149,18 @@ export const AddressScreeningHistory = () => {
         <PrimaryButton
           style={{ width: '150px', margin: 0 }}
           onClick={() => {
-            history.push(akashicPayPath(urls.addressScreeningNewScan));
+            setIsModalOpen(true);
           }}
         >
           <IonIcon icon={addOutline} />
           {t('NewScan')}
         </PrimaryButton>
       </SmartScanFooter>
+      <AddressScreeningNewScanModal
+        modal={modalRef}
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+      />
     </DashboardLayout>
   );
 };

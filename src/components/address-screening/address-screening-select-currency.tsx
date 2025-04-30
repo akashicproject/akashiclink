@@ -56,7 +56,7 @@ export const AddressScreeningSelectCurrency: FC<{
         : formAlertResetState
     );
     setDisabled(isNotEnoughBalance);
-  }, [selectedFeeCurrency]);
+  }, [selectedFeeCurrency, aggregatedBalances]);
 
   return (
     <>

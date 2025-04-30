@@ -1,16 +1,14 @@
 import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
 
-import type { LocationState } from '../../routing/history';
 import { AddressScreeningConfirmationDetailList } from './address-screening-confirmation-detail-list';
 import { AddressScreeningConfirmationFormActionButtons } from './address-screening-confirmation-form-action-buttons';
+import { AddressScreeningContext } from './address-screening-new-scan-modal';
 
 export const AddressScreeningConfirmationForm = () => {
   const { t } = useTranslation();
-  const history = useHistory<LocationState>();
-
-  const txnDetail = history.location.state?.addressScanConfirm ?? undefined;
+  const { addressScanConfirm: txnDetail } = useContext(AddressScreeningContext);
 
   // check if coming back from send page, and make ts happy
   if (!txnDetail) {
