@@ -3,8 +3,8 @@ import { IonIcon } from '@ionic/react';
 import { caretDownOutline } from 'ionicons/icons';
 import { useRef, useState } from 'react';
 
-import { ManageAccountsModal } from '../../../pages/manage-accounts/manage-accounts-modal';
 import { useAccountStorage } from '../../../utils/hooks/useLocalAccounts';
+import { ManageAccountsModal } from '../../manage-account/manage-accounts-modal';
 
 export const ChainDiv = styled.div({
   width: '100%',

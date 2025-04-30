@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useRef } from 'react';
 
-import { ManageAccountsModal } from '../../../../src/pages/manage-accounts/manage-accounts-modal';
+import { ManageAccountsModal } from '../../../../src/components/manage-account/manage-accounts-modal';
 
 const ManageAccountsModalComponent = (args: { isOpen: boolean }) => {
   return (

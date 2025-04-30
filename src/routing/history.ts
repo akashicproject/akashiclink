@@ -3,7 +3,7 @@ import type { ITransactionProposalClientSideOtk } from '@helium-pay/backend';
 import { createMemoryHistory } from 'history';
 
 import { type AddressScanConfirmationTxnsDetail } from '../components/address-screening/types';
-import type { SendConfirmationTxnsDetail } from '../components/send-deposit/send-form/types';
+import type { SendConfirmationTxnsDetail } from '../components/send/send-form/types';
 import { LAST_HISTORY_ENTRIES } from '../constants';
 import type { Url } from '../constants/urls';
 import { urls } from '../constants/urls';
