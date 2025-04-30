@@ -1,3 +1,4 @@
+import Big from 'big.js';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
@@ -9,15 +10,15 @@ export const useYesterdayHistoricBalance = () => {
   });
   //save yesterdayBalanceUSDT to state to prevent flicking
   const [yesterdayBalanceUSDT, setYesterdayBalanceUSDT] = useState<
-    string | undefined
+    Big | undefined
   >();
 
   useEffect(() => {
     if (historicBalances?.length === 0) return;
     const next = historicBalances?.[0]?.totalBalanceUSDT;
 
-    if (!next || yesterdayBalanceUSDT === next) return;
-    setYesterdayBalanceUSDT(next);
+    if (!next || yesterdayBalanceUSDT?.eq(next)) return;
+    setYesterdayBalanceUSDT(Big(next));
   }, [historicBalances?.length]);
 
   return {
