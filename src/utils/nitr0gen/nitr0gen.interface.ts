@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
   CoinSymbol,
-  CurrencySymbol,
+  CryptoCurrencySymbol,
   IBaseAcTransaction,
   IInternalFee,
   ITerriAcTransaction,
@@ -14,7 +14,7 @@ import type {
 export interface L2TxDetail {
   toAddress: string;
   coinSymbol: CoinSymbol;
-  tokenSymbol?: CurrencySymbol;
+  tokenSymbol?: CryptoCurrencySymbol;
   amount: string;
   initiatedToNonL2?: string;
   /** LedgerId of L1 wallet if that was input but result was an L2. Helps effectivize some

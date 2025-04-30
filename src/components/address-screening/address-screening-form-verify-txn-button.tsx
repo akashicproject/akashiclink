@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import {
   type CoinSymbol,
-  type CurrencySymbol,
+  type CryptoCurrencySymbol,
   FeeDelegationStrategy,
 } from '@helium-pay/backend';
 import type { Dispatch, FC, SetStateAction } from 'react';
@@ -32,7 +32,7 @@ export const AddressScreeningFormVerifyTxnButton: FC<{
   onAddressReset: () => void;
   setAlert: Dispatch<SetStateAction<FormAlertState>>;
   chain: CoinSymbol;
-  token: CurrencySymbol;
+  token: CryptoCurrencySymbol;
 }> = ({
   validatedScanAddress,
   disabled,

@@ -1,6 +1,6 @@
 import type {
   CoinSymbol,
-  CurrencySymbol,
+  CryptoCurrencySymbol,
   IExchangeRate,
 } from '@helium-pay/backend';
 import { TEST_TO_MAIN } from '@helium-pay/backend';
@@ -15,7 +15,7 @@ import Big from 'big.js';
 export function calculateInternalWithdrawalFee(
   exchangeRates: IExchangeRate[],
   coinSymbol: CoinSymbol,
-  tokenSymbol?: CurrencySymbol
+  tokenSymbol?: CryptoCurrencySymbol
 ): string {
   const internalFeeBase = '0.1';
   const exchangeRate = Big(

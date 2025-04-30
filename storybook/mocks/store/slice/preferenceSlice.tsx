@@ -1,4 +1,4 @@
-import type { CurrencySymbol } from '@helium-pay/backend';
+import type { CryptoCurrencySymbol } from '@helium-pay/backend';
 import { CoinSymbol } from '@helium-pay/backend';
 
 import type { PreferenceState } from '../../../../src/redux/slices/preferenceSlice';
@@ -10,7 +10,7 @@ export const mockFocusCurrency = {
 
 export type mockPreferenceStateParams = {
   coinSymbol?: CoinSymbol;
-  tokenSymbol?: CurrencySymbol;
+  tokenSymbol?: CryptoCurrencySymbol;
 };
 
 export const getMockPreferenceSlice = ({

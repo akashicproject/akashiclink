@@ -1,6 +1,6 @@
 import {
   CoinSymbol,
-  CurrencySymbol,
+  CryptoCurrencySymbol,
   type ICurrency,
   NetworkDictionary,
 } from '@helium-pay/backend';
@@ -40,7 +40,7 @@ export type ICurrencyForFrontend = Omit<ICurrency, 'network'> & {
  */
 export interface IWalletCurrency {
   chain: CoinSymbol;
-  token?: CurrencySymbol;
+  token?: CryptoCurrencySymbol;
   displayName: string;
 }
 
@@ -49,7 +49,7 @@ export interface IWalletCurrency {
  */
 export function makeWalletCurrency(
   chain: CoinSymbol,
-  token?: CurrencySymbol
+  token?: CryptoCurrencySymbol
 ): IWalletCurrency {
   if (!token) {
     return {
@@ -103,7 +103,7 @@ class CurrencyFactory {
   constructor(
     currencies: {
       chain: CoinSymbol;
-      token?: CurrencySymbol;
+      token?: CryptoCurrencySymbol;
       currencyIcon: string;
       darkCurrencyIcon?: string;
       greyCurrencyIcon?: string;
@@ -159,7 +159,7 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
     },
     {
       chain: CoinSymbol.Ethereum_Mainnet,
-      token: CurrencySymbol.USDT,
+      token: CryptoCurrencySymbol.USDT,
       // eslint-disable-next-line sonarjs/no-duplicate-string
       currencyIcon: '/shared-assets/images/usdt.png',
       darkCurrencyIcon: '/shared-assets/images/usdt.png',
@@ -168,7 +168,7 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
     },
     {
       chain: CoinSymbol.Tron,
-      token: CurrencySymbol.USDT,
+      token: CryptoCurrencySymbol.USDT,
       currencyIcon: '/shared-assets/images/usdt.png',
       darkCurrencyIcon: '/shared-assets/images/usdt.png',
       greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
@@ -190,14 +190,14 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
         },
         {
           chain: CoinSymbol.Ethereum_Sepolia,
-          token: CurrencySymbol.USDT,
+          token: CryptoCurrencySymbol.USDT,
           currencyIcon: '/shared-assets/images/usdt.png',
           darkCurrencyIcon: '/shared-assets/images/usdt.png',
           greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
         },
         {
           chain: CoinSymbol.Tron_Shasta,
-          token: CurrencySymbol.TETHER,
+          token: CryptoCurrencySymbol.TETHER,
           currencyIcon: '/shared-assets/images/usdt.png',
           darkCurrencyIcon: '/shared-assets/images/usdt.png',
           greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
@@ -213,16 +213,22 @@ export const ALLOWED_NETWORKS: CoinSymbol[] =
 
 export const ALLOWED_ADDRESS_SCAN_CURRENCY: {
   chain: CoinSymbol;
-  token: CurrencySymbol;
+  token: CryptoCurrencySymbol;
 }[] =
   process.env.REACT_APP_ENABLE_TESTNET_CURRENCIES === 'true'
     ? [
-        { chain: CoinSymbol.Tron_Shasta, token: CurrencySymbol.TETHER },
-        { chain: CoinSymbol.Ethereum_Sepolia, token: CurrencySymbol.USDT },
+        { chain: CoinSymbol.Tron_Shasta, token: CryptoCurrencySymbol.TETHER },
+        {
+          chain: CoinSymbol.Ethereum_Sepolia,
+          token: CryptoCurrencySymbol.USDT,
+        },
       ]
     : [
-        { chain: CoinSymbol.Tron, token: CurrencySymbol.USDT },
-        { chain: CoinSymbol.Ethereum_Mainnet, token: CurrencySymbol.USDT },
+        { chain: CoinSymbol.Tron, token: CryptoCurrencySymbol.USDT },
+        {
+          chain: CoinSymbol.Ethereum_Mainnet,
+          token: CryptoCurrencySymbol.USDT,
+        },
       ];
 
 export const ALLOWED_NETWORK_FOR_ADDRESS_SCREENING: CoinSymbol[] = [

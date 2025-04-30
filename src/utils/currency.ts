@@ -1,6 +1,6 @@
 import type {
   CoinSymbol,
-  CurrencySymbol,
+  CryptoCurrencySymbol,
   IInternalFee,
 } from '@helium-pay/backend';
 import { NetworkDictionary, otherError } from '@helium-pay/backend';
@@ -22,7 +22,7 @@ import Big from 'big.js';
 export function convertFromSmallestUnit(
   amount: string,
   coinSymbol: CoinSymbol,
-  tokenSymbol?: CurrencySymbol
+  tokenSymbol?: CryptoCurrencySymbol
 ): string {
   const bigAmount = Big(amount);
   throwIfNotInteger(bigAmount);
@@ -50,7 +50,7 @@ export function convertFromSmallestUnit(
 export function convertToSmallestUnit(
   amount: string,
   coinSymbol: CoinSymbol,
-  tokenSymbol?: CurrencySymbol
+  tokenSymbol?: CryptoCurrencySymbol
 ): string {
   const conversionFactor = getConversionFactor(coinSymbol, tokenSymbol);
   const convertedAmount = Big(10).pow(conversionFactor).times(amount);
@@ -61,7 +61,7 @@ export function convertToSmallestUnit(
 
 export interface CurrencyObject {
   coinSymbol: CoinSymbol;
-  tokenSymbol?: CurrencySymbol;
+  tokenSymbol?: CryptoCurrencySymbol;
   amount?: string;
   feesEstimate?: string;
   feesPaid?: string;
@@ -117,7 +117,7 @@ export function convertObjectCurrencies<T extends AnyCurrencyData>(
     feesEstimate,
     feesPaid,
   } = object as CurrencyObject;
-  const convert = (value: string, tokenSymbol?: CurrencySymbol) =>
+  const convert = (value: string, tokenSymbol?: CryptoCurrencySymbol) =>
     converter(value, coinSymbol, tokenSymbol);
 
   return {
@@ -142,7 +142,7 @@ export function convertObjectCurrencies<T extends AnyCurrencyData>(
 
 function getConversionFactor(
   coinSymbol: CoinSymbol,
-  tokenSymbol?: CurrencySymbol
+  tokenSymbol?: CryptoCurrencySymbol
 ): number {
   if (!tokenSymbol) return NetworkDictionary[coinSymbol].nativeCoin.decimal;
 

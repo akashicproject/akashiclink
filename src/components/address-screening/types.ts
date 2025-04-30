@@ -1,6 +1,6 @@
 import {
   type CoinSymbol,
-  type CurrencySymbol,
+  type CryptoCurrencySymbol,
   type IBaseAcTransaction,
   type ITerriAcTransaction,
 } from '@helium-pay/backend';
@@ -12,7 +12,7 @@ export type ValidatedScanAddress = {
   scanChain?: CoinSymbol;
   //added after user has selected currency to pay fee with
   feeChain?: CoinSymbol;
-  feeToken?: CurrencySymbol;
+  feeToken?: CryptoCurrencySymbol;
 };
 
 export const validatedScanAddressInitialState: ValidatedScanAddress = {
