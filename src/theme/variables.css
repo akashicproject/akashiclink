@@ -6,6 +6,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont,
     'Helvetica Neue', 'Roboto', sans-serif;
   --ion-text-color: #0b006b;
+  --ion-text-color-alt: #1c1b1f;
 
   /** primary **/
   --ion-color-primary: #1b00b3;
@@ -108,6 +109,7 @@ http://ionicframework.com/docs/theming/ */
   /** header-background also used in setting-naming as icon color**/
   --ion-header-background: #1b1547;
   --ion-slider: #c297ff;
+  --ion-seconday-background: #ffffff;
 
   /** grid **/
   --ion-grid-padding: 16px;
@@ -136,6 +138,7 @@ http://ionicframework.com/docs/theming/ */
   /** list item  **/
   --ion-item-border-color: #e8e0eb;
   --ion-item-background: 'transparent';
+  --ion-item-alt-border-color: #c9c6c7;
 
   /** modal  **/
   --ion-toolbar-background: #ffffff;
@@ -248,11 +251,13 @@ body.dark {
   --ion-color-light-tint: #383a3e;
 
   --ion-text-color: #ffffff;
+  --ion-text-color-alt: #ffffff;
   --ion-text-color-rgb: 255, 255, 255;
 
   --ion-background-color: #060030;
   --ion-background-alt: #150f42;
   --ion-background-color-rgb: 31, 31, 31;
+  --ion-seconday-background: #1c1b1f;
 
   /** buttons **/
   --ion-button-text: #e5e2e1;
@@ -286,6 +291,7 @@ body.dark {
 
   /** list item  **/
   --ion-item-border-color: #2f2f2f;
+  --ion-item-alt-border-color: #484647;
   --ion-item-background: 'transparent';
 
   /** card  **/

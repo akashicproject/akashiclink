@@ -28,14 +28,13 @@ export function useAggregatedBalances() {
       setAggregatedBalances(updatedAggregatedBalances);
     }
   }, [userBalancesStringify]);
-
   return aggregatedBalances;
 }
 
 export function useFocusCurrencySymbolsAndBalances() {
   const aggregatedBalances = useAggregatedBalances();
   const { delegatedFeeList } = useL1TxnDelegatedFees();
-
+  useCryptoCurrencyBalances();
   const walletCurrency = useAppSelector(selectFocusCurrencyDetail);
 
   const isCurrencyTypeToken = typeof walletCurrency.token !== 'undefined';
@@ -72,4 +71,21 @@ export function useFocusCurrencySymbolsAndBalances() {
       }) ?? '0',
     delegatedFee: delegatedFee,
   };
+}
+
+export function useCryptoCurrencyBalances() {
+  const aggregatedBalances = useAggregatedBalances();
+  const chainBalances = new CurrencyMap<string>();
+  const tokenBalances = new CurrencyMap<string>();
+
+  aggregatedBalances.forEach((balance, key) => {
+    const parsedKey = JSON.parse(key);
+    if (parsedKey.token) {
+      tokenBalances.set(parsedKey, balance);
+    } else {
+      chainBalances.set(parsedKey, balance);
+    }
+  });
+  const sortedBalances = new Map([...chainBalances, ...tokenBalances]);
+  return sortedBalances;
 }
