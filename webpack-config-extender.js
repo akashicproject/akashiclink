@@ -73,6 +73,19 @@ module.exports = {
       };
     }
 
+    // Configure ForkTsCheckerWebpackPlugin options through plugins array
+    const ForkTsCheckerWebpackPlugin = webpackConfig.plugins.find(
+      (plugin) => plugin.constructor.name === 'ForkTsCheckerWebpackPlugin'
+    );
+
+    if (ForkTsCheckerWebpackPlugin) {
+      // Update the existing plugin options
+      ForkTsCheckerWebpackPlugin.options = {
+        ...ForkTsCheckerWebpackPlugin.options,
+        memoryLimit: 8192, // Increased from 4096 to 8192 MB
+      };
+    }
+
     return webpackConfig;
   },
 };
