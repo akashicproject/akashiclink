@@ -3,6 +3,7 @@ import type {
   INftTransactionRecord,
   ITransactionRecord,
   ITransactionRecordForFrontend,
+  TransactionType,
 } from '@helium-pay/backend';
 import {
   formatNftTransactionForFrontend,
@@ -79,14 +80,30 @@ export function formatNftTransfers(transfers: INftTransactionRecord[]) {
 
 export function formatMergeAndSortNftAndCryptoTransfers(
   transfers: ITransactionRecord[],
-  nftTransfers: INftTransactionRecord[]
+  nftTransfers: INftTransactionRecord[],
+  filters?: {
+    layer?: TransactionLayer;
+    transferType?: TransactionType;
+    txnType: ('currency' | 'nft')[];
+  }
 ) {
-  const allFormattedTransfers = formatTransfers(transfers).concat(
-    formatNftTransfers(nftTransfers)
+  const allFormattedTransfers = formatTransfers(
+    !filters || filters?.txnType?.includes('currency') ? transfers : []
+  ).concat(
+    formatNftTransfers(
+      !filters || filters?.txnType?.includes('nft') ? nftTransfers : []
+    )
   );
 
   allFormattedTransfers.sort(
     (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
   );
-  return allFormattedTransfers;
+
+  const filteredTransfers = allFormattedTransfers.filter(
+    (txn) =>
+      (!filters?.layer || txn.layer === filters.layer) &&
+      (!filters?.transferType || txn.transferType === filters.transferType)
+  );
+
+  return filteredTransfers;
 }

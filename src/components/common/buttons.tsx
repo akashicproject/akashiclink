@@ -1,9 +1,10 @@
 import type { CSSInterpolation } from '@emotion/serialize/types';
 import styled from '@emotion/styled';
-import { IonButton, IonSpinner } from '@ionic/react';
+import { IonButton, IonIcon, IonSpinner } from '@ionic/react';
 import type { CSSProperties } from 'react';
 
 type IonButtonProps = React.ComponentProps<typeof IonButton>;
+type IonIconProps = React.ComponentProps<typeof IonIcon>;
 
 const squareButtonBaseCss: CSSInterpolation = {
   border: '1px solid transparent',
@@ -157,3 +158,52 @@ export const TextButton = styled(IonButton)({
     padding: 4,
   },
 });
+
+export const IconButton = ({
+  icon,
+  onClick,
+  src,
+  size = 24,
+  children,
+  ...props
+}: Omit<IonButtonProps, 'size'> & {
+  size?: number;
+  icon?: IonIconProps['icon'];
+  src?: IonIconProps['src'];
+}) => {
+  return (
+    <IonButton
+      size="small"
+      fill="clear"
+      onClick={onClick}
+      style={{
+        width: size,
+        height: size,
+        minHeight: size,
+        fontSize: size,
+        '--padding-start': 0,
+        '--padding-end': 0,
+        '--padding-top': 0,
+        '--padding-bottom': 0,
+        '--border-radius': '100%',
+        '--border-width': '0px',
+        ...props?.style,
+      }}
+      {...props}
+    >
+      {children}
+      {!children && (
+        <IonIcon
+          slot="icon-only"
+          icon={icon}
+          src={src}
+          style={{
+            width: size,
+            height: size,
+            padding: 4,
+          }}
+        />
+      )}
+    </IonButton>
+  );
+};

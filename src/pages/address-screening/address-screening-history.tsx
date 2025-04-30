@@ -7,13 +7,16 @@ import { useTranslation } from 'react-i18next';
 import { type GridComponents, Virtuoso } from 'react-virtuoso';
 import { AlertIcon } from 'src/components/common/icons/alert-icon';
 
+import {
+  NoActivityText,
+  NoActivityWrapper,
+} from '../../components/activity/transaction-history-list';
 import { AddressScreeningHistoryItem } from '../../components/address-screening/address-screening-history-item';
 import { AddressScreeningNewScanModal } from '../../components/address-screening/address-screening-new-scan-modal';
 import { PrimaryButton, WhiteButton } from '../../components/common/buttons';
 import { Divider } from '../../components/common/divider';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 import { useWalletScreenHistory } from '../../utils/hooks/useWalletScreenHistory';
-import { NoActivityText, NoActivityWrapper } from '../activity/activity';
 
 export const Wrapper = styled.div({
   display: 'flex',

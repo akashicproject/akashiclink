@@ -19,11 +19,11 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
-import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import {
   NoActivityText,
   NoActivityWrapper,
-} from '../../pages/activity/activity';
+} from '../../components/activity/transaction-history-list';
+import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectTheme } from '../../redux/slices/preferenceSlice';
 import type { LocationState } from '../../routing/history';
