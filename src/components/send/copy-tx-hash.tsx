@@ -63,11 +63,11 @@ export const ListCopyTxHashItem = ({
       </IonLabel>
       <IonNote
         className={`ion-text-size-xs ion-display-flex ion-align-items-center`}
-        style={{ color: color ?? 'var(--ion-text-color)' }}
+        style={{ color: color || 'var(--ion-text-color)' }}
         slot={'end'}
       >
         <IonText
-          className={txHashUrl ? 'ion-text-underline cursor-pointer' : ''}
+          className={txHashUrl ? 'ion-text-underline' : ''}
           onClick={onClickHash}
         >
           {displayLongText(txHash)}
@@ -79,7 +79,7 @@ export const ListCopyTxHashItem = ({
           <CopyIcon
             onClick={onClickCopyIcon}
             slot="icon-only"
-            className="copy-icon cursor-pointer"
+            className="copy-icon"
             isGrey={suffix === 'AS'}
           />
         </div>
@@ -91,7 +91,7 @@ export const ListCopyTxHashItem = ({
           className={'copied-popover'}
           onDidDismiss={() => setPopoverOpen(false)}
         >
-          <IonContent>{t('Copied')}</IonContent>
+          <IonContent class="ion-padding">{t('Copied')}</IonContent>
         </IonPopover>
       </IonNote>
     </div>

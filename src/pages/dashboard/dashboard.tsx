@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { WhiteButton } from '../../components/common/buttons';
 import { LayoutWithActivityTab } from '../../components/page-layout/layout-with-activity-tab';
-import { SelectCoin } from '../../components/send-deposit/select-coin';
+import { SelectCoin } from '../../components/send/select-coin';
 import { SendFormTriggerButton } from '../../components/send-deposit/send-form-trigger-button';
 import { urls } from '../../constants/urls';
 import { akashicPayPath } from '../../routing/navigation-tabs';

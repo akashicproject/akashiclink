@@ -9,7 +9,7 @@ import {
   TransactionLayer,
 } from '@helium-pay/backend';
 
-import type { ValidatedAddressPair } from '../../components/send-deposit/send-form/types';
+import type { ValidatedAddressPair } from '../../components/send/send-form/types';
 import { OwnersAPI } from '../api';
 import {
   convertFromSmallestUnit,

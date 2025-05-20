@@ -12,7 +12,7 @@ import { type RefObject, useContext } from 'react';
 import { SendChooseCurrencyForm } from './send-choose-currency-form/send-choose-currency-form';
 import { SendConfirmationForm } from './send-confirmation-form/send-confirmation-form';
 import { SendForm } from './send-form/send-form';
-import { SendFormContext } from './send-modal-context-provider';
+import { SendFormContext } from './send-form-trigger-button';
 
 export function SendFormModal({
   modal,

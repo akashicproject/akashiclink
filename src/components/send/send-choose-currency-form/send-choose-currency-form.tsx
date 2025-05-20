@@ -5,30 +5,30 @@ import {
   type IWalletCurrency,
   SUPPORTED_CURRENCIES_FOR_EXTENSION,
 } from '../../../constants/currencies';
+import { useAppDispatch } from '../../../redux/app/hooks';
+import { setFocusCurrency } from '../../../redux/slices/preferenceSlice';
 import { CryptoCurrencyList } from '../../crypto-currency/crypto-currency-list';
-import { SendFormContext } from '../send-modal-context-provider';
+import { SendFormContext } from '../send-form-trigger-button';
 
 export const SendChooseCurrencyForm = () => {
-  const { setStep, step, setCurrency } = useContext(SendFormContext);
+  const dispatch = useAppDispatch();
+  const { setStep, step } = useContext(SendFormContext);
 
   const handleChooseCurrency = (walletCurrency: IWalletCurrency) => {
-    setCurrency(walletCurrency);
+    dispatch(setFocusCurrency(walletCurrency));
     setStep(step + 1);
   };
 
   return (
     <IonGrid
       className={
-        'ion-padding-top-md ion-padding-bottom-xxs ion-padding-left-md ion-padding-right-md'
+        'ion-padding-top-0 ion-padding-bottom-xxs ion-padding-left-md ion-padding-right-md'
       }
     >
       <IonRow>
         <IonCol size={'12'}>
           <CryptoCurrencyList
-            minHeight={'80vh'}
-            currencies={SUPPORTED_CURRENCIES_FOR_EXTENSION.list.map(
-              (c) => c.walletCurrency
-            )}
+            currencies={SUPPORTED_CURRENCIES_FOR_EXTENSION.list}
             showUSDValue
             onClick={(walletCurrency) => handleChooseCurrency(walletCurrency)}
           />

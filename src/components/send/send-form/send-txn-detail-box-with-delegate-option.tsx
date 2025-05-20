@@ -12,10 +12,10 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { OwnersAPI } from 'src/utils/api';
+import { getPrecision } from 'src/utils/formatAmount';
 
-import { OwnersAPI } from '../../../utils/api';
-import { getPrecision } from '../../../utils/formatAmount';
-import { useCryptoCurrencySymbolsAndBalances } from '../../../utils/hooks/useCryptoCurrencySymbolsAndBalances';
+import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
 import { useVerifyTxnAndSign } from '../../../utils/hooks/useVerifyTxnAndSign';
 import { errorAlertShell, type FormAlertState } from '../../common/alert/alert';
 import { WhiteButton } from '../../common/buttons';
@@ -24,7 +24,7 @@ import { List } from '../../common/list/list';
 import { ListLabelValueAmountItem } from '../../common/list/list-label-value-amount-item';
 import { ListLabelValueItem } from '../../common/list/list-label-value-item';
 import { Tooltip } from '../../common/tooltip';
-import { SendFormContext } from '../send-modal-context-provider';
+import { SendFormContext } from '../send-form-trigger-button';
 import type { ValidatedAddressPair } from './types';
 
 const StyledWhiteButton = styled(WhiteButton)<{ backgroundColor?: string }>`
@@ -48,9 +48,6 @@ export const SendTxnDetailBoxWithDelegateOption = ({
   onAddressReset: () => void;
 }) => {
   const { t } = useTranslation();
-  const { setStep, setSendConfirm, step, currency } =
-    useContext(SendFormContext);
-
   const {
     isCurrencyTypeToken,
     nativeCoinBalance,
@@ -58,11 +55,12 @@ export const SendTxnDetailBoxWithDelegateOption = ({
     chain,
     token,
     delegatedFee,
-  } = useCryptoCurrencySymbolsAndBalances(currency);
+  } = useFocusCurrencySymbolsAndBalances();
 
   const canDelegate = isCurrencyTypeToken;
   const [networkFee, setNetworkFee] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { setStep, setSendConfirm, step } = useContext(SendFormContext);
   const verifyTxnAndSign = useVerifyTxnAndSign();
 
   const fetchNetworkFee = useCallback(

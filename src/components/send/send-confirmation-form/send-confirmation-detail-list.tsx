@@ -4,10 +4,10 @@ import Big from 'big.js';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAppSelector } from '../../../redux/app/hooks';
+import { selectFocusCurrencyDetail } from '../../../redux/slices/preferenceSlice';
 import { getPrecision } from '../../../utils/formatAmount';
-import { useCryptoCurrencySymbolsAndBalances } from '../../../utils/hooks/useCryptoCurrencySymbolsAndBalances';
-import { useInterval } from '../../../utils/hooks/useInterval';
-import { useTxnPresigned } from '../../../utils/hooks/useTxnPresigned';
+import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
 import { ShareActionButton } from '../../activity/share-action-button';
 import { L2Icon } from '../../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../../common/chain-icon/network-icon';
@@ -17,18 +17,15 @@ import { ListLabelValueItem } from '../../common/list/list-label-value-item';
 import { ListVerticalLabelValueItem } from '../../common/list/list-vertical-label-value-item';
 import { ListCopyTxHashItem } from '../copy-tx-hash';
 import { FromToAddressBlock } from '../from-to-address-block';
-import { QueuedChip } from '../queued-chip';
-import { SendFormContext } from '../send-modal-context-provider';
+import { SendFormContext } from '../send-form-trigger-button';
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const SendConfirmationDetailList = () => {
   const { t } = useTranslation();
-  const { sendConfirm, currency } = useContext(SendFormContext);
+  const { chain } = useAppSelector(selectFocusCurrencyDetail);
   const { isCurrencyTypeToken, currencySymbol, nativeCoinSymbol } =
-    useCryptoCurrencySymbolsAndBalances(currency);
-  const { chain } = currency;
-
-  const { data: signedL1Txn, trigger } = useTxnPresigned();
+    useFocusCurrencySymbolsAndBalances();
+  const { sendConfirm } = useContext(SendFormContext);
 
   const txn = sendConfirm?.txn;
   const txnFinal = sendConfirm?.txnFinal;
@@ -46,11 +43,12 @@ export const SendConfirmationDetailList = () => {
     .add(internalFee)
     .add(isCurrencyTypeToken ? Big(0) : totalFee);
 
-  const feeForPrecision = totalFee.gt(0)
-    ? totalFee.toString()
-    : internalFee.gt(0)
-      ? internalFee.toString()
-      : '0';
+  const feeForPrecision =
+    totalFee > Big(0)
+      ? totalFee.toString()
+      : internalFee > Big(0)
+        ? internalFee.toString()
+        : '0';
 
   const precision = getPrecision(txn?.amount ?? '0', feeForPrecision);
 
@@ -81,21 +79,6 @@ export const SendConfirmationDetailList = () => {
       ? currencySymbol + (isL2 ? ` (${nativeCoinSymbol})` : '')
       : nativeCoinSymbol;
 
-  // Presigned L1 txn returns presignedUmid instead of l2 tx hash
-  // Periodically fetches L2 txHash with presignedUmid
-  useInterval(() => {
-    if (!txnFinal?.isPresigned || !txnFinal?.txHash || !!signedL1Txn?.l2TxnHash)
-      return;
-
-    trigger({
-      preSignedUmid: txnFinal?.txHash ?? '',
-    });
-  }, 1000);
-
-  const txHash = txnFinal?.isPresigned
-    ? signedL1Txn?.l2TxnHash
-    : txnFinal?.txHash;
-
   return (
     <List lines="none">
       <IonItem className={'ion-margin-bottom-xs'}>
@@ -107,26 +90,30 @@ export const SendConfirmationDetailList = () => {
               : NetworkDictionary[chain].displayName.replace(/Chain/g, '')}
           </h3>
         </IonText>
-        {txHash && (
+        {txnFinal?.txHash && (
           <div className={'ion-margin-left-auto'}>
             <ShareActionButton
-              filename={txHash}
-              link={getUrl('transaction', !!isL2, txHash)}
+              filename={txnFinal.txHash}
+              link={getUrl('transaction', !!isL2, txnFinal.txHash)}
             />
           </div>
         )}
       </IonItem>
-      <ListVerticalLabelValueItem
-        label={t('InputAddress')}
-        value={validatedAddressPair?.userInputToAddress}
-      />
+      {
+        <div className="ion-margin-bottom-sm">
+          <ListVerticalLabelValueItem
+            label={t('InputAddress')}
+            value={validatedAddressPair?.userInputToAddress}
+          />
+        </div>
+      }
       {!txnFinal && (
         <ListVerticalLabelValueItem
           label={t('SendTo')}
           value={validatedAddressPair?.convertedToAddress}
         />
       )}
-      {txnFinal && (
+      {txnFinal?.txHash && (
         <>
           <IonItem>
             <FromToAddressBlock
@@ -140,17 +127,12 @@ export const SendConfirmationDetailList = () => {
               toAddressUrl={getUrl('account', !!isL2, txn?.toAddress ?? '-')}
             />
           </IonItem>
-          {txHash && (
-            <IonItem>
-              <ListCopyTxHashItem
-                txHash={txHash}
-                txHashUrl={getUrl('transaction', !!isL2, txHash)}
-              />
-            </IonItem>
-          )}
-          {!txHash && (
-            <ListLabelValueItem label={t('txHash')} value={<QueuedChip />} />
-          )}
+          <IonItem>
+            <ListCopyTxHashItem
+              txHash={txnFinal.txHash}
+              txHashUrl={getUrl('transaction', !!isL2, txnFinal.txHash)}
+            />
+          </IonItem>
         </>
       )}
       <IonItem>

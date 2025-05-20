@@ -4,11 +4,11 @@ import type { InputChangeEventDetail, InputCustomEvent } from '@ionic/react';
 import { IonChip, IonCol, IonInput, IonRow, IonText } from '@ionic/react';
 import Big from 'big.js';
 import { debounce } from 'lodash';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useCryptoCurrencySymbolsAndBalances } from '../../../utils/hooks/useCryptoCurrencySymbolsAndBalances';
-import { useCalculateCurrencyL2WithdrawalFee } from '../../../utils/hooks/useExchangeRates';
+import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
+import { useCalculateFocusCurrencyL2WithdrawalFee } from '../../../utils/hooks/useExchangeRates';
 import {
   AlertBox,
   errorAlertShell,
@@ -17,7 +17,6 @@ import {
 import { TextButton } from '../../common/buttons';
 import { L2Icon } from '../../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../../common/chain-icon/network-icon';
-import { SendFormContext } from '../send-modal-context-provider';
 import { SendTxnDetailBox } from './send-txn-detail-box';
 import { SendTxnDetailBoxWithDelegateOption } from './send-txn-detail-box-with-delegate-option';
 import type { ValidatedAddressPair } from './types';
@@ -54,8 +53,6 @@ export const SendAmountInputAndDetail = ({
   const [isFocused, setIsFocused] = useState(false);
   const handleBlur = () => setIsFocused(false);
   const handleFocus = () => setIsFocused(true);
-
-  const { currency } = useContext(SendFormContext);
   const {
     isCurrencyTypeToken,
     networkCurrencyCombinedDisplayName,
@@ -65,11 +62,11 @@ export const SendAmountInputAndDetail = ({
     nativeCoinSymbol,
     chain,
     delegatedFee,
-  } = useCryptoCurrencySymbolsAndBalances(currency);
+  } = useFocusCurrencySymbolsAndBalances();
 
   const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
 
-  const calculateL2Fee = useCalculateCurrencyL2WithdrawalFee(currency);
+  const calculateL2Fee = useCalculateFocusCurrencyL2WithdrawalFee();
 
   const isAmountLargerThanZero = amount !== '' && Big(amount).gt(0);
 

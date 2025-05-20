@@ -22,7 +22,7 @@ import {
   formAlertResetState,
 } from '../../common/alert/alert';
 import { PrimaryButton, WhiteButton } from '../../common/buttons';
-import { SendFormContext } from '../send-modal-context-provider';
+import { SendFormContext } from '../send-form-trigger-button';
 
 export const SendConfirmationFormActionButtons = () => {
   const { t } = useTranslation();
@@ -131,7 +131,6 @@ export const SendConfirmationFormActionButtons = () => {
       setSendConfirm({
         ...txnsDetail,
         txnFinal: {
-          isPresigned: response.isPresigned,
           txHash: response.txHash,
           feesEstimate: response.feesEstimate,
           delegatedFee: txnsDetail.delegatedFee,

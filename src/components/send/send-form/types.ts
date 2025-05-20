@@ -36,7 +36,6 @@ export interface SendConfirmationTxnsDetail {
 
 export interface SendConfirmationTxnFinal {
   error?: string;
-  isPresigned?: boolean;
   txHash?: string;
   feesEstimate?: string;
   delegatedFee?: string;
