@@ -29,7 +29,11 @@ export const TotalBalance = () => {
   );
 
   const balanceDiffPercent = Big(balanceDiff)
-    .div(yesterdayBalanceUSDT ?? '1')
+    .div(
+      yesterdayBalanceUSDT && !yesterdayBalanceUSDT.eq(0)
+        ? yesterdayBalanceUSDT
+        : '1'
+    )
     .times(100);
 
   const relativeSign = balanceDiff?.gte(0) ? '+' : '-';
