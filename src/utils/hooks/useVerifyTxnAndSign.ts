@@ -84,7 +84,7 @@ export const useVerifyTxnAndSign = () => {
         if (account.isFxBp) {
           // sign transaction from backend
           const { preparedTxn } = await OwnersAPI.prepareL2Txn({
-            signedTxn: txBody,
+            signedTx: txBody,
           });
           txBody = preparedTxn;
         }
