@@ -21,7 +21,6 @@
 @use 'ion-alert';
 @use 'ion-segment-button';
 @use 'ion-list';
-@use 'ion-modal';
 
 .w-100 {
   width: 100%;
@@ -33,12 +32,4 @@
 
 .button-transparent::part(native) {
   background: transparent;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.cursor-default {
-  cursor: default;
 }
