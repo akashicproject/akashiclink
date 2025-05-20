@@ -106,7 +106,6 @@
   "Copied": "Copied",
   "ErrorPageHeading": "Oops, something went wrong.",
   "ErrorPageDesc": "We are sorry about the inconvenience. Please contact our customer service, or",
-  "Coin": "Coin",
   "PrivateKey": "Private key",
   "ConfirmEmailSent": "An activation code has been sent. Please check {{email}} to complete the update.",
   "GenericFailureMsg": "Your operation failed, please try again later.",
@@ -357,5 +356,10 @@
   "IncomingCount": "Incoming count",
   "OutgoingCount": "Outgoing count",
   "ReceivingCryptoWarning": "We do not recommend receiving any cryptocurrency from this account",
+  "Withdrawal": "Withdrawal",
+  "History": "History",
+  "All": "All",
+  "NFT": "NFT",
+  "Coin": "Coin",
   "TotalBalance": "Total Balance"
 }

@@ -10,6 +10,7 @@ import {
   IonCol,
   IonGrid,
   IonIcon,
+  IonImg,
   IonLabel,
   IonRow,
 } from '@ionic/react';
@@ -18,13 +19,16 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
-import type { LocationState } from '../../routing/history';
-import { useWalletScreenDetail } from '../../utils/hooks/useWalletScreenDetail';
 import {
   NoActivityText,
   NoActivityWrapper,
-} from '../activity/transaction-history-list';
-import { NetworkIcon } from '../common/chain-icon/network-icon';
+} from '../../components/activity/transaction-history-list';
+import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectTheme } from '../../redux/slices/preferenceSlice';
+import type { LocationState } from '../../routing/history';
+import { themeType } from '../../theme/const';
+import { useWalletScreenDetail } from '../../utils/hooks/useWalletScreenDetail';
 import { Divider } from '../common/divider';
 import { AlertIcon } from '../common/icons/alert-icon';
 import { RiskGraph } from '../common/risk-graph';
@@ -32,7 +36,7 @@ import { RiskGraph } from '../common/risk-graph';
 const IconWrapper = styled.div({
   display: 'flex',
   gap: '8px',
-  justifyContent: 'start',
+  justifyContent: 'center',
 });
 const Address = styled.div({
   textAlign: 'center',
@@ -43,7 +47,7 @@ const Address = styled.div({
 const AddressWrapper = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'start',
+  justifyContent: 'center',
 });
 const StyledIonCard = styled(IonCard)({
   background: 'var(--ion-background-color)',
@@ -58,6 +62,7 @@ const StyledIonCardContent = styled(IonCardContent)({
   justifyContent: 'space-between',
   gap: '12px',
 });
+const currenciesIcon = [...SUPPORTED_CURRENCIES_FOR_EXTENSION.list];
 
 const getBadgeStyle = (riskLevel: RiskLevel) => {
   const styles = {
@@ -83,7 +88,7 @@ const getBadgeStyle = (riskLevel: RiskLevel) => {
     },
   };
   return {
-    padding: '4px 8px',
+    padding: '8px 16px',
     borderRadius: '8px',
     fontWeight: 'bold',
     border: '1px solid',
@@ -105,7 +110,7 @@ const BadgeItem: React.FC<BadgeItemProps> = ({ label, value, riskLevel }) => (
     >
       {label}
     </IonLabel>
-    <IonBadge className="ion-text-size-sm" style={getBadgeStyle(riskLevel)}>
+    <IonBadge className="ion-text-size-md" style={getBadgeStyle(riskLevel)}>
       {value}
     </IonBadge>
   </div>
@@ -132,7 +137,7 @@ const OverviewItem: React.FC<OverviewItemProps> = ({
     <div style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
       <span
         style={{
-          width: '2px',
+          width: '3px',
           height: '32px',
           background: 'linear-gradient(to bottom, #6a5acd 50%, #d3d3d3 50%)',
         }}
@@ -175,6 +180,10 @@ export const AddressScreeningDetail = () => {
   const history = useHistory<LocationState>();
 
   const { trigger, screening, isMutating } = useWalletScreenDetail();
+  const storedTheme = useAppSelector(selectTheme);
+  const currencyObj = currenciesIcon.find(
+    (c) => c.walletCurrency.chain === screening?.coinSymbol
+  );
 
   const addressScreeningId =
     history.location.state?.addressScreeningSearch?.id ?? undefined;
@@ -203,7 +212,15 @@ export const AddressScreeningDetail = () => {
       {!isMutating && screening && (
         <>
           <IconWrapper>
-            <NetworkIcon size={32} chain={screening?.coinSymbol} />
+            <IonImg
+              alt=""
+              src={
+                storedTheme === themeType.DARK
+                  ? currencyObj?.darkCurrencyIcon
+                  : currencyObj?.currencyIcon
+              }
+              style={{ height: '32px', width: '32px' }}
+            />
             <AddressWrapper>
               <div className={'ion-text-size-xxs ion-text-bold'}>
                 {screening.coinSymbol}

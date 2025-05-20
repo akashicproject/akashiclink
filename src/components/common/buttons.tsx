@@ -151,14 +151,11 @@ export const TabButton = styled(IonButton)({
 
 /** Button is just underlined text */
 export const TextButton = styled(IonButton)({
-  ...buttonTextBaseCss,
   background: 'none',
-  '--background': 'none',
   textDecoration: 'underline',
   minHeight: 0,
   ['&::part(native)']: {
     padding: 4,
-    color: 'var(--ion-color-primary)',
   },
 });
 

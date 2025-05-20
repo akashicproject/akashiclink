@@ -357,5 +357,9 @@
   "IncomingCount": "传入计数",
   "OutgoingCount": "传出计数",
   "ReceivingCryptoWarning": "我们不建议从该账号接收任何加密货币",
+  "Withdrawal": "提款",
+  "History": "记录",
+  "All": "全部",
+  "NFT": "NFT",
   "TotalBalance": "总余额"
 }
