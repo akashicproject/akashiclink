@@ -93,6 +93,7 @@ export function compareWalletCurrencies(
 export interface ICurrencyForExtension extends ICurrencyForFrontend {
   walletCurrency: IWalletCurrency;
   currencyIcon: string;
+  balance?: string;
   darkCurrencyIcon?: string;
   greyCurrencyIcon?: string;
 }
