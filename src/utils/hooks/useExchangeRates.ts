@@ -2,12 +2,13 @@ import {
   type CoinSymbol,
   type CryptoCurrencySymbol,
   type IExchangeRate,
+  TEST_TO_MAIN,
 } from '@helium-pay/backend';
 import Big from 'big.js';
 import useSWR from 'swr';
 
-import { type IWalletCurrency } from '../../constants/currencies';
-import { getMainnetEquivalent } from '../chain';
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
 import { calculateInternalWithdrawalFee } from '../internal-fee';
 import fetcher from '../ownerFetcher';
 
@@ -22,17 +23,12 @@ export const useExchangeRates = () => {
   };
 };
 
-export const useCalculateCurrencyL2WithdrawalFee = (
-  walletCurrency: IWalletCurrency
-) => {
+export const useCalculateFocusCurrencyL2WithdrawalFee = () => {
   const { exchangeRates } = useExchangeRates();
+  const { chain, token } = useAppSelector(selectFocusCurrencyDetail);
 
   return () => {
-    return calculateInternalWithdrawalFee(
-      exchangeRates,
-      walletCurrency.chain,
-      walletCurrency.token
-    );
+    return calculateInternalWithdrawalFee(exchangeRates, chain, token);
   };
 };
 
@@ -47,7 +43,8 @@ export const useValueOfAmountInUSDT = () => {
     const exchangeRate = Big(
       exchangeRates.find(
         (ex) =>
-          !tokenSymbol && ex.coinSymbol === getMainnetEquivalent(coinSymbol)
+          !tokenSymbol &&
+          ex.coinSymbol === (TEST_TO_MAIN.get(coinSymbol) || coinSymbol)
       )?.price || 1
     );
 

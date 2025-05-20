@@ -1,7 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import {
   type CoinSymbol,
-  type CurrencySymbol,
+  type CryptoCurrencySymbol,
   type FeeDelegationStrategy,
   type IBaseAcTransaction,
   type IWithdrawalProposal,
@@ -47,7 +47,7 @@ export const useVerifyTxnAndSign = () => {
     validatedAddressPair: ValidatedAddressPair,
     amount: string,
     coinSymbol: CoinSymbol,
-    tokenSymbol?: CurrencySymbol,
+    tokenSymbol?: CryptoCurrencySymbol,
     feeDelegationStrategy?: FeeDelegationStrategy
   ): Promise<string | UseVerifyAndSignResponse> => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);

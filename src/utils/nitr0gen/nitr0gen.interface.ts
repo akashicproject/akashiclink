@@ -31,11 +31,6 @@ export interface IOnboardedIdentity {
   ledgerId: string;
 }
 
-export interface IStreamRecord {
-  id: string;
-  name?: string;
-}
-
 /** ********* AC Responses ********* **/
 
 /**
@@ -51,8 +46,8 @@ export interface ActiveLedgerResponse<T = any> {
     errors?: string[];
   };
   $streams: {
-    new: IStreamRecord[];
-    updated: IStreamRecord[];
+    new: any[];
+    updated: any[];
   };
   $responses?: T[];
   $debug?: any;
@@ -69,7 +64,6 @@ export interface IKeyCreationResponse {
 export interface ITransactionSuccessResponse {
   isSuccess: true;
   txHash: string;
-  isPresigned: boolean;
   // Should probably not be optional. But fuck me this code is a mess.
   feesEstimate?: string;
 }

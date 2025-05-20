@@ -3,9 +3,8 @@ import type {
   CryptoCurrencySymbol,
   IExchangeRate,
 } from '@helium-pay/backend';
+import { TEST_TO_MAIN } from '@helium-pay/backend';
 import Big from 'big.js';
-
-import { getMainnetEquivalent } from './chain';
 
 /**
  * Calculates internal withdrawal fee for the specified amount to send. Fee is charged in same currency as user wants to send.
@@ -21,8 +20,10 @@ export function calculateInternalWithdrawalFee(
   const internalFeeBase = '0.1';
   const exchangeRate = Big(
     exchangeRates.find(
-      (ex) => !tokenSymbol && ex.coinSymbol === getMainnetEquivalent(coinSymbol)
-    )?.price ?? 1
+      (ex) =>
+        !tokenSymbol &&
+        ex.coinSymbol === (TEST_TO_MAIN.get(coinSymbol) || coinSymbol)
+    )?.price || 1
   );
 
   return Big(internalFeeBase).div(exchangeRate).toPrecision(2);
