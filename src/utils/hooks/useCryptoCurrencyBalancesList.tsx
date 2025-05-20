@@ -18,7 +18,7 @@ export function useCryptoCurrencyBalancesList() {
       )?.balance ?? '0';
 
     const balanceInUsd = Big(
-      getChainExchangeRate(currency.walletCurrency.chain, exchangeRates)
+      getChainExchangeRate(currency.walletCurrency, exchangeRates)
     ).times(balance ?? 0);
 
     return {

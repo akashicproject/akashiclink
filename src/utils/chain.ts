@@ -3,17 +3,21 @@ import {
   type IExchangeRate,
   TEST_TO_MAIN,
 } from '@helium-pay/backend';
+
+import { type IWalletCurrency } from '../constants/currencies';
 export const getMainnetEquivalent = (coinSymbol: CoinSymbol) => {
   return TEST_TO_MAIN.get(coinSymbol) ?? coinSymbol;
 };
 
 export const getChainExchangeRate = (
-  coinSymbol: CoinSymbol,
+  walletCurrency: IWalletCurrency,
   exchangeRates: IExchangeRate[]
 ) => {
   return (
     exchangeRates.find(
-      (ex: IExchangeRate) => ex.coinSymbol === getMainnetEquivalent(coinSymbol)
-    )?.price ?? 0
+      (ex: IExchangeRate) =>
+        !walletCurrency.token &&
+        ex.coinSymbol === getMainnetEquivalent(walletCurrency.chain)
+    )?.price ?? 1
   );
 };

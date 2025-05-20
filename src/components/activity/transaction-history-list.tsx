@@ -351,6 +351,7 @@ export const TransactionHistoryList: React.FC<{
       )}
       {isDataLoaded && formattedTransfers.length > 0 && (
         <Virtuoso
+          className="ion-content-scroll-host"
           style={{
             margin: '8px 0px',
             minHeight:

@@ -40,7 +40,7 @@ export function TransactionDetails({
               link={currentTransfer.l2TxnHashUrl}
             />
           </div>
-          <div className={'ion-display-flex ion-align-items-center ion-gap-sm'}>
+          <div className={'ion-display-flex ion-align-items-center ion-gap-xs'}>
             {currentTransfer.currency?.chain &&
               (currentTransfer.layer === TransactionLayer.L2 ? (
                 <L2Icon />
