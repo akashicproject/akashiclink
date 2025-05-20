@@ -85,6 +85,7 @@ export function formatMergeAndSortNftAndCryptoTransfers(
     layer?: TransactionLayer;
     transferType?: TransactionType;
     txnType: ('currency' | 'nft')[];
+    currency?: IWalletCurrency;
   }
 ) {
   const allFormattedTransfers = formatTransfers(
@@ -102,7 +103,10 @@ export function formatMergeAndSortNftAndCryptoTransfers(
   const filteredTransfers = allFormattedTransfers.filter(
     (txn) =>
       (!filters?.layer || txn.layer === filters.layer) &&
-      (!filters?.transferType || txn.transferType === filters.transferType)
+      (!filters?.transferType || txn.transferType === filters.transferType) &&
+      (!filters?.currency ||
+        `${txn.currency?.chain}-${txn.currency?.token ?? ''}` ===
+          `${filters.currency?.chain}-${filters.currency?.token ?? ''}`)
   );
 
   return filteredTransfers;

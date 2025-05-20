@@ -13,6 +13,7 @@ import { type MouseEvent, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type GridComponents, Virtuoso } from 'react-virtuoso';
 
+import { type IWalletCurrency } from '../../constants/currencies';
 import { urls } from '../../constants/urls';
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectTheme } from '../../redux/slices/preferenceSlice';
@@ -24,7 +25,7 @@ import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
 import { IconButton, OutlineButton, WhiteButton } from '../common/buttons';
 import { Divider } from '../common/divider';
 import { AlertIcon } from '../common/icons/alert-icon';
-import { OneActivity } from './one-activity';
+import { TransactionHistoryListItem } from './transaction-history-list-item';
 
 const ALL = 'All';
 
@@ -98,7 +99,7 @@ export const NoActivityWrapper = styled.div({
   flexDirection: 'column',
   alignItems: 'center',
   gap: '8px',
-  marginTop: '200px',
+  marginTop: '80px',
 });
 export const NoActivityText = styled.div({
   fontFamily: 'Nunito Sans',
@@ -203,12 +204,16 @@ export const TransactionHistoryList: React.FC<{
   isFilterLayer?: boolean;
   isFilterType?: boolean;
   isFilterNFT?: boolean;
+  currency?: IWalletCurrency;
   minHeight?: string;
+  onClick?: () => void;
 }> = ({
   isFilterLayer = false,
   isFilterType = false,
   isFilterNFT = false,
+  currency,
   minHeight,
+  onClick,
 }) => {
   const storedTheme = useAppSelector(selectTheme);
 
@@ -243,6 +248,7 @@ export const TransactionHistoryList: React.FC<{
     {
       ...(layerFilter !== ALL && { layer: layerFilter }),
       ...(transferTypeFilter !== ALL && { transferType: transferTypeFilter }),
+      ...(!!currency && { currency: currency }),
       txnType: [
         ...(txnTypeFilter.coin ? ['currency'] : []),
         ...(txnTypeFilter.nft ? ['nft'] : []),
@@ -363,8 +369,9 @@ export const TransactionHistoryList: React.FC<{
                 : undefined,
           }}
           itemContent={(index, transfer) => (
-            <OneActivity
+            <TransactionHistoryListItem
               onClick={() => {
+                onClick && onClick();
                 historyGo(urls.activityDetails, {
                   activityDetails: {
                     currentTransfer: transfer,
