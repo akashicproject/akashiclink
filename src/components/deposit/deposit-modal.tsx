@@ -12,7 +12,7 @@ import { type RefObject, useContext, useEffect } from 'react';
 import { useFetchAndRemapL1Address } from '../../utils/hooks/useFetchAndRemapL1address';
 import { ChooseCurrencyList } from './choose-currency-list';
 import { CurrencyQrCodeAddress } from './currency-qr-code-address';
-import { DepositModalContext } from './deposit-modal-context-provider';
+import { DepositModalContext } from './deposit-modal-trigger-button';
 
 export function DepositModal({
   modal,

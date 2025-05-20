@@ -9,7 +9,7 @@ import { L2Icon } from '../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../common/chain-icon/network-icon';
 import { CopyBox } from '../common/copy-box';
 import { CurrencyQrCode } from './currency-qr-code';
-import { DepositModalContext } from './deposit-modal-context-provider';
+import { DepositModalContext } from './deposit-modal-trigger-button';
 import { GenerateL1AddressButton } from './generate-l1-address-button';
 
 const CoinWrapper = styled.div({
@@ -64,7 +64,7 @@ export const CurrencyQrCodeAddress = () => {
             </p>
           </IonText>
         </IonCol>
-        <IonCol size="12">
+        <IonCol size="10">
           {(isAC || address) && (
             <CopyBox label={t('DepositAddress')} text={address ?? '-'} />
           )}
