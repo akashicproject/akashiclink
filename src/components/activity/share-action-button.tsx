@@ -111,6 +111,10 @@ export const ShareActionButton = ({
       )}
       {/* action sheet for mobile, let user choose what they want to share */}
       <IonActionSheet
+        style={{
+          '--background': 'var(--ion-background-color)',
+          '--button-color': 'var(--ion-text-color-alt)',
+        }}
         isOpen={isActionSheetOpen}
         buttons={[
           {
@@ -119,12 +123,16 @@ export const ShareActionButton = ({
               handleShareLink();
             },
           },
-          {
-            text: t('ShareScreenshot'),
-            handler: () => {
-              handleShareImage();
-            },
-          },
+          ...(isPlatform('android')
+            ? [
+                {
+                  text: t('ShareScreenshot'),
+                  handler: () => {
+                    handleShareImage();
+                  },
+                },
+              ]
+            : []),
           {
             text: t('Cancel'),
             role: 'cancel',
