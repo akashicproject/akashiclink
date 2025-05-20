@@ -113,12 +113,12 @@ export const SendAmountInputAndDetail = ({
   };
 
   const onClickUseMax = () => {
-    setAlert(formAlertResetState);
-    setAmount(
-      Big(currencyBalance)
-        .sub(isL2 ? calculateL2Fee() : delegatedFee)
-        .toString()
+    const maxAmount = Big(currencyBalance).sub(
+      isL2 ? calculateL2Fee() : delegatedFee
     );
+    if (maxAmount.lte(0)) return;
+    setAlert(formAlertResetState);
+    setAmount(maxAmount.toString());
   };
 
   return (
