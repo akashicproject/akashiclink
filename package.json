@@ -219,7 +219,12 @@
         }
       ],
       "@semantic-release/release-notes-generator",
-      "@semantic-release/gitlab",
+      [
+        "@semantic-release/gitlab",
+        {
+          "successCommentCondition": false
+        }
+      ],
       [
         "@semantic-release/exec",
         {
