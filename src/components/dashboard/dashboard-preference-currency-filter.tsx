@@ -44,7 +44,7 @@ export const DashboardPreferenceCurrencyFilter = () => {
           </IonText>
           <Virtuoso
             style={{
-              minHeight: 'calc(60vh - 110px  - var(--ion-safe-area-bottom)',
+              minHeight: 'calc(60vh - 110px - var(--ion-safe-area-bottom)',
             }}
             data={SUPPORTED_CURRENCIES_FOR_EXTENSION.list}
             itemContent={(_, { walletCurrency }) => (
@@ -63,7 +63,7 @@ export const DashboardPreferenceCurrencyFilter = () => {
               >
                 <div
                   className={
-                    'ion-display-flex ion-align-items-center ion-gap-xxs'
+                    'ion-display-flex ion-align-items-center ion-gap-sm'
                   }
                 >
                   <CryptoCurrencyIcon currency={walletCurrency} size={24} />
