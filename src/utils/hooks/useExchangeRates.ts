@@ -2,13 +2,13 @@ import {
   type CoinSymbol,
   type CryptoCurrencySymbol,
   type IExchangeRate,
-  TEST_TO_MAIN,
 } from '@helium-pay/backend';
 import Big from 'big.js';
 import useSWR from 'swr';
 
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
+import { getMainnetEquivalent } from '../chain';
 import { calculateInternalWithdrawalFee } from '../internal-fee';
 import fetcher from '../ownerFetcher';
 
@@ -43,8 +43,7 @@ export const useValueOfAmountInUSDT = () => {
     const exchangeRate = Big(
       exchangeRates.find(
         (ex) =>
-          !tokenSymbol &&
-          ex.coinSymbol === (TEST_TO_MAIN.get(coinSymbol) || coinSymbol)
+          !tokenSymbol && ex.coinSymbol === getMainnetEquivalent(coinSymbol)
       )?.price || 1
     );
 

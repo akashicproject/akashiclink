@@ -352,5 +352,6 @@
   "LastSeen": "마지막으로 본 시간 (UTC)",
   "IncomingCount": "수신 카운트",
   "OutgoingCount": "발신 횟수",
-  "ReceivingCryptoWarning": "이 계정에서 암호화폐를 받지 않는 것이 좋습니다"
+  "ReceivingCryptoWarning": "이 계정에서 암호화폐를 받지 않는 것이 좋습니다",
+  "TotalBalance": "총 잔액"
 }

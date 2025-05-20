@@ -12,14 +12,7 @@ export function useTotalCryptoCurrencyBalances() {
     (acc, balance) =>
       Big(acc).add(
         Big(balance.balance).times(
-          getChainExchangeRate(
-            {
-              token: balance.tokenSymbol,
-              chain: balance.coinSymbol,
-              displayName: '',
-            },
-            exchangeRates
-          )
+          getChainExchangeRate(balance.coinSymbol, exchangeRates)
         )
       ),
     Big('0')

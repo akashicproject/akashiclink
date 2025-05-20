@@ -1,11 +1,8 @@
 import styled from '@emotion/styled';
-import { type IExchangeRate, TEST_TO_MAIN } from '@helium-pay/backend';
-import Big from 'big.js';
 
 import { type IWalletCurrency } from '../../constants/currencies';
 import { formatAmount } from '../../utils/formatAmount';
-import { useAggregatedBalances } from '../../utils/hooks/useAggregatedBalances';
-import { useExchangeRates } from '../../utils/hooks/useExchangeRates';
+import { useCryptoCurrencyBalance } from '../../utils/hooks/useCryptoCurrencyBalance';
 import { CryptoCurrencyIcon } from '../common/chain-icon/crypto-currency-icon';
 
 const Container = styled.div({
@@ -48,19 +45,7 @@ const CryptoCurrencyListItem = ({
   showUSDValue: boolean;
   onClick?: (walletCurrency: IWalletCurrency) => void;
 }) => {
-  const { exchangeRates } = useExchangeRates();
-  const aggregatedBalances = useAggregatedBalances();
-
-  const balance = (aggregatedBalances.get(walletCurrency) as string) ?? '0';
-  const conversionRate =
-    exchangeRates.find(
-      (ex: IExchangeRate) =>
-        !walletCurrency.token &&
-        ex.coinSymbol ===
-          (TEST_TO_MAIN.get(walletCurrency.chain) ?? walletCurrency.chain)
-    )?.price ?? 1;
-
-  const priceInUsd = Big(conversionRate).times(balance ?? 0);
+  const { balance, balanceInUsd } = useCryptoCurrencyBalance(walletCurrency);
 
   return (
     <Container
@@ -85,7 +70,7 @@ const CryptoCurrencyListItem = ({
       </ContentWrapper>
       {showUSDValue && (
         <UsdValue className="ion-text-size-md ion-text-bold">
-          {`$ ${priceInUsd.toFixed(2)}`}
+          {`$ ${balanceInUsd.toFixed(2)}`}
         </UsdValue>
       )}
     </Container>

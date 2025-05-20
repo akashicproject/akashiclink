@@ -356,5 +356,6 @@
   "LastSeen": "Last seen (UTC)",
   "IncomingCount": "Incoming count",
   "OutgoingCount": "Outgoing count",
-  "ReceivingCryptoWarning": "We do not recommend receiving any cryptocurrency from this account"
+  "ReceivingCryptoWarning": "We do not recommend receiving any cryptocurrency from this account",
+  "TotalBalance": "Total Balance"
 }
