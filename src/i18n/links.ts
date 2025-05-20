@@ -3,7 +3,7 @@ import { Language } from '@helium-pay/common-i18n/src/locales/supported-language
 import { useSetGlobalLanguage } from '../utils/hooks/useSetGlobalLanguage';
 
 const INFO_SITE_LINKS = {
-  [Language.enUS]: 'https://www.akashiclink.com/en',
+  [Language.enUS]: 'https://www.akashiclink.com/en-US',
   [Language.zhCN]: 'https://www.akashiclink.com/zh-TW',
   [Language.zhTW]: 'https://www.akashiclink.com/zh-TW',
   [Language.bnBD]: 'https://www.akashiclink.com/bd-BD',
