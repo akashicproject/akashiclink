@@ -1,10 +1,10 @@
 import { Browser } from '@capacitor/browser';
-import { Capacitor } from '@capacitor/core';
 import styled from '@emotion/styled';
-import { IonIcon, IonItem, IonLabel, IonText } from '@ionic/react';
+import { IonIcon, IonItem, IonLabel, IonText, isPlatform } from '@ionic/react';
 import type { CSSProperties, FC, ReactNode } from 'react';
 import { useState } from 'react';
 
+import { LINK_TYPE, useI18nInfoUrls } from '../../i18n/links';
 import { Divider } from '../common/divider';
 import { ForwardArrow } from './forward-arrow';
 
@@ -50,16 +50,6 @@ export type SettingItemProps = {
   iconStyle?: CSSProperties;
 };
 
-const handleLink = async (link: string) => {
-  const isNative = Capacitor.isNativePlatform();
-
-  if (isNative) {
-    await Browser.open({ url: `mailto:${link}` });
-  } else {
-    window.location.href = `mailto:${link}`;
-  }
-};
-
 export function SettingItem({
   icon,
   header,
@@ -76,9 +66,17 @@ export function SettingItem({
   iconStyle,
 }: SettingItemProps) {
   const [showAccordionItem, setShowAccordionItem] = useState(false);
+  const infoUrls = useI18nInfoUrls();
+
   const handleClick = async () => {
     if (link) {
-      await handleLink(link);
+      const isMobile = isPlatform('ios') || isPlatform('android');
+
+      if (isMobile) {
+        await Browser.open({ url: infoUrls[LINK_TYPE.InfoSite] });
+      } else {
+        window.location.href = `mailto:${link}`;
+      }
     } else if (!isAccordion && onClick) {
       onClick();
     } else if (isAccordion) {
