@@ -1,35 +1,33 @@
-import {
-  type ICurrencyForExtension,
-  type IWalletCurrency,
-} from '../../constants/currencies';
+import { Virtuoso } from 'react-virtuoso';
+
+import { type IWalletCurrency } from '../../constants/currencies';
 import CryptoCurrencyListItem from './crypto-currency-list-item';
 
 export function CryptoCurrencyList({
+  minHeight,
   currencies,
   onClick,
   showUSDValue = false,
 }: {
-  currencies: ICurrencyForExtension[];
+  minHeight?: string; // for render inside modal which does not have a height for Virtuoso to work with
+  currencies: IWalletCurrency[];
   onClick?: (walletCurrency: IWalletCurrency) => void;
   showUSDValue?: boolean;
 }) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '10px',
-        alignItems: 'center',
-      }}
-    >
-      {currencies.map((currency) => (
-        <CryptoCurrencyListItem
-          key={`${currency.walletCurrency.chain}-${currency.walletCurrency.token}`}
-          walletCurrency={currency.walletCurrency}
-          onClick={onClick}
-          showUSDValue={showUSDValue}
-        />
-      ))}
-    </div>
+    <Virtuoso
+      style={{ height: '100%', width: '100%', minHeight: minHeight ?? 'auto' }}
+      data={currencies}
+      itemContent={(index, currency) => (
+        <div key={index} className="ion-padding-bottom-xs">
+          <CryptoCurrencyListItem
+            key={`${currency.chain}-${currency.token}`}
+            walletCurrency={currency}
+            showUSDValue={showUSDValue}
+            onClick={onClick}
+          />
+        </div>
+      )}
+    />
   );
 }

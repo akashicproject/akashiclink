@@ -34,6 +34,7 @@ export const CryptoCurrencyIcon = ({
         width: size + size / 4,
         height: size,
         borderRadius: '50%',
+        display: 'inline-block',
       }}
     >
       <IonImg

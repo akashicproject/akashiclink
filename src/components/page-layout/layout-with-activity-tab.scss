@@ -1,0 +1,26 @@
+.activity-list {
+  padding: 0 40px;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  background-color: #f3f5f6;
+}
+
+.activity-list-item {
+  --background: F3F5F6;
+  --min-height: 80px;
+}
+
+.address-item {
+  width: 304px;
+  --background: transparent;
+  --box-shadow: none;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.address-copy-btn {
+  color: var(--ion-color-primary-10);
+  --background: none;
+  --box-shadow: none;
+}

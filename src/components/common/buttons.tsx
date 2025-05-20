@@ -151,11 +151,14 @@ export const TabButton = styled(IonButton)({
 
 /** Button is just underlined text */
 export const TextButton = styled(IonButton)({
+  ...buttonTextBaseCss,
   background: 'none',
+  '--background': 'none',
   textDecoration: 'underline',
   minHeight: 0,
   ['&::part(native)']: {
     padding: 4,
+    color: 'var(--ion-color-primary)',
   },
 });
 
@@ -204,6 +207,47 @@ export const IconButton = ({
           }}
         />
       )}
+    </IonButton>
+  );
+};
+
+export const IconButton = ({
+  icon,
+  onClick,
+  size = 24,
+  ...props
+}: Omit<IonButtonProps, 'size'> & {
+  size?: number;
+  icon: IonIconProps['icon'];
+}) => {
+  return (
+    <IonButton
+      size="small"
+      fill="clear"
+      onClick={onClick}
+      style={{
+        width: size,
+        height: size,
+        minHeight: size,
+        fontSize: size,
+        '--padding-start': 0,
+        '--padding-end': 0,
+        '--padding-top': 0,
+        '--padding-bottom': 0,
+        '--border-radius': '100%',
+        ...props?.style,
+      }}
+      {...props}
+    >
+      <IonIcon
+        slot="icon-only"
+        icon={icon}
+        style={{
+          width: size,
+          height: size,
+          padding: 4,
+        }}
+      />
     </IonButton>
   );
 };

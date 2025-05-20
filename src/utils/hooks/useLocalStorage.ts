@@ -30,7 +30,7 @@ export function useLocalStorage<T>(
   key: string,
   initialValue?: T
 ): {
-  value: T | undefined;
+  value: T;
   setValue: (newValue: T) => Promise<void>;
   removeValue: () => Promise<void>;
   refreshValue: () => Promise<void>;

@@ -54,7 +54,6 @@ export const DashboardPreferenceSorting = () => {
           >
             {Object.values(DASHBOARD_LIST_SORTING_MODE).map((mode) => (
               <IonRadio
-                mode={'md'}
                 key={mode}
                 labelPlacement="end"
                 justify="start"
@@ -62,7 +61,7 @@ export const DashboardPreferenceSorting = () => {
                 onClick={(_) => setCurrenciesSortMode(mode)}
                 className="w-100 ion-padding-top-xs ion-padding-bottom-xs ion-margin-top-xxs ion-margin-bottom-xxs"
               >
-                <h5 className="ion-no-margin">{t(mode)}</h5>
+                <h5 className="ion-no-margin">{mode}</h5>
               </IonRadio>
             ))}
           </IonRadioGroup>
