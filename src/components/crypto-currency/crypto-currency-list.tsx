@@ -1,12 +1,17 @@
-import type { ICurrencyForExtension } from '../../constants/currencies';
+import {
+  type ICurrencyForExtension,
+  type IWalletCurrency,
+} from '../../constants/currencies';
 import CryptoCurrencyListItem from './crypto-currency-list-item';
 
 export function CryptoCurrencyList({
   currencies,
-  isShowUSDValue,
+  onClick,
+  showUSDValue = false,
 }: {
   currencies: ICurrencyForExtension[];
-  isShowUSDValue: boolean;
+  onClick?: (walletCurrency: IWalletCurrency) => void;
+  showUSDValue?: boolean;
 }) {
   return (
     <div
@@ -20,8 +25,9 @@ export function CryptoCurrencyList({
       {currencies.map((currency) => (
         <CryptoCurrencyListItem
           key={`${currency.walletCurrency.chain}-${currency.walletCurrency.token}`}
-          {...currency}
-          isShowUSDValue={isShowUSDValue}
+          walletCurrency={currency.walletCurrency}
+          onClick={onClick}
+          showUSDValue={showUSDValue}
         />
       ))}
     </div>
