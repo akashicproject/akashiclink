@@ -20,7 +20,7 @@ import {
 
 export const DashboardCryptoCurrencyList = () => {
   const { t } = useTranslation();
-  const isMobile = isPlatform('ios') || isPlatform('android');
+  const isIos = isPlatform('ios');
 
   const [detailWalletCurrency, setDetailWalletCurrency] = useState<
     IWalletCurrency | undefined
@@ -65,7 +65,7 @@ export const DashboardCryptoCurrencyList = () => {
       </div>
       <div
         style={{
-          height: `calc(100vh - ${isMobile ? '456px - var(--ion-safe-area-bottom)' : '392px'})`,
+          height: `calc(100vh - ${isIos ? '456px - var(--ion-safe-area-bottom)' : '392px - var(--ion-safe-area-bottom)'})`,
         }}
       >
         <CryptoCurrencyList
