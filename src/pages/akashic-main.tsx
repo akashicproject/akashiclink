@@ -1,10 +1,14 @@
 import './akashic-main.scss';
 
 import { IonImg, isPlatform } from '@ionic/react';
+import { useState } from 'react';
+import { useHistory } from 'react-router';
 
+import { WelcomeScreen } from '../components/common/loader/welcomeScreen';
 import { PublicLayout } from '../components/page-layout/public-layout';
 import { CreateOrImportForm } from '../components/wallet-setup/create-or-import-form';
 import { LoginForm } from '../components/wallet-setup/login-form';
+import type { LocationState } from '../routing/history';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 
 /**
@@ -15,27 +19,42 @@ import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
  *   on whether this is first login with this device
  */
 export function AkashicPayMain({ isPopup = false }) {
-  const isMobile = isPlatform('mobile');
+  const history = useHistory<LocationState>();
   const { localAccounts } = useAccountStorage();
 
+  const [showSplash, setShowSplash] = useState(
+    !history.location.state?.isManualLogout
+  );
+
+  const isMobile = isPlatform('ios') || isPlatform('android');
+
   return (
-    <PublicLayout>
-      <IonImg
-        className={`
-          ion-margin-auto 
-          ${
-            isMobile || !localAccounts.length
-              ? 'welcome-img'
-              : 'welcome-img-small'
-          }
-        `}
-        alt="welcome"
-      />
-      {localAccounts.length ? (
-        <LoginForm isPopup={isPopup} />
-      ) : (
-        <CreateOrImportForm />
-      )}
-    </PublicLayout>
+    <>
+      {showSplash && <WelcomeScreen onFinish={() => setShowSplash(false)} />}
+      <PublicLayout
+        contentStyle={{
+          display: 'flex',
+          flexDirection: 'column',
+          marginTop: `calc(50vh - ${isMobile ? '176px - 64px - var(--ion-safe-area-top)' : '240px'} )`,
+        }}
+      >
+        <IonImg
+          alt=""
+          src={`/shared-assets/images/akashic-logo.png`}
+          style={{
+            height: '84px',
+            width: '120px',
+            display: 'block',
+            margin: '0 auto',
+            opacity: showSplash ? 0 : 1,
+          }}
+        />
+        {localAccounts.length ? (
+          <LoginForm isPopup={isPopup} />
+        ) : (
+          <CreateOrImportForm />
+        )}
+      </PublicLayout>
+    </>
   );
 }

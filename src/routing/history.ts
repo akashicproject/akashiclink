@@ -38,6 +38,7 @@ export interface LocationState {
   addressScreeningSearch?: {
     id?: string;
   };
+  isManualLogout?: boolean;
 }
 
 export const historyResetStackAndRedirect = async (

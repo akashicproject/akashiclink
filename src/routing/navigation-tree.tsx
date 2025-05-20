@@ -4,7 +4,7 @@ import type { Location } from 'history';
 import { useEffect, useState } from 'react';
 import { Redirect } from 'react-router';
 
-import { Spinner } from '../components/common/loader/spinner';
+import { FullScreenBlock } from '../components/common/loader/full-screen-block';
 import { LAST_HISTORY_ENTRIES } from '../constants';
 import { urls } from '../constants/urls';
 import { Activity } from '../pages/activity/activity';
@@ -74,7 +74,7 @@ export function NavigationTree() {
       const lastHistoryJson = await Preferences.get({
         key: LAST_HISTORY_ENTRIES,
       });
-      const lastHistory = JSON.parse(lastHistoryJson?.value || '{}');
+      const lastHistory = JSON.parse(lastHistoryJson?.value ?? '{}');
 
       // rebuild history entries completely if stack is saved before
       if (Array.isArray(lastHistory) && lastHistory.length > 0) {
@@ -94,7 +94,7 @@ export function NavigationTree() {
     setTimeout(redirectToLastLocation, 1000);
   }, []);
 
-  if (isLoading) return <Spinner />;
+  if (isLoading) return <FullScreenBlock />;
 
   return (
     <IonRouterOutlet ionPage animated={false}>

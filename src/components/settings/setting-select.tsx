@@ -70,7 +70,7 @@ export function SettingSelect() {
           <SettingsDropDownItem
             className="ion-no-margin"
             button
-            onClick={logout}
+            onClick={() => logout}
             detail={false}
           >
             <div

@@ -10,7 +10,7 @@ import { useAccountStorage } from './useLocalAccounts';
 export function useLogout() {
   const { setCacheOtk } = useAccountStorage();
 
-  return async () => {
+  return async (options?: { isManualLogout?: boolean }) => {
     // Clear session variables
     setCacheOtk(null);
     await Preferences.remove({
@@ -25,6 +25,8 @@ export function useLogout() {
     });
 
     // completely reset router history
-    await historyResetStackAndRedirect(urls.akashicPay);
+    await historyResetStackAndRedirect(urls.akashicPay, {
+      isManualLogout: !!options?.isManualLogout,
+    });
   };
 }

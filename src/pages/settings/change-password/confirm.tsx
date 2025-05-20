@@ -19,7 +19,7 @@ export function ChangePasswordConfirm() {
         <div className="ion-margin-bottom w-100">
           <SuccessfulIconWithTitle title={t('PasswordChangeSuccess')} />
         </div>
-        <PrimaryButton className="w-100" expand="block" onClick={logout}>
+        <PrimaryButton className="w-100" expand="block" onClick={() => logout}>
           {t('Confirm')}
         </PrimaryButton>
       </SettingsWrapper>

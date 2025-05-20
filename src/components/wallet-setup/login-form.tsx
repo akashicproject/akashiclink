@@ -3,6 +3,7 @@ import { IonCol, IonRow } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
 import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemapAASToAddress';
 import { useFetchAndRemapL1Address } from '../../utils/hooks/useFetchAndRemapL1address';
@@ -78,7 +79,7 @@ export function LoginForm({ isPopup = false }) {
       await fetchAndRemapAASToAddress(activeAccount.identity);
       await fetchAndRemapL1Address();
       setPassword('');
-      historyResetStackAndRedirect();
+      historyResetStackAndRedirect(urls.dashboard, { isManualLogout: false });
     } catch (error) {
       datadogRum.addError(error);
       setAlert(errorAlertShell(unpackRequestErrorMessage(error)));
@@ -86,7 +87,6 @@ export function LoginForm({ isPopup = false }) {
       setIsLoading(false);
     }
   };
-
   if (isLoading) return <Spinner />;
 
   return (

@@ -16,7 +16,7 @@ export function useIdleTime() {
   const logout = useLogout();
   const { reset } = useIdleTimer({
     timeout: autoLockTime * 60000,
-    onIdle: logout,
+    onIdle: () => logout(),
     throttle: 200,
     events: [
       'click',

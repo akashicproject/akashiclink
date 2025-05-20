@@ -22,6 +22,8 @@ PODS:
     - Capacitor
   - CapacitorShare (5.0.8):
     - Capacitor
+  - CapacitorSplashScreen (5.0.8):
+    - Capacitor
   - CapacitorStatusBar (5.0.7):
     - Capacitor
 
@@ -38,6 +40,7 @@ DEPENDENCIES:
   - "CapacitorPreferences (from `../../../../node_modules/@capacitor/preferences`)"
   - CapacitorScreenshot (from `../../../../node_modules/capacitor-screenshot`)
   - "CapacitorShare (from `../../../../node_modules/@capacitor/share`)"
+  - "CapacitorSplashScreen (from `../../../../node_modules/@capacitor/splash-screen`)"
   - "CapacitorStatusBar (from `../../../../node_modules/@capacitor/status-bar`)"
 
 EXTERNAL SOURCES:
@@ -65,24 +68,27 @@ EXTERNAL SOURCES:
     :path: "../../../../node_modules/capacitor-screenshot"
   CapacitorShare:
     :path: "../../../../node_modules/@capacitor/share"
+  CapacitorSplashScreen:
+    :path: "../../../../node_modules/@capacitor/splash-screen"
   CapacitorStatusBar:
     :path: "../../../../node_modules/@capacitor/status-bar"
 
 SPEC CHECKSUMS:
-  AparajitaCapacitorSecureStorage: 4e40b517555ee2a0e6e034d4bd744b413b98483c
-  ByteowlsCapacitorFilesharer: f6a773825632d65d5404a34764c4a3fd857bb176
-  Capacitor: fc155ee2ee45a2093d716f13cf5aa5a865e2d85a
-  CapacitorApp: 17fecd0e6cb23feafac7eb0939417389038b0979
-  CapacitorBrowser: a6deae9e5bf87f62b62a753cff7992c5def9e771
-  CapacitorClipboard: 45e5e25f2271f98712985d422776cdc5a779cca1
+  AparajitaCapacitorSecureStorage: 6e0b2817906fe4bddbe81c5fef4dc2c866daaf16
+  ByteowlsCapacitorFilesharer: bda07882639e7d7b37de16426f2deb82d793c0b6
+  Capacitor: 04ccd5c7ad3949b25baf174a5c61594f1c031ee9
+  CapacitorApp: b23ce4279972fa24721b9ad7aefdf05e36c29db7
+  CapacitorBrowser: 4dc0624a8c372054f64f31e53c6375ce300b28cc
+  CapacitorClipboard: ed111834d249cf270231bbe1d7d25f604a28bd37
   CapacitorCordova: e825fce1a2e14e4b5730641c7e098dccf74397b7
-  CapacitorHaptics: 7c7c206f0c96a628fed073830c96d28c4b2e772e
-  CapacitorKeyboard: aec619a578235c6ce279075009a2689c2cf5c42c
-  CapacitorPreferences: 77ac427e98db83bace772455f8ba447430382c4c
-  CapacitorScreenshot: 1f31d65cf74736de13ba83f8f88a391f49eaf6c5
-  CapacitorShare: abef1f7be4e10b448693b0b83b540cb4b92dc849
-  CapacitorStatusBar: f390fbb49b82ffb754ea4b3cf71dc8b048baf3e7
+  CapacitorHaptics: 85a1ecd1d3026089642518d789f0fb81fe93cf80
+  CapacitorKeyboard: d878396bca6a0fefb313b1546c169648b5ae812a
+  CapacitorPreferences: cbf7f033bd08dd33b07090fe9ff54344dc02d6e2
+  CapacitorScreenshot: ba4286a410b012a0b1028d5f05dcce373d824c75
+  CapacitorShare: 0a43832a9e09fca9ada569ee1856de75d54c61bf
+  CapacitorSplashScreen: 0b962a2bee014151569dc59b089ba0e93daeeaf0
+  CapacitorStatusBar: 37ca5200a1791340c519239521ec2519d384eacb
 
-PODFILE CHECKSUM: 5d6590e85457769dfbb30225994f4b7ea3146c5c
+PODFILE CHECKSUM: 313abbae16f924c3eb88b87c3579a4c6fbe76ad2
 
 COCOAPODS: 1.15.2

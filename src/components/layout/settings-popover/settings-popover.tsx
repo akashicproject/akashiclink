@@ -223,7 +223,7 @@ export function SettingsPopover() {
           <SettingsItem
             displayText={t('Lock')}
             setShowPopover={setShowPopover}
-            onClick={logout}
+            onClick={() => logout}
           />
         </SettingsList>
       </IonPopover>

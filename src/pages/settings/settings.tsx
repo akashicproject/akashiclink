@@ -85,8 +85,8 @@ export function Settings() {
     },
     {
       header: t('LockAkashicWallet'),
-      onClick: () => {
-        logout();
+      onClick: async () => {
+        logout({ isManualLogout: true });
       },
       EndComponent: () => (
         <IonIcon
