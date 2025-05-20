@@ -65,7 +65,7 @@ export function DashboardCryptoCurrencyDetail({
         <IonCol size={'12'}>
           <IonText>
             <p className="ion-text-size-xl ion-text-bold ion-text-align-center">
-              {`${formatAmount(balance ?? '0')} ${walletCurrency.chain}`}
+              {`${formatAmount(balance ?? '0')} ${walletCurrency.displayName}`}
             </p>
           </IonText>
         </IonCol>
