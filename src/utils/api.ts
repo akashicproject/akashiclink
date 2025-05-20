@@ -1,9 +1,7 @@
 import type {
   ICreateSecondaryOtk,
-  IEstimateNetworkFee,
   ILookForL2Address,
   ILookForL2AddressResponse,
-  INetworkFeeValuesReturn,
   IPrepareL1TxnResponse,
   IPrepareL2Withdrawal,
   IPrepareL2WithdrawalResponse,
@@ -63,24 +61,6 @@ export const OwnersAPI = {
       JSON.stringify(transactionData)
     );
   },
-  estimateNetworkFees: async (
-    networkFeesData: IEstimateNetworkFee
-  ): Promise<INetworkFeeValuesReturn> => {
-    const queryParams = new URLSearchParams(
-      Object.entries(networkFeesData).reduce(
-        (acc, [key, value]) => {
-          acc[key] = String(value);
-          return acc;
-        },
-        {} as Record<string, string>
-      )
-    ).toString();
-    return await apiCall<INetworkFeeValuesReturn>(
-      `/l1-txn-orchestrator/network-fees?${queryParams}`,
-      'GET'
-    );
-  },
-
   generateSecondaryOtk: async (
     signedReq: ICreateSecondaryOtk
   ): Promise<void> => {

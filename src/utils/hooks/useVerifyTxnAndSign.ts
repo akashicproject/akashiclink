@@ -1,7 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import {
   type CoinSymbol,
-  type CryptoCurrencySymbol,
+  type CurrencySymbol,
   type FeeDelegationStrategy,
   type IBaseAcTransaction,
   type IWithdrawalProposal,
@@ -9,7 +9,7 @@ import {
   TransactionLayer,
 } from '@helium-pay/backend';
 
-import type { ValidatedAddressPair } from '../../components/send/send-form/types';
+import type { ValidatedAddressPair } from '../../components/send-deposit/send-form/types';
 import { OwnersAPI } from '../api';
 import {
   convertFromSmallestUnit,
@@ -47,7 +47,7 @@ export const useVerifyTxnAndSign = () => {
     validatedAddressPair: ValidatedAddressPair,
     amount: string,
     coinSymbol: CoinSymbol,
-    tokenSymbol?: CryptoCurrencySymbol,
+    tokenSymbol?: CurrencySymbol,
     feeDelegationStrategy?: FeeDelegationStrategy
   ): Promise<string | UseVerifyAndSignResponse> => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
@@ -78,14 +78,13 @@ export const useVerifyTxnAndSign = () => {
         let txBody = await nitr0genApi.l2Transaction(
           cacheOtk,
           // AC needs smallest units, so we convert
-          convertObjectCurrencies(l2TransactionData, convertToSmallestUnit),
-          account.isFxBp
+          convertObjectCurrencies(l2TransactionData, convertToSmallestUnit)
         );
         // add check for FX Bp
         if (account.isFxBp) {
           // sign transaction from backend
           const { preparedTxn } = await OwnersAPI.prepareL2Txn({
-            signedTx: txBody,
+            signedTxn: txBody,
           });
           txBody = preparedTxn;
         }
