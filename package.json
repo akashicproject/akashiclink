@@ -118,7 +118,7 @@
     "typescript": "5.5.4",
     "url": "0.11.3",
     "util": "0.12.5",
-    "viem": "2.15.1",
+    "viem": "2.26.2",
     "web-vitals": "0.2.4",
     "webpack": "5.76.2",
     "workbox-background-sync": "5.1.4",
