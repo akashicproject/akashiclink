@@ -10,7 +10,7 @@ import {
 } from '@ionic/react';
 import { Screenshot } from 'capacitor-screenshot';
 import { shareOutline } from 'ionicons/icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const ShareActionButton = ({
@@ -24,18 +24,8 @@ export const ShareActionButton = ({
 
   const isMobile = isPlatform('ios') || isPlatform('android');
   const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
-  const [isSupportWebShare, setIsSupportWebShare] = useState(false);
   const [screenshotBase64, setScreenshotBase64] = useState('');
   const [popoverOpen, setPopoverOpen] = useState(false);
-
-  useEffect(() => {
-    const checkCanShare = async () => {
-      if (await Share.canShare()) {
-        setIsSupportWebShare(true);
-      }
-    };
-    checkCanShare();
-  }, []);
 
   const handelOnClickButton = async () => {
     const ret = await Screenshot.take();
@@ -43,7 +33,7 @@ export const ShareActionButton = ({
 
     if (isMobile) {
       setIsActionSheetOpen(true);
-    } else if (isSupportWebShare) {
+    } else if (await Share.canShare()) {
       handleShareLink();
     } else {
       handleCopyLink();
@@ -95,26 +85,19 @@ export const ShareActionButton = ({
         icon={shareOutline}
         onClick={handelOnClickButton}
       />
-      {/* if share is not supported, copy the link instead and show popover */}
-      {/* had to not render it due to force trigger of ion-popover */}
-      {!isSupportWebShare && (
-        <IonPopover
-          trigger="share-box"
-          side="bottom"
-          alignment="end"
-          isOpen={popoverOpen}
-          className={'copied-popover'}
-          onDidDismiss={() => setPopoverOpen(false)}
-        >
-          <IonContent>{t('Copied')}</IonContent>
-        </IonPopover>
-      )}
+      {/* if share is not supported, copy the link instead and show popover*/}
+      <IonPopover
+        trigger="share-box"
+        side="bottom"
+        alignment="end"
+        isOpen={popoverOpen}
+        className={'copied-popover'}
+        onDidDismiss={() => setPopoverOpen(false)}
+      >
+        <IonContent class="ion-padding">{t('Copied')}</IonContent>
+      </IonPopover>
       {/* action sheet for mobile, let user choose what they want to share */}
       <IonActionSheet
-        style={{
-          '--background': 'var(--ion-background-color)',
-          '--button-color': 'var(--ion-text-color-alt)',
-        }}
         isOpen={isActionSheetOpen}
         buttons={[
           {
@@ -123,16 +106,12 @@ export const ShareActionButton = ({
               handleShareLink();
             },
           },
-          ...(isPlatform('android')
-            ? [
-                {
-                  text: t('ShareScreenshot'),
-                  handler: () => {
-                    handleShareImage();
-                  },
-                },
-              ]
-            : []),
+          {
+            text: t('ShareScreenshot'),
+            handler: () => {
+              handleShareImage();
+            },
+          },
           {
             text: t('Cancel'),
             role: 'cancel',

@@ -1,3 +1,5 @@
+import './activity.scss';
+
 import { TransactionLayer, TransactionType } from '@helium-pay/backend';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
@@ -40,7 +42,7 @@ export function TransactionDetails({
               link={currentTransfer.l2TxnHashUrl}
             />
           </div>
-          <div className={'ion-display-flex ion-align-items-center ion-gap-xs'}>
+          <div className={'ion-display-flex ion-align-items-center ion-gap-sm'}>
             {currentTransfer.currency?.chain &&
               (currentTransfer.layer === TransactionLayer.L2 ? (
                 <L2Icon />

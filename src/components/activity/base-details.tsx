@@ -9,8 +9,8 @@ import { themeType } from '../../theme/const';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { List } from '../common/list/list';
 import { ListVerticalLabelValueItem } from '../common/list/list-vertical-label-value-item';
-import { ListCopyTxHashItem } from '../send/copy-tx-hash';
-import { FromToAddressBlock } from '../send/from-to-address-block';
+import { ListCopyTxHashItem } from '../send-deposit/copy-tx-hash';
+import { FromToAddressBlock } from '../send-deposit/from-to-address-block';
 
 export const DetailColumn = styled.div({
   display: 'flex',

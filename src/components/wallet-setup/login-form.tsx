@@ -65,6 +65,7 @@ export function LoginForm({ isPopup = false }) {
         activeAccount.identity,
         password
       );
+
       if (!localSelectedOtk) {
         throw new Error(
           `localSelectedOtk not found may due to old account not migrated, ${activeAccount.identity}`

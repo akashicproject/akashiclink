@@ -96,7 +96,7 @@ ion-modal > .ion-page {
 
 ion-header {
   background: var(--ion-header-background);
-  padding: 0 16px;
+  padding: 0 24px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -239,67 +239,36 @@ ion-footer > * {
   margin-right: 0;
 }
 
-.ion-padding-xl {
-  padding: 32px;
-}
-
-.ion-padding-lg {
-  padding: 24px;
-}
-
-.ion-padding-md {
-  padding: 16px;
-}
-
-.ion-padding-sm {
-  padding: 12px;
-}
-
-.ion-padding-xs {
-  padding: 8px;
-}
-
-.ion-padding-xxs {
-  padding: 4px;
-}
-
 .ion-padding-0 {
   padding: 0;
 }
 
 .ion-padding-top-xl {
   padding-top: 32px;
-  --padding-top: 32px;
 }
 
 .ion-padding-top-lg {
   padding-top: 24px;
-  --padding-top: 24px;
 }
 
 .ion-padding-top-md {
   padding-top: 16px;
-  --padding-top: 16px;
 }
 
 .ion-padding-top-sm {
   padding-top: 12px;
-  --padding-top: 12px;
 }
 
 .ion-padding-top-xs {
   padding-top: 8px;
-  --padding-top: 8px;
 }
 
 .ion-padding-top-xxs {
   padding-top: 4px;
-  --padding-top: 4px;
 }
 
 .ion-padding-top-0 {
   padding-top: 0;
-  --padding-top: 0;
 }
 
 .ion-padding-bottom-xl {

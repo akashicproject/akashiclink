@@ -21,7 +21,7 @@ export const ActivityDetails = () => {
   }
 
   return (
-    <DashboardLayout>
+    <DashboardLayout showSwitchAccountBar showAddress showRefresh>
       {transfer.nft ? (
         <NftDetail currentTransfer={transfer} />
       ) : (

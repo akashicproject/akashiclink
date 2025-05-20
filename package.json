@@ -10,18 +10,18 @@
     "build:prod": "yarn lint:fix && env-cmd -f .env.production.local craco build",
     "sync:device": "yarn build:staging && env-cmd -f .env.staging.local npx cap sync",
     "sync:prod:device": "yarn build:prod && env-cmd -f .env.production.local npx cap sync",
-    "build:android": "NODE_OPTIONS=\"--max-old-space-size=8192\" yarn updateVersion:android && PLATFORM=android yarn sync:device && cd android && bundle exec fastlane buildApk --env staging",
-    "build:prod:android": "NODE_OPTIONS=\"--max-old-space-size=8192\" yarn updateVersion:prod:android && PLATFORM=android yarn sync:prod:device && cd android && bundle exec fastlane buildApk --env production",
-    "build:ios": "NODE_OPTIONS=\"--max-old-space-size=8192\" yarn updateVersion:ios && PLATFORM=ios yarn sync:device && cd ios/App && bundle exec fastlane buildIpa --env staging",
-    "build:prod:ios": "NODE_OPTIONS=\"--max-old-space-size=8192\" yarn updateVersion:prod:ios && PLATFORM=ios yarn sync:prod:device && cd ios/App && bundle exec fastlane buildIpa --env production",
+    "build:android": "yarn updateVersion:android && PLATFORM=android yarn sync:device && cd android && bundle exec fastlane buildApk --env staging",
+    "build:prod:android": "yarn updateVersion:prod:android && PLATFORM=android yarn sync:prod:device && cd android && bundle exec fastlane buildApk --env production",
+    "build:ios": "yarn updateVersion:ios && PLATFORM=ios yarn sync:device && cd ios/App && bundle exec fastlane buildIpa --env staging",
+    "build:prod:ios": "yarn updateVersion:prod:ios && PLATFORM=ios yarn sync:prod:device && cd ios/App && bundle exec fastlane buildIpa --env production",
     "deploy:android": "yarn updateVersion:android && PLATFORM=android yarn sync:device && cd android && bundle exec fastlane internal --env staging",
     "deploy:prod:android": "yarn updateVersion:prod:android && PLATFORM=android yarn sync:prod:device && cd android && bundle exec fastlane internal --env production",
     "deploy:ios": "yarn updateVersion:ios && PLATFORM=ios yarn sync:device && cd ios/App && bundle exec fastlane internal --env staging",
     "deploy:prod:ios": "yarn updateVersion:prod:ios && PLATFORM=ios yarn sync:prod:device && cd ios/App && bundle exec fastlane internal --env production",
     "serve:android": "npx cap open android",
     "serve:ios": "npx cap open ios",
-    "deploy:chrome-extension": "yarn build:staging && cd extension && env-cmd -f .env.staging node deploy.mjs",
-    "deploy:prod:chrome-extension": "yarn build:prod && cd extension && env-cmd -f .env.production node deploy.mjs",
+    "deploy:extension": "yarn build:staging && cd extension && env-cmd -f .env.staging node deploy.mjs",
+    "deploy:prod:extension": "yarn build:prod && cd extension && env-cmd -f .env.production node deploy.mjs",
     "updateVersion:android": "cd android && bundle exec fastlane updateManifest --env staging",
     "updateVersion:prod:android": "cd android && bundle exec fastlane updateManifest --env production",
     "updateVersion:ios": "cd ios/App && bundle exec fastlane updateManifest --env staging",
@@ -39,8 +39,7 @@
     "debug:ios": "env-cmd -f .env.staging.local ionic cap run ios -l --external",
     "analyze-bundle": "craco build && source-map-explorer 'build/static/js/*.js'",
     "semantic-release:android": "semantic-release --tag-format android-v\\${version}",
-    "semantic-release:ios": "semantic-release --tag-format ios-v\\${version}",
-    "semantic-release:chrome-extension": "semantic-release --tag-format chrome-extension-v\\${version}"
+    "semantic-release:ios": "semantic-release --tag-format ios-v\\${version}"
   },
   "dependencies": {
     "@activeledger/activecrypto": "^2.12.3",
@@ -220,12 +219,7 @@
         }
       ],
       "@semantic-release/release-notes-generator",
-      [
-        "@semantic-release/gitlab",
-        {
-          "successCommentCondition": false
-        }
-      ],
+      "@semantic-release/gitlab",
       [
         "@semantic-release/exec",
         {
