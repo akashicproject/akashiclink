@@ -6,6 +6,7 @@ import {
   type Dispatch,
   type SetStateAction,
   useCallback,
+  useContext,
   useEffect,
   useState,
 } from 'react';
@@ -13,12 +14,13 @@ import { useTranslation } from 'react-i18next';
 
 import { OwnersAPI } from '../../../utils/api';
 import { getPrecision } from '../../../utils/formatAmount';
-import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
+import { useCryptoCurrencySymbolsAndBalances } from '../../../utils/hooks/useCryptoCurrencySymbolsAndBalances';
 import { displayLongText } from '../../../utils/long-text';
 import type { FormAlertState } from '../../common/alert/alert';
 import { List } from '../../common/list/list';
 import { ListLabelValueAmountItem } from '../../common/list/list-label-value-amount-item';
 import { ListLabelValueItem } from '../../common/list/list-label-value-item';
+import { SendFormContext } from '../send-modal-context-provider';
 import { SendFormVerifyL2TxnButton } from './send-form-verify-l2-txn-button';
 import type { ValidatedAddressPair } from './types';
 
@@ -38,9 +40,12 @@ export const SendTxnDetailBox = ({
   onAddressReset: () => void;
 }) => {
   const { t } = useTranslation();
-  const { chain, nativeCoinBalance, nativeCoinSymbol } =
-    useFocusCurrencySymbolsAndBalances();
   const [networkFee, setNetworkFee] = useState<string | null>(null);
+
+  const { currency } = useContext(SendFormContext);
+
+  const { chain, nativeCoinBalance, nativeCoinSymbol } =
+    useCryptoCurrencySymbolsAndBalances(currency);
 
   const fetchNetworkFee = useCallback(
     debounce(async () => {

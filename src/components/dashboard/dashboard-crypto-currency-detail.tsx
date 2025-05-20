@@ -4,8 +4,6 @@ import { type Dispatch, type SetStateAction, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { type IWalletCurrency } from '../../constants/currencies';
-import { urls } from '../../constants/urls';
-import { historyResetStackAndRedirect } from '../../routing/history';
 import { formatAmount } from '../../utils/formatAmount';
 import { useAccountL1Address } from '../../utils/hooks/useAccountL1Address';
 import { useCryptoCurrencyBalance } from '../../utils/hooks/useCryptoCurrencyBalance';
@@ -51,11 +49,6 @@ export function DashboardCryptoCurrencyDetail({
     setIsModalOpen(false);
   };
 
-  const handleOnClickTxnHistoryItem = () => {
-    historyResetStackAndRedirect(urls.activity);
-    setIsModalOpen(false);
-  };
-
   return (
     <IonGrid>
       <IonRow className={'ion-grid-row-gap-xxs'}>
@@ -65,7 +58,7 @@ export function DashboardCryptoCurrencyDetail({
         <IonCol size={'12'}>
           <IonText>
             <p className="ion-text-size-xl ion-text-bold ion-text-align-center">
-              {`${formatAmount(balance ?? '0')} ${walletCurrency.displayName}`}
+              {`${formatAmount(balance ?? '0')} ${walletCurrency.chain}`}
             </p>
           </IonText>
         </IonCol>
@@ -94,8 +87,6 @@ export function DashboardCryptoCurrencyDetail({
             isFilterLayer
             isFilterType
             minHeight={'calc(80vh - 312px - var(--ion-safe-area-bottom))'}
-            currency={walletCurrency}
-            onClick={handleOnClickTxnHistoryItem}
           />
         </IonCol>
       </IonRow>

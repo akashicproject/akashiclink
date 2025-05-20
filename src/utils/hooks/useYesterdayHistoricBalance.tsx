@@ -5,7 +5,7 @@ import { useHistoricBalances } from './useHistoricBalances';
 
 export const useYesterdayHistoricBalance = () => {
   const { historicBalances } = useHistoricBalances({
-    startDate: dayjs().subtract(1, 'day').toDate(),
+    startDate: dayjs().subtract(1, 'day').startOf('day').toDate(),
   });
   //save yesterdayBalanceUSDT to state to prevent flicking
   const [yesterdayBalanceUSDT, setYesterdayBalanceUSDT] = useState<

@@ -361,5 +361,13 @@
   "History": "記錄",
   "All": "全部",
   "NFT": "NFT",
-  "TotalBalance": "總餘額"
+  "TotalBalance": "總餘額",
+  "Assets": "資產",
+  "SortBy": "排序方式",
+  "Preferences": "偏好設定",
+  "Custom": "自訂",
+  "Filter": "篩選",
+  "Alphabetical": "按字母順序 A-Z",
+  "Value": "價值",
+  "PreferencesDesc": "取消勾選即可在儀表板上隱藏代幣"
 }

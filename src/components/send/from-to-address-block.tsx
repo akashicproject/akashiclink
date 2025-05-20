@@ -38,7 +38,9 @@ export const FromToAddressBlock: FC<FromToAddressBlockProps> = ({
         <IonText
           onClick={fromAddressUrl ? onAddressClick(fromAddressUrl) : undefined}
         >
-          <p className={`${fromAddressUrl ? 'ion-text-underline' : ''} `}>
+          <p
+            className={`${fromAddressUrl ? 'ion-text-underline cursor-pointer' : ''} `}
+          >
             {fromAddress ? displayLongText(fromAddress, 16, false, true) : '-'}
           </p>
         </IonText>
@@ -61,7 +63,9 @@ export const FromToAddressBlock: FC<FromToAddressBlockProps> = ({
         <IonText
           onClick={toAddressUrl ? onAddressClick(toAddressUrl) : undefined}
         >
-          <p className={`${toAddressUrl ? 'ion-text-underline' : ''}`}>
+          <p
+            className={`${toAddressUrl ? 'ion-text-underline cursor-pointer' : ''}`}
+          >
             {toAddress ? displayLongText(toAddress, 16, false, true) : '-'}
           </p>
         </IonText>

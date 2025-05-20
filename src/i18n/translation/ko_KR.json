@@ -353,5 +353,13 @@
   "IncomingCount": "수신 카운트",
   "OutgoingCount": "발신 횟수",
   "ReceivingCryptoWarning": "이 계정에서 암호화폐를 받지 않는 것이 좋습니다",
-  "TotalBalance": "총 잔액"
+  "TotalBalance": "총 잔액",
+  "Assets": "자산",
+  "SortBy": "정렬 기준",
+  "Preferences": "설정",
+  "Custom": "사용자 정의",
+  "Filter": "필터",
+  "Alphabetical": "알파벳순 A-Z",
+  "Value": "값",
+  "PreferencesDesc": "대시보드에서 토큰을 숨기려면 선택을 해제하세요"
 }

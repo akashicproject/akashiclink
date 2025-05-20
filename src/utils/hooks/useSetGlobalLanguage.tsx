@@ -23,13 +23,13 @@ export const useSetGlobalLanguage = (): [
   const { i18n } = useTranslation();
   const localLanguage = getLocalisationLanguage();
   const { value: selectedLanguage, setValue: setSelectedLanguage } =
-    useLocalStorage<Language>(APP_LANGUAGE, localLanguage);
+    useLocalStorage<Language>(APP_LANGUAGE);
 
   useEffect(() => {
-    if (selectedLanguage !== i18n.language) {
+    if (selectedLanguage && selectedLanguage !== i18n.language) {
       i18n.changeLanguage(selectedLanguage);
     }
   }, [selectedLanguage, i18n]);
 
-  return [selectedLanguage, setSelectedLanguage];
+  return [selectedLanguage ?? localLanguage, setSelectedLanguage];
 };

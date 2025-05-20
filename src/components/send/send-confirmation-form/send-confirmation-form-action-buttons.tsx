@@ -22,7 +22,7 @@ import {
   formAlertResetState,
 } from '../../common/alert/alert';
 import { PrimaryButton, WhiteButton } from '../../common/buttons';
-import { SendFormContext } from '../send-form-trigger-button';
+import { SendFormContext } from '../send-modal-context-provider';
 
 export const SendConfirmationFormActionButtons = () => {
   const { t } = useTranslation();

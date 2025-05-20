@@ -5,6 +5,7 @@ import {
   IonCheckbox,
   IonContent,
   IonPopover,
+  IonSpinner,
   IonText,
 } from '@ionic/react';
 import { filterOutline } from 'ionicons/icons';
@@ -78,11 +79,6 @@ const TxnTypeTabsButton = styled(IonButton)<{ isSelected: boolean }>(
       : {}),
   })
 );
-
-const ListContainer = styled.div({
-  paddingLeft: '8px',
-  paddingRight: '8px',
-}) as GridComponents['List'];
 
 const CheckboxLabel = styled.label({
   display: 'flex',
@@ -204,10 +200,16 @@ const TxnTypeDropdown: React.FC<NFTDropdownProps> = ({
 };
 
 export const TransactionHistoryList: React.FC<{
-  isFilterLayer: boolean;
-  isFilterType: boolean;
-  isFilterNFT: boolean;
-}> = ({ isFilterLayer, isFilterType, isFilterNFT }) => {
+  isFilterLayer?: boolean;
+  isFilterType?: boolean;
+  isFilterNFT?: boolean;
+  minHeight?: string;
+}> = ({
+  isFilterLayer = false,
+  isFilterType = false,
+  isFilterNFT = false,
+  minHeight,
+}) => {
   const storedTheme = useAppSelector(selectTheme);
 
   const [layerFilter, setLayerFilter] = useState<typeof ALL | TransactionLayer>(
@@ -264,7 +266,7 @@ export const TransactionHistoryList: React.FC<{
 
   return (
     <div>
-      <div className={'ion-padding-left-sm ion-padding-right-sm'}>
+      <div>
         <div
           className={
             'ion-display-flex ion-justify-content-between ion-align-items-center '
@@ -322,7 +324,19 @@ export const TransactionHistoryList: React.FC<{
           )}
         </div>
       </div>
-
+      {!isDataLoaded && (
+        <IonSpinner
+          color="primary"
+          name="circular"
+          class="force-center"
+          style={{
+            marginLeft: '50vw',
+            marginTop: '50%',
+            transform: 'translateX(-50%)',
+            '--webkit-transform': 'translateX(-50%)',
+          }}
+        />
+      )}
       {isDataLoaded && formattedTransfers.length === 0 && (
         <NoActivityWrapper>
           <AlertIcon />
@@ -333,7 +347,8 @@ export const TransactionHistoryList: React.FC<{
         <Virtuoso
           style={{
             margin: '8px 0px',
-            minHeight: 'calc(100vh - 260px - var(--ion-safe-area-bottom))',
+            minHeight:
+              minHeight ?? 'calc(100vh - 220px - var(--ion-safe-area-bottom))',
           }}
           data={formattedTransfers}
           context={{
@@ -341,7 +356,6 @@ export const TransactionHistoryList: React.FC<{
             loadMore: () => setSize(size + 1),
           }}
           components={{
-            List: ListContainer,
             Footer:
               (transactionCount ?? 0) &&
               transfers.length < (transactionCount ?? 0)

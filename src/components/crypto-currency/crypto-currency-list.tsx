@@ -16,12 +16,19 @@ export function CryptoCurrencyList({
 }) {
   return (
     <Virtuoso
-      style={{ height: '100%', width: '100%', minHeight: minHeight ?? 'auto' }}
+      style={{
+        height: '100%',
+        width: '100%',
+        minHeight: minHeight ?? 'auto',
+      }}
       data={currencies}
       itemContent={(index, currency) => (
-        <div key={index} className="ion-padding-bottom-xs">
+        <div
+          key={index}
+          className="ion-padding-bottom-xxs ion-margin-bottom-xxs"
+        >
           <CryptoCurrencyListItem
-            key={`${currency.chain}-${currency.token}`}
+            key={`${currency.chain}-${currency.token ?? ''}`}
             walletCurrency={currency}
             showUSDValue={showUSDValue}
             onClick={onClick}

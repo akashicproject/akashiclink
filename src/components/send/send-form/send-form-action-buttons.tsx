@@ -3,9 +3,7 @@ import { IonCol, IonRow } from '@ionic/react';
 import { type FC, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAppSelector } from '../../../redux/app/hooks';
-import { selectFocusCurrencyDetail } from '../../../redux/slices/preferenceSlice';
-import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
+import { useCryptoCurrencySymbolsAndBalances } from '../../../utils/hooks/useCryptoCurrencySymbolsAndBalances';
 import { useVerifyTxnAndSign } from '../../../utils/hooks/useVerifyTxnAndSign';
 import {
   AlertBox,
@@ -13,7 +11,7 @@ import {
   formAlertResetState,
 } from '../../common/alert/alert';
 import { PrimaryButton, WhiteButton } from '../../common/buttons';
-import { SendFormContext } from '../send-form-trigger-button';
+import { SendFormContext } from '../send-modal-context-provider';
 import type { ValidatedAddressPair } from './types';
 
 type SendFormActionButtonsProps = {
@@ -32,10 +30,10 @@ export const SendFormActionButtons: FC<SendFormActionButtonsProps> = ({
   onAddressReset,
 }) => {
   const { t } = useTranslation();
-  const { nativeCoinSymbol } = useFocusCurrencySymbolsAndBalances();
-  const { chain, token } = useAppSelector(selectFocusCurrencyDetail);
-  const { setStep, setSendConfirm, setIsModalOpen, step } =
+  const { setStep, setSendConfirm, setIsModalOpen, step, currency } =
     useContext(SendFormContext);
+  const { chain, token } = currency;
+  const { nativeCoinSymbol } = useCryptoCurrencySymbolsAndBalances(currency);
 
   const [alert, setAlert] = useState(formAlertResetState);
   const [isLoading, setIsLoading] = useState(false);

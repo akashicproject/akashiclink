@@ -31,7 +31,7 @@ export const CryptoCurrencyIcon = ({
     <span
       style={{
         position: 'relative',
-        width: size + size / 4,
+        width: size,
         height: size,
         borderRadius: '50%',
         display: 'inline-block',

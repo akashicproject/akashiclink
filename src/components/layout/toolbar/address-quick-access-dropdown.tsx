@@ -21,9 +21,7 @@ export const AddressQuickAccessDropdown = () => {
 
   return (
     <>
-      {/* isTrigger is sort of a hotfix for now. should consider refactor AddressQuickAccessDropdownItem */}
       <AddressQuickAccessDropdownItem
-        isTrigger
         triggerId="click-trigger"
         address={activeAccount?.identity ?? ''}
         chain={'AkashicChain'}
@@ -32,25 +30,23 @@ export const AddressQuickAccessDropdown = () => {
           activeAccount?.accountName ??
           `Account ${activeAccount.identity.slice(-8)}`
         }
-        style={{ marginLeft: -12, paddingLeft: 12 }}
+        style={{ marginLeft: -8, paddingLeft: 8 }}
         onClickIcon={() => {
           setShowModal(true);
         }}
-        onClickLabel={(e) => {
+        onHoverLabel={(e) => {
           popoverRef.current!.event = e;
           setPopoverOpen(!popoverOpen);
         }}
       />
       <IonPopover
         trigger="click-trigger"
-        triggerAction="click"
+        triggerAction="hover"
         reference="trigger"
         ref={popoverRef}
         isOpen={popoverOpen}
-        onDidDismiss={() => {
-          setPopoverOpen(false);
-        }}
-        style={{ '--offset-x': isMobile ? '4px' : '-48px', '--min-width': 240 }}
+        onDidDismiss={() => setPopoverOpen(false)}
+        style={{ '--offset-x': isMobile ? '4px' : '-52px' }}
       >
         <IonContent style={{ backgroundColor: 'var(--ion-modal-background)' }}>
           {allAddresses.map(({ address, chain, displayName }) => (

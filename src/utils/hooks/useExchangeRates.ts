@@ -6,8 +6,7 @@ import {
 import Big from 'big.js';
 import useSWR from 'swr';
 
-import { useAppSelector } from '../../redux/app/hooks';
-import { selectFocusCurrencyDetail } from '../../redux/slices/preferenceSlice';
+import { type IWalletCurrency } from '../../constants/currencies';
 import { getMainnetEquivalent } from '../chain';
 import { calculateInternalWithdrawalFee } from '../internal-fee';
 import fetcher from '../ownerFetcher';
@@ -23,12 +22,17 @@ export const useExchangeRates = () => {
   };
 };
 
-export const useCalculateFocusCurrencyL2WithdrawalFee = () => {
+export const useCalculateCurrencyL2WithdrawalFee = (
+  walletCurrency: IWalletCurrency
+) => {
   const { exchangeRates } = useExchangeRates();
-  const { chain, token } = useAppSelector(selectFocusCurrencyDetail);
 
   return () => {
-    return calculateInternalWithdrawalFee(exchangeRates, chain, token);
+    return calculateInternalWithdrawalFee(
+      exchangeRates,
+      walletCurrency.chain,
+      walletCurrency.token
+    );
   };
 };
 
