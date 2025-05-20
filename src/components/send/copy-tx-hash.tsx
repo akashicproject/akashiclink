@@ -63,7 +63,7 @@ export const ListCopyTxHashItem = ({
       </IonLabel>
       <IonNote
         className={`ion-text-size-xs ion-display-flex ion-align-items-center`}
-        style={{ color: color || 'var(--ion-text-color)' }}
+        style={{ color: color ?? 'var(--ion-text-color)' }}
         slot={'end'}
       >
         <IonText

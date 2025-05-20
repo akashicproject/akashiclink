@@ -10,15 +10,12 @@ import {
   nftErrors,
   TransactionLayer,
   TransactionStatus,
-  WalletType,
 } from '@helium-pay/backend';
 
 import { useAppDispatch } from '../../redux/app/hooks';
 import { addLocalTransaction } from '../../redux/slices/localTransactionSlice';
-import { prefixWithAS } from '../convert-as-prefix';
 import type { ITransactionSettledResponse } from '../nitr0gen/nitr0gen.interface';
 import { Nitr0genApi } from '../nitr0gen/nitr0gen-api';
-import { HIDE_SMALL_BALANCES } from '../preference-keys';
 import { useValueOfAmountInUSDT } from './useExchangeRates';
 
 export const useSendL2Transaction = () => {
@@ -37,7 +34,7 @@ export const useSendL2Transaction = () => {
       ).$umid;
 
       const hideSmallTransactions = await Preferences.get({
-        key: HIDE_SMALL_BALANCES,
+        key: 'hide-small-balances',
       });
 
       const {
@@ -62,15 +59,7 @@ export const useSendL2Transaction = () => {
             fromAddress,
             toAddress,
             senderIdentity: fromAddress,
-            senderInfo: {
-              identity: prefixWithAS(fromAddress),
-              walletType: WalletType.AkashicLink, // Not necessarily accurate, but doesn't matter for temp local storage
-            },
             receiverIdentity: toAddress,
-            receiverInfo: {
-              identity: prefixWithAS(toAddress),
-              walletType: WalletType.AkashicLink, // Not necessarily accurate, but doesn't matter for temp local storage
-            },
             coinSymbol,
             tokenSymbol,
             l2TxnHash: txHash,
@@ -115,7 +104,7 @@ export const useSendL1Transaction = () => {
       const l2TxnHash = result.$umid;
 
       const hideSmallTransactions = await Preferences.get({
-        key: HIDE_SMALL_BALANCES,
+        key: 'hide-small-balances',
       });
 
       const { identity } = signedTransactionData;
@@ -143,10 +132,6 @@ export const useSendL1Transaction = () => {
             layer: TransactionLayer.L1,
             l2TxnHash,
             senderIdentity: identity,
-            senderInfo: {
-              identity: prefixWithAS(identity),
-              walletType: WalletType.AkashicLink, // Not necessarily accurate, but doesn't matter for temp local storage
-            },
           })
         );
       }

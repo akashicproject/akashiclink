@@ -38,7 +38,8 @@ export const SendTxnDetailBox = ({
   onAddressReset: () => void;
 }) => {
   const { t } = useTranslation();
-  const { chain, nativeCoinBalance } = useFocusCurrencySymbolsAndBalances();
+  const { chain, nativeCoinBalance, nativeCoinSymbol } =
+    useFocusCurrencySymbolsAndBalances();
   const [networkFee, setNetworkFee] = useState<string | null>(null);
 
   const fetchNetworkFee = useCallback(
@@ -92,13 +93,12 @@ export const SendTxnDetailBox = ({
                 <ListLabelValueItem
                   label={t('GasFee')}
                   value={
-                    Big(networkFee ?? 0).eq(0)
+                    networkFee === null
                       ? '-'
                       : canNonDelegate
-                        ? Big(networkFee ?? '0').toFixed(precision)
+                        ? `${Big(networkFee ?? '0').toFixed(precision)} ${nativeCoinSymbol}`
                         : t('InsufficientBalance')
                   }
-                  valueDim
                   labelBold
                 />
               )}

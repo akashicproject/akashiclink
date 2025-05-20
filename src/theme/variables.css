@@ -26,6 +26,7 @@ http://ionicframework.com/docs/theming/ */
 
   /** secondary **/
   --ion-color-secondary: #eddcff;
+  --ion-color-secondary-container: #0d97eb;
   --ion-color-secondary-rgb: 237, 220, 255;
   --ion-color-secondary-contrast: #0b006b;
   --ion-color-secondary-contrast-rgb: 41, 0, 85;
@@ -192,6 +193,7 @@ body.dark {
   --ion-color-outline: #929091;
 
   --ion-color-secondary: #625b71;
+  --ion-color-secondary-container: #0d97eb;
   --ion-color-secondary-rgb: 80, 200, 255;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
