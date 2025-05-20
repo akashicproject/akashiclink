@@ -7,7 +7,6 @@ import {
   type Dispatch,
   type SetStateAction,
   useCallback,
-  useContext,
   useEffect,
   useState,
 } from 'react';
@@ -15,6 +14,9 @@ import { useTranslation } from 'react-i18next';
 import { OwnersAPI } from 'src/utils/api';
 import { getPrecision } from 'src/utils/formatAmount';
 
+import { urls } from '../../../constants/urls';
+import { history } from '../../../routing/history';
+import { akashicPayPath } from '../../../routing/navigation-tabs';
 import { useFocusCurrencySymbolsAndBalances } from '../../../utils/hooks/useAggregatedBalances';
 import { useVerifyTxnAndSign } from '../../../utils/hooks/useVerifyTxnAndSign';
 import { errorAlertShell, type FormAlertState } from '../../common/alert/alert';
@@ -24,7 +26,6 @@ import { List } from '../../common/list/list';
 import { ListLabelValueAmountItem } from '../../common/list/list-label-value-amount-item';
 import { ListLabelValueItem } from '../../common/list/list-label-value-item';
 import { Tooltip } from '../../common/tooltip';
-import { SendFormContext } from '../send-form-trigger-button';
 import type { ValidatedAddressPair } from './types';
 
 const StyledWhiteButton = styled(WhiteButton)<{ backgroundColor?: string }>`
@@ -59,9 +60,6 @@ export const SendTxnDetailBoxWithDelegateOption = ({
 
   const canDelegate = isCurrencyTypeToken;
   const [networkFee, setNetworkFee] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const { setStep, setSendConfirm, step } = useContext(SendFormContext);
-  const verifyTxnAndSign = useVerifyTxnAndSign();
 
   const fetchNetworkFee = useCallback(
     debounce(async () => {
@@ -84,6 +82,10 @@ export const SendTxnDetailBoxWithDelegateOption = ({
 
   const canNonDelegate = Big(nativeCoinBalance).gt(networkFee ?? 0);
   const precision = getPrecision(amount, networkFee ?? '0');
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const verifyTxnAndSign = useVerifyTxnAndSign();
 
   const onConfirm = (isDelegated: boolean) => async () => {
     try {
@@ -109,16 +111,20 @@ export const SendTxnDetailBoxWithDelegateOption = ({
 
       // once user leave this page, reset the form
       onAddressReset();
-      setStep(step + 1);
-      setSendConfirm({
-        txn: res.txn,
-        signedTxn: res.signedTxn,
-        delegatedFee: res.delegatedFee,
-        validatedAddressPair,
-        amount,
-        feeDelegationStrategy: isDelegated
-          ? FeeDelegationStrategy.Delegate
-          : FeeDelegationStrategy.None,
+      history.push({
+        pathname: akashicPayPath(urls.sendConfirm),
+        state: {
+          sendConfirm: {
+            txn: res.txn,
+            signedTxn: res.signedTxn,
+            delegatedFee: res.delegatedFee,
+            validatedAddressPair,
+            amount,
+            feeDelegationStrategy: isDelegated
+              ? FeeDelegationStrategy.Delegate
+              : FeeDelegationStrategy.None,
+          },
+        },
       });
     } catch {
       setAlert(errorAlertShell('GenericFailureMsg'));
@@ -191,8 +197,8 @@ export const SendTxnDetailBoxWithDelegateOption = ({
                   Big(networkFee ?? 0).eq(0)
                     ? '-'
                     : canNonDelegate
-                      ? `${Big(networkFee ?? '0').toFixed(precision)} ${nativeCoinSymbol}`
-                      : t('InsufficientBalance')
+                      ? Big(networkFee ?? '0').toFixed(precision)
+                      : t('CannotNonDelegate')
                 }
                 labelBold
                 valueShorten
