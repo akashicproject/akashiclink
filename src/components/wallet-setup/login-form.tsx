@@ -65,7 +65,6 @@ export function LoginForm({ isPopup = false }) {
         activeAccount.identity,
         password
       );
-
       if (!localSelectedOtk) {
         throw new Error(
           `localSelectedOtk not found may due to old account not migrated, ${activeAccount.identity}`
@@ -75,7 +74,9 @@ export function LoginForm({ isPopup = false }) {
       datadogRum.setUser({
         id: activeAccount.username,
       });
+      // Set the login account
       await fetchAndRemapAASToAddress(activeAccount.identity);
+      // stores L1 addresses for active user
       await fetchAndRemapL1Address();
       setPassword('');
       historyResetStackAndRedirect();

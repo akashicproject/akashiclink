@@ -1,0 +1,198 @@
+import styled from '@emotion/styled';
+import {
+  IonCol,
+  IonGrid,
+  IonImg,
+  IonRow,
+  IonSpinner,
+  IonText,
+} from '@ionic/react';
+import { QRCodeSVG } from 'qrcode.react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { PrimaryButton } from '../../components/common/buttons';
+import { CopyBox } from '../../components/common/copy-box';
+import { LayoutWithActivityTab } from '../../components/page-layout/layout-with-activity-tab';
+import {
+  ALLOWED_NETWORKS,
+  SUPPORTED_CURRENCIES_FOR_EXTENSION,
+} from '../../constants/currencies';
+import { useAppSelector } from '../../redux/app/hooks';
+import {
+  selectFocusCurrency,
+  selectTheme,
+} from '../../redux/slices/preferenceSlice';
+import { themeType } from '../../theme/const';
+import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { useOwnerKeys } from '../../utils/hooks/useOwnerKeys';
+import { createL1Address } from '../../utils/wallet-creation';
+
+const CoinWrapper = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  padding: '0',
+  gap: '8px',
+});
+
+const QRCodeWrapper = styled.div({
+  lineHeight: 0,
+  padding: 8,
+  backgroundColor: 'var(--ion-color-white)',
+  borderRadius: 8,
+  margin: 4,
+  width: 128,
+  height: 128,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
+
+export function DepositPage() {
+  const { t } = useTranslation();
+  const storedTheme = useAppSelector(selectTheme);
+  const { activeAccount, cacheOtk, setLocalStoredL1Address } =
+    useAccountStorage();
+
+  const [isGeneratingAddress, setIsGeneratingAddress] = useState(false);
+  const [generatedAddress, setGeneratedAddress] = useState<string | undefined>(
+    undefined
+  );
+
+  const currency = useAppSelector(selectFocusCurrency);
+  const currentWalletMetadata =
+    SUPPORTED_CURRENCIES_FOR_EXTENSION.lookup(currency);
+
+  const {
+    keys: addresses,
+    isLoading: isAddressesLoading,
+    mutate,
+  } = useOwnerKeys(activeAccount?.identity ?? '');
+  const walletAddressDetail = addresses?.find(
+    (address) =>
+      address.coinSymbol.toLowerCase() ===
+      currentWalletMetadata.walletCurrency.chain.toLowerCase()
+  );
+
+  // store L1 address in Account Slice.
+  const localStoredL1Address = activeAccount?.localStoredL1Addresses?.find(
+    (e) => e.coinSymbol === currentWalletMetadata.walletCurrency.chain
+  )?.address;
+
+  const existingAddress = walletAddressDetail?.address ?? localStoredL1Address;
+
+  const isCoinAllowed = ALLOWED_NETWORKS.includes(
+    currentWalletMetadata.walletCurrency.chain
+  );
+
+  const hasAddress =
+    !!generatedAddress || !!existingAddress || !!localStoredL1Address;
+
+  const handleGetAddress = () => {
+    const createAddress = async () => {
+      try {
+        // Attempt to create missing l1 address
+        if (!existingAddress && cacheOtk && !isGeneratingAddress) {
+          setIsGeneratingAddress(true);
+          const generatedAddress = await createL1Address(
+            cacheOtk,
+            currentWalletMetadata.walletCurrency.chain
+          );
+          // store the address in local-storage
+          setLocalStoredL1Address(
+            currentWalletMetadata.walletCurrency.chain,
+            generatedAddress ?? ''
+          );
+          setGeneratedAddress(generatedAddress);
+          await mutate();
+        }
+      } catch (e) {
+        console.warn(e as Error);
+      } finally {
+        setIsGeneratingAddress(false);
+      }
+    };
+    if (!isGeneratingAddress) {
+      createAddress();
+    }
+  };
+
+  return (
+    <LayoutWithActivityTab
+      showRefresh={false}
+      showAddress={false}
+      loading={isAddressesLoading}
+    >
+      <IonGrid
+        className="ion-padding-top-md ion-padding-bottom-xl ion-padding-left-md ion-padding-right-md"
+        style={{
+          width: '100%',
+          height: '45vh',
+          margin: 0,
+        }}
+      >
+        <IonRow class="ion-justify-content-center ion-grid-row-gap-xxs">
+          <IonCol class="ion-center" size="12">
+            <CoinWrapper>
+              {walletAddressDetail?.coinSymbol && (
+                <IonImg
+                  alt={''}
+                  src={
+                    storedTheme === themeType.DARK
+                      ? currentWalletMetadata.darkCurrencyIcon
+                      : currentWalletMetadata.currencyIcon
+                  }
+                  style={{ height: '32px', width: '32px' }}
+                />
+              )}
+              <IonText>
+                <h3 className="ion-no-margin">
+                  {currentWalletMetadata.walletCurrency.displayName ?? '-'}
+                </h3>
+              </IonText>
+            </CoinWrapper>
+          </IonCol>
+          <IonCol class={'ion-center'} size="12">
+            <QRCodeWrapper>
+              {isGeneratingAddress && (
+                <IonSpinner color="primary" name="circular" />
+              )}
+              {!isGeneratingAddress && !hasAddress && (
+                <IonImg
+                  alt=""
+                  src={`/shared-assets/images/${
+                    isCoinAllowed ? 'Pending' : 'Failed'
+                  }-white.svg`}
+                />
+              )}
+              {!isGeneratingAddress && hasAddress && (
+                <QRCodeSVG
+                  value={generatedAddress ?? existingAddress ?? ''}
+                  size={100}
+                />
+              )}
+            </QRCodeWrapper>
+          </IonCol>
+          <IonCol size="10">
+            {hasAddress && (
+              <CopyBox
+                label={t('DepositAddress')}
+                text={generatedAddress ?? existingAddress ?? '-'}
+              />
+            )}
+            {!hasAddress && isCoinAllowed && (
+              <PrimaryButton
+                expand="block"
+                onClick={handleGetAddress}
+                isLoading={isGeneratingAddress}
+              >
+                {t('ClickToGenerateAddress')}
+              </PrimaryButton>
+            )}
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </LayoutWithActivityTab>
+  );
+}

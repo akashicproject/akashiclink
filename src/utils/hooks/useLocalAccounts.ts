@@ -19,6 +19,11 @@ import { useSecureStorage } from './useSecureStorage';
 const algorithm = 'aes-256-cbc';
 const secretIv = process.env.REACT_APP_SECRETIV ?? '6RxIESTJ1eJLpjpe';
 
+/**
+ * When logging in, a user will select a wallet `identity`
+ * This is translated to a `username` that is sent with the `password`
+ * to the /login endpoint
+ */
 export interface LocalAccount {
   identity: string;
   username?: string;
@@ -86,13 +91,7 @@ export const useAccountStorage = () => {
       return l;
     });
     if (activeAccount && activeAccount.identity === identity) {
-      dispatch(
-        setActiveAccountState({
-          ...activeAccount,
-          alias,
-          ledgerId,
-        })
-      );
+      dispatch(setActiveAccountState({ ...activeAccount, alias, ledgerId }));
     }
     dispatch(setLocalAccounts(updatedAccounts));
   };
@@ -223,12 +222,7 @@ export const useAccountStorage = () => {
   );
 
   const setActiveAccount = (account: LocalAccount) => {
-    dispatch(
-      setActiveAccountState({
-        ...account,
-        accountName: `Account ${account.identity.slice(-8)}`,
-      })
-    );
+    dispatch(setActiveAccountState(account));
   };
 
   const setCacheOtk = (otk: FullOtk | null) => {
@@ -236,20 +230,9 @@ export const useAccountStorage = () => {
   };
 
   const setLocalStoredL1Addresses = (
-    identity: string,
-    localStoredL1Addresses: LocalStoredL1AddressType[]
+    localStoredL1Addresses: LocalStoredL1AddressType[],
+    identity: string
   ) => {
-    if (localStoredL1Addresses.length === 0) return;
-
-    if (activeAccount && activeAccount.identity === identity) {
-      dispatch(
-        setActiveAccountState({
-          ...activeAccount,
-          localStoredL1Addresses: localStoredL1Addresses,
-        })
-      );
-    }
-
     const updatedAccounts = localAccounts.map((l) => {
       if (l.identity === identity) {
         return {
@@ -259,6 +242,50 @@ export const useAccountStorage = () => {
       }
       return l;
     });
+    if (localStoredL1Addresses.length !== 0) {
+      if (activeAccount && activeAccount.identity === identity) {
+        dispatch(
+          setActiveAccountState({
+            ...activeAccount,
+            localStoredL1Addresses: localStoredL1Addresses,
+          })
+        );
+      }
+      dispatch(setLocalAccounts(updatedAccounts));
+    }
+  };
+
+  const setLocalStoredL1Address = (
+    coinSymbol: CoinSymbol,
+    identity: string
+  ) => {
+    const updatedAccounts = localAccounts.map((l) => {
+      if (l.identity === identity) {
+        return {
+          ...l,
+          localStoredL1Addresses: [
+            ...(l.localStoredL1Addresses ?? []).filter(
+              (item) => item.coinSymbol !== coinSymbol
+            ),
+            { coinSymbol, address: identity },
+          ],
+        };
+      }
+      return l;
+    });
+    if (activeAccount && activeAccount.identity === identity) {
+      dispatch(
+        setActiveAccountState({
+          ...activeAccount,
+          localStoredL1Addresses: [
+            ...(activeAccount.localStoredL1Addresses ?? []).filter(
+              (item) => item.coinSymbol !== coinSymbol
+            ),
+            { coinSymbol, address: identity },
+          ],
+        })
+      );
+    }
     dispatch(setLocalAccounts(updatedAccounts));
   };
 
@@ -280,6 +307,7 @@ export const useAccountStorage = () => {
     cacheOtk,
     authenticated: !!cacheOtk,
     setCacheOtk,
+    setLocalStoredL1Address,
     setLocalStoredL1Addresses,
   };
 };

@@ -29,6 +29,7 @@ export const CreateWalletSuccessful = () => {
   const fetchAndRemapL1Address = useFetchAndRemapL1Address();
 
   const handleOnConfirm = async () => {
+    // stores L1 addresses for active user
     await fetchAndRemapL1Address();
     dispatch(onClear());
     // creation flow is finished, completely reset router history
