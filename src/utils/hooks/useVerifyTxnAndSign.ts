@@ -78,7 +78,8 @@ export const useVerifyTxnAndSign = () => {
         let txBody = await nitr0genApi.l2Transaction(
           cacheOtk,
           // AC needs smallest units, so we convert
-          convertObjectCurrencies(l2TransactionData, convertToSmallestUnit)
+          convertObjectCurrencies(l2TransactionData, convertToSmallestUnit),
+          account.isFxBp
         );
         // add check for FX Bp
         if (account.isFxBp) {
