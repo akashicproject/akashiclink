@@ -217,6 +217,10 @@
             {
               "type": "chore",
               "release": "patch"
+            },
+            {
+              "type": "refactor",
+              "release": "patch"
             }
           ]
         }
