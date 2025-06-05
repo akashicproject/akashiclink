@@ -71,7 +71,7 @@ export function DashboardCryptoCurrencyDetail({
         </IonCol>
         <IonCol size={'12'}>
           <IonText>
-            <p className="ion-text-size-sm ion-text-color-grey ion-text-align-center">{`$${balanceInUsd.toFixed(2)}`}</p>
+            <p className="ion-text-size-sm ion-text-color-grey ion-text-align-center">{`$${formatAmount(balanceInUsd ?? '0')}`}</p>
           </IonText>
         </IonCol>
         <IonCol size={'10'} offset={'1'}>

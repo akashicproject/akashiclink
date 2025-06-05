@@ -23,7 +23,7 @@ export function formatAmount(numberString: string, precision?: number): string {
   const decimalDigits = precision ?? getPrecision(numberString);
 
   // Set precision
-  const formattedNum = num.toFixed(decimalDigits);
+  const formattedNum = num.toFixed(decimalDigits, Big.roundDown);
 
   // Split the number into integer and decimal parts
   // decimalPart is mutated below so disable eslint

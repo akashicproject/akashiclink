@@ -67,7 +67,7 @@ const CryptoCurrencyListItem = ({
           className="ion-text-size-md ion-text-bold"
           style={{ color: 'var(--ion-text-color-alt)' }}
         >
-          {`$${formatAmount(balanceInUsd.toString(), 2)}`}
+          {`$${formatAmount(balanceInUsd, 2)}`}
         </div>
       )}
     </Container>

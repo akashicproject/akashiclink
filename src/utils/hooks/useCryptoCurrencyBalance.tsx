@@ -16,9 +16,9 @@ export function useCryptoCurrencyBalance(walletCurrency: IWalletCurrency) {
         `${walletCurrency.chain}${walletCurrency.token ?? ''}`
     )?.balance ?? '0';
 
-  const balanceInUsd = Big(
-    getChainExchangeRate(walletCurrency, exchangeRates)
-  ).times(balance ?? 0);
+  const balanceInUsd = Big(balance)
+    .times(getChainExchangeRate(walletCurrency, exchangeRates))
+    .toFixed(6, Big.roundDown); // prevent issues when balance is too small e.g. = '0.000001'
 
   return {
     balance,

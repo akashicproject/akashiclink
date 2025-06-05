@@ -1,4 +1,5 @@
 import { IonText, isPlatform } from '@ionic/react';
+import Big from 'big.js';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -41,7 +42,7 @@ export const DashboardCryptoCurrencyList = () => {
     )
     .sort((a, b) =>
       sortMode === DASHBOARD_LIST_SORTING_MODE.Value
-        ? b.balanceInUsd.minus(a.balanceInUsd).toNumber()
+        ? Big(b.balanceInUsd).minus(a.balanceInUsd).toNumber()
         : a.displayName.localeCompare(b.displayName)
     );
 

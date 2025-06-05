@@ -11,16 +11,18 @@ export function useTotalCryptoCurrencyBalances() {
   const totalBalanceInUsd = totalBalances?.reduce<Big>(
     (acc, balance) =>
       Big(acc).add(
-        Big(balance.balance).times(
-          getChainExchangeRate(
-            {
-              token: balance.tokenSymbol,
-              chain: balance.coinSymbol,
-              displayName: '',
-            },
-            exchangeRates
+        Big(balance.balance)
+          .times(
+            getChainExchangeRate(
+              {
+                token: balance.tokenSymbol,
+                chain: balance.coinSymbol,
+                displayName: '',
+              },
+              exchangeRates
+            )
           )
-        )
+          .toFixed(6, Big.roundDown)
       ),
     Big('0')
   );
