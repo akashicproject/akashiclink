@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import { IonBadge, IonText } from '@ionic/react';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
+import { formatAmountWithCommas } from 'src/utils/formatAmountWithCommas';
 
-import { formatAmountWithCommas } from '../../utils/formatAmountWithCommas';
 import { useTotalCryptoCurrencyBalances } from '../../utils/hooks/useTotalCryptoCurrencyBalances';
 import { useYesterdayHistoricBalance } from '../../utils/hooks/useYesterdayHistoricBalance';
 
@@ -48,7 +48,7 @@ export const TotalBalance = () => {
         {t('TotalBalance')}
       </IonText>
       <IonText className="ion-text-size-xxxxl ion-text-bold">
-        {`$${formatAmountWithCommas(Big(totalBalanceInUsd ?? '0').toString(), 2)}`}
+        {`$${formatAmountWithCommas(Big(totalBalanceInUsd ?? '0').toFixed(2, Big.roundDown), 2)}`}
       </IonText>
       <div
         className={
@@ -56,16 +56,13 @@ export const TotalBalance = () => {
         }
       >
         <IonText className="ion-text-size-sm">
-          {`${relativeSign}$${formatAmountWithCommas(
-            Big(totalBalanceInUsd ?? '0')
-              .sub(yesterdayBalanceUSDT ?? '0')
-              .abs()
-              .toString(),
-            2
+          {`${relativeSign}$${Big(balanceDiff.abs()).toFixed(
+            2,
+            Big.roundDown
           )}`}
         </IonText>
         <PercentageBadge className="ion-text-size-xs">
-          {`${formatAmountWithCommas(Big(balanceDiffPercent ?? '0').toString(), 2)}%`}
+          {`${Big(balanceDiffPercent).toFixed(2, Big.roundDown)}%`}
         </PercentageBadge>
       </div>
     </BackgroundBox>
