@@ -19,6 +19,7 @@ import {
 import axios from 'axios';
 
 import { prefixWithAS } from '../convert-as-prefix';
+import { getCurrentTime } from '../currentUTCTime';
 import { getManifestJson } from '../hooks/useCurrentAppInfo';
 import type {
   ActiveLedgerResponse,
@@ -94,17 +95,20 @@ export async function signTxBody<T extends IBaseAcTransaction>(
   // For payouts, the backend should already have set it. Hence the `??=`
   txBody.$tx._dbIndex ??= parseInt(process.env.REACT_APP_REDIS_DB_INDEX);
 
-  addExpireToTxBody(txBody);
+  await addExpireToTxBody(txBody);
 
   return await txHandler.signTransaction(txBody, otk);
 }
 
 /** Modifies the tx in-place and also returns the modified tx */
-function addExpireToTxBody<T extends IBaseAcTransaction>(txBody: T): T {
+async function addExpireToTxBody<T extends IBaseAcTransaction>(
+  txBody: T
+): Promise<T> {
   // 1 Min expiry, should be plenty
-  if (!txBody.$tx.$expire)
-    txBody.$tx.$expire = new Date(Date.now() + 60 * 1000).toISOString();
-
+  if (!txBody.$tx.$expire) {
+    const timestamp = await getCurrentTime();
+    txBody.$tx.$expire = new Date(timestamp + 60 * 1000).toISOString();
+  }
   return txBody;
 }
 
