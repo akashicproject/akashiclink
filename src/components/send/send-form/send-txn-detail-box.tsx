@@ -60,7 +60,9 @@ export const SendTxnDetailBox = ({
   );
 
   useEffect(() => {
-    fetchNetworkFee();
+    if (!validatedAddressPair.isL2) {
+      fetchNetworkFee();
+    }
     return () => {
       fetchNetworkFee.cancel(); // Cleanup function to cancel pending calls
     };

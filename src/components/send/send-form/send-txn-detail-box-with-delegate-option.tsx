@@ -79,6 +79,7 @@ export const SendTxnDetailBoxWithDelegateOption = ({
   );
   useEffect(() => {
     fetchNetworkFee();
+
     return () => {
       fetchNetworkFee.cancel(); // Cleanup function to cancel pending calls
     };
