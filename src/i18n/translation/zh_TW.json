@@ -118,7 +118,7 @@
   "ActivationCode": "激活碼",
   "PleaseEnterCode": "請輸入送到郵箱的激活碼",
   "EmailHelpText": "請輸入有效的電子郵件地址。",
-  "PasswordHelpText": "密碼必須是10個字符，包含一個大寫字母和一個數字",
+  "PasswordHelpText": "您的密碼必須滿足以下要求：\n- 長度至少10個字符\n- 包含至少一個大寫字母 (A-Z)\n- 包含至少一個小寫字母 (a-z)\n- 包含至少一個數字 (0-9)",
   "ConfirmPasswordHelpText": "密碼必須吻合",
   "AddressHelpText": "地址格式與鏈不一致",
   "NoSelfSend": "您不能發送給自己",

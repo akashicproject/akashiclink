@@ -100,7 +100,11 @@ export function StyledInput({
         }
         {...props}
       ></IonInput>
-      {!inputValid && <IonNote slot="error">{helpText}</IonNote>}
+      {!inputValid && (
+        <IonNote slot="error" style={{ whiteSpace: 'pre-line' }}>
+          {helpText}
+        </IonNote>
+      )}
     </IonItem>
   );
 }

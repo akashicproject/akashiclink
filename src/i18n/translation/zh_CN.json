@@ -118,7 +118,7 @@
   "ActivationCode": "激活码",
   "PleaseEnterCode": "请输入发送到邮箱的激活码",
   "EmailHelpText": "请输入有效的电子邮件地址。",
-  "PasswordHelpText": "密码必须是10个字符，包含一个大写字母和一个数字",
+  "PasswordHelpText": "您的密码必须满足以下要求：\n- 长度至少10个字符\n- 包含至少一个大写字母 (A-Z)\n- 包含至少一个小写字母 (a-z)\n- 包含至少一个数字 (0-9)",
   "ConfirmPasswordHelpText": "密码必须吻合",
   "ActivationCodeText": "激活码格式错误",
   "AddressHelpText": "地址格式与链不一致",
