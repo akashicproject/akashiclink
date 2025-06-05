@@ -32,14 +32,14 @@ export default meta;
 type Story = StoryObj<typeof TransactionHistoryListItem>;
 
 const baseTransaction = {
-  fromAddress: '0xC11f17B10791675fDFBf6E6C1Fde4c5B7Be0e195',
-  toAddress: '0xa900365635a4e3ACE87d730C1eFDFffA7A3e81D1',
+  fromAddress: 'TVBAa5Wr9XTuho66qY3vLS32kNnZyMw5md',
+  toAddress: 'TG4BTSPRV3iANo8tgVfdtMVDjMLFEZUWYP',
   amount: '0.010000',
   date: new Date(),
   initiatedAt: new Date(),
   status: TransactionStatus.CONFIRMED,
   layer: TransactionLayer.L1,
-  coinSymbol: CoinSymbol.Tron_Nile,
+  coinSymbol: CoinSymbol.Tron_Shasta,
 } as const;
 
 export const TronTransaction: Story = {
@@ -47,7 +47,7 @@ export const TronTransaction: Story = {
     transfer: formatTransfers([
       {
         ...baseTransaction,
-        coinSymbol: CoinSymbol.Tron_Nile,
+        coinSymbol: CoinSymbol.Tron_Shasta,
       },
     ])[0],
   },
