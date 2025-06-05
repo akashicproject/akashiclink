@@ -21,8 +21,13 @@ const StyledList = styled(IonList)({
 interface AccountListProps {
   style?: React.CSSProperties;
   height?: string;
+  setManageAccountsModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export const AccountList: React.FC<AccountListProps> = ({ height, style }) => {
+export const AccountList: React.FC<AccountListProps> = ({
+  height,
+  style,
+  setManageAccountsModalOpen,
+}) => {
   const { localAccounts, activeAccount, setActiveAccount } =
     useAccountStorage();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -84,6 +89,7 @@ export const AccountList: React.FC<AccountListProps> = ({ height, style }) => {
       />
       {accountToDelete && (
         <DeleteAccountModal
+          setManageAccountsModalOpen={setManageAccountsModalOpen}
           isOpen={isAlertOpen}
           account={accountToDelete}
           onCancel={onCancelModal}

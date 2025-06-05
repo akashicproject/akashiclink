@@ -16,10 +16,12 @@ import { OutlineButton, PrimaryButton } from '../common/buttons';
 import { AccountListItem } from './account-list-item';
 
 export const DeleteAccountModal = ({
+  setManageAccountsModalOpen,
   isOpen,
   onCancel,
   account,
 }: {
+  setManageAccountsModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   isOpen: boolean;
   onCancel: () => void;
   account: LocalAccount;
@@ -41,6 +43,7 @@ export const DeleteAccountModal = ({
       localAccounts.length === 1 ||
       activeAccount?.identity === account.identity
     ) {
+      setManageAccountsModalOpen && setManageAccountsModalOpen(false);
       await clearActiveAccount();
       await logout();
     }

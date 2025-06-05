@@ -85,6 +85,7 @@ export function ManageAccountsModal({
           <IonRow>
             <IonCol size="12">
               <AccountList
+                setManageAccountsModalOpen={setIsOpen}
                 height={`calc(92vh - ${
                   isMobile ? '320px - var(--ion-safe-area-bottom)' : '240px'
                 })`}
