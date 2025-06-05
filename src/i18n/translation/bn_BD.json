@@ -319,7 +319,10 @@
     "toAddress": "পাঠান",
     "ip": "আইপি",
     "remark": "মন্তব্য",
-    "canIpsBypassSigning": "কলব্যাক পুনরায় চেষ্টার অনুমতি দিন"
+    "canIpsBypassSigning": "কলব্যাক পুনরায় চেষ্টার অনুমতি দিন",
+    "currencies": "মুদ্রা",
+    "events": "ঘটনা",
+    "url": "ইউআরএল"
   },
   "SendBpByAlias": "Akashic উপনাম দ্বারা ব্যবসায়িক অ্যাকাউন্টে পাঠানো যাবে না",
   "SelectYourPreferredNode": "অনুগ্রহ করে আপনার পছন্দের নোড নির্বাচন করুন।",
