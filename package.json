@@ -74,7 +74,7 @@
     "@reduxjs/toolkit": "2.2.1",
     "@walletconnect/core": "2.13.3",
     "@walletconnect/types": "2.13.3",
-    "@walletconnect/utils": "2.13.3",
+    "@walletconnect/utils": "2.20.3",
     "@walletconnect/web3wallet": "1.12.3",
     "apexcharts": "4.4.0",
     "asn1.js": "^5.4.1",
