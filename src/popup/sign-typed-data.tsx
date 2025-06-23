@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import {
   type CoinSymbol,
   type CryptoCurrencySymbol,
@@ -57,36 +58,45 @@ export function SignTypedData() {
 
   const onSessionRequest = useCallback(
     async (event: Web3WalletTypes.SessionRequest) => {
-      const { topic, params, id } = event;
-      const { request } = params;
+      try {
+        const { topic, params, id } = event;
+        const { request } = params;
 
-      if (request.method === ETH_METHOD.SIGN_TYPED_DATA) {
-        const typedData = JSON.parse(request.params[1]);
+        if (request.method === ETH_METHOD.SIGN_TYPED_DATA) {
+          const typedData = JSON.parse(request.params[1]);
 
-        const { toSign, secondaryOtk, ...message } = typedData.message;
+          const { toSign, secondaryOtk, ...message } = typedData.message;
 
-        setRequestContent({
-          id,
-          method: request.method,
-          message: message,
-          primaryType: typedData.primaryType,
-          topic,
-          toSign: toSign,
-          secondaryOtk,
-          response: {},
-        });
+          setRequestContent({
+            id,
+            method: request.method,
+            message: message,
+            primaryType: typedData.primaryType,
+            topic,
+            toSign: toSign,
+            secondaryOtk,
+            response: {},
+          });
+        }
+      } catch (e) {
+        datadogRum.addError(e);
       }
     },
     []
   );
 
-  const onSessionRequestExpire = useCallback(async () => {
-    responseToSite({
-      method: ETH_METHOD.SIGN_TYPED_DATA,
-      error: EXTENSION_ERROR.REQUEST_EXPIRED,
-    });
-    await closePopup();
-  }, []);
+  const onSessionRequestExpire = useCallback(
+    async (event: Web3WalletTypes.SessionRequestExpire) => {
+      if (event.id === requestContent.id) {
+        await responseToSite({
+          method: ETH_METHOD.SIGN_TYPED_DATA,
+          error: EXTENSION_ERROR.REQUEST_EXPIRED,
+        });
+        await closePopup();
+      }
+    },
+    []
+  );
 
   const acceptSessionRequest = async () => {
     const { topic, id, primaryType, toSign, secondaryOtk } = requestContent;
@@ -183,6 +193,7 @@ export function SignTypedData() {
         });
       } finally {
         console.warn('Failed to sign', e);
+        datadogRum.addError(e);
         responseToSite({
           method: ETH_METHOD.SIGN_TYPED_DATA,
           error: EXTENSION_ERROR.UNKNOWN,
@@ -195,16 +206,20 @@ export function SignTypedData() {
     }
   };
   const rejectSessionRequest = async () => {
-    const { topic, id } = requestContent;
+    try {
+      const { topic, id } = requestContent;
 
-    await web3wallet?.respondSessionRequest({
-      topic,
-      response: {
-        id,
-        jsonrpc: '2.0',
-        error: getSdkError('USER_REJECTED'),
-      },
-    });
+      await web3wallet?.respondSessionRequest({
+        topic,
+        response: {
+          id,
+          jsonrpc: '2.0',
+          error: getSdkError('USER_REJECTED'),
+        },
+      });
+    } catch (e) {
+      datadogRum.addError(e);
+    }
   };
 
   // Do NOT remove useCallback for removeEventListener to work
@@ -234,31 +249,52 @@ export function SignTypedData() {
   };
 
   useEffect(() => {
-    if (!web3wallet) {
-      return;
-    }
-    const activeSessions = web3wallet?.getActiveSessions();
+    const initRequestPopup = async () => {
+      try {
+        if (!web3wallet) {
+          console.log('waiting for web3wallet to be ready');
+          datadogRum.addAction('Signing popup: Waiting for web3wallet');
+          return;
+        }
 
-    if (!activeSessions || Object.values(activeSessions).length === 0) {
-      // TODO: perhaps an error page?
-      responseToSite({
-        method: ETH_METHOD.SIGN_TYPED_DATA,
-        error: EXTENSION_ERROR.WC_SESSION_NOT_FOUND,
-      });
-      closePopup();
-      return;
-    }
+        const activeSessions = web3wallet?.getActiveSessions();
 
-    responseToSite({
-      method: ETH_METHOD.SIGN_TYPED_DATA,
-      event: EXTENSION_EVENT.POPUP_READY,
-    });
+        if (!activeSessions || Object.values(activeSessions).length === 0) {
+          datadogRum.addError('Signing popup: activeSessions not found');
+          await responseToSite({
+            method: ETH_METHOD.SIGN_TYPED_DATA,
+            error: EXTENSION_ERROR.WC_SESSION_NOT_FOUND,
+          });
+          setTimeout(() => {
+            closePopup();
+          }, 100);
+          return;
+        }
 
-    web3wallet.on('session_request', onSessionRequest);
-    web3wallet.on('session_request_expire', onSessionRequestExpire);
-    window.addEventListener('beforeunload', onPopupClosed);
+        //check for old requests
+        const pendingSessionRequests = web3wallet?.getPendingSessionRequests();
+        if (pendingSessionRequests && pendingSessionRequests.length > 1) {
+          datadogRum.addError(
+            'Signing popup: more than 1 pending requests are found'
+          );
+        }
+
+        web3wallet.on('session_request', onSessionRequest);
+        web3wallet.on('session_request_expire', onSessionRequestExpire);
+        window.addEventListener('beforeunload', onPopupClosed);
+
+        await responseToSite({
+          method: ETH_METHOD.SIGN_TYPED_DATA,
+          event: EXTENSION_EVENT.POPUP_READY,
+        });
+      } catch (e) {
+        datadogRum.addError(e);
+      }
+    };
+    initRequestPopup();
 
     return () => {
+      if (!web3wallet) return;
       web3wallet?.off('session_request', onSessionRequest);
       web3wallet?.off('session_request_expire', onSessionRequestExpire);
       window.removeEventListener('beforeunload', onPopupClosed);

@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { CoinSymbol } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import { getInternalError, getSdkError } from '@walletconnect/utils';
@@ -250,6 +251,7 @@ export function WalletConnection() {
         await web3wallet?.pair({ uri });
       } catch (e) {
         console.error(e);
+        datadogRum.addError(e);
       }
     };
 
