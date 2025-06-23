@@ -22,8 +22,11 @@ export function AkashicPayMain({ isPopup = false }) {
   const history = useHistory<LocationState>();
   const { localAccounts } = useAccountStorage();
 
+  const query = new URLSearchParams(window.location.search);
+  const type = query.get('type');
+
   const [showSplash, setShowSplash] = useState(
-    !history.location.state?.isManualLogout
+    !history.location.state?.isManualLogout && type !== 'webPageRequest'
   );
 
   const isMobile = isPlatform('ios') || isPlatform('android');
