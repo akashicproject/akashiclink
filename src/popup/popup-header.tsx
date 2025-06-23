@@ -9,8 +9,8 @@ export function PopupHeader() {
 
   const logoName =
     storedTheme === themeType.DARK
-      ? 'wallet-logo-dark.svg'
-      : 'wallet-logo-light.svg';
+      ? 'wallet-logo-light.svg'
+      : 'wallet-logo-dark.svg';
 
   return (
     <IonHeader
