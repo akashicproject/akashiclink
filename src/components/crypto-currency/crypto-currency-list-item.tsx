@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 import { type IWalletCurrency } from '../../constants/currencies';
-import { formatAmount } from '../../utils/formatAmount';
+import { formatAmountWithCommas } from '../../utils/formatAmountWithCommas';
 import { useCryptoCurrencyBalance } from '../../utils/hooks/useCryptoCurrencyBalance';
 import { CryptoCurrencyIcon } from '../common/chain-icon/crypto-currency-icon';
 
@@ -59,7 +59,7 @@ const CryptoCurrencyListItem = ({
           <div
             className="ion-text-size-xxs"
             style={{ color: 'var(--ion-text-color-alt)' }}
-          >{`${formatAmount(balance ?? '0')} ${walletCurrency.token ?? walletCurrency.chain}`}</div>
+          >{`${formatAmountWithCommas(balance ?? '0', 2)} ${walletCurrency.token ?? walletCurrency.chain}`}</div>
         </TextContainer>
       </ContentWrapper>
       {showUSDValue && (
@@ -67,7 +67,7 @@ const CryptoCurrencyListItem = ({
           className="ion-text-size-md ion-text-bold"
           style={{ color: 'var(--ion-text-color-alt)' }}
         >
-          {`$${formatAmount(balanceInUsd, 2)}`}
+          {`$${formatAmountWithCommas(balanceInUsd, 2)}`}
         </div>
       )}
     </Container>

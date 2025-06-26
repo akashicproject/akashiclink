@@ -14,6 +14,7 @@ import { useAppSelector } from '../../redux/app/hooks';
 import { selectTheme } from '../../redux/slices/preferenceSlice';
 import { themeType } from '../../theme/const';
 import { getPrecision, isGasFeeAccurate } from '../../utils/formatAmount';
+import { formatAmountWithCommas } from '../../utils/formatAmountWithCommas';
 import { formatDate } from '../../utils/formatDate';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { displayLongText } from '../../utils/long-text';
@@ -285,9 +286,7 @@ export function TransactionHistoryListItem({
               }}
             >
               {displayLongText(
-                `${isTxnDeposit ? '+' : '-'}${Big(transfer.amount).toFixed(
-                  amountPrecision
-                )} ${currencyDisplayName}`,
+                `${isTxnDeposit ? '+' : '-'}${formatAmountWithCommas(transfer.amount, amountPrecision)} ${currencyDisplayName}`,
                 26,
                 true
               )}
