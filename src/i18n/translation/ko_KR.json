@@ -315,7 +315,12 @@
     "remark": "발언",
     "currencies": "통화",
     "events": "이벤트",
-    "url": "URL"
+    "url": "URL",
+    "network": "Network",
+    "sendTo": "Send to",
+    "amount": "Amount",
+    "deposit": "Deposit",
+    "totalAmount": "Total Amount"
   },
   "SendBpByAlias": "Akashic Alias 으로 비즈니스 계정으로 보낼 수 없습니다",
   "SelectYourPreferredNode": "원하는 노드를 선택하세요.",

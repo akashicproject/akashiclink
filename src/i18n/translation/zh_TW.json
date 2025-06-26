@@ -316,7 +316,12 @@
     "canIpsBypassSigning": "允許回調重試",
     "currencies": "貨幣",
     "events": "事件",
-    "url": "URL"
+    "url": "URL",
+    "network": "Network",
+    "sendTo": "Send to",
+    "amount": "Amount",
+    "deposit": "Deposit",
+    "totalAmount": "Total Amount"
   },
   "SendBpByAlias": "無法透過 Akashic 地址發送商業帳戶",
   "SelectYourPreferredNode": "請選擇您偏好的節點。",

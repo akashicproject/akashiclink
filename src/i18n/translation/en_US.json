@@ -315,7 +315,12 @@
     "canIpsBypassSigning": "Allow Callback Retry",
     "currencies": "Currencies",
     "events": "Events",
-    "url": "Url"
+    "url": "Url",
+    "network": "Network",
+    "sendTo": "Send to",
+    "amount": "Amount",
+    "deposit": "Deposit",
+    "totalAmount": "Total Amount"
   },
   "SendBpByAlias": "Cannot send to business account by Akashic Alias",
   "SelectYourPreferredNode": "Please select your preferred node.",
