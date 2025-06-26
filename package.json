@@ -221,6 +221,10 @@
             {
               "type": "refactor",
               "release": "patch"
+            },
+            {
+              "type": "hotfix",
+              "release": "patch"
             }
           ]
         }
