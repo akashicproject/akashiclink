@@ -88,7 +88,7 @@ export function AddressScreeningHistoryItem({
   const handleClick = () => {
     historyGo(urls.addressScreeningDetails, {
       addressScreeningSearch: {
-        id: screening._id.toString(),
+        id: screening.paymentL2Hash,
       },
     });
   };
@@ -96,7 +96,7 @@ export function AddressScreeningHistoryItem({
   return (
     <>
       <AddressScreeningWrapper
-        key={screening._id.toString()}
+        key={screening.paymentL2Hash ?? ''}
         onClick={handleClick}
         style={style}
         hover={hasHoverEffect || false}

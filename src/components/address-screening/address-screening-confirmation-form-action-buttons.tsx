@@ -59,7 +59,7 @@ export const AddressScreeningConfirmationFormActionButtons = ({
 
       historyGo(urls.addressScreeningDetails, {
         addressScreeningSearch: {
-          id: response._id,
+          id: response.paymentL2Hash,
         },
       });
       setIsModalOpen(false);
