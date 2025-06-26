@@ -32,10 +32,14 @@ const PRIVACY_POLICY_LINKS = {
 };
 
 const QUICK_GUIDE_LINKS = {
-  [Language.enUS]: 'https://docs.akashiclink.com/',
-  [Language.zhCN]: 'https://docs.akashiclink.com/traditionalchinese',
-  [Language.zhTW]: 'https://docs.akashiclink.com/traditionalchinese',
-  [Language.bnBD]: 'https://docs.akashiclink.com',
+  [Language.enUS]:
+    'https://docs.akashiclink.com/guides/quick-guide#import-account',
+  [Language.zhCN]:
+    'https://docs.akashiclink.com/traditional-chinese/zhi-nan/kuai-su-zhi-nan#dao-ru-zhang-hao',
+  [Language.zhTW]:
+    'https://docs.akashiclink.com/traditional-chinese/zhi-nan/kuai-su-zhi-nan#dao-ru-zhang-hao',
+  [Language.bnBD]:
+    'https://docs.akashiclink.com/guides/quick-guide#import-account',
 };
 
 export const LINK_TYPE = {
