@@ -17,7 +17,9 @@ export const useAccountL1Address = (
   const isAC = chain === 'AkashicChain';
 
   const localStoredL1Address = activeAccount?.localStoredL1Addresses?.find(
-    (a) => a.coinSymbol.toLowerCase() === chain?.toLowerCase()
+    (a) =>
+      a.coinSymbol.toLowerCase() === chain?.toLowerCase() &&
+      typeof a.address === 'string'
   )?.address;
 
   return {

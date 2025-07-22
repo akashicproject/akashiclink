@@ -12,6 +12,8 @@ export function displayLongText(
   isPostfix?: boolean,
   isSplitInHalf?: boolean
 ): string {
+  if (!long) return '';
+
   if (long.length <= length) return long;
 
   if (isSplitInHalf) {

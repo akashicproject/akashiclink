@@ -13,19 +13,23 @@ export const useFetchAndRemapL1Address = () => {
   return async () => {
     if (!addresses?.length || !activeAccount) return;
 
-    const newAddresses = ALLOWED_NETWORKS.map((chain) => {
-      const l1 = addresses.find(
-        (a) => a.coinSymbol.toLowerCase() === chain.toLowerCase()
-      );
-      const localL1 = activeAccount?.localStoredL1Addresses?.find(
-        (a) => a.coinSymbol.toLowerCase() === chain.toLowerCase()
-      );
+    const newAddresses: LocalStoredL1AddressType[] = ALLOWED_NETWORKS.map(
+      (chain) => {
+        const l1 = addresses.find(
+          (a) => a.coinSymbol.toLowerCase() === chain.toLowerCase()
+        );
+        const localL1 = activeAccount?.localStoredL1Addresses?.find(
+          (a) =>
+            a.coinSymbol.toLowerCase() === chain.toLowerCase() &&
+            typeof a.address === 'string'
+        );
 
-      return {
-        coinSymbol: chain,
-        address: l1?.address ?? localL1 ?? '', // addresses return from endpoint take higher priority
-      } as LocalStoredL1AddressType;
-    });
+        return {
+          coinSymbol: chain,
+          address: l1?.address ?? localL1?.address ?? '', // addresses return from endpoint take higher priority
+        };
+      }
+    );
 
     setLocalStoredL1Addresses(activeAccount.identity, newAddresses);
   };
