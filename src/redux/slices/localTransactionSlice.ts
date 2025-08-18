@@ -27,6 +27,13 @@ export const localTransactionSlice = createAppSlice({
         };
       }
     ),
+    updateLocalTransactionByL2TxnHash: create.reducer(
+      (state, action: PayloadAction<ITransactionRecord>) => {
+        state.localTransactions = state.localTransactions.map((t) =>
+          t.l2TxnHash === action.payload.l2TxnHash ? action.payload : t
+        );
+      }
+    ),
     removeLocalTransactionByL2TxnHash: create.reducer(
       (state, action: PayloadAction<string>) => {
         state.localTransactions = state.localTransactions.filter(
@@ -44,8 +51,11 @@ export const localTransactionSlice = createAppSlice({
 });
 
 // Action creators are generated for each case reducer function.
-export const { addLocalTransaction, removeLocalTransactionByL2TxnHash } =
-  localTransactionSlice.actions;
+export const {
+  addLocalTransaction,
+  removeLocalTransactionByL2TxnHash,
+  updateLocalTransactionByL2TxnHash,
+} = localTransactionSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
 export const { selectLocalTransactions } = localTransactionSlice.selectors;

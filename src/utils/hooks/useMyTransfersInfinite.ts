@@ -1,6 +1,7 @@
 import { Preferences } from '@capacitor/preferences';
 import type { IOwnerTransactionsResponse } from '@helium-pay/backend';
 import {
+  CryptoCurrencySymbol,
   TransactionResult,
   TransactionStatus,
   TransactionType,
@@ -14,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
 import {
   removeLocalTransactionByL2TxnHash,
   selectLocalTransactions,
+  updateLocalTransactionByL2TxnHash,
 } from '../../redux/slices/localTransactionSlice';
 import fetcher from '../ownerFetcher';
 import { HIDE_SMALL_BALANCES } from '../preference-keys';
@@ -43,7 +45,19 @@ export const useMyTransfersInfinite = (limit = 100, query = {}) => {
   const { activeAccount, cacheOtk } = useAccountStorage();
   const dispatch = useAppDispatch();
   const localTransactions = useAppSelector(selectLocalTransactions);
-
+  // Convert any existing Tether tokenSymbol into USDT tokenSymbol in localTransactions
+  if (localTransactions.length > 0) {
+    localTransactions.forEach((t) => {
+      if (t.tokenSymbol === CryptoCurrencySymbol.TETHER) {
+        dispatch(
+          updateLocalTransactionByL2TxnHash({
+            ...t,
+            tokenSymbol: CryptoCurrencySymbol.USDT,
+          })
+        );
+      }
+    });
+  }
   const getKey = (
     pageIndex: number,
     previousPageData: IOwnerTransactionsResponse

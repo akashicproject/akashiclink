@@ -21,7 +21,7 @@ import axios from 'axios';
 import { prefixWithAS } from '../convert-as-prefix';
 import { getCurrentTime } from '../currentUTCTime';
 import { getManifestJson } from '../hooks/useCurrentAppInfo';
-import { delay } from '../timer-function';
+import { mapUSDTToTether } from '../hooks/useVerifyTxnAndSign';
 import type {
   ActiveLedgerResponse,
   IAcTreasuryThresholds,
@@ -247,11 +247,6 @@ export class Nitr0genApi {
       let lastError: unknown;
       for (const nodeUrl of nodeUrls) {
         try {
-          // Delay for safety: If we errored with a network error but AC
-          // actually processed the tx, we don't wanna resend right away and
-          // risk re-running a payout for example, which can process if very
-          // close to the original one. With some delay it will be caught as a duplicate
-          await delay(3000);
           return await this.executeSend<T>(nodeUrl, tx, method, timeout);
         } catch (e: unknown) {
           console.error(`Attempt with ${nodeUrl} failed: `, e);
@@ -604,13 +599,15 @@ export class Nitr0genApi {
     details: L2TxDetail,
     isFxBp = false,
     approvedStream?: string,
-    referenceId?: string
+    identifier?: string
   ): Promise<IBaseAcTransaction> {
     const $i = {
       owner: {
         $stream: otk.identity,
         network: details.coinSymbol,
-        token: details.tokenSymbol ?? nitr0genNativeCoin,
+        token:
+          mapUSDTToTether(details.coinSymbol, details.tokenSymbol) ??
+          nitr0genNativeCoin,
         amount: details.amount,
       },
       ...(isFxBp && {
@@ -640,7 +637,7 @@ export class Nitr0genApi {
         },
         metadata: {
           initiatedToNonL2: details.initiatedToNonL2,
-          referenceId,
+          identifier,
         },
       },
       $sigs: {},

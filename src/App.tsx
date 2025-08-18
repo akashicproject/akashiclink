@@ -58,7 +58,6 @@ const InitializeApp = () => {
 
 export default function App() {
   InitializeApp();
-
   // check if webpage request, if yes skip app and render popup page tree
   const query = new URLSearchParams(window.location.search);
   const type = query.get('type');

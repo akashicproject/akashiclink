@@ -63,7 +63,7 @@ export const useVerifyTxnAndSign = () => {
     tokenSymbol?: CryptoCurrencySymbol,
     feeDelegationStrategy?: FeeDelegationStrategy,
     approvedStream?: string,
-    referenceId?: string
+    identifier?: string
   ): Promise<string | UseVerifyAndSignResponse> => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
     const nitr0genApi = new Nitr0genApi();
@@ -85,7 +85,7 @@ export const useVerifyTxnAndSign = () => {
           // Backend accepts "normal" units, so we don't convert
           amount,
           coinSymbol,
-          tokenSymbol: mapUSDTToTether(coinSymbol, tokenSymbol),
+          tokenSymbol,
         };
         if (activeAccount.identity === l2TransactionData.toAddress)
           return 'NoSelfSend';
@@ -96,7 +96,7 @@ export const useVerifyTxnAndSign = () => {
           convertObjectCurrencies(l2TransactionData, convertToSmallestUnit),
           account.isFxBp,
           approvedStream,
-          referenceId
+          identifier
         );
         // add check for FX Bp
         if (account.isFxBp) {
@@ -137,7 +137,7 @@ export const useVerifyTxnAndSign = () => {
         tokenSymbol,
         feeDelegationStrategy,
         approvedStream,
-        referenceId,
+        identifier,
       };
 
       const { preparedTxn, fromAddress, delegatedFee } =
