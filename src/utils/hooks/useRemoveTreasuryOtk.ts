@@ -31,7 +31,7 @@ export const useRemoveTreasuryOtk = () => {
         signedTx,
       });
       // Inform AP of success
-      return `OxSUCCESS`;
+      return `0xSUCCESS`;
     } catch (e: unknown) {
       const error = e as Error;
 
