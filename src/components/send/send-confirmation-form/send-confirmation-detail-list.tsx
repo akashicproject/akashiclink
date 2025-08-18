@@ -6,8 +6,6 @@ import { useTranslation } from 'react-i18next';
 
 import { getPrecision } from '../../../utils/formatAmount';
 import { useCryptoCurrencySymbolsAndBalances } from '../../../utils/hooks/useCryptoCurrencySymbolsAndBalances';
-import { useInterval } from '../../../utils/hooks/useInterval';
-import { useTxnPresigned } from '../../../utils/hooks/useTxnPresigned';
 import { ShareActionButton } from '../../activity/share-action-button';
 import { L2Icon } from '../../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../../common/chain-icon/network-icon';
@@ -17,7 +15,6 @@ import { ListLabelValueItem } from '../../common/list/list-label-value-item';
 import { ListVerticalLabelValueItem } from '../../common/list/list-vertical-label-value-item';
 import { ListCopyTxHashItem } from '../copy-tx-hash';
 import { FromToAddressBlock } from '../from-to-address-block';
-import { QueuedChip } from '../queued-chip';
 import { SendFormContext } from '../send-modal-context-provider';
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -28,13 +25,11 @@ export const SendConfirmationDetailList = () => {
     useCryptoCurrencySymbolsAndBalances(currency);
   const { chain } = currency;
 
-  const { data: signedL1Txn, trigger } = useTxnPresigned();
-
   const txn = sendConfirm?.txn;
   const txnFinal = sendConfirm?.txnFinal;
   const validatedAddressPair = sendConfirm?.validatedAddressPair;
   const delegatedFee = sendConfirm?.delegatedFee;
-
+  const txHash = txnFinal?.txHash;
   const isL2 = validatedAddressPair?.isL2;
 
   // Calculate total Amount
@@ -80,21 +75,6 @@ export const SendConfirmationDetailList = () => {
     isCurrencyTypeToken && (isL2 || !!delegatedFee)
       ? currencySymbol + (isL2 ? ` (${nativeCoinSymbol})` : '')
       : nativeCoinSymbol;
-
-  // Presigned L1 txn returns presignedUmid instead of l2 tx hash
-  // Periodically fetches L2 txHash with presignedUmid
-  useInterval(() => {
-    if (!txnFinal?.isPresigned || !txnFinal?.txHash || !!signedL1Txn?.l2TxnHash)
-      return;
-
-    trigger({
-      preSignedUmid: txnFinal?.txHash ?? '',
-    });
-  }, 1000);
-
-  const txHash = txnFinal?.isPresigned
-    ? signedL1Txn?.l2TxnHash
-    : txnFinal?.txHash;
 
   return (
     <List lines="none">
@@ -147,9 +127,6 @@ export const SendConfirmationDetailList = () => {
                 txHashUrl={getUrl('transaction', !!isL2, txHash)}
               />
             </IonItem>
-          )}
-          {!txHash && (
-            <ListLabelValueItem label={t('txHash')} value={<QueuedChip />} />
           )}
         </>
       )}
