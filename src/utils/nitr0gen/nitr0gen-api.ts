@@ -433,6 +433,7 @@ export class Nitr0genApi {
           owner: {
             $stream: otk.identity,
             remove: oldPubKeyToRemove,
+            treasury: '0', // Default: Everything must be approved
           },
         },
       },
