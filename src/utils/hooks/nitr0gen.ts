@@ -8,6 +8,7 @@ import {
   type ITransactionProposalClientSideOtk,
   type ITransferNftResponse,
   nftErrors,
+  OtkType,
   TransactionLayer,
   TransactionStatus,
   WalletType,
@@ -20,11 +21,13 @@ import type { ITransactionSettledResponse } from '../nitr0gen/nitr0gen.interface
 import { Nitr0genApi } from '../nitr0gen/nitr0gen-api';
 import { HIDE_SMALL_BALANCES } from '../preference-keys';
 import { useValueOfAmountInUSDT } from './useExchangeRates';
+import { useAccountStorage } from './useLocalAccounts';
 
 export const useSendL2Transaction = () => {
   const nitr0genApi = new Nitr0genApi();
   const dispatch = useAppDispatch();
   const valueOfAmountInUSDT = useValueOfAmountInUSDT();
+  const { activeAccount } = useAccountStorage();
 
   const trigger = async (
     signedTransactionData: ITransactionProposalClientSideOtk
@@ -54,8 +57,9 @@ export const useSendL2Transaction = () => {
 
       // Only store locally if we are not hiding the transaction
       if (
-        (hideSmallTransactions && usdtValue.gte(1)) ||
-        !hideSmallTransactions
+        ((hideSmallTransactions && usdtValue.gte(1)) ||
+          !hideSmallTransactions) &&
+        activeAccount?.otkType === OtkType.PRIMARY
       ) {
         dispatch(
           addLocalTransaction({
