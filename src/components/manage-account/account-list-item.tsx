@@ -6,6 +6,7 @@ import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { displayLongText } from '../../utils/long-text';
 import { AccountIcon } from './account-icon';
 import { IconAndLabel } from './account-icon-and-label';
+import { AccountOtkTypeTag } from './account-otk-type-tag';
 
 export const AccountListItem = ({
   account,
@@ -51,9 +52,16 @@ export const AccountListItem = ({
         )}
 
         <IonLabel>
-          <h3 className={'ion-text-align-left ion-margin-bottom-0'}>
-            {account.alias ?? account.accountName}
-          </h3>
+          <div
+            className={
+              'ion-display-flex ion-flex-direction-row ion-align-items-center ion-gap-xs'
+            }
+          >
+            <h3 className={'ion-text-align-left ion-margin-bottom-0'}>
+              {account.alias ?? account.accountName}{' '}
+            </h3>
+            <AccountOtkTypeTag account={account} />
+          </div>
           <p className={'ion-text-align-left ion-text-size-xxs'}>
             {isShortAddress
               ? displayLongText(account.identity, 16, false, true)

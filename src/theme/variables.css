@@ -175,6 +175,14 @@ http://ionicframework.com/docs/theming/ */
   --risk-level-background-low: #ebfffc;
   --risk-level-background-high: #fff1db;
   --risk-level-background-severe: #ffe9ec;
+
+  /* Account otktype tag */
+  --otk-type-tag-primary-background: #e2dfff;
+  --otk-type-tag-primary-text: #4d49d8;
+  --otk-type-tag-secondary-background: #e8f1ff;
+  --otk-type-tag-secondary-text: #0d97eb;
+  --otk-type-tag-treasury-background: #e2ffff;
+  --otk-type-tag-treasury-text: #00bec1;
 }
 
 /** Dark Colors **/

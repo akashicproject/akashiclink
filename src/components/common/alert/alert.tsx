@@ -104,7 +104,13 @@ export function Alert({ state: externalState }: { state: FormAlertState }) {
  * - visibility state
  * - Optional button (e.g. to redirect somewhere)
  */
-export function CustomAlert({ state }: { state: CustomAlertState }) {
+export function CustomAlert({
+  state,
+  onDidDismiss,
+}: {
+  state: CustomAlertState;
+  onDidDismiss?: () => void;
+}) {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(state.visible);
 
@@ -116,7 +122,10 @@ export function CustomAlert({ state }: { state: CustomAlertState }) {
   return (
     <IonModal
       isOpen={isOpen}
-      onDidDismiss={() => setIsOpen(false)}
+      onDidDismiss={() => {
+        setIsOpen(false);
+        onDidDismiss?.();
+      }}
       className="custom-alert"
     >
       <IonToolbar color="#ffffff">

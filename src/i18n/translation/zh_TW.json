@@ -99,6 +99,7 @@
   "NewPassSameAsOld": "新密碼不能與舊密碼相同",
   "SavingsExceeded": "您沒有足夠的資金進行這筆交易",
   "TokenNotFound": "在所選區塊鏈上的任何帳號中都找不到該幣種",
+  "ExistingL2AccountError": "請登入現有帳號以匯入或更新密碼。",
   "ActivationCodeInvalid": "啟用碼已過期或無效 - 請重試。",
   "WalletIsBusy": "請等待確認先前的交易後再發送。",
   "transactionTimeOut": "交易超時，請稍後再試。",
@@ -192,6 +193,11 @@
     "TRX-SHASTA": "Tron SHASTA Testnet",
     "BTC": "比特幣鏈",
     "TBTC": "Bitcoin Testnet"
+  },
+  "OtkType": {
+    "primary": "主",
+    "secondary": "API/SDK",
+    "treasury": "財務"
   },
   "Security": "安全",
   "Information": "資訊",

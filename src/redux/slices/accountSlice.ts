@@ -1,6 +1,7 @@
-import { L2Regex } from '@helium-pay/backend';
+import { L2Regex, type OtkType } from '@helium-pay/backend';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
+import { isSameAccount } from '../../utils/account';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import type { FullOtk } from '../../utils/otk-generation';
 import { createAppSlice } from '../app/createAppSlice';
@@ -37,13 +38,23 @@ export const accountSlice = createAppSlice({
       }
     }),
     addAliasToAccountByIdentity: create.reducer(
-      (state, action: PayloadAction<{ alias: string; identity: string }>) => {
+      (
+        state,
+        action: PayloadAction<{
+          alias: string;
+          identity: string;
+          otkType: OtkType;
+        }>
+      ) => {
         const updatedAccounts = state.localAccounts.map((l) => {
-          if (l.identity === action.payload.identity) {
-            return { ...l, alias: action.payload.alias };
-          }
-          return l;
+          return isSameAccount(l, {
+            identity: action.payload.identity,
+            otkType: action.payload.otkType,
+          })
+            ? { ...l, alias: action.payload.alias }
+            : l;
         });
+
         if (state.activeAccount)
           state.activeAccount = {
             ...state.activeAccount,
@@ -53,25 +64,34 @@ export const accountSlice = createAppSlice({
       }
     ),
     removeAliasFromAccountByIdentity: create.reducer(
-      (state, action: PayloadAction<{ identity: string }>) => {
+      (
+        state,
+        action: PayloadAction<{ identity: string; otkType: OtkType }>
+      ) => {
         const updatedAccounts = state.localAccounts.map((l) => {
-          if (l.identity === action.payload.identity) {
+          if (
+            isSameAccount(l, {
+              identity: action.payload.identity,
+              otkType: action.payload.otkType,
+            })
+          ) {
             const { alias: _, ...rest } = l;
             return rest;
           }
           return l;
         });
+        state.localAccounts = updatedAccounts;
+
         if (state.activeAccount) {
           state.activeAccount = { ...state.activeAccount, alias: undefined };
         }
-        state.localAccounts = updatedAccounts;
       }
     ),
     addLocalAccount: create.reducer(
       (state, action: PayloadAction<{ account: LocalAccount }>) => {
         // Skip duplicate accounts
-        for (const { identity } of state.localAccounts ?? [])
-          if (identity === action.payload.account.identity) return;
+        for (const localAccount of state.localAccounts ?? [])
+          if (isSameAccount(localAccount, action.payload.account)) return;
 
         state.localAccounts = [
           ...(state.localAccounts ?? []),

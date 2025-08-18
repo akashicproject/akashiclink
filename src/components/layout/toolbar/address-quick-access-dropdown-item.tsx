@@ -1,6 +1,6 @@
 import type { JSX } from '@ionic/core/components';
 import { IonLabel } from '@ionic/react';
-import type { MouseEvent } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 
 import { type DepositChainOption } from '../../../utils/hooks/useAccountL1Address';
 import { displayLongText } from '../../../utils/long-text';
@@ -12,6 +12,7 @@ import { IconAndLabel } from '../../manage-account/account-icon-and-label';
 
 export const AddressQuickAccessDropdownItem = ({
   displayName,
+  displayNameIcon,
   chain,
   address,
   triggerId,
@@ -22,6 +23,7 @@ export const AddressQuickAccessDropdownItem = ({
   ...props
 }: {
   displayName: string;
+  displayNameIcon?: ReactNode;
   triggerId?: string;
   isTrigger?: boolean;
   chain: DepositChainOption;
@@ -58,9 +60,10 @@ export const AddressQuickAccessDropdownItem = ({
             isTrigger && onClickLabel && onClickLabel(e);
           }}
         >
-          <h3 className={'ion-text-align-left ion-margin-bottom-0'}>
-            {displayName}
-          </h3>
+          <div className={'ion-display-flex ion-gap-xs ion-align-items-center'}>
+            <h3 className={'ion-text-align-left '}>{displayName}</h3>
+            {displayNameIcon}
+          </div>
           <div
             className={'ion-display-flex ion-gap-xxxs ion-align-items-center'}
           >

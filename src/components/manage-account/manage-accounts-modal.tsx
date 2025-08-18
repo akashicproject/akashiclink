@@ -19,10 +19,12 @@ export function ManageAccountsModal({
   modal,
   isOpen,
   setIsOpen,
+  isPopup = false,
 }: {
   modal: RefObject<HTMLIonModalElement>;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isPopup?: boolean;
 }) {
   const { t } = useTranslation();
   const isMobile = isPlatform('ios') || isPlatform('android');
@@ -89,6 +91,7 @@ export function ManageAccountsModal({
                 height={`calc(92vh - ${
                   isMobile ? '320px - var(--ion-safe-area-bottom)' : '240px'
                 })`}
+                showManagementButtons={!isPopup}
               />
             </IonCol>
           </IonRow>

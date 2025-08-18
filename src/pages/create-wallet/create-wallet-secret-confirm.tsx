@@ -1,4 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { OtkType } from '@helium-pay/backend';
 import { IonCol, IonRow, IonText } from '@ionic/react';
 import axios from 'axios';
 import { isEqual } from 'lodash';
@@ -90,14 +91,20 @@ export function CreateWalletSecretConfirm({ isPopup = false }) {
       const { otk: fullOtk } = await createAccountWithAllL1Addresses(otk);
 
       // Set new account details and display summary screen
+      addLocalOtkAndCache({
+        otk: fullOtk,
+        otkType: OtkType.PRIMARY,
+        password: createWalletForm.password,
+      });
+
       const newAccount = {
         identity: fullOtk.identity,
+        otkType: OtkType.PRIMARY,
       };
-
-      addLocalOtkAndCache(fullOtk, createWalletForm.password);
       addLocalAccount(newAccount);
-      setAlert(formAlertResetState);
       setActiveAccount(newAccount);
+
+      setAlert(formAlertResetState);
 
       if (isPopup) {
         dispatch(onClear());

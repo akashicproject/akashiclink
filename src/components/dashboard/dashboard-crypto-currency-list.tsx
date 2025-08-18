@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { IWalletCurrency } from '../../constants/currencies';
+import { useIsScopeAccessAllowed } from '../../utils/account';
 import { useCryptoCurrencyBalancesList } from '../../utils/hooks/useCryptoCurrencyBalancesList';
 import { useInterval } from '../../utils/hooks/useInterval';
 import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
@@ -28,6 +29,9 @@ export const DashboardCryptoCurrencyList = () => {
   >();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLIonModalElement>(null);
+  const isQuickAccessAllowed = useIsScopeAccessAllowed(
+    'individualAssetQuickAccess'
+  );
 
   const { balances } = useCryptoCurrencyBalancesList();
   const { value: sortMode, refreshValue: loadSortMode } =
@@ -72,7 +76,7 @@ export const DashboardCryptoCurrencyList = () => {
         <CryptoCurrencyList
           currencies={sortedCurrencies}
           showUSDValue
-          onClick={handleOnClickItem}
+          onClick={isQuickAccessAllowed ? handleOnClickItem : undefined}
         />
       </div>
       <DashboardCryptoCurrencyDetailModal

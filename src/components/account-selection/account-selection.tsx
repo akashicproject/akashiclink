@@ -1,65 +1,41 @@
-import './account-selection.scss';
+import styled from '@emotion/styled';
+import { IonButton, IonIcon } from '@ionic/react';
+import { caretDownOutline } from 'ionicons/icons';
+import { useRef, useState } from 'react';
 
-import type { IonSelectCustomEvent } from '@ionic/core/dist/types/components';
-import type { SelectChangeEventDetail } from '@ionic/react';
-import { IonSelect, IonSelectOption } from '@ionic/react';
-import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
-
-import { urls } from '../../constants/urls';
-import { akashicPayPath } from '../../routing/navigation-tabs';
-import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { displayLongText } from '../../utils/long-text';
+import { AccountOtkTypeTag } from '../manage-account/account-otk-type-tag';
+import { ManageAccountsModal } from '../manage-account/manage-accounts-modal';
 
-const ACCOUNT_OPERATION_OPTIONS = [
-  {
-    tKey: 'CreateWallet',
-    url: urls.createWalletPassword,
+export const StyledAccountSelector = styled(IonButton)({
+  '--min-height': 'auto',
+  margin: 0,
+  flex: 1,
+  ['&::part(native)']: {
+    color: 'var(--ion-color-primary-10)',
+    '--border-color': '#7b757f',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderRadius: 8,
+    fontSize: '0.75rem',
+    '--inner-padding-end': '8px',
+    '--padding-start': '8px',
+    '--padding-top': '8px',
+    '--padding-bottom': '8px',
+    height: 40,
+    marginInlineStart: 0,
+    background: 'transparent',
+    textWrap: 'wrap',
+    textTransform: 'none',
   },
-  {
-    tKey: 'ImportWallet',
-    url: urls.importWalletSelectMethod,
-  },
-  {
-    tKey: 'ManageAccounts',
-    url: urls.manageAccounts,
-  },
-];
+});
 
-export function AccountSelection({
-  currentSelectedAccount,
-  onSelectAccount,
-  size = 'lg',
-  isPopup = false,
-}: {
-  currentSelectedAccount?: LocalAccount;
-  onSelectAccount?: (selectedAccount: LocalAccount) => void;
-  size?: 'md' | 'lg';
-  isPopup?: boolean;
-}) {
-  const history = useHistory();
-  const { t } = useTranslation();
+export function AccountSelection({ isPopup = false }: { isPopup?: boolean }) {
+  const [showModal, setShowModal] = useState(false);
+  const modal = useRef<HTMLIonModalElement>(null);
 
-  const { localAccounts } = useAccountStorage();
-
-  const onSelect = ({
-    detail: { value },
-  }: IonSelectCustomEvent<SelectChangeEventDetail>) => {
-    if (ACCOUNT_OPERATION_OPTIONS.map((option) => option.url).includes(value)) {
-      history.push(akashicPayPath(value));
-      return;
-    }
-
-    const accountSelectedByUser = localAccounts.find(
-      (account) => account.identity === value
-    );
-
-    // When new account is selected trigger callback
-    if (accountSelectedByUser && value !== currentSelectedAccount?.identity) {
-      onSelectAccount && onSelectAccount(accountSelectedByUser);
-    }
-  };
+  const { activeAccount } = useAccountStorage();
 
   return (
     <div
@@ -69,44 +45,36 @@ export function AccountSelection({
         gap: '8px',
         justifyContent: 'space-between',
         width: '100%',
+        height: 40,
       }}
     >
-      <IonSelect
-        className="account-selections-options ion-padding-bottom-0 ion-padding-top-0 ion-padding-left-md ion-padding-right-xs"
-        style={{
-          flexGrow: 1,
-          height: size === 'lg' ? 40 : 32,
-          minHeight: size === 'lg' ? 40 : 32,
-          minWidth: '0',
-        }}
-        value={currentSelectedAccount?.identity ?? localAccounts?.[0]?.identity}
-        onIonChange={onSelect}
-        interface="popover"
-        interfaceOptions={{
-          className: 'account-selection',
-          side: 'bottom',
-          size: 'cover',
+      <StyledAccountSelector
+        onClick={() => {
+          setShowModal(true);
         }}
       >
-        {[
-          ...localAccounts.map((account) => (
-            <IonSelectOption key={account.identity} value={account.identity}>
-              {`${
-                account.alias ?? account?.accountName ?? `Wallet`
-              } - ${displayLongText(account.identity, 20)}`}
-            </IonSelectOption>
-          )),
-          ...(isPopup ? [] : ACCOUNT_OPERATION_OPTIONS).map((option, i) => (
-            <IonSelectOption
-              className={i === 0 || i === 2 ? 'option-divider-top' : ''}
-              key={option.tKey}
-              value={option.url}
-            >
-              {t(option.tKey)}
-            </IonSelectOption>
-          )),
-        ]}
-      </IonSelect>
+        {activeAccount &&
+          `${
+            activeAccount.alias ?? activeAccount?.accountName ?? `Account`
+          } - ${displayLongText(activeAccount.identity, 20, true)}`}
+        {activeAccount && (
+          <AccountOtkTypeTag
+            className={'ion-margin-left-xxs ion-margin-right-xxs'}
+            account={activeAccount}
+          />
+        )}
+        <IonIcon
+          className={'ion-margin-left-auto'}
+          slot="end"
+          icon={caretDownOutline}
+        />
+      </StyledAccountSelector>
+      <ManageAccountsModal
+        modal={modal}
+        isOpen={showModal}
+        setIsOpen={setShowModal}
+        isPopup={isPopup}
+      />
     </div>
   );
 }

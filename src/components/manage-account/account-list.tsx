@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
 import { IonList, isPlatform } from '@ionic/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { getAccountUniqueId, isSameAccount } from '../../utils/account';
+import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemapAASToAddress';
+import { useFetchAndRemapL1Address } from '../../utils/hooks/useFetchAndRemapL1address';
 import type { LocalAccount } from '../../utils/hooks/useLocalAccounts';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useLogout } from '../../utils/hooks/useLogout';
@@ -22,14 +25,19 @@ interface AccountListProps {
   style?: React.CSSProperties;
   height?: string;
   setManageAccountsModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  showManagementButtons?: boolean;
 }
 export const AccountList: React.FC<AccountListProps> = ({
   height,
   style,
   setManageAccountsModalOpen,
+  showManagementButtons = true,
 }) => {
   const { localAccounts, activeAccount, setActiveAccount } =
     useAccountStorage();
+  const fetchAndRemapL1Address = useFetchAndRemapL1Address();
+  const fetchAndRemapAASToAddress = useFetchAndRemapAASToAddress();
+
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [accountToDelete, setAccountToDelete] = useState<LocalAccount | null>(
@@ -48,9 +56,24 @@ export const AccountList: React.FC<AccountListProps> = ({
   };
 
   const onSelectAccountClick = (account: LocalAccount) => async () => {
+    if (!activeAccount || isSameAccount(account, activeAccount)) return;
+
     await logout();
     setActiveAccount(account);
+    setManageAccountsModalOpen && setManageAccountsModalOpen(false);
   };
+
+  // fetch the latest info regarding the accounts
+  // this component unmounts and mounts several times, so we can make sure the latest copy of localAccounts is used
+  useEffect(() => {
+    fetchAndRemapL1Address();
+    if (activeAccount) {
+      fetchAndRemapAASToAddress({
+        identity: activeAccount?.identity,
+        otkType: activeAccount?.otkType,
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -68,25 +91,27 @@ export const AccountList: React.FC<AccountListProps> = ({
         {localAccounts.map((account, i) => (
           <AccountListItem
             lines={i === localAccounts.length - 1 ? 'none' : 'full'}
-            isActive={account.identity === activeAccount?.identity}
+            isActive={
+              activeAccount ? isSameAccount(account, activeAccount) : false
+            }
             button
-            key={account.identity}
+            key={getAccountUniqueId(account)}
             onClick={
               isDeleting
                 ? onDeleteAccountClick(account)
-                : account.identity !== activeAccount?.identity
-                  ? onSelectAccountClick(account)
-                  : undefined
+                : onSelectAccountClick(account)
             }
             showDeleteIcon={isDeleting}
             account={account}
           />
         ))}
       </StyledList>
-      <AccountManagementList
-        isDeleting={isDeleting}
-        onClickRemove={() => setIsDeleting(!isDeleting)}
-      />
+      {showManagementButtons && (
+        <AccountManagementList
+          isDeleting={isDeleting}
+          onClickRemove={() => setIsDeleting(!isDeleting)}
+        />
+      )}
       {accountToDelete && (
         <DeleteAccountModal
           setManageAccountsModalOpen={setManageAccountsModalOpen}

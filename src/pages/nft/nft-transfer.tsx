@@ -31,6 +31,7 @@ import {
 } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
+import { useIsScopeAccessAllowed } from '../../utils/account';
 import { OwnersAPI } from '../../utils/api';
 import { useNftTransfer } from '../../utils/hooks/nitr0gen';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
@@ -146,6 +147,7 @@ export function NftTransfer() {
   );
   const { activeAccount, cacheOtk } = useAccountStorage();
   const { trigger: triggerNftTransfer } = useNftTransfer();
+  const isSendAllowed = useIsScopeAccessAllowed('nftTransfer');
 
   const [alert, setAlert] = useState(formAlertResetState);
   const [loading, setLoading] = useState(false);
@@ -339,7 +341,7 @@ export function NftTransfer() {
               <IonCol>
                 <PrimaryButton
                   expand="block"
-                  disabled={!inputValue || !searched}
+                  disabled={!isSendAllowed || !inputValue || !searched}
                   isLoading={loading}
                   onClick={transferNft}
                 >

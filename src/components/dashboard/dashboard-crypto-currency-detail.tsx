@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { type IWalletCurrency } from '../../constants/currencies';
 import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
+import { useIsScopeAccessAllowed } from '../../utils/account';
 import { formatAmountWithCommas } from '../../utils/formatAmountWithCommas';
 import { useAccountL1Address } from '../../utils/hooks/useAccountL1Address';
 import { useCryptoCurrencyBalance } from '../../utils/hooks/useCryptoCurrencyBalance';
@@ -24,6 +25,9 @@ export function DashboardCryptoCurrencyDetail({
   walletCurrency: IWalletCurrency;
 }) {
   const { t } = useTranslation();
+  const isSendAllowed = useIsScopeAccessAllowed('send');
+  const isDepositAllowed = useIsScopeAccessAllowed('deposit');
+
   const { address } = useAccountL1Address(walletCurrency.chain);
   const { balance, balanceInUsd } = useCryptoCurrencyBalance(walletCurrency);
   const {
@@ -78,13 +82,21 @@ export function DashboardCryptoCurrencyDetail({
           <CopyBox label={t('DepositAddress')} text={address ?? '-'} />
         </IonCol>
         <IonCol size={'5'} offset={'1'}>
-          <PrimaryButton expand="block" onClick={handleOnClickSend}>
+          <PrimaryButton
+            disabled={!isSendAllowed}
+            expand="block"
+            onClick={handleOnClickSend}
+          >
             {t('Send')}
             <IonIcon slot="end" icon={arrowForwardOutline} />
           </PrimaryButton>
         </IonCol>
         <IonCol size={'5'}>
-          <WhiteButton expand="block" onClick={handleOnClickDeposit}>
+          <WhiteButton
+            disabled={!isDepositAllowed}
+            expand="block"
+            onClick={handleOnClickDeposit}
+          >
             {t('Deposit')}
             <IonIcon slot="end" icon={arrowDownOutline}></IonIcon>
           </WhiteButton>

@@ -109,11 +109,12 @@ export function ChangePassword() {
     if (newPassword && oldPassword) {
       try {
         if (!activeAccount) return;
-        await changeOtkPassword(
-          activeAccount.identity,
+        await changeOtkPassword({
+          identity: activeAccount.identity,
+          otkType: activeAccount.otkType,
           oldPassword,
-          newPassword
-        );
+          newPassword,
+        });
         // Using history instead of useState to keep blocking user after soft close
         historyReplace(urls.changePassword, {
           changePassword: {

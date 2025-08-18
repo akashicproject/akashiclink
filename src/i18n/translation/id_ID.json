@@ -100,6 +100,7 @@
   "NewPassSameAsOld": "New password cannot be the same as the previous password",
   "SavingsExceeded": "You do not have enough funds to make this transaction",
   "TokenNotFound": "Could not find this token in any Account on the selected blockchain",
+  "ExistingL2AccountError": "Please login to the existing account in order to import or update the password.",
   "WalletIsBusy": "Please wait until previous transactions have been confirmed before sending more",
   "transactionTimeOut": "Transaction has timed out. Please try again",
   "ActivationCodeInvalid": "Activation code has timed out or is invalid - please try again.",
@@ -192,6 +193,11 @@
     "TRX-SHASTA": "Tron SHASTA Testnet",
     "BTC": "Bitcoin Chain",
     "TBTC": "Bitcoin Testnet"
+  },
+  "OtkType": {
+    "primary": "Main",
+    "secondary": "API/SDK",
+    "treasury": "Treasury"
   },
   "Security": "Security",
   "Information": "Information",

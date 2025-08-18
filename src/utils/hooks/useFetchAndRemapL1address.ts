@@ -5,6 +5,8 @@ import {
 } from './useLocalAccounts';
 import { useOwnerKeys } from './useOwnerKeys';
 
+// BE AWARE THAT THIS HOOK "SNAPSHOT" `localAccounts` (`setLocalStoredL1Addresses` to be exact),
+// choose wisely WHEN you initialize this hook, or you might be using an older copy of localAccounts
 export const useFetchAndRemapL1Address = () => {
   const { activeAccount } = useAccountStorage();
   const { setLocalStoredL1Addresses } = useAccountStorage();
@@ -31,6 +33,10 @@ export const useFetchAndRemapL1Address = () => {
       }
     );
 
-    setLocalStoredL1Addresses(activeAccount.identity, newAddresses);
+    setLocalStoredL1Addresses({
+      identity: activeAccount.identity,
+      otkType: activeAccount.otkType,
+      newL1Addresses: newAddresses,
+    });
   };
 };

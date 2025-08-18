@@ -1,6 +1,6 @@
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import { datadogRum } from '@datadog/browser-rum';
-import { keyError } from '@helium-pay/backend';
+import { keyError, type OtkType } from '@helium-pay/backend';
 import type { PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { isAxiosError } from 'axios';
 
@@ -21,12 +21,14 @@ export interface ImportWalletForm {
 
 export interface ImportWalletState {
   otk: FullOtk | null;
+  otkType: OtkType | null;
   error: SerializedError | null;
   importWalletForm: ImportWalletForm;
 }
 
 const initialState: ImportWalletState = {
   otk: null,
+  otkType: null,
   error: null,
   importWalletForm: {
     password: '',
@@ -69,11 +71,14 @@ export const importWalletSlice = createAppSlice({
         // Reconstruct OTK
         const reconstructedOtk = await restoreOtk(passPhrase.join(' '));
         let identity: string | undefined;
+        let otkType: OtkType | undefined;
+
         try {
           const response = await OwnersAPI.retrieveIdentity({
             publicKey: reconstructedOtk.key.pub.pkcs8pem,
           });
           identity = response.identity;
+          otkType = response.otkType;
         } catch (e) {
           // Axios-errors don't get mapped nicely to SerializezError so we
           // re-throw as Error
@@ -86,14 +91,15 @@ export const importWalletSlice = createAppSlice({
 
         if (identity) {
           historyResetStackAndRedirect(urls.importWalletPassword);
-          return { ...reconstructedOtk, identity };
+          return { otk: { ...reconstructedOtk, identity }, otkType };
         } else {
           throw new Error('GenericFailureMsg');
         }
       },
       {
         fulfilled: (state, action) => {
-          state.otk = action.payload;
+          state.otk = action.payload.otk;
+          state.otkType = action.payload.otkType;
           state.error = initialState.error;
         },
         rejected: (state, action) => {
@@ -107,12 +113,15 @@ export const importWalletSlice = createAppSlice({
         // Restore OTK from keypair
         let otk: IKeyExtended = restoreOtkFromKeypair(privateKey);
         let identity: string | undefined;
+        let otkType: OtkType | undefined;
+
         try {
           try {
             const response = await OwnersAPI.retrieveIdentity({
               publicKey: otk.key.pub.pkcs8pem,
             });
             identity = response.identity;
+            otkType = response.otkType;
           } catch (e) {
             // This error could be because of a bug where we have some otks stored "compressed" and some "uncompressed"
             // So if facing this error, we try again with "uncompressed"
@@ -125,6 +134,7 @@ export const importWalletSlice = createAppSlice({
                 publicKey: otk.key.pub.pkcs8pem,
               });
               identity = response.identity;
+              otkType = response.otkType;
             } else {
               throw e;
             }
@@ -141,14 +151,15 @@ export const importWalletSlice = createAppSlice({
         // The value we return becomes the `fulfilled` action payload
         if (identity) {
           historyResetStackAndRedirect(urls.importWalletPassword);
-          return { ...otk, identity };
+          return { otk: { ...otk, identity }, otkType };
         } else {
           throw new Error('GenericFailureMsg');
         }
       },
       {
         fulfilled: (state, action) => {
-          state.otk = action.payload;
+          state.otk = action.payload.otk;
+          state.otkType = action.payload.otkType;
           state.error = initialState.error;
         },
         rejected: (state, action) => {
@@ -163,6 +174,7 @@ export const importWalletSlice = createAppSlice({
   selectors: {
     selectImportWalletForm: (importWallet) => importWallet.importWalletForm,
     selectOtk: (importWallet) => importWallet.otk,
+    selectOtkType: (importWallet) => importWallet.otkType,
     selectError: (importWallet) => importWallet.error,
   },
 });
@@ -176,5 +188,5 @@ export const {
 } = importWalletSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectImportWalletForm, selectOtk, selectError } =
+export const { selectImportWalletForm, selectOtk, selectOtkType, selectError } =
   importWalletSlice.selectors;

@@ -16,6 +16,7 @@ import { PrimaryButton, WhiteButton } from '../../components/common/buttons';
 import { Divider } from '../../components/common/divider';
 import { AlertIcon } from '../../components/common/icons/alert-icon';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
+import { useIsScopeAccessAllowed } from '../../utils/account';
 import { useWalletScreenHistory } from '../../utils/hooks/useWalletScreenHistory';
 
 export const Wrapper = styled.div({
@@ -70,6 +71,7 @@ const ListFooter: GridComponents['Footer'] = ({
 export const AddressScreeningHistory = () => {
   const { t } = useTranslation();
   const isMobile = isPlatform('ios') || isPlatform('android');
+  const isNewScanAllowed = useIsScopeAccessAllowed('addressScanning');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLIonModalElement>(null);
@@ -153,6 +155,7 @@ export const AddressScreeningHistory = () => {
           {t('ScanAddressReport')}
         </IonText>
         <PrimaryButton
+          disabled={!isNewScanAllowed}
           style={{ width: '150px', margin: 0 }}
           onClick={() => {
             setIsModalOpen(true);

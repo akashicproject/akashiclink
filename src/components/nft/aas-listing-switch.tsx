@@ -101,13 +101,17 @@ export const AasListingSwitch = ({
   ) => {
     if (!activeAccount) return;
     if (linking && alias && nftLedgerId) {
-      await addAasToAccountByIdentity(
-        nft.alias,
-        activeAccount.identity,
-        nft.ledgerId
-      );
+      await addAasToAccountByIdentity({
+        identity: activeAccount.identity,
+        otkType: activeAccount.otkType,
+        alias: nft.alias,
+        ledgerId: nft.ledgerId,
+      });
     } else if (!linking) {
-      await removeAasFromAccountByIdentity(activeAccount?.identity);
+      await removeAasFromAccountByIdentity({
+        identity: activeAccount.identity,
+        otkType: activeAccount.otkType,
+      });
     }
   };
 

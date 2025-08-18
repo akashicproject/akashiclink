@@ -20,6 +20,7 @@ import { selectTheme } from '../../redux/slices/preferenceSlice';
 import type { LocationState } from '../../routing/history';
 import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
+import { useIsScopeAccessAllowed } from '../../utils/account';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { NoNtfText } from './nfts';
 
@@ -38,6 +39,8 @@ export function Nft() {
   const state = history.location.state?.nft;
   const [alert, setAlert] = useState(formAlertResetState);
   const { nfts } = useNftMe();
+  const isSendAllowed = useIsScopeAccessAllowed('nftTransfer');
+
   const currentNft = nfts.find((nft) => nft.name === state?.nftName);
 
   const storedTheme = useAppSelector(selectTheme);
@@ -97,7 +100,11 @@ export function Nft() {
             </IonRow>
             <IonRow className="ion-margin-top-xs ion-margin-bottom-xxs">
               <IonCol size="10" offset="1">
-                <PrimaryButton expand="block" onClick={transferNft}>
+                <PrimaryButton
+                  disabled={!isSendAllowed}
+                  expand="block"
+                  onClick={transferNft}
+                >
                   {t('Transfer')}
                 </PrimaryButton>
               </IonCol>

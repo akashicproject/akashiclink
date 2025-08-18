@@ -1,6 +1,12 @@
 import { userConst } from '@helium-pay/backend';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
+import {
+  CustomAlert,
+  errorAlertShell,
+  formAlertResetState,
+} from '../../components/common/alert/alert';
 import { CreatePasswordForm } from '../../components/wallet-setup/create-password-form';
 import { urls } from '../../constants/urls';
 import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
@@ -9,6 +15,7 @@ import {
   onInputChange,
   selectImportWalletForm,
   selectOtk,
+  selectOtkType,
 } from '../../redux/slices/importWalletSlice';
 import {
   historyGoBackOrReplace,
@@ -22,24 +29,34 @@ import { useLogout } from '../../utils/hooks/useLogout';
 export function ImportWalletPassword({ isPopup = false }) {
   useIosScrollPasswordKeyboardIntoView();
 
+  const {
+    addLocalOtkAndCache,
+    addLocalAccount,
+    setActiveAccount,
+    localAccounts,
+  } = useAccountStorage();
   const logout = useLogout();
 
   const [isLoading, setIsLoading] = useState(false);
-  /** Tracking user input */
-  const validatePassword = (value: string) =>
-    !!RegExp(userConst.passwordRegex).exec(value);
-  const { addLocalOtkAndCache, addLocalAccount, setActiveAccount } =
-    useAccountStorage();
+  const [alert, setAlert] = useState(formAlertResetState);
+  const { t } = useTranslation();
+
+  // pick up import data from redux
   const importWalletForm = useAppSelector(selectImportWalletForm);
   const otk = useAppSelector(selectOtk);
+  const otkType = useAppSelector(selectOtkType);
+
   const dispatch = useAppDispatch();
-  const validateConfirmPassword = (value: string) =>
-    importWalletForm.password === value;
 
   /**
    * Validates Password, creates OTK and sends on to OTK-confirmation (Create)
    * OR, for import validates password, stores OTK and send to Success-screen
    */
+  const validateConfirmPassword = (value: string) =>
+    importWalletForm.password === value;
+  const validatePassword = (value: string) =>
+    !!RegExp(userConst.passwordRegex).exec(value);
+
   async function confirmPasswordAndCreateOtk() {
     if (
       !(
@@ -60,17 +77,22 @@ export function ImportWalletPassword({ isPopup = false }) {
       return;
     }
 
-    if (isPasswordValid && otk?.identity) {
-      // call import api and store the Identity.
-      // added local otk
-      addLocalOtkAndCache(otk, importWalletForm.password);
+    if (isPasswordValid && otk?.identity && otkType) {
+      // call import api and store the Identity. added local otk
+      addLocalOtkAndCache({
+        otk,
+        otkType: otkType,
+        password: importWalletForm.password,
+      });
       // need to add local account
       addLocalAccount({
         identity: otk.identity,
+        otkType: otkType,
       });
 
       setActiveAccount({
         identity: otk.identity,
+        otkType: otkType,
       });
 
       if (isPopup) {
@@ -97,13 +119,30 @@ export function ImportWalletPassword({ isPopup = false }) {
     }
   };
 
+  useEffect(() => {
+    // Check if the user is attempting to import a keypair with an L2 address
+    // that matches an existing non-migrated account, and display an alert if so
+    if (
+      localAccounts.some(
+        (localAccount) =>
+          localAccount.identity === otk?.identity && !localAccount.otkType
+      )
+    ) {
+      dispatch(onClearImportWalletSlice());
+      setAlert(errorAlertShell(t('ExistingL2AccountError')));
+    }
+  }, [localAccounts.length, otk?.identity]);
+
   return (
-    <CreatePasswordForm
-      form={importWalletForm}
-      isLoading={isLoading}
-      onInputChange={onInputChange}
-      onCancel={onClickCancel}
-      onSubmit={confirmPasswordAndCreateOtk}
-    />
+    <>
+      <CustomAlert state={alert} onDidDismiss={onClickCancel} />
+      <CreatePasswordForm
+        form={importWalletForm}
+        isLoading={isLoading}
+        onInputChange={onInputChange}
+        onCancel={onClickCancel}
+        onSubmit={confirmPasswordAndCreateOtk}
+      />
+    </>
   );
 }

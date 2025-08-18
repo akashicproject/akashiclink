@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
-import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemapAASToAddress';
-import { useFetchAndRemapL1Address } from '../../utils/hooks/useFetchAndRemapL1address';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
@@ -31,6 +29,7 @@ export function LoginForm({ isPopup = false }) {
   const { t } = useTranslation();
   const [alert, setAlert] = useState(formAlertResetState);
   const [isLoading, setIsLoading] = useState(false);
+
   const {
     localAccounts,
     addPrefixToAccounts,
@@ -38,9 +37,6 @@ export function LoginForm({ isPopup = false }) {
     setActiveAccount,
   } = useAccountStorage();
   const [password, setPassword] = useState<string>('');
-  const fetchAndRemapAASToAddress = useFetchAndRemapAASToAddress();
-
-  const fetchAndRemapL1Address = useFetchAndRemapL1Address();
 
   addPrefixToAccounts();
   useIosScrollPasswordKeyboardIntoView();
@@ -62,10 +58,11 @@ export function LoginForm({ isPopup = false }) {
         return;
       }
 
-      const localSelectedOtk = await getLocalOtkAndCache(
-        activeAccount.identity,
-        password
-      );
+      const localSelectedOtk = await getLocalOtkAndCache({
+        identity: activeAccount.identity,
+        otkType: activeAccount.otkType,
+        password,
+      });
 
       if (!localSelectedOtk) {
         throw new Error(
@@ -74,14 +71,14 @@ export function LoginForm({ isPopup = false }) {
       }
 
       datadogRum.setUser({
-        id: activeAccount.username,
+        id: `${activeAccount.identity}-${activeAccount.otkType}`,
       });
-      await fetchAndRemapAASToAddress(activeAccount.identity);
-      await fetchAndRemapL1Address();
+
       setPassword('');
       historyResetStackAndRedirect(urls.dashboard, { isManualLogout: false });
     } catch (error) {
       datadogRum.addError(error);
+      console.error(error);
       setAlert(errorAlertShell(unpackRequestErrorMessage(error)));
     } finally {
       setIsLoading(false);
@@ -100,11 +97,7 @@ export function LoginForm({ isPopup = false }) {
       </h3>
       <IonRow className={'ion-grid-gap-xs'}>
         <IonCol size="12">
-          <AccountSelection
-            onSelectAccount={(a) => setActiveAccount(a)}
-            currentSelectedAccount={activeAccount ?? localAccounts?.[0]}
-            isPopup={isPopup}
-          />
+          <AccountSelection isPopup={isPopup} />
         </IonCol>
         <IonCol size="12">
           <StyledInput
@@ -127,16 +120,6 @@ export function LoginForm({ isPopup = false }) {
           </PrimaryButton>
         </IonCol>
       </IonRow>
-      {/* TODO: re-enable once password recovery loop is implemented */}
-      {/* <IonRow style={{ marginTop: '-10px' }}>
-        <IonCol>
-          <h3>
-            <HelpLink href="https://akashicpay.com">
-              {t('ForgotYourPassword')}
-            </HelpLink>
-          </h3>
-        </IonCol>
-      </IonRow> */}
     </>
   );
 }

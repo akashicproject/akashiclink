@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 
 import { useAccountL1Address } from '../../../utils/hooks/useAccountAllAddresses';
 import { useAccountStorage } from '../../../utils/hooks/useLocalAccounts';
+import { AccountOtkTypeTag } from '../../manage-account/account-otk-type-tag';
 import { ManageAccountsModal } from '../../manage-account/manage-accounts-modal';
 import { AddressQuickAccessDropdownItem } from './address-quick-access-dropdown-item';
 
@@ -32,6 +33,7 @@ export const AddressQuickAccessDropdown = () => {
           activeAccount?.accountName ??
           `Account ${activeAccount.identity.slice(-8)}`
         }
+        displayNameIcon={<AccountOtkTypeTag account={activeAccount} />}
         style={{ marginLeft: -12, paddingLeft: 12 }}
         onClickIcon={() => {
           setShowModal(true);

@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { IonCol, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
@@ -14,13 +13,6 @@ import { useFetchAndRemapAASToAddress } from '../../utils/hooks/useFetchAndRemap
 import { useFetchAndRemapL1Address } from '../../utils/hooks/useFetchAndRemapL1address';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 
-export const StyledSpan = styled.span({
-  fontSize: '12px',
-  fontWeight: '700',
-  color: 'var(--ion-color-primary-10)',
-  marginTop: '4px',
-  lineHeight: '16px',
-});
 export const ImportWalletSuccessful = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -31,7 +23,10 @@ export const ImportWalletSuccessful = () => {
   const handleOnConfirm = async () => {
     dispatch(onClear());
     if (activeAccount?.identity) {
-      await fetchAndRemapAASToAddress(activeAccount?.identity);
+      await fetchAndRemapAASToAddress({
+        identity: activeAccount.identity,
+        otkType: activeAccount.otkType,
+      });
       await fetchAndRemapL1Address();
     }
     // migration flow is finished, completely reset router history
@@ -49,16 +44,6 @@ export const ImportWalletSuccessful = () => {
             <PrimaryButton expand="block" onClick={handleOnConfirm}>
               {t('Confirm')}
             </PrimaryButton>
-            {/** TODO: Re-enable with different flow at later stage */}
-            {/* <Divider/>>
-            <StyledSpan>{t('YouHaveOptionTo')}</StyledSpan>
-            <WhiteButton
-              onClick={() => {
-                history.push(akashicPayPath(urls.changePasswordAfterImport));
-              }}
-            >
-              {t('ChangePassword')}
-            </WhiteButton> */}
           </IonCol>
         </IonRow>
         <ContactSupportText />
