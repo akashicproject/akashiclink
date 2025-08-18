@@ -23,6 +23,7 @@ import { getCurrentTime } from '../currentUTCTime';
 import { getManifestJson } from '../hooks/useCurrentAppInfo';
 import type {
   ActiveLedgerResponse,
+  IAcTreasuryThresholds,
   IKeyCreationResponse,
   IOnboardedIdentity,
   L2TxDetail,
@@ -362,6 +363,56 @@ export class Nitr0genApi {
               type: 'secp256k1',
               public: newPubKey,
             },
+            remove: oldPubKeyToRemove,
+          },
+        },
+      },
+      $sigs: {},
+    };
+    return await signTxBody(txBody, otk);
+  }
+
+  /**
+   * Func to update amount-thresholds above which treasury key must approve transactions
+   * Must provide one of the two threshold params. The string param is a global value, the
+   * other allows specifying per network
+   */
+  public async updateTreasuryOtkTransaction(
+    otk: IKeyExtended,
+
+    networkThresholds?: IAcTreasuryThresholds,
+    globalThreshold?: string
+  ) {
+    if (!globalThreshold && !networkThresholds) {
+      throw new Error('Need some sort of threshold to update treasury key!');
+    }
+    const txBody: IBaseAcTransaction = {
+      $tx: {
+        $namespace: Nitr0gen.Namespace,
+        $contract: Nitr0gen.CreateSecondaryOtk,
+        $i: {
+          owner: {
+            $stream: otk.identity,
+            treasury: globalThreshold ?? networkThresholds,
+          },
+        },
+      },
+      $sigs: {},
+    };
+    return await signTxBody(txBody, otk);
+  }
+
+  public async removeTreasuryOtkTransaction(
+    otk: IKeyExtended,
+    oldPubKeyToRemove?: string
+  ) {
+    const txBody: IBaseAcTransaction = {
+      $tx: {
+        $namespace: Nitr0gen.Namespace,
+        $contract: Nitr0gen.CreateSecondaryOtk,
+        $i: {
+          owner: {
+            $stream: otk.identity,
             remove: oldPubKeyToRemove,
           },
         },

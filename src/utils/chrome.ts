@@ -30,6 +30,8 @@ export const TYPED_DATA_PRIMARY_TYPE = {
   AUTHORIZE_ACTION: 'AuthorizeAction',
   PAYOUT: 'Payout',
   GENERATE_SECONDARY_OTK: 'generateSecondaryOtk',
+  UPDATE_TREASURY_OTK: 'updateTreasuryOtk',
+  REMOVE_TREASURY_OTK: 'removeTreasuryOtk',
   BECOME_FX_BP: 'becomeFxBp',
 };
 

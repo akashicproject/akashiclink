@@ -2,6 +2,7 @@
 import type {
   CoinSymbol,
   CryptoCurrencySymbol,
+  CurrencySymbolWithNitr0genNative,
   IBaseAcTransaction,
   IInternalFee,
   ITerriAcTransaction,
@@ -98,3 +99,7 @@ export interface ITransactionForSigning extends ITransactionBase {
   readonly feesEstimate?: string;
   readonly fromLedgerId?: string;
 }
+
+export type IAcTreasuryThresholds = Partial<
+  Record<`${CoinSymbol}.${CurrencySymbolWithNitr0genNative}`, string>
+>;

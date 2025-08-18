@@ -9,6 +9,7 @@ import type {
   IPrepareL2WithdrawalResponse,
   IRetrieveIdentity,
   IRetrieveIdentityResponse,
+  ISignedTransaction,
   IWithdrawalProposal,
 } from '@helium-pay/backend';
 
@@ -84,14 +85,34 @@ export const OwnersAPI = {
   generateSecondaryOtk: async (
     signedReq: ICreateSecondaryOtk
   ): Promise<void> => {
-    apiCall<void>(
+    await apiCall<void>(
       `/owner/generate-secondary-otk`,
       'POST',
       JSON.stringify(signedReq)
     );
   },
 
+  updateTreasuryOtk: async (signedReq: ISignedTransaction): Promise<void> => {
+    await apiCall<void>(
+      `/owner/update-treasury-thresholds`,
+      'POST',
+      JSON.stringify(signedReq)
+    );
+  },
+
+  removeTreasuryOtk: async (signedReq: ISignedTransaction): Promise<void> => {
+    await apiCall<void>(
+      `/owner/remove-treasury-key`,
+      'POST',
+      JSON.stringify(signedReq)
+    );
+  },
+
   becomeFxBp: async (signedReq: ICreateSecondaryOtk): Promise<void> => {
-    apiCall<void>(`/owner/become-fx-bp`, 'POST', JSON.stringify(signedReq));
+    await apiCall<void>(
+      `/owner/become-fx-bp`,
+      'POST',
+      JSON.stringify(signedReq)
+    );
   },
 };

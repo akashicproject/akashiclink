@@ -2,6 +2,7 @@ import { datadogRum } from '@datadog/browser-rum';
 import {
   type CoinSymbol,
   type CryptoCurrencySymbol,
+  type CurrencySymbolWithNitr0genNative,
   FeeDelegationStrategy,
   L2Regex,
 } from '@helium-pay/backend';
@@ -23,12 +24,22 @@ import {
 } from '../utils/hooks/nitr0gen';
 import { useBecomeFxBp } from '../utils/hooks/useBecomeFxBp';
 import { useGenerateSecondaryOtk } from '../utils/hooks/useGenerateSecondaryOtk';
+import { useRemoveTreasuryOtk } from '../utils/hooks/useRemoveTreasuryOtk';
 import { useSignAuthorizeActionMessage } from '../utils/hooks/useSignAuthorizeActionMessage';
+import { useUpdateTreasuryOtk } from '../utils/hooks/useUpdateTreasuryOtk';
 import { useVerifyTxnAndSign } from '../utils/hooks/useVerifyTxnAndSign';
-import type { ITransactionFailureResponse } from '../utils/nitr0gen/nitr0gen.interface';
+import type {
+  IAcTreasuryThresholds,
+  ITransactionFailureResponse,
+} from '../utils/nitr0gen/nitr0gen.interface';
 import { useWeb3Wallet } from '../utils/web3wallet';
 import { SignTypedDataContent } from './sign-typed-data-content';
 
+interface ITreasuryThreshold {
+  threshold: string;
+  coinSymbol: CoinSymbol;
+  currency: CurrencySymbolWithNitr0genNative;
+}
 export function SignTypedData() {
   const web3wallet = useWeb3Wallet();
 
@@ -45,11 +56,19 @@ export function SignTypedData() {
       string | Record<string, string>
     >,
     secondaryOtk: {} as { oldPubKeyToRemove?: string; treasuryKey?: boolean },
+    treasuryOtk: {} as {
+      oldPubKeyToRemove?: string;
+      // One of the two must be provided when updating thresholds
+      networkThresholds?: ITreasuryThreshold[];
+      globalThreshold?: string;
+    },
     response: {},
   });
 
   const signAuthorizeActionMessage = useSignAuthorizeActionMessage();
   const generateSecondaryOtk = useGenerateSecondaryOtk();
+  const updateTreasuryOtk = useUpdateTreasuryOtk();
+  const removeTreasuryOtk = useRemoveTreasuryOtk();
   const becomeFxBp = useBecomeFxBp();
 
   const verifyTxnAndSign = useVerifyTxnAndSign();
@@ -65,7 +84,8 @@ export function SignTypedData() {
         if (request.method === ETH_METHOD.SIGN_TYPED_DATA) {
           const typedData = JSON.parse(request.params[1]);
 
-          const { toSign, secondaryOtk, ...message } = typedData.message;
+          const { toSign, secondaryOtk, treasuryOtk, ...message } =
+            typedData.message;
 
           setRequestContent({
             id,
@@ -75,6 +95,7 @@ export function SignTypedData() {
             topic,
             toSign: toSign,
             secondaryOtk,
+            treasuryOtk,
             response: {},
           });
         }
@@ -98,8 +119,10 @@ export function SignTypedData() {
     []
   );
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   const acceptSessionRequest = async () => {
-    const { topic, id, primaryType, toSign, secondaryOtk } = requestContent;
+    const { topic, id, primaryType, toSign, secondaryOtk, treasuryOtk } =
+      requestContent;
 
     try {
       let signedMsg = '';
@@ -117,6 +140,30 @@ export function SignTypedData() {
           break;
         case TYPED_DATA_PRIMARY_TYPE.GENERATE_SECONDARY_OTK:
           signedMsg = await generateSecondaryOtk(secondaryOtk);
+          break;
+        case TYPED_DATA_PRIMARY_TYPE.REMOVE_TREASURY_OTK:
+          if (!treasuryOtk.oldPubKeyToRemove)
+            throw new Error('Need pub key to remove treasury');
+          signedMsg = await removeTreasuryOtk({
+            oldPubKeyToRemove: treasuryOtk.oldPubKeyToRemove,
+          });
+          break;
+        case TYPED_DATA_PRIMARY_TYPE.UPDATE_TREASURY_OTK:
+          if (!treasuryOtk.networkThresholds && !treasuryOtk.globalThreshold)
+            throw new Error('Need threshold(s) to update treasury');
+
+          let thresholds: IAcTreasuryThresholds | undefined;
+          if (treasuryOtk.networkThresholds) {
+            thresholds = {};
+            for (const threshold of treasuryOtk.networkThresholds) {
+              thresholds[`${threshold.coinSymbol}.${threshold.currency}`] =
+                threshold.threshold;
+            }
+          }
+          signedMsg = await updateTreasuryOtk({
+            networkThresholds: thresholds,
+            globalThreshold: treasuryOtk.globalThreshold,
+          });
           break;
         case TYPED_DATA_PRIMARY_TYPE.PAYOUT: {
           // TODO: Fix all this casting
