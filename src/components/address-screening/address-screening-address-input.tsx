@@ -10,7 +10,6 @@ import {
   IonRow,
   IonText,
 } from '@ionic/react';
-import axios from 'axios';
 import { closeOutline } from 'ionicons/icons';
 import { debounce } from 'lodash';
 import { useState } from 'react';
@@ -75,13 +74,7 @@ export const AddressScreeningAddressInput = ({
 
       setAlert(errorAlertShell('AddressHelpText'));
     } catch (error) {
-      setAlert(
-        errorAlertShell(
-          axios.isAxiosError(error)
-            ? unpackRequestErrorMessage(error)
-            : 'GenericFailureMsg'
-        )
-      );
+      setAlert(errorAlertShell(unpackRequestErrorMessage(error)));
     }
   }, 500);
 

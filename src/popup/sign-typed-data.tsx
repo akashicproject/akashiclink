@@ -242,7 +242,7 @@ export function SignTypedData() {
           response: {
             id,
             jsonrpc: '2.0',
-            error: getSdkError('INVALID_METHOD'),
+            error: getSdkError('INVALID_METHOD', (e as Error)?.message),
           },
         });
       } finally {
