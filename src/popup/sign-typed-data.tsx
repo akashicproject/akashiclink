@@ -9,6 +9,7 @@ import {
 import { getSdkError } from '@walletconnect/utils';
 import { type Web3WalletTypes } from '@walletconnect/web3wallet';
 import { useCallback, useEffect, useState } from 'react';
+import { convertToSmallestUnit } from 'src/utils/currency';
 
 import {
   closePopup,
@@ -157,7 +158,15 @@ export function SignTypedData() {
             thresholds = {};
             for (const threshold of treasuryOtk.networkThresholds) {
               thresholds[`${threshold.coinSymbol}.${threshold.currency}`] =
-                threshold.threshold;
+                threshold.threshold !== '-1'
+                  ? convertToSmallestUnit(
+                      threshold.threshold,
+                      threshold.coinSymbol,
+                      threshold.currency
+                        ? (threshold.currency as CryptoCurrencySymbol)
+                        : undefined
+                    )
+                  : threshold.threshold;
             }
           }
           signedMsg = await updateTreasuryOtk({

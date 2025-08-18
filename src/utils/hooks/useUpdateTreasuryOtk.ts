@@ -26,12 +26,11 @@ export const useUpdateTreasuryOtk = () => {
       if (!payload.globalThreshold && !payload.networkThresholds) {
         throw new Error('Need some sort of threshold to update treasury key!');
       }
-      const nitr0gen = new Nitr0genApi();
 
+      const nitr0gen = new Nitr0genApi();
       const signedTx = await nitr0gen.updateTreasuryOtkTransaction(
         cacheOtk,
-        payload.networkThresholds,
-        payload.globalThreshold
+        payload.networkThresholds
       );
 
       await OwnersAPI.updateTreasuryOtk({
