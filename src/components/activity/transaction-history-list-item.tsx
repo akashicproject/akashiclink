@@ -40,7 +40,7 @@ const ActivityWrapper = styled.div<{ hover: boolean }>((props) => ({
 const TransactionStatusWrapper = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-between',
+  justifyContent: 'center',
 });
 
 const IconWrapper = styled.div({
