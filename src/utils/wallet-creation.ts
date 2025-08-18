@@ -1,10 +1,17 @@
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import type { CoinSymbol } from '@helium-pay/backend';
+import { BinanceSymbol, isCoinSymbol } from '@helium-pay/backend';
 
 import { ALLOWED_NETWORKS } from '../constants/currencies';
 import { OwnersAPI } from './api';
 import { Nitr0genApi } from './nitr0gen/nitr0gen-api';
 import type { FullOtk } from './otk-generation';
+
+// AC uses one key for all Ethereum-ecosystem wallets, so we don't have to
+// create for BSC _and_ ETH
+const NETWORKS_TO_CREATE_L1_ADDRESSES_FOR = ALLOWED_NETWORKS.filter(
+  (n) => !isCoinSymbol(n, BinanceSymbol)
+) as CoinSymbol[];
 
 export async function createAccountWithAllL1Addresses(
   otk: IKeyExtended
@@ -21,7 +28,7 @@ export async function createAccountWithAllL1Addresses(
 
   // mainnets for production accounts and testnets for staging and local accounts
   await Promise.all(
-    ALLOWED_NETWORKS.map(async (coinSymbol) => {
+    NETWORKS_TO_CREATE_L1_ADDRESSES_FOR.map(async (coinSymbol) => {
       await createL1Address(fullOtk, coinSymbol);
     })
   );
@@ -34,7 +41,7 @@ export async function createL1Address(
   coinSymbol: CoinSymbol
 ): Promise<string | undefined> {
   // safeguard coinSymbol base on env
-  if (!ALLOWED_NETWORKS.includes(coinSymbol)) {
+  if (!NETWORKS_TO_CREATE_L1_ADDRESSES_FOR.includes(coinSymbol)) {
     throw new Error('Coin not available');
   }
   if (!fullOtk.identity) {

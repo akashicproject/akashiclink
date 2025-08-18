@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import {
   CoinSymbol,
   CryptoCurrencySymbol,
@@ -152,6 +153,12 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
       greyCurrencyIcon: '/shared-assets/images/eth-grey.svg',
     },
     {
+      chain: CoinSymbol.Binance_Smart_Chain_Mainnet,
+      currencyIcon: '/shared-assets/images/bsc.svg',
+      darkCurrencyIcon: '/shared-assets/images/bsc.svg',
+      greyCurrencyIcon: '/shared-assets/images/bsc-grey.svg',
+    },
+    {
       chain: CoinSymbol.Tron,
       currencyIcon: '/shared-assets/images/trx.png',
       darkCurrencyIcon: '/shared-assets/images/trx.png',
@@ -160,10 +167,15 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
     {
       chain: CoinSymbol.Ethereum_Mainnet,
       token: CryptoCurrencySymbol.USDT,
-      // eslint-disable-next-line sonarjs/no-duplicate-string
       currencyIcon: '/shared-assets/images/usdt.png',
       darkCurrencyIcon: '/shared-assets/images/usdt.png',
-
+      greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
+    },
+    {
+      chain: CoinSymbol.Binance_Smart_Chain_Mainnet,
+      token: CryptoCurrencySymbol.USDT,
+      currencyIcon: '/shared-assets/images/usdt.png',
+      darkCurrencyIcon: '/shared-assets/images/usdt.png',
       greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
     },
     {
@@ -183,6 +195,12 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
           greyCurrencyIcon: '/shared-assets/images/eth-grey.svg',
         },
         {
+          chain: CoinSymbol.Binance_Smart_Chain_Testnet,
+          currencyIcon: '/shared-assets/images/bsc.svg',
+          darkCurrencyIcon: '/shared-assets/images/bsc.svg',
+          greyCurrencyIcon: '/shared-assets/images/bsc-grey.svg',
+        },
+        {
           chain: CoinSymbol.Tron_Shasta,
           currencyIcon: '/shared-assets/images/trx.png',
           darkCurrencyIcon: '/shared-assets/images/trx.png',
@@ -190,6 +208,13 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
         },
         {
           chain: CoinSymbol.Ethereum_Sepolia,
+          token: CryptoCurrencySymbol.USDT,
+          currencyIcon: '/shared-assets/images/usdt.png',
+          darkCurrencyIcon: '/shared-assets/images/usdt.png',
+          greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
+        },
+        {
+          chain: CoinSymbol.Binance_Smart_Chain_Testnet,
           token: CryptoCurrencySymbol.USDT,
           currencyIcon: '/shared-assets/images/usdt.png',
           darkCurrencyIcon: '/shared-assets/images/usdt.png',
@@ -208,8 +233,16 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
 
 export const ALLOWED_NETWORKS: CoinSymbol[] =
   process.env.REACT_APP_ENABLE_TESTNET_CURRENCIES === 'true'
-    ? [CoinSymbol.Ethereum_Sepolia, CoinSymbol.Tron_Shasta]
-    : [CoinSymbol.Ethereum_Mainnet, CoinSymbol.Tron];
+    ? [
+        CoinSymbol.Ethereum_Sepolia,
+        CoinSymbol.Tron_Shasta,
+        CoinSymbol.Binance_Smart_Chain_Testnet,
+      ]
+    : [
+        CoinSymbol.Ethereum_Mainnet,
+        CoinSymbol.Tron,
+        CoinSymbol.Binance_Smart_Chain_Mainnet,
+      ];
 
 // TODO: refactor tgt with NetworkDictionary
 export const ALLOWED_ADDRESS_SCAN_CURRENCY: IWalletCurrency[] =
