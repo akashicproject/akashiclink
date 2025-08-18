@@ -107,6 +107,7 @@ export const useSendL1Transaction = () => {
   const nitr0genApi = new Nitr0genApi();
   const dispatch = useAppDispatch();
   const valueOfAmountInUSDT = useValueOfAmountInUSDT();
+  const { activeAccount } = useAccountStorage();
 
   const trigger = async (
     signedTransactionData: ITransactionProposalClientSideOtk
@@ -134,7 +135,9 @@ export const useSendL1Transaction = () => {
       // And if not ETH/SEP as they get presigned and have the special "queued" transaction
       if (
         !isCoinSymbol(signedTransactionData.coinSymbol, EthereumSymbol) &&
-        ((hideSmallTransactions && usdtValue.gte(1)) || !hideSmallTransactions)
+        ((hideSmallTransactions && usdtValue.gte(1)) ||
+          !hideSmallTransactions) &&
+        activeAccount?.otkType === OtkType.PRIMARY
       ) {
         dispatch(
           addLocalTransaction({
