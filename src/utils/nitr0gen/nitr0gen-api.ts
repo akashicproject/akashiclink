@@ -347,7 +347,8 @@ export class Nitr0genApi {
   public async secondaryOtkTransaction(
     otk: IKeyExtended,
     newPubKey: string,
-    oldPubKeyToRemove?: string
+    oldPubKeyToRemove?: string,
+    treasuryKey?: boolean
   ) {
     const txBody: IBaseAcTransaction = {
       $tx: {
@@ -356,6 +357,7 @@ export class Nitr0genApi {
         $i: {
           owner: {
             $stream: otk.identity,
+            ...(treasuryKey && { treasury: '-1' }), // Threshold off (-1) when generating treasury
             add: {
               type: 'secp256k1',
               public: newPubKey,
@@ -427,6 +429,7 @@ export class Nitr0genApi {
         },
       },
       $sigs: {},
+      $unanimous: true,
     };
 
     // Sign Transaction

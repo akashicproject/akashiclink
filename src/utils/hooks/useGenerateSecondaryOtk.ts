@@ -7,14 +7,17 @@ import { unpackRequestErrorMessage } from '../unpack-request-error-message';
 import { useAccountMe } from './useAccountMe';
 import { useAccountStorage } from './useLocalAccounts';
 
-type OldPubKeyPayload = { oldPubKeyToRemove?: string };
+type SecondaryKeyPayload = {
+  oldPubKeyToRemove?: string;
+  treasuryKey?: boolean;
+};
 
 export const useGenerateSecondaryOtk = () => {
   const { activeAccount } = useAccountStorage();
   const { data: account } = useAccountMe();
   const { cacheOtk } = useAccountStorage();
 
-  return async (payload: OldPubKeyPayload) => {
+  return async (payload: SecondaryKeyPayload) => {
     try {
       if (!cacheOtk || !activeAccount || !account) {
         throw new Error('CouldNotReadAddress');
@@ -25,13 +28,16 @@ export const useGenerateSecondaryOtk = () => {
       const secondaryOtk = (await generateOTK()) as FullOtk;
 
       const signedTx = await nitr0gen.secondaryOtkTransaction(
-        // @ts-ignore
         cacheOtk,
         secondaryOtk.key.pub.pkcs8pem,
-        payload.oldPubKeyToRemove
+        payload.oldPubKeyToRemove,
+        payload.treasuryKey
       );
 
-      await OwnersAPI.generateSecondaryOtk({ signedTx });
+      await OwnersAPI.generateSecondaryOtk({
+        signedTx,
+        treasuryKey: payload.treasuryKey,
+      });
 
       return `0x${secondaryOtk.key.prv.pkcs8pem}-${secondaryOtk.key.pub.pkcs8pem}`;
 

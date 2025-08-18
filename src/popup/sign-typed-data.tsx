@@ -44,7 +44,7 @@ export function SignTypedData() {
       string,
       string | Record<string, string>
     >,
-    secondaryOtk: {} as { oldPubKeyToRemove?: string },
+    secondaryOtk: {} as { oldPubKeyToRemove?: string; treasuryKey?: boolean },
     response: {},
   });
 
