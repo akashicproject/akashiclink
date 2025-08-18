@@ -8,6 +8,7 @@ const REQUEST_TYPE = {
 const WALLET_METHOD = {
   UNLOCK_WALLET: 'UNLOCK_WALLET',
   LOCK_WALLET: 'LOCK_WALLET',
+  RESTARTED_WALLET: 'RESTARTED_WALLET',
 };
 
 const ETH_METHOD = {
@@ -72,7 +73,7 @@ chrome.runtime.onMessageExternal.addListener(
 );
 
 // ---- Upon receive external connection request
-chrome.runtime.onConnectExternal.addListener(function (port) {
+chrome.runtime.onConnectExternal.addListener(async (port) => {
   webPort = port;
 
   port.onMessage.addListener(async (request, _sender, _sendResponse) => {
@@ -130,6 +131,15 @@ chrome.runtime.onConnectExternal.addListener(function (port) {
       console.error(e);
     }
   });
+
+  // inform external connection of current wallet status
+  // not having autoLockBy means user has quited chrome before
+  const { autoLockBy } = await chrome.storage.session.get(AUTOLOCKBY_KEY);
+  if (autoLockBy === undefined) {
+    port.postMessage({
+      event: WALLET_METHOD.RESTARTED_WALLET,
+    });
+  }
 });
 
 // ---- Handle Auto lock event
