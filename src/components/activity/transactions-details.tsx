@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ActivityContainer } from '../../pages/activity/activity-details';
 import { getPrecision, isGasFeeAccurate } from '../../utils/formatAmount';
+import { formatAmountWithCommas } from '../../utils/formatAmountWithCommas';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
 import { L2Icon } from '../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../common/chain-icon/network-icon';
@@ -104,8 +105,8 @@ const WithdrawDetails = ({
   const gasFeeIsAccurate = isGasFeeAccurate(currentTransfer, precision);
 
   // Calculate total Amount
-  const totalAmount = Big(currentTransfer.amount);
-  const totalFee = Big(gasFee ?? '0');
+  const totalAmount = Big(currentTransfer.amount ?? '0');
+  const totalFee = Big(gasFee ?? '0').add(currentTransfer.fakeGasFee ?? '0');
 
   const internalFee = Big(currentTransfer.internalFee?.withdraw ?? '0');
   const totalAmountWithFee = totalAmount
@@ -130,35 +131,39 @@ const WithdrawDetails = ({
       <h3 className="ion-text-align-left ion-margin-0">{t('Send')}</h3>
       <ListLabelValueItem
         label={t('Amount')}
-        value={`${totalAmount.toFixed(precision)} ${currencyDisplayName}`}
+        value={`${formatAmountWithCommas(totalAmount.toString())} ${currencyDisplayName}`}
         valueSize={'md'}
         valueBold
       />
-      <ListLabelValueItem
-        label={t(
-          isL2
-            ? 'L2Fee'
-            : currentTransfer.feeIsDelegated
-              ? 'DelegatedGasFee'
-              : 'GasFee'
-        )}
-        value={`${
-          isL2 || currentTransfer.feeIsDelegated
-            ? internalFee.toFixed(precision)
-            : (!gasFeeIsAccurate ? '≈' : '') + totalFee.toFixed(precision)
-        } ${feeCurrencyDisplayName}${gasFeeIsEstimate ? '*' : ''}`}
-        valueSize={'md'}
-        valueBold
-      />
+      {isL2 && (
+        <ListLabelValueItem
+          label={t('L2Fee')}
+          value={`${formatAmountWithCommas(internalFee.toString())} ${feeCurrencyDisplayName}${gasFeeIsEstimate ? '*' : ''}`}
+          valueSize={'md'}
+          valueBold
+        />
+      )}
+      {!isL2 && (
+        <ListLabelValueItem
+          label={t(
+            currentTransfer.feeIsDelegated ? 'DelegatedGasFee' : 'GasFee'
+          )}
+          value={`${
+            currentTransfer.feeIsDelegated
+              ? formatAmountWithCommas(internalFee.toString())
+              : `${gasFeeIsAccurate ? '' : '≈'} ${formatAmountWithCommas(totalFee.toString())}`
+          } ${feeCurrencyDisplayName}${gasFeeIsEstimate ? '*' : ''}`}
+          valueSize={'md'}
+          valueBold
+        />
+      )}
       <ListLabelValueItem
         label={t('Total')}
-        value={`${totalAmountWithFee.toFixed(
-          precision
-        )} ${currencyDisplayName}`}
+        value={`${formatAmountWithCommas(totalAmountWithFee.toString())} ${currencyDisplayName}`}
         remark={
           isL2 || !currentTransfer.tokenSymbol || currentTransfer.feeIsDelegated
             ? undefined
-            : `+${totalFee.toFixed(precision)} ${
+            : `+${formatAmountWithCommas(totalFee.toString())} ${
                 currentTransfer.currency?.chain
               }${gasFeeIsEstimate ? '*' : ''}`
         }

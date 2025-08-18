@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import { IonBadge, IonText } from '@ionic/react';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
-import { formatAmountWithCommas } from 'src/utils/formatAmountWithCommas';
 
+import { formatAmountWithCommas } from '../../utils/formatAmountWithCommas';
 import { useTotalCryptoCurrencyBalances } from '../../utils/hooks/useTotalCryptoCurrencyBalances';
 import { useYesterdayHistoricBalance } from '../../utils/hooks/useYesterdayHistoricBalance';
 

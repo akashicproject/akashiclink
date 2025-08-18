@@ -142,14 +142,11 @@ export function TransactionHistoryListItem({
   );
 
   const gasFee = transfer.feesPaid ?? transfer.feesEstimate;
-
   const isDelegated = !!transfer.feeIsDelegated;
 
   // Use separate precision for gas and amount so they both show with the
   // minimum necessary (or 2)
   const gasPrecision = getPrecision('0', gasFee ?? '0');
-  const amountPrecision = getPrecision(transfer.amount, '0');
-
   const gasFeeIsAccurate = isGasFeeAccurate(transfer, gasPrecision);
 
   // If token, displayed as "USDT" for L1 and "USDT (ETH)" for L2 (since
@@ -158,16 +155,14 @@ export function TransactionHistoryListItem({
     ? transfer?.currency?.token + (isL2 ? ` (${transfer.currency.chain})` : '')
     : transfer?.currency?.chain;
 
-  let feeText = `${t('GasFee')}: ${!gasFeeIsAccurate ? '≈' : ''}${Big(
-    Big(gasFee ?? '0').toFixed(gasPrecision)
-  )} ${transfer?.currency?.chain}`;
+  const totalFee = Big(gasFee ?? '0').add(transfer.fakeGasFee ?? '0');
+
+  let feeText = `${t('GasFee')}: ${gasFeeIsAccurate ? '' : '≈'}${formatAmountWithCommas(totalFee.toString())} ${transfer?.currency?.chain}`;
 
   if (isDelegated) {
     feeText = `${t('DelegatedGasFee')}: ${
       transfer.internalFee?.withdraw
-        ? Big(transfer.internalFee?.withdraw ?? '0').toFixed(
-            getPrecision(transfer.amount, transfer.internalFee?.withdraw ?? '0')
-          )
+        ? formatAmountWithCommas(transfer.internalFee?.withdraw ?? '0')
         : '-'
     } ${currencyDisplayName}`;
   }
@@ -286,7 +281,7 @@ export function TransactionHistoryListItem({
               }}
             >
               {displayLongText(
-                `${isTxnDeposit ? '+' : '-'}${formatAmountWithCommas(transfer.amount, amountPrecision)} ${currencyDisplayName}`,
+                `${isTxnDeposit ? '+' : '-'}${formatAmountWithCommas(transfer.amount)} ${currencyDisplayName}`,
                 26,
                 true
               )}

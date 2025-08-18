@@ -16,11 +16,11 @@ export function formatAmountWithCommas(
 
   const num = new Big(numberString);
 
-  // Use the precision provided or work it out from the number provided
-  const decimalDigits = precision ?? getPrecision(numberString);
+  // Use the precision provided or work it out from the number provided, but no more than 6
+  const decimalDigits = precision ?? Math.min(getPrecision(numberString), 6);
 
   // Set precision
-  const formattedNum = num.toFixed(decimalDigits);
+  const formattedNum = num.toFixed(decimalDigits, Big.roundDown);
 
   // Split the number into integer and decimal parts
   // decimalPart is mutated below so disable eslint
