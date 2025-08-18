@@ -197,7 +197,7 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
         },
         {
           chain: CoinSymbol.Tron_Shasta,
-          token: CryptoCurrencySymbol.TETHER,
+          token: CryptoCurrencySymbol.USDT,
           currencyIcon: '/shared-assets/images/usdt.png',
           darkCurrencyIcon: '/shared-assets/images/usdt.png',
           greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
@@ -217,9 +217,9 @@ export const ALLOWED_ADDRESS_SCAN_CURRENCY: IWalletCurrency[] =
     ? [
         {
           chain: CoinSymbol.Tron_Shasta,
-          token: CryptoCurrencySymbol.TETHER,
+          token: CryptoCurrencySymbol.USDT,
           displayName: NetworkDictionary[CoinSymbol.Tron_Shasta].tokens.find(
-            ({ symbol }) => symbol === CryptoCurrencySymbol.TETHER
+            ({ symbol }) => symbol === CryptoCurrencySymbol.USDT
           )!.displayName,
         },
         {

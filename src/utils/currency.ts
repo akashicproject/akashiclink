@@ -1,6 +1,6 @@
 import {
-  type CoinSymbol,
-  type CryptoCurrencySymbol,
+  CoinSymbol,
+  CryptoCurrencySymbol,
   type IInternalFee,
   NetworkDictionary,
   otherError,
@@ -146,11 +146,25 @@ function getConversionFactor(
   tokenSymbol?: CryptoCurrencySymbol
 ): number {
   if (!tokenSymbol) return NetworkDictionary[coinSymbol].nativeCoin.decimal;
+  if (
+    tokenSymbol === CryptoCurrencySymbol.TETHER &&
+    coinSymbol === CoinSymbol.Tron_Shasta
+  ) {
+    // @TODO remove this mapping
+    // find USDT token
+    const usdtToken = NetworkDictionary[coinSymbol].tokens.find(
+      (t) => t.symbol === CryptoCurrencySymbol.USDT
+    );
+    return usdtToken!.decimal;
+  }
 
   const token = NetworkDictionary[coinSymbol].tokens.find(
     (t) => t.symbol === tokenSymbol
   );
-  if (!token) throw new Error(otherError.unsupportedCoinError);
+
+  if (!token) {
+    throw new Error(otherError.unsupportedCoinError);
+  }
 
   return token.decimal;
 }

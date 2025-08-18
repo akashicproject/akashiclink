@@ -1,7 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import {
-  type CoinSymbol,
-  type CryptoCurrencySymbol,
+  CoinSymbol,
+  CryptoCurrencySymbol,
   type FeeDelegationStrategy,
   type IBaseAcTransaction,
   type IWithdrawalProposal,
@@ -26,6 +26,19 @@ import { unpackRequestErrorMessage } from '../unpack-request-error-message';
 import { useAccountMe } from './useAccountMe';
 import { useExchangeRates } from './useExchangeRates';
 import { useAccountStorage } from './useLocalAccounts';
+
+const mapUSDTToTether = (
+  coinSymbol: CoinSymbol,
+  tokenSymbol?: CryptoCurrencySymbol
+) => {
+  if (
+    tokenSymbol === CryptoCurrencySymbol.USDT &&
+    coinSymbol === CoinSymbol.Tron_Shasta
+  ) {
+    return CryptoCurrencySymbol.TETHER;
+  }
+  return tokenSymbol ?? undefined;
+};
 
 export interface UseVerifyAndSignResponse {
   /** The signed txn sent to the chain. NOTE: the monetary amounts are in the
@@ -70,7 +83,7 @@ export const useVerifyTxnAndSign = () => {
           // Backend accepts "normal" units, so we don't convert
           amount,
           coinSymbol,
-          tokenSymbol,
+          tokenSymbol: mapUSDTToTether(coinSymbol, tokenSymbol),
         };
         if (activeAccount.identity === l2TransactionData.toAddress)
           return 'NoSelfSend';
