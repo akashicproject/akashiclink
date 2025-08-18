@@ -358,7 +358,7 @@ export class Nitr0genApi {
         $i: {
           owner: {
             $stream: otk.identity,
-            ...(treasuryKey && { treasury: '-1' }), // Threshold off (-1) when generating treasury
+            ...(treasuryKey && { treasury: '0' }), // Default: Everything must be approved
             add: {
               type: 'secp256k1',
               public: newPubKey,
