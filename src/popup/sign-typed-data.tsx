@@ -185,7 +185,7 @@ export function SignTypedData() {
             toSign.token as CryptoCurrencySymbol | undefined,
             FeeDelegationStrategy.Delegate, // Force-delegate AP payouts
             toSign.approvedStream as string,
-            toSign.identifier as string
+            toSign.referenceId as string
           );
 
           if (typeof res === 'string') {

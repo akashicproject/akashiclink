@@ -604,7 +604,7 @@ export class Nitr0genApi {
     details: L2TxDetail,
     isFxBp = false,
     approvedStream?: string,
-    identifier?: string
+    referenceId?: string
   ): Promise<IBaseAcTransaction> {
     const $i = {
       owner: {
@@ -640,7 +640,7 @@ export class Nitr0genApi {
         },
         metadata: {
           initiatedToNonL2: details.initiatedToNonL2,
-          identifier,
+          referenceId,
         },
       },
       $sigs: {},
