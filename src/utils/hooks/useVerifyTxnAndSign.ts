@@ -61,7 +61,8 @@ export const useVerifyTxnAndSign = () => {
     amount: string,
     coinSymbol: CoinSymbol,
     tokenSymbol?: CryptoCurrencySymbol,
-    feeDelegationStrategy?: FeeDelegationStrategy
+    feeDelegationStrategy?: FeeDelegationStrategy,
+    approvedStream?: string
   ): Promise<string | UseVerifyAndSignResponse> => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
     const nitr0genApi = new Nitr0genApi();
@@ -92,7 +93,8 @@ export const useVerifyTxnAndSign = () => {
           cacheOtk,
           // AC needs smallest units, so we convert
           convertObjectCurrencies(l2TransactionData, convertToSmallestUnit),
-          account.isFxBp
+          account.isFxBp,
+          approvedStream
         );
         // add check for FX Bp
         if (account.isFxBp) {
@@ -132,6 +134,7 @@ export const useVerifyTxnAndSign = () => {
         coinSymbol,
         tokenSymbol,
         feeDelegationStrategy,
+        approvedStream,
       };
 
       const { preparedTxn, fromAddress, delegatedFee } =

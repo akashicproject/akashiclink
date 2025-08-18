@@ -597,7 +597,8 @@ export class Nitr0genApi {
   async l2Transaction(
     otk: IKeyExtended,
     details: L2TxDetail,
-    isFxBp = false
+    isFxBp = false,
+    approvedStream?: string
   ): Promise<IBaseAcTransaction> {
     const $i = {
       owner: {
@@ -625,6 +626,11 @@ export class Nitr0genApi {
             $stream: details.toAddress,
             wallet: details.initiatedToL1LedgerId,
           },
+          ...(approvedStream && {
+            approved: {
+              $stream: approvedStream,
+            },
+          }),
         },
         metadata: {
           initiatedToNonL2: details.initiatedToNonL2,
