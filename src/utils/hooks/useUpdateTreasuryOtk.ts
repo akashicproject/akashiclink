@@ -40,6 +40,7 @@ export const useUpdateTreasuryOtk = () => {
       // Inform AP of success
       return `OxSUCCESS`;
     } catch (e: unknown) {
+      prompt('error', JSON.stringify(e, null, 2));
       const error = e as Error;
 
       datadogRum.addError(error);

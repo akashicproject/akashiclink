@@ -60,7 +60,7 @@ export const AutoLockTextCaret = ({
 
   const currentAutoLockTime =
     autoLockTimeMap.find((e) => {
-      if (e.value == autoLockTime) {
+      if (e.value === autoLockTime) {
         return e;
       }
     }) ?? autoLockTimeMap[0];
@@ -82,7 +82,7 @@ export const AutoLockAccordion = () => {
 
   const currentAutoLockTime =
     autoLockTimeMap.find((e) => {
-      if (e.value == autoLockTime) {
+      if (e.value === autoLockTime) {
         return e;
       }
     }) ?? autoLockTimeMap[0];

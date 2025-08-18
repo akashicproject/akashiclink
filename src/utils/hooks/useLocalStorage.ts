@@ -50,7 +50,7 @@ export function useLocalStorage<T>(
     try {
       const result = await Preferences.get({ key });
 
-      if (result.value == undefined && initialValue != undefined) {
+      if (result.value === null && initialValue !== undefined) {
         await setPreferenceAndStateValue(initialValue as T);
       } else if (result.value) {
         JSON.stringify(stateValue) !== result.value &&

@@ -743,7 +743,7 @@ export class Nitr0genApi {
       .sort(([_a, a], [_b, b]) => (b ?? Infinity) - (a ?? Infinity));
 
     // if we got a permanent error and no yes-votes, retrying is pointless
-    const permanentError = errors.find(([_e, retry]) => retry == null);
+    const permanentError = errors.find(([_e, retry]) => retry === null);
     if (permanentError && errors.length >= response.$summary.vote) {
       this.logErroredNitr0genResponse(response, 'error');
       this.convertChainErrorToAPIError(permanentError[0]);
@@ -758,7 +758,7 @@ export class Nitr0genApi {
       throw new NotFoundException(keyError.invalidL2Address);
     }
 
-    const worstTransientError = errors.find(([_e, delay]) => delay != null);
+    const worstTransientError = errors.find(([_e, delay]) => delay !== null);
     this.logErroredNitr0genResponse(response, 'warn');
     throw new BadGatewayException(
       worstTransientError?.[0] ?? otherError.orderFailed
