@@ -9,7 +9,6 @@ import { useAccountStorage } from './useLocalAccounts';
 
 type UpdateTreasuryKeyPayload = {
   networkThresholds?: IAcTreasuryThresholds;
-  globalThreshold?: string;
 };
 
 export const useUpdateTreasuryOtk = () => {
@@ -23,7 +22,7 @@ export const useUpdateTreasuryOtk = () => {
         throw new Error('CouldNotReadAddress');
       }
 
-      if (!payload.globalThreshold && !payload.networkThresholds) {
+      if (!payload.networkThresholds) {
         throw new Error('Need some sort of threshold to update treasury key!');
       }
 

@@ -400,11 +400,9 @@ export class Nitr0genApi {
    */
   public async updateTreasuryOtkTransaction(
     otk: IKeyExtended,
-
-    networkThresholds?: IAcTreasuryThresholds,
-    globalThreshold?: string
+    networkThresholds?: IAcTreasuryThresholds
   ) {
-    if (!globalThreshold && !networkThresholds) {
+    if (!networkThresholds) {
       throw new Error('Need some sort of threshold to update treasury key!');
     }
     const txBody: IBaseAcTransaction = {
@@ -414,7 +412,7 @@ export class Nitr0genApi {
         $i: {
           owner: {
             $stream: otk.identity,
-            treasury: globalThreshold ?? networkThresholds,
+            treasury: networkThresholds,
           },
         },
       },

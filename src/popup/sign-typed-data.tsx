@@ -59,9 +59,7 @@ export function SignTypedData() {
     secondaryOtk: {} as { oldPubKeyToRemove?: string; treasuryKey?: boolean },
     treasuryOtk: {} as {
       oldPubKeyToRemove?: string;
-      // One of the two must be provided when updating thresholds
       networkThresholds?: ITreasuryThreshold[];
-      globalThreshold?: string;
     },
     response: {},
   });
@@ -150,7 +148,7 @@ export function SignTypedData() {
           });
           break;
         case TYPED_DATA_PRIMARY_TYPE.UPDATE_TREASURY_OTK:
-          if (!treasuryOtk.networkThresholds && !treasuryOtk.globalThreshold)
+          if (!treasuryOtk.networkThresholds)
             throw new Error('Need threshold(s) to update treasury');
 
           let thresholds: IAcTreasuryThresholds | undefined;
@@ -171,7 +169,6 @@ export function SignTypedData() {
           }
           signedMsg = await updateTreasuryOtk({
             networkThresholds: thresholds,
-            globalThreshold: treasuryOtk.globalThreshold,
           });
           break;
         case TYPED_DATA_PRIMARY_TYPE.PAYOUT: {
