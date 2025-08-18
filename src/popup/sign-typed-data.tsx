@@ -5,6 +5,7 @@ import {
   type CurrencySymbolWithNitr0genNative,
   FeeDelegationStrategy,
   L2Regex,
+  nitr0genNativeCoin,
 } from '@helium-pay/backend';
 import { getSdkError } from '@walletconnect/utils';
 import { type Web3WalletTypes } from '@walletconnect/web3wallet';
@@ -160,9 +161,9 @@ export function SignTypedData() {
                   ? convertToSmallestUnit(
                       threshold.threshold,
                       threshold.coinSymbol,
-                      threshold.currency
-                        ? (threshold.currency as CryptoCurrencySymbol)
-                        : undefined
+                      threshold.currency === nitr0genNativeCoin
+                        ? undefined
+                        : threshold.currency
                     )
                   : threshold.threshold;
             }
