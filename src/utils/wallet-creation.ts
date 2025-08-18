@@ -50,12 +50,25 @@ export async function createL1Address(
       coinSymbol,
     });
 
+    // if both do not exist, fallback to key diff in error catch
+    if (!address && !unassignedLedgerId) {
+      throw new Error('Unable to find or reserve key');
+    }
+
+    // if address exists without unassignedLedgerId, means user already has l1 address
+    if (!unassignedLedgerId && !!address) {
+      return address;
+    }
+
     // if unassignedLedgerId exists, means no existing l1 address for this otk
     // assign the reserved key to otk
-    if (unassignedLedgerId) {
+    if (!!unassignedLedgerId && !!address) {
       await nitr0gen.assignKeyToOtk(fullOtk, unassignedLedgerId);
+      return address;
     }
-    return address;
+
+    // safety net
+    throw new Error('Unable to find or reserve key');
   } catch {
     // if assign pre-seed failed, fallback to key diff
     const { address } = await nitr0gen.createKey(fullOtk, coinSymbol);
