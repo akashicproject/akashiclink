@@ -31,6 +31,9 @@ export function WelcomeScreen({ onFinish }: SplashScreenProps) {
 
   if (phase === 'done') return null;
 
+  if (process.env.REACT_APP_DEBUG_DISABLE_STARTING_ANIMATION === 'true')
+    return null;
+
   return (
     <FullScreenBlock isTransparent={phase !== 'enter'}>
       <div
