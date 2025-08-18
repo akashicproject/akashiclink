@@ -4,6 +4,7 @@ import {
   type CryptoCurrencySymbol,
   type CurrencySymbolWithNitr0genNative,
   FeeDelegationStrategy,
+  type ITreasuryKeyNetworkThreshold,
   L2Regex,
   nitr0genNativeCoin,
 } from '@helium-pay/backend';
@@ -40,11 +41,6 @@ import type {
 import { useWeb3Wallet } from '../utils/web3wallet';
 import { SignTypedDataContent } from './sign-typed-data-content';
 
-interface ITreasuryThreshold {
-  threshold: string;
-  coinSymbol: CoinSymbol;
-  currency: CurrencySymbolWithNitr0genNative;
-}
 export function SignTypedData() {
   const web3wallet = useWeb3Wallet();
 
@@ -63,7 +59,7 @@ export function SignTypedData() {
     secondaryOtk: {} as { oldPubKeyToRemove?: string; treasuryKey?: boolean },
     treasuryOtk: {} as {
       oldPubKeyToRemove?: string;
-      networkThresholds?: ITreasuryThreshold[];
+      networkThresholds?: ITreasuryKeyNetworkThreshold[];
     },
     response: {},
   });
@@ -158,20 +154,18 @@ export function SignTypedData() {
           let thresholds: IAcTreasuryThresholds | undefined;
           if (treasuryOtk.networkThresholds) {
             thresholds = {};
-            for (const threshold of treasuryOtk.networkThresholds) {
+            for (const t of treasuryOtk.networkThresholds) {
               // TODO: Fix casting
               thresholds[
-                `${threshold.coinSymbol}.${mapUSDTToTether(threshold.coinSymbol, threshold.currency as CryptoCurrencySymbol) as CurrencySymbolWithNitr0genNative}`
+                `${t.coinSymbol}.${t.tokenSymbol ? (mapUSDTToTether(t.coinSymbol, t.tokenSymbol) as CurrencySymbolWithNitr0genNative) : nitr0genNativeCoin}`
               ] =
-                threshold.threshold !== '-1'
+                t.threshold !== '-1'
                   ? convertToSmallestUnit(
-                      threshold.threshold,
-                      threshold.coinSymbol,
-                      threshold.currency === nitr0genNativeCoin
-                        ? undefined
-                        : threshold.currency
+                      t.threshold,
+                      t.coinSymbol,
+                      t.tokenSymbol
                     )
-                  : threshold.threshold;
+                  : t.threshold;
             }
           }
           signedMsg = await updateTreasuryOtk({
