@@ -27,7 +27,7 @@ import { useAccountMe } from './useAccountMe';
 import { useExchangeRates } from './useExchangeRates';
 import { useAccountStorage } from './useLocalAccounts';
 
-const mapUSDTToTether = (
+export const mapUSDTToTether = (
   coinSymbol: CoinSymbol,
   tokenSymbol?: CryptoCurrencySymbol
 ) => {
@@ -62,7 +62,8 @@ export const useVerifyTxnAndSign = () => {
     coinSymbol: CoinSymbol,
     tokenSymbol?: CryptoCurrencySymbol,
     feeDelegationStrategy?: FeeDelegationStrategy,
-    approvedStream?: string
+    approvedStream?: string,
+    identifier?: string
   ): Promise<string | UseVerifyAndSignResponse> => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
     const nitr0genApi = new Nitr0genApi();
@@ -94,7 +95,8 @@ export const useVerifyTxnAndSign = () => {
           // AC needs smallest units, so we convert
           convertObjectCurrencies(l2TransactionData, convertToSmallestUnit),
           account.isFxBp,
-          approvedStream
+          approvedStream,
+          identifier
         );
         // add check for FX Bp
         if (account.isFxBp) {
@@ -135,6 +137,7 @@ export const useVerifyTxnAndSign = () => {
         tokenSymbol,
         feeDelegationStrategy,
         approvedStream,
+        identifier,
       };
 
       const { preparedTxn, fromAddress, delegatedFee } =
