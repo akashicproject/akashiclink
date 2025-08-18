@@ -29,7 +29,10 @@ import { useGenerateSecondaryOtk } from '../utils/hooks/useGenerateSecondaryOtk'
 import { useRemoveTreasuryOtk } from '../utils/hooks/useRemoveTreasuryOtk';
 import { useSignAuthorizeActionMessage } from '../utils/hooks/useSignAuthorizeActionMessage';
 import { useUpdateTreasuryOtk } from '../utils/hooks/useUpdateTreasuryOtk';
-import { useVerifyTxnAndSign } from '../utils/hooks/useVerifyTxnAndSign';
+import {
+  mapUSDTToTether,
+  useVerifyTxnAndSign,
+} from '../utils/hooks/useVerifyTxnAndSign';
 import type {
   IAcTreasuryThresholds,
   ITransactionFailureResponse,
@@ -156,7 +159,10 @@ export function SignTypedData() {
           if (treasuryOtk.networkThresholds) {
             thresholds = {};
             for (const threshold of treasuryOtk.networkThresholds) {
-              thresholds[`${threshold.coinSymbol}.${threshold.currency}`] =
+              // TODO: Fix casting
+              thresholds[
+                `${threshold.coinSymbol}.${mapUSDTToTether(threshold.coinSymbol, threshold.currency as CryptoCurrencySymbol) as CurrencySymbolWithNitr0genNative}`
+              ] =
                 threshold.threshold !== '-1'
                   ? convertToSmallestUnit(
                       threshold.threshold,
