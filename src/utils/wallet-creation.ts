@@ -2,10 +2,11 @@ import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import type { CoinSymbol } from '@helium-pay/backend';
 
 import { ALLOWED_NETWORKS } from '../constants/currencies';
+import { OwnersAPI } from './api';
 import { Nitr0genApi } from './nitr0gen/nitr0gen-api';
 import type { FullOtk } from './otk-generation';
 
-export async function createAccountWithKeys(
+export async function createAccountWithAllL1Addresses(
   otk: IKeyExtended
 ): Promise<{ otk: FullOtk }> {
   const nitr0gen = new Nitr0genApi();
@@ -15,14 +16,15 @@ export async function createAccountWithKeys(
 
   const fullOtk = { ...otk, identity: ledgerId };
 
-  // mainnets for production accounts and testnets for staging and local accounts
-  const allowedChains = ALLOWED_NETWORKS;
+  // set 1s timeout for owner creation event to arrive db
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  // Loop through chains, for each create a transaction for a new key to be
-  // signed by frontend
-  for (const coinSymbol of allowedChains) {
-    await nitr0gen.createKey(fullOtk, coinSymbol);
-  }
+  // mainnets for production accounts and testnets for staging and local accounts
+  await Promise.all(
+    ALLOWED_NETWORKS.map(async (coinSymbol) => {
+      await createL1Address(fullOtk, coinSymbol);
+    })
+  );
 
   return { otk: fullOtk };
 }
@@ -35,10 +37,28 @@ export async function createL1Address(
   if (!ALLOWED_NETWORKS.includes(coinSymbol)) {
     throw new Error('Coin not available');
   }
+  if (!fullOtk.identity) {
+    throw new Error('Missing identity');
+  }
 
   const nitr0gen = new Nitr0genApi();
 
-  const { address } = await nitr0gen.createKey(fullOtk, coinSymbol);
+  try {
+    // find existing key, or return a pre-seed key for assignment
+    const { address, unassignedLedgerId } = await OwnersAPI.findOrReserveKey({
+      identity: fullOtk.identity,
+      coinSymbol,
+    });
 
-  return address;
+    // if unassignedLedgerId exists, means no existing l1 address for this otk
+    // assign the reserved key to otk
+    if (unassignedLedgerId) {
+      await nitr0gen.assignKeyToOtk(fullOtk, unassignedLedgerId);
+    }
+    return address;
+  } catch {
+    // if assign pre-seed failed, fallback to key diff
+    const { address } = await nitr0gen.createKey(fullOtk, coinSymbol);
+    return address;
+  }
 }

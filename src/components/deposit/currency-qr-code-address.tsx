@@ -5,6 +5,8 @@ import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAccountL1Address } from '../../utils/hooks/useAccountL1Address';
+import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { useOwnerKeys } from '../../utils/hooks/useOwnerKeys';
 import { L2Icon } from '../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../common/chain-icon/network-icon';
 import { CopyBox } from '../common/copy-box';
@@ -24,6 +26,8 @@ export const CurrencyQrCodeAddress = () => {
   const { t } = useTranslation();
   const { chain } = useContext(DepositModalContext);
   const { address, isChainAllowed, isAC } = useAccountL1Address(chain);
+  const { activeAccount } = useAccountStorage();
+  const { mutate, isLoading } = useOwnerKeys(activeAccount?.identity ?? '');
 
   if (!chain) return null;
 
@@ -53,7 +57,7 @@ export const CurrencyQrCodeAddress = () => {
           </CoinWrapper>
         </IonCol>
         <IonCol class={'ion-center'} size="12">
-          <CurrencyQrCode size={160} chain={chain} />
+          {!isLoading && <CurrencyQrCode size={160} chain={chain} />}
         </IonCol>
         <IonCol size="10">
           <IonText>
@@ -69,7 +73,10 @@ export const CurrencyQrCodeAddress = () => {
             <CopyBox label={t('DepositAddress')} text={address ?? '-'} />
           )}
           {!isAC && !address && isChainAllowed && (
-            <GenerateL1AddressButton chain={chain as CoinSymbol} />
+            <GenerateL1AddressButton
+              chain={chain as CoinSymbol}
+              mutate={mutate}
+            />
           )}
         </IonCol>
       </IonRow>

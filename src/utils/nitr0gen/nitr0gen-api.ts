@@ -1,4 +1,4 @@
-import { TransactionHandler } from '@activeledger/sdk';
+import { type IKey, TransactionHandler } from '@activeledger/sdk';
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import { App } from '@capacitor/app';
 import { Capacitor } from '@capacitor/core';
@@ -48,6 +48,7 @@ enum ProductionContracts {
   CreateSecondaryOtk = '178106a54eec05c747a9704ea32e39fd6fa656322c92bb3ec3ba37899f25c27f@1',
   CryptoTransfer = '2bae6ea681826c0307ee047ef68eb0cf53487a257c498de7d081d66de119d666@1',
   DiffConsensus = '94479927cbe0860a3f51cbd36230faef7d1b69974323a83c8abcc78e3d0e8dd9@1',
+  AssignKey = '7afea15e8028af9f5aeafb6db6c0d2e8969c0c0492360ab15a6bc3754b818e19@1',
   Onboard = 'a456ddc07da6d46a6897d24de188e767b87a9d9f2f3c617d858aaf819e0e5bce@1',
   AfxOnboad = '', // TODO: update production contract
   NFTNamespace = 'akashicnft',
@@ -62,6 +63,7 @@ enum TestNetContracts {
   CreateSecondaryOtk = '3030f7c2bda3a02330ef3bfd9a1a1f66fec4a96c0c04c019b64255a4e8ba31ca@1',
   CryptoTransfer = 'a32a8bc21ceaeeaa671573126a246c15ec4dc3a5c825e3cffc9441636019acb1@1',
   DiffConsensus = '17be1db84dbf81c1ff1b2f5aebd4ba4e95d81338daf98d7c2bc7b54ad8994d1c@1',
+  AssignKey = 'a6e95e2f563bdac69bfa265b1c215bf2125e1c50048f68f9c0b52982e320d675@1',
   Onboard = 'c19c6f4d3c443ae7abb14d17d33b29d134df8d11bdabc568bd23f7023ee991fd@1',
   AfxOnboad = '205eb96fcc4ca79bde62475177c3f189f098776ff74b66246bf0df6e4a54b5de@1',
   NFTNamespace = 'akashicnft',
@@ -163,6 +165,25 @@ export class Nitr0genApi {
       ledgerId: prefixWithAS(newKey.id),
       address: newKey.address,
       hashes: newKey.hashes,
+    };
+  }
+
+  public async assignKeyToOtk(
+    otk: IKeyExtended,
+    keyToAssign: string
+  ): Promise<{ assignedKey: IKeyCreationResponse | undefined }> {
+    const txBody = await this.assign(otk, keyToAssign);
+    const response =
+      await this.post<ActiveLedgerResponse<IKeyCreationResponse>>(txBody);
+
+    if (!response.$responses?.[0]) {
+      throw new Error(
+        `Failed to assign key to otk. AC: ${JSON.stringify(response.$responses)}`
+      );
+    }
+
+    return {
+      assignedKey: response.$responses?.[0],
     };
   }
 
@@ -484,6 +505,33 @@ export class Nitr0genApi {
     };
 
     // Sign Transaction
+    return await signTxBody(txBody, otk);
+  }
+
+  /**
+   * Transaction to assign a reserved key to an otk for the requested coinSymbol
+   *
+   * Dev-info: relevant response in `response.responses[0]` as `IKeyCreationResponse`
+   */
+  async assign(otk: IKey, ledgerId: string): Promise<IBaseAcTransaction> {
+    const txBody: IBaseAcTransaction = {
+      $tx: {
+        $namespace: Nitr0gen.Namespace,
+        $contract: Nitr0gen.AssignKey,
+        $i: {
+          owner: {
+            $stream: otk.identity,
+          },
+        },
+        $o: {
+          key: {
+            $stream: ledgerId,
+          },
+        },
+      },
+      $sigs: {},
+    };
+
     return await signTxBody(txBody, otk);
   }
 

@@ -1,16 +1,18 @@
-import type {
-  ICreateSecondaryOtk,
-  IEstimateNetworkFee,
-  ILookForL2Address,
-  ILookForL2AddressResponse,
-  INetworkFeeValuesReturn,
-  IPrepareL1TxnResponse,
-  IPrepareL2Withdrawal,
-  IPrepareL2WithdrawalResponse,
-  IRetrieveIdentity,
-  IRetrieveIdentityResponse,
-  ISignedTransaction,
-  IWithdrawalProposal,
+import {
+  type ICreateSecondaryOtk,
+  type IEstimateNetworkFee,
+  type IGetOwnerDepositKeyDto,
+  type IGetOwnerDepositKeyResponse,
+  type ILookForL2Address,
+  type ILookForL2AddressResponse,
+  type INetworkFeeValuesReturn,
+  type IPrepareL1TxnResponse,
+  type IPrepareL2Withdrawal,
+  type IPrepareL2WithdrawalResponse,
+  type IRetrieveIdentity,
+  type IRetrieveIdentityResponse,
+  type ISignedTransaction,
+  type IWithdrawalProposal,
 } from '@helium-pay/backend';
 
 import { axiosBase } from './axios-helper';
@@ -31,6 +33,13 @@ const apiCall = async <T>(
 };
 
 export const OwnersAPI = {
+  findOrReserveKey: async (
+    findKeyData: IGetOwnerDepositKeyDto
+  ): Promise<IGetOwnerDepositKeyResponse> => {
+    const url = `/key/deposit-key?identity=${findKeyData.identity}&coinSymbol=${findKeyData.coinSymbol}`;
+    return await apiCall<IGetOwnerDepositKeyResponse>(url);
+  },
+
   retrieveIdentity: async (
     retrieveData: IRetrieveIdentity
   ): Promise<IRetrieveIdentityResponse> => {

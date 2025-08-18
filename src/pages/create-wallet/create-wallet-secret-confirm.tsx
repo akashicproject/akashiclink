@@ -1,5 +1,4 @@
 import { datadogRum } from '@datadog/browser-rum';
-import styled from '@emotion/styled';
 import { IonCol, IonRow, IonText } from '@ionic/react';
 import axios from 'axios';
 import { isEqual } from 'lodash';
@@ -33,15 +32,7 @@ import {
 } from '../../routing/history';
 import { EXTENSION_EVENT, responseToSite } from '../../utils/chrome';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
-import { createAccountWithKeys } from '../../utils/wallet-creation';
-
-export const StyledSpan = styled.span({
-  fontSize: '12px',
-  fontWeight: '400',
-  color: 'var(--ion-color-primary-10)',
-  marginTop: '4px',
-  lineHeight: '16px',
-});
+import { createAccountWithAllL1Addresses } from '../../utils/wallet-creation';
 
 export function CreateWalletSecretConfirm({ isPopup = false }) {
   const { t } = useTranslation();
@@ -96,7 +87,7 @@ export function CreateWalletSecretConfirm({ isPopup = false }) {
       // all checks are passed, immediately clear otk so otk is not reusable
       dispatch(onClearOtk());
 
-      const { otk: fullOtk } = await createAccountWithKeys(otk);
+      const { otk: fullOtk } = await createAccountWithAllL1Addresses(otk);
 
       // Set new account details and display summary screen
       const newAccount = {

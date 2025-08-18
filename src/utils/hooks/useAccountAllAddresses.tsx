@@ -25,7 +25,9 @@ export const useAccountL1Address = () => {
       chain,
       address:
         activeAccount?.localStoredL1Addresses?.find(
-          (address) => address.coinSymbol.toLowerCase() === chain.toLowerCase()
+          (address) =>
+            address.coinSymbol.toLowerCase() === chain.toLowerCase() &&
+            typeof address.address === 'string'
         )?.address ?? '',
     })),
   ];

@@ -1,6 +1,10 @@
-import { type CoinSymbol } from '@helium-pay/backend';
+import {
+  type CoinSymbol,
+  type IOwnerOldestKeysResponse,
+} from '@helium-pay/backend';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { type KeyedMutator } from 'swr';
 
 import { useFetchAndRemapL1Address } from '../../utils/hooks/useFetchAndRemapL1address';
 import {
@@ -10,7 +14,13 @@ import {
 import { createL1Address } from '../../utils/wallet-creation';
 import { PrimaryButton } from '../common/buttons';
 
-export const GenerateL1AddressButton = ({ chain }: { chain: CoinSymbol }) => {
+export const GenerateL1AddressButton = ({
+  chain,
+  mutate,
+}: {
+  chain: CoinSymbol;
+  mutate: KeyedMutator<IOwnerOldestKeysResponse[]>;
+}) => {
   const { t } = useTranslation();
   const { activeAccount, cacheOtk } = useAccountStorage();
   const fetchAndRemapL1Address = useFetchAndRemapL1Address();
@@ -18,7 +28,7 @@ export const GenerateL1AddressButton = ({ chain }: { chain: CoinSymbol }) => {
   const [isGeneratingAddress, setIsGeneratingAddress] = useState(false);
   const existingL1Address = activeAccount?.localStoredL1Addresses?.find(
     (a: LocalStoredL1AddressType) =>
-      a.coinSymbol.toLowerCase() === chain.toLowerCase()
+      a.coinSymbol.toLowerCase() === chain.toLowerCase() && a.address !== ''
   );
 
   const handleGetAddress = async () => {
@@ -29,6 +39,7 @@ export const GenerateL1AddressButton = ({ chain }: { chain: CoinSymbol }) => {
       if (!existingL1Address && cacheOtk && !isGeneratingAddress) {
         setIsGeneratingAddress(true);
         await createL1Address(cacheOtk, chain);
+        await mutate();
         await fetchAndRemapL1Address();
       }
     } catch (e) {
