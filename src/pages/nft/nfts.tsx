@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import type { INft } from '@helium-pay/backend';
+import type { INftObject } from '@helium-pay/backend';
 import { IonCol, IonGrid, IonRow, IonSpinner } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -58,7 +58,7 @@ export function Nfts() {
     (a, b) => (b.aas?.linked ? 1 : 0) - (a.aas?.linked ? 1 : 0)
   );
 
-  const selectNft = (nft: INft) => {
+  const selectNft = (nft: INftObject) => {
     history.push({
       pathname: akashicPayPath(urls.nft),
       state: {

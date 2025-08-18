@@ -1,4 +1,4 @@
-import type { INft } from '@helium-pay/backend';
+import type { INftObject } from '@helium-pay/backend';
 import useSWR from 'swr';
 
 import { REFRESH_INTERVAL } from '../../constants';
@@ -11,7 +11,7 @@ export const useNftMe = () => {
     data,
     mutate: mutateNftMe,
     ...response
-  } = useSWR<INft[], Error>(
+  } = useSWR<INftObject[], Error>(
     activeAccount?.identity && cacheOtk
       ? `/nft/owner/${activeAccount?.identity}`
       : null,

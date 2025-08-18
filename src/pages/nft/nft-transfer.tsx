@@ -1,6 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
-import type { IBaseAcTransaction, INft } from '@helium-pay/backend';
+import type { IBaseAcTransaction, INftObject } from '@helium-pay/backend';
 import { L2Regex, nftErrors } from '@helium-pay/backend';
 import { IonCol, IonImg, IonRow, IonSpinner } from '@ionic/react';
 import { debounce } from 'lodash';
@@ -103,7 +103,7 @@ interface IVerifyNftResponse {
 }
 
 const verifyNftTransaction = async (
-  nft: INft,
+  nft: INftObject,
   cacheOtk: FullOtk | null,
   toAddress: string
 ): Promise<IVerifyNftResponse> => {

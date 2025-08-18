@@ -1,5 +1,4 @@
 import type {
-  INft,
   INftTransactionRecord,
   ITransactionRecord,
   ITransactionRecordForFrontend,
@@ -21,7 +20,6 @@ export interface ITransactionRecordForExtension
   extends ITransactionRecordForFrontend {
   networkIcon?: string;
   currency?: IWalletCurrency;
-  nft?: INft;
   l2TxnHashUrl: string;
 }
 

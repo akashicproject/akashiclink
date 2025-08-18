@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { type INft, nftErrors, userConst } from '@helium-pay/backend';
+import { type INftObject, nftErrors, userConst } from '@helium-pay/backend';
 import axios from 'axios';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -24,12 +24,12 @@ const AASListSwitchContainer = styled.div`
 /* In minutes. 72hrs on prod, 1 min else */
 const AAS_LINK_RESTRICT_TIME = process.env.REACT_APP_ENV === 'prod' ? 4320 : 1;
 
-const validateLinkRestriction = (nftDocument: INft) => {
-  if (nftDocument.aas.unLinkedAt) {
+const validateLinkRestriction = (nft: INftObject) => {
+  if (nft.aas.unLinkedAt) {
     // Difference in ms between when aas can be linked again (linkedAt + 72hrs) and now
     const timeUntilLinkAllowed =
       // HACK bc dates get turned into strings going from BE -> FE
-      new Date(nftDocument.aas.unLinkedAt).getTime() +
+      new Date(nft.aas.unLinkedAt).getTime() +
       AAS_LINK_RESTRICT_TIME * 60 * 1000 -
       Date.now();
 
@@ -53,8 +53,8 @@ const validateLinkRestriction = (nftDocument: INft) => {
 
 const verifyUpdateAas = (
   ownerIdentity: string,
-  nft: INft,
-  nfts: INft[],
+  nft: INftObject,
+  nfts: INftObject[],
   newValue?: string
 ) => {
   // Show generic error
@@ -77,7 +77,7 @@ export const AasListingSwitch = ({
   setAlert,
   setParentLinkage,
 }: {
-  nft: INft;
+  nft: INftObject;
   setAlert: React.Dispatch<React.SetStateAction<FormAlertState>>;
   setParentLinkage: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
