@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { type IWalletCurrency } from '../../constants/currencies';
 import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
-import { formatAmount } from '../../utils/formatAmount';
+import { formatAmountWithCommas } from '../../utils/formatAmountWithCommas';
 import { useAccountL1Address } from '../../utils/hooks/useAccountL1Address';
 import { useCryptoCurrencyBalance } from '../../utils/hooks/useCryptoCurrencyBalance';
 import TransactionHistoryList from '../activity/transaction-history-list';
@@ -65,13 +65,13 @@ export function DashboardCryptoCurrencyDetail({
         <IonCol size={'12'}>
           <IonText>
             <p className="ion-text-size-xl ion-text-bold ion-text-align-center">
-              {`${formatAmount(balance ?? '0')} ${walletCurrency.displayName}`}
+              {`${formatAmountWithCommas(balance ?? '0', 2)} ${walletCurrency.displayName}`}
             </p>
           </IonText>
         </IonCol>
         <IonCol size={'12'}>
           <IonText>
-            <p className="ion-text-size-sm ion-text-color-grey ion-text-align-center">{`$${formatAmount(balanceInUsd ?? '0')}`}</p>
+            <p className="ion-text-size-sm ion-text-color-grey ion-text-align-center">{`$${formatAmountWithCommas(balanceInUsd ?? '0')}`}</p>
           </IonText>
         </IonCol>
         <IonCol size={'10'} offset={'1'}>

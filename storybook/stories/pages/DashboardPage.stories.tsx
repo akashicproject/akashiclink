@@ -11,7 +11,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent, within } from '@storybook/test';
 
 import { Dashboard } from '../../../src/pages/dashboard/dashboard';
-import { formatAmount } from '../../../src/utils/formatAmount';
+import { formatAmountWithCommas } from '../../../src/utils/formatAmountWithCommas';
 import { sleep } from '../test/utli';
 
 const meta: Meta<typeof Dashboard> = {
@@ -56,7 +56,7 @@ export const DashboardPage: Story = {
     await sleep(500);
     const accountBar = canvas.getByText(PRESET_OWNER_AAS_ALIAS);
     const ethAmountDisplay = canvas.getByText(
-      `${formatAmount(MOCKED_ETH_BALANCE?.balance ?? '0')} ETH`
+      `${formatAmountWithCommas(MOCKED_ETH_BALANCE?.balance ?? '0')} ETH`
     );
 
     // the first "send" element is a button
