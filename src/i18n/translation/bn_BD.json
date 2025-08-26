@@ -333,7 +333,8 @@
     "sendTo": "Send to",
     "amount": "Amount",
     "deposit": "Deposit",
-    "totalAmount": "Total Amount"
+    "totalAmount": "Total Amount",
+    "enableManualTransactionCallback": "Enable Manual Deposit Payout Callback"
   },
   "SendBpByAlias": "Akashic উপনাম দ্বারা ব্যবসায়িক অ্যাকাউন্টে পাঠানো যাবে না",
   "SelectYourPreferredNode": "অনুগ্রহ করে আপনার পছন্দের নোড নির্বাচন করুন।",

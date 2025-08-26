@@ -325,7 +325,8 @@
     "sendTo": "Send to",
     "amount": "Amount",
     "deposit": "Deposit",
-    "totalAmount": "Total Amount"
+    "totalAmount": "Total Amount",
+    "enableManualTransactionCallback": "Enable Manual Deposit Payout Callback"
   },
   "SendBpByAlias": "Cannot send to business account by Akashic Alias",
   "SelectYourPreferredNode": "Please select your preferred node.",
