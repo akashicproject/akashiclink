@@ -1,20 +1,13 @@
 import { L2Regex } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import Big from 'big.js';
-import { debounce } from 'lodash';
-import {
-  type Dispatch,
-  type SetStateAction,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { type Dispatch, type SetStateAction, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { OwnersAPI } from '../../../utils/api';
 import { getPrecision } from '../../../utils/formatAmount';
 import { useCryptoCurrencySymbolsAndBalances } from '../../../utils/hooks/useCryptoCurrencySymbolsAndBalances';
+import { useEstimatedNetworkFee } from '../../../utils/hooks/useEstimatedNetworkFee';
+import { useCalculateCurrencyL2WithdrawalFee } from '../../../utils/hooks/useExchangeRates';
 import { displayLongText } from '../../../utils/long-text';
 import type { FormAlertState } from '../../common/alert/alert';
 import { List } from '../../common/list/list';
@@ -27,49 +20,31 @@ import type { ValidatedAddressPair } from './types';
 export const SendTxnDetailBox = ({
   validatedAddressPair,
   amount,
-  fee,
   disabled,
   setAlert,
   onAddressReset,
 }: {
   validatedAddressPair: ValidatedAddressPair;
   amount: string;
-  fee: string;
   disabled: boolean;
   setAlert: Dispatch<SetStateAction<FormAlertState>>;
   onAddressReset: () => void;
 }) => {
   const { t } = useTranslation();
-  const [networkFee, setNetworkFee] = useState<string | null>(null);
-
   const { currency } = useContext(SendFormContext);
 
-  const { chain, nativeCoinBalance, nativeCoinSymbol } =
+  const estimatedNetworkFee = useEstimatedNetworkFee({
+    validatedAddressPair,
+    amount,
+  });
+  const calculateL2Fee = useCalculateCurrencyL2WithdrawalFee(currency);
+  const l2Fee = calculateL2Fee();
+
+  const { nativeCoinBalance, nativeCoinSymbol } =
     useCryptoCurrencySymbolsAndBalances(currency);
 
-  const fetchNetworkFee = useCallback(
-    debounce(async () => {
-      const feeResponse = await OwnersAPI.estimateNetworkFees({
-        toAddress: validatedAddressPair.convertedToAddress,
-        amount,
-        coinSymbol: chain,
-      });
-      setNetworkFee(feeResponse.networkFee);
-    }, 500),
-    [validatedAddressPair, amount, chain]
-  );
-
-  useEffect(() => {
-    if (!validatedAddressPair.isL2) {
-      fetchNetworkFee();
-    }
-    return () => {
-      fetchNetworkFee.cancel(); // Cleanup function to cancel pending calls
-    };
-  }, [fetchNetworkFee]);
-
-  const canNonDelegate = Big(nativeCoinBalance).gt(networkFee ?? 0);
-  const precision = getPrecision(amount, networkFee ?? '0');
+  const canNonDelegate = Big(nativeCoinBalance).gt(estimatedNetworkFee ?? 0);
+  const precision = getPrecision(amount, estimatedNetworkFee ?? '0');
 
   const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
 
@@ -100,10 +75,10 @@ export const SendTxnDetailBox = ({
                 <ListLabelValueItem
                   label={t('GasFee')}
                   value={
-                    networkFee === null
+                    estimatedNetworkFee === null
                       ? '-'
                       : canNonDelegate
-                        ? `${Big(networkFee ?? '0').toFixed(precision)} ${nativeCoinSymbol}`
+                        ? `${Big(estimatedNetworkFee ?? '0').toFixed(precision)} ${nativeCoinSymbol}`
                         : t('InsufficientBalance')
                   }
                   labelBold
@@ -112,18 +87,18 @@ export const SendTxnDetailBox = ({
               {isL2 && (
                 <ListLabelValueAmountItem
                   label={t('Fee')}
-                  value={fee}
+                  value={l2Fee}
                   amount={amount}
-                  fee={fee}
+                  fee={l2Fee}
                 />
               )}
               <ListLabelValueAmountItem
                 label={t('Total')}
-                value={Big(isL2 ? (fee ?? '0') : '0')
+                value={Big(isL2 ? (l2Fee ?? '0') : '0')
                   .add(amount)
                   .toString()}
                 amount={amount}
-                fee={fee}
+                fee={l2Fee}
               />
             </IonCol>
             <IonCol size={'4'} className={'ion-center'}>

@@ -2,20 +2,17 @@ import styled from '@emotion/styled';
 import { FeeDelegationStrategy } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import Big from 'big.js';
-import { debounce } from 'lodash';
 import {
   type Dispatch,
   type SetStateAction,
-  useCallback,
   useContext,
-  useEffect,
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { OwnersAPI } from '../../../utils/api';
 import { getPrecision } from '../../../utils/formatAmount';
 import { useCryptoCurrencySymbolsAndBalances } from '../../../utils/hooks/useCryptoCurrencySymbolsAndBalances';
+import { useEstimatedNetworkFee } from '../../../utils/hooks/useEstimatedNetworkFee';
 import { useVerifyTxnAndSign } from '../../../utils/hooks/useVerifyTxnAndSign';
 import { errorAlertShell, type FormAlertState } from '../../common/alert/alert';
 import { WhiteButton } from '../../common/buttons';
@@ -61,32 +58,16 @@ export const SendTxnDetailBoxWithDelegateOption = ({
   } = useCryptoCurrencySymbolsAndBalances(currency);
 
   const canDelegate = isCurrencyTypeToken;
-  const [networkFee, setNetworkFee] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const verifyTxnAndSign = useVerifyTxnAndSign();
 
-  const fetchNetworkFee = useCallback(
-    debounce(async () => {
-      const feeResponse = await OwnersAPI.estimateNetworkFees({
-        toAddress: validatedAddressPair.convertedToAddress,
-        amount,
-        coinSymbol: chain,
-        tokenSymbol: token,
-      });
-      setNetworkFee(feeResponse.networkFee);
-    }, 500),
-    [validatedAddressPair, amount, chain, token]
-  );
-  useEffect(() => {
-    fetchNetworkFee();
+  const estimatedNetworkFee = useEstimatedNetworkFee({
+    validatedAddressPair,
+    amount: amount === '' ? '0' : amount,
+  });
 
-    return () => {
-      fetchNetworkFee.cancel(); // Cleanup function to cancel pending calls
-    };
-  }, [fetchNetworkFee]);
-
-  const canNonDelegate = Big(nativeCoinBalance).gt(networkFee ?? 0);
-  const precision = getPrecision(amount, networkFee ?? '0');
+  const canNonDelegate = Big(nativeCoinBalance).gt(estimatedNetworkFee ?? 0);
+  const precision = getPrecision(amount, estimatedNetworkFee ?? '0');
 
   const onConfirm = (isDelegated: boolean) => async () => {
     try {
@@ -191,10 +172,10 @@ export const SendTxnDetailBoxWithDelegateOption = ({
               <ListLabelValueItem
                 label={t('GasFee')}
                 value={
-                  Big(networkFee ?? 0).eq(0)
+                  Big(estimatedNetworkFee ?? 0).eq(0)
                     ? '-'
                     : canNonDelegate
-                      ? `${Big(networkFee ?? '0').toFixed(precision)} ${nativeCoinSymbol}`
+                      ? `${Big(estimatedNetworkFee ?? '0').toFixed(precision)} ${nativeCoinSymbol}`
                       : t('InsufficientBalance')
                 }
                 labelBold

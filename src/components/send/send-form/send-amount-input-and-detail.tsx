@@ -8,6 +8,7 @@ import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useCryptoCurrencySymbolsAndBalances } from '../../../utils/hooks/useCryptoCurrencySymbolsAndBalances';
+import { useEstimatedNetworkFee } from '../../../utils/hooks/useEstimatedNetworkFee';
 import { useCalculateCurrencyL2WithdrawalFee } from '../../../utils/hooks/useExchangeRates';
 import {
   AlertBox,
@@ -71,6 +72,11 @@ export const SendAmountInputAndDetail = ({
 
   const calculateL2Fee = useCalculateCurrencyL2WithdrawalFee(currency);
 
+  const estimatedNetworkFee = useEstimatedNetworkFee({
+    validatedAddressPair,
+    amount: amount === '' ? currencyBalance : amount, // if user haven't input amount, prefetch max amount
+  });
+
   const isAmountLargerThanZero = amount !== '' && Big(amount).gt(0);
 
   const validateAmount = debounce(async (input: string) => {
@@ -113,9 +119,14 @@ export const SendAmountInputAndDetail = ({
   };
 
   const onClickUseMax = () => {
-    const maxAmount = Big(currencyBalance).sub(
-      isL2 ? calculateL2Fee() : delegatedFee
-    );
+    const estimatedFee = isL2
+      ? calculateL2Fee()
+      : isCurrencyTypeToken
+        ? delegatedFee
+        : (estimatedNetworkFee ?? '0');
+
+    const maxAmount = Big(currencyBalance).sub(estimatedFee);
+
     if (maxAmount.lte(0)) return;
     setAlert(formAlertResetState);
     setAmount(maxAmount.toString());
@@ -175,7 +186,6 @@ export const SendAmountInputAndDetail = ({
         <SendTxnDetailBox
           validatedAddressPair={validatedAddressPair}
           amount={amount}
-          fee={calculateL2Fee()}
           disabled={alert.visible}
           setAlert={setAlert}
           onAddressReset={onAddressReset}

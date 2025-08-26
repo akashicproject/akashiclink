@@ -5,6 +5,7 @@ import type {
 } from '@helium-pay/backend';
 import Big from 'big.js';
 
+import { INTERNAL_FEE_BASE } from '../constants/fee';
 import { getMainnetEquivalent } from './chain';
 
 /**
@@ -18,12 +19,11 @@ export function calculateInternalWithdrawalFee(
   coinSymbol: CoinSymbol,
   tokenSymbol?: CryptoCurrencySymbol
 ): string {
-  const internalFeeBase = '0.1';
   const exchangeRate = Big(
     exchangeRates.find(
       (ex) => !tokenSymbol && ex.coinSymbol === getMainnetEquivalent(coinSymbol)
     )?.price ?? 1
   );
 
-  return Big(internalFeeBase).div(exchangeRate).toPrecision(2);
+  return Big(INTERNAL_FEE_BASE).div(exchangeRate).toPrecision(2);
 }
