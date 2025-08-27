@@ -527,6 +527,7 @@ export class Nitr0genApi {
         $i: {
           owner: {
             $stream: otk.identity,
+            personal: true,
           },
         },
         $o: {
