@@ -6,16 +6,19 @@ import { useTranslation } from 'react-i18next';
 
 import { getPrecision } from '../../../utils/formatAmount';
 import { useCryptoCurrencySymbolsAndBalances } from '../../../utils/hooks/useCryptoCurrencySymbolsAndBalances';
+import { ShareActionButton } from '../../activity/share-action-button';
 import { L2Icon } from '../../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../../common/chain-icon/network-icon';
 import { Divider } from '../../common/divider';
 import { List } from '../../common/list/list';
 import { ListLabelValueItem } from '../../common/list/list-label-value-item';
 import { ListVerticalLabelValueItem } from '../../common/list/list-vertical-label-value-item';
+import { ListCopyTxHashItem } from '../copy-tx-hash';
+import { FromToAddressBlock } from '../from-to-address-block';
 import { SendFormContext } from '../send-modal-context-provider';
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
-export const SendConfirmationDetailList = () => {
+export const SendCompletedDetailList = () => {
   const { t } = useTranslation();
   const { sendConfirm, currency } = useContext(SendFormContext);
   const { isCurrencyTypeToken, currencySymbol, nativeCoinSymbol } =
@@ -23,13 +26,16 @@ export const SendConfirmationDetailList = () => {
   const { chain } = currency;
 
   const txn = sendConfirm?.txn;
+  const txnFinal = sendConfirm?.txnFinal;
   const validatedAddressPair = sendConfirm?.validatedAddressPair;
   const delegatedFee = sendConfirm?.delegatedFee;
+  const txHash = txnFinal?.txHash;
   const isL2 = validatedAddressPair?.isL2;
 
   // Calculate total Amount
-  const totalFee = Big(txn?.feesEstimate ?? 0);
-
+  const totalFee = txnFinal?.feesEstimate
+    ? Big(txnFinal?.feesEstimate)
+    : Big(txn?.feesEstimate ?? 0);
   const internalFee = Big(txn?.internalFee?.withdraw ?? 0);
   const totalAmountWithFee = Big(txn?.amount ?? '0')
     .add(internalFee)
@@ -42,6 +48,20 @@ export const SendConfirmationDetailList = () => {
       : '0';
 
   const precision = getPrecision(txn?.amount ?? '0', feeForPrecision);
+
+  const getUrl = (
+    type: 'account' | 'transaction',
+    isL2: boolean,
+    value: string
+  ) => {
+    if (type === 'account') {
+      return isL2
+        ? `${process.env.REACT_APP_SCAN_BASE_URL}/accounts/${value}`
+        : `${NetworkDictionary[chain].addressUrl}/${value}`;
+    }
+    // Or if transaction
+    return `${process.env.REACT_APP_SCAN_BASE_URL}/transactions/${value}`;
+  };
 
   // If token, displayed as "USDT" for L1 and "USDT (ETH)" for L2 (since
   // deducing the chain the token belongs to is not trivial)
@@ -67,15 +87,35 @@ export const SendConfirmationDetailList = () => {
               : NetworkDictionary[chain].displayName.replace(/Chain/g, '')}
           </h3>
         </IonText>
+        {txHash && (
+          <div className={'ion-margin-left-auto'}>
+            <ShareActionButton
+              filename={txHash}
+              link={getUrl('transaction', !!isL2, txHash)}
+            />
+          </div>
+        )}
       </IonItem>
       <ListVerticalLabelValueItem
         label={t('InputAddress')}
         value={validatedAddressPair?.userInputToAddress}
       />
-      <ListVerticalLabelValueItem
-        label={t('SendTo')}
-        value={validatedAddressPair?.convertedToAddress}
-      />
+      <IonItem>
+        <FromToAddressBlock
+          fromAddress={txn?.fromAddress}
+          toAddress={txn?.toAddress}
+          fromAddressUrl={getUrl('account', !!isL2, txn?.fromAddress ?? '-')}
+          toAddressUrl={getUrl('account', !!isL2, txn?.toAddress ?? '-')}
+        />
+      </IonItem>
+      {txHash && (
+        <IonItem>
+          <ListCopyTxHashItem
+            txHash={txHash}
+            txHashUrl={getUrl('transaction', !!isL2, txHash)}
+          />
+        </IonItem>
+      )}
       <IonItem>
         <Divider style={{ width: '100%' }} className={'ion-margin-vertical'} />
       </IonItem>

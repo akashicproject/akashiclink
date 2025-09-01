@@ -10,6 +10,7 @@ import { arrowBackOutline } from 'ionicons/icons';
 import { type RefObject, useContext } from 'react';
 
 import { SendChooseCurrencyForm } from './send-choose-currency-form/send-choose-currency-form';
+import { SendCompleted } from './send-confirmation-form/send-completed';
 import { SendConfirmationForm } from './send-confirmation-form/send-confirmation-form';
 import { SendForm } from './send-form/send-form';
 import { SendFormContext } from './send-modal-context-provider';
@@ -73,6 +74,7 @@ export function SendFormModal({
         {step === 0 && <SendChooseCurrencyForm />}
         {step === 1 && <SendForm />}
         {step === 2 && <SendConfirmationForm />}
+        {step === 3 && <SendCompleted />}
       </IonContent>
     </IonModal>
   );

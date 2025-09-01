@@ -2,8 +2,6 @@ import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ErrorIconWithTitle } from '../../common/state-icon-with-title/error-icon-with-title';
-import { SuccessfulIconWithTitle } from '../../common/state-icon-with-title/successful-icon-with-title';
 import { SendFormContext } from '../send-modal-context-provider';
 import { SendConfirmationDetailList } from './send-confirmation-detail-list';
 import { SendConfirmationFormActionButtons } from './send-confirmation-form-action-buttons';
@@ -28,20 +26,11 @@ export const SendConfirmationForm = () => {
     >
       <IonRow>
         <IonCol size={'12'}>
-          {sendConfirm?.txnFinal?.txHash && (
-            <SuccessfulIconWithTitle
-              size={24}
-              isHorizontal
-              title={t('TransactionSuccessful')}
-            />
-          )}
-          {sendConfirm?.txnFinal?.error && (
-            <ErrorIconWithTitle
-              size={24}
-              isHorizontal
-              title={t('TransactionFailed')}
-            />
-          )}
+          <h2
+            className={`ion-text-align-center ion-text-size-md ion-margin-bottom-0 ion-margin-top-sm`}
+          >
+            {t('TransactionSummary')}
+          </h2>
         </IonCol>
       </IonRow>
       <IonRow>

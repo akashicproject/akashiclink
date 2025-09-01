@@ -62,6 +62,7 @@
   "WrongPassword": "Wrong password, please try again.",
   "GoBack": "Go Back",
   "InputAddress": "Input Address",
+  "TransactionSummary": "Transaction Summary",
   "TransactionSuccessful": "Transaction Successful",
   "TransactionFailed": "Transaction Failed",
   "Receiver": "Receiver",

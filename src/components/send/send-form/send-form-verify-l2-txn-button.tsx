@@ -41,10 +41,8 @@ export const SendFormVerifyL2TxnButton: FC<SendFormVerifyL2TxnButtonProps> = ({
 
   const verifyTxnAndSign = useVerifyTxnAndSign();
 
-  const onConfirm = async () => {
+  const executeVerifyL2Txn = async () => {
     try {
-      setIsLoading(true);
-
       const res = await verifyTxnAndSign(
         validatedAddressPair,
         amount,
@@ -76,6 +74,11 @@ export const SendFormVerifyL2TxnButton: FC<SendFormVerifyL2TxnButtonProps> = ({
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const onConfirm = () => {
+    setIsLoading(true);
+    executeVerifyL2Txn();
   };
 
   return (
