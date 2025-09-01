@@ -327,7 +327,8 @@
     "sendTo": "傅送至",
     "amount": "金額",
     "deposit": "存款",
-    "totalAmount": "總額"
+    "totalAmount": "總額",
+    "enableManualTransactionCallback": "啟用手動存款/提款回調"
   },
   "SendBpByAlias": "無法透過 Akashic 地址發送商業帳號",
   "SelectYourPreferredNode": "請選擇您偏好的節點。",
