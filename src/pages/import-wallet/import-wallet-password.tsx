@@ -21,7 +21,6 @@ import {
   historyGoBackOrReplace,
   historyResetStackAndRedirect,
 } from '../../routing/history';
-import { EXTENSION_EVENT, responseToSite } from '../../utils/chrome';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useLogout } from '../../utils/hooks/useLogout';
@@ -33,6 +32,7 @@ export function ImportWalletPassword({ isPopup = false }) {
     addLocalOtkAndCache,
     addLocalAccount,
     setActiveAccount,
+    activeAccount,
     localAccounts,
   } = useAccountStorage();
   const logout = useLogout();
@@ -78,6 +78,11 @@ export function ImportWalletPassword({ isPopup = false }) {
     }
 
     if (isPasswordValid && otk?.identity && otkType) {
+      // If user is currently signed in, ensure the currently active account and connected webapps are signed out
+      if (activeAccount) {
+        await logout();
+      }
+
       // call import api and store the Identity. added local otk
       addLocalOtkAndCache({
         otk,
@@ -99,10 +104,6 @@ export function ImportWalletPassword({ isPopup = false }) {
         dispatch(onClearImportWalletSlice());
         historyResetStackAndRedirect(urls.importWalletSuccessful);
         return;
-      } else {
-        await responseToSite({
-          event: EXTENSION_EVENT.USER_LOCKED_WALLET,
-        });
       }
 
       setIsLoading(false);
