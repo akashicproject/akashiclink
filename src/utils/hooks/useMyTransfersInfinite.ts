@@ -30,7 +30,7 @@ const transferMeFetcher = async (
   });
 
   const url = path
-    ? `${path}&hideSmallTransactions=${
+    ? `${path}&withEnergyPurchases=true&hideSmallTransactions=${
         hideSmallTransactions.value &&
         ['true', 'false'].includes(hideSmallTransactions.value)
           ? hideSmallTransactions.value
