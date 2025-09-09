@@ -67,24 +67,13 @@ export interface IKeyCreationResponse {
 
 /** ********* L1 Stuff ********* **/
 
-export interface ITransactionSuccessResponse {
+export interface ITransactionSettledResponse {
   isSuccess: true;
   txHash: string;
   isPresigned: boolean;
   // Should probably not be optional. But fuck me this code is a mess.
   feesEstimate?: string;
 }
-export interface ITransactionFailureResponse {
-  isSuccess: false;
-  reason: string;
-}
-/**
- * Describes response object returned by the backend when a transaction is sent
- * to the blockchain and the transaction's promise is resolved/rejected
- */
-export type ITransactionSettledResponse =
-  | ITransactionSuccessResponse
-  | ITransactionFailureResponse;
 
 /**
  * Describes a transaction proposal with anticipated gas fee that still needs to:

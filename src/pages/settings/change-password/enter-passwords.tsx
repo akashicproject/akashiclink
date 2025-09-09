@@ -22,9 +22,9 @@ import {
   historyReplace,
   type LocationState,
 } from '../../../routing/history';
+import { getErrorMessageTKey } from '../../../utils/error-utils';
 import { useAccountStorage } from '../../../utils/hooks/useLocalAccounts';
 import { useLogout } from '../../../utils/hooks/useLogout';
-import { unpackRequestErrorMessage } from '../../../utils/unpack-request-error-message';
 
 export function ChangePassword() {
   const { t } = useTranslation();
@@ -123,7 +123,7 @@ export function ChangePassword() {
         });
         resetStates();
       } catch (error) {
-        setAlertRequest(errorAlertShell(unpackRequestErrorMessage(error)));
+        setAlertRequest(errorAlertShell(getErrorMessageTKey(error)));
       }
     }
   }

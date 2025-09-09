@@ -14,7 +14,7 @@ export const useRemoveTreasuryOtk = () => {
 
   return async (payload: RemoveTreasuryKeyPayload) => {
     if (!cacheOtk || !activeAccount || !account) {
-      throw new Error('CouldNotReadAddress');
+      throw new Error('cacheOtk not found');
     }
     const nitr0gen = new Nitr0genApi();
 

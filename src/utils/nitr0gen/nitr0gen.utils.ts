@@ -171,28 +171,3 @@ export async function fetchNodesPing(
   });
   return nodePingData;
 }
-
-// Below is to replicate previous backend Nitr0gen error handling
-// which is to make implementation of sendTransactionInsistently later easier
-// TODO: refactor this with sendTransactionInsistently
-// so that we don't need to declare HTTP error on frontend
-export class BadGatewayException extends Error {
-  constructor(msg: string) {
-    super(msg);
-    Object.setPrototypeOf(this, BadGatewayException.prototype);
-  }
-}
-
-export class NotFoundException extends Error {
-  constructor(msg: string) {
-    super(msg);
-    Object.setPrototypeOf(this, NotFoundException.prototype);
-  }
-}
-
-export class ForbiddenException extends Error {
-  constructor(msg: string) {
-    super(msg);
-    Object.setPrototypeOf(this, ForbiddenException.prototype);
-  }
-}

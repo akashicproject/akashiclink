@@ -23,9 +23,9 @@ import {
   selectImportWalletForm,
 } from '../../redux/slices/importWalletSlice';
 import { historyGoBackOrReplace } from '../../routing/history';
+import { getErrorMessageTKey } from '../../utils/error-utils';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import { validateSecretPhrase } from '../../utils/otk-generation';
-import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 
 const StyledDiv = styled.div`
   padding: 8px;
@@ -56,7 +56,7 @@ export const ImportWalletSecret = () => {
   useEffect(() => {
     setAlert(
       importWalletError
-        ? errorAlertShell(unpackRequestErrorMessage(importWalletError))
+        ? errorAlertShell(getErrorMessageTKey(importWalletError))
         : formAlertResetState
     );
     // if import failed, release button to let user try again

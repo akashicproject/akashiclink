@@ -20,6 +20,7 @@ import {
   selectOtk,
 } from '../../redux/slices/createWalletSlice';
 import { historyReplace } from '../../routing/history';
+import { getErrorMessageTKey } from '../../utils/error-utils';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 
 export function CreateWalletSecret() {
@@ -42,7 +43,7 @@ export function CreateWalletSecret() {
   useEffect(() => {
     setAlert(
       createWalletError
-        ? errorAlertShell('GenericFailureMsg')
+        ? errorAlertShell(getErrorMessageTKey(createWalletError))
         : formAlertResetState
     );
   }, [createWalletError, t]);

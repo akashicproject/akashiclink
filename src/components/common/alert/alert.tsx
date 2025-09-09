@@ -12,6 +12,7 @@ import { closeOutline } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { type I18nKeys } from '../../../i18n/I18nNamespaces';
 import { PrimaryButton } from '../buttons';
 
 /**
@@ -22,12 +23,12 @@ import { PrimaryButton } from '../buttons';
 export interface FormAlertState {
   success: boolean;
   visible: boolean;
-  message: string;
+  message: I18nKeys | null;
   messageProps?: Record<string, unknown>;
 }
 
 export const errorAlertShell = (
-  message: string,
+  message: I18nKeys,
   messageProps?: Record<string, unknown>
 ) => ({
   success: false,
@@ -37,7 +38,7 @@ export const errorAlertShell = (
 });
 
 export const successAlertShell = (
-  message: string,
+  message: I18nKeys,
   messageProps?: Record<string, unknown>
 ) => ({
   success: true,
@@ -49,13 +50,13 @@ export const successAlertShell = (
 export const formAlertResetState: FormAlertState = {
   success: false,
   visible: false,
-  message: '',
+  message: null,
 };
 
 export interface CustomAlertState {
   visible: boolean;
   success: boolean;
-  message: string;
+  message: I18nKeys | null;
   messageProps?: Record<string, unknown>;
   onConfirm?: () => void;
   confirmButtonMessage?: string;
@@ -83,7 +84,7 @@ export function Alert({ state: externalState }: { state: FormAlertState }) {
     <IonAlert
       isOpen={state.visible}
       header={state.success ? `${t('Success')}` : `${t('Failure')}`}
-      message={state.message}
+      message={state.message ?? ''}
       buttons={['OK']}
       /* Listen for keydown events once rendered - stop once closed */
       onDidPresent={() => {
@@ -149,7 +150,7 @@ export function CustomAlert({
         />
         <IonText className="warning-text">
           <h2>{state.success ? `${t('Success')}` : `${t('Failure')}`}</h2>
-          {t(state.message, state.messageProps)}
+          {t(state.message ?? '', state.messageProps)}
         </IonText>
         {state.onConfirm && (
           <PrimaryButton onClick={state.onConfirm} style={{ width: '160px' }}>
@@ -197,7 +198,7 @@ export function AlertBox({
           ...style,
         }}
       >
-        {t(state.message, state.messageProps)}
+        {t(state.message ?? '', state.messageProps)}
       </h4>
     </IonNote>
   );

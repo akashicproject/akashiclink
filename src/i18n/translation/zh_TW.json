@@ -61,7 +61,6 @@
   "PleaseConfirmYourPassword": "請確認您的密碼",
   "GoBack": "返回",
   "InputAddress": "輸入地址",
-  "TransactionSummary": "交易摘要",
   "TransactionSuccessful": "交易成功",
   "TransactionFailed": "交易失敗",
   "Receiver": "接受者",
@@ -378,5 +377,10 @@
   "Filter": "篩選",
   "Alphabetical": "按字母順序 A-Z",
   "Value": "價值",
-  "PreferencesDesc": "取消勾選即可在儀表板上隱藏代幣"
+  "PreferencesDesc": "取消勾選即可在儀表板上隱藏代幣",
+  "TransactionExpired": "交易已過期",
+  "CouldNotReadAddress": "無法讀取地址",
+  "InvalidMethod": "無效方法",
+  "NeedPubKey": "需要公鑰以刪除財庫密鑰",
+  "NeedThresholds": "需要閾值以更新財庫"
 }

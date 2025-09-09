@@ -62,7 +62,6 @@
   "WrongPassword": "ভুল পাসওয়ার্ড, অনুগ্রহ করে আবার চেষ্টা করুন।",
   "GoBack": "ফিরে যান",
   "InputAddress": "ইনপুট ঠিকানা",
-  "TransactionSummary": "লেনদেনের সারাংশ",
   "TransactionSuccessful": "লেনদেন সফল",
   "TransactionFailed": "লেনদেন ব্যর্থ",
   "Receiver": "প্রাপক",
@@ -384,5 +383,10 @@
   "Filter": "ফিল্টার",
   "Preferences": "পছন্দসমূহ",
   "Custom": "কাস্টম",
-  "PreferencesDesc": "ড্যাশবোর্ড থেকে টোকেন লুকানোর জন্য টিক চিহ্নটি খুলে দিন।"
+  "PreferencesDesc": "ড্যাশবোর্ড থেকে টোকেন লুকানোর জন্য টিক চিহ্নটি খুলে দিন।",
+  "TransactionExpired": "লেনদেনের মেয়াদ শেষ হয়েছে",
+  "CouldNotReadAddress": "ঠিকানা পড়া যায়নি",
+  "InvalidMethod": "অবৈধ পদ্ধতি",
+  "NeedPubKey": "ট্রেজারি কী মুছতে পাবলিক কী প্রয়োজন",
+  "NeedThresholds": "ট্রেজারি আপডেট করতে থ্রেশহোল্ড প্রয়োজন"
 }

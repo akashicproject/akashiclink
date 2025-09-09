@@ -70,31 +70,15 @@ export const importWalletSlice = createAppSlice({
       async (passPhrase: string[]) => {
         // Reconstruct OTK
         const reconstructedOtk = await restoreOtk(passPhrase.join(' '));
-        let identity: string | undefined;
-        let otkType: OtkType | undefined;
 
-        try {
-          const response = await OwnersAPI.retrieveIdentity({
-            publicKey: reconstructedOtk.key.pub.pkcs8pem,
-          });
-          identity = response.identity;
-          otkType = response.otkType;
-        } catch (e) {
-          // Axios-errors don't get mapped nicely to SerializezError so we
-          // re-throw as Error
-          if (isAxiosError(e)) {
-            throw new Error(e.response?.data.message);
-          } else {
-            throw e;
-          }
-        }
+        const response = await OwnersAPI.retrieveIdentity({
+          publicKey: reconstructedOtk.key.pub.pkcs8pem,
+        });
+        const identity = response.identity;
+        const otkType = response.otkType;
 
-        if (identity) {
-          historyResetStackAndRedirect(urls.importWalletPassword);
-          return { otk: { ...reconstructedOtk, identity }, otkType };
-        } else {
-          throw new Error('GenericFailureMsg');
-        }
+        historyResetStackAndRedirect(urls.importWalletPassword);
+        return { otk: { ...reconstructedOtk, identity }, otkType };
       },
       {
         fulfilled: (state, action) => {
@@ -116,34 +100,24 @@ export const importWalletSlice = createAppSlice({
         let otkType: OtkType | undefined;
 
         try {
-          try {
+          const response = await OwnersAPI.retrieveIdentity({
+            publicKey: otk.key.pub.pkcs8pem,
+          });
+          identity = response.identity;
+          otkType = response.otkType;
+        } catch (e) {
+          // This error could be because of a bug where we have some otks stored "compressed" and some "uncompressed"
+          // So if facing this error, we try again with "uncompressed"
+          if (
+            isAxiosError(e) &&
+            e.response?.data.message === KeyError.invalidPrivateKey
+          ) {
+            otk = restoreOtkFromKeypair(privateKey, 'uncompressed');
             const response = await OwnersAPI.retrieveIdentity({
               publicKey: otk.key.pub.pkcs8pem,
             });
             identity = response.identity;
             otkType = response.otkType;
-          } catch (e) {
-            // This error could be because of a bug where we have some otks stored "compressed" and some "uncompressed"
-            // So if facing this error, we try again with "uncompressed"
-            if (
-              isAxiosError(e) &&
-              e.response?.data.message === KeyError.invalidPrivateKey
-            ) {
-              otk = restoreOtkFromKeypair(privateKey, 'uncompressed');
-              const response = await OwnersAPI.retrieveIdentity({
-                publicKey: otk.key.pub.pkcs8pem,
-              });
-              identity = response.identity;
-              otkType = response.otkType;
-            } else {
-              throw e;
-            }
-          }
-        } catch (e) {
-          // Axios-errors don't get mapped nicely to SerializezError so we
-          // re-throw as Error
-          if (isAxiosError(e)) {
-            throw new Error(e.response?.data.message);
           } else {
             throw e;
           }
@@ -153,7 +127,8 @@ export const importWalletSlice = createAppSlice({
           historyResetStackAndRedirect(urls.importWalletPassword);
           return { otk: { ...otk, identity }, otkType };
         } else {
-          throw new Error('GenericFailureMsg');
+          // probably won't throw this as it will already been thrown above
+          throw new Error('No identity found');
         }
       },
       {

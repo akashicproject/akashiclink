@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import { type INftObject, NftError, UserError } from '@helium-pay/backend';
-import axios from 'axios';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { AppError, getErrorMessageTKey } from '../../utils/error-utils';
 import { useUpdateAas } from '../../utils/hooks/nitr0gen';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
@@ -24,7 +24,7 @@ const AASListSwitchContainer = styled.div`
 /* In minutes. 72hrs on prod, 1 min else */
 const AAS_LINK_RESTRICT_TIME = process.env.REACT_APP_ENV === 'prod' ? 4320 : 1;
 
-const validateLinkRestriction = (nft: INftObject) => {
+const calculateTimeUntilLinkAllowed = (nft: INftObject) => {
   if (nft.aas.unLinkedAt) {
     // Difference in ms between when aas can be linked again (linkedAt + 72hrs) and now
     const timeUntilLinkAllowed =
@@ -32,23 +32,34 @@ const validateLinkRestriction = (nft: INftObject) => {
       new Date(nft.aas.unLinkedAt).getTime() +
       AAS_LINK_RESTRICT_TIME * 60 * 1000 -
       Date.now();
+    return timeUntilLinkAllowed;
+  }
+  return 0;
+};
 
-    // Convert milliseconds to minutes, seconds, or hours
-    const minutesDifference = Math.floor(timeUntilLinkAllowed / (1000 * 60));
-    const secondsDifference = Math.floor(timeUntilLinkAllowed / 1000);
-    const hoursDifference = Math.floor(timeUntilLinkAllowed / (1000 * 60 * 60));
-    // If time is positive, means user still has to wait, if negative it means new link may happen
+const getRemainingTime = (nft: INftObject) => {
+  if (nft.aas.unLinkedAt) {
+    // Difference in ms between when aas can be linked again (linkedAt + 72hrs) and now
+    const timeUntilLinkAllowed =
+      // HACK bc dates get turned into strings going from BE -> FE
+      new Date(nft.aas.unLinkedAt).getTime() +
+      AAS_LINK_RESTRICT_TIME * 60 * 1000 -
+      Date.now();
     if (timeUntilLinkAllowed > 0) {
-      // The exception throws the hours, minute or seconds remaining as in the frontend the whole description is rendered.
-      throw new Error(
-        hoursDifference
-          ? hoursDifference + ' hours'
-          : minutesDifference
-            ? minutesDifference + ' minutes'
-            : secondsDifference + ' seconds'
+      // Convert milliseconds to minutes, seconds, or hours
+      const minutesDifference = Math.floor(timeUntilLinkAllowed / (1000 * 60));
+      const secondsDifference = Math.floor(timeUntilLinkAllowed / 1000);
+      const hoursDifference = Math.floor(
+        timeUntilLinkAllowed / (1000 * 60 * 60)
       );
+      return hoursDifference
+        ? hoursDifference + ' hours'
+        : minutesDifference
+          ? minutesDifference + ' minutes'
+          : secondsDifference + ' seconds';
     }
   }
+  return '';
 };
 
 const verifyUpdateAas = (
@@ -69,7 +80,9 @@ const verifyUpdateAas = (
     throw new Error(NftError.onlyOneAASLinkingAllowed);
   }
 
-  validateLinkRestriction(nft);
+  if (calculateTimeUntilLinkAllowed(nft)) {
+    throw new Error(AppError.AASLinkingFailed);
+  }
 };
 
 export const AasListingSwitch = ({
@@ -118,7 +131,7 @@ export const AasListingSwitch = ({
   const updateAASList = async () => {
     try {
       if (!cacheOtk) {
-        throw new Error('GenericFailureMsg');
+        throw new Error('cacheOtk not found');
       }
       setIsLoading(true);
       if (nft.alias && activeAccount?.identity && cacheOtk) {
@@ -148,24 +161,16 @@ export const AasListingSwitch = ({
       setIsLinked(!isLinked);
       setParentLinkage(!isLinked);
     } catch (error) {
-      const errorMsg = axios.isAxiosError(error)
-        ? error?.response?.data?.message
-        : error instanceof Error // From time-link-restriction
-          ? error.message
-          : '';
-      const timeUnits = ['hours', 'minutes', 'seconds'];
-      if (errorMsg === nftErrors.onlyOneAASLinkingAllowed) {
-        setAlert(errorAlertShell('OnlyOneAAS'));
-      } else if (timeUnits.includes(errorMsg.split(' ')[1])) {
+      if ((error as Error).message === AppError.AASLinkingFailed) {
         setAlert(
           errorAlertShell('AASLinkingFailed', {
             name: nft.alias,
-            timeRemaining: errorMsg.split(' ')[0],
-            timeUnit: t(errorMsg.split(' ')[1]),
+            timeRemaining: getRemainingTime(nft).split(' ')[0],
+            timeUnit: t(getRemainingTime(nft).split(' ')[1]),
           })
         );
       } else {
-        setAlert(errorAlertShell('GenericFailureMsg'));
+        setAlert(errorAlertShell(getErrorMessageTKey(error)));
       }
     } finally {
       setIsLoading(false);

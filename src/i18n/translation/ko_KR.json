@@ -62,7 +62,6 @@
   "WrongPassword": "비밀번호가 잘못되었습니다. 다시 시도하세요.",
   "GoBack": "뒤로 가기",
   "InputAddress": "입력 주소",
-  "TransactionSummary": "거래 요약",
   "TransactionSuccessful": "거래 성공",
   "TransactionFailed": "트랜잭션 실패",
   "Receiver": "수신기",
@@ -370,5 +369,10 @@
   "Filter": "필터",
   "Alphabetical": "알파벳순 A-Z",
   "Value": "값",
-  "PreferencesDesc": "대시보드에서 토큰을 숨기려면 선택을 해제하세요"
+  "PreferencesDesc": "대시보드에서 토큰을 숨기려면 선택을 해제하세요",
+  "TransactionExpired": "트랜잭션이 만료되었습니다",
+  "CouldNotReadAddress": "주소를 읽을 수 없습니다",
+  "InvalidMethod": "유효하지 않은 메서드",
+  "NeedPubKey": "재무 키를 제거하려면 공개 키가 필요합니다",
+  "NeedThresholds": "재무를 업데이트하려면 임계값이 필요합니다"
 }

@@ -16,7 +16,7 @@ import {
   NetworkDictionary,
   OtherError,
 } from '@helium-pay/backend';
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 
 import { prefixWithAS } from '../convert-as-prefix';
 import { getCurrentTime } from '../currentUTCTime';
@@ -207,6 +207,7 @@ export class Nitr0genApi {
    *  while staging goes directly to a node.
    *  When Prod also moves to direct, can remove `headers` and the conditional safe-making
    */
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   private async send<T>(
     tx?: object,
     path?: string,
@@ -245,18 +246,37 @@ export class Nitr0genApi {
       let lastError: unknown;
       for (const nodeUrl of nodeUrls) {
         try {
-          // Delay for safety: If we errored with a network error but AC
-          // actually processed the tx, we don't wanna resend right away and
-          // risk re-running a payout for example, which can process if very
-          // close to the original one. With some delay it will be caught as a duplicate
-          await delay(3000);
           return await this.executeSend<T>(nodeUrl, tx, method, timeout);
         } catch (e: unknown) {
-          console.error(`Attempt with ${nodeUrl} failed: `, e);
-          lastError = e;
+          // If network error likely node is down. Try next node. Also try next if
+          // error during preseeding
+          if (
+            isAxiosError(e) &&
+            ((e.status && e.status >= 300) ||
+              (e.response?.status && e.response.status >= 300))
+          ) {
+            const status = isAxiosError(e)
+              ? (e.status ?? e.response?.status)
+              : 'unknown';
+            console.warn(
+              `AC Failed with ${status} at ${nodeUrl}. Trying next node`
+            );
+            lastError = e;
+          } else {
+            // If not a network error, throw error
+            console.error(`AC call errored for unknown reason: `, e);
+            const error = e instanceof Error ? e : new Error('Unknown error');
+            datadogRum.addError(error);
+            throw error;
+          }
         }
+        // Delay for safety: If we errored with a network error but AC
+        // actually processed the tx, we don't wanna resend right away and
+        // risk re-running a payout for example, which can process if very
+        // close to the original one. With some delay it will be caught as a duplicate
+        await delay(3000);
       }
-      console.error('All nodes failed:', lastError);
+      datadogRum.addError(lastError);
       throw lastError;
     }
   }
@@ -291,11 +311,6 @@ export class Nitr0genApi {
       if (response.data.$umid) {
         response.data.$umid = 'AS' + response.data.$umid;
       }
-      if (!response.data.$summary.commit) {
-        throw new Error(
-          response.data?.$summary?.errors?.[0] ?? 'Unknown AC Error'
-        );
-      }
     }
     return response.data;
   }
@@ -308,7 +323,11 @@ export class Nitr0genApi {
     path?: string,
     port: PortType = PortType.CHAIN
   ): Promise<T> {
-    return await this.send(tx, path, port);
+    const response = await this.send<T>(tx, path, port);
+    if (isActiveLedgerResponse(response)) {
+      this.checkForNitr0genError(response);
+    }
+    return response;
   }
 
   /**
@@ -322,7 +341,11 @@ export class Nitr0genApi {
     port: PortType = PortType.CHAIN,
     timeout = 5000
   ): Promise<T> {
-    return await this.send(undefined, path, port, 'get', timeout);
+    const response = await this.send<T>(undefined, path, port, 'get', timeout);
+    if (isActiveLedgerResponse(response)) {
+      this.checkForNitr0genError(response);
+    }
+    return response;
   }
 
   /**
@@ -786,6 +809,8 @@ export class Nitr0genApi {
         throw new Error(KeyError.invalidL2Address);
       case this.isChainErrorTransient(error):
         throw new Error(OtherError.orderFailed);
+      case String(error).includes('Transaction Expired'):
+        throw new Error(OtherError.transactionExpired);
       default:
         throw new Error(OtherError.orderFailed, { cause: error });
     }
@@ -815,19 +840,5 @@ export class Nitr0genApi {
     datadogRum.addError(
       logLevel === 'error' ? new Error(errorMessage) : errorMessage
     );
-  }
-
-  /**
-   * TODO: Handle insistent calling to nitr0gen if transilient error
-   */
-  public async sendTransaction<ReturnT>(
-    nitr0ApiFn: () => Promise<ActiveLedgerResponse<ReturnT>>
-  ) {
-    const nitr0genApi = new Nitr0genApi();
-    const alResponse = await nitr0ApiFn();
-
-    nitr0genApi.checkForNitr0genError(alResponse);
-
-    return alResponse;
   }
 }

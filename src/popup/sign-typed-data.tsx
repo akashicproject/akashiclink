@@ -11,7 +11,6 @@ import {
 import { getSdkError } from '@walletconnect/utils';
 import { type Web3WalletTypes } from '@walletconnect/web3wallet';
 import { useCallback, useEffect, useState } from 'react';
-import { convertToSmallestUnit } from 'src/utils/currency';
 
 import {
   closePopup,
@@ -21,6 +20,8 @@ import {
   responseToSite,
   TYPED_DATA_PRIMARY_TYPE,
 } from '../utils/chrome';
+import { convertToSmallestUnit } from '../utils/currency';
+import { AppError } from '../utils/error-utils';
 import {
   useSendL1Transaction,
   useSendL2Transaction,
@@ -34,10 +35,7 @@ import {
   mapUSDTToTether,
   useVerifyTxnAndSign,
 } from '../utils/hooks/useVerifyTxnAndSign';
-import type {
-  IAcTreasuryThresholds,
-  ITransactionFailureResponse,
-} from '../utils/nitr0gen/nitr0gen.interface';
+import type { IAcTreasuryThresholds } from '../utils/nitr0gen/nitr0gen.interface';
 import { useWeb3Wallet } from '../utils/web3wallet';
 import { SignTypedDataContent } from './sign-typed-data-content';
 
@@ -142,14 +140,14 @@ export function SignTypedData() {
           break;
         case TYPED_DATA_PRIMARY_TYPE.REMOVE_TREASURY_OTK:
           if (!treasuryOtk.oldPubKeyToRemove)
-            throw new Error('Need pub key to remove treasury');
+            throw new Error(AppError.NeedPubKey);
           signedMsg = await removeTreasuryOtk({
             oldPubKeyToRemove: treasuryOtk.oldPubKeyToRemove,
           });
           break;
         case TYPED_DATA_PRIMARY_TYPE.UPDATE_TREASURY_OTK:
           if (!treasuryOtk.networkThresholds)
-            throw new Error('Need threshold(s) to update treasury');
+            throw new Error(AppError.NeedThresholds);
 
           let thresholds: IAcTreasuryThresholds | undefined;
           if (treasuryOtk.networkThresholds) {
@@ -188,10 +186,6 @@ export function SignTypedData() {
             toSign.referenceId as string
           );
 
-          if (typeof res === 'string') {
-            throw new Error(res);
-          }
-
           const didUserInputL2Address = L2Regex.exec(
             toSign.addressInput as string
           );
@@ -212,15 +206,11 @@ export function SignTypedData() {
                   signedTx,
                 });
 
-          if (!response.isSuccess) {
-            throw new Error((response as ITransactionFailureResponse).reason);
-          }
-
           signedMsg = `0x${response.txHash}`;
           break;
         }
         default:
-          throw new Error('Unreachable');
+          throw new Error(AppError.InvalidMethod);
       }
 
       await web3wallet?.respondSessionRequest({

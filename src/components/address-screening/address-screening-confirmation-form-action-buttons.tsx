@@ -6,9 +6,9 @@ import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
 import { historyGo } from '../../routing/history';
+import { getErrorMessageTKey } from '../../utils/error-utils';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { usePayToScreen } from '../../utils/hooks/usePayToScreen';
-import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import {
   AlertBox,
   errorAlertShell,
@@ -64,7 +64,7 @@ export const AddressScreeningConfirmationFormActionButtons = ({
       });
       setIsModalOpen(false);
     } catch (error) {
-      const errorShell = errorAlertShell(unpackRequestErrorMessage(error));
+      const errorShell = errorAlertShell(getErrorMessageTKey(error));
       if (
         [OtherError.signingError, OtherError.providerError].includes(
           (error as Error).message as OtherError
@@ -89,7 +89,7 @@ export const AddressScreeningConfirmationFormActionButtons = ({
       <IonAlert
         isOpen={forceAlert.visible}
         header={t('GenericFailureMsg')}
-        message={t(forceAlert.message)}
+        message={t(forceAlert.message ?? '')}
         backdropDismiss={false}
         buttons={[
           {

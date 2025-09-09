@@ -16,7 +16,6 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ALLOWED_NETWORK_FOR_ADDRESS_SCREENING } from '../../constants/currencies';
-import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import {
   AlertBox,
   errorAlertShell,
@@ -63,19 +62,15 @@ export const AddressScreeningAddressInput = ({
         RegExp(NetworkDictionary[symbol].regex.address).exec(userInput)
     );
 
-    try {
-      if (!!scanAddressChain) {
-        onAddressValidated({
-          scanAddress: userInput,
-          scanChain: scanAddressChain,
-        });
-        return;
-      }
-
-      setAlert(errorAlertShell('AddressHelpText'));
-    } catch (error) {
-      setAlert(errorAlertShell(unpackRequestErrorMessage(error)));
+    if (!!scanAddressChain) {
+      onAddressValidated({
+        scanAddress: userInput,
+        scanChain: scanAddressChain,
+      });
+      return;
     }
+
+    setAlert(errorAlertShell('AddressHelpText'));
   }, 500);
 
   const onAddressChange = (e: InputCustomEvent) => {

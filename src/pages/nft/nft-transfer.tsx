@@ -1,4 +1,3 @@
-import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
 import type { IBaseAcTransaction, INftObject } from '@helium-pay/backend';
 import { L2Regex, NftError } from '@helium-pay/backend';
@@ -33,13 +32,13 @@ import { akashicPayPath } from '../../routing/navigation-tabs';
 import { themeType } from '../../theme/const';
 import { useIsScopeAccessAllowed } from '../../utils/account';
 import { OwnersAPI } from '../../utils/api';
+import { getErrorMessageTKey } from '../../utils/error-utils';
 import { useNftTransfer } from '../../utils/hooks/nitr0gen';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { displayLongText } from '../../utils/long-text';
 import { Nitr0genApi, signTxBody } from '../../utils/nitr0gen/nitr0gen-api';
 import type { FullOtk } from '../../utils/otk-generation';
-import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { NftWrapper } from './nft';
 import { NoNtfText, NoNtfWrapper } from './nfts';
 
@@ -109,7 +108,7 @@ const verifyNftTransaction = async (
   toAddress: string
 ): Promise<IVerifyNftResponse> => {
   if (!cacheOtk || !nft.aas?.ledgerId) {
-    throw new Error('GenericFailureMsg');
+    throw new Error('cacheOtk not found');
   }
 
   const nitr0genApi = new Nitr0genApi();
@@ -197,7 +196,7 @@ export function NftTransfer() {
     setLoading(true);
     try {
       if (!cacheOtk || !currentNft) {
-        throw new Error('GenericFailureMsg');
+        throw new Error('cacheOtk not found');
       }
 
       const verifiedNft = await verifyNftTransaction(
@@ -232,8 +231,7 @@ export function NftTransfer() {
         },
       });
     } catch (error) {
-      datadogRum.addError(error);
-      setAlert(errorAlertShell(unpackRequestErrorMessage(error)));
+      setAlert(errorAlertShell(getErrorMessageTKey(error)));
     } finally {
       setInputValue('');
       await mutateNftMe();

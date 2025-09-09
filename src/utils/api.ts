@@ -23,12 +23,6 @@ const apiCall = async <T>(
   data?: unknown
 ): Promise<T> => {
   const response = await axiosBase.request<T>({ url, method, data });
-  if (response.status >= 400) {
-    const errorData = response.data as { message?: string };
-    const errorMessage =
-      errorData?.message ?? `Request failed with status ${response.status}`;
-    throw new Error(errorMessage);
-  }
   return response.data;
 };
 

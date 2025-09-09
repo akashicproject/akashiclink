@@ -10,16 +10,15 @@ import {
   IonRow,
   IonText,
 } from '@ionic/react';
-import axios from 'axios';
 import { closeOutline } from 'ionicons/icons';
 import { debounce } from 'lodash';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { OwnersAPI } from '../../../utils/api';
+import { getErrorMessageTKey } from '../../../utils/error-utils';
 import { useAccountStorage } from '../../../utils/hooks/useLocalAccounts';
 import { useOwnerKeys } from '../../../utils/hooks/useOwnerKeys';
-import { unpackRequestErrorMessage } from '../../../utils/unpack-request-error-message';
 import {
   AlertBox,
   errorAlertShell,
@@ -133,13 +132,7 @@ export const SendAddressInput = ({
         });
       }
     } catch (error) {
-      setAlert(
-        errorAlertShell(
-          axios.isAxiosError(error)
-            ? unpackRequestErrorMessage(error)
-            : 'GenericFailureMsg'
-        )
-      );
+      setAlert(errorAlertShell(getErrorMessageTKey(error)));
     }
   }, 500);
 

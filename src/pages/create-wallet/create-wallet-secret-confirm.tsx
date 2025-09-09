@@ -1,7 +1,5 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { OtkType } from '@helium-pay/backend';
 import { IonCol, IonRow, IonText } from '@ionic/react';
-import axios from 'axios';
 import { isEqual } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -32,6 +30,7 @@ import {
   historyResetStackAndRedirect,
 } from '../../routing/history';
 import { EXTENSION_EVENT, responseToSite } from '../../utils/chrome';
+import { AppError, getErrorMessageTKey } from '../../utils/error-utils';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { createAccountWithAllL1Addresses } from '../../utils/wallet-creation';
 
@@ -74,7 +73,7 @@ export function CreateWalletSecretConfirm({ isPopup = false }) {
           otk.phrase.trim()
         )
       ) {
-        throw new Error(t('InvalidSecretPhrase'));
+        throw new Error(AppError.InvalidSecretPhrase);
       }
 
       // losing Password would never allow user to go forward again, redirect user back to login page
@@ -116,11 +115,7 @@ export function CreateWalletSecretConfirm({ isPopup = false }) {
 
       historyResetStackAndRedirect(urls.createWalletSuccessful);
     } catch (e) {
-      datadogRum.addError(e);
-      const error = e as Error;
-      let message = error.message || 'GenericFailureMsg';
-      if (axios.isAxiosError(e)) message = e.response?.data?.message || message;
-      setAlert(errorAlertShell(message));
+      setAlert(errorAlertShell(getErrorMessageTKey(e)));
       setIsCreatingAccount(false);
     }
   }

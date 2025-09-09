@@ -62,7 +62,6 @@
   "WrongPassword": "Wrong password, please try again.",
   "GoBack": "Go Back",
   "InputAddress": "Input Address",
-  "TransactionSummary": "Transaction Summary",
   "TransactionSuccessful": "Transaction Successful",
   "TransactionFailed": "Transaction Failed",
   "Receiver": "Receiver",
@@ -378,5 +377,10 @@
   "Filter": "Filter",
   "Alphabetical": "Alphabetical A-Z",
   "Value": "Value",
-  "PreferencesDesc": "Untick to hide token from the dashboard"
+  "PreferencesDesc": "Untick to hide token from the dashboard",
+  "TransactionExpired": "Transaction Expired",
+  "CouldNotReadAddress": "Could not read address",
+  "InvalidMethod": "Invalid method",
+  "NeedPubKey": "Need pub key to remove treasury key",
+  "NeedThresholds": "Need threshold(s) to update treasury"
 }

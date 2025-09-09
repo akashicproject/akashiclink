@@ -52,7 +52,7 @@ export function SettingsBackup() {
                   state={{
                     visible: true,
                     success: false,
-                    message: t('KeyPairWarning'),
+                    message: 'KeyPairWarning',
                   }}
                 />
               </IonCol>

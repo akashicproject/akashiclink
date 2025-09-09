@@ -8,14 +8,13 @@ import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ONE_DAY_MS, ONE_MINUTE_MS } from '../../../constants';
+import { getErrorMessageTKey } from '../../../utils/error-utils';
 import {
   useSendL1Transaction,
   useSendL2Transaction,
 } from '../../../utils/hooks/nitr0gen';
 import { useInterval } from '../../../utils/hooks/useInterval';
 import { useVerifyTxnAndSign } from '../../../utils/hooks/useVerifyTxnAndSign';
-import type { ITransactionFailureResponse } from '../../../utils/nitr0gen/nitr0gen.interface';
-import { unpackRequestErrorMessage } from '../../../utils/unpack-request-error-message';
 import {
   AlertBox,
   errorAlertShell,
@@ -77,11 +76,6 @@ export const SendConfirmationFormActionButtons = () => {
           txnsDetail.feeDelegationStrategy
         );
 
-        if (typeof res === 'string') {
-          setFormAlert(errorAlertShell(res));
-          return;
-        }
-
         setSendConfirm({
           ...sendConfirm,
           txn: res.txn,
@@ -89,7 +83,7 @@ export const SendConfirmationFormActionButtons = () => {
           delegatedFee: res.delegatedFee,
         });
       } catch (e) {
-        setFormAlert(errorAlertShell(unpackRequestErrorMessage(e)));
+        setFormAlert(errorAlertShell(getErrorMessageTKey(e)));
       } finally {
         setIsLoading(false);
       }
@@ -124,10 +118,6 @@ export const SendConfirmationFormActionButtons = () => {
             feeDelegationStrategy: txnsDetail.feeDelegationStrategy,
           });
 
-      if (!response?.isSuccess) {
-        throw new Error((response as ITransactionFailureResponse).reason);
-      }
-
       setSendConfirm({
         ...txnsDetail,
         txnFinal: {
@@ -139,7 +129,7 @@ export const SendConfirmationFormActionButtons = () => {
       });
       setIsModalLock(false);
     } catch (error) {
-      const errorShell = errorAlertShell(unpackRequestErrorMessage(error));
+      const errorShell = errorAlertShell(getErrorMessageTKey(error));
       if (
         [OtherError.signingError, OtherError.providerError].includes(
           (error as Error).message as OtherError
@@ -171,7 +161,7 @@ export const SendConfirmationFormActionButtons = () => {
       <IonAlert
         isOpen={forceAlert.visible}
         header={t('GenericFailureMsg')}
-        message={t(forceAlert.message)}
+        message={t(forceAlert.message ?? '')}
         backdropDismiss={false}
         buttons={[
           {

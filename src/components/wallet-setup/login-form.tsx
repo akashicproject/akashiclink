@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
+import { getErrorMessageTKey } from '../../utils/error-utils';
 import { useIosScrollPasswordKeyboardIntoView } from '../../utils/hooks/useIosScrollPasswordKeyboardIntoView';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
-import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
 import { AccountSelection } from '../account-selection/account-selection';
 import {
   CustomAlert,
@@ -77,9 +77,7 @@ export function LoginForm({ isPopup = false }) {
       setPassword('');
       historyResetStackAndRedirect(urls.dashboard, { isManualLogout: false });
     } catch (error) {
-      datadogRum.addError(error);
-      console.error(error);
-      setAlert(errorAlertShell(unpackRequestErrorMessage(error)));
+      setAlert(errorAlertShell(getErrorMessageTKey(error)));
     } finally {
       setIsLoading(false);
     }

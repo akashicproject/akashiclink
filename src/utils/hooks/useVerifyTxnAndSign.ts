@@ -1,4 +1,3 @@
-import { datadogRum } from '@datadog/browser-rum';
 import {
   CoinSymbol,
   CryptoCurrencySymbol,
@@ -16,13 +15,13 @@ import {
   convertObjectCurrencies,
   convertToSmallestUnit,
 } from '../currency';
+import { AppError } from '../error-utils';
 import { calculateInternalWithdrawalFee } from '../internal-fee';
 import type {
   ITransactionForSigning,
   L2TxDetail,
 } from '../nitr0gen/nitr0gen.interface';
 import { Nitr0genApi, signTxBody } from '../nitr0gen/nitr0gen-api';
-import { unpackRequestErrorMessage } from '../unpack-request-error-message';
 import { useAccountMe } from './useAccountMe';
 import { useExchangeRates } from './useExchangeRates';
 import { useAccountStorage } from './useLocalAccounts';
@@ -64,108 +63,101 @@ export const useVerifyTxnAndSign = () => {
     feeDelegationStrategy?: FeeDelegationStrategy,
     approvedStream?: string,
     referenceId?: string
-  ): Promise<string | UseVerifyAndSignResponse> => {
+  ): Promise<UseVerifyAndSignResponse> => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
     const nitr0genApi = new Nitr0genApi();
 
-    try {
-      if (!cacheOtk || !activeAccount || !account) {
-        return 'GenericFailureMsg';
-      }
+    if (!cacheOtk || !activeAccount || !account) {
+      throw new Error('cache not found');
+    }
 
-      if (isL2) {
-        const l2TransactionData: L2TxDetail = {
-          initiatedToNonL2: !L2Regex.exec(
-            validatedAddressPair.userInputToAddress
-          )
-            ? validatedAddressPair.userInputToAddress
-            : undefined,
-          toAddress: validatedAddressPair.convertedToAddress,
-          initiatedToL1LedgerId: validatedAddressPair.initiatedToL1LedgerId,
-          // Backend accepts "normal" units, so we don't convert
-          amount,
-          coinSymbol,
-          tokenSymbol,
-        };
-        if (activeAccount.identity === l2TransactionData.toAddress)
-          return 'NoSelfSend';
-
-        let txBody = await nitr0genApi.l2Transaction(
-          cacheOtk,
-          // AC needs smallest units, so we convert
-          convertObjectCurrencies(l2TransactionData, convertToSmallestUnit),
-          account.isFxBp,
-          approvedStream,
-          referenceId
-        );
-        // add check for FX Bp
-        if (account.isFxBp) {
-          // sign transaction from backend
-          const { preparedTxn } = await OwnersAPI.prepareL2Txn({
-            signedTx: txBody,
-          });
-          txBody = preparedTxn;
-        }
-
-        const txn: ITransactionForSigning = {
-          ...l2TransactionData,
-          identity: activeAccount.identity,
-          internalFee: {
-            withdraw: calculateInternalWithdrawalFee(
-              exchangeRates,
-              coinSymbol,
-              tokenSymbol
-            ),
-          },
-          layer: TransactionLayer.L2,
-          fromAddress: activeAccount.identity,
-          txToSign: txBody,
-        };
-
-        return {
-          txn,
-          signedTxn: txBody,
-        };
-      }
-
-      const transactionData: IWithdrawalProposal = {
-        identity: activeAccount.identity,
+    if (isL2) {
+      const l2TransactionData: L2TxDetail = {
+        initiatedToNonL2: !L2Regex.exec(validatedAddressPair.userInputToAddress)
+          ? validatedAddressPair.userInputToAddress
+          : undefined,
         toAddress: validatedAddressPair.convertedToAddress,
+        initiatedToL1LedgerId: validatedAddressPair.initiatedToL1LedgerId,
         // Backend accepts "normal" units, so we don't convert
         amount,
         coinSymbol,
         tokenSymbol,
-        feeDelegationStrategy,
+      };
+      if (activeAccount.identity === l2TransactionData.toAddress)
+        throw new Error(AppError.NoSelfSend);
+
+      let txBody = await nitr0genApi.l2Transaction(
+        cacheOtk,
+        // AC needs smallest units, so we convert
+        convertObjectCurrencies(l2TransactionData, convertToSmallestUnit),
+        account.isFxBp,
         approvedStream,
-        referenceId,
-      };
-
-      const { preparedTxn, fromAddress, delegatedFee } =
-        await OwnersAPI.prepareL1Txn(transactionData);
-      const signedTxn = await signTxBody(preparedTxn, cacheOtk);
-      const uiFeesEstimate = convertFromSmallestUnit(
-        preparedTxn.$tx.metadata?.feesEstimate ?? '0',
-        coinSymbol
+        referenceId
       );
+      // add check for FX Bp
+      if (account.isFxBp) {
+        // sign transaction from backend
+        const { preparedTxn } = await OwnersAPI.prepareL2Txn({
+          signedTx: txBody,
+        });
+        txBody = preparedTxn;
+      }
+
       const txn: ITransactionForSigning = {
+        ...l2TransactionData,
         identity: activeAccount.identity,
-        fromAddress,
-        toAddress: validatedAddressPair.convertedToAddress,
-        amount,
-        coinSymbol,
-        tokenSymbol,
-        feesEstimate: uiFeesEstimate,
-        layer: TransactionLayer.L1,
-        txToSign: signedTxn,
         internalFee: {
-          withdraw: delegatedFee,
+          withdraw: calculateInternalWithdrawalFee(
+            exchangeRates,
+            coinSymbol,
+            tokenSymbol
+          ),
         },
+        layer: TransactionLayer.L2,
+        fromAddress: activeAccount.identity,
+        txToSign: txBody,
       };
 
-      return { txn, signedTxn, delegatedFee };
-    } catch (error) {
-      datadogRum.addError(error);
-      return unpackRequestErrorMessage(error);
+      return {
+        txn,
+        signedTxn: txBody,
+      };
     }
+
+    const transactionData: IWithdrawalProposal = {
+      identity: activeAccount.identity,
+      toAddress: validatedAddressPair.convertedToAddress,
+      // Backend accepts "normal" units, so we don't convert
+      amount,
+      coinSymbol,
+      tokenSymbol,
+      feeDelegationStrategy,
+      approvedStream,
+      referenceId,
+    };
+
+    const { preparedTxn, fromAddress, delegatedFee } =
+      await OwnersAPI.prepareL1Txn(transactionData);
+    const signedTxn = await signTxBody(preparedTxn, cacheOtk);
+    const uiFeesEstimate = convertFromSmallestUnit(
+      preparedTxn.$tx.metadata?.feesEstimate ?? '0',
+      coinSymbol
+    );
+    const txn: ITransactionForSigning = {
+      identity: activeAccount.identity,
+      fromAddress,
+      toAddress: validatedAddressPair.convertedToAddress,
+      amount,
+      coinSymbol,
+      tokenSymbol,
+      feesEstimate: uiFeesEstimate,
+      layer: TransactionLayer.L1,
+      txToSign: signedTxn,
+      internalFee: {
+        withdraw: delegatedFee,
+      },
+    };
+
+    return { txn, signedTxn, delegatedFee };
   };
 };

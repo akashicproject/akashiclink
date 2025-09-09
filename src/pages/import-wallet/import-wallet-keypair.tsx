@@ -20,7 +20,7 @@ import {
   selectImportWalletForm,
 } from '../../redux/slices/importWalletSlice';
 import { historyGoBackOrReplace } from '../../routing/history';
-import { unpackRequestErrorMessage } from '../../utils/unpack-request-error-message';
+import { getErrorMessageTKey } from '../../utils/error-utils';
 
 export function ImportWalletKeypair() {
   const { t } = useTranslation();
@@ -33,7 +33,7 @@ export function ImportWalletKeypair() {
   useEffect(() => {
     setAlert(
       importWalletError
-        ? errorAlertShell(unpackRequestErrorMessage(importWalletError))
+        ? errorAlertShell(getErrorMessageTKey(importWalletError))
         : formAlertResetState
     );
     // // if import failed, release button to let user try again

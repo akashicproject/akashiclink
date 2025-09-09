@@ -1,4 +1,5 @@
 import { OwnersAPI } from '../api';
+import { AppError } from '../error-utils';
 import { type IAcTreasuryThresholds } from '../nitr0gen/nitr0gen.interface';
 import { Nitr0genApi } from '../nitr0gen/nitr0gen-api';
 import { useAccountMe } from './useAccountMe';
@@ -15,11 +16,11 @@ export const useUpdateTreasuryOtk = () => {
 
   return async (payload: UpdateTreasuryKeyPayload) => {
     if (!cacheOtk || !activeAccount || !account) {
-      throw new Error('CouldNotReadAddress');
+      throw new Error('cacheOtk not found');
     }
 
     if (!payload.networkThresholds) {
-      throw new Error('Need some sort of threshold to update treasury key!');
+      throw new Error(AppError.NeedThresholds);
     }
 
     const nitr0gen = new Nitr0genApi();
