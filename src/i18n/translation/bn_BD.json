@@ -62,6 +62,7 @@
   "WrongPassword": "ভুল পাসওয়ার্ড, অনুগ্রহ করে আবার চেষ্টা করুন।",
   "GoBack": "ফিরে যান",
   "InputAddress": "ইনপুট ঠিকানা",
+  "TransactionSummary": "লেনদেনের সারাংশ",
   "TransactionSuccessful": "লেনদেন সফল",
   "TransactionFailed": "লেনদেন ব্যর্থ",
   "Receiver": "প্রাপক",

@@ -61,6 +61,7 @@
   "PleaseConfirmYourPassword": "请确认您的密码",
   "GoBack": "返回",
   "InputAddress": "输入地址",
+  "TransactionSummary": "交易摘要",
   "TransactionSuccessful": "交易成功",
   "TransactionFailed": "交易失败",
   "Receiver": "接受者",
