@@ -66,9 +66,8 @@ export const AddressScreeningConfirmationFormActionButtons = ({
     } catch (error) {
       const errorShell = errorAlertShell(getErrorMessageTKey(error));
       if (
-        [OtherError.signingError, OtherError.providerError].includes(
-          (error as Error).message as OtherError
-        )
+        error instanceof Error &&
+        error.message === OtherError.providerError
       ) {
         setFormAlert(errorShell);
       } else {
