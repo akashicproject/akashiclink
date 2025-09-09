@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { type INftObject, nftErrors, userConst } from '@helium-pay/backend';
+import { type INftObject, NftError, UserError } from '@helium-pay/backend';
 import axios from 'axios';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -59,14 +59,14 @@ const verifyUpdateAas = (
 ) => {
   // Show generic error
   if (newValue && ownerIdentity !== newValue)
-    throw new Error(userConst.aasOwnershipError);
+    throw new Error(UserError.aasOwnershipError);
 
   if (nft.ownerIdentity !== ownerIdentity) {
-    throw new Error(nftErrors.ownerIdentityShouldBeSame);
+    throw new Error(NftError.ownerIdentityShouldBeSame);
   }
 
   if (!!newValue && nfts.some((nft) => nft.aas?.linked)) {
-    throw new Error(nftErrors.onlyOneAASLinkingAllowed);
+    throw new Error(NftError.onlyOneAASLinkingAllowed);
   }
 
   validateLinkRestriction(nft);

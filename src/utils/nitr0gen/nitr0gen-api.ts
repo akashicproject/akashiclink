@@ -12,9 +12,9 @@ import type {
 import {
   EthLikeSymbol,
   isCoinSymbol,
-  keyError,
+  KeyError,
   NetworkDictionary,
-  otherError,
+  OtherError,
 } from '@helium-pay/backend';
 import axios from 'axios';
 
@@ -31,13 +31,10 @@ import type {
   L2TxDetail,
 } from './nitr0gen.interface';
 import {
-  BadGatewayException,
   chooseBestNodes,
   fetchNodesPing,
-  ForbiddenException,
   getChainNode,
   getRetryDelayInMS,
-  NotFoundException,
   PortType,
 } from './nitr0gen.utils';
 
@@ -766,14 +763,12 @@ export class Nitr0genApi {
       errors.length >= response.$summary.vote
     ) {
       this.logErroredNitr0genResponse(response, 'error');
-      throw new NotFoundException(keyError.invalidL2Address);
+      throw new Error(KeyError.invalidL2Address);
     }
 
     const worstTransientError = errors.find(([_e, delay]) => delay !== null);
     this.logErroredNitr0genResponse(response, 'warn');
-    throw new BadGatewayException(
-      worstTransientError?.[0] ?? otherError.orderFailed
-    );
+    throw new Error(worstTransientError?.[0] ?? OtherError.orderFailed);
   }
 
   /**
@@ -782,16 +777,17 @@ export class Nitr0genApi {
    * @param error the error-string returned from Nitr0gen
    * @throws
    */
+
   private convertChainErrorToAPIError(error: string): never {
     switch (true) {
       case this.isChainErrorSavingsExceeded(error):
-        throw new ForbiddenException(keyError.savingsExceeded);
+        throw new Error(KeyError.savingsExceeded);
       case String(error).includes('Stream(s) not found'):
-        throw new NotFoundException(keyError.invalidL2Address);
+        throw new Error(KeyError.invalidL2Address);
       case this.isChainErrorTransient(error):
-        throw new BadGatewayException(otherError.orderFailed);
+        throw new Error(OtherError.orderFailed);
       default:
-        throw new Error(otherError.orderFailed, { cause: error });
+        throw new Error(OtherError.orderFailed, { cause: error });
     }
   }
 

@@ -1,5 +1,5 @@
 import type { IBaseAcTransaction } from '@helium-pay/backend';
-import { otherError } from '@helium-pay/backend';
+import { OtherError } from '@helium-pay/backend';
 import { IonAlert, IonCol, IonRow } from '@ionic/react';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -66,8 +66,8 @@ export const AddressScreeningConfirmationFormActionButtons = ({
     } catch (error) {
       const errorShell = errorAlertShell(unpackRequestErrorMessage(error));
       if (
-        [otherError.signingError, otherError.providerError].includes(
-          (error as Error).message
+        [OtherError.signingError, OtherError.providerError].includes(
+          (error as Error).message as OtherError
         )
       ) {
         setFormAlert(errorShell);

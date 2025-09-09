@@ -7,7 +7,7 @@ import {
   isCoinSymbol,
   type ITransactionProposalClientSideOtk,
   type ITransferNftResponse,
-  nftErrors,
+  NftError,
   OtkType,
   TransactionLayer,
   TransactionStatus,
@@ -206,7 +206,7 @@ export const useUpdateAas = () => {
       };
     } catch (err) {
       const error =
-        err instanceof Error ? err : new Error(nftErrors.linkingAasFailed);
+        err instanceof Error ? err : new Error(NftError.linkingAasFailed);
       datadogRum.addError(error);
       throw err;
     }

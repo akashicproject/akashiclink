@@ -1,7 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import styled from '@emotion/styled';
 import type { IBaseAcTransaction, INftObject } from '@helium-pay/backend';
-import { L2Regex, nftErrors } from '@helium-pay/backend';
+import { L2Regex, NftError } from '@helium-pay/backend';
 import { IonCol, IonImg, IonRow, IonSpinner } from '@ionic/react';
 import { debounce } from 'lodash';
 import { useState } from 'react';
@@ -114,10 +114,10 @@ const verifyNftTransaction = async (
 
   const nitr0genApi = new Nitr0genApi();
   if (nft.aas?.linked) {
-    throw new Error(nftErrors.aasValueShouldBeDeleted);
+    throw new Error(NftError.aasValueShouldBeDeleted);
   }
   if (nft.ownerIdentity === toAddress) {
-    throw new Error(nftErrors.toAddressIsAlreadyOwner);
+    throw new Error(NftError.toAddressIsAlreadyOwner);
   }
 
   const txToSign = await nitr0genApi.transferNftTransaction(

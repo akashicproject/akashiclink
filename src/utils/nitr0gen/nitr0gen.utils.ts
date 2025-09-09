@@ -1,5 +1,5 @@
 import { CapacitorCookies } from '@capacitor/core';
-import { otherError } from '@helium-pay/backend';
+import { OtherError } from '@helium-pay/backend';
 import axios from 'axios';
 
 // enum Port {
@@ -88,7 +88,7 @@ export function getRetryDelayInMS(error: string, attempts = 1) {
     case error.includes('Failed to rebroadcast'):
     case error.includes('timeout'):
     case error.includes('status code 500'):
-    case error === otherError.orderFailed:
+    case error === OtherError.orderFailed:
       return 250;
     case error.includes('Stream Position Incorrect'):
     case error.includes('Stream(s) not found'):

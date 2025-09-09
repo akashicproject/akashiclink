@@ -3,7 +3,7 @@ import {
   CryptoCurrencySymbol,
   type IInternalFee,
   NetworkDictionary,
-  otherError,
+  OtherError,
 } from '@helium-pay/backend';
 import Big from 'big.js';
 
@@ -163,7 +163,7 @@ function getConversionFactor(
   );
 
   if (!token) {
-    throw new Error(otherError.unsupportedCoinError);
+    throw new Error(OtherError.unsupportedCoinError);
   }
 
   return token.decimal;
@@ -171,5 +171,5 @@ function getConversionFactor(
 
 function throwIfNotInteger(amount: Big) {
   if (amount.mod(1).toString() !== '0')
-    throw new Error(otherError.transactionTooSmallError);
+    throw new Error(OtherError.transactionTooSmallError);
 }

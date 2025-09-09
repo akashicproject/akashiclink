@@ -2,7 +2,7 @@ import type {
   IBaseAcTransaction,
   ITerriAcTransaction,
 } from '@helium-pay/backend';
-import { otherError } from '@helium-pay/backend';
+import { OtherError } from '@helium-pay/backend';
 import { IonAlert, IonCol, IonRow } from '@ionic/react';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -37,6 +37,7 @@ export const SendConfirmationFormActionButtons = () => {
   } = useContext(SendFormContext);
 
   const txnsDetail = sendConfirm;
+  const txnFinal = sendConfirm?.txnFinal;
 
   const [forceAlert, setForceAlert] = useState(formAlertResetState);
   const [formAlert, setFormAlert] = useState(formAlertResetState);
@@ -55,6 +56,7 @@ export const SendConfirmationFormActionButtons = () => {
           forceAlert.visible ||
           formAlert.visible ||
           isLoading ||
+          txnFinal ||
           !txnsDetail
         ) {
           return;
@@ -95,12 +97,16 @@ export const SendConfirmationFormActionButtons = () => {
     isL2 ? ONE_DAY_MS : ONE_MINUTE_MS
   ); // 1 min if L1, 24 hr if L2
 
-  const executeTransaction = async () => {
+  const onConfirm = async () => {
     try {
+      setFormAlert(formAlertResetState);
+
       if (!txnsDetail?.txn || !txnsDetail?.signedTxn) {
         setFormAlert(errorAlertShell('GenericFailureMsg'));
         return;
       }
+      setIsLoading(true);
+      setIsModalLock(true);
 
       const { txToSign: _, ...txn } = txnsDetail.txn;
       const signedTxn = txnsDetail.signedTxn;
@@ -131,12 +137,12 @@ export const SendConfirmationFormActionButtons = () => {
           delegatedFee: txnsDetail.delegatedFee,
         },
       });
-      setStep(3);
+      setIsModalLock(false);
     } catch (error) {
       const errorShell = errorAlertShell(unpackRequestErrorMessage(error));
       if (
-        [otherError.signingError, otherError.providerError].includes(
-          (error as Error).message
+        [OtherError.signingError, OtherError.providerError].includes(
+          (error as Error).message as OtherError
         )
       ) {
         setFormAlert(errorShell);
@@ -147,14 +153,6 @@ export const SendConfirmationFormActionButtons = () => {
       setIsLoading(false);
       setIsModalLock(false);
     }
-  };
-
-  const onConfirm = () => {
-    setIsLoading(true);
-    setIsModalLock(true);
-    setFormAlert(formAlertResetState);
-
-    executeTransaction();
   };
 
   const onCancel = () => {
@@ -193,22 +191,33 @@ export const SendConfirmationFormActionButtons = () => {
           </IonCol>
         </IonRow>
       )}
-      <IonRow>
-        <IonCol size={'6'}>
-          <PrimaryButton
-            isLoading={isLoading}
-            onClick={onConfirm}
-            expand="block"
-          >
-            {t('Confirm')}
-          </PrimaryButton>
-        </IonCol>
-        <IonCol size={'6'}>
-          <WhiteButton disabled={isLoading} onClick={onCancel} expand="block">
-            {t('GoBack')}
-          </WhiteButton>
-        </IonCol>
-      </IonRow>
+      {!txnFinal && (
+        <IonRow>
+          <IonCol size={'6'}>
+            <PrimaryButton
+              isLoading={isLoading}
+              onClick={onConfirm}
+              expand="block"
+            >
+              {t('Confirm')}
+            </PrimaryButton>
+          </IonCol>
+          <IonCol size={'6'}>
+            <WhiteButton disabled={isLoading} onClick={onCancel} expand="block">
+              {t('GoBack')}
+            </WhiteButton>
+          </IonCol>
+        </IonRow>
+      )}
+      {txnFinal && (
+        <IonRow>
+          <IonCol size={'12'}>
+            <PrimaryButton onClick={onFinish} expand="block">
+              {t('OK')}
+            </PrimaryButton>
+          </IonCol>
+        </IonRow>
+      )}
     </>
   );
 };

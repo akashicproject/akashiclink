@@ -1,6 +1,6 @@
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import { datadogRum } from '@datadog/browser-rum';
-import { keyError, type OtkType } from '@helium-pay/backend';
+import { KeyError, type OtkType } from '@helium-pay/backend';
 import type { PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { isAxiosError } from 'axios';
 
@@ -127,7 +127,7 @@ export const importWalletSlice = createAppSlice({
             // So if facing this error, we try again with "uncompressed"
             if (
               isAxiosError(e) &&
-              e.response?.data.message === keyError.invalidPrivateKey
+              e.response?.data.message === KeyError.invalidPrivateKey
             ) {
               otk = restoreOtkFromKeypair(privateKey, 'uncompressed');
               const response = await OwnersAPI.retrieveIdentity({

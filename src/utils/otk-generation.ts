@@ -1,7 +1,7 @@
 import { ActiveCrypto } from '@activeledger/activecrypto';
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import { KeyHandler, KeyType } from '@activeledger/sdk-bip39';
-import { keyError } from '@helium-pay/backend';
+import { KeyError } from '@helium-pay/backend';
 import * as crypto from 'crypto';
 
 import { decodeECPrivateKey, encodeECPublicKey } from './otk-helpers';
@@ -82,7 +82,7 @@ export function restoreOtkFromKeypair(
       name: 'otk',
     };
   } catch {
-    throw new Error(keyError.invalidPrivateKey);
+    throw new Error(KeyError.invalidPrivateKey);
   }
 }
 
@@ -105,7 +105,7 @@ export function signAuthenticationData(
     }
     return kp.sign(data);
   } catch {
-    throw new Error(keyError.invalidPrivateKey);
+    throw new Error(KeyError.invalidPrivateKey);
   }
 }
 
