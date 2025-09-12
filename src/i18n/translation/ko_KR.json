@@ -324,7 +324,9 @@
     "amount": "Amount",
     "deposit": "Deposit",
     "totalAmount": "Total Amount",
-    "enableManualTransactionCallback": "Enable Manual Deposit Payout Callback"
+    "enableManualTransactionCallback": "Enable Manual Deposit Payout Callback",
+    "maxDeviationPercent": "Relax Matching",
+    "depositRequestExpireTime": "Deposit Request Expire Time"
   },
   "SendBpByAlias": "Akashic Alias 으로 비즈니스 계정으로 보낼 수 없습니다",
   "SelectYourPreferredNode": "원하는 노드를 선택하세요.",

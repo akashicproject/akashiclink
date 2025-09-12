@@ -325,7 +325,9 @@
     "amount": "金额",
     "deposit": "存款",
     "totalAmount": "总额",
-    "enableManualTransactionCallback": "启用手动存款/提款回调"
+    "enableManualTransactionCallback": "启用手动存款/提款回调",
+    "maxDeviationPercent": "放宽匹配",
+    "depositRequestExpireTime": "存款请求有效期限"
   },
   "SendBpByAlias": "无法透过 Akashic 地址发送商业帐户",
   "SelectYourPreferredNode": "请选择您喜欢的节点。",
