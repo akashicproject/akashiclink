@@ -12,15 +12,19 @@ export const getManifestJson = async (): Promise<Record<string, string>> => {
 };
 
 export const useCurrentAppInfo = () => {
-  const [version, setVersion] = useState<string>('');
+  const [version, setVersion] = useState<string>(
+    sessionStorage.getItem('version') ?? ''
+  );
   const [appInfo, setAppInfo] = useState<AppInfo>();
 
   useEffect(() => {
     const getManifestVersion = async () => {
       try {
-        const manifestData = await getManifestJson();
-
-        setVersion(manifestData.version);
+        if (!version) {
+          const manifestData = await getManifestJson();
+          setVersion(manifestData.version);
+          sessionStorage.setItem('version', manifestData.version);
+        }
       } catch (e) {
         datadogRum.addError(e);
         console.warn(e);
