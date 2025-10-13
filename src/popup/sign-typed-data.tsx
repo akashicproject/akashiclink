@@ -177,6 +177,7 @@ export function SignTypedData() {
               userInputToAddress: toSign.addressInput as string,
               convertedToAddress: toSign.convertedToAddress as string,
               alias: toSign.alias as string,
+              initiatedToL1LedgerId: toSign.keyLedgerId as string,
             },
             toSign.amount as string,
             toSign.chain as CoinSymbol,
