@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { type IWalletScreening } from '@helium-pay/backend';
+import { type IWalletScreeningObject } from '@helium-pay/backend';
 import { IonImg, IonText } from '@ionic/react';
 import { type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -64,7 +64,7 @@ const RISK_COLORS: { [key: string]: string } = {
  * @param divider separator after
  */
 interface AddressScreeningItemProps {
-  screening: IWalletScreening;
+  screening: IWalletScreeningObject;
   style?: CSSProperties;
   showDetail?: boolean;
   hasHoverEffect?: boolean;

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { type IWalletScreening } from '@helium-pay/backend';
+import { type IWalletScreeningObject } from '@helium-pay/backend';
 import { IonIcon, IonSpinner, IonText, isPlatform } from '@ionic/react';
 import { addOutline } from 'ionicons/icons';
 import { useRef, useState } from 'react';
@@ -37,7 +37,7 @@ const SmartScanFooter = styled.div({
   gap: 8,
 });
 
-const renderItem = (_: number, screening: IWalletScreening) => (
+const renderItem = (_: number, screening: IWalletScreeningObject) => (
   <AddressScreeningHistoryItem
     screening={screening}
     showDetail

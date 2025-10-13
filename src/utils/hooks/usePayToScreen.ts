@@ -1,6 +1,6 @@
 import {
   type IPayFeeAndScreenWallet,
-  type IWalletScreening,
+  type IWalletScreeningObject,
 } from '@helium-pay/backend';
 import useSWRMutation from 'swr/mutation';
 
@@ -8,7 +8,7 @@ import { axiosBase } from '../axios-helper';
 
 export const usePayToScreen = () => {
   const { trigger, data, error, isMutating } = useSWRMutation<
-    IWalletScreening,
+    IWalletScreeningObject,
     Error,
     string,
     IPayFeeAndScreenWallet

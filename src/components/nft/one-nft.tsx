@@ -1,6 +1,6 @@
 import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
-import type { INft, INftObject } from '@helium-pay/backend';
+import type { INftObject } from '@helium-pay/backend';
 import { IonContent, IonImg, IonPopover, IonRow } from '@ionic/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -71,7 +71,7 @@ const AASListTag = styled.div({
 });
 
 type OneNftProps = {
-  nft: INftObject | INft;
+  nft: INftObject;
   isLinked?: boolean;
   select?: () => void;
   style?: React.CSSProperties;
