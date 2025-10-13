@@ -85,13 +85,20 @@ export const DeleteAccountModal = ({
             {t('RemoveTheAccount')}
           </h3>
           <div>
-            <AccountListItem lines={'none'} account={account} isShortAddress />
+            <AccountListItem
+              lines={'none'}
+              account={account}
+              isShortAddress={false}
+            />
           </div>
           <IonText
             className={'ion-text-align-center ion-text-size-xs'}
             color={'dark'}
           >
-            <p className={'ion-text-align-center'}>
+            <p
+              className={'ion-text-align-center'}
+              style={{ color: 'var(--ion-color-danger)' }}
+            >
               {t('UnsavedDataWillBeRemoved')}
             </p>
           </IonText>
