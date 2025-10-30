@@ -287,7 +287,7 @@
   "LockAkashicWallet": "AkashicLink লক করুন",
   "AutoLock": "স্বয়ংক্রিয় লক",
   "Support": "সমর্থন",
-  "HideSmallBalances": "ছোট ব্যালেন্স লুকান",
+  "HideSmallTransactions": "ছোট লেনদেন লুকান",
   "EstimatedGasFeeMessage": "*শুধুমাত্র আনুমানিক গ্যাস ফি। লেনদেন নিশ্চিত হওয়ার পরে প্রকৃত গ্যাস ফি দেখানো হবে",
   "AkashicAlias": "Akashic উপনাম",
   "WhatsNewIn": "v{{version}}-এ নতুন কী",

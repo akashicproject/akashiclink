@@ -286,7 +286,7 @@
   "LockAkashicWallet": "Lock AkashicLink",
   "AutoLock": "Auto Lock",
   "Support": "Support",
-  "HideSmallBalances": "Hide Small Balances",
+  "HideSmallTransactions": "Hide Small Transactions",
   "EstimatedGasFeeMessage": "*Estimated Gas fee only. Actual gas fee will be shown after the transaction is confirmed",
   "AkashicAlias": "Akashic Alias",
   "WhatsNewIn": "Whats new in v{{version}}",

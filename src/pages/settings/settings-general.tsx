@@ -34,7 +34,7 @@ export function SettingsGeneral() {
       EndComponent: ThemeSelect,
     },
     {
-      header: t('HideSmallBalances'),
+      header: t('HideSmallTransactions'),
       icon: getImageIconUrl('visibility-off-primary-70.svg'),
       EndComponent: HideSmallTxnToggle,
     },

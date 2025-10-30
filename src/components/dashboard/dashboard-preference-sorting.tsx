@@ -1,5 +1,4 @@
 import {
-  IonCheckbox,
   IonCol,
   IonGrid,
   IonIcon,
@@ -20,14 +19,8 @@ import {
 
 export const DashboardPreferenceSorting = () => {
   const { t } = useTranslation();
-  const {
-    step,
-    setStep,
-    currenciesSortMode,
-    setCurrenciesSortMode,
-    hideSmallBalance,
-    setHideSmallBalance,
-  } = useContext(DashboardPreferenceContext);
+  const { step, setStep, currenciesSortMode, setCurrenciesSortMode } =
+    useContext(DashboardPreferenceContext);
 
   const handleOnClickCustom = () => {
     setStep(step + 1);
@@ -83,16 +76,6 @@ export const DashboardPreferenceSorting = () => {
               </TextButton>
             </div>
           </div>
-          <IonCheckbox
-            labelPlacement="end"
-            justify="start"
-            checked={hideSmallBalance}
-            value={hideSmallBalance}
-            onClick={(_) => setHideSmallBalance(!hideSmallBalance)}
-            className="w-100 ion-padding-top-xs ion-padding-bottom-xs ion-margin-top-xxs ion-margin-bottom-xxs"
-          >
-            <h5 className="ion-no-margin">{t('HideSmallBalances')}</h5>
-          </IonCheckbox>
         </IonCol>
       </IonRow>
     </IonGrid>

@@ -287,7 +287,7 @@
   "LockAkashicWallet": "锁定 AkashicLink",
   "AutoLock": "自动锁",
   "Support": "支援",
-  "HideSmallBalances": "隐藏小额余额",
+  "HideSmallTransactions": "隐藏小额交易",
   "EstimatedGasFeeMessage": "*仅估算矿工費。实际矿工費将在交易确认后显示。",
   "AkashicAlias": "Akashic域名",
   "WhatsNewIn": "v{{version}} 中的新功能",
