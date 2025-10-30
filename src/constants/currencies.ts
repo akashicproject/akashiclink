@@ -185,6 +185,20 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
       darkCurrencyIcon: '/shared-assets/images/usdt.png',
       greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
     },
+    {
+      chain: CoinSymbol.Ethereum_Mainnet,
+      token: CryptoCurrencySymbol.USDC,
+      currencyIcon: '/shared-assets/images/usdc.png',
+      darkCurrencyIcon: '/shared-assets/images/usdc.png',
+      greyCurrencyIcon: '/shared-assets/images/usdc-grey.png',
+    },
+    {
+      chain: CoinSymbol.Binance_Smart_Chain_Mainnet,
+      token: CryptoCurrencySymbol.USDC,
+      currencyIcon: '/shared-assets/images/usdc.png',
+      darkCurrencyIcon: '/shared-assets/images/usdc.png',
+      greyCurrencyIcon: '/shared-assets/images/usdc-grey.png',
+    },
   ],
   ...(process.env.REACT_APP_ENABLE_TESTNET_CURRENCIES === 'true'
     ? [
@@ -226,6 +240,20 @@ export const SUPPORTED_CURRENCIES_FOR_EXTENSION = new CurrencyFactory([
           currencyIcon: '/shared-assets/images/usdt.png',
           darkCurrencyIcon: '/shared-assets/images/usdt.png',
           greyCurrencyIcon: '/shared-assets/images/usdt-grey.png',
+        },
+        {
+          chain: CoinSymbol.Ethereum_Sepolia,
+          token: CryptoCurrencySymbol.USDC,
+          currencyIcon: '/shared-assets/images/usdc.png',
+          darkCurrencyIcon: '/shared-assets/images/usdc.png',
+          greyCurrencyIcon: '/shared-assets/images/usdc-grey.png',
+        },
+        {
+          chain: CoinSymbol.Binance_Smart_Chain_Testnet,
+          token: CryptoCurrencySymbol.USDC,
+          currencyIcon: '/shared-assets/images/usdc.png',
+          darkCurrencyIcon: '/shared-assets/images/usdc.png',
+          greyCurrencyIcon: '/shared-assets/images/usdc-grey.png',
         },
       ]
     : []),
