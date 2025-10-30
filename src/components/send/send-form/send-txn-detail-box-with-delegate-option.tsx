@@ -24,10 +24,15 @@ import { Tooltip } from '../../common/tooltip';
 import { SendFormContext } from '../send-modal-context-provider';
 import type { ValidatedAddressPair } from './types';
 
-const StyledWhiteButton = styled(WhiteButton)<{ backgroundColor?: string }>`
+const StyledWhiteButton = styled(WhiteButton)<{
+  backgroundColor?: string;
+  isLongText?: boolean;
+}>`
   ::part(native) {
-    font-size: 8px;
-    height: 32px;
+    font-size: ${(props) => (props.isLongText ? '11px' : '14px')};
+    height: 40px;
+    padding-left: 6px;
+    padding-right: 6px;
   }
 `;
 
@@ -154,6 +159,9 @@ export const SendTxnDetailBoxWithDelegateOption = ({
                 onClick={onConfirm(true)}
                 disabled={isLoading || disabled || !canDelegate}
                 isLoading={isLoading}
+                // Use NonDelegated string to check for length so that both strings have the same font size
+                // and it looks better
+                isLongText={t('NonDelegated').length > 10}
               >
                 {!isLoading ? t('Delegated') : ''}
               </StyledWhiteButton>
@@ -196,6 +204,7 @@ export const SendTxnDetailBoxWithDelegateOption = ({
                 onClick={onConfirm(false)}
                 disabled={isLoading || disabled || !canNonDelegate}
                 isLoading={isLoading}
+                isLongText={t('NonDelegated').length > 10}
               >
                 {!isLoading ? t('NonDelegated') : ''}
               </StyledWhiteButton>
