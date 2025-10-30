@@ -78,6 +78,7 @@ export const useSendL2Transaction = () => {
           amount,
           internalFee,
           initiatedToNonL2,
+          usdtValue: usdtValue.toNumber(),
         })
       );
     }
@@ -128,6 +129,7 @@ export const useSendL1Transaction = () => {
       dispatch(
         addLocalTransaction({
           ...signedTransactionData,
+          usdtValue: usdtValue.toNumber(),
           feeIsDelegated:
             signedTransactionData.feeDelegationStrategy ===
             FeeDelegationStrategy.Delegate,
