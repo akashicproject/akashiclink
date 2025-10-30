@@ -208,7 +208,7 @@ export const DashboardPreferenceCurrencyFilter = () => {
             searchIcon={getImageIconUrl('search-icon.svg')}
           />
           <AllToken checked={isAllSelected} onToggle={handleSelectAll} />
-          <div style={{ maxHeight: 'calc(60vh - 12.5rem)', overflowY: 'auto' }}>
+          <div style={{ maxHeight: 'calc(72vh - 12.5rem)', overflowY: 'auto' }}>
             {filteredChains.map((chain) => (
               <DashboardPreferenceCurrencyGroup
                 key={chain}
