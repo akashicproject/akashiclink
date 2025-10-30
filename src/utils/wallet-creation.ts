@@ -1,4 +1,5 @@
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
+import { datadogRum } from '@datadog/browser-rum';
 import type { CoinSymbol } from '@helium-pay/backend';
 import { BinanceSymbol, isCoinSymbol } from '@helium-pay/backend';
 
@@ -27,13 +28,36 @@ export async function createAccountWithAllL1Addresses(
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   // mainnets for production accounts and testnets for staging and local accounts
-  await Promise.all(
-    NETWORKS_TO_CREATE_L1_ADDRESSES_FOR.map(async (coinSymbol) => {
-      await createL1Address(fullOtk, coinSymbol);
-    })
-  );
+  await bulkCreateOrAssignKeys(fullOtk, NETWORKS_TO_CREATE_L1_ADDRESSES_FOR);
 
   return { otk: fullOtk };
+}
+
+async function bulkCreateOrAssignKeys(
+  fullOtk: IKeyExtended,
+  coinSymbols: CoinSymbol[]
+): Promise<void> {
+  if (!fullOtk.identity) {
+    throw new Error('Missing identity');
+  }
+  const nitr0gen = new Nitr0genApi();
+  const unassignedLedgerIds: string[] = [];
+  for (const coinSymbol of coinSymbols) {
+    // find existing key, or return a pre-seed key for assignment
+    const { address, unassignedLedgerId } = await OwnersAPI.findOrReserveKey({
+      identity: fullOtk.identity,
+      coinSymbol,
+    });
+    if (unassignedLedgerId) {
+      unassignedLedgerIds.push(unassignedLedgerId);
+    } else if (!address && !unassignedLedgerId) {
+      // if both do not exist, create new key and continue
+      await nitr0gen.createKey(fullOtk, coinSymbol);
+    }
+  }
+  if (unassignedLedgerIds.length > 0) {
+    await nitr0gen.assignKeysToOtk(fullOtk, unassignedLedgerIds);
+  }
 }
 
 export async function createL1Address(
@@ -59,7 +83,9 @@ export async function createL1Address(
 
     // if both do not exist, fallback to key diff in error catch
     if (!address && !unassignedLedgerId) {
-      throw new Error('Unable to find or reserve key');
+      // if assign pre-seed failed, fallback to key diff
+      const { address } = await nitr0gen.createKey(fullOtk, coinSymbol);
+      return address;
     }
 
     // if address exists without unassignedLedgerId, means user already has l1 address
@@ -70,15 +96,14 @@ export async function createL1Address(
     // if unassignedLedgerId exists, means no existing l1 address for this otk
     // assign the reserved key to otk
     if (!!unassignedLedgerId && !!address) {
-      await nitr0gen.assignKeyToOtk(fullOtk, unassignedLedgerId);
+      await nitr0gen.assignKeysToOtk(fullOtk, [unassignedLedgerId]);
       return address;
     }
 
     // safety net
     throw new Error('Unable to find or reserve key');
-  } catch {
-    // if assign pre-seed failed, fallback to key diff
-    const { address } = await nitr0gen.createKey(fullOtk, coinSymbol);
-    return address;
+  } catch (error) {
+    datadogRum.addError('createL1Address error', { error });
+    throw error;
   }
 }

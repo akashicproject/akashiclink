@@ -167,11 +167,11 @@ export class Nitr0genApi {
     };
   }
 
-  public async assignKeyToOtk(
+  public async assignKeysToOtk(
     otk: IKeyExtended,
-    keyToAssign: string
+    keysToAssign: string[]
   ): Promise<{ assignedKey: IKeyCreationResponse | undefined }> {
-    const txBody = await this.assign(otk, keyToAssign);
+    const txBody = await this.assign(otk, keysToAssign);
     const response =
       await this.post<ActiveLedgerResponse<IKeyCreationResponse>>(txBody);
 
@@ -539,7 +539,15 @@ export class Nitr0genApi {
    *
    * Dev-info: relevant response in `response.responses[0]` as `IKeyCreationResponse`
    */
-  async assign(otk: IKey, ledgerId: string): Promise<IBaseAcTransaction> {
+  async assign(otk: IKey, ledgerIds: string[]): Promise<IBaseAcTransaction> {
+    // turn ledgerIds into object with key1: { $stream: ledgerId1 }, key2: { $stream: ledgerId2 }
+    const keys = ledgerIds.reduce(
+      (acc, ledgerId, index) => {
+        acc[`key${index + 1}`] = { $stream: ledgerId };
+        return acc;
+      },
+      {} as Record<string, { $stream: string }>
+    );
     const txBody: IBaseAcTransaction = {
       $tx: {
         $namespace: Nitr0gen.Namespace,
@@ -550,11 +558,7 @@ export class Nitr0genApi {
             personal: true,
           },
         },
-        $o: {
-          key: {
-            $stream: ledgerId,
-          },
-        },
+        $o: keys,
       },
       $sigs: {},
     };
