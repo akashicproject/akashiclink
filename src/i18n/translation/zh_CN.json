@@ -181,7 +181,7 @@
   "TransactionType": "交易类型",
   "Amount/NFT": "金额 / NFT",
   "Chain": {
-    "Title": "链",
+    "Title": "网路",
     "AkashicChain": "AkashicChain",
     "ETH": "以太坊主网",
     "SEP": "Ethereum Sepolia Testnet",
