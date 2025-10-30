@@ -59,7 +59,7 @@ const CryptoCurrencyListItem = ({
           <div
             className="ion-text-size-xxs"
             style={{ color: 'var(--ion-text-color-alt)' }}
-          >{`${formatAmountWithCommas(balance ?? '0', 2)} ${walletCurrency.token ?? walletCurrency.chain}`}</div>
+          >{`${formatAmountWithCommas(balance ?? '0')} ${walletCurrency.token ?? walletCurrency.chain}`}</div>
         </TextContainer>
       </ContentWrapper>
       {showUSDValue && (
