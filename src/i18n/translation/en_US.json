@@ -377,9 +377,13 @@
   "Alphabetical": "Alphabetical A-Z",
   "Value": "Value",
   "PreferencesDesc": "Untick to hide token from the dashboard",
+  "TokenSelected": "token selected",
   "TransactionExpired": "Transaction Expired",
   "CouldNotReadAddress": "Could not read address",
   "InvalidMethod": "Invalid method",
   "NeedPubKey": "Need pub key to remove treasury key",
-  "NeedThresholds": "Need threshold(s) to update treasury"
+  "NeedThresholds": "Need threshold(s) to update treasury",
+  "Clear": "Clear",
+  "Search": "Search",
+  "SelectAll": "Select All"
 }

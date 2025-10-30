@@ -378,9 +378,13 @@
   "Alphabetical": "按字母順序 A-Z",
   "Value": "價值",
   "PreferencesDesc": "取消勾選即可在儀表板上隱藏代幣",
+  "TokenSelected": "個代幣已選擇",
   "TransactionExpired": "交易已過期",
   "CouldNotReadAddress": "無法讀取地址",
   "InvalidMethod": "無效方法",
   "NeedPubKey": "需要公鑰以刪除財庫密鑰",
-  "NeedThresholds": "需要閾值以更新財庫"
+  "NeedThresholds": "需要閾值以更新財庫",
+  "Clear": "清除",
+  "Search": "搜尋",
+  "SelectAll": "全選"
 }

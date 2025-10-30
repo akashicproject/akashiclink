@@ -30,6 +30,7 @@ export function DashboardPreferenceModal({
       onIonModalDidDismiss={onIonModalDidDismiss}
       style={{
         '--border-radius': '24px',
+        borderRadius: '0px',
       }}
     >
       {step !== 0 && (
@@ -49,7 +50,7 @@ export function DashboardPreferenceModal({
         </IonButton>
       )}
       <IonContent className="ion-padding-top-xl">
-        <div style={{ height: '52vh' }}>
+        <div style={{ height: 'calc(100vh * 0.7 - 120px)', overflow: 'auto' }}>
           {step === 0 && <DashboardPreferenceSorting />}
           {step === 1 && <DashboardPreferenceCurrencyFilter />}
         </div>

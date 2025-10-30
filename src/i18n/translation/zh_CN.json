@@ -377,9 +377,13 @@
   "Preferences": "偏好设置",
   "Custom": "自定义",
   "PreferencesDesc": "取消勾选即可在仪表板中隐藏代币",
+  "TokenSelected": "个代币已选择",
   "TransactionExpired": "交易已过期",
   "CouldNotReadAddress": "无法读取地址",
   "InvalidMethod": "无效方法",
   "NeedPubKey": "需要公钥以删除财库密钥",
-  "NeedThresholds": "需要阈值以更新财库"
+  "NeedThresholds": "需要阈值以更新财库",
+  "Clear": "清除",
+  "Search": "搜索",
+  "SelectAll": "全选"
 }
