@@ -215,7 +215,7 @@ export function SecretWords({
               {visibilityArray.map((visibility, i) => {
                 return (
                   // ok because the array has 12 ordered elements, mapping to the 12 words
-                  // eslint-disable-next-line sonarjs/no-array-index-key
+                  /* eslint-disable-next-line react/no-array-index-key */
                   <WordCol size="4" key={i} class="ion-padding-horizontal">
                     <WordItem>
                       <WordNumber>{i + 1}.</WordNumber>

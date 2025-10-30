@@ -30,9 +30,12 @@ export const AddressScreeningContext = createContext<{
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 }>({
   step: 0,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setStep: () => {},
   addressScanConfirm: undefined,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setAddressScanConfirm: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setIsModalOpen: () => {},
 });
 

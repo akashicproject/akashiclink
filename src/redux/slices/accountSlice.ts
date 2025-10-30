@@ -75,7 +75,7 @@ export const accountSlice = createAppSlice({
               otkType: action.payload.otkType,
             })
           ) {
-            const { alias: _, ...rest } = l;
+            const { alias, ...rest } = l;
             return rest;
           }
           return l;

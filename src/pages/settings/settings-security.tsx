@@ -47,7 +47,7 @@ export function SettingsSecurity() {
             return (
               <SettingItem
                 backgroundColor="var(--ion-background)"
-                /* eslint-disable-next-line sonarjs/no-array-index-key */
+                /* eslint-disable-next-line react/no-array-index-key */
                 key={index}
                 icon={securityMenuItem.icon}
                 header={securityMenuItem.header}

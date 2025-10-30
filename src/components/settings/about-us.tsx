@@ -228,7 +228,7 @@ export function AboutUs({
         {aboutUsMenu.map((abm, index) => {
           return (
             <SettingItem
-              /* eslint-disable-next-line sonarjs/no-array-index-key */
+              /* eslint-disable-next-line react/no-array-index-key */
               key={index}
               icon={abm.icon}
               header={abm.header}

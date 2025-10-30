@@ -39,14 +39,19 @@ export const DashboardPreferenceContext = createContext<{
   setHiddenCurrencies: Dispatch<SetStateAction<string[]>>; //array of `${currency.chain}-${currency.token}`
 }>({
   step: 0,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setStep: () => {},
   isModalOpen: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setIsModalOpen: () => {},
   currenciesSortMode: DASHBOARD_LIST_SORTING_MODE.Alphabetical,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setCurrenciesSortMode: () => {},
   hideSmallBalance: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setHideSmallBalance: () => {},
   hiddenCurrencies: [],
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setHiddenCurrencies: () => {},
 });
 

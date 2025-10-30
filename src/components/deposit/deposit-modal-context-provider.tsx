@@ -19,10 +19,13 @@ export const DepositModalContext = createContext<{
   setChain: Dispatch<SetStateAction<DepositChainOption | undefined>>;
 }>({
   step: 0,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setStep: () => {},
   isModalOpen: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setIsModalOpen: () => {},
   chain: undefined,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setChain: () => {},
 });
 

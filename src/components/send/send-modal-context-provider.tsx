@@ -29,14 +29,19 @@ export const SendFormContext = createContext<{
   >;
 }>({
   step: 0,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setStep: () => {},
   currency: SUPPORTED_CURRENCIES_FOR_EXTENSION.list[0].walletCurrency,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setCurrency: () => {},
   isModalOpen: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setIsModalOpen: () => {},
   isModalLock: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setIsModalLock: () => {},
   sendConfirm: undefined,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSendConfirm: () => {},
 });
 

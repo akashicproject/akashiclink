@@ -57,6 +57,7 @@ const InitializeApp = () => {
 };
 
 export default function App() {
+  // eslint-disable-next-line new-cap
   InitializeApp();
   // check if webpage request, if yes skip app and render popup page tree
   const query = new URLSearchParams(window.location.search);

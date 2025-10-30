@@ -135,7 +135,7 @@ export function SettingsPopover() {
     event: undefined,
   });
 
-  const [_, setGlobalLanguage] = useSetGlobalLanguage();
+  const [, setGlobalLanguage] = useSetGlobalLanguage();
 
   return (
     <>

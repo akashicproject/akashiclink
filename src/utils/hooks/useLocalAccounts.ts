@@ -116,7 +116,7 @@ export const useAccountStorage = () => {
   }) => {
     const updatedAccounts = localAccounts.map((l) => {
       if (isSameAccount(l, { identity, otkType })) {
-        const { alias: _, ledgerId: _a, ...rest } = l;
+        const { alias, ledgerId, ...rest } = l;
         return rest;
       }
       return l;

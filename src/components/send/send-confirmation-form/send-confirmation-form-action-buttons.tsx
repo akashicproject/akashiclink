@@ -96,7 +96,7 @@ export const SendConfirmationFormActionButtons = () => {
         return;
       }
 
-      const { txToSign: _, ...txn } = txnsDetail.txn;
+      const { txToSign, ...txn } = txnsDetail.txn;
       const signedTxn = txnsDetail.signedTxn;
 
       const response = isL2
