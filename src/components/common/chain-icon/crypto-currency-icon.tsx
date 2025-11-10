@@ -17,7 +17,7 @@ export const CryptoCurrencyIcon = ({
   size?: number;
 }) => {
   const networkIcon = getCurrencyIcon({ coinSymbol });
-  const tokenBadgeIcon = getCurrencyIcon({ coinSymbol, tokenSymbol });
+  const currencyIcon = getCurrencyIcon({ coinSymbol, tokenSymbol });
 
   const currency = SUPPORTED_CURRENCIES_WITH_NAMES.find(
     (c) => c.coinSymbol === coinSymbol && c.tokenSymbol === tokenSymbol
@@ -28,6 +28,7 @@ export const CryptoCurrencyIcon = ({
       style={{
         position: 'relative',
         width: size,
+        minWidth: size,
         height: size,
         borderRadius: '50%',
         display: 'inline-block',
@@ -35,13 +36,13 @@ export const CryptoCurrencyIcon = ({
     >
       <IonImg
         alt={currency?.displayName}
-        src={networkIcon}
+        src={currencyIcon}
         style={{ position: 'absolute', width: '100%', height: '100%', left: 0 }}
       />
       {currency?.tokenSymbol && (
         <IonImg
           alt={currency.displayName}
-          src={tokenBadgeIcon}
+          src={networkIcon}
           style={{
             position: 'absolute',
             top: '0px',
