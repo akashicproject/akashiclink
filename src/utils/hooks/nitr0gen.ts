@@ -131,6 +131,7 @@ export const useSendL1Transaction = () => {
       dispatch(
         addLocalTransaction({
           ...signedTransactionData,
+          usdtValue: usdtValue.toNumber(),
           feeIsDelegated:
             signedTransactionData.feeDelegationStrategy ===
             FeeDelegationStrategy.Delegate,
