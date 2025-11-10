@@ -90,6 +90,12 @@ export const SendAmountInputAndDetail = ({
       return;
     }
 
+    // amount have dps smaller than 6
+    if (userInputAmount.c.length - 1 - userInputAmount.e > 6) {
+      setAlert(errorAlertShell('amountMaxDecimalPlaces'));
+      return;
+    }
+
     // if L2, balance must be larger than amount + internal fee
     if (isL2) {
       const fee = calculateL2Fee();

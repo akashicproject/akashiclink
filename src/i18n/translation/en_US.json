@@ -154,6 +154,7 @@
   "UseMax": "Use Max",
   "CalculateOnNextStep": "Calculated on next step",
   "amountLargerThenZero": "Please provide amount larger than zero",
+  "amountMaxDecimalPlaces": "Maximum of 6 decimal places allowed",
   "InsufficientBalance": "Insufficient Balance",
   "invalidL2Address": "Please provide a valid Layer 2 recipient Account.",
   "SendNewCode": "Send a New Code",

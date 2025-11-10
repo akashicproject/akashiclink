@@ -156,6 +156,7 @@
   "CalculateOnNextStep": "পরবর্তী ধাপে গণনা করা হবে",
   "InsufficientBalance": "অপর্যাপ্ত ব্যালেন্স",
   "amountLargerThenZero": "অনুগ্রহ করে শূন্যের চেয়ে বড় পরিমাণ প্রদান করুন",
+  "amountMaxDecimalPlaces": "সর্বাধিক ৬টি দশমিক স্থান অনুমোদিত",
   "invalidL2Address": "অনুগ্রহ করে একটি বৈধ লেয়ার ২ প্রাপক অ্যাকাউন্ট প্রদান করুন।",
   "SendNewCode": "একটি নতুন কোড পাঠান",
   "VersionInfo": "সংস্করণ তথ্য",

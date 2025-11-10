@@ -156,6 +156,7 @@
   "CalculateOnNextStep": "於下一步計算",
   "InsufficientBalance": "余额不足",
   "amountLargerThenZero": "请提供大于零的金额",
+  "amountMaxDecimalPlaces": "最多允许 6 位小数",
   "invalidL2Address": "请提供正确的 Layer L2 接收地址。",
   "SendNewCode": "发送新代码",
   "VersionInfo": "版本信息",
