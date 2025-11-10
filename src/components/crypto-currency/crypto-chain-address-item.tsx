@@ -17,9 +17,6 @@ import { CopyIcon } from '../common/icons/copy-icon';
 const Container = styled.div({
   display: 'flex',
   alignItems: 'center',
-  borderRadius: '8px',
-  border: '1px solid var(--ion-item-alt-border-color)',
-  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
   width: '325px',
   height: '52px',
   justifyContent: 'space-between',
@@ -85,7 +82,7 @@ const CryptoChainAddressItem = ({
             {displayName}
           </div>
           <div
-            className="ion-text-size-xxs"
+            className="ion-text-size-xs"
             style={{ color: 'var(--ion-text-color-alt)' }}
           >
             {displayLongText(address, 18)}
