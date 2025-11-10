@@ -129,7 +129,6 @@ export const useSendL1Transaction = () => {
       dispatch(
         addLocalTransaction({
           ...signedTransactionData,
-          usdtValue: usdtValue.toNumber(),
           feeIsDelegated:
             signedTransactionData.feeDelegationStrategy ===
             FeeDelegationStrategy.Delegate,
@@ -142,6 +141,7 @@ export const useSendL1Transaction = () => {
             identity: prefixWithAS(identity),
             walletType: WalletType.AkashicLink, // Not necessarily accurate, but doesn't matter for temp local storage
           },
+          usdtValue: usdtValue.toNumber(),
         })
       );
     }
