@@ -1,7 +1,7 @@
+import { type CryptoCurrencyWithName } from '@helium-pay/backend';
 import { IonContent, IonModal } from '@ionic/react';
 import { type Dispatch, type RefObject, type SetStateAction } from 'react';
 
-import type { IWalletCurrency } from '../../constants/currencies';
 import { DashboardCryptoCurrencyDetail } from './dashboard-crypto-currency-detail';
 
 export function DashboardCryptoCurrencyDetailModal({
@@ -13,7 +13,7 @@ export function DashboardCryptoCurrencyDetailModal({
   isModalOpen: boolean;
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
   modalRef: RefObject<HTMLIonModalElement>;
-  walletCurrency?: IWalletCurrency;
+  walletCurrency?: CryptoCurrencyWithName;
 }) {
   const onIonModalDidDismiss = () => {
     setIsModalOpen(false);

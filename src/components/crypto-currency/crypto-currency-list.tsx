@@ -1,6 +1,6 @@
+import { type CryptoCurrencyWithName } from '@helium-pay/backend';
 import { Virtuoso } from 'react-virtuoso';
 
-import { type IWalletCurrency } from '../../constants/currencies';
 import CryptoCurrencyListItem from './crypto-currency-list-item';
 
 export function CryptoCurrencyList({
@@ -10,8 +10,8 @@ export function CryptoCurrencyList({
   showUSDValue = false,
 }: {
   minHeight?: string; // for render inside modal which does not have a height for Virtuoso to work with
-  currencies: IWalletCurrency[];
-  onClick?: (walletCurrency: IWalletCurrency) => void;
+  currencies: CryptoCurrencyWithName[];
+  onClick?: (walletCurrency: CryptoCurrencyWithName) => void;
   showUSDValue?: boolean;
 }) {
   return (
@@ -28,8 +28,8 @@ export function CryptoCurrencyList({
           className="ion-padding-bottom-xxs ion-margin-bottom-xxs"
         >
           <CryptoCurrencyListItem
-            key={`${currency.chain}-${currency.token ?? ''}`}
-            walletCurrency={currency}
+            key={`${currency.coinSymbol}-${currency.tokenSymbol ?? ''}`}
+            currency={currency}
             showUSDValue={showUSDValue}
             onClick={onClick}
           />

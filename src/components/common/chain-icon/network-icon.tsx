@@ -1,23 +1,14 @@
-import type { CoinSymbol } from '@helium-pay/backend';
+import { type CoinSymbol, NetworkDictionary } from '@helium-pay/backend';
 import { IonImg } from '@ionic/react';
 
-import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../../constants/currencies';
-import { useAppSelector } from '../../../redux/app/hooks';
-import { selectTheme } from '../../../redux/slices/preferenceSlice';
-import { themeType } from '../../../theme/const';
-
 export const NetworkIcon = ({
-  chain: targetChain,
+  chain,
   size = 24,
 }: {
   chain: CoinSymbol;
   size?: number;
 }) => {
-  const storedTheme = useAppSelector(selectTheme);
-
-  const currencyIcon = SUPPORTED_CURRENCIES_FOR_EXTENSION.list.find(
-    ({ walletCurrency: { chain } }) => chain === targetChain
-  )?.[storedTheme === themeType.DARK ? 'darkCurrencyIcon' : 'currencyIcon'];
+  const currencyIcon = NetworkDictionary[chain].networkIcon;
 
   return (
     <span

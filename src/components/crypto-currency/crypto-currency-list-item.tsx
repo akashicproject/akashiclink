@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
+import { type CryptoCurrencyWithName } from '@helium-pay/backend';
 
-import { type IWalletCurrency } from '../../constants/currencies';
 import { formatAmountWithCommas } from '../../utils/formatAmountWithCommas';
 import { useCryptoCurrencyBalance } from '../../utils/hooks/useCryptoCurrencyBalance';
 import { CryptoCurrencyIcon } from '../common/chain-icon/crypto-currency-icon';
@@ -31,35 +31,41 @@ const TextContainer = styled.div({
 });
 
 const CryptoCurrencyListItem = ({
-  walletCurrency,
+  currency,
   showUSDValue,
   onClick,
 }: {
-  walletCurrency: IWalletCurrency;
+  currency: CryptoCurrencyWithName;
   showUSDValue: boolean;
-  onClick?: (walletCurrency: IWalletCurrency) => void;
+  onClick?: (currency: CryptoCurrencyWithName) => void;
 }) => {
-  const { balance, balanceInUsd } = useCryptoCurrencyBalance(walletCurrency);
+  const { balance, balanceInUsd } = useCryptoCurrencyBalance(
+    currency.coinSymbol,
+    currency.tokenSymbol
+  );
 
   return (
     <Container
       className="ion-padding-top-xs ion-padding-bottom-xs ion-padding-left-sm ion-padding-right-sm"
-      onClick={() => onClick && onClick(walletCurrency)}
+      onClick={() => onClick && onClick(currency)}
       style={{ cursor: onClick ? 'pointer' : 'default' }}
     >
       <ContentWrapper>
-        <CryptoCurrencyIcon currency={walletCurrency} />
+        <CryptoCurrencyIcon
+          coinSymbol={currency.coinSymbol}
+          tokenSymbol={currency.tokenSymbol}
+        />
         <TextContainer>
           <div
             className="ion-text-size-sm ion-text-bold"
             style={{ color: 'var(--ion-text-color-alt)' }}
           >
-            {walletCurrency.displayName}
+            {currency.displayName}
           </div>
           <div
             className="ion-text-size-xxs"
             style={{ color: 'var(--ion-text-color-alt)' }}
-          >{`${formatAmountWithCommas(balance ?? '0')} ${walletCurrency.token ?? walletCurrency.chain}`}</div>
+          >{`${formatAmountWithCommas(balance ?? '0')} ${currency.tokenSymbol ?? currency.coinSymbol}`}</div>
         </TextContainer>
       </ContentWrapper>
       {showUSDValue && (

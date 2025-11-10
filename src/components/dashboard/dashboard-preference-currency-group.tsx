@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
-import { type CoinSymbol, NetworkDictionary } from '@helium-pay/backend';
+import type { CoinSymbol, CryptoCurrencyWithName } from '@helium-pay/backend';
 import { IonCheckbox, IonIcon, IonText } from '@ionic/react';
 import { caretDown } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 
-import type { IWalletCurrency } from '../../constants/currencies';
 import { CryptoCurrencyIcon } from '../common/chain-icon/crypto-currency-icon';
 
 const TokenGroup = styled.div<{ selected: boolean }>((props) => ({
@@ -80,15 +79,15 @@ const SelectAllItem = styled.div<{ checked: boolean }>((props) => ({
 
 interface CurrencyGroupProps {
   chain: CoinSymbol;
-  mainCurrency: IWalletCurrency | undefined;
-  currencies: IWalletCurrency[];
+  mainCurrency: CryptoCurrencyWithName | undefined;
+  currencies: CryptoCurrencyWithName[];
   isExpanded: boolean;
   selectedCount: number;
   isAllSelected: boolean;
   hiddenCurrencies: string[];
   onToggleChain: (chain: CoinSymbol) => void;
   onSelectAll: (chain: CoinSymbol) => void;
-  onToggleCurrency: (currency: IWalletCurrency) => void;
+  onToggleCurrency: (currency: CryptoCurrencyWithName) => void;
 }
 
 export const DashboardPreferenceCurrencyGroup = ({
@@ -123,10 +122,14 @@ export const DashboardPreferenceCurrencyGroup = ({
       >
         <TokenHeader>
           {mainCurrency && (
-            <CryptoCurrencyIcon currency={mainCurrency} size={24} />
+            <CryptoCurrencyIcon
+              coinSymbol={mainCurrency.coinSymbol}
+              tokenSymbol={mainCurrency.tokenSymbol}
+              size={24}
+            />
           )}
           <h5 className="ion-no-margin ion-text-size-md ion-text-bold">
-            {NetworkDictionary[chain].displayName}
+            {mainCurrency?.displayName ?? chain}
           </h5>
           {selectedCount > 0 && <CountBadge>{selectedCount}</CountBadge>}
         </TokenHeader>
@@ -156,11 +159,11 @@ export const DashboardPreferenceCurrencyGroup = ({
           </SelectAllItem>
           {currencies.map((currency) => {
             const isChecked = !hiddenCurrencies.includes(
-              `${currency.chain}-${currency.token ?? ''}`
+              `${currency.coinSymbol}-${currency.tokenSymbol ?? ''}`
             );
             return (
               <TokenItem
-                key={`${currency.chain}-${currency.token ?? ''}`}
+                key={`${currency.coinSymbol}-${currency.tokenSymbol ?? ''}`}
                 checked={isChecked}
                 onClick={() => onToggleCurrency(currency)}
                 onKeyDown={(e) =>
@@ -169,7 +172,11 @@ export const DashboardPreferenceCurrencyGroup = ({
                 tabIndex={0}
               >
                 <TokenSymbolIconAlignment>
-                  <CryptoCurrencyIcon currency={currency} size={24} />
+                  <CryptoCurrencyIcon
+                    coinSymbol={currency.coinSymbol}
+                    tokenSymbol={currency.tokenSymbol}
+                    size={24}
+                  />
                   <h5 className="ion-no-margin ion-text-size-sm ion-text-bold">
                     {currency.displayName}
                   </h5>

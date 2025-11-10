@@ -15,9 +15,8 @@ export function useTotalCryptoCurrencyBalances() {
           .times(
             getChainExchangeRate(
               {
-                token: balance.tokenSymbol,
-                chain: balance.coinSymbol,
-                displayName: '',
+                coinSymbol: balance.coinSymbol,
+                tokenSymbol: balance.tokenSymbol,
               },
               exchangeRates
             )

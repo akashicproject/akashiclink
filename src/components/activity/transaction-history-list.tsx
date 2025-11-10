@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
-import { TransactionLayer, TransactionType } from '@helium-pay/backend';
+import {
+  type CryptoCurrency,
+  TransactionLayer,
+  TransactionType,
+} from '@helium-pay/backend';
 import {
   IonButton,
   IonCheckbox,
@@ -13,7 +17,6 @@ import { type MouseEvent, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type GridComponents, Virtuoso } from 'react-virtuoso';
 
-import { type IWalletCurrency } from '../../constants/currencies';
 import { urls } from '../../constants/urls';
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectTheme } from '../../redux/slices/preferenceSlice';
@@ -204,7 +207,7 @@ export const TransactionHistoryList: React.FC<{
   isFilterLayer?: boolean;
   isFilterType?: boolean;
   isFilterNFT?: boolean;
-  currency?: IWalletCurrency;
+  currency?: CryptoCurrency;
   minHeight?: string;
   onClick?: () => void;
 }> = ({

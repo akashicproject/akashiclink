@@ -1,4 +1,5 @@
 import type {
+  CryptoCurrency,
   INftTransactionRecord,
   ITransactionRecord,
   ITransactionRecordForFrontend,
@@ -7,19 +8,13 @@ import type {
 import {
   formatNftTransactionForFrontend,
   formatTransactionForFrontend,
-  NetworkDictionary,
   TransactionLayer,
 } from '@helium-pay/backend';
-
-import type { IWalletCurrency } from '../constants/currencies';
-import { makeWalletCurrency } from '../constants/currencies';
 
 const akashicScanAccountsUrl = `${process.env.REACT_APP_SCAN_BASE_URL}/accounts`;
 const akashicScanTransactionsUrl = `${process.env.REACT_APP_SCAN_BASE_URL}/transactions`;
 export interface ITransactionRecordForExtension
   extends ITransactionRecordForFrontend {
-  networkIcon?: string;
-  currency?: IWalletCurrency;
   l2TxnHashUrl: string;
 }
 
@@ -42,8 +37,6 @@ export function formatTransfers(transfers: ITransactionRecord[]) {
           : t.receiverInfo?.identity;
       return {
         ...formatTransactionForFrontend(t, id),
-        networkIcon: NetworkDictionary[t.coinSymbol].networkIcon,
-        currency: makeWalletCurrency(t.coinSymbol, t?.tokenSymbol),
         internalSenderUrl: l2Sender
           ? `${akashicScanAccountsUrl}/${l2Sender}`
           : undefined, // Keep undefined so we can default to L1 URL if there is no L2 URL
@@ -83,7 +76,7 @@ export function formatMergeAndSortNftAndCryptoTransfers(
     layer?: TransactionLayer;
     transferType?: TransactionType;
     txnType: ('currency' | 'nft')[];
-    currency?: IWalletCurrency;
+    currency?: CryptoCurrency;
   }
 ) {
   const allFormattedTransfers = formatTransfers(
@@ -103,8 +96,8 @@ export function formatMergeAndSortNftAndCryptoTransfers(
       (!filters?.layer || txn.layer === filters.layer) &&
       (!filters?.transferType || txn.transferType === filters.transferType) &&
       (!filters?.currency ||
-        `${txn.currency?.chain}-${txn.currency?.token ?? ''}` ===
-          `${filters.currency?.chain}-${filters.currency?.token ?? ''}`)
+        `${txn.coinSymbol}-${txn.tokenSymbol ?? ''}` ===
+          `${filters.currency?.coinSymbol}-${filters.currency?.tokenSymbol ?? ''}`)
   );
 
   return filteredTransfers;

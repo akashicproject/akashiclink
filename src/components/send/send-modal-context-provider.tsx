@@ -1,3 +1,4 @@
+import { type CryptoCurrencyWithName } from '@helium-pay/backend';
 import {
   createContext,
   type Dispatch,
@@ -7,18 +8,15 @@ import {
   useState,
 } from 'react';
 
-import {
-  type IWalletCurrency,
-  SUPPORTED_CURRENCIES_FOR_EXTENSION,
-} from '../../constants/currencies';
+import { SUPPORTED_CURRENCIES_WITH_NAMES } from '../../constants/currencies';
 import type { SendConfirmationTxnsDetail } from './send-form/types';
 import { SendFormModal } from './send-form-modal';
 
 export const SendFormContext = createContext<{
   step: number;
   setStep: Dispatch<SetStateAction<number>>;
-  currency: IWalletCurrency;
-  setCurrency: Dispatch<SetStateAction<IWalletCurrency>>;
+  currency: CryptoCurrencyWithName;
+  setCurrency: Dispatch<SetStateAction<CryptoCurrencyWithName>>;
   isModalOpen: boolean;
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
   isModalLock: boolean;
@@ -31,7 +29,7 @@ export const SendFormContext = createContext<{
   step: 0,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setStep: () => {},
-  currency: SUPPORTED_CURRENCIES_FOR_EXTENSION.list[0].walletCurrency,
+  currency: SUPPORTED_CURRENCIES_WITH_NAMES[0],
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setCurrency: () => {},
   isModalOpen: false,
@@ -56,8 +54,8 @@ export function SendFormContextProvider({
     SendConfirmationTxnsDetail | undefined
   >(undefined);
   const [step, setStep] = useState(0);
-  const [currency, setCurrency] = useState<IWalletCurrency>(
-    SUPPORTED_CURRENCIES_FOR_EXTENSION.list[0].walletCurrency
+  const [currency, setCurrency] = useState<CryptoCurrencyWithName>(
+    SUPPORTED_CURRENCIES_WITH_NAMES[0]
   );
   const modalRef = useRef<HTMLIonModalElement>(null);
 

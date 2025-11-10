@@ -24,7 +24,7 @@ export function TransactionDetails({
   const chainName =
     currentTransfer.layer === TransactionLayer.L2
       ? t('Chain.AkashicChain')
-      : t(`Chain.${currentTransfer.currency?.chain.toUpperCase()}`);
+      : t(`Chain.${currentTransfer.coinSymbol.toUpperCase()}`);
 
   return (
     <ActivityContainer>
@@ -42,11 +42,11 @@ export function TransactionDetails({
             />
           </div>
           <div className={'ion-display-flex ion-align-items-center ion-gap-xs'}>
-            {currentTransfer.currency?.chain &&
+            {currentTransfer.coinSymbol &&
               (currentTransfer.layer === TransactionLayer.L2 ? (
                 <L2Icon />
               ) : (
-                <NetworkIcon chain={currentTransfer.currency?.chain} />
+                <NetworkIcon chain={currentTransfer.coinSymbol} />
               ))}
             <span className="ion-text-size-xs" style={{ color: '#958E99' }}>
               {chainName}
@@ -115,16 +115,16 @@ const WithdrawDetails = ({
 
   // If token, displayed as "USDT" for L1 and "USDT (ETH)" for L2 (since
   // deducing the chain the token belongs to is not trivial)
-  const currencyDisplayName = currentTransfer?.currency?.token
-    ? currentTransfer?.currency?.token +
-      (isL2 ? ` (${currentTransfer.currency.chain})` : '')
-    : currentTransfer?.currency?.chain;
+  const currencyDisplayName = currentTransfer?.tokenSymbol
+    ? currentTransfer?.tokenSymbol +
+      (isL2 ? ` (${currentTransfer.coinSymbol})` : '')
+    : currentTransfer?.coinSymbol;
 
   const feeCurrencyDisplayName =
-    currentTransfer?.currency?.token && (isL2 || currentTransfer.feeIsDelegated)
-      ? currentTransfer?.currency?.token +
-        (isL2 ? ` (${currentTransfer.currency.chain})` : '')
-      : currentTransfer?.currency?.chain;
+    currentTransfer?.tokenSymbol && (isL2 || currentTransfer.feeIsDelegated)
+      ? currentTransfer?.tokenSymbol +
+        (isL2 ? ` (${currentTransfer.coinSymbol})` : '')
+      : currentTransfer?.coinSymbol;
 
   return (
     <List lines="none">
@@ -164,7 +164,7 @@ const WithdrawDetails = ({
           isL2 || !currentTransfer.tokenSymbol || currentTransfer.feeIsDelegated
             ? undefined
             : `+${formatAmountWithCommas(totalFee.toString())} ${
-                currentTransfer.currency?.chain
+                currentTransfer.coinSymbol
               }${gasFeeIsEstimate ? '*' : ''}`
         }
         valueSize={'md'}

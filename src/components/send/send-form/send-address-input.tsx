@@ -55,7 +55,7 @@ export const SendAddressInput = ({
   const [alert, setAlert] = useState(formAlertResetState);
   const { activeAccount } = useAccountStorage();
   const {
-    currency: { chain },
+    currency: { coinSymbol },
   } = useContext(SendFormContext);
   const addresses = useOwnerKeys(activeAccount?.identity ?? '').keys;
 
@@ -80,7 +80,7 @@ export const SendAddressInput = ({
       const { l2Address, alias, isBp, ledgerId } =
         await OwnersAPI.lookForL2Address({
           to: userInput,
-          coinSymbol: chain,
+          coinSymbol,
         });
 
       // Not allow sending BP by alias
@@ -89,7 +89,7 @@ export const SendAddressInput = ({
         return;
       }
 
-      if (RegExp(NetworkDictionary[chain].regex.address).exec(userInput)) {
+      if (RegExp(NetworkDictionary[coinSymbol].regex.address).exec(userInput)) {
         // Sending by L1 address
         onAddressValidated({
           alias,

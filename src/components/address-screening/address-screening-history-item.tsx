@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
-import { type IWalletScreeningObject } from '@helium-pay/backend';
+import {
+  getCurrencyIcon,
+  type IWalletScreeningObject,
+} from '@helium-pay/backend';
 import { IonImg, IonText } from '@ionic/react';
 import { type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { urls } from '../../constants/urls';
 import { historyGo } from '../../routing/history';
 import { formatDate } from '../../utils/formatDate';
@@ -71,8 +73,6 @@ interface AddressScreeningItemProps {
   divider?: boolean;
 }
 
-const currenciesIcon = [...SUPPORTED_CURRENCIES_FOR_EXTENSION.list];
-
 export function AddressScreeningHistoryItem({
   screening,
   style,
@@ -80,10 +80,6 @@ export function AddressScreeningHistoryItem({
   divider,
 }: AddressScreeningItemProps) {
   const { t } = useTranslation();
-
-  const currencyObj = currenciesIcon.find(
-    (c) => c.walletCurrency.chain === screening.coinSymbol
-  );
 
   const handleClick = () => {
     historyGo(urls.addressScreeningDetails, {
@@ -105,7 +101,7 @@ export function AddressScreeningHistoryItem({
           <TypeIcon>
             <IonImg
               alt=""
-              src={currencyObj?.currencyIcon}
+              src={getCurrencyIcon({ coinSymbol: screening.coinSymbol })}
               style={{
                 height: '32px',
                 width: '32px',

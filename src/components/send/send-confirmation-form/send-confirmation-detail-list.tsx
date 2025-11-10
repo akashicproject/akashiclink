@@ -20,7 +20,7 @@ export const SendConfirmationDetailList = () => {
   const { sendConfirm, currency } = useContext(SendFormContext);
   const { isCurrencyTypeToken, currencySymbol, nativeCoinSymbol } =
     useCryptoCurrencySymbolsAndBalances(currency);
-  const { chain } = currency;
+  const { coinSymbol } = currency;
 
   const txn = sendConfirm?.txn;
   const validatedAddressPair = sendConfirm?.validatedAddressPair;
@@ -59,12 +59,16 @@ export const SendConfirmationDetailList = () => {
   return (
     <List lines="none">
       <IonItem className={'ion-margin-bottom-xs'}>
-        {isL2 ? <L2Icon size={24} /> : <NetworkIcon size={24} chain={chain} />}
+        {isL2 ? (
+          <L2Icon size={24} />
+        ) : (
+          <NetworkIcon size={24} chain={coinSymbol} />
+        )}
         <IonText>
           <h3 className={'ion-text-size-md ion-margin-0 ion-margin-left-xs'}>
             {isL2
               ? t('Chain.AkashicChain')
-              : NetworkDictionary[chain].displayName.replace(/Chain/g, '')}
+              : NetworkDictionary[coinSymbol].displayName.replace(/Chain/g, '')}
           </h3>
         </IonText>
       </IonItem>

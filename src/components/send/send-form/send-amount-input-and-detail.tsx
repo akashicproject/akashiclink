@@ -70,7 +70,10 @@ export const SendAmountInputAndDetail = ({
 
   const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
 
-  const calculateL2Fee = useCalculateCurrencyL2WithdrawalFee(currency);
+  const calculateL2Fee = useCalculateCurrencyL2WithdrawalFee(
+    currency.coinSymbol,
+    currency.tokenSymbol
+  );
 
   const estimatedNetworkFee = useEstimatedNetworkFee({
     validatedAddressPair,

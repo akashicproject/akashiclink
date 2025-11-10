@@ -1,21 +1,19 @@
+import { type CryptoCurrency } from '@helium-pay/backend';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import {
-  type IWalletCurrency,
-  SUPPORTED_CURRENCIES_FOR_EXTENSION,
-} from '../../constants/currencies';
+import { SUPPORTED_CURRENCIES } from '../../constants/currencies';
 import { type ThemeType, themeType } from '../../theme/const';
 import { createAppSlice } from '../app/createAppSlice';
 
 export interface PreferenceState {
   theme: ThemeType;
-  focusCurrency: IWalletCurrency;
+  focusCurrency: CryptoCurrency;
   autoLockTime: number;
 }
 
 const initialState: PreferenceState = {
   theme: themeType.SYSTEM as ThemeType,
-  focusCurrency: SUPPORTED_CURRENCIES_FOR_EXTENSION.default.walletCurrency,
+  focusCurrency: SUPPORTED_CURRENCIES[0],
   autoLockTime: 10,
 };
 
@@ -34,7 +32,7 @@ export const preferenceSlice = createAppSlice({
       state.autoLockTime = action.payload;
     }),
     setFocusCurrency: create.reducer(
-      (state, action: PayloadAction<IWalletCurrency>) => {
+      (state, action: PayloadAction<CryptoCurrency>) => {
         state.focusCurrency = action.payload;
       }
     ),
@@ -53,11 +51,11 @@ export const preferenceSlice = createAppSlice({
     selectAutoLockTime: (preference) => preference.autoLockTime,
     selectFocusCurrency: (preference) => preference.focusCurrency,
     selectFocusCurrencyDetail: (preference) => {
-      const currentWalletMetadata = SUPPORTED_CURRENCIES_FOR_EXTENSION.lookup(
-        preference.focusCurrency
-      );
+      const currentWalletMetadata =
+        SUPPORTED_CURRENCIES.find((c) => c === preference.focusCurrency) ??
+        SUPPORTED_CURRENCIES[0];
 
-      return currentWalletMetadata.walletCurrency;
+      return currentWalletMetadata;
     },
   },
 });

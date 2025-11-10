@@ -37,7 +37,10 @@ export const AddressScreeningSelectCurrency: FC<{
   const [selectedFeeCurrency, setSelectedFeeCurrency] = useState(
     ALLOWED_ADDRESS_SCAN_CURRENCY[0]
   );
-  const { balance } = useCryptoCurrencyBalance(selectedFeeCurrency);
+  const { balance } = useCryptoCurrencyBalance(
+    selectedFeeCurrency.coinSymbol,
+    selectedFeeCurrency.tokenSymbol
+  );
 
   useEffect(() => {
     const isNotEnoughBalance = Big(balance).lte(0);
@@ -72,18 +75,18 @@ export const AddressScreeningSelectCurrency: FC<{
         </IonCol>
         <IonCol className={'ion-center ion-padding-block-0'} size={'10'}>
           <IonSegment
-            value={`${selectedFeeCurrency.chain}-${selectedFeeCurrency.token ?? ''}`}
+            value={`${selectedFeeCurrency.coinSymbol}-${selectedFeeCurrency.tokenSymbol ?? ''}`}
             style={{
               height: '32px',
               '--background': 'transparent',
               '--background-checked': 'transparent',
             }}
           >
-            {ALLOWED_ADDRESS_SCAN_CURRENCY.map((currency) => (
+            {ALLOWED_ADDRESS_SCAN_CURRENCY.map((c) => (
               <IonSegmentButton
-                key={`${currency.chain}-${currency.token ?? ''}`}
-                value={`${currency.chain}-${currency.token ?? ''}`}
-                onClick={() => setSelectedFeeCurrency(currency)}
+                key={`${c.coinSymbol}-${c.tokenSymbol ?? ''}`}
+                value={`${c.coinSymbol}-${c.tokenSymbol ?? ''}`}
+                onClick={() => setSelectedFeeCurrency(c)}
                 style={{
                   height: '32px',
                   minHeight: '32px',
@@ -101,7 +104,7 @@ export const AddressScreeningSelectCurrency: FC<{
                     display: 'flex',
                     alignItems: 'center',
                   }}
-                >{`${currency.token ?? ''} (${currency.chain})`}</IonLabel>
+                >{`${c.tokenSymbol ?? ''} (${c.coinSymbol})`}</IonLabel>
               </IonSegmentButton>
             ))}
           </IonSegment>
@@ -116,7 +119,7 @@ export const AddressScreeningSelectCurrency: FC<{
                   <ListLabelValueItem
                     labelBold
                     label={t('Fee')}
-                    value={`${SCAN_FEE_AMOUNT} ${selectedFeeCurrency.token ?? ''} (${selectedFeeCurrency.chain})`}
+                    value={`${SCAN_FEE_AMOUNT} ${selectedFeeCurrency.tokenSymbol ?? ''} (${selectedFeeCurrency.coinSymbol})`}
                   />
                 </div>
               </IonCol>
@@ -125,8 +128,8 @@ export const AddressScreeningSelectCurrency: FC<{
                   validatedScanAddress={validatedScanAddress}
                   disabled={disabled}
                   setAlert={setAlert}
-                  chain={selectedFeeCurrency.chain}
-                  token={selectedFeeCurrency.token}
+                  chain={selectedFeeCurrency.coinSymbol}
+                  token={selectedFeeCurrency.tokenSymbol}
                   onAddressReset={onAddressReset}
                 />
               </IonCol>

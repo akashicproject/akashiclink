@@ -6,7 +6,6 @@ import {
 import Big from 'big.js';
 import useSWR from 'swr';
 
-import { type IWalletCurrency } from '../../constants/currencies';
 import { getMainnetEquivalent } from '../chain';
 import { calculateInternalWithdrawalFee } from '../internal-fee';
 import fetcher from '../ownerFetcher';
@@ -23,15 +22,16 @@ export const useExchangeRates = () => {
 };
 
 export const useCalculateCurrencyL2WithdrawalFee = (
-  walletCurrency: IWalletCurrency
+  coinSymbol: CoinSymbol,
+  tokenSymbol?: CryptoCurrencySymbol
 ) => {
   const { exchangeRates } = useExchangeRates();
 
   return () => {
     return calculateInternalWithdrawalFee(
       exchangeRates,
-      walletCurrency.chain,
-      walletCurrency.token
+      coinSymbol,
+      tokenSymbol
     );
   };
 };

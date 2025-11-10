@@ -23,7 +23,7 @@ export const SendCompletedDetailList = () => {
   const { sendConfirm, currency } = useContext(SendFormContext);
   const { isCurrencyTypeToken, currencySymbol, nativeCoinSymbol } =
     useCryptoCurrencySymbolsAndBalances(currency);
-  const { chain } = currency;
+  const { coinSymbol } = currency;
 
   const txn = sendConfirm?.txn;
   const txnFinal = sendConfirm?.txnFinal;
@@ -57,7 +57,7 @@ export const SendCompletedDetailList = () => {
     if (type === 'account') {
       return isL2
         ? `${process.env.REACT_APP_SCAN_BASE_URL}/accounts/${value}`
-        : `${NetworkDictionary[chain].addressUrl}/${value}`;
+        : `${NetworkDictionary[coinSymbol].addressUrl}/${value}`;
     }
     // Or if transaction
     return `${process.env.REACT_APP_SCAN_BASE_URL}/transactions/${value}`;
@@ -79,12 +79,16 @@ export const SendCompletedDetailList = () => {
   return (
     <List lines="none">
       <IonItem className={'ion-margin-bottom-xs'}>
-        {isL2 ? <L2Icon size={24} /> : <NetworkIcon size={24} chain={chain} />}
+        {isL2 ? (
+          <L2Icon size={24} />
+        ) : (
+          <NetworkIcon size={24} chain={coinSymbol} />
+        )}
         <IonText>
           <h3 className={'ion-text-size-md ion-margin-0 ion-margin-left-xs'}>
             {isL2
               ? t('Chain.AkashicChain')
-              : NetworkDictionary[chain].displayName.replace(/Chain/g, '')}
+              : NetworkDictionary[coinSymbol].displayName.replace(/Chain/g, '')}
           </h3>
         </IonText>
         {txHash && (

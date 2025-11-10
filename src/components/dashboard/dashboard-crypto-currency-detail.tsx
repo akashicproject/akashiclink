@@ -1,9 +1,9 @@
+import { type CryptoCurrencyWithName } from '@helium-pay/backend';
 import { IonCol, IonGrid, IonIcon, IonRow, IonText } from '@ionic/react';
 import { arrowDownOutline, arrowForwardOutline } from 'ionicons/icons';
 import { type Dispatch, type SetStateAction, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { type IWalletCurrency } from '../../constants/currencies';
 import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
 import { useIsScopeAccessAllowed } from '../../utils/account';
@@ -22,14 +22,17 @@ export function DashboardCryptoCurrencyDetail({
   walletCurrency,
 }: {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
-  walletCurrency: IWalletCurrency;
+  walletCurrency: CryptoCurrencyWithName;
 }) {
   const { t } = useTranslation();
   const isSendAllowed = useIsScopeAccessAllowed('send');
   const isDepositAllowed = useIsScopeAccessAllowed('deposit');
 
-  const { address } = useAccountL1Address(walletCurrency.chain);
-  const { balance, balanceInUsd } = useCryptoCurrencyBalance(walletCurrency);
+  const { address } = useAccountL1Address(walletCurrency.coinSymbol);
+  const { balance, balanceInUsd } = useCryptoCurrencyBalance(
+    walletCurrency.coinSymbol,
+    walletCurrency.tokenSymbol
+  );
   const {
     setIsModalOpen: setIsDepositModalOpen,
     setChain,
@@ -42,7 +45,7 @@ export function DashboardCryptoCurrencyDetail({
   } = useContext(SendFormContext);
 
   const handleOnClickDeposit = () => {
-    setChain(walletCurrency.chain);
+    setChain(walletCurrency.coinSymbol);
     setDepositModalStep(1);
     setIsDepositModalOpen(true);
     setIsModalOpen(false);
@@ -64,7 +67,11 @@ export function DashboardCryptoCurrencyDetail({
     <IonGrid>
       <IonRow className={'ion-grid-row-gap-xxs'}>
         <IonCol size={'12'} className={'ion-text-align-center'}>
-          <CryptoCurrencyIcon size={60} currency={walletCurrency} />
+          <CryptoCurrencyIcon
+            size={60}
+            coinSymbol={walletCurrency.coinSymbol}
+            tokenSymbol={walletCurrency.tokenSymbol}
+          />
         </IonCol>
         <IonCol size={'12'}>
           <IonText>

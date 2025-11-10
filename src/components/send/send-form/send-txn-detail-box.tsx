@@ -37,7 +37,10 @@ export const SendTxnDetailBox = ({
     validatedAddressPair,
     amount,
   });
-  const calculateL2Fee = useCalculateCurrencyL2WithdrawalFee(currency);
+  const calculateL2Fee = useCalculateCurrencyL2WithdrawalFee(
+    currency.coinSymbol,
+    currency.tokenSymbol
+  );
   const l2Fee = calculateL2Fee();
 
   const { nativeCoinBalance, nativeCoinSymbol } =

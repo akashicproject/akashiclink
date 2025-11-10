@@ -1,9 +1,9 @@
+import { type CryptoCurrencyWithName } from '@helium-pay/backend';
 import { IonText, isPlatform } from '@ionic/react';
 import Big from 'big.js';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { IWalletCurrency } from '../../constants/currencies';
 import { useIsScopeAccessAllowed } from '../../utils/account';
 import { useCryptoCurrencyBalancesList } from '../../utils/hooks/useCryptoCurrencyBalancesList';
 import { useInterval } from '../../utils/hooks/useInterval';
@@ -25,7 +25,7 @@ export const DashboardCryptoCurrencyList = () => {
   const isIos = isPlatform('ios');
 
   const [detailWalletCurrency, setDetailWalletCurrency] = useState<
-    IWalletCurrency | undefined
+    CryptoCurrencyWithName | undefined
   >();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLIonModalElement>(null);
@@ -42,7 +42,9 @@ export const DashboardCryptoCurrencyList = () => {
   const sortedCurrencies = balances
     .filter(
       (currency) =>
-        !hiddenCurrencies?.includes(`${currency.chain}-${currency.token ?? ''}`)
+        !hiddenCurrencies?.includes(
+          `${currency.coinSymbol}-${currency.tokenSymbol ?? ''}`
+        )
     )
     .sort((a, b) =>
       sortMode === DASHBOARD_LIST_SORTING_MODE.Value
@@ -55,7 +57,7 @@ export const DashboardCryptoCurrencyList = () => {
     loadHiddenCurrencies();
   }, 100);
 
-  const handleOnClickItem = (walletCurrency: IWalletCurrency) => {
+  const handleOnClickItem = (walletCurrency: CryptoCurrencyWithName) => {
     setDetailWalletCurrency(walletCurrency);
     setIsModalOpen(true);
   };

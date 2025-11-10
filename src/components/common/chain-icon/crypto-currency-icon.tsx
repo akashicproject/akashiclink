@@ -1,31 +1,27 @@
+import {
+  type CoinSymbol,
+  type CryptoCurrencySymbol,
+  getCurrencyIcon,
+} from '@helium-pay/backend';
 import { IonImg } from '@ionic/react';
 
-import {
-  type IWalletCurrency,
-  SUPPORTED_CURRENCIES_FOR_EXTENSION,
-} from '../../../constants/currencies';
-import { useAppSelector } from '../../../redux/app/hooks';
-import { selectTheme } from '../../../redux/slices/preferenceSlice';
-import { themeType } from '../../../theme/const';
+import { SUPPORTED_CURRENCIES_WITH_NAMES } from '../../../constants/currencies';
 
 export const CryptoCurrencyIcon = ({
-  currency,
+  coinSymbol,
+  tokenSymbol,
   size = 32,
 }: {
-  currency: IWalletCurrency;
+  coinSymbol: CoinSymbol;
+  tokenSymbol?: CryptoCurrencySymbol;
   size?: number;
 }) => {
-  const storedTheme = useAppSelector(selectTheme);
+  const networkIcon = getCurrencyIcon({ coinSymbol });
+  const tokenBadgeIcon = getCurrencyIcon({ coinSymbol, tokenSymbol });
 
-  const tokenBadgeIcon = SUPPORTED_CURRENCIES_FOR_EXTENSION.list.find(
-    (c) => c.walletCurrency.chain === currency.chain && !c.walletCurrency.token
-  )?.[storedTheme === themeType.DARK ? 'darkCurrencyIcon' : 'currencyIcon'];
-
-  const currencyIcon = SUPPORTED_CURRENCIES_FOR_EXTENSION.list.find(
-    (c) =>
-      c.walletCurrency.chain === currency.chain &&
-      c.walletCurrency.token === currency.token
-  )?.[storedTheme === themeType.DARK ? 'darkCurrencyIcon' : 'currencyIcon'];
+  const currency = SUPPORTED_CURRENCIES_WITH_NAMES.find(
+    (c) => c.coinSymbol === coinSymbol && c.tokenSymbol === tokenSymbol
+  );
 
   return (
     <span
@@ -38,11 +34,11 @@ export const CryptoCurrencyIcon = ({
       }}
     >
       <IonImg
-        alt={currency.displayName}
-        src={currencyIcon}
+        alt={currency?.displayName}
+        src={networkIcon}
         style={{ position: 'absolute', width: '100%', height: '100%', left: 0 }}
       />
-      {currency.token && (
+      {currency?.tokenSymbol && (
         <IonImg
           alt={currency.displayName}
           src={tokenBadgeIcon}

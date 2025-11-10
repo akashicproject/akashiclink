@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import type { CoinSymbol } from '@helium-pay/backend';
+import type { CoinSymbol, CryptoCurrencyWithName } from '@helium-pay/backend';
 import {
   IonButton,
   IonCheckbox,
@@ -12,8 +12,7 @@ import {
 import { useContext, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { IWalletCurrency } from '../../constants/currencies';
-import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
+import { SUPPORTED_CURRENCIES_WITH_NAMES } from '../../constants/currencies';
 import { getImageIconUrl } from '../../utils/url-utils';
 import { DashboardPreferenceCurrencyGroup } from './dashboard-preference-currency-group';
 import { DashboardPreferenceContext } from './dashboard-preference-modal-trigger-button';
@@ -104,16 +103,16 @@ export const DashboardPreferenceCurrencyFilter = () => {
   const [expandedChains, setExpandedChains] = useState<string[]>([]);
 
   const groupedCurrencies = useMemo(() => {
-    return SUPPORTED_CURRENCIES_FOR_EXTENSION.list.reduce(
-      (acc, { walletCurrency }) => {
-        const chain = walletCurrency.chain;
+    return SUPPORTED_CURRENCIES_WITH_NAMES.reduce(
+      (acc, currency) => {
+        const chain = currency.coinSymbol;
         if (!acc[chain]) {
           acc[chain] = [];
         }
-        acc[chain].push(walletCurrency);
+        acc[chain].push(currency);
         return acc;
       },
-      {} as Record<string, IWalletCurrency[]>
+      {} as Record<string, CryptoCurrencyWithName[]>
     );
   }, []);
 
@@ -122,17 +121,15 @@ export const DashboardPreferenceCurrencyFilter = () => {
     [groupedCurrencies]
   );
 
-  const getCurrencyKey = (currency: IWalletCurrency) =>
-    `${currency.chain}-${currency.token ?? ''}`;
+  const getCurrencyKey = (currency: CryptoCurrencyWithName) =>
+    `${currency.coinSymbol}-${currency.tokenSymbol ?? ''}`;
 
   const getChainKeys = (chain: CoinSymbol) => {
     return groupedCurrencies[chain].map((c) => getCurrencyKey(c));
   };
 
   const allKeys = useMemo(() => {
-    return SUPPORTED_CURRENCIES_FOR_EXTENSION.list.map(({ walletCurrency }) =>
-      getCurrencyKey(walletCurrency)
-    );
+    return SUPPORTED_CURRENCIES_WITH_NAMES.map((c) => getCurrencyKey(c));
   }, []);
 
   const isChainAllSelected = (chain: CoinSymbol) => {
@@ -145,7 +142,7 @@ export const DashboardPreferenceCurrencyFilter = () => {
   };
 
   const getMainCurrency = (chain: CoinSymbol) => {
-    return groupedCurrencies[chain].find((c) => !c.token);
+    return groupedCurrencies[chain].find((c) => !c.tokenSymbol);
   };
 
   const filteredChains = useMemo(() => {
@@ -157,7 +154,7 @@ export const DashboardPreferenceCurrencyFilter = () => {
     });
   }, [chains, groupedCurrencies, search]);
 
-  const handleToggleCurrency = (currency: IWalletCurrency) => {
+  const handleToggleCurrency = (currency: CryptoCurrencyWithName) => {
     const key = getCurrencyKey(currency);
     setHiddenCurrencies((prev) =>
       prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
@@ -193,7 +190,7 @@ export const DashboardPreferenceCurrencyFilter = () => {
 
   const isAllSelected = hiddenCurrencies.length === 0;
   const selectedCount =
-    SUPPORTED_CURRENCIES_FOR_EXTENSION.list.length - hiddenCurrencies.length;
+    SUPPORTED_CURRENCIES_WITH_NAMES.length - hiddenCurrencies.length;
 
   return (
     <IonGrid className="ion-padding-top-0 ion-padding-bottom-xxs ion-padding-left-md ion-padding-right-md">

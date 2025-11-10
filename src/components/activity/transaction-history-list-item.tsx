@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import {
+  getCurrencyIcon,
   TransactionLayer,
   TransactionStatus,
   TransactionType,
@@ -9,7 +10,6 @@ import Big from 'big.js';
 import { type CSSProperties, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { SUPPORTED_CURRENCIES_FOR_EXTENSION } from '../../constants/currencies';
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectTheme } from '../../redux/slices/preferenceSlice';
 import { themeType } from '../../theme/const';
@@ -137,8 +137,9 @@ export function TransactionHistoryListItem({
   const isTxnDeposit = transfer.transferType === TransactionType.DEPOSIT;
   const isTxnConfirmed = transfer.status === TransactionStatus.CONFIRMED;
 
-  const currencyObj = SUPPORTED_CURRENCIES_FOR_EXTENSION.list.find(
-    (c) => c.walletCurrency.chain === transfer.currency?.chain
+  const currencyIcon = getCurrencyIcon(
+    { coinSymbol: transfer.coinSymbol, tokenSymbol: transfer.tokenSymbol },
+    isTxnConfirmed ? 'normal' : 'grey'
   );
 
   const gasFee = transfer.feesPaid ?? transfer.feesEstimate;
@@ -151,13 +152,13 @@ export function TransactionHistoryListItem({
 
   // If token, displayed as "USDT" for L1 and "USDT (ETH)" for L2 (since
   // deducing the chain the token belongs to is not trivial)
-  const currencyDisplayName = transfer?.currency?.token
-    ? transfer?.currency?.token + (isL2 ? ` (${transfer.currency.chain})` : '')
-    : transfer?.currency?.chain;
+  const currencyDisplayName = transfer?.tokenSymbol
+    ? transfer?.tokenSymbol + (isL2 ? ` (${transfer.coinSymbol})` : '')
+    : transfer?.coinSymbol;
 
   const totalFee = Big(gasFee ?? '0').add(transfer.fakeGasFee ?? '0');
 
-  let feeText = `${t('GasFee')}: ${gasFeeIsAccurate ? '' : '≈'}${formatAmountWithCommas(totalFee.toString())} ${transfer?.currency?.chain}`;
+  let feeText = `${t('GasFee')}: ${gasFeeIsAccurate ? '' : '≈'}${formatAmountWithCommas(totalFee.toString())} ${transfer?.coinSymbol}`;
 
   if (isDelegated) {
     feeText = `${t('DelegatedGasFee')}: ${
@@ -196,11 +197,7 @@ export function TransactionHistoryListItem({
             ) : (
               <IonImg
                 alt=""
-                src={
-                  isTxnConfirmed
-                    ? currencyObj?.currencyIcon
-                    : currencyObj?.greyCurrencyIcon
-                }
+                src={currencyIcon}
                 style={{
                   height: '32px',
                   width: '32px',

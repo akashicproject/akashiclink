@@ -35,7 +35,7 @@ export const SendFormVerifyL2TxnButton: FC<SendFormVerifyL2TxnButtonProps> = ({
   const { setStep, setSendConfirm, step, currency } =
     useContext(SendFormContext);
   const { nativeCoinSymbol } = useCryptoCurrencySymbolsAndBalances(currency);
-  const { chain, token } = currency;
+  const { coinSymbol, tokenSymbol } = currency;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,8 +46,8 @@ export const SendFormVerifyL2TxnButton: FC<SendFormVerifyL2TxnButtonProps> = ({
       const res = await verifyTxnAndSign(
         validatedAddressPair,
         amount,
-        chain,
-        token,
+        coinSymbol,
+        tokenSymbol,
         FeeDelegationStrategy.None
       );
       if (typeof res === 'string') {

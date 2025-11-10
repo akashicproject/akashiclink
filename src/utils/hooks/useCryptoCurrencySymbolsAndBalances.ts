@@ -1,36 +1,42 @@
-import { NetworkDictionary } from '@helium-pay/backend';
+import {
+  type CryptoCurrencyWithName,
+  NetworkDictionary,
+} from '@helium-pay/backend';
 
-import { type IWalletCurrency } from '../../constants/currencies';
 import { getMainnetEquivalent } from '../chain';
 import { useCryptoCurrencyBalance } from './useCryptoCurrencyBalance';
 import { useL1TxnDelegatedFees } from './useL1TxnDelegatedFees';
 
 // TODO: check if this is duplicated with other hooks
 export function useCryptoCurrencySymbolsAndBalances(
-  walletCurrency: IWalletCurrency
+  walletCurrency: CryptoCurrencyWithName
 ) {
   const { delegatedFeeList } = useL1TxnDelegatedFees();
 
-  const { balance: currencyBalance } = useCryptoCurrencyBalance(walletCurrency);
-  const { balance: nativeCoinBalance } = useCryptoCurrencyBalance({
-    ...walletCurrency,
-    token: undefined,
-  });
+  const { balance: currencyBalance } = useCryptoCurrencyBalance(
+    walletCurrency.coinSymbol,
+    walletCurrency.tokenSymbol
+  );
+  const { balance: nativeCoinBalance } = useCryptoCurrencyBalance(
+    walletCurrency.coinSymbol,
+    walletCurrency.tokenSymbol
+  );
 
-  const isCurrencyTypeToken = typeof walletCurrency.token !== 'undefined';
-  const nativeCoin = NetworkDictionary[walletCurrency.chain].nativeCoin;
+  const isCurrencyTypeToken = typeof walletCurrency.tokenSymbol !== 'undefined';
+  const nativeCoin = NetworkDictionary[walletCurrency.coinSymbol].nativeCoin;
   const delegatedFee =
     delegatedFeeList.find(
-      (fee) => fee.coinSymbol === getMainnetEquivalent(walletCurrency.chain)
+      (fee) =>
+        fee.coinSymbol === getMainnetEquivalent(walletCurrency.coinSymbol)
     )?.delegatedFee ?? '0';
 
   return {
     isCurrencyTypeToken,
-    chain: walletCurrency.chain,
-    token: walletCurrency.token,
+    chain: walletCurrency.coinSymbol,
+    token: walletCurrency.tokenSymbol,
     networkCurrencyCombinedDisplayName: walletCurrency.displayName,
     currencySymbol: isCurrencyTypeToken
-      ? (walletCurrency.token as string)
+      ? (walletCurrency.tokenSymbol as string)
       : nativeCoin.displayName,
     currencyBalance: currencyBalance ?? '0',
     nativeCoinSymbol: nativeCoin.displayName,
