@@ -29,6 +29,7 @@
     "start:dev": "DISABLE_ESLINT_PLUGIN=true PORT=3001 craco start",
     "lint": "npx eslint . --cache",
     "lint:fix": "yarn lint --fix",
+    "prettier:check": "npx prettier --check \"**/*.ts\"",
     "typecheck": "tsc --project ./tsconfig.json --noEmit",
     "storybook": "REACT_APP_API_BASE_URL=http://localhost:6006/api/v0 DISABLE_ESLINT_PLUGIN=true storybook dev -p 6006 -c ./storybook",
     "test-storybook": "TARGET_URL=http://localhost:6006 test-storybook --config-dir storybook --verbose",
