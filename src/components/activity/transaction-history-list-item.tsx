@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import {
+  getCurrencyDisplayName,
   getCurrencyIcon,
   TransactionLayer,
   TransactionStatus,
@@ -161,15 +162,14 @@ export function TransactionHistoryListItem({
   const gasPrecision = getPrecision('0', gasFee ?? '0');
   const gasFeeIsAccurate = isGasFeeAccurate(transfer, gasPrecision);
 
-  // If token, displayed as "USDT" for L1 and "USDT (ETH)" for L2 (since
-  // deducing the chain the token belongs to is not trivial)
-  const currencyDisplayName = transfer?.tokenSymbol
-    ? transfer?.tokenSymbol + (isL2 ? ` (${transfer.coinSymbol})` : '')
-    : transfer?.coinSymbol;
+  const currencyDisplayName = getCurrencyDisplayName({
+    coinSymbol: transfer.coinSymbol,
+    tokenSymbol: transfer.tokenSymbol,
+  });
 
   const totalFee = Big(gasFee ?? '0').add(transfer.fakeGasFee ?? '0');
 
-  let feeText = `${t('GasFee')}: ${gasFeeIsAccurate ? '' : '≈'}${formatAmountWithCommas(totalFee.toString())} ${transfer?.coinSymbol}`;
+  let feeText = `${t('GasFee')}: ${gasFeeIsAccurate ? '' : '≈'}${formatAmountWithCommas(totalFee.toString())} ${getCurrencyDisplayName({ coinSymbol: transfer.coinSymbol })}`;
 
   if (isDelegated) {
     feeText = `${t('DelegatedGasFee')}: ${
@@ -298,10 +298,15 @@ export function TransactionHistoryListItem({
               <IonText>
                 <p style={{ color: 'var(--ion-text-color-alt)' }}>
                   {t('Bal')}:{' '}
-                  {transfer.updatedBalance?.get(
-                    `${activeAccount?.identity}-internal`
+                  {formatAmountWithCommas(
+                    transfer.updatedBalance?.get(
+                      `${activeAccount?.identity}-internal`
+                    ) ?? '0'
                   )}{' '}
-                  {currencyDisplayName}
+                  {getCurrencyDisplayName({
+                    coinSymbol: transfer.coinSymbol,
+                    tokenSymbol: transfer.tokenSymbol,
+                  })}
                 </p>
               </IonText>
             )}

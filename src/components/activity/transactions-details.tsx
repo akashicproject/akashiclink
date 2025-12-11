@@ -1,4 +1,8 @@
-import { TransactionLayer, TransactionType } from '@helium-pay/backend';
+import {
+  getCurrencyDisplayName,
+  TransactionLayer,
+  TransactionType,
+} from '@helium-pay/backend';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
 
@@ -113,18 +117,22 @@ const WithdrawDetails = ({
     .add(internalFee)
     .add(currentTransfer.tokenSymbol ? Big(0) : totalFee);
 
-  // If token, displayed as "USDT" for L1 and "USDT (ETH)" for L2 (since
-  // deducing the chain the token belongs to is not trivial)
-  const currencyDisplayName = currentTransfer?.tokenSymbol
-    ? currentTransfer?.tokenSymbol +
-      (isL2 ? ` (${currentTransfer.coinSymbol})` : '')
-    : currentTransfer?.coinSymbol;
+  const currencyDisplayName = getCurrencyDisplayName({
+    coinSymbol: currentTransfer.coinSymbol,
+    tokenSymbol: currentTransfer.tokenSymbol,
+  });
 
+  // Fee is in same unit as transaction if L2 or delegated. Otherwise fee is
+  // always native
   const feeCurrencyDisplayName =
     currentTransfer?.tokenSymbol && (isL2 || currentTransfer.feeIsDelegated)
-      ? currentTransfer?.tokenSymbol +
-        (isL2 ? ` (${currentTransfer.coinSymbol})` : '')
-      : currentTransfer?.coinSymbol;
+      ? getCurrencyDisplayName({
+          coinSymbol: currentTransfer.coinSymbol,
+          tokenSymbol: currentTransfer.tokenSymbol,
+        })
+      : getCurrencyDisplayName({
+          coinSymbol: currentTransfer.coinSymbol,
+        });
 
   return (
     <List lines="none">
@@ -164,7 +172,7 @@ const WithdrawDetails = ({
           isL2 || !currentTransfer.tokenSymbol || currentTransfer.feeIsDelegated
             ? undefined
             : `+${formatAmountWithCommas(totalFee.toString())} ${
-                currentTransfer.coinSymbol
+                feeCurrencyDisplayName
               }${gasFeeIsEstimate ? '*' : ''}`
         }
         valueSize={'md'}
@@ -186,14 +194,17 @@ const DepositDetails = ({
   currentTransfer: ITransactionRecordForExtension;
 }) => {
   const { t } = useTranslation();
+
+  const currencyDisplayName = getCurrencyDisplayName({
+    coinSymbol: currentTransfer.coinSymbol,
+    tokenSymbol: currentTransfer.tokenSymbol,
+  });
   return (
     <List lines="none">
       <h3 className="ion-text-align-left ion-margin-0">{t('Deposit')}</h3>
       <ListLabelValueItem
         label={t('Total')}
-        value={`${currentTransfer.amount} ${
-          currentTransfer.tokenSymbol ?? currentTransfer.coinSymbol
-        }`}
+        value={`${formatAmountWithCommas(currentTransfer.amount)} ${currencyDisplayName}`}
         valueSize={'md'}
         valueBold
       />
