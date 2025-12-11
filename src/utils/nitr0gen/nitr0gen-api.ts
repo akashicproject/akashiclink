@@ -1,21 +1,21 @@
 import { type IKey, TransactionHandler } from '@activeledger/sdk';
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
+import { App } from '@capacitor/app';
+import { Capacitor } from '@capacitor/core';
+import { datadogRum } from '@datadog/browser-rum';
 import type {
   CoinSymbol,
   CryptoCurrencySymbol,
   IBaseAcTransaction,
   ITerriAcTransaction,
-} from '@akashic/as-backend';
+} from '@helium-pay/backend';
 import {
   EthLikeSymbol,
   isCoinSymbol,
   KeyError,
   NetworkDictionary,
   OtherError,
-} from '@akashic/as-backend';
-import { App } from '@capacitor/app';
-import { Capacitor } from '@capacitor/core';
-import { datadogRum } from '@datadog/browser-rum';
+} from '@helium-pay/backend';
 import axios, { isAxiosError } from 'axios';
 
 import { prefixWithAS } from '../convert-as-prefix';
@@ -73,30 +73,11 @@ enum TestNetContracts {
   NFTAasRecordTesting = '461846656354b677f530a978b249b0b5373a0c576ed3947a6ecebed7c3fec1b5@1',
 }
 
-enum StagingContracts {
-  Namespace = 'akashicdev',
-  Create = '2c6fd805a95196b641c21e23a3d47d63570d8cb4d1025a7951ae4561e4dc5de7@1',
-  CreateSecondaryOtk = 'e719d2086a98881cd4ac620550387224216af8423bbeffe6c32945e140e7a1f8@1',
-  CryptoTransfer = '6d67fb1befa15a27a712b7b525b6053f0c10a16089e0527b55a9be58121da248@1',
-  DiffConsensus = '0d46b234d158b83fcc382287bbda934d5001c6e73b2a1e04e5ff4160b857ddaa@1',
-  AssignKey = 'd7499c07cb3bf4d3ef9f533e6c5b86ad939f2c61af7ddef8b3c73906ca216706@1',
-  Onboard = '41830891180c33873532f9a8f10a5bb1f28052e98341ae2a362688e15042bae7@1',
-  AfxOnboard = '240bc44c437ca6c63a095ae83403bdc9a3d8a7ac1ebba5ba5735396f238c4b92@1',
-  NFTNamespace = 'akashicnft',
-  NFTTransfer = 'akashicnft',
-  NFTAasRecord = '',
-  NFTAasRecordTesting = '',
-}
-
 const NFT_RECORD_TYPE = 'wallet';
 const NFT_RECORD_NAME = 'key';
 
 const Nitr0gen =
-  process.env.REACT_APP_ENV === 'prod'
-    ? ProductionContracts
-    : process.env.REACT_APP_ENV === 'preprod'
-      ? TestNetContracts
-      : StagingContracts;
+  process.env.REACT_APP_ENV === 'prod' ? ProductionContracts : TestNetContracts;
 
 const fxMultiSignIdentity =
   process.env.REACT_APP_ENV === 'prod'
@@ -110,7 +91,7 @@ export async function signTxBody<T extends IBaseAcTransaction>(
   const txHandler = new TransactionHandler();
   if (!process.env.REACT_APP_REDIS_DB_INDEX) {
     throw new Error(
-      'You must specify the variable `REACT_APP_REDIS_DB_INDEX` in your AW .env file or you will clobber preprod!'
+      'You must specify the variable `REACT_APP_REDIS_DB_INDEX` in your AW .env file or you will clobber staging!'
     );
   }
   // For payouts, the backend should already have set it. Hence the `??=`
@@ -223,7 +204,7 @@ export class Nitr0genApi {
   /**
    * Helper method to send get or post-requests to a Nitr0gen Gateway
    * TODO: For now, prod uses the gateway with API key,
-   *  while preprod goes directly to a node.
+   *  while staging goes directly to a node.
    *  When Prod also moves to direct, can remove `headers` and the conditional safe-making
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
