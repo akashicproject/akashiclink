@@ -1,5 +1,5 @@
 {
-  "buildCommand": "yarn run build",
+  "buildCommand": "turbo build",
   "installCommand": "echo \" \"",
   "framework": "ionic-react"
 }
