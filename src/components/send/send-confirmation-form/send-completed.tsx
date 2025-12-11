@@ -2,6 +2,8 @@ import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAccountMe } from '../../../utils/hooks/useAccountMe';
+import { useMyTransfersInfinite } from '../../../utils/hooks/useMyTransfersInfinite';
 import { PrimaryButton } from '../../common/buttons';
 import { ErrorIconWithTitle } from '../../common/state-icon-with-title/error-icon-with-title';
 import { SuccessfulIconWithTitle } from '../../common/state-icon-with-title/successful-icon-with-title';
@@ -12,6 +14,8 @@ export const SendCompleted = () => {
   const { t } = useTranslation();
   const { setStep, sendConfirm, setSendConfirm, setIsModalOpen } =
     useContext(SendFormContext);
+  const { mutateMyTransfers } = useMyTransfersInfinite();
+  const { mutate: mutateAccountMe } = useAccountMe();
 
   const txnsDetail = sendConfirm;
 
@@ -22,6 +26,8 @@ export const SendCompleted = () => {
   }
 
   const onFinish = () => {
+    mutateMyTransfers();
+    mutateAccountMe();
     setStep(0);
     setSendConfirm(undefined);
     setIsModalOpen(false);
