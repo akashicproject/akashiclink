@@ -19,6 +19,10 @@ const PercentageBadge = styled(IonBadge)({
   borderRadius: '16px',
 });
 
+const RelativeSign = styled.div({
+  color: 'var(--ion-color-outline)',
+});
+
 export const TotalBalance = () => {
   const { t } = useTranslation();
   const { totalBalanceInUsd } = useTotalCryptoCurrencyBalances();
@@ -44,10 +48,10 @@ export const TotalBalance = () => {
         'ion-display-flex ion-padding-block-md ion-flex-direction-column ion-gap-xxs'
       }
     >
-      <IonText className="ion-text-size-sm ion-text-color-grey ion-text-bold">
+      <IonText className="ion-text-size-lg ion-text-color-grey ion-text-bold">
         {t('TotalBalance')}
       </IonText>
-      <IonText className="ion-text-size-xxxxl ion-text-bold">
+      <IonText className="ion-text-size-xxxxl ion-text-bold ">
         {`$${formatAmountWithCommas(Big(totalBalanceInUsd ?? '0').toFixed(2, Big.roundDown), 2)}`}
       </IonText>
       <div
@@ -55,13 +59,13 @@ export const TotalBalance = () => {
           'ion-display-flex ion-align-items-center ion-justify-content-center ion-gap-xs'
         }
       >
-        <IonText className="ion-text-size-sm">
+        <RelativeSign className="ion-text-size-md ion-text-bold">
           {`${relativeSign}$${Big(balanceDiff.abs()).toFixed(
             2,
             Big.roundDown
           )}`}
-        </IonText>
-        <PercentageBadge className="ion-text-size-xs">
+        </RelativeSign>
+        <PercentageBadge className="ion-text-size-md">
           {`${Big(balanceDiffPercent).toFixed(2, Big.roundDown)}%`}
         </PercentageBadge>
       </div>

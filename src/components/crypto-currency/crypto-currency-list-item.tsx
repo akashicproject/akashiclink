@@ -54,14 +54,14 @@ const CryptoCurrencyListItem = ({
         />
         <TextContainer>
           <div
-            className="ion-text-size-sm ion-text-bold"
+            className="ion-text-size-md ion-text-bold"
             style={{ color: 'var(--ion-text-color-alt)' }}
           >
             {currency.displayName}
           </div>
           <div
             className="ion-text-size-xs"
-            style={{ color: 'var(--ion-text-color-alt)' }}
+            style={{ color: 'var(--ion-color-outline)' }}
           >{`${formatAmountWithCommas(balance ?? '0')} ${currency.tokenSymbol ?? currency.coinSymbol}`}</div>
         </TextContainer>
       </ContentWrapper>
