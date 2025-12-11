@@ -103,7 +103,5 @@ app/src/main/res/xml/config.xml
 **/key/
 .env.production
 .env.preprod
-.env.staging
 keystore-preprod.properties
 keystore-production.properties
-keystore-staging.properties

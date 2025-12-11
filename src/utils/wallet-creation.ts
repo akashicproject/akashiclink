@@ -27,7 +27,7 @@ export async function createAccountWithAllL1Addresses(
   // set 1s timeout for owner creation event to arrive db
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  // mainnets for production accounts and testnets for staging and local accounts
+  // mainnets for production accounts and testnets for preprod and local accounts
   await bulkCreateOrAssignKeys(fullOtk, NETWORKS_TO_CREATE_L1_ADDRESSES_FOR);
 
   return { otk: fullOtk };

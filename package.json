@@ -145,6 +145,7 @@
     "@craco/types": "7.1.0",
     "@datadog/datadog-ci": "2.43.0",
     "@shared/eslint": "workspace:^",
+    "@shared/semantic-release": "workspace:^",
     "@storybook/addon-coverage": "1.0.4",
     "@storybook/addon-docs": "^8.3.6",
     "@storybook/addon-essentials": "^8.3.6",

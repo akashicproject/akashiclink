@@ -31,7 +31,6 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.preprod.local
-.env.staging.local
 .env.production.local
 
 # vercel
