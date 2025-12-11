@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import type { CoinSymbol, CryptoCurrencyWithName } from '@helium-pay/backend';
+import { NetworkDictionary } from '@helium-pay/backend/src/modules/api-interfaces/networks/networks.model';
 import { IonCheckbox, IonIcon, IonText } from '@ionic/react';
 import { caretDown } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
@@ -129,7 +130,7 @@ export const DashboardPreferenceCurrencyGroup = ({
             />
           )}
           <h5 className="ion-no-margin ion-text-size-md ion-text-bold">
-            {mainCurrency?.displayName ?? chain}
+            {NetworkDictionary[chain]?.displayName ?? chain}
           </h5>
           {selectedCount > 0 && <CountBadge>{selectedCount}</CountBadge>}
         </TokenHeader>
