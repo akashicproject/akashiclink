@@ -49,7 +49,7 @@ enum ProductionContracts {
   DiffConsensus = '94479927cbe0860a3f51cbd36230faef7d1b69974323a83c8abcc78e3d0e8dd9@1',
   AssignKey = '7afea15e8028af9f5aeafb6db6c0d2e8969c0c0492360ab15a6bc3754b818e19@1',
   Onboard = 'a456ddc07da6d46a6897d24de188e767b87a9d9f2f3c617d858aaf819e0e5bce@1',
-  AfxOnboad = '', // TODO: update production contract
+  AfxOnboard = '', // TODO: update production contract
   NFTNamespace = 'akashicnft',
   NFTTransfer = 'e7ba6aa2aea7ae33f6bce49a07e6f8a2e6a5983e66b44f236e76cf689513c20a@1',
   NFTAasRecord = '6b1acfbfba1f54571036fd579f509f4c60ac1e363c111f70815bea33957cf64a@1',
@@ -64,7 +64,7 @@ enum TestNetContracts {
   DiffConsensus = '17be1db84dbf81c1ff1b2f5aebd4ba4e95d81338daf98d7c2bc7b54ad8994d1c@1',
   AssignKey = 'a6e95e2f563bdac69bfa265b1c215bf2125e1c50048f68f9c0b52982e320d675@1',
   Onboard = 'c19c6f4d3c443ae7abb14d17d33b29d134df8d11bdabc568bd23f7023ee991fd@1',
-  AfxOnboad = '205eb96fcc4ca79bde62475177c3f189f098776ff74b66246bf0df6e4a54b5de@1',
+  AfxOnboard = '205eb96fcc4ca79bde62475177c3f189f098776ff74b66246bf0df6e4a54b5de@1',
   NFTNamespace = 'akashicnft',
   NFTTransfer = '604fd945206ef3bf410a714971152576e75ad98bec9eaef169a5c6fffcf4c2d1@1',
   // The "Testing" contract has a 60s cooldown on Alias-linking (vs 72hrs for
@@ -377,7 +377,7 @@ export class Nitr0genApi {
     const txBody: IBaseAcTransaction = {
       $tx: {
         $namespace: Nitr0gen.Namespace,
-        $contract: Nitr0gen.AfxOnboad,
+        $contract: Nitr0gen.AfxOnboard,
         $i: {
           owner: {
             $stream: otk.identity,
