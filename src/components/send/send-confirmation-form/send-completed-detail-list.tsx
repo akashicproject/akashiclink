@@ -1,4 +1,8 @@
-import { NetworkDictionary } from '@helium-pay/backend';
+import {
+  CoinSymbol,
+  NetworkDictionary,
+  suffixForSolanaDevnetURL,
+} from '@helium-pay/backend';
 import { IonItem, IonText } from '@ionic/react';
 import Big from 'big.js';
 import { useContext } from 'react';
@@ -55,9 +59,14 @@ export const SendCompletedDetailList = () => {
     value: string
   ) => {
     if (type === 'account') {
-      return isL2
-        ? `${process.env.REACT_APP_SCAN_BASE_URL}/accounts/${value}`
-        : `${NetworkDictionary[coinSymbol].addressUrl}/${value}`;
+      if (isL2) {
+        return `${process.env.REACT_APP_SCAN_BASE_URL}/accounts/${value}`;
+      }
+      let url = `${NetworkDictionary[coinSymbol].addressUrl}/${value}`;
+      if (coinSymbol === CoinSymbol.Solana_Devnet) {
+        url += suffixForSolanaDevnetURL;
+      }
+      return url;
     }
     // Or if transaction
     return `${process.env.REACT_APP_SCAN_BASE_URL}/transactions/${value}`;
