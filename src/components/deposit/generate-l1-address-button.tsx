@@ -38,9 +38,9 @@ export const GenerateL1AddressButton = ({
       // Attempt to create missing l1 address
       if (!existingL1Address && cacheOtk && !isGeneratingAddress) {
         setIsGeneratingAddress(true);
-        await createL1Address(cacheOtk, chain);
+        const address = await createL1Address(cacheOtk, chain);
         await mutate();
-        await fetchAndRemapL1Address();
+        await fetchAndRemapL1Address(address, chain);
       }
     } catch (e) {
       console.warn(e as Error);
