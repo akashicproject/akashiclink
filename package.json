@@ -29,7 +29,6 @@
     "start:dev": "DISABLE_ESLINT_PLUGIN=true PORT=3001 craco start",
     "lint": "npx eslint . --cache",
     "lint:fix": "yarn lint --fix",
-    "prettier:check": "npx prettier --check \"**/*.ts\"",
     "typecheck": "tsc --project ./tsconfig.json --noEmit",
     "storybook": "REACT_APP_API_BASE_URL=http://localhost:6006/api/v0 DISABLE_ESLINT_PLUGIN=true storybook dev -p 6006 -c ./storybook",
     "test-storybook": "TARGET_URL=http://localhost:6006 test-storybook --config-dir storybook --verbose",
@@ -38,10 +37,7 @@
     "ionic:serve": "craco start",
     "debug:android": "env-cmd -f .env.staging.local ionic cap run android -l --external",
     "debug:ios": "env-cmd -f .env.staging.local ionic cap run ios -l --external",
-    "analyze-bundle": "craco build && source-map-explorer 'build/static/js/*.js'",
-    "semantic-release:android": "semantic-release --tag-format android-v\\${version}",
-    "semantic-release:ios": "semantic-release --tag-format ios-v\\${version}",
-    "semantic-release:chrome-extension": "semantic-release --tag-format chrome-extension-v\\${version}"
+    "analyze-bundle": "craco build && source-map-explorer 'build/static/js/*.js'"
   },
   "dependencies": {
     "@activeledger/activecrypto": "^2.12.3",
@@ -202,52 +198,6 @@
   "msw": {
     "workerDirectory": [
       "public"
-    ]
-  },
-  "release": {
-    "extends": "semantic-release-monorepo",
-    "branches": [
-      "main",
-      {
-        "name": "staging",
-        "prerelease": true
-      }
-    ],
-    "repositoryUrl": "https://gitlab.com/dreamsai/cpg-2/HeliumPay-monorepo",
-    "plugins": [
-      [
-        "@semantic-release/commit-analyzer",
-        {
-          "preset": "angular",
-          "releaseRules": [
-            {
-              "type": "chore",
-              "release": "patch"
-            },
-            {
-              "type": "refactor",
-              "release": "patch"
-            },
-            {
-              "type": "hotfix",
-              "release": "patch"
-            }
-          ]
-        }
-      ],
-      "@semantic-release/release-notes-generator",
-      [
-        "@semantic-release/gitlab",
-        {
-          "successCommentCondition": false
-        }
-      ],
-      [
-        "@semantic-release/exec",
-        {
-          "publishCmd": "cd ../.. && SEMANTIC_VERSION=${nextRelease.version} bash ci/scripts/deploy-wallet-extension.sh"
-        }
-      ]
     ]
   }
 }
