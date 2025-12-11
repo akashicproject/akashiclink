@@ -9,7 +9,7 @@ export function Activity() {
       <IonGrid>
         <IonRow>
           <IonCol size="12">
-            <TransactionHistoryList isFilterLayer isFilterType isFilterNFT />
+            <TransactionHistoryList isFilterType isFilterNFT />
           </IonCol>
         </IonRow>
       </IonGrid>

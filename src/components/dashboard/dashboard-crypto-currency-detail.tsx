@@ -110,7 +110,6 @@ export function DashboardCryptoCurrencyDetail({
         </IonCol>
         <IonCol size={'12'}>
           <TransactionHistoryList
-            isFilterLayer
             isFilterType
             minHeight={'calc(80vh - 312px - var(--ion-safe-area-bottom))'}
             currency={walletCurrency}

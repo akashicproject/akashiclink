@@ -8,12 +8,12 @@ import {
   IonButton,
   IonCheckbox,
   IonContent,
-  IonPopover,
+  IonModal,
   IonSpinner,
   IonText,
 } from '@ionic/react';
-import { filterOutline } from 'ionicons/icons';
-import { type MouseEvent, useRef, useState } from 'react';
+import { closeOutline, filterOutline } from 'ionicons/icons';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type GridComponents, Virtuoso } from 'react-virtuoso';
 
@@ -25,43 +25,17 @@ import { themeType } from '../../theme/const';
 import { formatMergeAndSortNftAndCryptoTransfers } from '../../utils/formatTransfers';
 import { useMyTransfersInfinite } from '../../utils/hooks/useMyTransfersInfinite';
 import { useNftTransfersMe } from '../../utils/hooks/useNftTransfersMe';
-import { IconButton, OutlineButton, WhiteButton } from '../common/buttons';
+import { IconButton, PrimaryButton, WhiteButton } from '../common/buttons';
 import { Divider } from '../common/divider';
 import { AlertIcon } from '../common/icons/alert-icon';
 import { TransactionHistoryListItem } from './transaction-history-list-item';
 
 const ALL = 'All';
 
-const LayerButton = styled(OutlineButton)<{ isSelected: boolean }>(
-  ({ isSelected }) => ({
-    margin: 0,
-    minHeight: '14px',
-    '--padding-top': '4px',
-    '--padding-bottom': '4px',
-    ['&::part(native)']: {
-      borderRadius: '8px',
-      fontSize: '10px',
-      fontWeight: 700,
-      height: '24px',
-      minHeight: '24px',
-      minWidth: '48px',
-      ['&:active, &:focus, &:hover']: {
-        background: 'var(--ion-color-primary-container)',
-        color: 'var(--ion-color-white)',
-      },
-      ...(isSelected
-        ? {
-            background: 'var(--ion-color-primary-container)',
-            color: 'var(--ion-color-white)',
-          }
-        : {}),
-    },
-  })
-);
-
 const TxnTypeTabsButton = styled(IonButton)<{ isSelected: boolean }>(
   ({ isSelected }) => ({
     margin: 0,
+    // eslint-disable-next-line sonarjs/no-duplicate-string
     color: 'var(--ion-color-inverse-surface)',
     fontSize: '10px',
     fontWeight: 700,
@@ -131,31 +105,64 @@ const ListFooter: GridComponents['Footer'] = ({
   );
 };
 
-interface NFTDropdownProps {
+interface FilterDropdownProps {
   nftFilter: { coin: boolean; nft: boolean };
   setNftFilter: React.Dispatch<
     React.SetStateAction<{ coin: boolean; nft: boolean }>
   >;
+  layerFilter: { l1: boolean; l2: boolean };
+  setLayerFilter: React.Dispatch<
+    React.SetStateAction<{ l1: boolean; l2: boolean }>
+  >;
 }
 
-const TxnTypeDropdown: React.FC<NFTDropdownProps> = ({
+const FiltersDropdown: React.FC<FilterDropdownProps> = ({
   nftFilter,
   setNftFilter,
+  layerFilter,
+  setLayerFilter,
 }) => {
   const { t } = useTranslation();
 
-  const popoverRef = useRef<HTMLIonPopoverElement>(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tempNftFilter, setTempNftFilter] = useState(nftFilter);
+  const [tempLayerFilter, setTempLayerFilter] = useState(layerFilter);
 
-  const toggleDropdown = (e: MouseEvent<Element>) => {
-    popoverRef.current!.event = e;
-    setIsDropdownOpen(!isDropdownOpen);
+  const openModal = () => {
+    setTempNftFilter(nftFilter);
+    setTempLayerFilter(layerFilter);
+    setIsModalOpen(true);
   };
 
-  const toggleNftFilter = (key: 'coin' | 'nft') => {
-    setNftFilter((prev) => {
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleReset = () => {
+    setTempNftFilter({ coin: true, nft: true });
+    setTempLayerFilter({ l1: true, l2: true });
+  };
+
+  const handleApply = () => {
+    setNftFilter(tempNftFilter);
+    setLayerFilter(tempLayerFilter);
+    setIsModalOpen(false);
+  };
+
+  const toggleTempNftFilter = (key: 'coin' | 'nft') => {
+    setTempNftFilter((prev) => {
       const updatedFilter = { ...prev, [key]: !prev[key] };
       if (!updatedFilter.coin && !updatedFilter.nft) {
+        updatedFilter[key] = true;
+      }
+      return updatedFilter;
+    });
+  };
+
+  const toggleTempLayerFilter = (key: 'l1' | 'l2') => {
+    setTempLayerFilter((prev) => {
+      const updatedFilter = { ...prev, [key]: !prev[key] };
+      if (!updatedFilter.l1 && !updatedFilter.l2) {
         updatedFilter[key] = true;
       }
       return updatedFilter;
@@ -168,50 +175,164 @@ const TxnTypeDropdown: React.FC<NFTDropdownProps> = ({
         className={'ion-margin-0'}
         size={24}
         icon={filterOutline}
-        onClick={toggleDropdown}
-        aria-expanded={isDropdownOpen}
+        onClick={openModal}
       />
-      <IonPopover
-        side="left"
-        alignment="center"
-        ref={popoverRef}
-        isOpen={isDropdownOpen}
-        onDidDismiss={() => setIsDropdownOpen(false)}
+      <IonModal
+        handle={true}
+        initialBreakpoint={0.92}
+        breakpoints={[0, 0.92]}
+        isOpen={isModalOpen}
+        onIonModalDidDismiss={closeModal}
         style={{
-          '--width': '120px',
-          '--max-width': '120px',
+          '--border-radius': '24px',
+          '--background': 'var(--ion-background-color)',
         }}
       >
-        <IonContent>
-          <CheckboxLabel>
-            <IonCheckbox
-              checked={nftFilter.coin}
-              onIonChange={() => toggleNftFilter('coin')}
-            />
-            {t('Coin')}
-          </CheckboxLabel>
-          <CheckboxLabel>
-            <IonCheckbox
-              checked={nftFilter.nft}
-              onIonChange={() => toggleNftFilter('nft')}
-            />
-            NFT
-          </CheckboxLabel>
+        <IonContent style={{ '--background': 'var(--ion-background-color)' }}>
+          <div
+            style={{
+              padding: '24px',
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+            }}
+          >
+            {/* Header */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '24px',
+              }}
+            >
+              <IconButton
+                size={24}
+                icon={closeOutline}
+                onClick={closeModal}
+                style={{ color: 'var(--ion-color-inverse-surface)' }}
+              />
+              <IonButton
+                fill="clear"
+                onClick={handleReset}
+                style={{
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  color: 'var(--ion-color-inverse-surface)',
+                  textTransform: 'none',
+                }}
+              >
+                {t('Reset')}
+              </IonButton>
+            </div>
+
+            {/* Title */}
+            <h2
+              style={{
+                textAlign: 'left',
+                fontSize: '20px',
+                fontWeight: 700,
+                margin: '0 0 32px 0',
+                color: 'var(--ion-color-inverse-surface)',
+              }}
+            >
+              {t('Filters')}
+            </h2>
+
+            {/* Content */}
+            <div style={{ flex: 1, overflowY: 'auto' }}>
+              {/* Transaction Layers Section */}
+              <div style={{ marginBottom: '24px' }}>
+                <h3
+                  style={{
+                    textAlign: 'left',
+                    fontSize: '14px',
+                    fontWeight: 700,
+                    margin: '0 0 16px 0',
+                    color: 'var(--ion-color-inverse-surface)',
+                  }}
+                >
+                  {t('TransactionLayers')}
+                </h3>
+                <CheckboxLabel>
+                  <IonCheckbox
+                    checked={tempLayerFilter.l1}
+                    onIonChange={() => toggleTempLayerFilter('l1')}
+                    style={{ '--size': '24px', '--border-radius': '4px' }}
+                  />
+                  <span style={{ fontSize: '16px' }}>{t('Layer1')}</span>
+                </CheckboxLabel>
+                <CheckboxLabel>
+                  <IonCheckbox
+                    checked={tempLayerFilter.l2}
+                    onIonChange={() => toggleTempLayerFilter('l2')}
+                    style={{ '--size': '24px', '--border-radius': '4px' }}
+                  />
+                  <span style={{ fontSize: '16px' }}>{t('Layer2')}</span>
+                </CheckboxLabel>
+              </div>
+
+              {/* Transaction Types Section */}
+              <div>
+                <h3
+                  style={{
+                    textAlign: 'left',
+                    fontSize: '14px',
+                    fontWeight: 700,
+                    margin: '0 0 16px 0',
+                    color: 'var(--ion-color-inverse-surface)',
+                  }}
+                >
+                  {t('TransactionTypes')}
+                </h3>
+                <CheckboxLabel>
+                  <IonCheckbox
+                    checked={tempNftFilter.coin}
+                    onIonChange={() => toggleTempNftFilter('coin')}
+                    style={{ '--size': '24px', '--border-radius': '4px' }}
+                  />
+                  <span style={{ fontSize: '16px' }}>{t('Coin')}</span>
+                </CheckboxLabel>
+                <CheckboxLabel>
+                  <IonCheckbox
+                    checked={tempNftFilter.nft}
+                    onIonChange={() => toggleTempNftFilter('nft')}
+                    style={{ '--size': '24px', '--border-radius': '4px' }}
+                  />
+                  <span style={{ fontSize: '16px' }}>{t('NFT')}</span>
+                </CheckboxLabel>
+              </div>
+            </div>
+
+            {/* Apply Button */}
+            <PrimaryButton
+              expand="block"
+              onClick={handleApply}
+              style={{
+                marginTop: '24px',
+                fontSize: '16px',
+                fontWeight: 700,
+                height: '56px',
+                borderRadius: '28px',
+                textTransform: 'none',
+              }}
+            >
+              {t('ApplyFilters')}
+            </PrimaryButton>
+          </div>
         </IonContent>
-      </IonPopover>
+      </IonModal>
     </>
   );
 };
 
 export const TransactionHistoryList: React.FC<{
-  isFilterLayer?: boolean;
   isFilterType?: boolean;
   isFilterNFT?: boolean;
   currency?: CryptoCurrency;
   minHeight?: string;
   onClick?: () => void;
 }> = ({
-  isFilterLayer = false,
   isFilterType = false,
   isFilterNFT = false,
   currency,
@@ -220,9 +341,11 @@ export const TransactionHistoryList: React.FC<{
 }) => {
   const storedTheme = useAppSelector(selectTheme);
 
-  const [layerFilter, setLayerFilter] = useState<typeof ALL | TransactionLayer>(
-    ALL
-  );
+  const [layerFilter, setLayerFilter] = useState<{ l1: boolean; l2: boolean }>({
+    l1: true,
+    l2: true,
+  });
+
   const [transferTypeFilter, setTransferTypeFilter] = useState<
     typeof ALL | TransactionType
   >(ALL);
@@ -249,7 +372,8 @@ export const TransactionHistoryList: React.FC<{
     transfers,
     nftTransfers,
     {
-      ...(layerFilter !== ALL && { layer: layerFilter }),
+      ...(!layerFilter.l1 && layerFilter.l2 && { layer: TransactionLayer.L2 }),
+      ...(layerFilter.l1 && !layerFilter.l2 && { layer: TransactionLayer.L1 }),
       ...(transferTypeFilter !== ALL && { transferType: transferTypeFilter }),
       ...(!!currency && { currency: currency }),
       txnType: [
@@ -260,12 +384,6 @@ export const TransactionHistoryList: React.FC<{
   );
 
   const isDataLoaded = !isLoading && !isLoadingNft;
-
-  const layerOptions = [
-    { label: t('All'), value: ALL },
-    { label: 'L1', value: TransactionLayer.L1 },
-    { label: 'L2', value: TransactionLayer.L2 },
-  ];
 
   const typeOptions = [
     { label: t('All'), value: ALL },
@@ -284,21 +402,6 @@ export const TransactionHistoryList: React.FC<{
           <IonText>
             <h4 className={'ion-margin-0'}>{t('History')}</h4>
           </IonText>
-          {isFilterLayer && (
-            <div className={'ion-display-flex ion-gap-xs'}>
-              {layerOptions.map((option) => (
-                <LayerButton
-                  isSelected={layerFilter === option.value}
-                  key={option.value}
-                  onClick={() =>
-                    setLayerFilter(option.value as TransactionLayer)
-                  }
-                >
-                  {option.label}
-                </LayerButton>
-              ))}
-            </div>
-          )}
         </div>
         <Divider
           borderColor={storedTheme === themeType.DARK ? '#2F2F2F' : '#D9D9D9'}
@@ -326,9 +429,11 @@ export const TransactionHistoryList: React.FC<{
             </div>
           )}
           {isFilterNFT && (
-            <TxnTypeDropdown
+            <FiltersDropdown
               nftFilter={txnTypeFilter}
               setNftFilter={setTxnTypeFilter}
+              layerFilter={layerFilter}
+              setLayerFilter={setLayerFilter}
             />
           )}
         </div>
