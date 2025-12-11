@@ -1,7 +1,7 @@
 import {
   type CoinSymbol,
   type IOwnerOldestKeysResponse,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type KeyedMutator } from 'swr';

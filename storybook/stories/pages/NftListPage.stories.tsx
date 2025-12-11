@@ -1,4 +1,4 @@
-import { mockGetNftOwner, mockGetOwnerDetails } from '@helium-pay/api-mocks';
+import { mockGetNftOwner, mockGetOwnerDetails } from '@akashic/api-mocks';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Nfts } from '../../../src/pages/nft/nfts';

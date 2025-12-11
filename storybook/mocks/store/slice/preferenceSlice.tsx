@@ -1,5 +1,5 @@
-import type { CryptoCurrencySymbol } from '@helium-pay/backend';
-import { CoinSymbol } from '@helium-pay/backend';
+import type { CryptoCurrencySymbol } from '@akashic/as-backend';
+import { CoinSymbol } from '@akashic/as-backend';
 
 import type { PreferenceState } from '../../../../src/redux/slices/preferenceSlice';
 

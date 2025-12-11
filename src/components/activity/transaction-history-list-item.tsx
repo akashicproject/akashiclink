@@ -1,11 +1,11 @@
-import styled from '@emotion/styled';
 import {
   getCurrencyDisplayName,
   getCurrencyIcon,
   TransactionLayer,
   TransactionStatus,
   TransactionType,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
+import styled from '@emotion/styled';
 import { IonImg, IonText } from '@ionic/react';
 import Big from 'big.js';
 import { type CSSProperties, useEffect, useState } from 'react';

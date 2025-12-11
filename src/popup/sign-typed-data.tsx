@@ -1,4 +1,3 @@
-import { datadogRum } from '@datadog/browser-rum';
 import {
   type CoinSymbol,
   type CryptoCurrencySymbol,
@@ -7,7 +6,8 @@ import {
   type ITreasuryKeyNetworkThreshold,
   L2Regex,
   nitr0genNativeCoin,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
+import { datadogRum } from '@datadog/browser-rum';
 import { getSdkError } from '@walletconnect/utils';
 import { type Web3WalletTypes } from '@walletconnect/web3wallet';
 import { useCallback, useEffect, useState } from 'react';

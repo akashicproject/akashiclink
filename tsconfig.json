@@ -7,9 +7,9 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "baseUrl": "./",
     "paths": {
-      "@helium-pay/backend": ["../../../apps/backend/src/index"],
-      "@helium-pay/common-i18n": ["../../packages/common-i18n/src/index"],
-      "@helium-pay/api-mocks": ["../../packages/api-mocks/src/index"]
+      "@akashic/as-backend": ["../../../apps/backend/src/index"],
+      "@akashic/common-i18n": ["../../packages/common-i18n/src/index"],
+      "@akashic/api-mocks": ["../../packages/api-mocks/src/index"]
     }
   },
   "include": [

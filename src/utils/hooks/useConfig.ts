@@ -1,4 +1,4 @@
-import type { IConfigResponse } from '@helium-pay/backend';
+import type { IConfigResponse } from '@akashic/as-backend';
 import { isPlatform } from '@ionic/react';
 import useSWR from 'swr';
 

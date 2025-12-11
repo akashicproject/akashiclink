@@ -6,7 +6,7 @@ import {
   PRESET_NFT_ALIAS,
   PRESET_OWNER_AAS_ALIAS,
   PRESET_OWNER_BALANCES,
-} from '@helium-pay/api-mocks';
+} from '@akashic/api-mocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent, within } from '@storybook/test';
 

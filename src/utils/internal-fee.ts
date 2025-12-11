@@ -2,7 +2,7 @@ import type {
   CoinSymbol,
   CryptoCurrencySymbol,
   IExchangeRate,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 import Big from 'big.js';
 
 import { INTERNAL_FEE_BASE } from '../constants/fee';

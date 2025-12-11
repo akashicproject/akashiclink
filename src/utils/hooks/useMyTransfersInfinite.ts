@@ -1,11 +1,11 @@
-import { Preferences } from '@capacitor/preferences';
-import type { IOwnerTransactionsResponse } from '@helium-pay/backend';
+import type { IOwnerTransactionsResponse } from '@akashic/as-backend';
 import {
   CryptoCurrencySymbol,
   TransactionResult,
   TransactionStatus,
   TransactionType,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
+import { Preferences } from '@capacitor/preferences';
 import type { AxiosRequestConfig } from 'axios';
 import Big from 'big.js';
 import useSWRInfinite from 'swr/infinite';

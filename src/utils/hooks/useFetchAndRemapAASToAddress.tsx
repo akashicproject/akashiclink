@@ -1,4 +1,4 @@
-import { type OtkType } from '@helium-pay/backend';
+import { type OtkType } from '@akashic/as-backend';
 
 import { useAccountStorage } from './useLocalAccounts';
 import { useNftMe } from './useNftMe';

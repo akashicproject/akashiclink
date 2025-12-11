@@ -1,6 +1,6 @@
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
+import { KeyError, type OtkType } from '@akashic/as-backend';
 import { datadogRum } from '@datadog/browser-rum';
-import { KeyError, type OtkType } from '@helium-pay/backend';
 import type { PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { isAxiosError } from 'axios';
 

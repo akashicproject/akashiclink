@@ -1,4 +1,4 @@
-import { Language } from '@helium-pay/common-i18n/src/locales/supported-languages';
+import { Language } from '@akashic/common-i18n/src/locales/supported-languages';
 
 import { useSetGlobalLanguage } from '../utils/hooks/useSetGlobalLanguage';
 

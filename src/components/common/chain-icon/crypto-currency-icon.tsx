@@ -2,7 +2,7 @@ import {
   type CoinSymbol,
   type CryptoCurrencySymbol,
   getCurrencyIcon,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 import { IonImg } from '@ionic/react';
 
 import { SUPPORTED_CURRENCIES_WITH_NAMES } from '../../../constants/currencies';

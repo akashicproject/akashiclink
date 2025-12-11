@@ -1,6 +1,6 @@
+import type { INftObject } from '@akashic/as-backend';
 import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
-import type { INftObject } from '@helium-pay/backend';
 import { IonContent, IonImg, IonPopover, IonRow } from '@ionic/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';

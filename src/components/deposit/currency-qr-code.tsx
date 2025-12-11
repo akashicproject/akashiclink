@@ -1,5 +1,5 @@
+import { type CoinSymbol } from '@akashic/as-backend';
 import styled from '@emotion/styled';
-import { type CoinSymbol } from '@helium-pay/backend';
 import { IonImg, IonSpinner } from '@ionic/react';
 import { QRCodeSVG } from 'qrcode.react';
 

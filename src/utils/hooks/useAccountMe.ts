@@ -1,4 +1,4 @@
-import type { IOwnerDetailsResponse } from '@helium-pay/backend';
+import type { IOwnerDetailsResponse } from '@akashic/as-backend';
 import useSWR from 'swr';
 
 import { REFRESH_INTERVAL } from '../../constants';

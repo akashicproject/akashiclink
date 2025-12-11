@@ -2,7 +2,7 @@ import {
   mockGetOwnerDetails,
   mockGetOwnerKeys,
   PRESET_L2_ADDRESS,
-} from '@helium-pay/api-mocks';
+} from '@akashic/api-mocks';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { SignTypedDataContent } from '../../../src/popup/sign-typed-data-content';

@@ -1,4 +1,4 @@
-import { type IWalletScreeningPaginatedAndCountResponse } from '@helium-pay/backend';
+import { type IWalletScreeningPaginatedAndCountResponse } from '@akashic/as-backend';
 import useSWRInfinite from 'swr/infinite';
 
 import { axiosBase } from '../axios-helper';

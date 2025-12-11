@@ -1,5 +1,5 @@
+import { type CryptoCurrencyWithName } from '@akashic/as-backend';
 import styled from '@emotion/styled';
-import { type CryptoCurrencyWithName } from '@helium-pay/backend';
 
 import { formatAmountWithCommas } from '../../utils/formatAmountWithCommas';
 import { useCryptoCurrencyBalance } from '../../utils/hooks/useCryptoCurrencyBalance';

@@ -1,4 +1,4 @@
-import type { ITransactionRecord } from '@helium-pay/backend';
+import type { ITransactionRecord } from '@akashic/as-backend';
 import Big from 'big.js';
 
 /**

@@ -1,8 +1,8 @@
-import styled from '@emotion/styled';
 import {
   getCurrencyIcon,
   type IWalletScreeningObject,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
+import styled from '@emotion/styled';
 import { IonImg, IonText } from '@ionic/react';
 import { type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';

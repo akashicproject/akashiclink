@@ -1,4 +1,3 @@
-import { Preferences } from '@capacitor/preferences';
 import {
   EthereumSymbol,
   FeeDelegationStrategy,
@@ -10,7 +9,8 @@ import {
   TransactionLayer,
   TransactionStatus,
   WalletType,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
+import { Preferences } from '@capacitor/preferences';
 
 import { useAppDispatch } from '../../redux/app/hooks';
 import { addLocalTransaction } from '../../redux/slices/localTransactionSlice';

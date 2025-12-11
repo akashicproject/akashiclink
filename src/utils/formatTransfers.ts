@@ -4,12 +4,12 @@ import type {
   ITransactionRecord,
   ITransactionRecordForFrontend,
   TransactionType,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 import {
   formatNftTransactionForFrontend,
   formatTransactionForFrontend,
   TransactionLayer,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 
 const akashicScanAccountsUrl = `${process.env.REACT_APP_SCAN_BASE_URL}/accounts`;
 const akashicScanTransactionsUrl = `${process.env.REACT_APP_SCAN_BASE_URL}/transactions`;

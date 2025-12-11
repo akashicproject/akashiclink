@@ -1,4 +1,4 @@
-import { type CoinSymbol } from '@helium-pay/backend';
+import { type CoinSymbol } from '@akashic/as-backend';
 
 import { ALLOWED_NETWORKS } from '../../constants/currencies';
 import { useAccountStorage } from './useLocalAccounts';

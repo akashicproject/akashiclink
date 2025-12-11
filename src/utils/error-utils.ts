@@ -1,11 +1,11 @@
-import { datadogRum } from '@datadog/browser-rum';
 import {
   AuthError,
   KeyError,
   NftError,
   OtherError,
   UserError,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
+import { datadogRum } from '@datadog/browser-rum';
 import axios from 'axios';
 
 import type { I18nKeys } from '../i18n/I18nNamespaces';

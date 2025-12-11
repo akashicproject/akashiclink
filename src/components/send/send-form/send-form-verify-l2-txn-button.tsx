@@ -1,4 +1,4 @@
-import { FeeDelegationStrategy } from '@helium-pay/backend';
+import { FeeDelegationStrategy } from '@akashic/as-backend';
 import {
   type Dispatch,
   type FC,

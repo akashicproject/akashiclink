@@ -1,4 +1,4 @@
-import { OtkType } from '@helium-pay/backend';
+import { OtkType } from '@akashic/as-backend';
 import { IonCol, IonRow, IonText } from '@ionic/react';
 import { isEqual } from 'lodash';
 import { useEffect, useState } from 'react';

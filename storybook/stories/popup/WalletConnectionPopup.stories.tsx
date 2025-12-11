@@ -1,4 +1,4 @@
-import { mockGetOwnerKeys } from '@helium-pay/api-mocks';
+import { mockGetOwnerKeys } from '@akashic/api-mocks';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { WalletConnection } from '../../../src/popup/wallet-connection';

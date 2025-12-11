@@ -1,4 +1,4 @@
-import type { IDelegatedFeeValuesReturn } from '@helium-pay/backend';
+import type { IDelegatedFeeValuesReturn } from '@akashic/as-backend';
 import useSWR from 'swr';
 
 import fetcher from '../ownerFetcher';

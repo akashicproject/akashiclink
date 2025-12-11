@@ -2,7 +2,7 @@ import {
   CoinSymbol,
   NetworkDictionary,
   suffixForSolanaDevnetURL,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 import { IonItem, IonText } from '@ionic/react';
 import Big from 'big.js';
 import { useContext } from 'react';

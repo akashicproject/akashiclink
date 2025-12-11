@@ -1,4 +1,4 @@
-import { type CoinSymbol, NetworkDictionary } from '@helium-pay/backend';
+import { type CoinSymbol, NetworkDictionary } from '@akashic/as-backend';
 import { IonImg } from '@ionic/react';
 
 export const NetworkIcon = ({

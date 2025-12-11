@@ -1,4 +1,4 @@
-import { type CryptoCurrencyWithName } from '@helium-pay/backend';
+import { type CryptoCurrencyWithName } from '@akashic/as-backend';
 import {
   createContext,
   type Dispatch,

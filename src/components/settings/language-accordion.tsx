@@ -1,4 +1,4 @@
-import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
+import { LANGUAGE_LIST } from '@akashic/common-i18n/src/locales/supported-languages';
 import { IonRadioGroup } from '@ionic/react';
 
 import { useSetGlobalLanguage } from '../../utils/hooks/useSetGlobalLanguage';

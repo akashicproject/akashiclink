@@ -13,7 +13,7 @@ import {
   type IRetrieveIdentityResponse,
   type ISignedTransaction,
   type IWithdrawalProposal,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 
 import { axiosBase } from './axios-helper';
 

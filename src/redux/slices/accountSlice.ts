@@ -1,4 +1,4 @@
-import { L2Regex, type OtkType } from '@helium-pay/backend';
+import { L2Regex, type OtkType } from '@akashic/as-backend';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { isSameAccount } from '../../utils/account';

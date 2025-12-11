@@ -1,7 +1,7 @@
 import {
   type CoinSymbol,
   type CryptoCurrencySymbol,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 import Big from 'big.js';
 
 import { getChainExchangeRate } from '../chain';

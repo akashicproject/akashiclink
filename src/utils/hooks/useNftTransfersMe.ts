@@ -1,5 +1,5 @@
-import type { INftTransactionRecord } from '@helium-pay/backend';
-import { TransactionStatus, TransactionType } from '@helium-pay/backend';
+import type { INftTransactionRecord } from '@akashic/as-backend';
+import { TransactionStatus, TransactionType } from '@akashic/as-backend';
 import useSWR from 'swr';
 
 import { REFRESH_INTERVAL } from '../../constants';

@@ -6,7 +6,7 @@ import {
   type IWithdrawalProposal,
   L2Regex,
   TransactionLayer,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 
 import type { ValidatedAddressPair } from '../../components/send/send-form/types';
 import { OwnersAPI } from '../api';

@@ -2,7 +2,7 @@ import {
   type IWalletScreeningData,
   type RiskDescription,
   RiskLevel,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 import { IonText } from '@ionic/react';
 import { type ApexOptions } from 'apexcharts';
 import ReactApexChart from 'react-apexcharts';

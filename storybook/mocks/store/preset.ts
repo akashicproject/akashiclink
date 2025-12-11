@@ -1,4 +1,4 @@
-import { PRESET_L2_ADDRESS } from '@helium-pay/api-mocks';
+import { PRESET_L2_ADDRESS } from '@akashic/api-mocks';
 
 import type { FullOtk } from '../../../src/utils/otk-generation';
 

@@ -3,7 +3,7 @@ import {
   type CryptoCurrencySymbol,
   type IBaseAcTransaction,
   type ITerriAcTransaction,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 
 import type { ITransactionForSigning } from '../../utils/nitr0gen/nitr0gen.interface';
 

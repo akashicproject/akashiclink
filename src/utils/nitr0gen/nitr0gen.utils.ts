@@ -1,5 +1,5 @@
+import { OtherError } from '@akashic/as-backend';
 import { CapacitorCookies } from '@capacitor/core';
-import { OtherError } from '@helium-pay/backend';
 import axios from 'axios';
 
 // enum Port {

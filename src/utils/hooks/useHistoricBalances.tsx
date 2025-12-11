@@ -1,4 +1,4 @@
-import type { IOwnerHistoricBalancesResponse } from '@helium-pay/backend';
+import type { IOwnerHistoricBalancesResponse } from '@akashic/as-backend';
 import useSWR from 'swr';
 
 import fetcher from '../ownerFetcher';

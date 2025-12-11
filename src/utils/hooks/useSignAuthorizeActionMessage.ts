@@ -1,4 +1,4 @@
-import type { IBecomeBp } from '@helium-pay/backend';
+import type { IBecomeBp } from '@akashic/as-backend';
 
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectCacheOtk } from '../../redux/slices/accountSlice';

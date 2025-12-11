@@ -1,7 +1,7 @@
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
+import type { CoinSymbol } from '@akashic/as-backend';
+import { BinanceSymbol, isCoinSymbol } from '@akashic/as-backend';
 import { datadogRum } from '@datadog/browser-rum';
-import type { CoinSymbol } from '@helium-pay/backend';
-import { BinanceSymbol, isCoinSymbol } from '@helium-pay/backend';
 
 import { ALLOWED_NETWORKS } from '../constants/currencies';
 import { OwnersAPI } from './api';

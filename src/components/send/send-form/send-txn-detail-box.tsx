@@ -1,4 +1,4 @@
-import { L2Regex } from '@helium-pay/backend';
+import { L2Regex } from '@akashic/as-backend';
 import { IonCol, IonRow } from '@ionic/react';
 import Big from 'big.js';
 import { type Dispatch, type SetStateAction, useContext } from 'react';

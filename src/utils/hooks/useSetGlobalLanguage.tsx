@@ -1,7 +1,7 @@
 import {
   DEFAULT_LANGUAGE,
   Language,
-} from '@helium-pay/common-i18n/src/locales/supported-languages';
+} from '@akashic/common-i18n/src/locales/supported-languages';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 

@@ -1,6 +1,6 @@
+import type { CoinSymbol, CryptoCurrencyWithName } from '@akashic/as-backend';
+import { NetworkDictionary } from '@akashic/as-backend/src/modules/api-interfaces/networks/networks.model';
 import styled from '@emotion/styled';
-import type { CoinSymbol, CryptoCurrencyWithName } from '@helium-pay/backend';
-import { NetworkDictionary } from '@helium-pay/backend/src/modules/api-interfaces/networks/networks.model';
 import { IonCheckbox, IonIcon, IonText } from '@ionic/react';
 import { caretDown } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';

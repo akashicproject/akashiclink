@@ -1,6 +1,6 @@
+import { RiskLevel } from '@akashic/as-backend';
+import { type RiskDescription } from '@akashic/as-backend';
 import styled from '@emotion/styled';
-import { RiskLevel } from '@helium-pay/backend';
-import { type RiskDescription } from '@helium-pay/backend';
 import {
   IonBadge,
   IonCard,

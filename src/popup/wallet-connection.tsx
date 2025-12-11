@@ -1,5 +1,5 @@
+import { CoinSymbol } from '@akashic/as-backend';
 import { datadogRum } from '@datadog/browser-rum';
-import { CoinSymbol } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import { getInternalError, getSdkError } from '@walletconnect/utils';
 import { type Web3WalletTypes } from '@walletconnect/web3wallet';

@@ -1,4 +1,4 @@
-import { NetworkDictionary } from '@helium-pay/backend';
+import { NetworkDictionary } from '@akashic/as-backend';
 import { IonItem, IonText } from '@ionic/react';
 import Big from 'big.js';
 import { useContext } from 'react';

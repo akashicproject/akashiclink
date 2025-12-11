@@ -1,5 +1,5 @@
+import { FeeDelegationStrategy } from '@akashic/as-backend';
 import styled from '@emotion/styled';
-import { FeeDelegationStrategy } from '@helium-pay/backend';
 import { IonCol, IonRow } from '@ionic/react';
 import Big from 'big.js';
 import {

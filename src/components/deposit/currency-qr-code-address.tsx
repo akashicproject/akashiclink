@@ -1,5 +1,5 @@
+import { type CoinSymbol } from '@akashic/as-backend';
 import styled from '@emotion/styled';
-import { type CoinSymbol } from '@helium-pay/backend';
 import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';

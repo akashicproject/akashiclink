@@ -1,4 +1,4 @@
-import type { IOwnerBalancesResponse } from '@helium-pay/backend';
+import type { IOwnerBalancesResponse } from '@akashic/as-backend';
 
 /**
  * Information about user wallet formatted for display in the extension

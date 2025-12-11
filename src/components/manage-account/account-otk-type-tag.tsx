@@ -1,5 +1,5 @@
+import { type OtkType } from '@akashic/as-backend';
 import styled from '@emotion/styled';
-import { type OtkType } from '@helium-pay/backend';
 import { useTranslation } from 'react-i18next';
 
 import { type LocalAccount } from '../../utils/hooks/useLocalAccounts';

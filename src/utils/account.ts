@@ -1,4 +1,4 @@
-import { OtkType } from '@helium-pay/backend';
+import { OtkType } from '@akashic/as-backend';
 
 import { type LocalAccount, useAccountStorage } from './hooks/useLocalAccounts';
 

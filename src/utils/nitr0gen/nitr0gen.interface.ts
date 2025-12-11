@@ -8,7 +8,7 @@ import type {
   ITerriAcTransaction,
   ITransactionBase,
   TransactionLayer,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 
 /** ********* Internal Arguments/Responses ********* **/
 

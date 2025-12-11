@@ -1,5 +1,5 @@
+import { L2Regex } from '@akashic/as-backend';
 import styled from '@emotion/styled';
-import { L2Regex } from '@helium-pay/backend';
 import type { InputChangeEventDetail, InputCustomEvent } from '@ionic/react';
 import { IonChip, IonCol, IonInput, IonRow, IonText } from '@ionic/react';
 import Big from 'big.js';

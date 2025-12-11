@@ -9,7 +9,7 @@ import {
   TESTNET_CURRENCIES,
   TESTNET_CURRENCIES_WITH_NAMES,
   TronSymbol,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 
 /**
  * "Smart" list of currencies supported in the extension

@@ -1,4 +1,4 @@
-import type { IOwnerOldestKeysResponse } from '@helium-pay/backend';
+import type { IOwnerOldestKeysResponse } from '@akashic/as-backend';
 import useSWR from 'swr';
 
 import fetcher from '../ownerFetcher';

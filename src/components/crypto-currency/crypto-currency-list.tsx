@@ -1,4 +1,4 @@
-import { type CryptoCurrencyWithName } from '@helium-pay/backend';
+import { type CryptoCurrencyWithName } from '@akashic/as-backend';
 import { Virtuoso } from 'react-virtuoso';
 
 import CryptoCurrencyListItem from './crypto-currency-list-item';

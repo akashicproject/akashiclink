@@ -1,5 +1,5 @@
-import type { IBaseAcTransaction } from '@helium-pay/backend';
-import { OtherError } from '@helium-pay/backend';
+import type { IBaseAcTransaction } from '@akashic/as-backend';
+import { OtherError } from '@akashic/as-backend';
 import { IonAlert, IonCol, IonRow } from '@ionic/react';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';

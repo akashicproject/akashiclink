@@ -4,7 +4,7 @@ import {
   type IInternalFee,
   NetworkDictionary,
   OtherError,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 import Big from 'big.js';
 
 /**

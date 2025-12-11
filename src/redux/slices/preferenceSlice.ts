@@ -1,4 +1,4 @@
-import { type CryptoCurrency } from '@helium-pay/backend';
+import { type CryptoCurrency } from '@akashic/as-backend';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { SUPPORTED_CURRENCIES } from '../../constants/currencies';

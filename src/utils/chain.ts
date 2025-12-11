@@ -3,7 +3,7 @@ import {
   type CryptoCurrency,
   type IExchangeRate,
   TEST_TO_MAIN,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 
 export const getMainnetEquivalent = (coinSymbol: CoinSymbol) => {
   return TEST_TO_MAIN.get(coinSymbol) ?? coinSymbol;

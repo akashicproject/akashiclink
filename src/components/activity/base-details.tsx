@@ -1,5 +1,5 @@
+import { TransactionStatus } from '@akashic/as-backend';
 import styled from '@emotion/styled';
-import { TransactionStatus } from '@helium-pay/backend';
 import { IonImg } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 

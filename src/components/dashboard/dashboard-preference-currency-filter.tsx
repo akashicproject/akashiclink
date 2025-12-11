@@ -1,5 +1,5 @@
+import type { CoinSymbol, CryptoCurrencyWithName } from '@akashic/as-backend';
 import styled from '@emotion/styled';
-import type { CoinSymbol, CryptoCurrencyWithName } from '@helium-pay/backend';
 import {
   IonButton,
   IonCheckbox,

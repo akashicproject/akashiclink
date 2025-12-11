@@ -1,5 +1,5 @@
+import type { ITransactionProposalClientSideOtk } from '@akashic/as-backend';
 import { Preferences } from '@capacitor/preferences';
-import type { ITransactionProposalClientSideOtk } from '@helium-pay/backend';
 import { createMemoryHistory } from 'history';
 
 import { type AddressScanConfirmationTxnsDetail } from '../components/address-screening/types';

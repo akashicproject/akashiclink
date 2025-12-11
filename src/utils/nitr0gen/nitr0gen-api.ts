@@ -1,21 +1,21 @@
 import { type IKey, TransactionHandler } from '@activeledger/sdk';
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
-import { App } from '@capacitor/app';
-import { Capacitor } from '@capacitor/core';
-import { datadogRum } from '@datadog/browser-rum';
 import type {
   CoinSymbol,
   CryptoCurrencySymbol,
   IBaseAcTransaction,
   ITerriAcTransaction,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 import {
   EthLikeSymbol,
   isCoinSymbol,
   KeyError,
   NetworkDictionary,
   OtherError,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
+import { App } from '@capacitor/app';
+import { Capacitor } from '@capacitor/core';
+import { datadogRum } from '@datadog/browser-rum';
 import axios, { isAxiosError } from 'axios';
 
 import { prefixWithAS } from '../convert-as-prefix';

@@ -4,7 +4,7 @@ import {
   mockGetNftOwnerTransfers,
   mockGetOwnerDetails,
   mockGetOwnerTransactions,
-} from '@helium-pay/api-mocks';
+} from '@akashic/api-mocks';
 import type { Meta, StoryObj } from '@storybook/react/*';
 
 import { ActivityDetails } from '../../../src/pages/activity/activity-details';

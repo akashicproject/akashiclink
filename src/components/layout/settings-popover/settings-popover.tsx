@@ -1,6 +1,6 @@
 import './settings-popover.scss';
 
-import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
+import { LANGUAGE_LIST } from '@akashic/common-i18n/src/locales/supported-languages';
 import { IonIcon, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
 import { caretBackOutline } from 'ionicons/icons';
 import type {

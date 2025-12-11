@@ -1,5 +1,5 @@
+import { type INftObject, NftError, UserError } from '@akashic/as-backend';
 import styled from '@emotion/styled';
-import { type INftObject, NftError, UserError } from '@helium-pay/backend';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

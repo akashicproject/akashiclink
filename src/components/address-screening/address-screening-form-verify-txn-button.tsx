@@ -1,9 +1,9 @@
-import styled from '@emotion/styled';
 import {
   type CoinSymbol,
   type CryptoCurrencySymbol,
   FeeDelegationStrategy,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
+import styled from '@emotion/styled';
 import {
   type Dispatch,
   type FC,

@@ -1,4 +1,4 @@
-import { type CoinSymbol, L2Regex, OtkType } from '@helium-pay/backend';
+import { type CoinSymbol, L2Regex, OtkType } from '@akashic/as-backend';
 import crypto from 'crypto';
 
 import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';

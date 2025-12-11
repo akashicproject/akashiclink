@@ -3,7 +3,7 @@ import {
   PRESET_L2_ADDRESS_2,
   PRESET_NFT_LEDGER_ID,
   PRESET_OWNER_AAS_ALIAS,
-} from '@helium-pay/api-mocks';
+} from '@akashic/api-mocks';
 
 import type { AccountState } from '../../../../src/redux/slices/accountSlice';
 import { mockCacheOtk } from '../preset';

@@ -3,7 +3,7 @@ import {
   CryptoCurrencySymbol,
   TransactionLayer,
   TransactionStatus,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { TransactionHistoryListItem } from '../../../src/components/activity/transaction-history-list-item';

@@ -22,7 +22,7 @@ import {
   mockGetMinigate,
   mockGetMinigateNftImage,
   mockPostToAC,
-} from '@helium-pay/api-mocks';
+} from '@akashic/api-mocks';
 import { setupIonicReact } from '@ionic/react';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import type { Preview } from '@storybook/react';

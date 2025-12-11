@@ -1,4 +1,4 @@
-import { CoinSymbol } from '@helium-pay/backend';
+import { CoinSymbol } from '@akashic/as-backend';
 import type { StoryContext, StoryFn } from '@storybook/react';
 import { Provider } from 'react-redux';
 

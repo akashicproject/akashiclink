@@ -1,5 +1,5 @@
+import { LANGUAGE_LIST } from '@akashic/common-i18n/src/locales/supported-languages';
 import styled from '@emotion/styled';
-import { LANGUAGE_LIST } from '@helium-pay/common-i18n/src/locales/supported-languages';
 import { IonButton, IonIcon, IonItem, IonList, IonPopover } from '@ionic/react';
 import { caretDownOutline, globeOutline } from 'ionicons/icons';
 import type { SyntheticEvent } from 'react';

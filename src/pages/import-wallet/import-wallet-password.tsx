@@ -1,4 +1,4 @@
-import { userConst } from '@helium-pay/backend';
+import { userConst } from '@akashic/as-backend';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

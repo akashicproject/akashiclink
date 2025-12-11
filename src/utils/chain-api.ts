@@ -1,4 +1,4 @@
-import { type OtkType } from '@helium-pay/backend';
+import { type OtkType } from '@akashic/as-backend';
 import axios from 'axios';
 
 import { chooseBestNodes, PortType } from './nitr0gen/nitr0gen.utils';

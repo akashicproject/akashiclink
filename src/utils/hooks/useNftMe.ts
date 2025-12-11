@@ -1,4 +1,4 @@
-import type { INftObject } from '@helium-pay/backend';
+import type { INftObject } from '@akashic/as-backend';
 import useSWR from 'swr';
 
 import { REFRESH_INTERVAL } from '../../constants';

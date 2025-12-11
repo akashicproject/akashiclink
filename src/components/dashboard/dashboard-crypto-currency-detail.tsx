@@ -1,4 +1,4 @@
-import { type CryptoCurrencyWithName } from '@helium-pay/backend';
+import { type CryptoCurrencyWithName } from '@akashic/as-backend';
 import { IonCol, IonGrid, IonIcon, IonRow, IonText } from '@ionic/react';
 import { arrowDownOutline, arrowForwardOutline } from 'ionicons/icons';
 import { type Dispatch, type SetStateAction, useContext } from 'react';

@@ -1,7 +1,7 @@
 import {
   type CryptoCurrencyWithName,
   NetworkDictionary,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 
 import { getMainnetEquivalent } from '../chain';
 import { useCryptoCurrencyBalance } from './useCryptoCurrencyBalance';

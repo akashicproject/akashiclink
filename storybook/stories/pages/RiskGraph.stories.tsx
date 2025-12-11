@@ -1,4 +1,4 @@
-import { RiskLevel } from '@helium-pay/backend';
+import { RiskLevel } from '@akashic/as-backend';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { RiskGraph } from '../../../src/components/common/risk-graph';

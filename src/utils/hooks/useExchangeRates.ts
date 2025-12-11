@@ -2,7 +2,7 @@ import {
   type CoinSymbol,
   type CryptoCurrencySymbol,
   type IExchangeRate,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 import Big from 'big.js';
 import useSWR from 'swr';
 

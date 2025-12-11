@@ -1,5 +1,5 @@
+import { type IWalletScreeningObject } from '@akashic/as-backend';
 import styled from '@emotion/styled';
-import { type IWalletScreeningObject } from '@helium-pay/backend';
 import { IonIcon, IonSpinner, IonText, isPlatform } from '@ionic/react';
 import { addOutline } from 'ionicons/icons';
 import { useRef, useState } from 'react';

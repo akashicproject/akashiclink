@@ -1,6 +1,6 @@
+import type { IBaseAcTransaction, INftObject } from '@akashic/as-backend';
+import { L2Regex, NftError } from '@akashic/as-backend';
 import styled from '@emotion/styled';
-import type { IBaseAcTransaction, INftObject } from '@helium-pay/backend';
-import { L2Regex, NftError } from '@helium-pay/backend';
 import { IonCol, IonImg, IonRow, IonSpinner } from '@ionic/react';
 import { debounce } from 'lodash';
 import { useState } from 'react';

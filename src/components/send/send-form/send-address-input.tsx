@@ -1,5 +1,5 @@
+import { L2Regex, NetworkDictionary } from '@akashic/as-backend';
 import styled from '@emotion/styled';
-import { L2Regex, NetworkDictionary } from '@helium-pay/backend';
 import type { InputCustomEvent } from '@ionic/react';
 import {
   IonButton,

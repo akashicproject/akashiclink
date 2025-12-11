@@ -1,5 +1,5 @@
+import type { INftObject } from '@akashic/as-backend';
 import styled from '@emotion/styled';
-import type { INftObject } from '@helium-pay/backend';
 import { IonCol, IonGrid, IonRow, IonSpinner } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';

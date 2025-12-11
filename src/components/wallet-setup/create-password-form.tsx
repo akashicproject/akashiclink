@@ -1,4 +1,4 @@
-import { userConst } from '@helium-pay/backend';
+import { userConst } from '@akashic/as-backend';
 import { IonCheckbox, IonCol, IonRow } from '@ionic/react';
 import type { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';

@@ -1,7 +1,7 @@
 import {
   type IFindWalletScreeningById,
   type IWalletScreeningByIdResponse,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
 import useSWRMutation from 'swr/mutation';
 
 import { axiosBase } from '../axios-helper';
