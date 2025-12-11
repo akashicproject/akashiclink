@@ -14,9 +14,8 @@ import type Translation from '../../../i18n/translation/en_US.json';
 export const StyledInputErrorPrompt: {
   [key: string]: keyof typeof Translation;
 } = {
-  // eslint-disable-next-line sonarjs/no-hardcoded-passwords
   Password: 'PasswordHelpText',
-  // eslint-disable-next-line sonarjs/no-hardcoded-passwords
+
   ConfirmPassword: 'ConfirmPasswordHelpText',
   Email: 'EmailHelpText',
   Amount: 'AmountHelpText',

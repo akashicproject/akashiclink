@@ -42,14 +42,14 @@ function UpdateModal({
   const [isMoreInfo, setIsMoreInfo] = useState(false);
   return (
     <IonModal
-      id="update-modal"
+      className="popup-modal"
       ref={modal}
       isOpen={isOpen}
       onIonModalDidDismiss={() => {
         setIsOpen(false);
       }}
     >
-      <div className="update-modal-wrapper">
+      <div className="popup-modal-wrapper">
         <IonIcon
           src={getImageIconUrl('akashic-link-logo.svg')}
           style={{

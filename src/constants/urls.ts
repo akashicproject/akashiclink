@@ -9,18 +9,14 @@ export const urls = {
   nftTransfer: 'nft-transfer',
   nftTransferResult: 'nft-transfer-result',
   recoverCode: 'recover-code',
-  // eslint-disable-next-line sonarjs/no-hardcoded-passwords
   changePassword: 'change-password',
-  // eslint-disable-next-line sonarjs/no-hardcoded-passwords
   changePasswordConfirm: 'change-password-confirm',
   error: 'error',
   manageAccounts: 'manage-account',
-  // eslint-disable-next-line sonarjs/no-hardcoded-passwords
   createWalletPassword: 'create-wallet-password',
   createWalletSecretPhrase: 'create-wallet-secret',
   createWalletSecretPhraseConfirm: 'create-wallet-secret-confirm',
   createWalletSuccessful: 'create-wallet-success',
-  // eslint-disable-next-line sonarjs/no-hardcoded-passwords
   importWalletPassword: 'import-wallet-password',
   importWalletKeypair: 'import-wallet-keypair',
   importWalletSecretPhrase: 'import-wallet-secret-phrase',
