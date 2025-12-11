@@ -73,4 +73,10 @@ module.exports = {
       },
     ],
   ],
+  monorepo: {
+    dependencies: [
+      'packages/common-i18n',
+      'apps/backend/src/modules/api-interfaces',
+    ],
+  },
 };
