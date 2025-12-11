@@ -29,6 +29,7 @@ import { IconButton, PrimaryButton, WhiteButton } from '../common/buttons';
 import { Divider } from '../common/divider';
 import { AlertIcon } from '../common/icons/alert-icon';
 import { TransactionHistoryListItem } from './transaction-history-list-item';
+import { ViewMode, ViewModeDropdown } from './view-mode';
 
 const ALL = 'All';
 
@@ -70,6 +71,7 @@ const CheckboxLabel = styled.label({
   width: '100%',
   borderRadius: '6px',
 });
+
 export const NoActivityWrapper = styled.div({
   width: '100%',
   display: 'inline-flex',
@@ -114,6 +116,7 @@ interface FilterDropdownProps {
   setLayerFilter: React.Dispatch<
     React.SetStateAction<{ l1: boolean; l2: boolean }>
   >;
+  currency?: boolean;
 }
 
 const FiltersDropdown: React.FC<FilterDropdownProps> = ({
@@ -121,6 +124,7 @@ const FiltersDropdown: React.FC<FilterDropdownProps> = ({
   setNftFilter,
   layerFilter,
   setLayerFilter,
+  currency,
 }) => {
   const { t } = useTranslation();
 
@@ -273,35 +277,37 @@ const FiltersDropdown: React.FC<FilterDropdownProps> = ({
               </div>
 
               {/* Transaction Types Section */}
-              <div>
-                <h3
-                  style={{
-                    textAlign: 'left',
-                    fontSize: '14px',
-                    fontWeight: 700,
-                    margin: '0 0 16px 0',
-                    color: 'var(--ion-color-inverse-surface)',
-                  }}
-                >
-                  {t('TransactionTypes')}
-                </h3>
-                <CheckboxLabel>
-                  <IonCheckbox
-                    checked={tempNftFilter.coin}
-                    onIonChange={() => toggleTempNftFilter('coin')}
-                    style={{ '--size': '24px', '--border-radius': '4px' }}
-                  />
-                  <span style={{ fontSize: '16px' }}>{t('Coin')}</span>
-                </CheckboxLabel>
-                <CheckboxLabel>
-                  <IonCheckbox
-                    checked={tempNftFilter.nft}
-                    onIonChange={() => toggleTempNftFilter('nft')}
-                    style={{ '--size': '24px', '--border-radius': '4px' }}
-                  />
-                  <span style={{ fontSize: '16px' }}>{t('NFT')}</span>
-                </CheckboxLabel>
-              </div>
+              {!currency && (
+                <div>
+                  <h3
+                    style={{
+                      textAlign: 'left',
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      margin: '0 0 16px 0',
+                      color: 'var(--ion-color-inverse-surface)',
+                    }}
+                  >
+                    {t('TransactionTypes')}
+                  </h3>
+                  <CheckboxLabel>
+                    <IonCheckbox
+                      checked={tempNftFilter.coin}
+                      onIonChange={() => toggleTempNftFilter('coin')}
+                      style={{ '--size': '24px', '--border-radius': '4px' }}
+                    />
+                    <span style={{ fontSize: '16px' }}>{t('Coin')}</span>
+                  </CheckboxLabel>
+                  <CheckboxLabel>
+                    <IonCheckbox
+                      checked={tempNftFilter.nft}
+                      onIonChange={() => toggleTempNftFilter('nft')}
+                      style={{ '--size': '24px', '--border-radius': '4px' }}
+                    />
+                    <span style={{ fontSize: '16px' }}>{t('NFT')}</span>
+                  </CheckboxLabel>
+                </div>
+              )}
             </div>
 
             {/* Apply Button */}
@@ -340,6 +346,8 @@ export const TransactionHistoryList: React.FC<{
   onClick,
 }) => {
   const storedTheme = useAppSelector(selectTheme);
+
+  const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.RemainingBalance);
 
   const [layerFilter, setLayerFilter] = useState<{ l1: boolean; l2: boolean }>({
     l1: true,
@@ -402,6 +410,10 @@ export const TransactionHistoryList: React.FC<{
           <IonText>
             <h4 className={'ion-margin-0'}>{t('History')}</h4>
           </IonText>
+          <ViewModeDropdown
+            selectedMode={viewMode}
+            onModeChange={setViewMode}
+          />
         </div>
         <Divider
           borderColor={storedTheme === themeType.DARK ? '#2F2F2F' : '#D9D9D9'}
@@ -434,6 +446,7 @@ export const TransactionHistoryList: React.FC<{
               setNftFilter={setTxnTypeFilter}
               layerFilter={layerFilter}
               setLayerFilter={setLayerFilter}
+              currency={!!currency}
             />
           )}
         </div>
@@ -491,6 +504,7 @@ export const TransactionHistoryList: React.FC<{
               showDetail
               hasHoverEffect
               divider={index !== formattedTransfers.length - 1}
+              viewMode={viewMode}
             />
           )}
         />

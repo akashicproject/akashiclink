@@ -111,6 +111,7 @@ export function DashboardCryptoCurrencyDetail({
         <IonCol size={'12'}>
           <TransactionHistoryList
             isFilterType
+            isFilterNFT
             minHeight={'calc(80vh - 312px - var(--ion-safe-area-bottom))'}
             currency={walletCurrency}
             onClick={handleOnClickTxnHistoryItem}

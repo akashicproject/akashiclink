@@ -26,6 +26,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-inverse-primary: #c2c1ff;
   --ion-color-on-surface-light: #b2b1b8;
   --ion-color-on-surface-variant: #47464a;
+  --ion-color-surface-container: #eeecf3;
   --ion-color-outline: #787677;
 
   /** secondary **/
@@ -202,6 +203,7 @@ body.dark {
   --ion-color-primary-dark: #0b006b;
   --ion-color-inverse-surface: #e2e1e8;
   --ion-color-inverse-primary: #4d49d8;
+  --ion-color-surface-container: #211f26;
   --ion-color-outline: #929091;
 
   --ion-color-secondary: #625b71;
