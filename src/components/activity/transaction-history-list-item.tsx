@@ -22,7 +22,14 @@ import { getNftImage } from '../../utils/nft-image-link';
 import { L2Icon } from '../common/chain-icon/l2-icon';
 import { Divider } from '../common/divider';
 
-const ActivityWrapper = styled.div<{ hover: boolean }>((props) => ({
+const ActivityWrapper = styled.div(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  padding: '4px',
+  cursor: 'pointer',
+}));
+
+const DetailsWrapper = styled.div<{ hover: boolean }>((props) => ({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
@@ -54,7 +61,6 @@ const TypeIcon = styled.div({
 });
 
 const Time = styled.div({
-  textAlign: 'center',
   fontSize: '0.625rem',
   fontWeight: 400,
 });
@@ -183,8 +189,17 @@ export function TransactionHistoryListItem({
    * - If the more-info-chevron is displayed, reduce the spacing
    */
   return (
-    <>
-      <ActivityWrapper
+    <ActivityWrapper>
+      <Time
+        style={{
+          ...(!isTxnConfirmed && {
+            color: 'var(--activity-dim-text)',
+          }),
+        }}
+      >
+        {formatDate(new Date(transfer.initiatedAt))}
+      </Time>
+      <DetailsWrapper
         key={transfer.id}
         onClick={onClick}
         style={style}
@@ -238,15 +253,6 @@ export function TransactionHistoryListItem({
                       : ''
               }`}
             </div>
-            <Time
-              style={{
-                ...(!isTxnConfirmed && {
-                  color: 'var(--activity-dim-text)',
-                }),
-              }}
-            >
-              {formatDate(new Date(transfer.initiatedAt))}
-            </Time>
           </TransactionStatusWrapper>
         </IconWrapper>
         {isNft ? (
@@ -298,7 +304,7 @@ export function TransactionHistoryListItem({
             )}
           </AmountWrapper>
         )}
-      </ActivityWrapper>
+      </DetailsWrapper>
       {divider && (
         <Divider
           className={'ion-margin-left-xs ion-margin-right-xs'}
@@ -307,6 +313,6 @@ export function TransactionHistoryListItem({
           borderWidth={'0.5px'}
         />
       )}
-    </>
+    </ActivityWrapper>
   );
 }
