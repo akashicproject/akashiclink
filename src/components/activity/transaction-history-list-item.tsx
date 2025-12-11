@@ -138,7 +138,7 @@ export function TransactionHistoryListItem({
   const isTxnConfirmed = transfer.status === TransactionStatus.CONFIRMED;
 
   const currencyIcon = getCurrencyIcon(
-    { coinSymbol: transfer.coinSymbol, tokenSymbol: transfer.tokenSymbol },
+    { coinSymbol: transfer.coinSymbol },
     isTxnConfirmed ? 'normal' : 'grey'
   );
 
