@@ -10,10 +10,10 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Steps to setup pipeline locally
 
-1. Copy Google Store Keys & staging and/or production app Android Signing keys into `android/fastlane/key` folder
+1. Copy Google Store Keys & preprod and/or production app Android Signing keys into `android/fastlane/key` folder
 2. If you have different key name other than the one in `Appfile`, replace name of the key json with your Google Store key name
-3. Copy `keystore-staging.properties` and/or `keystore-production.properties` and place them into `android` folder
-4. `cp .env.example .env.staging && cp .env.example .env.production` and fill in relevant info
+3. Copy `keystore-preprod.properties` and/or `keystore-production.properties` and place them into `android` folder
+4. `cp .env.example .env.preprod && cp .env.example .env.production` and fill in relevant info
 
 # Available Actions
 

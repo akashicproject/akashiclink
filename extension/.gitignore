@@ -1,4 +1,4 @@
 **/outputs/
 
 .env.production
-.env.staging
+.env.preprod

@@ -43,7 +43,7 @@ isPlatform('mobile') && location.reload();
 
 ```sh
 cp .env.example .env # optionally edit .env to suit your needs
-cp .env.example .env.staging.local # If you need to build Android App. Copy as .env.production.local for production env
+cp .env.example .env.preprod.local # If you need to build Android App. Copy as .env.production.local for production env
 yarn install
 ```
 
@@ -113,7 +113,7 @@ yarn serve:android
 
 ## Live reloading Android or ios App
 
-add IS_LIVE_RELOAD=true in `.env.staging.local`
+add IS_LIVE_RELOAD=true in `.env.preprod.local`
 
 ```sh
 yarn debug:ios

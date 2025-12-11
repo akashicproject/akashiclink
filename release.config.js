@@ -30,7 +30,7 @@ const platform = process.env.PLATFORM;
 
 module.exports = {
   extends: 'semantic-release-monorepo',
-  branches: ['main', 'staging'],
+  branches: ['main', 'preprod', 'staging'],
   repositoryUrl: 'https://gitlab.com/dreamsai/cpg-2/HeliumPay-monorepo',
   tagFormat: getTagFormat(currentBranch, platform),
   plugins: [
