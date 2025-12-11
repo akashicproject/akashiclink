@@ -10,6 +10,7 @@
     "build:preprod": "yarn lint:fix && env-cmd -f .env.preprod.local craco build",
     "build:prod": "yarn lint:fix && env-cmd -f .env.production.local craco build",
     "sync:device": "yarn build:staging && env-cmd -f .env.staging.local npx cap sync",
+    "sync:preprod:device": "yarn build:preprod && env-cmd -f .env.preprod.local npx cap sync",
     "sync:prod:device": "yarn build:prod && env-cmd -f .env.production.local npx cap sync",
     "build:android": "NODE_OPTIONS=\"--max-old-space-size=8192\" yarn updateVersion:android && PLATFORM=android yarn sync:device && cd android && bundle exec fastlane buildApk --env staging",
     "build:prod:android": "NODE_OPTIONS=\"--max-old-space-size=8192\" yarn updateVersion:prod:android && PLATFORM=android yarn sync:prod:device && cd android && bundle exec fastlane buildApk --env production",
