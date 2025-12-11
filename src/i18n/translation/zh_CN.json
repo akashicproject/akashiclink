@@ -191,6 +191,8 @@
     "TBNB": "Binance Testnet",
     "TRX": "创链",
     "TRX-SHASTA": "Tron SHASTA Testnet",
+    "SOL": "索拉拉",
+    "SOLDEV": "Solana Devnet",
     "BTC": "比特币链",
     "TBTC": "Bitcoin Testnet"
   },

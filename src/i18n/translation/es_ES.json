@@ -190,6 +190,8 @@
     "TBNB": "Binance Testnet",
     "TRX": "Tron Chain",
     "TRX-SHASTA": "Tron SHASTA Testnet",
+    "SOL": "Solana",
+    "SOLDEV": "Solana Devnet",
     "BTC": "Bitcoin Chain",
     "TBTC": "Bitcoin Testnet"
   },
