@@ -70,8 +70,8 @@ export const ViewModeDropdown: React.FC<ViewModeDropdownProps> = ({
   };
 
   const viewModeOptions = [
-    { label: t('Balance'), value: 'balance' as ViewMode },
-    { label: t('GasFee'), value: 'gasFee' as ViewMode },
+    { label: t('Balance'), value: ViewMode.RemainingBalance },
+    { label: t('GasFee'), value: ViewMode.GasFee },
   ];
 
   const selectedLabel =
