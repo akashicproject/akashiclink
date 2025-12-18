@@ -30,7 +30,7 @@ const platform = process.env.PLATFORM;
 
 module.exports = {
   extends: 'semantic-release-monorepo',
-  branches: ['main', 'preprod', 'staging'],
+  branches: ['main', 'staging'],
   repositoryUrl: 'https://gitlab.com/dreamsai/cpg-2/HeliumPay-monorepo',
   tagFormat: getTagFormat(currentBranch, platform),
   plugins: [
@@ -74,9 +74,6 @@ module.exports = {
     ],
   ],
   monorepo: {
-    dependencies: [
-      'packages/common-i18n',
-      'apps/backend/src/modules/api-interfaces',
-    ],
+    dependencies: ['apps/backend/src/modules/api-interfaces'],
   },
 };
