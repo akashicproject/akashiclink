@@ -1,12 +1,11 @@
+import styled from '@emotion/styled';
 import {
-  getCurrencyDisplayName,
   getCurrencyIcon,
   TransactionLayer,
   TransactionStatus,
   TransactionType,
-} from '@akashic/as-backend';
-import styled from '@emotion/styled';
-import { IonImg, IonText } from '@ionic/react';
+} from '@helium-pay/backend';
+import { IonImg } from '@ionic/react';
 import Big from 'big.js';
 import { type CSSProperties, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,12 +17,10 @@ import { getPrecision, isGasFeeAccurate } from '../../utils/formatAmount';
 import { formatAmountWithCommas } from '../../utils/formatAmountWithCommas';
 import { formatDate } from '../../utils/formatDate';
 import type { ITransactionRecordForExtension } from '../../utils/formatTransfers';
-import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { displayLongText } from '../../utils/long-text';
 import { getNftImage } from '../../utils/nft-image-link';
 import { L2Icon } from '../common/chain-icon/l2-icon';
 import { Divider } from '../common/divider';
-import { ViewMode } from './view-mode';
 
 const ActivityWrapper = styled.div(() => ({
   display: 'flex',
@@ -81,7 +78,7 @@ const AmountWrapper = styled.div({
 });
 const GasFee = styled.div({
   overflow: 'hidden',
-  fontSize: '0.75rem',
+  fontSize: '0.625rem',
   fontWeight: 400,
   // eslint-disable-next-line sonarjs/no-duplicate-string
   color: 'var(--activity-dim-text)',
@@ -128,7 +125,6 @@ interface OneActivityProps {
   showDetail?: boolean;
   hasHoverEffect?: boolean;
   divider?: boolean;
-  viewMode?: ViewMode;
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -138,13 +134,11 @@ export function TransactionHistoryListItem({
   style,
   hasHoverEffect,
   divider,
-  viewMode = ViewMode.RemainingBalance,
 }: OneActivityProps) {
   const { t } = useTranslation();
   const isL2 = transfer.layer === TransactionLayer.L2;
   const isNft = !!transfer?.nft;
   const storedTheme = useAppSelector(selectTheme);
-  const { activeAccount } = useAccountStorage();
 
   const isTxnDeposit = transfer.transferType === TransactionType.DEPOSIT;
   const isTxnConfirmed = transfer.status === TransactionStatus.CONFIRMED;
@@ -162,14 +156,15 @@ export function TransactionHistoryListItem({
   const gasPrecision = getPrecision('0', gasFee ?? '0');
   const gasFeeIsAccurate = isGasFeeAccurate(transfer, gasPrecision);
 
-  const currencyDisplayName = getCurrencyDisplayName({
-    coinSymbol: transfer.coinSymbol,
-    tokenSymbol: transfer.tokenSymbol,
-  });
+  // If token, displayed as "USDT" for L1 and "USDT (ETH)" for L2 (since
+  // deducing the chain the token belongs to is not trivial)
+  const currencyDisplayName = transfer?.tokenSymbol
+    ? transfer?.tokenSymbol + (isL2 ? ` (${transfer.coinSymbol})` : '')
+    : transfer?.coinSymbol;
 
   const totalFee = Big(gasFee ?? '0').add(transfer.fakeGasFee ?? '0');
 
-  let feeText = `${t('GasFee')}: ${gasFeeIsAccurate ? '' : '≈'}${formatAmountWithCommas(totalFee.toString())} ${getCurrencyDisplayName({ coinSymbol: transfer.coinSymbol })}`;
+  let feeText = `${t('GasFee')}: ${gasFeeIsAccurate ? '' : '≈'}${formatAmountWithCommas(totalFee.toString())} ${transfer?.coinSymbol}`;
 
   if (isDelegated) {
     feeText = `${t('DelegatedGasFee')}: ${
@@ -294,23 +289,7 @@ export function TransactionHistoryListItem({
                 true
               )}
             </Amount>
-            {viewMode === ViewMode.RemainingBalance && (
-              <IonText>
-                <p style={{ color: 'var(--ion-text-color-alt)' }}>
-                  {t('Bal')}:{' '}
-                  {formatAmountWithCommas(
-                    transfer.updatedBalance?.get(
-                      `${activeAccount?.identity}-internal`
-                    ) ?? '0'
-                  )}{' '}
-                  {getCurrencyDisplayName({
-                    coinSymbol: transfer.coinSymbol,
-                    tokenSymbol: transfer.tokenSymbol,
-                  })}
-                </p>
-              </IonText>
-            )}
-            {!isTxnDeposit && gasFee && viewMode === 'gasFee' && (
+            {!isTxnDeposit && gasFee && (
               <GasFee
                 style={{
                   color: !isTxnConfirmed
