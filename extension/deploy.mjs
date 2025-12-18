@@ -11,6 +11,8 @@ const CLIENT_SECRET = process.env.EXTENSION_CLIENT_SECRET;
 const CLIENT_ID = process.env.EXTENSION_CLIENT_ID;
 const SLACK_URL = process.env.SLACK_URL;
 const FLAVORS = process.env.FLAVORS;
+const SKIP_UPLOAD =
+  process.env.SKIP_UPLOAD === 'true' || process.env.SKIP_UPLOAD === '1';
 
 const MAJOR_VERSION = process.env.MAJOR_VERSION;
 const MINOR_VERSION = process.env.MINOR_VERSION;
@@ -34,6 +36,7 @@ const zipFailMsg = `:large_red_circle: :chrome_dynosaur: [Extension] [${FLAVORS}
 const buildingMsg = `:large_yellow_circle: :google: [Extension] [${FLAVORS}] New build deployment in progress. Attempting to deploy version ${versionName}`;
 const buildSuccessMsg = `:large_green_circle: :chrome: [Extension] [${FLAVORS}] New Zip uploaded successfully!`;
 const buildFailMsg = `:large_red_circle: :chrome_dynosaur: [Extension] [${FLAVORS}] Failed to upload the Zip!`;
+const zipSuccessSkipUploadMsg = `:large_green_circle: :package: [Extension] [${FLAVORS}]!`;
 const slackFields = [
   {
     title: 'Environment',
@@ -122,9 +125,19 @@ const zipExtension = async () => {
             },
           ],
         });
-      } else {
-        upload();
-      }
+      } else if (SKIP_UPLOAD) {
+          slack({
+            attachments: [
+              {
+                color: '#2fb886',
+                title: zipSuccessSkipUploadMsg,
+                fields: slackFields,
+              },
+            ],
+          });
+        } else {
+          upload();
+        }
     });
   });
 };
