@@ -2,7 +2,7 @@ import createReleaseConfig from '../../release.config.mjs';
 
 const platform = process.env.PLATFORM;
 
-const getCustomTagFormat = (branchName) => {
+const getCustomTagFormat = () => {
   let prefix;
   if (platform === 'android') {
     prefix = 'android-v';
@@ -14,10 +14,7 @@ const getCustomTagFormat = (branchName) => {
     prefix = 'wallet-extension-v';
   }
 
-  if (branchName === 'main') {
-    return `${prefix}\${version}`;
-  }
-  return `${prefix}\${version}-${branchName}`;
+  return `${prefix}\${version}`;
 };
 
 export default createReleaseConfig({
