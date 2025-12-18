@@ -43,6 +43,30 @@ const LockedAddress = styled(IonItem)({
   },
 });
 
+/**
+ * Calculate dynamic font size based on address length
+ * L2 addresses (~66 chars) will get smaller font
+ * L1 addresses (~34-42 chars) will get larger font
+ */
+const calculateSendAddressFontSize = (address: string): string => {
+  const length = address.length;
+
+  // Define size breakpoints
+  if (length >= 60) {
+    // L2 addresses (very long)
+    return '0.48rem';
+  } else if (length >= 42) {
+    // Ethereum-style L1 addresses
+    return '0.78rem';
+  } else if (length >= 34) {
+    // TRON-style L1 addresses
+    return '0.8rem';
+  } else {
+    // Shorter addresses or aliases
+    return '0.75rem';
+  }
+};
+
 export const SendAddressInput = ({
   validatedAddressPair,
   onAddressValidated,
@@ -167,7 +191,15 @@ export const SendAddressInput = ({
         )}
         {validatedAddressPair.userInputToAddress !== '' && (
           <LockedAddress lines="full">
-            <IonLabel className="ion-text-bold" style={{ fontSize: '0.48rem' }}>
+            <IonLabel
+              className="ion-text-bold"
+              style={{
+                fontSize: calculateSendAddressFontSize(
+                  validatedAddressPair.userInputToAddress
+                ),
+                wordBreak: 'break-all',
+              }}
+            >
               {validatedAddressPair.userInputToAddress}
             </IonLabel>
             <IonButton
