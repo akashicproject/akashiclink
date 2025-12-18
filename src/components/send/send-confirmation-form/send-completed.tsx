@@ -28,6 +28,10 @@ export const SendCompleted = () => {
   const onFinish = () => {
     mutateMyTransfers();
     mutateAccountMe();
+    setTimeout(() => {
+      mutateMyTransfers();
+      mutateAccountMe();
+    }, 2000);
     setStep(0);
     setSendConfirm(undefined);
     setIsModalOpen(false);
