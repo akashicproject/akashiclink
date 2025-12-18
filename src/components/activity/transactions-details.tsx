@@ -91,7 +91,6 @@ const WithdrawDetails = ({
   currentTransfer,
 }: {
   currentTransfer: ITransactionRecordForExtension;
-  // eslint-disable-next-line sonarjs/cognitive-complexity
 }) => {
   const { t } = useTranslation();
   const isL2 = currentTransfer.layer === TransactionLayer.L2;
