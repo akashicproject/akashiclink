@@ -155,7 +155,6 @@
   "UseMax": "Use Max",
   "CalculateOnNextStep": "Calculated on next step",
   "amountLargerThenZero": "Please provide amount larger than zero",
-  "amountMaxDecimalPlaces": "Maximum of 6 decimal places allowed",
   "InsufficientBalance": "Insufficient Balance",
   "invalidL2Address": "Please provide a valid Layer 2 recipient Account.",
   "SendNewCode": "Send a New Code",
@@ -190,6 +189,8 @@
     "TBNB": "Binance Testnet",
     "TRX": "Tron Chain",
     "TRX-SHASTA": "Tron SHASTA Testnet",
+    "SOL": "Solana",
+    "SOLDEV": "Solana Devnet",
     "BTC": "Bitcoin Chain",
     "TBTC": "Bitcoin Testnet"
   },

@@ -156,7 +156,6 @@
   "CalculateOnNextStep": "다음 단계에서 계산",
   "InsufficientBalance": "불충분한 잔액",
   "amountLargerThenZero": "0보다 큰 금액을 입력하세요.",
-  "amountMaxDecimalPlaces": "소수점은 최대 6자리까지 허용됩니다.",
   "invalidL2Address": "유효한 레이어 2 수신자 계정을 입력하세요.",
   "SendNewCode": "새 코드 보내기",
   "VersionInfo": "버전 정보",
@@ -190,6 +189,8 @@
     "TBNB": "Binance Testnet",
     "TRX": "Tron Chain",
     "TRX-SHASTA": "Tron SHASTA Testnet",
+    "SOL": "Solana",
+    "SOLDEV": "Solana Devnet",
     "BTC": "Bitcoin Chain",
     "TBTC": "Bitcoin Testnet"
   },

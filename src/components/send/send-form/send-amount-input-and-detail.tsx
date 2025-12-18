@@ -1,4 +1,4 @@
-import { L2Regex } from '@akashic/as-backend';
+import { L2Regex, truncateToMaxDecimals } from '@akashic/as-backend';
 import styled from '@emotion/styled';
 import type { InputChangeEventDetail, InputCustomEvent } from '@ionic/react';
 import { IonChip, IonCol, IonInput, IonRow, IonText } from '@ionic/react';
@@ -57,6 +57,7 @@ export const SendAmountInputAndDetail = ({
   const handleFocus = () => setIsFocused(true);
 
   const { currency } = useContext(SendFormContext);
+
   const {
     isCurrencyTypeToken,
     networkCurrencyCombinedDisplayName,
@@ -93,12 +94,6 @@ export const SendAmountInputAndDetail = ({
       return;
     }
 
-    // amount have dps smaller than 6
-    if (userInputAmount.c.length - 1 - userInputAmount.e > 6) {
-      setAlert(errorAlertShell('amountMaxDecimalPlaces'));
-      return;
-    }
-
     // if L2, balance must be larger than amount + internal fee
     if (isL2) {
       const fee = calculateL2Fee();
@@ -120,10 +115,20 @@ export const SendAmountInputAndDetail = ({
   }, 200);
 
   const onAmountChange = (e: InputCustomEvent<InputChangeEventDetail>) => {
-    setAmount(e.target?.value?.toString() ?? '');
+    const value = truncateToMaxDecimals(
+      e.target?.value?.toString() ?? '',
+      currency
+    );
 
-    if (typeof e.target?.value === 'string' && e.target?.value !== '') {
-      validateAmount(e.target?.value);
+    // Sync the input field with the truncated value to prevent a flickering effect
+    if (value !== e.target?.value?.toString()) {
+      e.target.value = value;
+    }
+
+    setAmount(value);
+
+    if (value !== '') {
+      validateAmount(value);
     }
   };
 
