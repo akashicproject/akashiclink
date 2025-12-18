@@ -1,5 +1,5 @@
-import { L2Regex, NetworkDictionary } from '@akashic/as-backend';
 import styled from '@emotion/styled';
+import { L2Regex, NetworkDictionary } from '@helium-pay/backend';
 import type { InputCustomEvent } from '@ionic/react';
 import {
   IonButton,
@@ -37,7 +37,9 @@ const LockedAddress = styled(IonItem)({
     borderRadius: 8,
     height: 40,
     fontSize: '0.75rem',
-    '--inner-padding-end': '8px',
+    '--inner-padding-end': '2px', // Reduce end padding
+    '--padding-start': '8px', // Optional: adjust start padding
+    '--padding-end': '2px', // Reduce end padding
   },
 });
 
@@ -155,7 +157,7 @@ export const SendAddressInput = ({
           </h2>
         </IonText>
       </IonCol>
-      <IonCol size={'12'}>
+      <IonCol size={'13'}>
         {validatedAddressPair.userInputToAddress === '' && (
           <StyledInput
             placeholder={t('EnterAddress')}
@@ -165,11 +167,25 @@ export const SendAddressInput = ({
         )}
         {validatedAddressPair.userInputToAddress !== '' && (
           <LockedAddress lines="full">
-            <IonLabel className="ion-text-bold">
+            <IonLabel className="ion-text-bold" style={{ fontSize: '0.48rem' }}>
               {validatedAddressPair.userInputToAddress}
             </IonLabel>
-            <IonButton onClick={onAddressClear} fill="clear" slot="end">
-              <IonIcon slot="icon-only" icon={closeOutline}></IonIcon>
+            <IonButton
+              onClick={onAddressClear}
+              fill="clear"
+              slot="end"
+              style={{
+                marginLeft: 0,
+                marginRight: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+              }}
+            >
+              <IonIcon
+                slot="icon-only"
+                icon={closeOutline}
+                style={{ width: '16px', height: '16px' }}
+              ></IonIcon>
             </IonButton>
           </LockedAddress>
         )}
