@@ -113,7 +113,6 @@ export const NewAppAvailableModal = () => {
             className="ion-margin-top-lg"
             style={{ width: '100%' }}
             onClick={async () => {
-              setIsOpen(false);
               await Browser.open({
                 url: downloadUrl,
               });
