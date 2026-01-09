@@ -1,4 +1,3 @@
-import { Browser } from '@capacitor/browser';
 import { IonIcon, IonModal, IonNote, isPlatform } from '@ionic/react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +12,7 @@ export const NewAppAvailableModal = () => {
   const modalRef = useRef<HTMLIonModalElement>(null);
   const [isOpen, setIsOpen] = useState(isMobile);
 
-  const downloadUrl = isPlatform('ios')
+  const url = isPlatform('ios')
     ? 'https://apps.apple.com/us/app/akashiclink-2-0/id6753808452'
     : 'https://www.akashiclink.com/en-US/download';
 
@@ -109,17 +108,14 @@ export const NewAppAvailableModal = () => {
               {t('OldAppDeprecationNotice')}
             </p>
           </IonNote>
-          <PrimaryButton
-            className="ion-margin-top-lg"
-            style={{ width: '100%' }}
-            onClick={async () => {
-              await Browser.open({
-                url: downloadUrl,
-              });
-            }}
-          >
-            {t('DownloadNewAkashicLink')}
-          </PrimaryButton>
+          <a target={'_blank'} href={url}>
+            <PrimaryButton
+              className="ion-margin-top-lg"
+              style={{ width: '100%' }}
+            >
+              {t('DownloadNewAkashicLink')}
+            </PrimaryButton>
+          </a>
         </div>
       </div>
     </IonModal>
