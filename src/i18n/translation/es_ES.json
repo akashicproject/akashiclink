@@ -334,11 +334,9 @@
     "amount": "Importe",
     "deposit": "Depósito",
     "totalAmount": "Importe total",
-    "AgreeToGenerateSecondaryKey": "Acepto generar la clave API/SDK",
-    "AgreeToGenerateTreasuryKey": "Acepto generar el KeyPair de Tesorería",
-    "AgreeToSetMultisigThresholds": "Acepto configurar los umbrales de Multisig",
-    "ConfirmationToDisableMultisig": "Confirmación para desactivar Multisig",
-    "AcceptTermsAndPrivacyPolicy": "¡Bienvenido a AkashicPay! Haga clic para iniciar sesión y aceptar los Términos de servicio y la Política de privacidad de AkashicPay."
+    "enableManualTransactionCallback": "Habilitar devolución de llamada de pago de depósito manual",
+    "maxDeviationPercent": "Coincidencia relajada",
+    "depositRequestExpireTime": "Tiempo de expiración de solicitud de depósito"
   },
   "SendBpByAlias": "No se puede enviar a la cuenta comercial por Akashic Alias",
   "SelectYourPreferredNode": "Por favor, selecciona tu nodo preferido.",
