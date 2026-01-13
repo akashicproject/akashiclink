@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import { Language } from '@akashic/common-i18n/src/locales/supported-languages';
 
 import { useSetGlobalLanguage } from '../utils/hooks/useSetGlobalLanguage';
@@ -7,6 +8,7 @@ const INFO_SITE_LINKS = {
   [Language.zhCN]: 'https://www.akashiclink.com/zh-TW',
   [Language.zhTW]: 'https://www.akashiclink.com/zh-TW',
   [Language.bnBD]: 'https://www.akashiclink.com/bd-BD',
+  [Language.esES]: 'https://www.akashiclink.com/es-ES',
 };
 
 const TERMS_OF_USE_LINKS = {
@@ -17,6 +19,8 @@ const TERMS_OF_USE_LINKS = {
   [Language.zhTW]:
     'https://docs.akashiclink.com/traditionalchinese/shi-yong-tiao-kuan-yu-yin-si-quan-zheng-ce',
   [Language.bnBD]:
+    'https://docs.akashiclink.com/terms-of-use-and-privacy-policy',
+  [Language.esES]:
     'https://docs.akashiclink.com/terms-of-use-and-privacy-policy',
 };
 
@@ -29,6 +33,8 @@ const PRIVACY_POLICY_LINKS = {
     'https://docs.akashiclink.com/traditionalchinese/shi-yong-tiao-kuan-yu-yin-si-quan-zheng-ce',
   [Language.bnBD]:
     'https://docs.akashiclink.com/terms-of-use-and-privacy-policy',
+  [Language.esES]:
+    'https://docs.akashiclink.com/terms-of-use-and-privacy-policy',
 };
 
 const QUICK_GUIDE_LINKS = {
@@ -39,6 +45,8 @@ const QUICK_GUIDE_LINKS = {
   [Language.zhTW]:
     'https://docs.akashiclink.com/traditional-chinese/zhi-nan/kuai-su-zhi-nan#dao-ru-zhang-hao',
   [Language.bnBD]:
+    'https://docs.akashiclink.com/guides/quick-guide#import-account',
+  [Language.esES]:
     'https://docs.akashiclink.com/guides/quick-guide#import-account',
 };
 
