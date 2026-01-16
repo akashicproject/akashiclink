@@ -20,6 +20,7 @@ import {
   EXTENSION_EVENT,
   responseToSite,
 } from '../utils/chrome';
+import { getCurrentTime } from '../utils/currentUTCTime';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useOwnerKeys } from '../utils/hooks/useOwnerKeys';
 import { useSetGlobalLanguage } from '../utils/hooks/useSetGlobalLanguage';
@@ -155,9 +156,11 @@ export function WalletConnection() {
         await closePopup();
       }
 
+      const serverTime = await getCurrentTime();
+
       const payloadToSign = {
         identity: activeAccount?.identity ?? '',
-        expires: Date.now() + 60 * 1000,
+        expires: serverTime + 60 * 1000,
       };
 
       const walletPreference = {
