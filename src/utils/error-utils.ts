@@ -42,7 +42,7 @@ const errorMessageMap = new Map<
   [NftError.onlyOneAASLinkingAllowed, 'OnlyOneAAS'],
   // nitr0gen errors
   [KeyError.invalidL2Address, 'UserDoesNotExist'],
-  [KeyError.savingsExceeded, 'ActivationCodeInvalid'],
+  [KeyError.savingsExceeded, 'SavingsExceeded'],
   [OtherError.orderFailed, 'OTKNotFound'],
   [OtherError.transactionExpired, 'TransactionExpired'],
 ]);
