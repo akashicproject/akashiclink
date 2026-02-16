@@ -403,5 +403,9 @@
   "NeedThresholds": "需要阈值以更新财库",
   "Clear": "清除",
   "Search": "搜索",
-  "SelectAll": "全选"
+  "SelectAll": "全选",
+  "Recent": "最近",
+  "MyAccount": "我的账户",
+  "NoRecentAddresses": "没有最近的地址",
+  "NoOtherAccounts": "此设备上没有其他账户"
 }

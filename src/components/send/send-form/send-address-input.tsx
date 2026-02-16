@@ -12,7 +12,7 @@ import {
 } from '@ionic/react';
 import { closeOutline } from 'ionicons/icons';
 import { debounce } from 'lodash';
-import { useContext, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { OwnersAPI } from '../../../utils/api';
@@ -26,6 +26,7 @@ import {
 } from '../../common/alert/alert';
 import { StyledInput } from '../../common/input/styled-input';
 import { SendFormContext } from '../send-modal-context-provider';
+import { SendAddressTabs } from './send-address-tabs';
 import type { ValidatedAddressPair } from './types';
 
 const LockedAddress = styled(IonItem)({
@@ -79,13 +80,15 @@ export const SendAddressInput = ({
   const { t } = useTranslation();
 
   const [alert, setAlert] = useState(formAlertResetState);
+  const [inputValue, setInputValue] = useState('');
+  const inputRef = useRef<HTMLIonInputElement>(null);
   const { activeAccount } = useAccountStorage();
   const {
     currency: { coinSymbol },
   } = useContext(SendFormContext);
   const addresses = useOwnerKeys(activeAccount?.identity ?? '').keys;
 
-  const validateAddress = debounce(async (input: string) => {
+  const validateAddressInput = async (input: string) => {
     setAlert(formAlertResetState);
 
     const userInput = input.trim();
@@ -160,16 +163,26 @@ export const SendAddressInput = ({
     } catch (error) {
       setAlert(errorAlertShell(getErrorMessageTKey(error)));
     }
-  }, 500);
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const validateAddress = debounce(validateAddressInput, 500);
 
   const onAddressChange = (e: InputCustomEvent) => {
     if (typeof e.target?.value === 'string') {
+      setInputValue(e.target.value);
       validateAddress(e.target.value);
     }
   };
 
   const onAddressClear = () => {
+    setInputValue('');
     onAddressReset();
+  };
+
+  const handleSelectAddress = (address: string) => {
+    setInputValue(address);
+    validateAddressInput(address);
   };
 
   return (
@@ -184,8 +197,10 @@ export const SendAddressInput = ({
       <IonCol size={'13'}>
         {validatedAddressPair.userInputToAddress === '' && (
           <StyledInput
+            ref={inputRef}
             placeholder={t('EnterAddress')}
             type={'text'}
+            value={inputValue}
             onIonInput={onAddressChange}
           />
         )}
@@ -225,6 +240,11 @@ export const SendAddressInput = ({
       {alert.visible && (
         <IonCol size={'12'}>
           <AlertBox state={alert} />
+        </IonCol>
+      )}
+      {validatedAddressPair.userInputToAddress === '' && (
+        <IonCol size={'12'}>
+          <SendAddressTabs onSelectAddress={handleSelectAddress} />
         </IonCol>
       )}
     </IonRow>

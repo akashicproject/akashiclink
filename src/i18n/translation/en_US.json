@@ -403,5 +403,9 @@
   "NeedThresholds": "Need threshold(s) to update treasury",
   "Clear": "Clear",
   "Search": "Search",
-  "SelectAll": "Select All"
+  "SelectAll": "Select All",
+  "Recent": "Recent",
+  "MyAccount": "My Account",
+  "NoRecentAddresses": "No recent addresses",
+  "NoOtherAccounts": "No other accounts on this device"
 }

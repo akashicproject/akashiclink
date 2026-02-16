@@ -404,5 +404,9 @@
   "NeedThresholds": "需要閾值以更新財庫",
   "Clear": "清除",
   "Search": "搜尋",
-  "SelectAll": "全選"
+  "SelectAll": "全選",
+  "Recent": "最近",
+  "MyAccount": "我的帳戶",
+  "NoRecentAddresses": "沒有最近的地址",
+  "NoOtherAccounts": "此設備上沒有其他帳戶"
 }

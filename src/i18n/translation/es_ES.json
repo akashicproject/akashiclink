@@ -403,5 +403,9 @@
   "NeedThresholds": "Se necesitan umbrales para actualizar la tesorería",
   "Clear": "Limpiar",
   "Search": "Buscar",
-  "SelectAll": "Seleccionar todo"
+  "SelectAll": "Seleccionar todo",
+  "Recent": "Recientes",
+  "MyAccount": "Mi Cuenta",
+  "NoRecentAddresses": "No hay direcciones recientes",
+  "NoOtherAccounts": "No hay otras cuentas en este dispositivo"
 }
