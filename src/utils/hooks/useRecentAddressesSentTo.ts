@@ -21,7 +21,7 @@ interface RecentAddressesResponse {
  * Returns unique addresses the user has sent to, sorted by most recent first.
  * Excludes the active account's address and local account addresses.
  *
- * @param coinSymbol - Optional filter for specific network (e.g., TRX_SHASTA, ETH_SEPOLIA)
+ * @param coinSymbol - Optional filter for specific network (e.g., TRX_SHASTA, SEPOLIA)
  */
 export const useRecentAddressesSentTo = (coinSymbol?: CoinSymbol) => {
   const { activeAccount, cacheOtk, localAccounts } = useAccountStorage();
