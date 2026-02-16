@@ -268,3 +268,29 @@ const meta: Meta<typeof DashboardComponent> = {
 ```
 
 </details>
+
+## Provider Architecture
+
+Detailed provider-focused doc: [`docs/PROVIDER_ARCHITECTURE.md`](docs/PROVIDER_ARCHITECTURE.md)
+
+Note: This architecture description covers the browser extension provider integration path (background/content/injected + website usage). It does not attempt to describe any off-chain services or backend infrastructure.
+
+Flow overview:
+
+```
+Website React (wallet-context) --> provider.request()
+  Injected Script (injected.ts) --window.postMessage--> Content Script (content.ts)
+    --> chrome.runtime.sendMessage --> Background (background.ts)
+    <-- chrome.runtime.sendMessage <--
+  Injected Script resolves promise & emits events -> React context updates
+```
+
+Key points:
+
+- Multiple environments (`dev`, `staging`, `prod`) can coexist. Each build registers its provider under `window.__AKASHIC_PROVIDERS[env]`.
+- No global `window.akashicLink` fallback: the website explicitly selects env via `NEXT_PUBLIC_ENV`.
+- Background manages sessions, permissions per origin, and approval popups.
+- Content script enforces allowed-origin gating and injects the provider script only on permitted domains.
+- Events (`accountsChanged`, `disconnect`, `popupOpened`, `popupClosed`) propagate background -> content -> injected -> dApp listeners.
+
+See the full architecture doc for diagrams, sequence details, and extension RPC method list.

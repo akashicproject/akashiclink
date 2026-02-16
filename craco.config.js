@@ -1,3 +1,5 @@
+/* eslint-disable sonarjs/no-nested-functions */
+
 /**
  * This configuration is here because of a long standing bug
  * in create-react-app (from which we use react-scripts build/start)
@@ -9,6 +11,7 @@
 
 const { addPlugins } = require('@craco/craco');
 const webpack = require('webpack');
+const path = require('path');
 
 const webpackConfigExtender = require('./webpack-config-extender');
 
@@ -48,6 +51,70 @@ module.exports = {
           constructor && constructor.name === 'ModuleScopePlugin'
       );
       webpackConfig.resolve.plugins.splice(scopePluginIndex, 1);
+
+      // --- Add additional extension entry points (background, content, injected) ---
+      // CRA normally provides a single entry (index.tsx). We convert to an object so webpack emits
+      // separate bundles we can reference from the extension manifest. These files live in /src.
+      const originalEntry = webpackConfig.entry;
+      // Resolve absolute paths to avoid CRA's module scope guard (already disabled above)
+      const extraEntries = {
+        background: path.resolve(__dirname, 'src/background.ts'),
+        content: path.resolve(__dirname, 'src/content.ts'),
+        injected: path.resolve(__dirname, 'src/injected.ts'),
+      };
+      if (typeof originalEntry === 'function') {
+        webpackConfig.entry = async () => {
+          const resolved = await originalEntry();
+          return { main: resolved, ...extraEntries };
+        };
+      } else if (
+        Array.isArray(originalEntry) ||
+        typeof originalEntry === 'string'
+      ) {
+        webpackConfig.entry = { main: originalEntry, ...extraEntries };
+      } else if (typeof originalEntry === 'object') {
+        webpackConfig.entry = { ...originalEntry, ...extraEntries };
+      }
+
+      // Deterministic filenames (no content hash) so manifest can reference predictable names
+      // We only override if not already explicitly set.
+      if (webpackConfig.output) {
+        webpackConfig.output.filename = 'static/js/[name].js';
+        webpackConfig.output.chunkFilename = 'static/js/[name].chunk.js';
+      }
+
+      // Plugin: copy selected entry outputs to build root (needed for MV3 manifest simplicity)
+      class CopyEntryRootsPlugin {
+        constructor(entryNames) {
+          this.entryNames = entryNames;
+        }
+        apply(compiler) {
+          compiler.hooks.thisCompilation.tap(
+            'CopyEntryRootsPlugin',
+            (compilation) => {
+              const { Compilation } = compiler.webpack;
+              compilation.hooks.processAssets.tap(
+                {
+                  name: 'CopyEntryRootsPlugin',
+                  stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+                },
+                (assets) => {
+                  this.entryNames.forEach((n) => {
+                    const src = `static/js/${n}.js`;
+                    if (assets[src]) {
+                      // Emit duplicate asset at root (background.js, etc.)
+                      compilation.emitAsset(`${n}.js`, assets[src]);
+                    }
+                  });
+                }
+              );
+            }
+          );
+        }
+      }
+      webpackConfig.plugins.push(
+        new CopyEntryRootsPlugin(['background', 'content', 'injected'])
+      );
 
       return {
         ...webpackConfigExtender.run(webpackConfig, __dirname),

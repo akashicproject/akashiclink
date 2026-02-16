@@ -17,11 +17,38 @@
     "default_icon": "shared-assets/icons/extension-icon/Icon128.png",
     "default_popup": "index.html"
   },
-  "permissions": ["storage", "alarms"],
+  "permissions": ["storage", "alarms", "tabs", "scripting", "activeTab"],
   "background": {
-    "service_worker": "serviceWorker.js",
+    "service_worker": "background.js",
     "type": "module"
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.akashicpay.com/*",
+        "https://*.testnet.akashicpay.com/*",
+        "https://*.akashicfx.com/*",
+        "https://*.testnet.akashicfx.com/*",
+        "http://localhost:3000/*",
+        "http://localhost:3001/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["injected.js"],
+      "matches": [
+        "https://*.akashicpay.com/*",
+        "https://*.testnet.akashicpay.com/*",
+        "https://*.akashicfx.com/*",
+        "https://*.testnet.akashicfx.com/*",
+        "http://localhost:3000/*",
+        "http://localhost:3001/*"
+      ]
+    }
+  ],
   "externally_connectable": {
     "ids": ["*"],
     "matches": [
