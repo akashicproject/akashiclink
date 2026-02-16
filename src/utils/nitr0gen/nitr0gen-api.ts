@@ -5,6 +5,7 @@ import type {
   CryptoCurrencySymbol,
   IBaseAcTransaction,
   ITerriAcTransaction,
+  SecondaryOtkContractI,
 } from '@akashic/as-backend';
 import {
   EthLikeSymbol,
@@ -119,6 +120,65 @@ export async function signTxBody<T extends IBaseAcTransaction>(
   await addExpireToTxBody(txBody);
 
   return await txHandler.signTransaction(txBody, otk);
+}
+
+/*
+ * Checks if contract is of CreateSecondaryOtk type, but that it is not a treasury
+ * addition/removal (which also uses the same contract). This is for regular
+ * secondary OTK creation/removal
+ */
+export function isSecondaryOtkUpdate(
+  txBody: IBaseAcTransaction<SecondaryOtkContractI>
+) {
+  return (
+    txBody.$tx.$contract.includes(Nitr0gen.CreateSecondaryOtk.split('@')[0]) &&
+    !txBody.$tx.$i?.owner?.treasury
+  );
+}
+
+/*
+ * Checks if contract is of CreateSecondaryOtk type, but that it is a treasury
+ * addition (which also uses the same contract)
+ */
+export function isTreasuryOtkAddition(
+  txBody: IBaseAcTransaction<SecondaryOtkContractI>
+) {
+  return (
+    txBody.$tx.$contract.includes(Nitr0gen.CreateSecondaryOtk.split('@')[0]) &&
+    !!txBody.$tx.$i?.owner?.treasury &&
+    txBody.$tx.$i.owner.treasury === '0' &&
+    !!txBody.$tx.$i.owner.add
+  );
+}
+
+/*
+ * Checks if contract is of CreateSecondaryOtk type, but that it is a treasury
+ * removal (which also uses the same contract).
+ */
+export function isTreasuryOtkRemoval(
+  txBody: IBaseAcTransaction<SecondaryOtkContractI>
+) {
+  return (
+    txBody.$tx.$contract.includes(Nitr0gen.CreateSecondaryOtk.split('@')[0]) &&
+    !!txBody.$tx.$i?.owner?.treasury &&
+    txBody.$tx.$i.owner.treasury === '0' &&
+    !!txBody.$tx.$i.owner.remove
+  );
+}
+
+/**
+ * Checks if contract is of CreateSecondaryOtk type, but that it doesn't "add"
+ * or "remove" an otk, only updates thresholds
+ */
+export function isTreasuryThresholdUpdateOnly(
+  txBody: IBaseAcTransaction<SecondaryOtkContractI>
+) {
+  return (
+    txBody.$tx.$contract.includes(Nitr0gen.CreateSecondaryOtk.split('@')[0]) &&
+    !!txBody.$tx.$i?.owner?.treasury &&
+    !txBody.$tx.$i.owner.add &&
+    !txBody.$tx.$i.owner.remove
+  );
 }
 
 /** Modifies the tx in-place and also returns the modified tx */

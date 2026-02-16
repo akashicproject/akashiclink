@@ -20,6 +20,7 @@ import {
   EXT_VERSION,
   type IAccountsReturnType,
   type IRequestAccountsReturnType,
+  type ISignTransactionReturnType,
   type ISignTypedDataReturnType,
   PROVIDER_EVENT,
   WALLET_METHOD,
@@ -55,7 +56,8 @@ type RpcSuccess = {
     | IAccountsReturnType
     | IRequestAccountsReturnType
     | ISignTypedDataReturnType
-    | boolean;
+    | boolean
+    | ISignTransactionReturnType;
 };
 type RpcError = {
   id: number;
@@ -303,12 +305,11 @@ function handleRequestAccounts(req: PendingRequest) {
   openPopup(req.id, { method: AKASHIC_METHOD.REQUEST_ACCOUNTS });
 }
 
-function handleSignTypedDataV4(req: PendingRequest) {
-  const typed = req.params?.[0];
+function handleAkashicMethod(method: AKASHIC_METHOD, req: PendingRequest) {
+  const param = req.params?.[0];
   openPopup(req.id, {
-    method: AKASHIC_METHOD.SIGN_TYPED_DATA,
-    data: encodeURIComponent(JSON.stringify(typed ?? {})),
-    primaryType: typed.primaryType ?? '',
+    method,
+    data: encodeURIComponent(JSON.stringify(param ?? {})),
   });
 }
 
@@ -469,10 +470,11 @@ function handleRpcRequest(
       finalize(id);
       break;
     }
-    case AKASHIC_METHOD.SIGN_TYPED_DATA: {
+    case AKASHIC_METHOD.SIGN_TYPED_DATA:
+    case AKASHIC_METHOD.SIGN_TRANSACTION: {
       if (!errorOnActivePopup(pendingRequest[id])) break;
       withAuthorizedSession(pendingRequest[id], () =>
-        handleSignTypedDataV4(pendingRequest[id])
+        handleAkashicMethod(method, pendingRequest[id])
       );
       break;
     }
@@ -578,8 +580,11 @@ function handleApprovalDecision(
         schedulePersist();
         break;
       }
-      case AKASHIC_METHOD.SIGN_TYPED_DATA: {
-        const response = result as ISignTypedDataReturnType;
+      case AKASHIC_METHOD.SIGN_TYPED_DATA:
+      case AKASHIC_METHOD.SIGN_TRANSACTION: {
+        const response = result as
+          | ISignTypedDataReturnType
+          | ISignTransactionReturnType;
         respond(req.tabId, { id: req.id, result: response });
         break;
       }

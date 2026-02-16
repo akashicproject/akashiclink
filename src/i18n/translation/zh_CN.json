@@ -335,9 +335,10 @@
     "amount": "金额",
     "deposit": "存款",
     "totalAmount": "总额",
-    "enableManualTransactionCallback": "启用手动存款/提款回调",
-    "maxDeviationPercent": "放宽匹配",
-    "depositRequestExpireTime": "存款请求有效期限",
+    "AgreeToGenerateSecondaryKey": "我同意生成 API/SDK 密钥对",
+    "AgreeToGenerateTreasuryKey": "我同意生成财务密钥对",
+    "AgreeToSetMultisigThresholds": "我同意设置多签阈值",
+    "ConfirmationToDisableMultisig": "确认禁用多签",
     "AcceptTermsAndPrivacyPolicy": "欢迎访问 AkashicPay！点击登录并接受 AkashicPay 服务条款和隐私政策。"
   },
   "SendBpByAlias": "无法透过 Akashic 地址发送商业帐户",

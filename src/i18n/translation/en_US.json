@@ -334,9 +334,10 @@
     "amount": "Amount",
     "deposit": "Deposit",
     "totalAmount": "Total Amount",
-    "enableManualTransactionCallback": "Enable Manual Deposit Payout Callback",
-    "maxDeviationPercent": "Relax Matching",
-    "depositRequestExpireTime": "Deposit Request Expire Time",
+    "AgreeToGenerateSecondaryKey": "I agree to generate the API/SDK key",
+    "AgreeToGenerateTreasuryKey": "I agree to generate the Treasury KeyPair",
+    "AgreeToSetMultisigThresholds": "I agree to set the Multisig thresholds",
+    "ConfirmationToDisableMultisig": "Confirmation to disable Multisig",
     "AcceptTermsAndPrivacyPolicy": "Welcome to AkashicPay! Click to sign in and accept the AkashicPay Terms of Service and Privacy Policy."
   },
   "SendBpByAlias": "Cannot send to business account by Akashic Alias",
