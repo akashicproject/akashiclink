@@ -4,7 +4,8 @@ import { mutate } from 'swr';
 import { LAST_HISTORY_ENTRIES } from '../../constants';
 import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
-import { EXTENSION_EVENT, responseToSite } from '../chrome';
+import { BRIDGE_MESSAGE } from '../../types/bridge-types';
+import { responseToSite } from '../chrome';
 import { useAccountStorage } from './useLocalAccounts';
 
 export function useLogout() {
@@ -20,9 +21,7 @@ export function useLogout() {
     // Clear the SWR cache for every key
     await mutate((_key) => true, undefined, { revalidate: false });
 
-    await responseToSite({
-      event: EXTENSION_EVENT.USER_LOCKED_WALLET,
-    });
+    await responseToSite(BRIDGE_MESSAGE.INTERNAL_LOGOUT);
 
     // completely reset router history
     await historyResetStackAndRedirect(urls.akashicPay, {

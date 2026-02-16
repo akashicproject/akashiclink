@@ -12,6 +12,7 @@ interface AkashicProvider {
 // Non-standard RPC helper methods:
 // - wallet_closePopup(requestId: number): cancel specific popup by request id
 // - wallet_disconnect: disconnect current session (emits accountsChanged([]) + disconnect)
+// - wallet_lockWallet: global logout (all sessions cleared, disconnect events broadcast to every tab)
 // Behavior notes:
 // - Previously granted origins auto-approve eth_requestAccounts without opening a popup.
 

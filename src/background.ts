@@ -520,6 +520,11 @@ function handleRpcRequest(
       finalize(id);
       break;
     }
+    case WALLET_METHOD.LOCK_WALLET: {
+      if (!errorOnActivePopup(pendingRequest[id])) break;
+      openPopup(id, { method: WALLET_METHOD.LOCK_WALLET });
+      break;
+    }
     default:
       respond(pendingRequest[id].tabId, {
         id,
@@ -576,6 +581,11 @@ function handleApprovalDecision(
       case AKASHIC_METHOD.SIGN_TYPED_DATA: {
         const response = result as ISignTypedDataReturnType;
         respond(req.tabId, { id: req.id, result: response });
+        break;
+      }
+      case WALLET_METHOD.LOCK_WALLET: {
+        respond(req.tabId, { id: req.id, result: true });
+        schedulePersist();
         break;
       }
       default:

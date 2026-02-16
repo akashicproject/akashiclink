@@ -10,6 +10,4 @@ export const HIDE_SMALL_BALANCES = 'hide-small-balances';
 export const HIDDEN_CURRENCIES = 'hidden-currencies';
 export const CURRENCIES_SORT_MODE = 'currencies-sort-mode';
 export const APP_LANGUAGE = 'language';
-
-// if this key is changed, be sure to change it in apps/wallet-extension/public/serviceWorker.js as well
 export const APP_AUTO_LOCK_BY = 'autoLockBy';

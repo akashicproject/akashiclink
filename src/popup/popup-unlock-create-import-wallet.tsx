@@ -1,5 +1,4 @@
 import { IonRouterOutlet } from '@ionic/react';
-import { useCallback, useEffect } from 'react';
 import { Redirect } from 'react-router';
 
 import { urls } from '../constants/urls';
@@ -14,27 +13,8 @@ import { ImportWalletSecret } from '../pages/import-wallet/import-wallet-secret'
 import { ImportWalletSelectMethod } from '../pages/import-wallet/import-wallet-select-method';
 import { ImportWalletSuccessful } from '../pages/import-wallet/import-wallet-successful';
 import { AkashicTab } from '../routing/navigation-tabs';
-import {
-  EXTENSION_EVENT,
-  responseToSite,
-  WALLET_METHOD,
-} from '../utils/chrome';
 
 export function PopupUnlockOrCreateAndImportWallet() {
-  const onPopupClosed = useCallback(() => {
-    responseToSite({
-      method: WALLET_METHOD.UNLOCK_WALLET,
-      event: EXTENSION_EVENT.USER_CLOSED_POPUP,
-    });
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('beforeunload', onPopupClosed);
-    return () => {
-      window.removeEventListener('beforeunload', onPopupClosed);
-    };
-  }, []);
-
   return (
     <IonRouterOutlet ionPage animated={false}>
       {AkashicTab.registerPage(() => (
