@@ -1,26 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import { BRIDGE_MESSAGE } from '../types/bridge-types';
 import { responseErrorToSite, responseToSite } from '../utils/chrome';
 import { useSignMessage } from '../utils/hooks/useSignMessage';
-import { SignTypedDataContent } from './sign-typed-data-content';
+import { SignTransactionOrPersonalContent } from './sign-transaction-or-personal-content';
 
-export interface ITypedData {
-  types: {
-    [key: string]: { name: string; type: string }[];
-  };
-  primaryType: string;
-  message: { [key: string]: unknown };
-}
-
-export function SignTypedData() {
-  const { t } = useTranslation();
-
+export function PersonalSign() {
   const [isProcessingRequest, setIsProcessingRequest] = useState(false);
 
-  const [typedData, setTypedData] = useState<ITypedData>();
+  const [data, setData] = useState<Record<string, unknown>>();
 
+  const [message, setMessage] = useState<Record<string, string>>();
   const signMessage = useSignMessage();
 
   const [id, setId] = useState<number>();
@@ -28,30 +18,31 @@ export function SignTypedData() {
   useEffect(() => {
     const url = new URL(window.location.href);
     const idParam = url.searchParams.get('id');
-    const method = url.searchParams.get('method');
     const data = url.searchParams.get('data');
-    if (!idParam || !data || !method) {
+    if (!idParam || !data) {
       responseErrorToSite(new Error('Missing parameters'), Number(idParam));
       return;
     }
     if (idParam) setId(Number(idParam));
-    let typedData: ITypedData | undefined;
+
+    let parsedData: Record<string, unknown>;
     try {
-      typedData = JSON.parse(decodeURIComponent(data));
+      parsedData = JSON.parse(decodeURIComponent(data));
     } catch (e) {
       responseErrorToSite(e, Number(idParam));
       return;
     }
-    setTypedData(typedData);
+    setData(parsedData);
+    setMessage({
+      content: JSON.stringify(parsedData, null, 2),
+    });
   }, []);
 
   const onClickSign = async () => {
     try {
+      if (!data) throw new Error('Missing parameters');
       setIsProcessingRequest(true);
-      if (!typedData) throw new Error('Missing parameters');
-
-      const { message } = typedData;
-      const signedMsg = signMessage(message);
+      const signedMsg = signMessage(data);
 
       await responseToSite(
         BRIDGE_MESSAGE.APPROVAL_DECISION,
@@ -71,25 +62,8 @@ export function SignTypedData() {
   };
 
   return (
-    <SignTypedDataContent
-      // special case for BecomeBP to show friendlier message
-      typedData={
-        typedData?.primaryType === 'BecomeBP'
-          ? {
-              types: {
-                BecomeBP: [
-                  { name: 'identity', type: 'string' },
-                  { name: 'content', type: 'string' },
-                ],
-              },
-              primaryType: 'BecomeBP',
-              message: {
-                identity: typedData.message.identity,
-                content: t('Popup.AcceptTermsAndPrivacyPolicy'),
-              },
-            }
-          : typedData
-      }
+    <SignTransactionOrPersonalContent
+      message={message}
       isProcessingRequest={isProcessingRequest}
       onClickSign={onClickSign}
       onClickReject={onClickReject}

@@ -12,7 +12,7 @@ import {
   isTreasuryOtkRemoval,
   isTreasuryThresholdUpdateOnly,
 } from '../utils/nitr0gen/nitr0gen-api';
-import { SignTransactionContent } from './sign-transaction-content';
+import { SignTransactionOrPersonalContent } from './sign-transaction-or-personal-content';
 
 export function SignTransaction() {
   const { t } = useTranslation();
@@ -35,9 +35,15 @@ export function SignTransaction() {
       return;
     }
     if (idParam) setId(Number(idParam));
-    const transaction: IBaseAcTransaction = JSON.parse(
-      decodeURIComponent(data)
-    );
+
+    let transaction: IBaseAcTransaction;
+    try {
+      transaction = JSON.parse(decodeURIComponent(data));
+    } catch (e) {
+      responseErrorToSite(e, Number(idParam));
+      return;
+    }
+
     setTransaction(transaction);
     if (isSecondaryOtkUpdate(transaction)) {
       // Secondary OTK addition
@@ -101,7 +107,7 @@ export function SignTransaction() {
   };
 
   return (
-    <SignTransactionContent
+    <SignTransactionOrPersonalContent
       message={message}
       isProcessingRequest={isProcessingRequest}
       onClickSign={onClickSign}

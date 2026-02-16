@@ -54,13 +54,6 @@ export function SendTransaction() {
       responseErrorToSite(e, Number(idParam));
       return;
     }
-    if (!parsed) {
-      responseErrorToSite(
-        new Error('Failed to parse transaction data'),
-        Number(idParam)
-      );
-      return;
-    }
     setSendTransactionData(parsed);
   }, []);
 
