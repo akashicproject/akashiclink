@@ -1,6 +1,6 @@
 import { ALL_CURRENCIES_BY_MARKET_CAP, type CryptoCurrencyWithName, NetworkDictionary, sortCompareFnForMarketCap } from '@akashic/as-backend';
 import { IonChip, IonCol, IonGrid, IonIcon, IonInput, IonRow } from '@ionic/react';
-import { checkmark, searchOutline } from 'ionicons/icons';
+import { checkmark, chevronBack, chevronForward, searchOutline } from 'ionicons/icons';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CryptoCurrencyIcon } from 'src/components/common/chain-icon/crypto-currency-icon';
@@ -100,41 +100,34 @@ export const SendChooseCurrencyForm = () => {
               }}
             />
           </div>
-          <div
-            style={{
-              display: 'flex',
-              marginBottom: '16px',
-              overflowX: 'auto',
-              gap: '8px',
-              paddingBottom: '4px',
-            }}
-          >
-            <IonChip
-              outline={selectedNetwork !== null}
-              onClick={() => setSelectedNetwork(null)}
+          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+            <IonIcon
+              icon={chevronBack}
               style={{
-                fontSize: '0.875rem',
-                fontWeight: 700,
-                borderRadius: '8px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '6px 16px 6px 8px',
-                whiteSpace: 'nowrap',
-                width: 'auto',
-                minWidth: 'fit-content',
-                backgroundColor: selectedNetwork === null ? 'var(--ion-color-secondary-container)' : 'transparent',
-                gap: '10px',
+                fontSize: '24px',
+                cursor: 'pointer',
+                color: 'var(--ion-color-on-surface-variant)',
+              }}
+              onClick={() => {
+                const container = document.getElementById('chip-scroll-container');
+                if (container) {
+                  container.scrollBy({ left: -150, behavior: 'smooth' });
+                }
+              }}
+            />
+            <div
+              id="chip-scroll-container"
+              style={{
+                display: 'flex',
+                overflowX: 'auto',
+                gap: '8px',
+                paddingBottom: '4px',
+                flex: 1,
               }}
             >
-              <IonIcon icon={checkmark} color='var(--ion-color-on-surface-variant)' />
-              {t('All')}
-            </IonChip>
-            {availableNetworks.map((network) => (
               <IonChip
-                key={network}
-                outline={selectedNetwork !== network}
-                onClick={() => setSelectedNetwork(network)}
+                outline={selectedNetwork !== null}
+                onClick={() => setSelectedNetwork(null)}
                 style={{
                   fontSize: '0.875rem',
                   fontWeight: 700,
@@ -146,14 +139,52 @@ export const SendChooseCurrencyForm = () => {
                   whiteSpace: 'nowrap',
                   width: 'auto',
                   minWidth: 'fit-content',
-                  backgroundColor: selectedNetwork === network ? 'var(--ion-color-secondary-container)' : 'transparent',
-                  gap: '8px',
+                  backgroundColor: selectedNetwork === null ? 'var(--ion-color-secondary-container)' : 'transparent',
+                  gap: '10px',
                 }}
               >
-                <CryptoCurrencyIcon coinSymbol={network} size={18} />
-                {NetworkDictionary[network]?.displayName ?? network}
+                <IonIcon icon={checkmark} color='var(--ion-color-on-surface-variant)' />
+                {t('All')}
               </IonChip>
-            ))}
+              {availableNetworks.map((network) => (
+                <IonChip
+                  key={network}
+                  outline={selectedNetwork !== network}
+                  onClick={() => setSelectedNetwork(network)}
+                  style={{
+                    fontSize: '0.875rem',
+                    fontWeight: 700,
+                    borderRadius: '8px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '6px 16px 6px 8px',
+                    whiteSpace: 'nowrap',
+                    width: 'auto',
+                    minWidth: 'fit-content',
+                    backgroundColor: selectedNetwork === network ? 'var(--ion-color-secondary-container)' : 'transparent',
+                    gap: '8px',
+                  }}
+                >
+                  <CryptoCurrencyIcon coinSymbol={network} size={18} />
+                  {NetworkDictionary[network]?.displayName ?? network}
+                </IonChip>
+              ))}
+            </div>
+            <IonIcon
+              icon={chevronForward}
+              style={{
+                fontSize: '24px',
+                cursor: 'pointer',
+                color: 'var(--ion-color-on-surface-variant)',
+              }}
+              onClick={() => {
+                const container = document.getElementById('chip-scroll-container');
+                if (container) {
+                  container.scrollBy({ left: 150, behavior: 'smooth' });
+                }
+              }}
+            />
           </div>
           <div
             style={{
