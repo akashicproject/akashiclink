@@ -1,34 +1,22 @@
 import {
   type CoinSymbol,
   type CryptoCurrencySymbol,
-  type CurrencySymbolWithNitr0genNative,
   FeeDelegationStrategy,
-  type ITreasuryKey,
   type ITreasuryKeyNetworkThreshold,
   L2Regex,
-  nitr0genNativeCoin,
 } from '@akashic/as-backend';
-import { datadogRum } from '@datadog/browser-rum';
 import { useEffect, useState } from 'react';
 
 import { BRIDGE_MESSAGE } from '../types/bridge-types';
 import { responseToSite, TYPED_DATA_PRIMARY_TYPE } from '../utils/chrome';
-import { convertToSmallestUnit } from '../utils/currency';
 import { AppError } from '../utils/error-utils';
 import {
   useSendL1Transaction,
   useSendL2Transaction,
 } from '../utils/hooks/nitr0gen';
 import { useBecomeFxBp } from '../utils/hooks/useBecomeFxBp';
-import { useGenerateSecondaryOtk } from '../utils/hooks/useGenerateSecondaryOtk';
-import { useRemoveTreasuryOtk } from '../utils/hooks/useRemoveTreasuryOtk';
 import { useSignMessage } from '../utils/hooks/useSignMessage';
-import { useUpdateTreasuryOtk } from '../utils/hooks/useUpdateTreasuryOtk';
-import {
-  mapUSDTToTether,
-  useVerifyTxnAndSign,
-} from '../utils/hooks/useVerifyTxnAndSign';
-import type { IAcTreasuryThresholds } from '../utils/nitr0gen/nitr0gen.interface';
+import { useVerifyTxnAndSign } from '../utils/hooks/useVerifyTxnAndSign';
 import { SignTypedDataContent } from './sign-typed-data-content';
 
 export interface ITypedData {
@@ -55,9 +43,6 @@ export function SignTypedData() {
   const [typedData, setTypedData] = useState<ITypedData>();
 
   const signMessage = useSignMessage();
-  const generateSecondaryOtk = useGenerateSecondaryOtk();
-  const updateTreasuryOtk = useUpdateTreasuryOtk();
-  const removeTreasuryOtk = useRemoveTreasuryOtk();
   const becomeFxBp = useBecomeFxBp();
 
   const verifyTxnAndSign = useVerifyTxnAndSign();
@@ -79,12 +64,11 @@ export function SignTypedData() {
   }, []);
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
-  const acceptSessionRequest = async () => {
-    if (!typedData) throw new Error('Missing parameters');
-
-    const { primaryType, message, secondaryOtk, treasuryOtk, toSign } =
-      typedData;
+  const onClickSign = async () => {
     try {
+      setIsProcessingRequest(true);
+      if (!typedData) throw new Error('Missing parameters');
+      const { primaryType, message, toSign } = typedData;
       let signedMsg = '';
 
       switch (primaryType) {
@@ -98,42 +82,6 @@ export function SignTypedData() {
           break;
         case TYPED_DATA_PRIMARY_TYPE.BECOME_FX_BP:
           signedMsg = await becomeFxBp();
-          break;
-        case TYPED_DATA_PRIMARY_TYPE.GENERATE_SECONDARY_OTK:
-          signedMsg = await generateSecondaryOtk(secondaryOtk);
-          break;
-        case TYPED_DATA_PRIMARY_TYPE.REMOVE_TREASURY_OTK:
-          if (!treasuryOtk.oldPubKeyToRemove)
-            throw new Error(AppError.NeedPubKey);
-          signedMsg = await removeTreasuryOtk({
-            oldPubKeyToRemove: treasuryOtk.oldPubKeyToRemove,
-          });
-          break;
-        case TYPED_DATA_PRIMARY_TYPE.UPDATE_TREASURY_OTK:
-          const treasuryOtkTyped = treasuryOtk as ITreasuryKey;
-          if (!treasuryOtkTyped.networkThresholds)
-            throw new Error(AppError.NeedThresholds);
-
-          let thresholds: IAcTreasuryThresholds | undefined;
-          if (treasuryOtkTyped.networkThresholds) {
-            thresholds = {};
-            for (const t of treasuryOtkTyped.networkThresholds) {
-              // TODO: Fix casting
-              thresholds[
-                `${t.coinSymbol}.${t.tokenSymbol ? (mapUSDTToTether(t.coinSymbol, t.tokenSymbol) as CurrencySymbolWithNitr0genNative) : nitr0genNativeCoin}`
-              ] =
-                t.threshold !== '-1'
-                  ? convertToSmallestUnit(
-                      t.threshold,
-                      t.coinSymbol,
-                      t.tokenSymbol
-                    )
-                  : t.threshold;
-            }
-          }
-          signedMsg = await updateTreasuryOtk({
-            networkThresholds: thresholds,
-          });
           break;
         case TYPED_DATA_PRIMARY_TYPE.PAYOUT: {
           // TODO: Fix all this casting
@@ -179,30 +127,28 @@ export function SignTypedData() {
           throw new Error(AppError.InvalidMethod);
       }
 
-      responseToSite(BRIDGE_MESSAGE.APPROVAL_DECISION, id, true, signedMsg);
+      await responseToSite(
+        BRIDGE_MESSAGE.APPROVAL_DECISION,
+        id,
+        true,
+        signedMsg
+      );
     } catch (e) {
       datadogRum.addError(e);
-      responseToSite(
+      await responseToSite(
         BRIDGE_MESSAGE.APPROVAL_DECISION,
         id,
         false,
         undefined,
         e instanceof Error ? e.message : JSON.stringify(e)
       );
+    } finally {
+      setIsProcessingRequest(false);
     }
-  };
-  const rejectSessionRequest = async () => {
-    responseToSite(BRIDGE_MESSAGE.APPROVAL_DECISION, id, false);
-  };
-
-  const onClickSign = async () => {
-    setIsProcessingRequest(true);
-    await acceptSessionRequest();
-    setIsProcessingRequest(false);
   };
 
   const onClickReject = async () => {
-    await rejectSessionRequest();
+    await responseToSite(BRIDGE_MESSAGE.APPROVAL_DECISION, id, false);
   };
 
   return (

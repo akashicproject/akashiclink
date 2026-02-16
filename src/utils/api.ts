@@ -11,7 +11,6 @@ import {
   type IPrepareL2WithdrawalResponse,
   type IRetrieveIdentity,
   type IRetrieveIdentityResponse,
-  type ISignedTransaction,
   type IWithdrawalProposal,
 } from '@akashic/as-backend';
 
@@ -82,32 +81,6 @@ export const OwnersAPI = {
     return await apiCall<INetworkFeeValuesReturn>(
       `/l1-txn-orchestrator/network-fees?${queryParams}`,
       'GET'
-    );
-  },
-
-  generateSecondaryOtk: async (
-    signedReq: ICreateSecondaryOtk
-  ): Promise<void> => {
-    await apiCall<void>(
-      `/owner/generate-secondary-otk`,
-      'POST',
-      JSON.stringify(signedReq)
-    );
-  },
-
-  updateTreasuryOtk: async (signedReq: ISignedTransaction): Promise<void> => {
-    await apiCall<void>(
-      `/owner/update-treasury-thresholds`,
-      'POST',
-      JSON.stringify(signedReq)
-    );
-  },
-
-  removeTreasuryOtk: async (signedReq: ISignedTransaction): Promise<void> => {
-    await apiCall<void>(
-      `/owner/remove-treasury-key`,
-      'POST',
-      JSON.stringify(signedReq)
     );
   },
 
