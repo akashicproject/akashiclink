@@ -73,9 +73,6 @@ export function dataTransformer<T extends ResponseObject | ResponseArray>(
 
   const dataWithConvertedTypes = Object.fromEntries(
     Object.entries(data).map(([key, value]): [string, ResponseValue] => {
-      if (key === 'updatedBalance') {
-        return [key, new Map(Object.entries(value as Record<string, unknown>))];
-      }
       if (
         value &&
         typeof value === 'string' &&
