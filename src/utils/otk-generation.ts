@@ -86,8 +86,7 @@ export function restoreOtkFromKeypair(
   }
 }
 
-// Sign a piece of data using the private key to be verified by the backend
-export function signAuthenticationData(
+export function signData(
   otkPriv: string,
   data: string | Record<string, unknown>
 ) {

@@ -12,7 +12,7 @@ import { BRIDGE_MESSAGE } from '../types/bridge-types';
 import { responseErrorToSite, responseToSite } from '../utils/chrome';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useSetGlobalLanguage } from '../utils/hooks/useSetGlobalLanguage';
-import { useSignAuthorizeActionMessage } from '../utils/hooks/useSignAuthorizeActionMessage';
+import { useSignMessage } from '../utils/hooks/useSignMessage';
 import { ConnectionBackButton } from './connection-back-button';
 
 export function WalletConnection() {
@@ -31,7 +31,7 @@ export function WalletConnection() {
 
   const { activeAccount } = useAccountStorage();
 
-  const signAuthorizeActionMessage = useSignAuthorizeActionMessage();
+  const signMessage = useSignMessage();
 
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -48,7 +48,7 @@ export function WalletConnection() {
         language: globalLanguage.replace('-', '='), // use replace for backward compatible with "-"
       };
 
-      const signedMsg = await signAuthorizeActionMessage(payloadToSign);
+      const signedMsg = signMessage(payloadToSign);
       await responseToSite(BRIDGE_MESSAGE.APPROVAL_DECISION, id, true, {
         payload: payloadToSign,
         signature: signedMsg,

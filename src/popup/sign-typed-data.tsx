@@ -3,6 +3,7 @@ import {
   type CryptoCurrencySymbol,
   type CurrencySymbolWithNitr0genNative,
   FeeDelegationStrategy,
+  type ITreasuryKey,
   type ITreasuryKeyNetworkThreshold,
   L2Regex,
   nitr0genNativeCoin,
@@ -21,7 +22,7 @@ import {
 import { useBecomeFxBp } from '../utils/hooks/useBecomeFxBp';
 import { useGenerateSecondaryOtk } from '../utils/hooks/useGenerateSecondaryOtk';
 import { useRemoveTreasuryOtk } from '../utils/hooks/useRemoveTreasuryOtk';
-import { useSignAuthorizeActionMessage } from '../utils/hooks/useSignAuthorizeActionMessage';
+import { useSignMessage } from '../utils/hooks/useSignMessage';
 import { useUpdateTreasuryOtk } from '../utils/hooks/useUpdateTreasuryOtk';
 import {
   mapUSDTToTether,
@@ -30,27 +31,30 @@ import {
 import type { IAcTreasuryThresholds } from '../utils/nitr0gen/nitr0gen.interface';
 import { SignTypedDataContent } from './sign-typed-data-content';
 
+export interface ITypedData {
+  types: {
+    [key: string]: { name: string; type: string }[];
+  };
+  primaryType: string;
+  message: { [key: string]: unknown };
+  // @deprecated Additional fields for specific typed data actions
+  secondaryOtk: { oldPubKeyToRemove?: string; treasuryKey?: boolean };
+  treasuryOtk: {
+    oldPubKeyToRemove?: string;
+    networkThresholds?: ITreasuryKeyNetworkThreshold[];
+  };
+  toSign: { identity: string; expires: string } & Record<
+    string,
+    string | Record<string, string>
+  >;
+}
+
 export function SignTypedData() {
   const [isProcessingRequest, setIsProcessingRequest] = useState(false);
 
-  const [requestContent, setRequestContent] = useState({
-    id: 0,
-    method: '',
-    primaryType: '',
-    message: {} as Record<string, string>,
-    toSign: {} as { identity: string; expires: string } & Record<
-      string,
-      string | Record<string, string>
-    >,
-    secondaryOtk: {} as { oldPubKeyToRemove?: string; treasuryKey?: boolean },
-    treasuryOtk: {} as {
-      oldPubKeyToRemove?: string;
-      networkThresholds?: ITreasuryKeyNetworkThreshold[];
-    },
-    response: {},
-  });
+  const [typedData, setTypedData] = useState<ITypedData>();
 
-  const signAuthorizeActionMessage = useSignAuthorizeActionMessage();
+  const signMessage = useSignMessage();
   const generateSecondaryOtk = useGenerateSecondaryOtk();
   const updateTreasuryOtk = useUpdateTreasuryOtk();
   const removeTreasuryOtk = useRemoveTreasuryOtk();
@@ -59,46 +63,38 @@ export function SignTypedData() {
   const verifyTxnAndSign = useVerifyTxnAndSign();
   const { trigger: triggerSendL2Transaction } = useSendL2Transaction();
   const { trigger: triggerSendL1Transaction } = useSendL1Transaction();
+  const [id, setId] = useState<number>();
 
   useEffect(() => {
     const url = new URL(window.location.href);
-    const id = url.searchParams.get('id');
+    const idParam = url.searchParams.get('id');
     const method = url.searchParams.get('method');
-    const primaryType = url.searchParams.get('primaryType');
     const data = url.searchParams.get('data');
-    if (!id || !data || !primaryType || !method) {
+    if (!idParam || !data || !method) {
       throw new Error('Missing parameters');
     }
+    if (idParam) setId(Number(idParam));
     const typedData = JSON.parse(decodeURIComponent(data));
-
-    const { toSign, secondaryOtk, treasuryOtk, ...message } = typedData.message;
-    setRequestContent({
-      id: Number(id),
-      method,
-      message,
-      primaryType,
-      toSign: toSign,
-      secondaryOtk,
-      treasuryOtk,
-      response: {},
-    });
+    setTypedData(typedData);
   }, []);
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
   const acceptSessionRequest = async () => {
-    const { id, primaryType, toSign, secondaryOtk, treasuryOtk } =
-      requestContent;
+    if (!typedData) throw new Error('Missing parameters');
 
+    const { primaryType, message, secondaryOtk, treasuryOtk, toSign } =
+      typedData;
     try {
       let signedMsg = '';
 
       switch (primaryType) {
-        case TYPED_DATA_PRIMARY_TYPE.AUTHORIZE_ACTION:
-          signedMsg = await signAuthorizeActionMessage({
-            ...toSign,
-            identity: toSign.identity,
-            expires: Number(toSign.expires),
-          });
+        case 'CallbackUrl':
+        case 'RetryCallback':
+        case 'UpdateReferenceId':
+        case 'SetupWhitelistIp':
+        case 'DenyTransaction':
+        case 'UpdateCallbackSettings':
+          signedMsg = signMessage(message);
           break;
         case TYPED_DATA_PRIMARY_TYPE.BECOME_FX_BP:
           signedMsg = await becomeFxBp();
@@ -114,13 +110,14 @@ export function SignTypedData() {
           });
           break;
         case TYPED_DATA_PRIMARY_TYPE.UPDATE_TREASURY_OTK:
-          if (!treasuryOtk.networkThresholds)
+          const treasuryOtkTyped = treasuryOtk as ITreasuryKey;
+          if (!treasuryOtkTyped.networkThresholds)
             throw new Error(AppError.NeedThresholds);
 
           let thresholds: IAcTreasuryThresholds | undefined;
-          if (treasuryOtk.networkThresholds) {
+          if (treasuryOtkTyped.networkThresholds) {
             thresholds = {};
-            for (const t of treasuryOtk.networkThresholds) {
+            for (const t of treasuryOtkTyped.networkThresholds) {
               // TODO: Fix casting
               thresholds[
                 `${t.coinSymbol}.${t.tokenSymbol ? (mapUSDTToTether(t.coinSymbol, t.tokenSymbol) as CurrencySymbolWithNitr0genNative) : nitr0genNativeCoin}`
@@ -195,8 +192,6 @@ export function SignTypedData() {
     }
   };
   const rejectSessionRequest = async () => {
-    const { id } = requestContent;
-
     responseToSite(BRIDGE_MESSAGE.APPROVAL_DECISION, id, false);
   };
 
@@ -210,12 +205,9 @@ export function SignTypedData() {
     await rejectSessionRequest();
   };
 
-  const isWaitingRequestContent = requestContent.method === '';
-
   return (
     <SignTypedDataContent
-      isWaitingRequestContent={isWaitingRequestContent}
-      requestContent={requestContent}
+      typedData={typedData}
       isProcessingRequest={isProcessingRequest}
       onClickSign={onClickSign}
       onClickReject={onClickReject}

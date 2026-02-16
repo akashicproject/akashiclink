@@ -336,7 +336,8 @@
     "totalAmount": "Total Amount",
     "enableManualTransactionCallback": "Enable Manual Deposit Payout Callback",
     "maxDeviationPercent": "Relax Matching",
-    "depositRequestExpireTime": "Deposit Request Expire Time"
+    "depositRequestExpireTime": "Deposit Request Expire Time",
+    "AcceptTermsAndPrivacyPolicy": "Welcome to AkashicPay! Click to sign in and accept the AkashicPay Terms of Service and Privacy Policy."
   },
   "SendBpByAlias": "Cannot send to business account by Akashic Alias",
   "SelectYourPreferredNode": "Please select your preferred node.",

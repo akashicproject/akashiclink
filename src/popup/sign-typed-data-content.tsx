@@ -3,37 +3,25 @@ import { useTranslation } from 'react-i18next';
 
 import { BorderedBox } from '../components/common/box/border-box';
 import { OutlineButton, PrimaryButton } from '../components/common/buttons';
-import { List } from '../components/common/list/list';
-import { ListVerticalLabelValueItem } from '../components/common/list/list-vertical-label-value-item';
 import { PopupLayout } from '../components/page-layout/popup-layout';
+import type { ITypedData } from './sign-typed-data';
+import { TypedDataViewer } from './typed-data-viewer';
 
 export function SignTypedDataContent({
-  isWaitingRequestContent,
-  requestContent,
+  typedData,
   isProcessingRequest,
   onClickSign,
   onClickReject,
 }: {
-  isWaitingRequestContent: boolean;
-  requestContent: {
-    id: number;
-    method: string;
-    primaryType: string;
-    message: Record<string, string>;
-    toSign: { identity: string; expires: string } & Record<
-      string,
-      string | Record<string, string>
-    >;
-    secondaryOtk: { oldPubKeyToRemove?: string };
-    response: Record<string, unknown>;
-  };
+  typedData?: ITypedData;
   isProcessingRequest: boolean;
   onClickSign: () => Promise<void>;
   onClickReject: () => Promise<void>;
 }) {
   const { t } = useTranslation();
 
-  const searchParams = new URLSearchParams(window.location.search);
+  const url = new URL(window.location.href);
+  const origin = url.searchParams.get('origin');
 
   return (
     <PopupLayout>
@@ -41,7 +29,7 @@ export function SignTypedDataContent({
         <IonCol size={'8'} offset={'2'}>
           <BorderedBox lines="full" compact>
             <h4 className="w-100 ion-justify-content-center ion-margin-0">
-              {searchParams.get('appUrl') ?? '-'}
+              {origin ?? '-'}
             </h4>
           </BorderedBox>
         </IonCol>
@@ -56,65 +44,29 @@ export function SignTypedDataContent({
         <IonCol
           size={'12'}
           className={'ion-justify-content-center ion-align-items-center'}
+          style={{ maxHeight: 'calc(100vh - 300px)', overflowY: 'auto' }}
         >
-          {isWaitingRequestContent && (
+          {typedData ? (
+            <TypedDataViewer
+              data={typedData.message}
+              dataType={typedData.primaryType}
+              types={typedData.types}
+              label={typedData.primaryType}
+            />
+          ) : (
             <IonSpinner
               className={'w-100 ion-margin-top-xl'}
               color="secondary"
               name="circular"
             />
           )}
-          <List lines={'none'}>
-            {/* // TODO: prepare array of display to do render */}
-            {Object.entries(
-              requestContent?.message?.toDisplay ??
-                requestContent?.message ??
-                {}
-            ).map(([key, value]) => {
-              if (Array.isArray(value)) {
-                return value.map((v) =>
-                  Object.entries(v).map(([key, value]) => {
-                    if (value) {
-                      return (
-                        <ListVerticalLabelValueItem
-                          key={key}
-                          label={t(`Popup.${key}`)}
-                          value={(value as string) ?? '-'}
-                        />
-                      );
-                    }
-                  })
-                );
-              } else if (typeof value === 'object') {
-                return Object.entries(value).map(([key, value]) => {
-                  if (value) {
-                    return (
-                      <ListVerticalLabelValueItem
-                        key={key}
-                        label={t(`Popup.${key}`)}
-                        value={(value as string) ?? '-'}
-                      />
-                    );
-                  }
-                });
-              } else if (value !== '') {
-                return (
-                  <ListVerticalLabelValueItem
-                    key={key}
-                    label={t(`Popup.${key}`)}
-                    value={value ?? '-'}
-                  />
-                );
-              }
-            })}
-          </List>
         </IonCol>
       </IonRow>
       <IonRow className={'ion-margin-top-auto'}>
         <IonCol size={'6'}>
           <OutlineButton
             expand="block"
-            disabled={isWaitingRequestContent || isProcessingRequest}
+            disabled={!typedData || isProcessingRequest}
             onClick={onClickReject}
           >
             {t('Deny')}
@@ -123,7 +75,7 @@ export function SignTypedDataContent({
         <IonCol size={'6'}>
           <PrimaryButton
             expand="block"
-            isLoading={isWaitingRequestContent || isProcessingRequest}
+            isLoading={!typedData || isProcessingRequest}
             onClick={onClickSign}
           >
             {t('Confirm')}

@@ -335,7 +335,8 @@
     "totalAmount": "Total Amount",
     "enableManualTransactionCallback": "Enable Manual Deposit Payout Callback",
     "maxDeviationPercent": "Relax Matching",
-    "depositRequestExpireTime": "Deposit Request Expire Time"
+    "depositRequestExpireTime": "Deposit Request Expire Time",
+    "AcceptTermsAndPrivacyPolicy": "AkashicPay 에 오신 것을 환영합니다! 클릭하여 로그인하고 AkashicPay 서비스 약관 및 개인정보 보호정책에 동의합니다."
   },
   "SendBpByAlias": "Akashic Alias 으로 비즈니스 계정으로 보낼 수 없습니다",
   "SelectYourPreferredNode": "원하는 노드를 선택하세요.",
