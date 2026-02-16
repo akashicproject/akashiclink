@@ -1,19 +1,15 @@
-import { type CryptoCurrency } from '@akashic/as-backend';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import { SUPPORTED_CURRENCIES } from '../../constants/currencies';
 import { type ThemeType, themeType } from '../../theme/const';
 import { createAppSlice } from '../app/createAppSlice';
 
 export interface PreferenceState {
   theme: ThemeType;
-  focusCurrency: CryptoCurrency;
   autoLockTime: number;
 }
 
 const initialState: PreferenceState = {
   theme: themeType.SYSTEM as ThemeType,
-  focusCurrency: SUPPORTED_CURRENCIES[0],
   autoLockTime: 10,
 };
 
@@ -31,11 +27,6 @@ export const preferenceSlice = createAppSlice({
     setAutoLockTime: create.reducer((state, action: PayloadAction<number>) => {
       state.autoLockTime = action.payload;
     }),
-    setFocusCurrency: create.reducer(
-      (state, action: PayloadAction<CryptoCurrency>) => {
-        state.focusCurrency = action.payload;
-      }
-    ),
   }),
   // You can define your selectors here. These selectors receive the slice
   // state as their first argument.
@@ -49,25 +40,11 @@ export const preferenceSlice = createAppSlice({
       return preference.theme;
     },
     selectAutoLockTime: (preference) => preference.autoLockTime,
-    selectFocusCurrency: (preference) => preference.focusCurrency,
-    selectFocusCurrencyDetail: (preference) => {
-      const currentWalletMetadata =
-        SUPPORTED_CURRENCIES.find((c) => c === preference.focusCurrency) ??
-        SUPPORTED_CURRENCIES[0];
-
-      return currentWalletMetadata;
-    },
   },
 });
 
 // Action creators are generated for each case reducer function.
-export const { setTheme, setAutoLockTime, setFocusCurrency } =
-  preferenceSlice.actions;
+export const { setTheme, setAutoLockTime } = preferenceSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const {
-  selectTheme,
-  selectAutoLockTime,
-  selectFocusCurrency, // TODO: remove this
-  selectFocusCurrencyDetail, // TODO: remove this
-} = preferenceSlice.selectors;
+export const { selectTheme, selectAutoLockTime } = preferenceSlice.selectors;

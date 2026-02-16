@@ -1,28 +1,11 @@
-import type { CryptoCurrencySymbol } from '@akashic/as-backend';
-import { CoinSymbol } from '@akashic/as-backend';
-
 import type { PreferenceState } from '../../../../src/redux/slices/preferenceSlice';
 
-export const mockFocusCurrency = {
-  chain: CoinSymbol.Ethereum_Mainnet,
-  displayName: 'ETH',
-};
-
-export type mockPreferenceStateParams = {
-  coinSymbol?: CoinSymbol;
-  tokenSymbol?: CryptoCurrencySymbol;
-};
-
-export const getMockPreferenceSlice = ({
-  coinSymbol,
-  tokenSymbol,
-}: mockPreferenceStateParams): { preferenceSlice: PreferenceState } => {
+export const getMockPreferenceSlice = (): {
+  preferenceSlice: PreferenceState;
+} => {
   return {
     preferenceSlice: {
       theme: 'light',
-      focusCurrency: coinSymbol
-        ? { chain: coinSymbol, token: tokenSymbol, displayName: coinSymbol }
-        : mockFocusCurrency,
       autoLockTime: 10,
     },
   };

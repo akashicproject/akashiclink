@@ -1,4 +1,3 @@
-import { CoinSymbol } from '@akashic/as-backend';
 import type { StoryContext, StoryFn } from '@storybook/react';
 import { Provider } from 'react-redux';
 
@@ -6,13 +5,11 @@ import { getMockStore } from '../mocks/store';
 import type {
   mockAccountStoreParams,
   mockCreateWalletStoreParams,
-  mockPreferenceStateParams,
 } from '../mocks/store/slice';
 
 const DEFAULT_STORE_PARAMS: {
   account: mockAccountStoreParams;
   createWallet: mockCreateWalletStoreParams;
-  preferences: mockPreferenceStateParams;
 } = {
   account: {
     hasLocalAccounts: true,
@@ -20,7 +17,6 @@ const DEFAULT_STORE_PARAMS: {
     isLoggedIn: true,
   },
   createWallet: { hasPassword: false },
-  preferences: { coinSymbol: CoinSymbol.Ethereum_Mainnet },
 };
 
 export const useReduxProvider = (
@@ -35,10 +31,6 @@ export const useReduxProvider = (
     createWallet: {
       ...DEFAULT_STORE_PARAMS['createWallet'],
       ...store?.createWallet,
-    },
-    preferences: {
-      ...DEFAULT_STORE_PARAMS['preferences'],
-      ...store?.preferences,
     },
   };
 
