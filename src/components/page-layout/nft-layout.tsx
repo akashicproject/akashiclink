@@ -28,7 +28,7 @@ export function NftLayout({
   }, [history.entries]);
 
   return (
-    <IonPage>
+    <IonPage style={{ maxWidth: 600, margin: '0 auto' }}>
       <Header />
       <IonContent className="nft-layout ion-text-align-center">
         <IonRow>

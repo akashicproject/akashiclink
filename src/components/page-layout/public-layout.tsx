@@ -42,7 +42,7 @@ export function PublicLayout({
   }, [history.entries]);
 
   return (
-    <IonPage>
+    <IonPage style={{ maxWidth: 600, margin: '0 auto' }}>
       <StyledLayout className="vertical public-layout">
         {/* Keep header within layout for space when virtual keyboard comes up */}
         <PublicHeader />

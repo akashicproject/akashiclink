@@ -39,7 +39,7 @@ export function DashboardLayout({
   }, [authenticated, history]);
 
   return (
-    <IonPage>
+    <IonPage style={{ maxWidth: 600, margin: '0 auto' }}>
       <DepositModalContextProvider>
         <SendFormContextProvider>
           <Header />

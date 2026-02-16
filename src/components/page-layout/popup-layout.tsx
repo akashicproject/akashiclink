@@ -30,7 +30,7 @@ export function PopupLayout({
   const { activeAccount } = useAccountStorage();
 
   return (
-    <IonPage>
+    <IonPage style={{ maxWidth: 600, margin: '0 auto' }}>
       <StyledLayout className="vertical public-layout">
         {showIdentity && (
           <IonHeader
