@@ -21,6 +21,8 @@ import { IonApp, isPlatform, setupIonicReact } from '@ionic/react';
 import { IonReactMemoryRouter } from '@ionic/react-router';
 import { useEffect } from 'react';
 
+import { DepositModalContextProvider } from './components/deposit/deposit-modal-context-provider';
+import { SendFormContextProvider } from './components/send/send-modal-context-provider';
 import { PopupTree } from './popup/popup-tree';
 import { useAppSelector } from './redux/app/hooks';
 import { selectTheme } from './redux/slices/preferenceSlice';
@@ -65,8 +67,12 @@ export default function App() {
   return (
     <IonApp>
       <IonReactMemoryRouter history={history}>
-        {type === 'webPageRequest' && <PopupTree />}
-        {type !== 'webPageRequest' && <NavigationTree />}
+        <DepositModalContextProvider>
+          <SendFormContextProvider>
+            {type === 'webPageRequest' && <PopupTree />}
+            {type !== 'webPageRequest' && <NavigationTree />}
+          </SendFormContextProvider>
+        </DepositModalContextProvider>
       </IonReactMemoryRouter>
     </IonApp>
   );

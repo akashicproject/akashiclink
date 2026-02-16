@@ -20,6 +20,7 @@ import {
   EXT_VERSION,
   type IAccountsReturnType,
   type IRequestAccountsReturnType,
+  type ISendTransactionReturnType,
   type ISignTransactionReturnType,
   type ISignTypedDataReturnType,
   PROVIDER_EVENT,
@@ -57,7 +58,8 @@ type RpcSuccess = {
     | IRequestAccountsReturnType
     | ISignTypedDataReturnType
     | boolean
-    | ISignTransactionReturnType;
+    | ISignTransactionReturnType
+    | ISendTransactionReturnType;
 };
 type RpcError = {
   id: number;
@@ -471,7 +473,8 @@ function handleRpcRequest(
       break;
     }
     case AKASHIC_METHOD.SIGN_TYPED_DATA:
-    case AKASHIC_METHOD.SIGN_TRANSACTION: {
+    case AKASHIC_METHOD.SIGN_TRANSACTION:
+    case AKASHIC_METHOD.SEND_TRANSACTION: {
       if (!errorOnActivePopup(pendingRequest[id])) break;
       withAuthorizedSession(pendingRequest[id], () =>
         handleAkashicMethod(method, pendingRequest[id])
@@ -581,10 +584,12 @@ function handleApprovalDecision(
         break;
       }
       case AKASHIC_METHOD.SIGN_TYPED_DATA:
-      case AKASHIC_METHOD.SIGN_TRANSACTION: {
+      case AKASHIC_METHOD.SIGN_TRANSACTION:
+      case AKASHIC_METHOD.SEND_TRANSACTION: {
         const response = result as
           | ISignTypedDataReturnType
-          | ISignTransactionReturnType;
+          | ISignTransactionReturnType
+          | ISendTransactionReturnType;
         respond(req.tabId, { id: req.id, result: response });
         break;
       }

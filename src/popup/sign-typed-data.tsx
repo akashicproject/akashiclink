@@ -1,22 +1,11 @@
-import {
-  type CoinSymbol,
-  type CryptoCurrencySymbol,
-  FeeDelegationStrategy,
-  type ITreasuryKeyNetworkThreshold,
-  L2Regex,
-} from '@akashic/as-backend';
+import { datadogRum } from '@datadog/browser-rum';
 import { useEffect, useState } from 'react';
 
 import { BRIDGE_MESSAGE } from '../types/bridge-types';
 import { responseToSite, TYPED_DATA_PRIMARY_TYPE } from '../utils/chrome';
 import { AppError } from '../utils/error-utils';
-import {
-  useSendL1Transaction,
-  useSendL2Transaction,
-} from '../utils/hooks/nitr0gen';
 import { useBecomeFxBp } from '../utils/hooks/useBecomeFxBp';
 import { useSignMessage } from '../utils/hooks/useSignMessage';
-import { useVerifyTxnAndSign } from '../utils/hooks/useVerifyTxnAndSign';
 import { SignTypedDataContent } from './sign-typed-data-content';
 
 export interface ITypedData {
@@ -25,16 +14,6 @@ export interface ITypedData {
   };
   primaryType: string;
   message: { [key: string]: unknown };
-  // @deprecated Additional fields for specific typed data actions
-  secondaryOtk: { oldPubKeyToRemove?: string; treasuryKey?: boolean };
-  treasuryOtk: {
-    oldPubKeyToRemove?: string;
-    networkThresholds?: ITreasuryKeyNetworkThreshold[];
-  };
-  toSign: { identity: string; expires: string } & Record<
-    string,
-    string | Record<string, string>
-  >;
 }
 
 export function SignTypedData() {
@@ -45,9 +24,6 @@ export function SignTypedData() {
   const signMessage = useSignMessage();
   const becomeFxBp = useBecomeFxBp();
 
-  const verifyTxnAndSign = useVerifyTxnAndSign();
-  const { trigger: triggerSendL2Transaction } = useSendL2Transaction();
-  const { trigger: triggerSendL1Transaction } = useSendL1Transaction();
   const [id, setId] = useState<number>();
 
   useEffect(() => {
@@ -68,7 +44,7 @@ export function SignTypedData() {
     try {
       setIsProcessingRequest(true);
       if (!typedData) throw new Error('Missing parameters');
-      const { primaryType, message, toSign } = typedData;
+      const { primaryType, message } = typedData;
       let signedMsg = '';
 
       switch (primaryType) {
@@ -83,46 +59,6 @@ export function SignTypedData() {
         case TYPED_DATA_PRIMARY_TYPE.BECOME_FX_BP:
           signedMsg = await becomeFxBp();
           break;
-        case TYPED_DATA_PRIMARY_TYPE.PAYOUT: {
-          // TODO: Fix all this casting
-          const res = await verifyTxnAndSign(
-            {
-              userInputToAddress: toSign.addressInput as string,
-              convertedToAddress: toSign.convertedToAddress as string,
-              alias: toSign.alias as string,
-              initiatedToL1LedgerId: toSign.keyLedgerId as string,
-            },
-            toSign.amount as string,
-            toSign.chain as CoinSymbol,
-            toSign.token as CryptoCurrencySymbol | undefined,
-            FeeDelegationStrategy.Delegate, // Force-delegate AP payouts
-            toSign.approvedStream as string,
-            toSign.referenceId as string
-          );
-
-          const didUserInputL2Address = L2Regex.exec(
-            toSign.addressInput as string
-          );
-
-          const { txn, signedTxn: signedTx } = res;
-
-          const response =
-            toSign.isL2 === 'true'
-              ? await triggerSendL2Transaction({
-                  ...txn,
-                  signedTx,
-                  initiatedToNonL2: !didUserInputL2Address
-                    ? (toSign.addressInput as string)
-                    : undefined,
-                })
-              : await triggerSendL1Transaction({
-                  ...txn,
-                  signedTx,
-                });
-
-          signedMsg = `0x${response.txHash}`;
-          break;
-        }
         default:
           throw new Error(AppError.InvalidMethod);
       }

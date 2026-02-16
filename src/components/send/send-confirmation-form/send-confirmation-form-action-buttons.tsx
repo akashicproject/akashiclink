@@ -8,6 +8,8 @@ import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ONE_DAY_MS, ONE_MINUTE_MS } from '../../../constants';
+import { BRIDGE_MESSAGE } from '../../../types/bridge-types';
+import { responseToSite } from '../../../utils/chrome';
 import { getErrorMessageTKey } from '../../../utils/error-utils';
 import {
   useSendL1Transaction,
@@ -146,9 +148,20 @@ export const SendConfirmationFormActionButtons = () => {
     executeTransaction();
   };
 
-  const onCancel = () => {
+  const onCancel = async () => {
     setStep(0);
     setSendConfirm(undefined);
+
+    // Special handling for popup flow to notify the dapp of the transaction result
+    const url = new URL(window.location.href);
+    const idParam = url.searchParams.get('id');
+    if (idParam) {
+      await responseToSite(
+        BRIDGE_MESSAGE.APPROVAL_DECISION,
+        Number(idParam),
+        false
+      );
+    }
   };
 
   const onFinish = () => {

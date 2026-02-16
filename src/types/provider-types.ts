@@ -33,6 +33,7 @@ export enum AKASHIC_METHOD {
   REQUEST_ACCOUNTS = 'akashic_requestAccounts',
   SIGN_TYPED_DATA = 'akashic_signTypedData',
   SIGN_TRANSACTION = 'akashic_signTransaction',
+  SEND_TRANSACTION = 'akashic_sendTransaction',
 }
 
 // Custom AkashicLink methods
@@ -70,6 +71,8 @@ export type ISignTypedDataReturnType = string;
 
 export type ISignTransactionReturnType = string;
 
+export type ISendTransactionReturnType = string;
+
 // NOTE:
 // Originally this type attempted to declare a property using a computed key: {[CHANNEL]: string;}
 // However, CHANNEL is a runtime string (not a string literal type), so TypeScript disallows
@@ -82,7 +85,8 @@ export type ApprovalMessage = {
   result?:
     | IRequestAccountsReturnType
     | ISignTypedDataReturnType
-    | ISignTransactionReturnType;
+    | ISignTransactionReturnType
+    | ISendTransactionReturnType;
   reason?: string;
   // Dynamic channel property keyed by the runtime value of CHANNEL
   [dynamicChannelKey: string]: unknown;

@@ -3,6 +3,7 @@ import { datadogRum } from '@datadog/browser-rum';
 import { BRIDGE_MESSAGE } from '../types/bridge-types';
 import type {
   IRequestAccountsReturnType,
+  ISendTransactionReturnType,
   ISignTransactionReturnType,
   ISignTypedDataReturnType,
 } from '../types/provider-types';
@@ -91,7 +92,8 @@ export const responseToSite = async (
   result?:
     | IRequestAccountsReturnType
     | ISignTypedDataReturnType
-    | ISignTransactionReturnType,
+    | ISignTransactionReturnType
+    | ISendTransactionReturnType,
   reason?: string
 ) => {
   // Skip if not in extension context (dev mode in browser)

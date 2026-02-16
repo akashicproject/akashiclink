@@ -2,6 +2,8 @@ import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { BRIDGE_MESSAGE } from '../../../types/bridge-types';
+import { responseToSite } from '../../../utils/chrome';
 import { useAccountMe } from '../../../utils/hooks/useAccountMe';
 import { useMyTransfersInfinite } from '../../../utils/hooks/useMyTransfersInfinite';
 import { PrimaryButton } from '../../common/buttons';
@@ -25,7 +27,7 @@ export const SendCompleted = () => {
     return null;
   }
 
-  const onFinish = () => {
+  const onFinish = async () => {
     mutateMyTransfers();
     mutateAccountMe();
     setTimeout(() => {
@@ -35,6 +37,18 @@ export const SendCompleted = () => {
     setStep(0);
     setSendConfirm(undefined);
     setIsModalOpen(false);
+
+    // Special handling for popup flow to notify the dapp of the transaction result
+    const url = new URL(window.location.href);
+    const idParam = url.searchParams.get('id');
+    if (idParam) {
+      await responseToSite(
+        BRIDGE_MESSAGE.APPROVAL_DECISION,
+        Number(idParam),
+        true,
+        sendConfirm?.txnFinal?.txHash
+      );
+    }
   };
 
   return (

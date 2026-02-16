@@ -1,6 +1,7 @@
 import { AKASHIC_METHOD, WALLET_METHOD } from '../types/provider-types';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { PopupUnlockOrCreateAndImportWallet } from './popup-unlock-create-import-wallet';
+import { SendTransaction } from './send-transaction';
 import { SignTransaction } from './sign-transaction';
 import { SignTypedData } from './sign-typed-data';
 import { WalletConnection } from './wallet-connection';
@@ -29,6 +30,10 @@ export function PopupTree() {
 
   if (method === AKASHIC_METHOD.SIGN_TRANSACTION) {
     return <SignTransaction />;
+  }
+
+  if (method === AKASHIC_METHOD.SEND_TRANSACTION) {
+    return <SendTransaction />;
   }
 
   // TODO: handle invalid request
