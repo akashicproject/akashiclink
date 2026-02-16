@@ -1,4 +1,4 @@
-import { ETH_METHOD, WALLET_METHOD } from '../utils/chrome';
+import { AKASHIC_METHOD, WALLET_METHOD } from '../types/provider-types';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { PopupUnlockOrCreateAndImportWallet } from './popup-unlock-create-import-wallet';
 import { SignTypedData } from './sign-typed-data';
@@ -18,12 +18,12 @@ export function PopupTree() {
     return <PopupUnlockOrCreateAndImportWallet />;
   }
 
-  if (method === ETH_METHOD.REQUEST_ACCOUNTS) {
+  if (method === AKASHIC_METHOD.REQUEST_ACCOUNTS) {
     return <WalletConnection />;
   }
 
   // TODO: possible different layout for typed data
-  if (method === ETH_METHOD.SIGN_TYPED_DATA) {
+  if (method === AKASHIC_METHOD.SIGN_TYPED_DATA) {
     return <SignTypedData />;
   }
 
