@@ -8,18 +8,10 @@ import {
   nitr0genNativeCoin,
 } from '@akashic/as-backend';
 import { datadogRum } from '@datadog/browser-rum';
-import { getSdkError } from '@walletconnect/utils';
-import { type Web3WalletTypes } from '@walletconnect/web3wallet';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import {
-  closePopup,
-  ETH_METHOD,
-  EXTENSION_ERROR,
-  EXTENSION_EVENT,
-  responseToSite,
-  TYPED_DATA_PRIMARY_TYPE,
-} from '../utils/chrome';
+import { BRIDGE_MESSAGE } from '../types/bridge-types';
+import { responseToSite, TYPED_DATA_PRIMARY_TYPE } from '../utils/chrome';
 import { convertToSmallestUnit } from '../utils/currency';
 import { AppError } from '../utils/error-utils';
 import {
@@ -36,18 +28,14 @@ import {
   useVerifyTxnAndSign,
 } from '../utils/hooks/useVerifyTxnAndSign';
 import type { IAcTreasuryThresholds } from '../utils/nitr0gen/nitr0gen.interface';
-import { useWeb3Wallet } from '../utils/web3wallet';
 import { SignTypedDataContent } from './sign-typed-data-content';
 
 export function SignTypedData() {
-  const web3wallet = useWeb3Wallet();
-
   const [isProcessingRequest, setIsProcessingRequest] = useState(false);
 
   const [requestContent, setRequestContent] = useState({
     id: 0,
     method: '',
-    topic: '',
     primaryType: '',
     message: {} as Record<string, string>,
     toSign: {} as { identity: string; expires: string } & Record<
@@ -72,53 +60,33 @@ export function SignTypedData() {
   const { trigger: triggerSendL2Transaction } = useSendL2Transaction();
   const { trigger: triggerSendL1Transaction } = useSendL1Transaction();
 
-  const onSessionRequest = useCallback(
-    async (event: Web3WalletTypes.SessionRequest) => {
-      try {
-        const { topic, params, id } = event;
-        const { request } = params;
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const id = url.searchParams.get('id');
+    const method = url.searchParams.get('method');
+    const primaryType = url.searchParams.get('primaryType');
+    const data = url.searchParams.get('data');
+    if (!id || !data || !primaryType || !method) {
+      throw new Error('Missing parameters');
+    }
+    const typedData = JSON.parse(decodeURIComponent(data));
 
-        if (request.method === ETH_METHOD.SIGN_TYPED_DATA) {
-          const typedData = JSON.parse(request.params[1]);
-
-          const { toSign, secondaryOtk, treasuryOtk, ...message } =
-            typedData.message;
-
-          setRequestContent({
-            id,
-            method: request.method,
-            message: message,
-            primaryType: typedData.primaryType,
-            topic,
-            toSign: toSign,
-            secondaryOtk,
-            treasuryOtk,
-            response: {},
-          });
-        }
-      } catch (e) {
-        datadogRum.addError(e);
-      }
-    },
-    []
-  );
-
-  const onSessionRequestExpire = useCallback(
-    async (event: Web3WalletTypes.SessionRequestExpire) => {
-      if (event.id === requestContent.id) {
-        await responseToSite({
-          method: ETH_METHOD.SIGN_TYPED_DATA,
-          error: EXTENSION_ERROR.REQUEST_EXPIRED,
-        });
-        await closePopup();
-      }
-    },
-    []
-  );
+    const { toSign, secondaryOtk, treasuryOtk, ...message } = typedData.message;
+    setRequestContent({
+      id: Number(id),
+      method,
+      message,
+      primaryType,
+      toSign: toSign,
+      secondaryOtk,
+      treasuryOtk,
+      response: {},
+    });
+  }, []);
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
   const acceptSessionRequest = async () => {
-    const { topic, id, primaryType, toSign, secondaryOtk, treasuryOtk } =
+    const { id, primaryType, toSign, secondaryOtk, treasuryOtk } =
       requestContent;
 
     try {
@@ -214,69 +182,23 @@ export function SignTypedData() {
           throw new Error(AppError.InvalidMethod);
       }
 
-      await web3wallet?.respondSessionRequest({
-        topic,
-        response: {
-          id,
-          jsonrpc: '2.0',
-          result: signedMsg,
-        },
-      });
-
-      // Need this setTimeout for respondSessionRequest to completely finish before closing itself
-      setTimeout(() => {
-        window.removeEventListener('beforeunload', onPopupClosed);
-        closePopup();
-      }, 100);
+      responseToSite(BRIDGE_MESSAGE.APPROVAL_DECISION, id, true, signedMsg);
     } catch (e) {
-      try {
-        await web3wallet?.respondSessionRequest({
-          topic,
-          response: {
-            id,
-            jsonrpc: '2.0',
-            error: getSdkError('INVALID_METHOD', (e as Error)?.message),
-          },
-        });
-      } finally {
-        console.warn('Failed to sign', e);
-        datadogRum.addError(e);
-        responseToSite({
-          method: ETH_METHOD.SIGN_TYPED_DATA,
-          error: EXTENSION_ERROR.UNKNOWN,
-        });
-        setTimeout(() => {
-          window.removeEventListener('beforeunload', onPopupClosed);
-          closePopup();
-        }, 100);
-      }
+      datadogRum.addError(e);
+      responseToSite(
+        BRIDGE_MESSAGE.APPROVAL_DECISION,
+        id,
+        false,
+        undefined,
+        e instanceof Error ? e.message : JSON.stringify(e)
+      );
     }
   };
   const rejectSessionRequest = async () => {
-    try {
-      const { topic, id } = requestContent;
+    const { id } = requestContent;
 
-      await web3wallet?.respondSessionRequest({
-        topic,
-        response: {
-          id,
-          jsonrpc: '2.0',
-          error: getSdkError('USER_REJECTED'),
-        },
-      });
-    } catch (e) {
-      datadogRum.addError(e);
-    }
+    responseToSite(BRIDGE_MESSAGE.APPROVAL_DECISION, id, false);
   };
-
-  // Do NOT remove useCallback for removeEventListener to work
-  const onPopupClosed = useCallback(() => {
-    rejectSessionRequest();
-    responseToSite({
-      method: ETH_METHOD.SIGN_TYPED_DATA,
-      event: EXTENSION_EVENT.USER_CLOSED_POPUP,
-    });
-  }, []);
 
   const onClickSign = async () => {
     setIsProcessingRequest(true);
@@ -285,68 +207,8 @@ export function SignTypedData() {
   };
 
   const onClickReject = async () => {
-    try {
-      await rejectSessionRequest();
-    } finally {
-      setTimeout(() => {
-        window.removeEventListener('beforeunload', onPopupClosed);
-        closePopup();
-      }, 100);
-    }
+    await rejectSessionRequest();
   };
-
-  useEffect(() => {
-    const initRequestPopup = async () => {
-      try {
-        if (!web3wallet) {
-          console.log('waiting for web3wallet to be ready');
-          datadogRum.addAction('Signing popup: Waiting for web3wallet');
-          return;
-        }
-
-        const activeSessions = web3wallet?.getActiveSessions();
-
-        if (!activeSessions || Object.values(activeSessions).length === 0) {
-          datadogRum.addError('Signing popup: activeSessions not found');
-          await responseToSite({
-            method: ETH_METHOD.SIGN_TYPED_DATA,
-            error: EXTENSION_ERROR.WC_SESSION_NOT_FOUND,
-          });
-          setTimeout(() => {
-            closePopup();
-          }, 100);
-          return;
-        }
-
-        //check for old requests
-        const pendingSessionRequests = web3wallet?.getPendingSessionRequests();
-        if (pendingSessionRequests && pendingSessionRequests.length > 1) {
-          datadogRum.addError(
-            'Signing popup: more than 1 pending requests are found'
-          );
-        }
-
-        web3wallet.on('session_request', onSessionRequest);
-        web3wallet.on('session_request_expire', onSessionRequestExpire);
-        window.addEventListener('beforeunload', onPopupClosed);
-
-        await responseToSite({
-          method: ETH_METHOD.SIGN_TYPED_DATA,
-          event: EXTENSION_EVENT.POPUP_READY,
-        });
-      } catch (e) {
-        datadogRum.addError(e);
-      }
-    };
-    initRequestPopup();
-
-    return () => {
-      if (!web3wallet) return;
-      web3wallet?.off('session_request', onSessionRequest);
-      web3wallet?.off('session_request_expire', onSessionRequestExpire);
-      window.removeEventListener('beforeunload', onPopupClosed);
-    };
-  }, [onSessionRequest, web3wallet]);
 
   const isWaitingRequestContent = requestContent.method === '';
 

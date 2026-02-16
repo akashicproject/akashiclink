@@ -18,7 +18,6 @@ export function SignTypedDataContent({
   requestContent: {
     id: number;
     method: string;
-    topic: string;
     primaryType: string;
     message: Record<string, string>;
     toSign: { identity: string; expires: string } & Record<
