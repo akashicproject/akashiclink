@@ -2,6 +2,7 @@ import { type IWalletScreeningPaginatedAndCountResponse } from '@akashic/as-back
 import useSWRInfinite from 'swr/infinite';
 
 import { axiosBase } from '../axios-helper';
+import { getCurrentTime } from '../currentUTCTime';
 import { useAccountStorage } from './useLocalAccounts';
 import { useSignMessage } from './useSignMessage';
 
@@ -18,9 +19,11 @@ export const useWalletScreenHistory = (limit = 10) => {
   } = useSWRInfinite<IWalletScreeningPaginatedAndCountResponse, Error>(
     (pageIndex) => pageIndex.toString(),
     async (pageIndex: string) => {
+      const serverTime = await getCurrentTime();
+
       const payloadToSign = {
         identity: activeAccount?.identity ?? '',
-        expires: Date.now() + 60 * 1000,
+        expires: serverTime + 60 * 1000,
         page: Number(pageIndex),
         limit: Number(limit),
       };

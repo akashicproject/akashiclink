@@ -10,6 +10,7 @@ import { useAppSelector } from '../redux/app/hooks';
 import { selectTheme } from '../redux/slices/preferenceSlice';
 import { BRIDGE_MESSAGE } from '../types/bridge-types';
 import { responseErrorToSite, responseToSite } from '../utils/chrome';
+import { getCurrentTime } from '../utils/currentUTCTime';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useSetGlobalLanguage } from '../utils/hooks/useSetGlobalLanguage';
 import { useSignMessage } from '../utils/hooks/useSignMessage';
@@ -38,9 +39,10 @@ export function WalletConnection() {
   const onClickApproveConnect = async () => {
     try {
       setIsProcessing(true);
+      const serverTime = await getCurrentTime();
       const payloadToSign = {
         identity: activeAccount?.identity ?? '',
-        expires: Date.now() + 60 * 1000,
+        expires: serverTime + 60 * 1000,
       };
 
       const walletPreference = {

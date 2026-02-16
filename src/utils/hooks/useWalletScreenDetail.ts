@@ -5,6 +5,7 @@ import {
 import useSWRMutation from 'swr/mutation';
 
 import { axiosBase } from '../axios-helper';
+import { getCurrentTime } from '../currentUTCTime';
 import { useAccountStorage } from './useLocalAccounts';
 import { useSignMessage } from './useSignMessage';
 
@@ -20,9 +21,11 @@ export const useWalletScreenDetail = () => {
   >(
     '/wallet-screening/detail',
     async (url: string, { arg }: { arg: IFindWalletScreeningById }) => {
+      const serverTime = await getCurrentTime();
+
       const payloadToSign = {
         identity: activeAccount?.identity ?? '',
-        expires: Date.now() + 60 * 1000,
+        expires: serverTime + 60 * 1000,
         id: arg.id,
       };
 
