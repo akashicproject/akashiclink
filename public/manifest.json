@@ -48,16 +48,5 @@
         "http://localhost:3001/*"
       ]
     }
-  ],
-  "externally_connectable": {
-    "ids": ["*"],
-    "matches": [
-      "https://*.akashicpay.com/*",
-      "https://*.testnet.akashicpay.com/*",
-      "https://*.akashicfx.com/*",
-      "https://*.testnet.akashicfx.com/*",
-      "http://localhost:3000/*",
-      "http://localhost:3001/*"
-    ]
-  }
+  ]
 }
