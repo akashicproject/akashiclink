@@ -19,7 +19,7 @@ export function DepositModal({
 }: {
   modal: RefObject<HTMLIonModalElement>;
 }) {
-  const { isModalOpen, setIsModalOpen, step, setStep } =
+  const { isModalOpen, setIsModalOpen, step, setStep, chain } =
     useContext(DepositModalContext);
 
   const fetchAndRemapL1Address = useFetchAndRemapL1Address();
@@ -68,7 +68,7 @@ export function DepositModal({
           </IonRow>
         </IonGrid>
         {step === 0 && <ChooseCurrencyList />}
-        {step === 1 && <CurrencyQrCodeAddress />}
+        {step === 1 && chain && <CurrencyQrCodeAddress chain={chain} />}
       </IonContent>
     </IonModal>
   );

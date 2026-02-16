@@ -1,10 +1,6 @@
-import {
-  type CoinSymbol,
-  type IOwnerOldestKeysResponse,
-} from '@akashic/as-backend';
+import { type CoinSymbol } from '@akashic/as-backend';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { type KeyedMutator } from 'swr';
 
 import { useFetchAndRemapL1Address } from '../../utils/hooks/useFetchAndRemapL1address';
 import {
@@ -16,10 +12,10 @@ import { PrimaryButton } from '../common/buttons';
 
 export const GenerateL1AddressButton = ({
   chain,
-  mutate,
+  onGeneratedAddress,
 }: {
   chain: CoinSymbol;
-  mutate: KeyedMutator<IOwnerOldestKeysResponse[]>;
+  onGeneratedAddress: () => void;
 }) => {
   const { t } = useTranslation();
   const { activeAccount, cacheOtk } = useAccountStorage();
@@ -39,7 +35,7 @@ export const GenerateL1AddressButton = ({
       if (!existingL1Address && cacheOtk && !isGeneratingAddress) {
         setIsGeneratingAddress(true);
         const address = await createL1Address(cacheOtk, chain);
-        await mutate();
+        await onGeneratedAddress();
         await fetchAndRemapL1Address(address, chain);
       }
     } catch (e) {

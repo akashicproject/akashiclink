@@ -1,4 +1,4 @@
-import { type CryptoCurrencyWithName } from '@helium-pay/backend';
+import { type CryptoCurrencyWithName } from '@akashic/as-backend';
 import { IonCol, IonGrid, IonIcon, IonRow, IonText } from '@ionic/react';
 import { arrowDownOutline, arrowForwardOutline } from 'ionicons/icons';
 import { type Dispatch, type SetStateAction, useContext } from 'react';
@@ -10,34 +10,35 @@ import { useIsScopeAccessAllowed } from '../../utils/account';
 import { formatAmountWithCommas } from '../../utils/formatAmountWithCommas';
 import { useAccountL1Address } from '../../utils/hooks/useAccountL1Address';
 import { useCryptoCurrencyBalance } from '../../utils/hooks/useCryptoCurrencyBalance';
+import { useFetchAndRemapL1Address } from '../../utils/hooks/useFetchAndRemapL1address';
 import TransactionHistoryList from '../activity/transaction-history-list';
 import { PrimaryButton, WhiteButton } from '../common/buttons';
 import { CryptoCurrencyIcon } from '../common/chain-icon/crypto-currency-icon';
 import { CopyBox } from '../common/copy-box';
-import { DepositModalContext } from '../deposit/deposit-modal-context-provider';
+import { GenerateL1AddressButton } from '../deposit/generate-l1-address-button';
 import { SendFormContext } from '../send/send-modal-context-provider';
 
 export function DashboardCryptoCurrencyDetail({
   setIsModalOpen,
+  setStep,
   walletCurrency,
 }: {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+  setStep: Dispatch<SetStateAction<number>>;
   walletCurrency: CryptoCurrencyWithName;
 }) {
   const { t } = useTranslation();
   const isSendAllowed = useIsScopeAccessAllowed('send');
   const isDepositAllowed = useIsScopeAccessAllowed('deposit');
+  const fetchAndRemapL1Address = useFetchAndRemapL1Address();
 
   const { address } = useAccountL1Address(walletCurrency.coinSymbol);
+
   const { balance, balanceInUsd } = useCryptoCurrencyBalance(
     walletCurrency.coinSymbol,
     walletCurrency.tokenSymbol
   );
-  const {
-    setIsModalOpen: setIsDepositModalOpen,
-    setChain,
-    setStep: setDepositModalStep,
-  } = useContext(DepositModalContext);
+
   const {
     setIsModalOpen: setIsSendModalOpen,
     setCurrency,
@@ -45,10 +46,7 @@ export function DashboardCryptoCurrencyDetail({
   } = useContext(SendFormContext);
 
   const handleOnClickDeposit = () => {
-    setChain(walletCurrency.coinSymbol);
-    setDepositModalStep(1);
-    setIsDepositModalOpen(true);
-    setIsModalOpen(false);
+    setStep(1);
   };
 
   const handleOnClickSend = () => {
@@ -61,6 +59,10 @@ export function DashboardCryptoCurrencyDetail({
   const handleOnClickTxnHistoryItem = () => {
     historyResetStackAndRedirect(urls.activity);
     setIsModalOpen(false);
+  };
+
+  const onGeneratedNewAddress = () => {
+    fetchAndRemapL1Address();
   };
 
   return (
@@ -85,29 +87,42 @@ export function DashboardCryptoCurrencyDetail({
             <p className="ion-text-size-sm ion-text-color-grey ion-text-align-center">{`$${formatAmountWithCommas(balanceInUsd ?? '0')}`}</p>
           </IonText>
         </IonCol>
-        <IonCol size={'10'} offset={'1'}>
-          <CopyBox label={t('DepositAddress')} text={address ?? '-'} />
-        </IonCol>
-        <IonCol size={'5'} offset={'1'}>
-          <PrimaryButton
-            disabled={!isSendAllowed}
-            expand="block"
-            onClick={handleOnClickSend}
-          >
-            {t('Send')}
-            <IonIcon slot="end" icon={arrowForwardOutline} />
-          </PrimaryButton>
-        </IonCol>
-        <IonCol size={'5'}>
-          <WhiteButton
-            disabled={!isDepositAllowed}
-            expand="block"
-            onClick={handleOnClickDeposit}
-          >
-            {t('Deposit')}
-            <IonIcon slot="end" icon={arrowDownOutline}></IonIcon>
-          </WhiteButton>
-        </IonCol>
+        {address && (
+          <>
+            <IonCol size={'10'} offset={'1'}>
+              <CopyBox label={t('DepositAddress')} text={address ?? '-'} />
+            </IonCol>
+            <IonCol size={'5'} offset={'1'}>
+              <PrimaryButton
+                disabled={!isSendAllowed}
+                expand="block"
+                onClick={handleOnClickSend}
+              >
+                {t('Send')}
+                <IonIcon slot="end" icon={arrowForwardOutline} />
+              </PrimaryButton>
+            </IonCol>
+            <IonCol size={'5'}>
+              <WhiteButton
+                disabled={!isDepositAllowed}
+                expand="block"
+                onClick={handleOnClickDeposit}
+              >
+                {t('Deposit')}
+                <IonIcon slot="end" icon={arrowDownOutline}></IonIcon>
+              </WhiteButton>
+            </IonCol>
+          </>
+        )}
+        {!address && (
+          <IonCol size={'8'} offset={'2'} className={'ion-text-align-center'}>
+            <GenerateL1AddressButton
+              chain={walletCurrency.coinSymbol}
+              onGeneratedAddress={onGeneratedNewAddress}
+            />
+          </IonCol>
+        )}
+
         <IonCol size={'12'}>
           <TransactionHistoryList
             isFilterType

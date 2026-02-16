@@ -1,17 +1,18 @@
 import { type CoinSymbol } from '@akashic/as-backend';
 import styled from '@emotion/styled';
 import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
-import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAccountL1Address } from '../../utils/hooks/useAccountL1Address';
+import {
+  type DepositChainOption,
+  useAccountL1Address,
+} from '../../utils/hooks/useAccountL1Address';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useOwnerKeys } from '../../utils/hooks/useOwnerKeys';
 import { L2Icon } from '../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../common/chain-icon/network-icon';
 import { CopyBox } from '../common/copy-box';
 import { CurrencyQrCode } from './currency-qr-code';
-import { DepositModalContext } from './deposit-modal-context-provider';
 import { GenerateL1AddressButton } from './generate-l1-address-button';
 
 const CoinWrapper = styled.div({
@@ -22,9 +23,12 @@ const CoinWrapper = styled.div({
   gap: '8px',
 });
 
-export const CurrencyQrCodeAddress = () => {
+export const CurrencyQrCodeAddress = ({
+  chain,
+}: {
+  chain: DepositChainOption;
+}) => {
   const { t } = useTranslation();
-  const { chain } = useContext(DepositModalContext);
   const { address, isChainAllowed, isAC } = useAccountL1Address(chain);
   const { activeAccount } = useAccountStorage();
   const { mutate, isLoading } = useOwnerKeys(activeAccount?.identity ?? '');
@@ -75,7 +79,7 @@ export const CurrencyQrCodeAddress = () => {
           {!isAC && !address && isChainAllowed && (
             <GenerateL1AddressButton
               chain={chain as CoinSymbol}
-              mutate={mutate}
+              onGeneratedAddress={mutate}
             />
           )}
         </IonCol>
