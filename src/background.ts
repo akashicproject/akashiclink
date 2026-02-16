@@ -11,6 +11,7 @@ import {
 } from './types/bridge-types';
 import {
   AKASHIC_METHOD,
+  type AkashicAccount,
   ERR_DISCONNECTED,
   ERR_PENDING,
   ERR_REJECTED,
@@ -32,6 +33,7 @@ import { APP_AUTO_LOCK_BY } from './utils/preference-keys';
 // Consider making this configurable or adjusting for better UX.
 // 60 seconds is a common default for user approvals.
 const POPUP_TIMEOUT_MS = 60_000;
+
 const popupTimers: Record<number, number> = {};
 
 // -----------------------------
@@ -73,7 +75,7 @@ const pendingRequest: Record<number, PendingRequest> = {};
 // and cleared on disconnect, tab close, or unauthorized request
 const sessions: Record<number, SessionInfo> = {};
 // Persisted granted permissions by origin
-const originPermissions: Record<string, string[]> = {};
+const originPermissions: Record<string, AkashicAccount[]> = {};
 
 // Persistence (single root key only)
 const ROOT_KEY = 'AKASHIC_STATE_V1';
@@ -83,23 +85,17 @@ const PERSIST_DEBOUNCE_MS = 500;
 function schedulePersist() {
   if (persistTimer) clearTimeout(persistTimer);
   persistTimer = setTimeout(() => {
-    try {
-      const serialSessions: Record<string, SessionInfo> = {};
-      for (const [k, v] of Object.entries(sessions)) serialSessions[k] = v;
-      const serialRequests: Record<string, PendingRequest> = {};
-      for (const [k, v] of Object.entries(pendingRequest)) {
-        serialRequests[k] = v;
-      }
-      chrome.storage.local.set({
+    chrome.storage.local
+      .set({
         [ROOT_KEY]: {
-          sessions: serialSessions,
+          sessions,
           originPermissions,
-          pendingRequests: serialRequests,
+          pendingRequests: pendingRequest,
         },
+      })
+      .catch((e) => {
+        log('persist failed', e);
       });
-    } catch (e) {
-      log('persist failed', e);
-    }
   }, PERSIST_DEBOUNCE_MS) as unknown as number;
 }
 
@@ -114,9 +110,9 @@ function restoreState() {
         const rawRequests = container.pendingRequests || {};
 
         // Load permissions
-        for (const [o, accounts] of Object.entries(rawPerms))
-          if (Array.isArray(accounts))
-            originPermissions[o] = accounts as string[];
+        for (const [o, accounts] of Object.entries(rawPerms)) {
+          originPermissions[o] = accounts as AkashicAccount[];
+        }
 
         // Clean up any orphaned pending requests from previous session
         cleanupOrphanedRequests(rawRequests);
@@ -455,7 +451,7 @@ function handleRpcRequest(
       const pr = pendingRequest[id];
       const origin = pr.origin;
       const tId = pr.tabId;
-      let result: string[] = [];
+      let result: AkashicAccount[] = [];
       if (!!tId && sessions[tId]) {
         result = originPermissions[sessions[tId].origin] || [];
       } else if (origin && originPermissions[origin]) {
@@ -577,8 +573,7 @@ function handleApprovalDecision(
         sessions[req.tabId] = {
           origin: req.origin ?? '',
         };
-        if (req.origin)
-          originPermissions[req.origin] = [response.payload.identity];
+        if (req.origin) originPermissions[req.origin] = response.accounts;
         respond(req.tabId, { id: req.id, result: response });
         schedulePersist();
         break;

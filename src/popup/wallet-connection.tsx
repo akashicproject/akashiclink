@@ -30,7 +30,7 @@ export function WalletConnection() {
   const storedTheme = useAppSelector(selectTheme);
   const [globalLanguage] = useSetGlobalLanguage();
 
-  const { activeAccount } = useAccountStorage();
+  const { activeAccount, cacheOtk } = useAccountStorage();
 
   const signMessage = useSignMessage();
 
@@ -39,22 +39,32 @@ export function WalletConnection() {
   const onClickApproveConnect = async () => {
     try {
       setIsProcessing(true);
+      if (!activeAccount?.identity || !cacheOtk?.key.pub.pkcs8pem) {
+        throw new Error('No active account or cache OTK found');
+      }
+
       const serverTime = await getCurrentTime();
       const payloadToSign = {
-        identity: activeAccount?.identity ?? '',
+        identity: activeAccount.identity,
+        accounts: [
+          {
+            identity: activeAccount.identity,
+            publicKey: cacheOtk.key.pub.pkcs8pem,
+          },
+        ],
         expires: serverTime + 60 * 1000,
-      };
-
-      const walletPreference = {
-        theme: storedTheme,
-        language: globalLanguage.replace('-', '='), // use replace for backward compatible with "-"
+        userData: {
+          walletPreference: {
+            theme: storedTheme,
+            language: globalLanguage.replace('-', '='), // use replace for backward compatible with "-"
+          },
+        },
       };
 
       const signedMsg = signMessage(payloadToSign);
       await responseToSite(BRIDGE_MESSAGE.APPROVAL_DECISION, id, true, {
-        payload: payloadToSign,
+        ...payloadToSign,
         signature: signedMsg,
-        walletPreference,
       });
     } catch (e) {
       await responseErrorToSite(

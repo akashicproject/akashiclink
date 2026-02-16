@@ -51,21 +51,26 @@ export enum PROVIDER_EVENT {
   POPUP_OPENED = 'popupOpened',
 }
 
-// TODO: change to array of identities in future if multiple account support
-// and we don't need signature when the new Web3 auth flow implemented
-export type IRequestAccountsReturnType = {
-  payload: {
-    identity: string;
-    expires: number;
-  };
-  signature: string;
-  walletPreference: {
-    theme: string;
-    language: string;
-  };
+export type AkashicAccount = {
+  identity: string;
+  publicKey: string;
 };
 
-export type IAccountsReturnType = string[];
+// TODO: we don't need signature when the new Web3 auth flow implemented
+export type IRequestAccountsReturnType = {
+  identity: string;
+  accounts: AkashicAccount[];
+  userData: {
+    walletPreference: {
+      theme: string;
+      language: string;
+    };
+  };
+  expires: number;
+  signature: string;
+};
+
+export type IAccountsReturnType = AkashicAccount[];
 
 export type ISignTypedDataReturnType = string;
 
