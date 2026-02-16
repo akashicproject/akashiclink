@@ -6,6 +6,7 @@ import { BRIDGE_MESSAGE } from '../types/bridge-types';
 import { responseErrorToSite, responseToSite } from '../utils/chrome';
 import { useSignMessage } from '../utils/hooks/useSignMessage';
 import {
+  isAfxOnboardContract,
   isSecondaryOtkUpdate,
   isTreasuryOtkAddition,
   isTreasuryOtkRemoval,
@@ -61,6 +62,12 @@ export function SignTransaction() {
       setMessage({
         identity: transaction.$tx.$i.owner.$stream,
         content: t('Popup.ConfirmationToDisableMultisig'),
+      });
+    } else if (isAfxOnboardContract(transaction)) {
+      // AfxOnboard contract
+      setMessage({
+        identity: transaction.$tx.$i.owner.$stream,
+        content: t('Popup.AcceptTermsAndPrivacyPolicy'),
       });
     } else {
       // Unknown transaction type

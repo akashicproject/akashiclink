@@ -181,6 +181,13 @@ export function isTreasuryThresholdUpdateOnly(
   );
 }
 
+/**
+ * Checks if contract is of AfxOnboard type
+ */
+export function isAfxOnboardContract(txBody: IBaseAcTransaction) {
+  return txBody.$tx.$contract.includes(Nitr0gen.AfxOnboard.split('@')[0]);
+}
+
 /** Modifies the tx in-place and also returns the modified tx */
 async function addExpireToTxBody<T extends IBaseAcTransaction>(
   txBody: T
