@@ -166,7 +166,11 @@ export const DashboardPreferenceCurrencyFilter = () => {
   };
 
   const handleSelectAll = () => {
-    setHiddenCurrencies([]);
+    if (hiddenCurrencies.length === 0) {
+      setHiddenCurrencies(allKeys);
+    } else {
+      setHiddenCurrencies([]);
+    }
   };
 
   const toggleChain = (chain: CoinSymbol) => {
