@@ -20,8 +20,6 @@ export const RecentAddressList: FC<RecentAddressListProps> = ({
     currency.coinSymbol
   );
 
-  console.log('fefe recent', recentAddressesWithTimestamp);
-
   return (
     <AddressList
       items={recentAddressesWithTimestamp}
