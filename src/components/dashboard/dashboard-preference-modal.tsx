@@ -50,7 +50,22 @@ export function DashboardPreferenceModal({
         </IonButton>
       )}
       <IonContent className="ion-padding-top-xl">
-        <div style={{ height: '75vh' }}>
+        <div
+          style={{
+            /**
+             * The modal uses initialBreakpoint={0.9}, meaning it renders at 90vh.
+             *
+             * We manually calculate the inner container height to:
+             * - Account for IonContent padding
+             *
+             * 75vh is intentionally smaller than 90vh to compensate for
+             * header spacing, safe areas, and footer actions.
+             *
+             * NOTE: If the modal breakpoint changes, this value must be adjusted.
+             */
+            height: 'calc(75vh - var(--padding-top) + var(--offset-top))',
+          }}
+        >
           {step === 0 && <DashboardPreferenceSorting />}
           {step === 1 && <DashboardPreferenceCurrencyFilter />}
         </div>
