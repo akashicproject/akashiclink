@@ -1,10 +1,10 @@
 import type { IOwnerTransactionsResponse } from '@akashic/as-backend';
 import {
-  CryptoCurrencySymbol,
   TransactionResult,
   TransactionStatus,
   TransactionType,
 } from '@akashic/as-backend';
+import { CryptoCurrencySymbol } from '@akashic/core-lib';
 import type { AxiosRequestConfig } from 'axios';
 import Big from 'big.js';
 import useSWRInfinite from 'swr/infinite';

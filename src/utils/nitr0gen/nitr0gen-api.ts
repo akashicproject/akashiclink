@@ -1,8 +1,6 @@
 import { type IKey, TransactionHandler } from '@activeledger/sdk';
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import type {
-  CoinSymbol,
-  CryptoCurrencySymbol,
   IBaseAcTransaction,
   ITerriAcTransaction,
   SecondaryOtkContractI,
@@ -14,6 +12,7 @@ import {
   NetworkDictionary,
   OtherError,
 } from '@akashic/as-backend';
+import type { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
 import { datadogRum } from '@datadog/browser-rum';
 import axios, { isAxiosError } from 'axios';
 

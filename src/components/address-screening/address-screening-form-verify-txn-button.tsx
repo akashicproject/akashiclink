@@ -1,8 +1,5 @@
-import {
-  type CoinSymbol,
-  type CryptoCurrencySymbol,
-  FeeDelegationStrategy,
-} from '@akashic/as-backend';
+import { FeeDelegationStrategy } from '@akashic/as-backend';
+import type { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
 import styled from '@emotion/styled';
 import {
   type Dispatch,

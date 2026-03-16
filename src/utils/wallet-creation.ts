@@ -1,6 +1,6 @@
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
-import type { CoinSymbol } from '@akashic/as-backend';
-import { BinanceSymbol, isCoinSymbol } from '@akashic/as-backend';
+import { isCoinSymbol } from '@akashic/as-backend';
+import { BinanceSymbol, type CoinSymbol } from '@akashic/core-lib';
 import { datadogRum } from '@datadog/browser-rum';
 
 import { ALLOWED_NETWORKS } from '../constants/currencies';

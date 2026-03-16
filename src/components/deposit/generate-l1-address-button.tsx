@@ -1,4 +1,4 @@
-import { type CoinSymbol } from '@akashic/as-backend';
+import { type CoinSymbol } from '@akashic/core-lib';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

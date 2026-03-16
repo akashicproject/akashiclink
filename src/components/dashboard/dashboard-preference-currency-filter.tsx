@@ -1,4 +1,5 @@
-import type { CoinSymbol, CryptoCurrencyWithName } from '@akashic/as-backend';
+import type { CryptoCurrencyWithName } from '@akashic/as-backend';
+import type { CoinSymbol } from '@akashic/core-lib';
 import styled from '@emotion/styled';
 import {
   IonButton,

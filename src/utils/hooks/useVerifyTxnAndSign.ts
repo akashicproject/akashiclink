@@ -1,12 +1,11 @@
 import {
-  CoinSymbol,
-  CryptoCurrencySymbol,
   type FeeDelegationStrategy,
   type IBaseAcTransaction,
   type IWithdrawalProposal,
   L2Regex,
   TransactionLayer,
 } from '@akashic/as-backend';
+import { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
 
 import type { ValidatedAddressPair } from '../../components/send/send-form/types';
 import { OwnersAPI } from '../api';

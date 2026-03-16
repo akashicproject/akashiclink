@@ -1,4 +1,5 @@
-import { type CoinSymbol, L2Regex, OtkType } from '@akashic/as-backend';
+import { L2Regex, OtkType } from '@akashic/as-backend';
+import type { CoinSymbol } from '@akashic/core-lib';
 import crypto from 'crypto';
 
 import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';

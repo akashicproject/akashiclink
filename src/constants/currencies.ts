@@ -1,6 +1,4 @@
 import {
-  CoinSymbol,
-  EthereumSymbol,
   isCoinSymbol,
   MAINNET_CURRENCIES,
   MAINNET_CURRENCIES_WITH_NAMES,
@@ -8,8 +6,8 @@ import {
   SUPPORTED_TESTNETS,
   TESTNET_CURRENCIES,
   TESTNET_CURRENCIES_WITH_NAMES,
-  TronSymbol,
 } from '@akashic/as-backend';
+import { CoinSymbol, EthereumSymbol, TronSymbol } from '@akashic/core-lib';
 
 /**
  * "Smart" list of currencies supported in the extension

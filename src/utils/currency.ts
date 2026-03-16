@@ -1,10 +1,9 @@
 import {
-  CoinSymbol,
-  CryptoCurrencySymbol,
   type IInternalFee,
   NetworkDictionary,
   OtherError,
 } from '@akashic/as-backend';
+import { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
 import Big from 'big.js';
 
 /**

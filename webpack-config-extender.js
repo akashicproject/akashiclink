@@ -42,6 +42,7 @@ module.exports = {
         resolvePackagePath('../../packages/common-i18n/src'),
         resolvePackagePath('../../packages/ui-lib/src'),
         resolvePackagePath('../../packages/api-mocks/src'),
+        resolvePackagePath('../../packages/core-lib/src'),
       ]);
     }
 

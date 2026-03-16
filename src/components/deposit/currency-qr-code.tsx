@@ -1,4 +1,4 @@
-import { type CoinSymbol } from '@akashic/as-backend';
+import { type CoinSymbol } from '@akashic/core-lib';
 import styled from '@emotion/styled';
 import { IonImg, IonSpinner } from '@ionic/react';
 import { QRCodeSVG } from 'qrcode.react';

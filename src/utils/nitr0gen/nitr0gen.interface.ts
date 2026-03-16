@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
-  CoinSymbol,
-  CryptoCurrencySymbol,
   CurrencySymbolWithNitr0genNative,
   IBaseAcTransaction,
   IInternalFee,
@@ -9,6 +7,7 @@ import type {
   ITransactionBase,
   TransactionLayer,
 } from '@akashic/as-backend';
+import type { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
 
 /** ********* Internal Arguments/Responses ********* **/
 

@@ -1,11 +1,28 @@
-import { ALL_CURRENCIES_BY_MARKET_CAP, type CryptoCurrencyWithName, NetworkDictionary, sortCompareFnForMarketCap } from '@akashic/as-backend';
-import { IonChip, IonCol, IonGrid, IonIcon, IonInput, IonRow } from '@ionic/react';
-import { checkmark, chevronBack, chevronForward, searchOutline } from 'ionicons/icons';
+import {
+  ALL_CURRENCIES_BY_MARKET_CAP,
+  type CryptoCurrencyWithName,
+  NetworkDictionary,
+  sortCompareFnForMarketCap,
+} from '@akashic/as-backend';
+import {
+  IonChip,
+  IonCol,
+  IonGrid,
+  IonIcon,
+  IonInput,
+  IonRow,
+} from '@ionic/react';
+import {
+  checkmark,
+  chevronBack,
+  chevronForward,
+  searchOutline,
+} from 'ionicons/icons';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CryptoCurrencyIcon } from 'src/components/common/chain-icon/crypto-currency-icon';
 
 import { useCryptoCurrencyBalancesList } from '../../../utils/hooks/useCryptoCurrencyBalancesList';
+import { CryptoCurrencyIcon } from '../../common/chain-icon/crypto-currency-icon';
 import { CryptoCurrencyList } from '../../crypto-currency/crypto-currency-list';
 import { SendFormContext } from '../send-modal-context-provider';
 
@@ -51,8 +68,7 @@ export const SendChooseCurrencyForm = () => {
       c.tokenSymbol?.toLowerCase().includes(searchLower) ||
       c.displayName?.toLowerCase().includes(searchLower);
 
-    const matchesNetwork =
-      !selectedNetwork || c.coinSymbol === selectedNetwork;
+    const matchesNetwork = !selectedNetwork || c.coinSymbol === selectedNetwork;
 
     return matchesSearch && matchesNetwork;
   });
@@ -65,7 +81,14 @@ export const SendChooseCurrencyForm = () => {
     >
       <IonRow>
         <IonCol size={'12'}>
-          <div style={{ fontWeight: 700, fontSize: '1.25rem', marginBottom: 4, textAlign: 'center' }}>
+          <div
+            style={{
+              fontWeight: 700,
+              fontSize: '1.25rem',
+              marginBottom: 4,
+              textAlign: 'center',
+            }}
+          >
             {t('SelectCurrency')}
           </div>
           <div style={{ position: 'relative', margin: '16px 0 12px 0' }}>
@@ -73,34 +96,43 @@ export const SendChooseCurrencyForm = () => {
               value={searchText}
               onIonInput={(e) => {
                 const target = e.target as HTMLIonInputElement;
-                setSearchText(target.value as string || '');
+                setSearchText((target.value as string) || '');
               }}
               placeholder={t('Search')}
-              style={{
-                borderRadius: '24px',
-                fontSize: '1rem',
-                fontWeight: 400,
-                border: '1px solid var(--ion-color-outline)',
-                background: 'transparent',
-                '--highlight-color': 'transparent',
-                '--highlight-height': '0px',
-                '--placeholder-color': 'var(--ion-color-inverse-surface)',
-              } as React.CSSProperties}
+              style={
+                {
+                  borderRadius: '24px',
+                  fontSize: '1rem',
+                  fontWeight: 400,
+                  border: '1px solid var(--ion-color-outline)',
+                  background: 'transparent',
+                  '--highlight-color': 'transparent',
+                  '--highlight-height': '0px',
+                  '--placeholder-color': 'var(--ion-color-inverse-surface)',
+                } as React.CSSProperties
+              }
             />
             <IonIcon
               icon={searchOutline}
-              style={{  
+              style={{
                 position: 'absolute',
                 right: '16px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 color: 'var(--ion-color-on-inverse-surface)',
                 fontSize: '20px',
-                pointerEvents: 'none'
+                pointerEvents: 'none',
               }}
             />
           </div>
-          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+          <div
+            style={{
+              position: 'relative',
+              display: 'flex',
+              alignItems: 'center',
+              marginBottom: '16px',
+            }}
+          >
             <IonIcon
               icon={chevronBack}
               style={{
@@ -109,7 +141,9 @@ export const SendChooseCurrencyForm = () => {
                 color: 'var(--ion-color-on-surface-variant)',
               }}
               onClick={() => {
-                const container = document.getElementById('chip-scroll-container');
+                const container = document.getElementById(
+                  'chip-scroll-container'
+                );
                 if (container) {
                   container.scrollBy({ left: -150, behavior: 'smooth' });
                 }
@@ -139,11 +173,17 @@ export const SendChooseCurrencyForm = () => {
                   whiteSpace: 'nowrap',
                   width: 'auto',
                   minWidth: 'fit-content',
-                  backgroundColor: selectedNetwork === null ? 'var(--ion-color-secondary-container)' : 'transparent',
+                  backgroundColor:
+                    selectedNetwork === null
+                      ? 'var(--ion-color-secondary-container)'
+                      : 'transparent',
                   gap: '10px',
                 }}
               >
-                <IonIcon icon={checkmark} color='var(--ion-color-on-surface-variant)' />
+                <IonIcon
+                  icon={checkmark}
+                  color="var(--ion-color-on-surface-variant)"
+                />
                 {t('All')}
               </IonChip>
               {availableNetworks.map((network) => (
@@ -162,7 +202,10 @@ export const SendChooseCurrencyForm = () => {
                     whiteSpace: 'nowrap',
                     width: 'auto',
                     minWidth: 'fit-content',
-                    backgroundColor: selectedNetwork === network ? 'var(--ion-color-secondary-container)' : 'transparent',
+                    backgroundColor:
+                      selectedNetwork === network
+                        ? 'var(--ion-color-secondary-container)'
+                        : 'transparent',
                     gap: '8px',
                   }}
                 >
@@ -179,7 +222,9 @@ export const SendChooseCurrencyForm = () => {
                 color: 'var(--ion-color-on-surface-variant)',
               }}
               onClick={() => {
-                const container = document.getElementById('chip-scroll-container');
+                const container = document.getElementById(
+                  'chip-scroll-container'
+                );
                 if (container) {
                   container.scrollBy({ left: 150, behavior: 'smooth' });
                 }

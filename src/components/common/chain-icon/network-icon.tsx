@@ -1,4 +1,5 @@
-import { type CoinSymbol, NetworkDictionary } from '@akashic/as-backend';
+import { NetworkDictionary } from '@akashic/as-backend';
+import type { CoinSymbol } from '@akashic/core-lib';
 import { IonImg } from '@ionic/react';
 
 export const NetworkIcon = ({

@@ -1,4 +1,4 @@
-import { type CoinSymbol } from '@akashic/as-backend';
+import { type CoinSymbol } from '@akashic/core-lib';
 
 import { ALLOWED_NETWORKS } from '../../constants/currencies';
 import {

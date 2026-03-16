@@ -1,5 +1,4 @@
 import {
-  EthereumSymbol,
   FeeDelegationStrategy,
   type IBaseAcTransaction,
   isCoinSymbol,
@@ -10,6 +9,7 @@ import {
   TransactionStatus,
   WalletType,
 } from '@akashic/as-backend';
+import { EthereumSymbol } from '@akashic/core-lib';
 
 import { useAppDispatch } from '../../redux/app/hooks';
 import { addLocalTransaction } from '../../redux/slices/localTransactionSlice';

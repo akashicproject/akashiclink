@@ -1,7 +1,5 @@
-import {
-  type CryptoCurrencySymbol,
-  type FiatCurrencySymbol,
-} from '@akashic/as-backend';
+import { type FiatCurrencySymbol } from '@akashic/as-backend';
+import type { CryptoCurrencySymbol } from '@akashic/core-lib';
 import useSWR from 'swr';
 
 import fetcher from '../ownerFetcher';

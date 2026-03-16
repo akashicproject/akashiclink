@@ -1,8 +1,5 @@
-import {
-  type CoinSymbol,
-  type CryptoCurrencySymbol,
-  FeeDelegationStrategy,
-} from '@akashic/as-backend';
+import { FeeDelegationStrategy } from '@akashic/as-backend';
+import type { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
 import { useContext, useEffect, useState } from 'react';
 
 import { SendFormContext } from '../components/send/send-modal-context-provider';

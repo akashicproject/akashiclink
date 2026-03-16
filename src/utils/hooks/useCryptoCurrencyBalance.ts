@@ -1,7 +1,5 @@
-import {
-  type CoinSymbol,
-  type CryptoCurrencySymbol,
-} from '@akashic/as-backend';
+import {} from '@akashic/as-backend';
+import type { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
 import Big from 'big.js';
 
 import { getChainExchangeRate } from '../chain';

@@ -1,8 +1,5 @@
-import type {
-  CoinSymbol,
-  CryptoCurrencySymbol,
-  IExchangeRate,
-} from '@akashic/as-backend';
+import type { IExchangeRate } from '@akashic/as-backend';
+import type { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
 import Big from 'big.js';
 
 import { INTERNAL_FEE_BASE } from '../constants/fee';

@@ -1,8 +1,8 @@
 import {
-  CoinSymbol,
   NetworkDictionary,
   suffixForSolanaDevnetURL,
 } from '@akashic/as-backend';
+import { CoinSymbol } from '@akashic/core-lib';
 import { IonItem, IonText } from '@ionic/react';
 import Big from 'big.js';
 import { useContext } from 'react';

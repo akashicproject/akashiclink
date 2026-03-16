@@ -1,9 +1,8 @@
 import {
-  type CoinSymbol,
-  type CryptoCurrencySymbol,
   type IBaseAcTransaction,
   type ITerriAcTransaction,
 } from '@akashic/as-backend';
+import type { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
 
 import type { ITransactionForSigning } from '../../utils/nitr0gen/nitr0gen.interface';
 

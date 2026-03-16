@@ -1,5 +1,6 @@
-import type { CoinSymbol, CryptoCurrencyWithName } from '@akashic/as-backend';
+import type { CryptoCurrencyWithName } from '@akashic/as-backend';
 import { NetworkDictionary } from '@akashic/as-backend/src/modules/api-interfaces/networks/networks.model';
+import type { CoinSymbol } from '@akashic/core-lib';
 import styled from '@emotion/styled';
 import { IonCheckbox, IonIcon, IonText } from '@ionic/react';
 import { caretDown } from 'ionicons/icons';

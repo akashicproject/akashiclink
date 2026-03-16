@@ -1,8 +1,5 @@
-import {
-  type CoinSymbol,
-  type CryptoCurrencySymbol,
-  getCurrencyIcon,
-} from '@akashic/as-backend';
+import { getCurrencyIcon } from '@akashic/as-backend';
+import type { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
 import { IonImg } from '@ionic/react';
 
 import { SUPPORTED_CURRENCIES_WITH_NAMES } from '../../../constants/currencies';

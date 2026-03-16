@@ -1,4 +1,4 @@
-import type { CoinSymbol } from '@akashic/as-backend';
+import type { CoinSymbol } from '@akashic/core-lib';
 import useSWR from 'swr';
 
 import fetcher from '../ownerFetcher';

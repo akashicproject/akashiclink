@@ -28,6 +28,7 @@
     "@activeledger/sdk-bip39": "1.0.3",
     "@akashic/as-backend": "workspace:^",
     "@akashic/common-i18n": "workspace:^",
+    "@akashic/core-lib": "workspace:^",
     "@datadog/browser-rum": "5.0.0",
     "@emotion/react": "11.11.1",
     "@emotion/serialize": "^1.1.2",
