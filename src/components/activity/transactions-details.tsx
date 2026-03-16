@@ -40,10 +40,7 @@ export function TransactionDetails({
             }
           >
             <h2>{t('TransactionDetails')}</h2>
-            <ShareActionButton
-              filename={currentTransfer.l2TxnHash}
-              link={currentTransfer.l2TxnHashUrl}
-            />
+            <ShareActionButton link={currentTransfer.l2TxnHashUrl} />
           </div>
           <div className={'ion-display-flex ion-align-items-center ion-gap-xs'}>
             {currentTransfer.coinSymbol &&

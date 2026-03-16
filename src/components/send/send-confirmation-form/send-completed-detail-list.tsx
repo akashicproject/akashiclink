@@ -102,10 +102,7 @@ export const SendCompletedDetailList = () => {
         </IonText>
         {txHash && (
           <div className={'ion-margin-left-auto'}>
-            <ShareActionButton
-              filename={txHash}
-              link={getUrl('transaction', !!isL2, txHash)}
-            />
+            <ShareActionButton link={getUrl('transaction', !!isL2, txHash)} />
           </div>
         )}
       </IonItem>

@@ -29,20 +29,14 @@ const PingStatus = styled.span`
 
 export function SettingsNetwork() {
   const { t } = useTranslation();
-  const [nodes, setNodes] = useState<Node[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [unreachableNode, setUnreachableNode] = useState<Node | null>(null);
   const storedTheme = useAppSelector(selectTheme);
-  const [preferredNodeKey, setPreferredNodeKey] = useState<string>('');
 
-  useEffect(() => {
-    (async () => {
-      const preferredNode = Cookies.get(PREFERRED_NODE_KEY);
-      setPreferredNodeKey(preferredNode ?? '');
-      const nodesList = await fetchNodesPing(false);
-      setNodes(nodesList);
-    })();
-  }, []);
+  const [nodes, setNodes] = useState<Node[]>([]);
+  const [unreachableNode, setUnreachableNode] = useState<Node | null>(null);
+  const [preferredNodeKey, setPreferredNodeKey] = useState<string>(
+    Cookies.get(PREFERRED_NODE_KEY) ?? ''
+  );
 
   useEffect(() => {
     if (nodes.length) {
@@ -58,7 +52,7 @@ export function SettingsNetwork() {
     setNodes(nodesList);
   };
 
-  const updatePreferredNodeKey = async (key: string) => {
+  const updatePreferredNodeKey = (key: string) => {
     Cookies.set(PREFERRED_NODE_KEY, key);
     setPreferredNodeKey(key);
   };
@@ -71,6 +65,10 @@ export function SettingsNetwork() {
       updatePreferredNodeKey(node.key);
     }
   };
+
+  useEffect(() => {
+    loadNodes();
+  }, []);
 
   return (
     <DashboardLayout>
@@ -105,7 +103,7 @@ export function SettingsNetwork() {
             <SettingItem
               key={node.key}
               backgroundColor="var(--ion-background)"
-              header={`${t('Node')}  ${++index} ${
+              header={`${t('Node')} ${++index} ${
                 node.key === preferredNodeKey ? t('Preferred') : ''
               }`}
               onClick={() => handleNodeSelect(node)}
