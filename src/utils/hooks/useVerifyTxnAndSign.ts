@@ -47,6 +47,8 @@ export interface UseVerifyAndSignResponse {
   txn: ITransactionForSigning;
   /** The delegated fee, if any. In UI units (in contrast to the txn) */
   delegatedFee?: string;
+  /** True if the destination address has not been used before (backend-provided). */
+  isFirstTimeInteractionWithAddress?: boolean;
 }
 
 export const useVerifyTxnAndSign = () => {
@@ -121,6 +123,7 @@ export const useVerifyTxnAndSign = () => {
       return {
         txn,
         signedTxn: txBody,
+        isFirstTimeInteractionWithAddress: false,
       };
     }
 
@@ -136,8 +139,12 @@ export const useVerifyTxnAndSign = () => {
       referenceId,
     };
 
-    const { preparedTxn, fromAddress, delegatedFee } =
-      await OwnersAPI.prepareL1Txn(transactionData);
+    const {
+      preparedTxn,
+      fromAddress,
+      delegatedFee,
+      isFirstTimeInteractionWithAddress,
+    } = await OwnersAPI.prepareL1Txn(transactionData);
     const signedTxn = await signTxBody(preparedTxn, cacheOtk);
     const uiFeesEstimate = convertFromSmallestUnit(
       preparedTxn.$tx.metadata?.feesEstimate ?? '0',
@@ -158,6 +165,6 @@ export const useVerifyTxnAndSign = () => {
       },
     };
 
-    return { txn, signedTxn, delegatedFee };
+    return { txn, signedTxn, delegatedFee, isFirstTimeInteractionWithAddress };
   };
 };

@@ -66,6 +66,8 @@ export const SendFormVerifyL2TxnButton: FC<SendFormVerifyL2TxnButtonProps> = ({
         txn: res.txn,
         signedTxn: res.signedTxn,
         delegatedFee: res.delegatedFee,
+        isFirstTimeInteractionWithAddress:
+          res.isFirstTimeInteractionWithAddress,
         validatedAddressPair,
         amount,
       });

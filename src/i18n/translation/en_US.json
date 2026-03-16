@@ -64,6 +64,7 @@
   "SelectCurrency": "Select Currency",
   "InputAddress": "Input Address",
   "TransactionSummary": "Transaction Summary",
+  "FirstTimeAddressWarning": "This is your first time interacting with this address. Double-check the details to keep your transfer safe.",
   "TransactionSuccessful": "Transaction Successful",
   "TransactionFailed": "Transaction Failed",
   "Receiver": "Receiver",

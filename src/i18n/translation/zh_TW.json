@@ -63,6 +63,7 @@
   "SelectCurrency": "選擇貨幣",
   "InputAddress": "輸入地址",
   "TransactionSummary": "交易摘要",
+  "FirstTimeAddressWarning": "這是您第一次與此地址進行交互。請仔細檢查詳細信息以確保轉帳安全。",
   "TransactionSuccessful": "交易成功",
   "TransactionFailed": "交易失敗",
   "Receiver": "接受者",

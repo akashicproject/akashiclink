@@ -98,6 +98,8 @@ export function SendTransaction() {
           txn: res.txn,
           signedTxn: res.signedTxn,
           delegatedFee: res.delegatedFee,
+          isFirstTimeInteractionWithAddress:
+            res.isFirstTimeInteractionWithAddress,
           validatedAddressPair: {
             userInputToAddress: sendTransactionData.addressInput,
             convertedToAddress: sendTransactionData.toAddress,

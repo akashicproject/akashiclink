@@ -1,11 +1,16 @@
 import { NetworkDictionary } from '@akashic/as-backend';
 import { IonItem, IonText } from '@ionic/react';
 import Big from 'big.js';
+import { warningOutline } from 'ionicons/icons';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAppSelector } from '../../../redux/app/hooks';
+import { selectTheme } from '../../../redux/slices/preferenceSlice';
+import { themeType } from '../../../theme/const';
 import { getPrecision } from '../../../utils/formatAmount';
 import { useCryptoCurrencySymbolsAndBalances } from '../../../utils/hooks/useCryptoCurrencySymbolsAndBalances';
+import { AlertBox } from '../../common/alert/alert';
 import { L2Icon } from '../../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../../common/chain-icon/network-icon';
 import { Divider } from '../../common/divider';
@@ -18,6 +23,8 @@ import { SendFormContext } from '../send-modal-context-provider';
 export const SendConfirmationDetailList = () => {
   const { t } = useTranslation();
   const { sendConfirm, currency } = useContext(SendFormContext);
+  const theme = useAppSelector(selectTheme);
+  const isDarkMode = theme === themeType.DARK;
   const { isCurrencyTypeToken, currencySymbol, nativeCoinSymbol } =
     useCryptoCurrencySymbolsAndBalances(currency);
   const { coinSymbol } = currency;
@@ -57,80 +64,127 @@ export const SendConfirmationDetailList = () => {
       : nativeCoinSymbol;
 
   return (
-    <List lines="none">
-      <IonItem className={'ion-margin-bottom-xs'}>
-        {isL2 ? (
-          <L2Icon size={24} />
-        ) : (
-          <NetworkIcon size={24} chain={coinSymbol} />
-        )}
-        <IonText>
-          <h3 className={'ion-text-size-md ion-margin-0 ion-margin-left-xs'}>
-            {isL2
-              ? t('Chain.AkashicChain')
-              : NetworkDictionary[coinSymbol].displayName.replace(/Chain/g, '')}
-          </h3>
-        </IonText>
-      </IonItem>
-      <ListVerticalLabelValueItem
-        label={t('InputAddress')}
-        value={validatedAddressPair?.userInputToAddress}
-      />
-      <ListVerticalLabelValueItem
-        label={t('SendTo')}
-        value={validatedAddressPair?.convertedToAddress}
-      />
-      <IonItem>
-        <Divider style={{ width: '100%' }} className={'ion-margin-vertical'} />
-      </IonItem>
-      <ListLabelValueItem
-        label={t('Amount')}
-        value={`${Big(txn?.amount ?? '0').toFixed(precision)} ${currencyDisplayName}`}
-        valueSize={'md'}
-        valueBold
-      />
-      {isL2 && (
-        <ListLabelValueItem
-          label={t('L2Fee')}
-          value={`${internalFee.toFixed(precision)} ${feeCurrencyDisplayName}`}
-          valueSize={'md'}
-          valueBold
+    <>
+      <List lines="none">
+        <IonItem className={'ion-margin-bottom-xs'}>
+          {isL2 ? (
+            <L2Icon size={24} />
+          ) : (
+            <NetworkIcon size={24} chain={coinSymbol} />
+          )}
+          <IonText>
+            <h3 className={'ion-text-size-md ion-margin-0 ion-margin-left-xs'}>
+              {isL2
+                ? t('Chain.AkashicChain')
+                : NetworkDictionary[coinSymbol].displayName.replace(
+                    /Chain/g,
+                    ''
+                  )}
+            </h3>
+          </IonText>
+        </IonItem>
+        <ListVerticalLabelValueItem
+          label={t('InputAddress')}
+          value={validatedAddressPair?.userInputToAddress}
         />
-      )}
-      {!isL2 && (
-        <ListLabelValueItem
-          label={t(delegatedFee ? 'DelegatedGasFee' : 'GasFee')}
-          value={`${
-            delegatedFee
-              ? Big(delegatedFee).toFixed(precision)
-              : totalFee.toFixed(precision)
-          } ${feeCurrencyDisplayName}`}
-          valueSize={'md'}
-          valueBold
+        <ListVerticalLabelValueItem
+          label={t('SendTo')}
+          value={validatedAddressPair?.convertedToAddress}
         />
-      )}
-      <ListLabelValueItem
-        label={t('Total')}
-        value={`${totalAmountWithFee.toFixed(
-          precision
-        )} ${currencyDisplayName}`}
-        remark={
-          isL2 || !isCurrencyTypeToken || delegatedFee
-            ? undefined
-            : `+${totalFee.toFixed(precision)} ${nativeCoinSymbol}`
-        }
-        valueSize={'md'}
-        valueBold
-      />
-      <>
         <IonItem>
           <Divider
             style={{ width: '100%' }}
             className={'ion-margin-vertical'}
           />
         </IonItem>
-        <ListLabelValueItem label={t('AkashicAlias')} value={alias} labelBold />
-      </>
-    </List>
+        <ListLabelValueItem
+          label={t('Amount')}
+          value={`${Big(txn?.amount ?? '0').toFixed(precision)} ${currencyDisplayName}`}
+          valueSize={'md'}
+          valueBold
+        />
+        {isL2 && (
+          <ListLabelValueItem
+            label={t('L2Fee')}
+            value={`${internalFee.toFixed(precision)} ${feeCurrencyDisplayName}`}
+            valueSize={'md'}
+            valueBold
+          />
+        )}
+        {!isL2 && (
+          <ListLabelValueItem
+            label={t(delegatedFee ? 'DelegatedGasFee' : 'GasFee')}
+            value={`${
+              delegatedFee
+                ? Big(delegatedFee).toFixed(precision)
+                : totalFee.toFixed(precision)
+            } ${feeCurrencyDisplayName}`}
+            valueSize={'md'}
+            valueBold
+          />
+        )}
+        <ListLabelValueItem
+          label={t('Total')}
+          value={`${totalAmountWithFee.toFixed(
+            precision
+          )} ${currencyDisplayName}`}
+          remark={
+            isL2 || !isCurrencyTypeToken || delegatedFee
+              ? undefined
+              : `+${totalFee.toFixed(precision)} ${nativeCoinSymbol}`
+          }
+          valueSize={'md'}
+          valueBold
+        />
+        <>
+          <IonItem>
+            <Divider
+              style={{ width: '100%' }}
+              className={'ion-margin-vertical'}
+            />
+          </IonItem>
+          <ListLabelValueItem
+            label={t('AkashicAlias')}
+            value={alias}
+            labelBold
+          />
+        </>
+      </List>
+      {sendConfirm?.isFirstTimeInteractionWithAddress &&
+        (() => {
+          const borderColorVariant = isDarkMode
+            ? 'primary-on-container'
+            : 'primary-container';
+          return (
+            <AlertBox
+              state={{
+                success: false,
+                visible: true,
+                message: 'FirstTimeAddressWarning',
+              }}
+              customStyle={{
+                container: {
+                  borderLeft: `8px solid var(--ion-color-${borderColorVariant})`,
+                  borderTop: `1px solid var(--ion-color-${borderColorVariant})`,
+                  borderRight: `1px solid var(--ion-color-${borderColorVariant})`,
+                  borderBottom: `1px solid var(--ion-color-${borderColorVariant})`,
+                  padding: '12px 16px',
+                  justifyContent: 'flex-start',
+                  gap: '12px',
+                },
+                text: {
+                  color: 'var(--ion-color-inverse-surface)',
+                  textAlign: 'left',
+                  margin: 0,
+                },
+                icon: {
+                  color: `var(--ion-color-${borderColorVariant})`,
+                },
+              }}
+              icon={warningOutline}
+            />
+          );
+        })()}
+    </>
   );
 };

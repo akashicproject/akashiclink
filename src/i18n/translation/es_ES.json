@@ -64,6 +64,7 @@
   "SelectCurrency": "Seleccionar moneda",
   "InputAddress": "Introducir dirección",
   "TransactionSummary": "Resumen de la transacción",
+  "FirstTimeAddressWarning": "Esta es tu primera vez interactuando con esta dirección. Verifica los detalles para mantener tu transferencia segura.",
   "TransactionSuccessful": "Transacción realizada correctamente",
   "TransactionFailed": "Transacción fallida",
   "Receiver": "Destinatario",

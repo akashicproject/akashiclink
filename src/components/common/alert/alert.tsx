@@ -162,6 +162,8 @@ export function CustomAlert({
   );
 }
 
+const DEFAULT_ALERT_ICON = '/shared-assets/images/error-outline.svg';
+
 /**
  * Boxed Alert featuring
  * - message
@@ -170,36 +172,55 @@ export function CustomAlert({
 export function AlertBox({
   state,
   style,
+  customStyle,
+  icon,
 }: {
   state: FormAlertState;
   style?: React.CSSProperties;
+  customStyle?: {
+    container?: React.CSSProperties;
+    text?: React.CSSProperties;
+    icon?: React.CSSProperties;
+  };
+  icon?: string;
 }) {
   const { t } = useTranslation();
   const color = state.success
     ? 'var(--ion-color-success)'
     : 'var(--ion-color-danger)';
 
+  // Use custom styles if provided, otherwise fall back to default styles
+  const containerStyle = customStyle?.container ?? {
+    ...(state.visible && {
+      border: `1px solid ${style?.color ?? color}`,
+      justifyContent: 'left',
+      padding: '0 5%',
+    }),
+  };
+
+  const textStyle = customStyle?.text ?? {
+    marginTop: '5px',
+    marginBottom: '5px',
+    color,
+    ...style,
+  };
+
+  const iconStyle = customStyle?.icon ?? {
+    color,
+  };
+
   return (
-    <IonNote
-      className="alert-box"
-      style={{
-        ...(state.visible && {
-          border: `1px solid ${style?.color || color}`,
-          justifyContent: 'left',
-          padding: '0 5%',
-        }),
-      }}
-    >
-      <h4
+    <IonNote className="alert-box" style={containerStyle}>
+      <IonIcon
+        src={icon ?? DEFAULT_ALERT_ICON}
         style={{
-          marginTop: '5px',
-          marginBottom: '5px',
-          color,
-          ...style,
+          width: '24px',
+          height: '24px',
+          flexShrink: 0,
+          ...iconStyle,
         }}
-      >
-        {t(state.message ?? '', state.messageProps)}
-      </h4>
+      />
+      <h4 style={textStyle}>{t(state.message ?? '', state.messageProps)}</h4>
     </IonNote>
   );
 }
