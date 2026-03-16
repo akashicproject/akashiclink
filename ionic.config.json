@@ -1,7 +1,4 @@
 {
   "name": "AkashicLink",
-  "integrations": {
-    "capacitor": {}
-  },
   "type": "react"
 }
