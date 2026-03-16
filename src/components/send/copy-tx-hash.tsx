@@ -1,4 +1,3 @@
-import { Browser } from '@capacitor/browser';
 import {
   IonContent,
   IonLabel,
@@ -44,10 +43,7 @@ export const ListCopyTxHashItem = ({
   const onClickCopyIcon = async (e: never) => txHash && copyData(txHash, e);
 
   const onClickHash = async () => {
-    txHashUrl &&
-      (await Browser.open({
-        url: txHashUrl,
-      }));
+    txHashUrl && window.open(txHashUrl, '_blank');
   };
 
   return (

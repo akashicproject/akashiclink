@@ -1,4 +1,3 @@
-import { Browser } from '@capacitor/browser';
 import { IonIcon, IonLabel, IonText } from '@ionic/react';
 import { arrowForwardCircleOutline } from 'ionicons/icons';
 import type { FC } from 'react';
@@ -22,7 +21,7 @@ export const FromToAddressBlock: FC<FromToAddressBlockProps> = ({
   const { t } = useTranslation();
 
   const onAddressClick = (url: string) => async () => {
-    await Browser.open({ url });
+    window.open(url, '_blank');
   };
 
   return (

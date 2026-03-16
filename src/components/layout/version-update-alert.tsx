@@ -1,4 +1,3 @@
-import { Browser } from '@capacitor/browser';
 import { IonAlert } from '@ionic/react';
 import { compareVersions } from 'compare-versions';
 import { useEffect } from 'react';
@@ -95,9 +94,7 @@ export const VersionUpdateAlert = () => {
                 role: 'confirm',
                 handler: async () => {
                   setSkipVersion(config.awLatestVersion);
-                  await Browser.open({
-                    url: config.awUrl,
-                  });
+                  window.open(config.awUrl, '_blank');
                   // make it non dismissible
                   return false;
                 },

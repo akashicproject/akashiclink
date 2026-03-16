@@ -1,6 +1,5 @@
 import './settings.scss';
 
-import { Browser } from '@capacitor/browser';
 import styled from '@emotion/styled';
 import { IonButton, IonIcon, IonModal } from '@ionic/react';
 import type { Dispatch, RefObject, SetStateAction } from 'react';
@@ -99,9 +98,7 @@ function UpdateModal({
           style={{ width: '100%' }}
           onClick={async () => {
             setIsOpen(false);
-            await Browser.open({
-              url: updateUrl,
-            });
+            window.open(updateUrl, '_blank');
           }}
         >
           {t('UpdateNow')}
@@ -153,26 +150,20 @@ export function AboutUs({
     {
       header: t('PrivacyPolicy'),
       onClick: async () => {
-        await Browser.open({
-          url: infoUrls[LINK_TYPE.PrivacyPolicy],
-        });
+        window.open(infoUrls[LINK_TYPE.PrivacyPolicy], '_blank');
       },
     },
     {
       header: t('TermsOfUse'),
       onClick: async () => {
-        await Browser.open({
-          url: infoUrls[LINK_TYPE.TermsOfUse],
-        });
+        window.open(infoUrls[LINK_TYPE.TermsOfUse], '_blank');
       },
       isDivider: true,
     },
     {
       header: t('VisitOurWebsite'),
       onClick: async () => {
-        await Browser.open({
-          url: infoUrls[LINK_TYPE.InfoSite],
-        });
+        window.open(infoUrls[LINK_TYPE.InfoSite], '_blank');
       },
     },
   ];
