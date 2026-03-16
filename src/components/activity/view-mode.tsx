@@ -14,9 +14,16 @@ const ViewModeButton = styled(IonButton)({
     padding: '0',
     background: 'transparent',
   },
-  '& ion-icon': {
-    marginLeft: '4px',
-  },
+});
+
+const ButtonContent = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+});
+
+const ViewLabel = styled.span({
+  letterSpacing: 'normal',
 });
 
 const ViewModeOption = styled.div<{ isSelected: boolean }>(
@@ -70,8 +77,8 @@ export const ViewModeDropdown: React.FC<ViewModeDropdownProps> = ({
   };
 
   const viewModeOptions = [
-    { label: t('Balance'), value: 'balance' as ViewMode },
-    { label: t('GasFee'), value: 'gasFee' as ViewMode },
+    { label: t('Balance'), value: ViewMode.RemainingBalance },
+    { label: t('GasFee'), value: ViewMode.GasFee },
   ];
 
   const selectedLabel =
@@ -81,10 +88,10 @@ export const ViewModeDropdown: React.FC<ViewModeDropdownProps> = ({
   return (
     <>
       <ViewModeButton fill="clear" onClick={openPopover}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-          $<span>{selectedLabel}</span>
+        <ButtonContent>
+          $<ViewLabel>{selectedLabel}</ViewLabel>
           <IonIcon icon={chevronDownOutline} style={{ fontSize: '16px' }} />
-        </div>
+        </ButtonContent>
       </ViewModeButton>
       <IonPopover
         event={popoverEvent}
