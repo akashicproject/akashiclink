@@ -36,4 +36,4 @@ export const urls = {
   addressScreeningDetails: 'address-screening/details',
 } as const;
 
-export const SUPPORT_MAIL = 'support@akashiclink.com';
+export const SUPPORT_MAIL = 'https://t.me/akashiclink_support_bot';

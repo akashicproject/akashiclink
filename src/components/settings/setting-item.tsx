@@ -67,7 +67,7 @@ export function SettingItem({
 
   const handleClick = async () => {
     if (link) {
-      window.location.href = `mailto:${link}`;
+      window.open(link, '_blank', 'noopener,noreferrer');
     } else if (!isAccordion && onClick) {
       onClick();
     } else if (isAccordion) {
