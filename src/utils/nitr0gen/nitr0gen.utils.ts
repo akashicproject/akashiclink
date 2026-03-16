@@ -1,6 +1,8 @@
 import { OtherError } from '@akashic/as-backend';
-import { CapacitorCookies } from '@capacitor/core';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+
+import { NODE_PING_DATA, PREFERRED_NODE_KEY } from '../cookies-keys';
 
 // enum Port {
 //   CHAIN = '5260',
@@ -111,13 +113,16 @@ export async function getChainNode(port: PortType, node: string) {
 }
 
 export async function chooseBestNodes(port: PortType) {
-  const cookieMap = await CapacitorCookies.getCookies();
-  if (cookieMap['preferred-node-key']) {
-    return getChainNode(port, cookieMap['preferred-node-key']);
+  const preferredNode = Cookies.get(PREFERRED_NODE_KEY);
+
+  if (preferredNode) {
+    return getChainNode(port, preferredNode);
   }
 
-  if (cookieMap[`node-${port}`]) {
-    return cookieMap[`node-${port}`];
+  const nodePort = Cookies.get(`node-${port}`);
+
+  if (nodePort) {
+    return nodePort;
   }
 
   const isProd = process.env.REACT_APP_ENV === 'prod';
@@ -131,10 +136,8 @@ export async function chooseBestNodes(port: PortType) {
   );
   const node = await getChainNode(port, nodeKey);
 
-  await CapacitorCookies.setCookie({
-    key: `node-${port}`,
-    value: node,
-    expires: new Date(Date.now() + 1000 * 60 * 60 * 24).toUTCString(), // 1 day
+  Cookies.set(`node-${port}`, node, {
+    expires: 1, // 1 day
   });
 
   return node;
@@ -142,9 +145,10 @@ export async function chooseBestNodes(port: PortType) {
 export async function fetchNodesPing(
   hardRefresh: boolean
 ): Promise<NodesPingInfo[]> {
-  const cookieMap = await CapacitorCookies.getCookies();
-  if (!hardRefresh && cookieMap[`nodePingData`]) {
-    return JSON.parse(cookieMap[`nodePingData`]) as NodesPingInfo[];
+  const cachedNodePingData = Cookies.get(NODE_PING_DATA);
+
+  if (!hardRefresh && cachedNodePingData) {
+    return JSON.parse(cachedNodePingData) as NodesPingInfo[];
   }
   const isProd = process.env.REACT_APP_ENV === 'prod';
   const nodeEntries = Object.entries(
@@ -164,10 +168,8 @@ export async function fetchNodesPing(
     })
   );
 
-  await CapacitorCookies.setCookie({
-    key: `nodePingData`,
-    value: JSON.stringify(nodePingData),
-    expires: new Date(Date.now() + 1000 * 60 * 60 * 24).toUTCString(), // 1 day
+  Cookies.set(NODE_PING_DATA, JSON.stringify(nodePingData), {
+    expires: 1, // 1 day
   });
   return nodePingData;
 }

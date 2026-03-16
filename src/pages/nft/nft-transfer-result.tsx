@@ -78,8 +78,8 @@ export function NftTransferResult() {
     // nfts. This allows backbutton from nfts -> dashboard to work
     // Notate that mutate must be after history otherwise this page re-renders
     // with a persistent error
-    await historyResetStackAndRedirect(urls.dashboard);
-    await historyGo(urls.nfts);
+    historyResetStackAndRedirect(urls.dashboard);
+    historyGo(urls.nfts);
     await mutateNftTransfersMe();
   };
 

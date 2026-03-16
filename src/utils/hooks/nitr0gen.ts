@@ -10,7 +10,6 @@ import {
   TransactionStatus,
   WalletType,
 } from '@akashic/as-backend';
-import { Preferences } from '@capacitor/preferences';
 
 import { useAppDispatch } from '../../redux/app/hooks';
 import { addLocalTransaction } from '../../redux/slices/localTransactionSlice';
@@ -34,9 +33,9 @@ export const useSendL2Transaction = () => {
       await nitr0genApi.sendSignedTx(signedTransactionData.signedTx)
     ).$umid;
 
-    const hideSmallTransactions = await Preferences.get({
-      key: HIDE_SMALL_BALANCES,
-    });
+    const hideSmallTransactions = localStorage.getItem(
+      `CapacitorStorage.${HIDE_SMALL_BALANCES}`
+    );
 
     const {
       fromAddress,
@@ -109,9 +108,9 @@ export const useSendL1Transaction = () => {
 
     const l2TxnHash = result.$umid;
 
-    const hideSmallTransactions = await Preferences.get({
-      key: HIDE_SMALL_BALANCES,
-    });
+    const hideSmallTransactions = localStorage.getItem(
+      `CapacitorStorage.${HIDE_SMALL_BALANCES}`
+    );
 
     const { identity } = signedTransactionData;
 

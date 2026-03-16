@@ -5,7 +5,6 @@ import {
   TransactionStatus,
   TransactionType,
 } from '@akashic/as-backend';
-import { Preferences } from '@capacitor/preferences';
 import type { AxiosRequestConfig } from 'axios';
 import Big from 'big.js';
 import useSWRInfinite from 'swr/infinite';
@@ -25,15 +24,15 @@ const transferMeFetcher = async (
   path: string,
   config?: AxiosRequestConfig
 ): Promise<IOwnerTransactionsResponse> => {
-  const hideSmallTransactions = await Preferences.get({
-    key: HIDE_SMALL_BALANCES,
-  });
+  const hideSmallTransactions = localStorage.getItem(
+    `CapacitorStorage.${HIDE_SMALL_BALANCES}`
+  );
 
   const url = path
     ? `${path}&withEnergyPurchases=true&hideSmallTransactions=${
-        hideSmallTransactions.value &&
-        ['true', 'false'].includes(hideSmallTransactions.value)
-          ? hideSmallTransactions.value
+        hideSmallTransactions &&
+        ['true', 'false'].includes(hideSmallTransactions)
+          ? hideSmallTransactions
           : 'true'
       }`
     : '';

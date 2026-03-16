@@ -1,4 +1,3 @@
-import { Preferences } from '@capacitor/preferences';
 import { IonRouterOutlet, isPlatform } from '@ionic/react';
 import type { Location } from 'history';
 import { useEffect, useState } from 'react';
@@ -71,10 +70,11 @@ export function NavigationTree() {
       }
 
       // Saved history stack
-      const lastHistoryJson = await Preferences.get({
-        key: LAST_HISTORY_ENTRIES,
-      });
-      const lastHistory = JSON.parse(lastHistoryJson?.value ?? '{}');
+      const lastHistoryJson = localStorage.getItem(
+        `CapacitorStorage.${LAST_HISTORY_ENTRIES}`
+      );
+
+      const lastHistory = JSON.parse(lastHistoryJson ?? '{}');
 
       // rebuild history entries completely if stack is saved before
       if (Array.isArray(lastHistory) && lastHistory.length > 0) {
@@ -87,7 +87,8 @@ export function NavigationTree() {
       }
 
       // Remove the last-location as history is now reset
-      await Preferences.remove({ key: LAST_HISTORY_ENTRIES });
+      typeof window !== 'undefined' &&
+        localStorage.removeItem(`CapacitorStorage.${LAST_HISTORY_ENTRIES}`);
 
       setIsLoading(false);
     };

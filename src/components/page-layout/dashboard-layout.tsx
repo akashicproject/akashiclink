@@ -1,10 +1,10 @@
-import { Preferences } from '@capacitor/preferences';
 import { IonContent, IonFooter, IonPage } from '@ionic/react';
 import { type ReactNode, useEffect } from 'react';
 
 import { LAST_HISTORY_ENTRIES } from '../../constants';
 import { history } from '../../routing/history';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
+import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { Header } from '../layout/header';
 import { NavigationTabs } from '../layout/navigation-tabs';
 import { VersionUpdateAlert } from '../layout/version-update-alert';
@@ -17,19 +17,15 @@ export function DashboardLayout({
   footer?: ReactNode;
 }) {
   const { authenticated } = useAccountStorage();
+  const { setValue, removeValue } = useLocalStorage(LAST_HISTORY_ENTRIES);
 
   /** If user auth has expired, redirect to login page */
   useEffect(() => {
     const updateLastLocation = async () => {
       if (!authenticated) {
-        await Preferences.remove({
-          key: LAST_HISTORY_ENTRIES,
-        });
+        removeValue();
       } else {
-        await Preferences.set({
-          key: LAST_HISTORY_ENTRIES,
-          value: JSON.stringify(history.entries),
-        });
+        setValue(history.entries);
       }
     };
 

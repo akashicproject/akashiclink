@@ -1,10 +1,10 @@
-import { Preferences } from '@capacitor/preferences';
 import { IonCol, IonContent, IonPage, IonRow } from '@ionic/react';
 import type { ReactNode } from 'react';
 import React, { useEffect } from 'react';
 
 import { LAST_HISTORY_ENTRIES } from '../../constants';
 import { history } from '../../routing/history';
+import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { Header } from '../layout/header';
 import { AccountNameBar } from '../layout/toolbar/account-name-bar';
 
@@ -16,12 +16,11 @@ export function NftLayout({
   noFooter?: boolean;
   backButtonUrl?: string;
 }) {
+  const { setValue } = useLocalStorage(LAST_HISTORY_ENTRIES);
+
   useEffect(() => {
-    const updateLastLocation = async () => {
-      await Preferences.set({
-        key: LAST_HISTORY_ENTRIES,
-        value: JSON.stringify(history.entries),
-      });
+    const updateLastLocation = () => {
+      setValue(history.entries);
     };
 
     updateLastLocation();

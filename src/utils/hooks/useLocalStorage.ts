@@ -1,4 +1,3 @@
-import { Preferences } from '@capacitor/preferences';
 import { datadogRum } from '@datadog/browser-rum';
 import { useEffect, useState } from 'react';
 
@@ -21,9 +20,9 @@ export function useLocalStorage<T>(
   initialValue: T
 ): {
   value: T;
-  setValue: (newValue: T) => Promise<void>;
-  removeValue: () => Promise<void>;
-  refreshValue: () => Promise<void>;
+  setValue: (newValue: T) => void;
+  removeValue: () => void;
+  refreshValue: () => void;
 };
 
 export function useLocalStorage<T>(
@@ -31,30 +30,33 @@ export function useLocalStorage<T>(
   initialValue?: T
 ): {
   value: T | undefined;
-  setValue: (newValue: T) => Promise<void>;
-  removeValue: () => Promise<void>;
-  refreshValue: () => Promise<void>;
+  setValue: (newValue: T) => void;
+  removeValue: () => void;
+  refreshValue: () => void;
 };
 export function useLocalStorage<T>(
   key: string,
   initialValue?: T
 ): {
   value: T | undefined;
-  setValue: (newValue: T) => Promise<void>;
-  removeValue: () => Promise<void>;
-  refreshValue: () => Promise<void>;
+  setValue: (newValue: T) => void;
+  removeValue: () => void;
+  refreshValue: () => void;
 } {
   const [stateValue, setStateValue] = useState<T>();
 
-  async function loadValue() {
+  function loadValue() {
     try {
-      const result = await Preferences.get({ key });
+      const result =
+        typeof window !== 'undefined'
+          ? localStorage.getItem(`CapacitorStorage.${key}`)
+          : null;
 
-      if (result.value === null && initialValue !== undefined) {
-        await setPreferenceAndStateValue(initialValue as T);
-      } else if (result.value) {
-        JSON.stringify(stateValue) !== result.value &&
-          setStateValue(JSON.parse(result.value));
+      if (result === null && initialValue !== undefined) {
+        setPreferenceAndStateValue(initialValue as T);
+      } else if (result) {
+        JSON.stringify(stateValue) !== result &&
+          setStateValue(JSON.parse(result));
       } else {
         console.warn(key + ' preference value & initialValue not found');
       }
@@ -63,25 +65,22 @@ export function useLocalStorage<T>(
     }
   }
 
-  const setPreferenceAndStateValue = async (value: T) => {
+  const setPreferenceAndStateValue = (value: T) => {
     try {
       setStateValue(value);
-      await Preferences.set({
-        key,
-        value: JSON.stringify(value),
-      });
+      typeof window !== 'undefined' &&
+        localStorage.setItem(`CapacitorStorage.${key}`, JSON.stringify(value));
     } catch (e) {
       datadogRum.addError(e);
       console.error(e);
     }
   };
 
-  const removePreference = async () => {
+  const removePreference = () => {
     try {
       setStateValue(undefined);
-      await Preferences.remove({
-        key,
-      });
+      typeof window !== 'undefined' &&
+        localStorage.removeItem(`CapacitorStorage.${key}`);
     } catch (e) {
       datadogRum.addError(e);
       console.error(e);

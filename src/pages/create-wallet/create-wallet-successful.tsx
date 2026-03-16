@@ -32,7 +32,7 @@ export const CreateWalletSuccessful = () => {
     await fetchAndRemapL1Address();
     dispatch(onClear());
     // creation flow is finished, completely reset router history
-    await historyResetStackAndRedirect();
+    historyResetStackAndRedirect();
   };
 
   return (

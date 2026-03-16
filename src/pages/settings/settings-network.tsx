@@ -1,7 +1,7 @@
-import { CapacitorCookies } from '@capacitor/core';
 import styled from '@emotion/styled';
 import { IonAlert, IonIcon } from '@ionic/react';
 import { checkmark, ellipse } from 'ionicons/icons';
+import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -16,6 +16,7 @@ import { SettingItem } from '../../components/settings/setting-item';
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectTheme } from '../../redux/slices/preferenceSlice';
 import { themeType } from '../../theme/const';
+import { PREFERRED_NODE_KEY } from '../../utils/cookies-keys';
 
 type Node = {
   key: string;
@@ -36,9 +37,8 @@ export function SettingsNetwork() {
 
   useEffect(() => {
     (async () => {
-      const { 'preferred-node-key': savedNodeKey = '' } =
-        await CapacitorCookies.getCookies();
-      setPreferredNodeKey(savedNodeKey);
+      const preferredNode = Cookies.get(PREFERRED_NODE_KEY);
+      setPreferredNodeKey(preferredNode ?? '');
       const nodesList = await fetchNodesPing(false);
       setNodes(nodesList);
     })();
@@ -59,7 +59,7 @@ export function SettingsNetwork() {
   };
 
   const updatePreferredNodeKey = async (key: string) => {
-    await CapacitorCookies.setCookie({ key: 'preferred-node-key', value: key });
+    Cookies.set(PREFERRED_NODE_KEY, key);
     setPreferredNodeKey(key);
   };
 

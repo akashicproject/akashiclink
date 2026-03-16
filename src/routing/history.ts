@@ -1,5 +1,4 @@
 import type { ITransactionProposalClientSideOtk } from '@akashic/as-backend';
-import { Preferences } from '@capacitor/preferences';
 import { createMemoryHistory } from 'history';
 
 import { type AddressScanConfirmationTxnsDetail } from '../components/address-screening/types';
@@ -41,7 +40,7 @@ export interface LocationState {
   isManualLogout?: boolean;
 }
 
-export const historyResetStackAndRedirect = async (
+export const historyResetStackAndRedirect = (
   url: Url = urls.dashboard,
   state?: Record<string, unknown>
 ) => {
@@ -50,13 +49,14 @@ export const historyResetStackAndRedirect = async (
   history.index = 0;
   history.replace(akashicPayPath(url), state);
   // set Preferences AFTER history is mutated
-  await Preferences.set({
-    key: LAST_HISTORY_ENTRIES,
-    value: JSON.stringify(history.entries),
-  });
+  typeof window !== 'undefined' &&
+    localStorage.setItem(
+      `CapacitorStorage.${LAST_HISTORY_ENTRIES}`,
+      JSON.stringify(history.entries)
+    );
 };
 
-export const historyGoBackOrReplace = async (
+export const historyGoBackOrReplace = (
   url: Url = urls.dashboard,
   state?: Record<string, unknown>
 ) => {
@@ -68,13 +68,14 @@ export const historyGoBackOrReplace = async (
     history.replace(akashicPayPath(url), state);
   }
   // set Preferences AFTER history is mutated
-  await Preferences.set({
-    key: LAST_HISTORY_ENTRIES,
-    value: JSON.stringify(history.entries),
-  });
+  typeof window !== 'undefined' &&
+    localStorage.setItem(
+      `CapacitorStorage.${LAST_HISTORY_ENTRIES}`,
+      JSON.stringify(history.entries)
+    );
 };
 
-export const historyGo = async (
+export const historyGo = (
   url: Url = urls.dashboard,
   state?: Record<string, unknown>
 ) => {
@@ -83,20 +84,22 @@ export const historyGo = async (
   }
   history.push(akashicPayPath(url), state);
   // set Preferences AFTER history is mutated
-  await Preferences.set({
-    key: LAST_HISTORY_ENTRIES,
-    value: JSON.stringify(history.entries),
-  });
+  typeof window !== 'undefined' &&
+    localStorage.setItem(
+      `CapacitorStorage.${LAST_HISTORY_ENTRIES}`,
+      JSON.stringify(history.entries)
+    );
 };
 
-export const historyReplace = async (
+export const historyReplace = (
   url: Url = urls.dashboard,
   state?: Record<string, unknown>
 ) => {
   history.replace(akashicPayPath(url), state);
   // set Preferences AFTER history is mutated
-  await Preferences.set({
-    key: LAST_HISTORY_ENTRIES,
-    value: JSON.stringify(history.entries),
-  });
+  typeof window !== 'undefined' &&
+    localStorage.setItem(
+      `CapacitorStorage.${LAST_HISTORY_ENTRIES}`,
+      JSON.stringify(history.entries)
+    );
 };

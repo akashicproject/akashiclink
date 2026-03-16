@@ -1,10 +1,10 @@
-import { Preferences } from '@capacitor/preferences';
 import styled from '@emotion/styled';
 import { IonPage } from '@ionic/react';
 import { type ReactNode, useEffect } from 'react';
 
 import { LAST_HISTORY_ENTRIES } from '../../constants';
 import { history } from '../../routing/history';
+import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
 import { Footer } from '../layout/footer';
 import { PublicHeader } from '../layout/public-header';
 import { VersionUpdateAlert } from '../layout/version-update-alert';
@@ -30,12 +30,11 @@ export function PublicLayout({
   children: ReactNode;
   contentStyle?: React.CSSProperties;
 }) {
+  const { setValue } = useLocalStorage(LAST_HISTORY_ENTRIES);
+
   useEffect(() => {
-    const updateLastLocation = async () => {
-      await Preferences.set({
-        key: LAST_HISTORY_ENTRIES,
-        value: JSON.stringify(history.entries),
-      });
+    const updateLastLocation = () => {
+      setValue(history.entries);
     };
 
     updateLastLocation();

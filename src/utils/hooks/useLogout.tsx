@@ -1,4 +1,3 @@
-import { Preferences } from '@capacitor/preferences';
 import { mutate } from 'swr';
 
 import { LAST_HISTORY_ENTRIES } from '../../constants';
@@ -14,9 +13,8 @@ export function useLogout() {
   return async (options?: { isManualLogout?: boolean }) => {
     // Clear session variables
     setCacheOtk(null);
-    await Preferences.remove({
-      key: LAST_HISTORY_ENTRIES,
-    });
+    typeof window !== 'undefined' &&
+      localStorage.removeItem(`CapacitorStorage.${LAST_HISTORY_ENTRIES}`);
 
     // Clear the SWR cache for every key
     await mutate((_key) => true, undefined, { revalidate: false });
@@ -24,7 +22,7 @@ export function useLogout() {
     await responseToSite(BRIDGE_MESSAGE.INTERNAL_LOGOUT);
 
     // completely reset router history
-    await historyResetStackAndRedirect(urls.akashicPay, {
+    historyResetStackAndRedirect(urls.akashicPay, {
       isManualLogout: !!options?.isManualLogout,
     });
   };
