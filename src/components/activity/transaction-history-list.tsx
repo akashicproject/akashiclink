@@ -1,9 +1,9 @@
-import styled from '@emotion/styled';
 import {
   type CryptoCurrency,
   TransactionLayer,
   TransactionType,
-} from '@helium-pay/backend';
+} from '@akashic/as-backend';
+import styled from '@emotion/styled';
 import {
   IonButton,
   IonCheckbox,
@@ -12,7 +12,7 @@ import {
   IonSpinner,
   IonText,
 } from '@ionic/react';
-import { closeOutline, filterOutline } from 'ionicons/icons';
+import { closeSharp, filterOutline } from 'ionicons/icons';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type GridComponents, Virtuoso } from 'react-virtuoso';
@@ -195,10 +195,10 @@ const FiltersDropdown: React.FC<FilterDropdownProps> = ({
         <IonContent style={{ '--background': 'var(--ion-background-color)' }}>
           <div
             style={{
-              padding: '24px',
+              padding: '8px 24px',
               display: 'flex',
               flexDirection: 'column',
-              height: '100%',
+              height: '90vh',
             }}
           >
             {/* Header */}
@@ -207,14 +207,16 @@ const FiltersDropdown: React.FC<FilterDropdownProps> = ({
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginBottom: '24px',
               }}
             >
               <IconButton
                 size={24}
-                icon={closeOutline}
+                icon={closeSharp}
                 onClick={closeModal}
-                style={{ color: 'var(--ion-color-inverse-surface)' }}
+                style={{
+                  color: 'var(--ion-color-inverse-surface)',
+                  marginLeft: '-14px',
+                }}
               />
               <IonButton
                 fill="clear"
@@ -315,7 +317,6 @@ const FiltersDropdown: React.FC<FilterDropdownProps> = ({
               expand="block"
               onClick={handleApply}
               style={{
-                marginTop: '24px',
                 fontSize: '16px',
                 fontWeight: 700,
                 height: '56px',
