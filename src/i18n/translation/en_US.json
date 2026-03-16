@@ -61,6 +61,7 @@
   "PleaseConfirmYourPassword": "Please confirm your password",
   "WrongPassword": "Wrong password, please try again.",
   "GoBack": "Go Back",
+  "SelectCurrency": "Select Currency",
   "InputAddress": "Input Address",
   "TransactionSummary": "Transaction Summary",
   "TransactionSuccessful": "Transaction Successful",
@@ -109,6 +110,7 @@
   "PrivateKey": "Private key",
   "ConfirmEmailSent": "An activation code has been sent. Please check {{email}} to complete the update.",
   "GenericFailureMsg": "Your operation failed, please try again later.",
+  "ExchangeRateFetchError": "Failed to fetch exchange rate, please try again later.",
   "InvalidEmail": "Please enter a valid email address",
   "PasswordHelperText": "Password must be 10+ characters long, and a mixture of lower/upper case letters & numbers.",
   "NewPasswordMustBeDifferent": "Please do not use old password as your new password",
@@ -407,5 +409,25 @@
   "Recent": "Recent",
   "MyAccount": "My Account",
   "NoRecentAddresses": "No recent addresses",
-  "NoOtherAccounts": "No other accounts on this device"
+  "NoOtherAccounts": "No other accounts on this device",
+  "FiatCurrency": "Fiat Currency",
+  "DisplayCurrency": "Display Currency",
+  "currency": {
+    "USD": "United States Dollar",
+    "CHF": "Swiss Franc",
+    "CNY": "Chinese Yuan",
+    "EUR": "Euro",
+    "HKD": "Hong Kong Dollar",
+    "IDR": "Indonesian Rupiah",
+    "INR": "Indian Rupee",
+    "JPY": "Japanese Yen",
+    "KHR": "Cambodian Riel",
+    "KRW": "South Korean Won",
+    "MYR": "Malaysian Ringgit",
+    "PHP": "Philippine Peso",
+    "SGD": "Singapore Dollar",
+    "THB": "Thai Baht",
+    "TWD": "New Taiwan Dollar",
+    "VND": "Vietnamese Dong"
+  }
 }

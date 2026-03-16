@@ -25,6 +25,7 @@ export const urls = {
   activity: 'activity',
   activityDetails: 'activity/details',
   settings: 'settings',
+  settingsFiatCurrency: 'settings/fiat-currency',
   settingsGeneral: 'settings/general',
   settingsSecurity: 'settings/security',
   settingsNetwork: 'settings/network',

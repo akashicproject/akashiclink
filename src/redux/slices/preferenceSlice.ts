@@ -1,14 +1,17 @@
+import { FiatCurrencySymbol } from '@akashic/as-backend';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { type ThemeType, themeType } from '../../theme/const';
 import { createAppSlice } from '../app/createAppSlice';
 
 export interface PreferenceState {
+  fiatCurrencyDisplay: FiatCurrencySymbol;
   theme: ThemeType;
   autoLockTime: number;
 }
 
 const initialState: PreferenceState = {
+  fiatCurrencyDisplay: FiatCurrencySymbol.USD,
   theme: themeType.SYSTEM as ThemeType,
   autoLockTime: 10,
 };
@@ -27,6 +30,11 @@ export const preferenceSlice = createAppSlice({
     setAutoLockTime: create.reducer((state, action: PayloadAction<number>) => {
       state.autoLockTime = action.payload;
     }),
+    setFiatCurrencyDisplay: create.reducer(
+      (state, action: PayloadAction<FiatCurrencySymbol>) => {
+        state.fiatCurrencyDisplay = action.payload;
+      }
+    ),
   }),
   // You can define your selectors here. These selectors receive the slice
   // state as their first argument.
@@ -40,11 +48,15 @@ export const preferenceSlice = createAppSlice({
       return preference.theme;
     },
     selectAutoLockTime: (preference) => preference.autoLockTime,
+    selectFiatCurrencyDisplay: (preference) =>
+      preference.fiatCurrencyDisplay ?? FiatCurrencySymbol.USD,
   },
 });
 
 // Action creators are generated for each case reducer function.
-export const { setTheme, setAutoLockTime } = preferenceSlice.actions;
+export const { setTheme, setAutoLockTime, setFiatCurrencyDisplay } =
+  preferenceSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectTheme, selectAutoLockTime } = preferenceSlice.selectors;
+export const { selectTheme, selectAutoLockTime, selectFiatCurrencyDisplay } =
+  preferenceSlice.selectors;

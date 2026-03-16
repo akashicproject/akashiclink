@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 
 import { formatAmountWithCommas } from '../../utils/formatAmountWithCommas';
 import { useCryptoCurrencyBalance } from '../../utils/hooks/useCryptoCurrencyBalance';
+import { useFiatCurrencyDisplay } from '../../utils/hooks/useFiatCurrencyDisplay';
 import { CryptoCurrencyIcon } from '../common/chain-icon/crypto-currency-icon';
 
 const Container = styled.div({
@@ -36,14 +37,16 @@ const CryptoCurrencyListItem = ({
   showUSDValue: boolean;
   onClick?: (currency: CryptoCurrencyWithName) => void;
 }) => {
-  const { balance, balanceInUsd } = useCryptoCurrencyBalance(
+  const { fiatCurrencySign } = useFiatCurrencyDisplay();
+
+  const { balance, balanceInFiat } = useCryptoCurrencyBalance(
     currency.coinSymbol,
     currency.tokenSymbol
   );
 
   return (
     <Container
-      className="ion-padding-top-xs ion-padding-bottom-xs ion-padding-left-sm ion-padding-right-sm"
+      className="ion-padding-top-xs ion-padding-bottom-xs ion-padding-left-xs ion-padding-right-xs"
       onClick={() => onClick && onClick(currency)}
       style={{ cursor: onClick ? 'pointer' : 'default' }}
     >
@@ -70,7 +73,7 @@ const CryptoCurrencyListItem = ({
           className="ion-text-size-md ion-text-bold"
           style={{ color: 'var(--ion-text-color-alt)' }}
         >
-          {`$${formatAmountWithCommas(balanceInUsd, 2)}`}
+          {`${fiatCurrencySign}${balanceInFiat ? formatAmountWithCommas(balanceInFiat.toString(), 2) : '-'}`}
         </div>
       )}
     </Container>

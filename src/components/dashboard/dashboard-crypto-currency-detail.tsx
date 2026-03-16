@@ -11,6 +11,7 @@ import { formatAmountWithCommas } from '../../utils/formatAmountWithCommas';
 import { useAccountL1Address } from '../../utils/hooks/useAccountL1Address';
 import { useCryptoCurrencyBalance } from '../../utils/hooks/useCryptoCurrencyBalance';
 import { useFetchAndRemapL1Address } from '../../utils/hooks/useFetchAndRemapL1address';
+import { useFiatCurrencyDisplay } from '../../utils/hooks/useFiatCurrencyDisplay';
 import TransactionHistoryList from '../activity/transaction-history-list';
 import { PrimaryButton, WhiteButton } from '../common/buttons';
 import { CryptoCurrencyIcon } from '../common/chain-icon/crypto-currency-icon';
@@ -34,10 +35,12 @@ export function DashboardCryptoCurrencyDetail({
 
   const { address } = useAccountL1Address(walletCurrency.coinSymbol);
 
-  const { balance, balanceInUsd } = useCryptoCurrencyBalance(
+  const { balance, balanceInFiat } = useCryptoCurrencyBalance(
     walletCurrency.coinSymbol,
     walletCurrency.tokenSymbol
   );
+
+  const { fiatCurrencySign } = useFiatCurrencyDisplay();
 
   const {
     setIsModalOpen: setIsSendModalOpen,
@@ -84,7 +87,9 @@ export function DashboardCryptoCurrencyDetail({
         </IonCol>
         <IonCol size={'12'}>
           <IonText>
-            <p className="ion-text-size-sm ion-text-color-grey ion-text-align-center">{`$${formatAmountWithCommas(balanceInUsd ?? '0')}`}</p>
+            <p className="ion-text-size-sm ion-text-color-grey ion-text-align-center">
+              {`~${fiatCurrencySign}${balanceInFiat ? formatAmountWithCommas(balanceInFiat.toString(), 2) : '-'}`}
+            </p>
           </IonText>
         </IonCol>
         {address && (

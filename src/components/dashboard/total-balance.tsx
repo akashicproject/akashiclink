@@ -4,6 +4,7 @@ import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
 
 import { formatAmountWithCommas } from '../../utils/formatAmountWithCommas';
+import { useFiatCurrencyDisplay } from '../../utils/hooks/useFiatCurrencyDisplay';
 import { useTotalCryptoCurrencyBalances } from '../../utils/hooks/useTotalCryptoCurrencyBalances';
 import { useYesterdayHistoricBalance } from '../../utils/hooks/useYesterdayHistoricBalance';
 
@@ -25,17 +26,19 @@ const RelativeSign = styled.div({
 
 export const TotalBalance = () => {
   const { t } = useTranslation();
-  const { totalBalanceInUsd } = useTotalCryptoCurrencyBalances();
-  const { yesterdayBalanceUSDT } = useYesterdayHistoricBalance();
+  const { totalBalanceInFiat } = useTotalCryptoCurrencyBalances();
+  const { yesterdayBalanceInFiat } = useYesterdayHistoricBalance();
 
-  const balanceDiff = Big(totalBalanceInUsd ?? '0').sub(
-    yesterdayBalanceUSDT ?? '0'
+  const { fiatCurrencySign } = useFiatCurrencyDisplay();
+
+  const balanceDiff = Big(totalBalanceInFiat ?? '0').sub(
+    yesterdayBalanceInFiat ?? '0'
   );
 
   const balanceDiffPercent = Big(balanceDiff)
     .div(
-      yesterdayBalanceUSDT && !yesterdayBalanceUSDT.eq(0)
-        ? yesterdayBalanceUSDT
+      yesterdayBalanceInFiat && !yesterdayBalanceInFiat.eq(0)
+        ? yesterdayBalanceInFiat
         : '1'
     )
     .times(100);
@@ -52,7 +55,7 @@ export const TotalBalance = () => {
         {t('TotalBalance')}
       </IonText>
       <IonText className="ion-text-size-xxxxl ion-text-bold ">
-        {`$${formatAmountWithCommas(Big(totalBalanceInUsd ?? '0').toFixed(2, Big.roundDown), 2)}`}
+        {`${fiatCurrencySign}${totalBalanceInFiat ? formatAmountWithCommas(totalBalanceInFiat.toFixed(2, Big.roundDown), 2) : '-'}`}
       </IonText>
       <div
         className={
@@ -60,7 +63,7 @@ export const TotalBalance = () => {
         }
       >
         <RelativeSign className="ion-text-size-md ion-text-bold">
-          {`${relativeSign}$${Big(balanceDiff.abs()).toFixed(
+          {`${relativeSign}${fiatCurrencySign}${Big(balanceDiff.abs()).toFixed(
             2,
             Big.roundDown
           )}`}

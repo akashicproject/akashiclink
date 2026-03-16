@@ -61,6 +61,7 @@
   "PleaseConfirmYourPassword": "Confirme su contraseña",
   "WrongPassword": "Contraseña incorrecta, inténtelo de nuevo",
   "GoBack": "Volver",
+  "SelectCurrency": "Seleccionar moneda",
   "InputAddress": "Introducir dirección",
   "TransactionSummary": "Resumen de la transacción",
   "TransactionSuccessful": "Transacción realizada correctamente",
@@ -109,6 +110,7 @@
   "PrivateKey": "Clave privada",
   "ConfirmEmailSent": "An activation code has been sent. Please check {{email}} to complete the update.",
   "GenericFailureMsg": "La operación ha fallado, vuelva a intentarlo más tarde.",
+  "ExchangeRateFetchError": "No se ha podido obtener el tipo de cambio, vuelva a intentarlo más tarde.",
   "InvalidEmail": "Please enter a valid email address",
   "PasswordHelperText": "La contraseña debe tener más de 10 caracteres y contener una combinación de letras minúsculas, mayúsculas y números",
   "NewPasswordMustBeDifferent": "No utilice la contraseña anterior como nueva contraseña",
@@ -407,5 +409,25 @@
   "Recent": "Recientes",
   "MyAccount": "Mi Cuenta",
   "NoRecentAddresses": "No hay direcciones recientes",
-  "NoOtherAccounts": "No hay otras cuentas en este dispositivo"
+  "NoOtherAccounts": "No hay otras cuentas en este dispositivo",
+  "FiatCurrency": "Moneda fiduciaria",
+  "DisplayCurrency": "Moneda de visualización",
+  "currency": {
+    "USD": "Dólar estadounidense",
+    "CHF": "Franco suizo",
+    "CNY": "Yuan chino",
+    "EUR": "Euro",
+    "HKD": "Dólar de Hong Kong",
+    "IDR": "Rupia indonesia",
+    "INR": "Rupia india",
+    "JPY": "Yen japonés",
+    "KHR": "Riel camboyano",
+    "KRW": "Won surcoreano",
+    "MYR": "Ringgit malayo",
+    "PHP": "Peso filipino",
+    "SGD": "Dólar de Singapur",
+    "THB": "Baht tailandés",
+    "TWD": "Nuevo dólar taiwanés",
+    "VND": "Dong vietnamita"
+  }
 }

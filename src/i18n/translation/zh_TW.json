@@ -60,6 +60,7 @@
   "PleaseConfirm": "請輸入密碼以便確認",
   "PleaseConfirmYourPassword": "請確認您的密碼",
   "GoBack": "返回",
+  "SelectCurrency": "選擇貨幣",
   "InputAddress": "輸入地址",
   "TransactionSummary": "交易摘要",
   "TransactionSuccessful": "交易成功",
@@ -104,6 +105,7 @@
   "WalletIsBusy": "請等待確認先前的交易後再發送。",
   "transactionTimeOut": "交易超時，請稍後再試。",
   "GenericFailureMsg": "你的操作已失敗，請過一段時間再嘗試。",
+  "ExchangeRateFetchError": "獲取匯率失敗，請稍後再試。",
   "Copied": "已複製",
   "ErrorPageHeading": "喔！似乎出錯了",
   "ErrorPageDesc": "非常抱歉，請聯絡客服或",
@@ -408,5 +410,25 @@
   "Recent": "最近",
   "MyAccount": "我的帳戶",
   "NoRecentAddresses": "沒有最近的地址",
-  "NoOtherAccounts": "此設備上沒有其他帳戶"
+  "NoOtherAccounts": "此設備上沒有其他帳戶",
+  "FiatCurrency": "法定貨幣",
+  "DisplayCurrency": "顯示貨幣",
+  "currency": {
+    "USD": "美元",
+    "CHF": "瑞士法郎",
+    "CNY": "人民幣",
+    "EUR": "歐元",
+    "HKD": "港元",
+    "IDR": "印尼盾",
+    "INR": "印度盧比",
+    "JPY": "日圓",
+    "KHR": "柬埔寨瑞爾",
+    "KRW": "韓元",
+    "MYR": "馬來西亞林吉特",
+    "PHP": "菲律賓披索",
+    "SGD": "新加坡元",
+    "THB": "泰銖",
+    "TWD": "新台幣",
+    "VND": "越南盾"
+  }
 }

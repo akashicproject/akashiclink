@@ -1,4 +1,7 @@
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
+import { urls } from 'src/constants/urls';
+import { akashicPayPath } from 'src/routing/navigation-tabs';
 
 import { ThemeSelect } from '../../components/layout/toolbar/theme-select';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
@@ -6,6 +9,7 @@ import {
   PageHeader,
   SettingsWrapper,
 } from '../../components/settings/base-components';
+import { CurrentFiatCurrencyDisplay } from '../../components/settings/current-fiat-currency-display';
 import { HideSmallTxnToggle } from '../../components/settings/hide-small-txn-toggle';
 import {
   LanguageAccordion,
@@ -19,8 +23,17 @@ import { getImageIconUrl } from '../../utils/url-utils';
 
 export function SettingsGeneral() {
   const { t } = useTranslation();
+  const history = useHistory();
 
   const generalMenuItems: SettingItemProps[] = [
+    {
+      header: t('FiatCurrency'),
+      icon: getImageIconUrl('dollar-sign.svg'),
+      onClick: () => {
+        history.push(akashicPayPath(urls.settingsFiatCurrency));
+      },
+      EndComponent: CurrentFiatCurrencyDisplay,
+    },
     {
       header: t('Languages'),
       icon: getImageIconUrl('language.svg'),
@@ -60,6 +73,7 @@ export function SettingsGeneral() {
                 icon={gMenuItems.icon}
                 isAccordion={gMenuItems.isAccordion}
                 EndComponent={gMenuItems.EndComponent}
+                onClick={gMenuItems.onClick}
               >
                 {gMenuItems.children}
               </SettingItem>

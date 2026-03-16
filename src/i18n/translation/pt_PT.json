@@ -61,6 +61,7 @@
   "PleaseConfirmYourPassword": "Please confirm your password",
   "WrongPassword": "Wrong password, please try again.",
   "GoBack": "Go Back",
+  "SelectCurrency": "Select Currency",
   "InputAddress": "Input Address",
   "TransactionSummary": "Transaction Summary",
   "TransactionSuccessful": "Transaction Successful",

@@ -32,6 +32,7 @@ import { ChangePassword } from '../pages/settings/change-password/enter-password
 import { Settings } from '../pages/settings/settings';
 import { SettingsAboutUs } from '../pages/settings/settings-about-us';
 import { SettingsBackup } from '../pages/settings/settings-backup';
+import { SettingsFiatCurrency } from '../pages/settings/settings-fiat-currency';
 import { SettingsGeneral } from '../pages/settings/settings-general';
 import { SettingsNetwork } from '../pages/settings/settings-network';
 import { SettingsSecurity } from '../pages/settings/settings-security';
@@ -110,6 +111,7 @@ export function NavigationTree() {
       {AkashicTab.registerPage(NftTransferResult, urls.nftTransferResult)}
       {AkashicTab.registerPage(Activity, urls.activity)}
       {AkashicTab.registerPage(Settings, urls.settings)}
+      {AkashicTab.registerPage(SettingsFiatCurrency, urls.settingsFiatCurrency)}
       {AkashicTab.registerPage(SettingsGeneral, urls.settingsGeneral)}
       {AkashicTab.registerPage(SettingsSecurity, urls.settingsSecurity)}
       {AkashicTab.registerPage(SettingsNetwork, urls.settingsNetwork)}

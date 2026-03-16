@@ -61,6 +61,7 @@
   "PleaseConfirmYourPassword": "비밀번호를 확인해 주세요",
   "WrongPassword": "비밀번호가 잘못되었습니다. 다시 시도하세요.",
   "GoBack": "뒤로 가기",
+  "SelectCurrency": "통화 선택",
   "InputAddress": "입력 주소",
   "TransactionSummary": "거래 요약",
   "TransactionSuccessful": "거래 성공",
