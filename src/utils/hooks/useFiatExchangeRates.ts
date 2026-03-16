@@ -8,7 +8,7 @@ export const useFiatExchangeRates = (requestedCurrency: FiatCurrencySymbol) => {
   const { data, ...response } = useSWR<
     Record<CryptoCurrencySymbol, string>,
     Error
-  >(`/exchange-rate/${requestedCurrency}`, fetcher);
+  >(`/v0/exchange-rate/${requestedCurrency}`, fetcher);
   return {
     exchangeRate: data,
     ...response,
