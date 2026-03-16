@@ -173,6 +173,12 @@ const FiltersDropdown: React.FC<FilterDropdownProps> = ({
     });
   };
 
+  const isFilterActive =
+    !tempNftFilter.coin ||
+    !tempNftFilter.nft ||
+    !tempLayerFilter.l1 ||
+    !tempLayerFilter.l2;
+
   return (
     <>
       <IconButton
@@ -180,6 +186,8 @@ const FiltersDropdown: React.FC<FilterDropdownProps> = ({
         size={24}
         icon={filterOutline}
         onClick={openModal}
+        fill={isFilterActive ? 'solid' : 'clear'}
+        color={isFilterActive ? 'primary' : 'transparent'}
       />
       <IonModal
         handle={true}

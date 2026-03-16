@@ -132,12 +132,18 @@ export function DashboardPreferenceModalTriggerButton() {
     setIsModalOpen(true);
   };
 
+  const isFilterActive =
+    hiddenCurrencies.length > 0 ||
+    currenciesSortMode !== DASHBOARD_LIST_SORTING_MODE.Alphabetical;
+
   return (
     <DashboardPreferenceContext.Provider value={contextValue}>
       <IconButton
         onClick={handleOnClickButton}
         icon={filterOutline}
         size={24}
+        fill={isFilterActive ? 'solid' : 'clear'}
+        color={isFilterActive ? 'primary' : 'transparent'}
       />
       <DashboardPreferenceModal modal={modalRef} />
     </DashboardPreferenceContext.Provider>

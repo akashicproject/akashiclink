@@ -13,6 +13,8 @@ import { useContext, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { SUPPORTED_CURRENCIES_WITH_NAMES } from '../../constants/currencies';
+import { useLocalStorage } from '../../utils/hooks/useLocalStorage';
+import { HIDDEN_CURRENCIES } from '../../utils/preference-keys';
 import { getImageIconUrl } from '../../utils/url-utils';
 import { DashboardPreferenceCurrencyGroup } from './dashboard-preference-currency-group';
 import { DashboardPreferenceContext } from './dashboard-preference-modal-trigger-button';
@@ -41,10 +43,17 @@ const Searchbar = styled(IonSearchbar)({
     height: '2.875rem',
     top: '50%',
     transform: 'translateY(-50%)',
+    transition: 'opacity 0.2s',
+  },
+  '&:focus-within .searchbar-search-icon': {
+    opacity: 0,
+  },
+  '&:focus-within input::placeholder': {
+    opacity: 0,
   },
 });
 
-const PreferenceHeader = ({ onClearAll }: { onClearAll: () => void }) => {
+const PreferenceHeader = ({ onResetAll }: { onResetAll: () => void }) => {
   const { t } = useTranslation();
   return (
     <div className="ion-display-flex ion-justify-content-between ion-align-items-center">
@@ -53,42 +62,44 @@ const PreferenceHeader = ({ onClearAll }: { onClearAll: () => void }) => {
       </h2>
       <IonButton
         fill="clear"
-        onClick={onClearAll}
+        onClick={onResetAll}
         className="ion-text-size-md ion-text-color-grey ion-text-bold ion-text-capitalize"
       >
-        {t('Clear')}
+        {t('Reset')}
       </IonButton>
     </div>
   );
 };
 
-const CountDisplay = ({ count }: { count: number }) => {
-  const { t } = useTranslation();
-  return (
-    <div className="ion-text-left ion-margin-top-xs ion-margin-bottom-sm">
-      <IonText className="ion-text-size-md ion-text-bold ion-text-color-grey">
-        {`${count} ${t('TokenSelected')}`}
-      </IonText>
-    </div>
-  );
-};
-
-const AllToken = ({
+const AllTokenAndCountCheckBox = ({
   checked,
   onToggle,
+  count,
 }: {
   checked: boolean;
   onToggle: () => void;
+  count: number;
 }) => {
   const { t } = useTranslation();
   return (
     <div className="ion-display-flex ion-align-items-center ion-justify-content-between ion-padding-sm">
-      <IonText
-        className="ion-text-size-md ion-text-color-grey ion-text-bold
-      "
+      <div
+        className="ion-display-flex ion-align-items-center"
+        style={{ gap: '0.5rem' }}
       >
-        {t('SelectAll')}
-      </IonText>
+        <IonText
+          className="ion-text-size-sm ion-text-bold"
+          style={{ color: 'var(--ion-color-outline)' }}
+        >
+          {t('SelectAll')}
+        </IonText>
+        <IonText
+          className="ion-text-size-xs ion-text-bold"
+          style={{ color: 'var(--ion-color-on-surface-light)' }}
+        >
+          {`(${count}/${SUPPORTED_CURRENCIES_WITH_NAMES.length} ${t('TokenSelected')})`}
+        </IonText>
+      </div>
       <IonCheckbox checked={checked} onIonChange={onToggle} />
     </div>
   );
@@ -161,16 +172,12 @@ export const DashboardPreferenceCurrencyFilter = () => {
     );
   };
 
-  const handleClearAll = () => {
-    setHiddenCurrencies(allKeys);
+  const handleResetAll = () => {
+    setHiddenCurrencies(savedHiddenCurrencies ?? allKeys);
   };
 
   const handleSelectAll = () => {
-    if (hiddenCurrencies.length === 0) {
-      setHiddenCurrencies(allKeys);
-    } else {
-      setHiddenCurrencies([]);
-    }
+    setHiddenCurrencies(isAllSelected ? allKeys : []);
   };
 
   const toggleChain = (chain: CoinSymbol) => {
@@ -196,19 +203,25 @@ export const DashboardPreferenceCurrencyFilter = () => {
   const selectedCount =
     SUPPORTED_CURRENCIES_WITH_NAMES.length - hiddenCurrencies.length;
 
+  const { value: savedHiddenCurrencies } =
+    useLocalStorage<string[]>(HIDDEN_CURRENCIES);
+
   return (
     <IonGrid className="ion-padding-top-0 ion-padding-bottom-xxs ion-padding-left-md ion-padding-right-md">
       <IonRow className="ion-center ion-grid-row-gap-sm">
         <IonCol className="ion-text-align-center" size="12">
-          <PreferenceHeader onClearAll={handleClearAll} />
-          <CountDisplay count={selectedCount} />
+          <PreferenceHeader onResetAll={handleResetAll} />
           <Searchbar
             value={search}
             onIonInput={(e) => setSearch(e.detail.value!)}
             placeholder={t('Search')}
             searchIcon={getImageIconUrl('search-icon.svg')}
           />
-          <AllToken checked={isAllSelected} onToggle={handleSelectAll} />
+          <AllTokenAndCountCheckBox
+            checked={isAllSelected}
+            onToggle={handleSelectAll}
+            count={selectedCount}
+          />
           <div style={{ maxHeight: 'calc(72vh - 12.5rem)', overflowY: 'auto' }}>
             {filteredChains.map((chain) => (
               <DashboardPreferenceCurrencyGroup
