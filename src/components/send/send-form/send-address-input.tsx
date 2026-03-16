@@ -165,7 +165,6 @@ export const SendAddressInput = ({
     }
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const validateAddress = debounce(validateAddressInput, 500);
 
   const onAddressChange = (e: InputCustomEvent) => {
