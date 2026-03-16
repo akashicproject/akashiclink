@@ -103,8 +103,6 @@ export const SendTxnDetailBoxWithDelegateOption = ({
         txn: res.txn,
         signedTxn: res.signedTxn,
         delegatedFee: res.delegatedFee,
-        isFirstTimeInteractionWithAddress:
-          res.isFirstTimeInteractionWithAddress,
         validatedAddressPair,
         amount,
         feeDelegationStrategy: isDelegated

@@ -49,7 +49,6 @@ export interface SendConfirmationTxnsDetail {
   delegatedFee?: string;
   feeDelegationStrategy?: FeeDelegationStrategy;
   txnFinal?: SendConfirmationTxnFinal;
-  isFirstTimeInteractionWithAddress?: boolean;
 }
 
 export interface SendConfirmationTxnFinal {

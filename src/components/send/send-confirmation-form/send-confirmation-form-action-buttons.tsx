@@ -81,8 +81,6 @@ export const SendConfirmationFormActionButtons = () => {
           txn: res.txn,
           signedTxn: res.signedTxn,
           delegatedFee: res.delegatedFee,
-          isFirstTimeInteractionWithAddress:
-            res.isFirstTimeInteractionWithAddress,
         });
       } catch (e) {
         setFormAlert(errorAlertShell(getErrorMessageTKey(e)));

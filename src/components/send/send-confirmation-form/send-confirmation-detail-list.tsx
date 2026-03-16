@@ -1,16 +1,11 @@
 import { NetworkDictionary } from '@akashic/as-backend';
 import { IonItem, IonText } from '@ionic/react';
 import Big from 'big.js';
-import { warningOutline } from 'ionicons/icons';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAppSelector } from '../../../redux/app/hooks';
-import { selectTheme } from '../../../redux/slices/preferenceSlice';
-import { themeType } from '../../../theme/const';
 import { getPrecision } from '../../../utils/formatAmount';
 import { useCryptoCurrencySymbolsAndBalances } from '../../../utils/hooks/useCryptoCurrencySymbolsAndBalances';
-import { AlertBox } from '../../common/alert/alert';
 import { L2Icon } from '../../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../../common/chain-icon/network-icon';
 import { Divider } from '../../common/divider';
@@ -23,8 +18,6 @@ import { SendFormContext } from '../send-modal-context-provider';
 export const SendConfirmationDetailList = () => {
   const { t } = useTranslation();
   const { sendConfirm, currency } = useContext(SendFormContext);
-  const theme = useAppSelector(selectTheme);
-  const isDarkMode = theme === themeType.DARK;
   const { isCurrencyTypeToken, currencySymbol, nativeCoinSymbol } =
     useCryptoCurrencySymbolsAndBalances(currency);
   const { coinSymbol } = currency;
@@ -150,41 +143,6 @@ export const SendConfirmationDetailList = () => {
           />
         </>
       </List>
-      {sendConfirm?.isFirstTimeInteractionWithAddress &&
-        (() => {
-          const borderColorVariant = isDarkMode
-            ? 'primary-on-container'
-            : 'primary-container';
-          return (
-            <AlertBox
-              state={{
-                success: false,
-                visible: true,
-                message: 'FirstTimeAddressWarning',
-              }}
-              customStyle={{
-                container: {
-                  borderLeft: `8px solid var(--ion-color-${borderColorVariant})`,
-                  borderTop: `1px solid var(--ion-color-${borderColorVariant})`,
-                  borderRight: `1px solid var(--ion-color-${borderColorVariant})`,
-                  borderBottom: `1px solid var(--ion-color-${borderColorVariant})`,
-                  padding: '12px 16px',
-                  justifyContent: 'flex-start',
-                  gap: '12px',
-                },
-                text: {
-                  color: 'var(--ion-color-inverse-surface)',
-                  textAlign: 'left',
-                  margin: 0,
-                },
-                icon: {
-                  color: `var(--ion-color-${borderColorVariant})`,
-                },
-              }}
-              icon={warningOutline}
-            />
-          );
-        })()}
     </>
   );
 };
