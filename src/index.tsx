@@ -38,7 +38,7 @@ const initDatadog = async () => {
       site: 'datadoghq.com',
       service: 'akashic-wallet',
       env: process.env.REACT_APP_ENV || '',
-      allowedTracingUrls: [`${process.env.REACT_APP_API_BASE_URL}/api`],
+      allowedTracingUrls: [`${process.env.REACT_APP_API_BASE_URL}`],
 
       // Specify a version number to identify the deployed version of your application in Datadog
       version,

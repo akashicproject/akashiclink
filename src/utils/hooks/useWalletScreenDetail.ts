@@ -19,7 +19,7 @@ export const useWalletScreenDetail = () => {
     string,
     IFindWalletScreeningById
   >(
-    '/wallet-screening/detail',
+    '/v0/wallet-screening/detail',
     async (url: string, { arg }: { arg: IFindWalletScreeningById }) => {
       const serverTime = await getCurrentTime();
 

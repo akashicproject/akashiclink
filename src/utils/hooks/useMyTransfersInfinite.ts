@@ -68,7 +68,7 @@ export const useMyTransfersInfinite = (limit = 100, query = {}) => {
     )
       return null;
 
-    return `/owner/transactions?${new URLSearchParams({
+    return `/v0/owner/transactions?${new URLSearchParams({
       ...query,
       identity: activeAccount?.identity ?? '',
       page: pageIndex.toString(),

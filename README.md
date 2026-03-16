@@ -83,7 +83,7 @@ yarn build:dev
 
 ```text
 REACT_APP_PUBLIC_URL=https://api.akashicscan.com
-REACT_APP_API_BASE_URL=https://api.akashicscan.com/api/v0
+REACT_APP_API_BASE_URL=https://api.akashicscan.com/api
 ```
 
 2. Build extension

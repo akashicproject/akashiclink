@@ -13,7 +13,7 @@ export const useNftMe = () => {
     ...response
   } = useSWR<INftObject[], Error>(
     activeAccount?.identity && cacheOtk
-      ? `/nft/owner/${activeAccount?.identity}`
+      ? `/v0/nft/owner/${activeAccount?.identity}`
       : null,
     fetcher,
     {

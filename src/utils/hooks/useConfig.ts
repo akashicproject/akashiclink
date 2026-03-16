@@ -6,7 +6,7 @@ import fetcher from '../ownerFetcher';
 
 export const useConfig = () => {
   const { data, isLoading } = useSWR<IConfigResponse, Error>(
-    `/config`,
+    `/v0/config`,
     fetcher
   );
 

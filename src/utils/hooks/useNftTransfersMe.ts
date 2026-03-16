@@ -19,7 +19,7 @@ export const useNftTransfersMe = (query = {}) => {
     ...response
   } = useSWR<INftTransactionRecord[], Error>(
     activeAccount?.identity && cacheOtk
-      ? `/nft/owner/${activeAccount?.identity}/transfers?${params.toString()}`
+      ? `/v0/nft/owner/${activeAccount?.identity}/transfers?${params.toString()}`
       : null,
     fetcher,
     { refreshInterval: REFRESH_INTERVAL }

@@ -12,7 +12,7 @@ import fetcher from '../ownerFetcher';
 
 export const useExchangeRates = () => {
   const { data, ...response } = useSWR<IExchangeRate[], Error>(
-    `/owner/exchange-rates`,
+    `/v0/owner/exchange-rates`,
     fetcher
   );
   return {

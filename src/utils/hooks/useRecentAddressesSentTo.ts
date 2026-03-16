@@ -38,7 +38,7 @@ export const useRecentAddressesSentTo = (coinSymbol?: CoinSymbol) => {
     Error
   >(
     activeAccount?.identity && cacheOtk
-      ? `/owner/recent-addresses-sent-to?${queryParams.toString()}`
+      ? `/v0/owner/recent-addresses-sent-to?${queryParams.toString()}`
       : null,
     fetcher as (url: string) => Promise<RecentAddressesResponse>
   );

@@ -13,7 +13,7 @@ export const usePayToScreen = () => {
     string,
     IPayFeeAndScreenWallet
   >(
-    '/wallet-screening/pay-to-screen',
+    '/v0/wallet-screening/pay-to-screen',
     async (url: string, { arg }: { arg: IPayFeeAndScreenWallet }) => {
       const response = await axiosBase.post(url, arg);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return

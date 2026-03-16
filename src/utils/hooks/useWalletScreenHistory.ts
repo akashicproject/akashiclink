@@ -30,7 +30,7 @@ export const useWalletScreenHistory = (limit = 10) => {
 
       const signedMsg = signMessage(payloadToSign);
 
-      const response = await axiosBase.post('/wallet-screening', {
+      const response = await axiosBase.post('/v0/wallet-screening', {
         ...payloadToSign,
         signature: signedMsg.substring(2), //exclude 0x which is only required by WalletConnect
       });

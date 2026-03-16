@@ -19,7 +19,7 @@ export const useHistoricBalances = ({
   });
 
   const { data, ...response } = useSWR<IOwnerHistoricBalancesResponse, Error>(
-    `/owner/historic-balances?address=${activeAccount?.identity}&${queryParams.toString()}`,
+    `/v0/owner/historic-balances?address=${activeAccount?.identity}&${queryParams.toString()}`,
     fetcher,
     {
       refreshInterval: 60000, // Refresh every 60 seconds
