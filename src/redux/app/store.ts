@@ -3,14 +3,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { routerMiddleware } from 'connected-react-router';
 import { persistReducer } from 'redux-persist';
-import CapacitorStorage from 'redux-persist-capacitor';
 
 import { history } from '../../routing/history';
 import createRootReducer from './reducers';
+import CapacitorBackwardCompatibleStorage from './storage';
 
 const persistConfig = {
   key: 'root',
-  storage: CapacitorStorage,
+  storage: CapacitorBackwardCompatibleStorage,
 };
 
 const rootReducer = createRootReducer(history);
