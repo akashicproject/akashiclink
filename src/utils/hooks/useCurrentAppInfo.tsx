@@ -1,5 +1,3 @@
-import type { AppInfo } from '@capacitor/app';
-import { App } from '@capacitor/app';
 import { datadogRum } from '@datadog/browser-rum';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -15,7 +13,6 @@ export const useCurrentAppInfo = () => {
   const [version, setVersion] = useState<string>(
     sessionStorage.getItem('version') ?? ''
   );
-  const [appInfo, setAppInfo] = useState<AppInfo>();
 
   useEffect(() => {
     const getManifestVersion = async () => {
@@ -34,21 +31,8 @@ export const useCurrentAppInfo = () => {
     getManifestVersion();
   }, []);
 
-  useEffect(() => {
-    const getAppInfo = async () => {
-      try {
-        const appInfo = await App.getInfo();
-        setAppInfo(appInfo);
-      } catch (e) {
-        datadogRum.addError(e);
-      }
-    };
-
-    getAppInfo();
-  }, []);
-
   return {
-    name: appInfo?.name ?? 'AkashicLink',
-    version: appInfo?.version ?? version,
+    name: 'AkashicLink',
+    version: version,
   };
 };

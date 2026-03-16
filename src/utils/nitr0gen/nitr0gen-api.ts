@@ -14,7 +14,6 @@ import {
   NetworkDictionary,
   OtherError,
 } from '@akashic/as-backend';
-import { App } from '@capacitor/app';
 import { Capacitor } from '@capacitor/core';
 import { datadogRum } from '@datadog/browser-rum';
 import axios, { isAxiosError } from 'axios';
@@ -376,13 +375,8 @@ export class Nitr0genApi {
     const requestFunction = method === 'post' ? axios.post : axios.get;
 
     let version;
-    try {
-      const appInfo = await App.getInfo();
-      version = appInfo.version;
-    } catch {
-      const manifestData = await getManifestJson();
-      version = manifestData.version;
-    }
+    const manifestData = await getManifestJson();
+    version = manifestData.version;
     const headers = {
       'Ap-Version': version,
       'Ap-Client': Capacitor.getPlatform(),
