@@ -9,7 +9,8 @@
     "paths": {
       "@akashic/as-backend": ["../../../apps/backend/src/index"],
       "@akashic/common-i18n": ["../../packages/common-i18n/src/index"],
-      "@akashic/api-mocks": ["../../packages/api-mocks/src/index"]
+      "@akashic/api-mocks": ["../../packages/api-mocks/src/index"],
+      "@akashic/nitr0gen": ["../../packages/nitr0gen/index"]
     }
   },
   "include": [
