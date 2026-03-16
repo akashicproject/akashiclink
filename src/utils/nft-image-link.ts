@@ -1,4 +1,4 @@
-import { chooseBestNodes, PortType } from './nitr0gen/nitr0gen.utils';
+import { chooseBestNodesFromCookies } from './nitr0gen/nitr0gen.utils';
 
 /**
  *
@@ -12,6 +12,6 @@ export async function getNftImage(
   width = '300',
   quality = '100'
 ): Promise<string> {
-  const NITR0_URL = await chooseBestNodes(PortType.NFT);
+  const NITR0_URL = await chooseBestNodesFromCookies('minigate');
   return `${NITR0_URL}cdn-cgi/image/width=${width},quality=${quality}/nft/image/${identity}`;
 }

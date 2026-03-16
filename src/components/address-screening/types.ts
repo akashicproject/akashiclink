@@ -1,10 +1,10 @@
+import type { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
 import {
   type IBaseAcTransaction,
   type ITerriAcTransaction,
-} from '@akashic/as-backend';
-import type { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
+} from '@akashic/nitr0gen';
 
-import type { ITransactionForSigning } from '../../utils/nitr0gen/nitr0gen.interface';
+import { type ITransactionForSigning } from '../send/send-form/types';
 
 export type ValidatedScanAddress = {
   scanAddress: string;

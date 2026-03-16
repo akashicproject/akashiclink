@@ -5,7 +5,7 @@ import { datadogRum } from '@datadog/browser-rum';
 
 import { ALLOWED_NETWORKS } from '../constants/currencies';
 import { OwnersAPI } from './api';
-import { Nitr0genApi } from './nitr0gen/nitr0gen-api';
+import { getNitr0genApi } from './nitr0gen/nitr0gen.utils';
 import type { FullOtk } from './otk-generation';
 
 // AC uses one key for all Ethereum-ecosystem wallets, so we don't have to
@@ -17,12 +17,16 @@ const NETWORKS_TO_CREATE_L1_ADDRESSES_FOR = ALLOWED_NETWORKS.filter(
 export async function createAccountWithAllL1Addresses(
   otk: IKeyExtended
 ): Promise<{ otk: FullOtk }> {
-  const nitr0gen = new Nitr0genApi();
-
   // 1. Request account-creation
-  const { ledgerId } = await nitr0gen.onboardOtk(otk);
+  const nitr0genApi = await getNitr0genApi();
+  const { response, error, nodeErrors } = await nitr0genApi.onboardOtk(otk);
+  if (error || !response) {
+    const err = new Error(error);
+    datadogRum.addError(err, { nodeErrors });
+    throw err;
+  }
 
-  const fullOtk = { ...otk, identity: ledgerId };
+  const fullOtk = { ...otk, identity: response.ledgerId };
 
   // set 1s timeout for owner creation event to arrive db
   await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -40,7 +44,7 @@ async function bulkCreateOrAssignKeys(
   if (!fullOtk.identity) {
     throw new Error('Missing identity');
   }
-  const nitr0gen = new Nitr0genApi();
+  const nitr0genApi = await getNitr0genApi();
   const unassignedLedgerIds: string[] = [];
   for (const coinSymbol of coinSymbols) {
     // find existing key, or return a pre-seed key for assignment
@@ -52,11 +56,27 @@ async function bulkCreateOrAssignKeys(
       unassignedLedgerIds.push(unassignedLedgerId);
     } else if (!address && !unassignedLedgerId) {
       // if both do not exist, create new key and continue
-      await nitr0gen.createKey(fullOtk, coinSymbol);
+      const { error, nodeErrors } = await nitr0genApi.createKey(
+        fullOtk,
+        coinSymbol
+      );
+      if (error) {
+        const err = new Error(error);
+        datadogRum.addError(err, { nodeErrors });
+        throw err;
+      }
     }
   }
   if (unassignedLedgerIds.length > 0) {
-    await nitr0gen.assignKeysToOtk(fullOtk, unassignedLedgerIds);
+    const { error, nodeErrors } = await nitr0genApi.assignKeysToOtk(
+      fullOtk,
+      unassignedLedgerIds
+    );
+    if (error) {
+      const err = new Error(error);
+      datadogRum.addError(err, { nodeErrors });
+      throw err;
+    }
   }
 }
 
@@ -72,7 +92,7 @@ export async function createL1Address(
     throw new Error('Missing identity');
   }
 
-  const nitr0gen = new Nitr0genApi();
+  const nitr0genApi = await getNitr0genApi();
 
   try {
     // find existing key, or return a pre-seed key for assignment
@@ -84,8 +104,16 @@ export async function createL1Address(
     // if both do not exist, fallback to key diff in error catch
     if (!address && !unassignedLedgerId) {
       // if assign pre-seed failed, fallback to key diff
-      const { address } = await nitr0gen.createKey(fullOtk, coinSymbol);
-      return address;
+      const { response, error, nodeErrors } = await nitr0genApi.createKey(
+        fullOtk,
+        coinSymbol
+      );
+      if (error || !response) {
+        const err = new Error(error);
+        datadogRum.addError(err, { nodeErrors });
+        throw err;
+      }
+      return response.address;
     }
 
     // if address exists without unassignedLedgerId, means user already has l1 address
@@ -96,8 +124,14 @@ export async function createL1Address(
     // if unassignedLedgerId exists, means no existing l1 address for this otk
     // assign the reserved key to otk
     if (!!unassignedLedgerId && !!address) {
-      await nitr0gen.assignKeysToOtk(fullOtk, [unassignedLedgerId]);
-      return address;
+      const { error, nodeErrors } = await nitr0genApi.assignKeysToOtk(fullOtk, [
+        unassignedLedgerId,
+      ]);
+      if (error) {
+        const err = new Error(error);
+        datadogRum.addError(err, { nodeErrors });
+        throw err;
+      }
     }
 
     // safety net

@@ -1,5 +1,6 @@
-import type { IBaseAcTransaction, INftObject } from '@akashic/as-backend';
+import type { INftObject } from '@akashic/as-backend';
 import { L2Regex, NftError } from '@akashic/as-backend';
+import { type IBaseAcTransaction } from '@akashic/nitr0gen';
 import styled from '@emotion/styled';
 import { IonCol, IonImg, IonRow, IonSpinner } from '@ionic/react';
 import { debounce } from 'lodash';
@@ -37,7 +38,7 @@ import { useNftTransfer } from '../../utils/hooks/nitr0gen';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
 import { displayLongText } from '../../utils/long-text';
-import { Nitr0genApi, signTxBody } from '../../utils/nitr0gen/nitr0gen-api';
+import { getNitr0genApi } from '../../utils/nitr0gen/nitr0gen.utils';
 import type { FullOtk } from '../../utils/otk-generation';
 import { NftWrapper } from './nft';
 import { NoNtfText, NoNtfWrapper } from './nfts';
@@ -111,7 +112,7 @@ const verifyNftTransaction = async (
     throw new Error('cacheOtk not found');
   }
 
-  const nitr0genApi = new Nitr0genApi();
+  const nitr0genApi = await getNitr0genApi();
   if (nft.aas?.linked) {
     throw new Error(NftError.aasValueShouldBeDeleted);
   }
@@ -119,10 +120,9 @@ const verifyNftTransaction = async (
     throw new Error(NftError.toAddressIsAlreadyOwner);
   }
 
-  const txToSign = await nitr0genApi.transferNftTransaction(
-    cacheOtk,
-    nft.aas?.ledgerId,
-    toAddress
+  const txToSign = await nitr0genApi.signTx(
+    nitr0genApi.transferNftTransaction(nft.aas?.ledgerId, toAddress),
+    cacheOtk
   );
 
   return {
@@ -210,7 +210,12 @@ export function NftTransfer() {
         ...cacheOtk,
         identity: verifiedNft.nftAasStreamId,
       };
-      const signedTx = await signTxBody(verifiedNft.txToSign, signerOtk);
+
+      const nitr0genApi = await getNitr0genApi();
+      const signedTx = await nitr0genApi.signTx(
+        verifiedNft.txToSign,
+        signerOtk
+      );
 
       const response = await triggerNftTransfer(signedTx);
 

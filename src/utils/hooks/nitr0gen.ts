@@ -1,27 +1,29 @@
 import {
   FeeDelegationStrategy,
-  type IBaseAcTransaction,
   isCoinSymbol,
   type ITransactionProposalClientSideOtk,
   type ITransferNftResponse,
   OtkType,
-  TransactionLayer,
   TransactionStatus,
   WalletType,
 } from '@akashic/as-backend';
 import { EthereumSymbol } from '@akashic/core-lib';
+import {
+  type IBaseAcTransaction,
+  type ITransactionSettledResponse,
+  prefixWithAS,
+  TransactionLayer,
+} from '@akashic/nitr0gen';
+import { datadogRum } from '@datadog/browser-rum';
 
 import { useAppDispatch } from '../../redux/app/hooks';
 import { addLocalTransaction } from '../../redux/slices/localTransactionSlice';
-import { prefixWithAS } from '../convert-as-prefix';
-import type { ITransactionSettledResponse } from '../nitr0gen/nitr0gen.interface';
-import { Nitr0genApi } from '../nitr0gen/nitr0gen-api';
+import { getNitr0genApi } from '../nitr0gen/nitr0gen.utils';
 import { HIDE_SMALL_BALANCES } from '../preference-keys';
 import { useValueOfAmountInUSDT } from './useExchangeRates';
 import { useAccountStorage } from './useLocalAccounts';
 
 export const useSendL2Transaction = () => {
-  const nitr0genApi = new Nitr0genApi();
   const dispatch = useAppDispatch();
   const valueOfAmountInUSDT = useValueOfAmountInUSDT();
   const { activeAccount } = useAccountStorage();
@@ -29,9 +31,15 @@ export const useSendL2Transaction = () => {
   const trigger = async (
     signedTransactionData: ITransactionProposalClientSideOtk
   ): Promise<ITransactionSettledResponse> => {
-    const txHash = (
-      await nitr0genApi.sendSignedTx(signedTransactionData.signedTx)
-    ).$umid;
+    const nitr0genApi = await getNitr0genApi();
+    const { response, error, nodeErrors } = await nitr0genApi.post(
+      signedTransactionData.signedTx
+    );
+    if (error || !response) {
+      const err = new Error(error);
+      datadogRum.addError(err, { nodeErrors });
+      throw err;
+    }
 
     const hideSmallTransactions = localStorage.getItem(
       `CapacitorStorage.${HIDE_SMALL_BALANCES}`
@@ -70,7 +78,7 @@ export const useSendL2Transaction = () => {
           },
           coinSymbol,
           tokenSymbol,
-          l2TxnHash: txHash,
+          l2TxnHash: response.$umid,
           initiatedAt: new Date(),
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -87,14 +95,13 @@ export const useSendL2Transaction = () => {
     return {
       isPresigned: false,
       isSuccess: true,
-      txHash,
+      txHash: response.$umid,
     };
   };
   return { trigger };
 };
 
 export const useSendL1Transaction = () => {
-  const nitr0genApi = new Nitr0genApi();
   const dispatch = useAppDispatch();
   const valueOfAmountInUSDT = useValueOfAmountInUSDT();
   const { activeAccount } = useAccountStorage();
@@ -102,11 +109,17 @@ export const useSendL1Transaction = () => {
   const trigger = async (
     signedTransactionData: ITransactionProposalClientSideOtk
   ): Promise<ITransactionSettledResponse> => {
-    const result = await nitr0genApi.sendSignedTx(
+    const nitr0genApi = await getNitr0genApi();
+    const { response, error, nodeErrors } = await nitr0genApi.post(
       signedTransactionData.signedTx
     );
+    if (error || !response) {
+      const err = new Error(error);
+      datadogRum.addError(err, { nodeErrors });
+      throw err;
+    }
 
-    const l2TxnHash = result.$umid;
+    const l2TxnHash = response.$umid;
 
     const hideSmallTransactions = localStorage.getItem(
       `CapacitorStorage.${HIDE_SMALL_BALANCES}`
@@ -151,7 +164,7 @@ export const useSendL1Transaction = () => {
 
     return {
       isSuccess: true,
-      isPresigned: !!result.$streams.new.find((s) => s.name === 'l1.presign'),
+      isPresigned: !!response.$streams.new.find((s) => s.name === 'l1.presign'),
       txHash: l2TxnHash,
     };
   };
@@ -159,14 +172,18 @@ export const useSendL1Transaction = () => {
 };
 
 export const useNftTransfer = () => {
-  const nitr0genApi = new Nitr0genApi();
-
   const trigger = async (
     signedTx: IBaseAcTransaction
   ): Promise<
     Omit<ITransferNftResponse, 'nftName' | 'ownerIdentity' | 'alias'>
   > => {
-    const response = await nitr0genApi.sendSignedTx(signedTx);
+    const nitr0genApi = await getNitr0genApi();
+    const { response, error, nodeErrors } = await nitr0genApi.post(signedTx);
+    if (error || !response) {
+      const err = new Error(error);
+      datadogRum.addError(err, { nodeErrors });
+      throw err;
+    }
 
     return {
       txHash: response.$umid,
@@ -176,13 +193,18 @@ export const useNftTransfer = () => {
 };
 
 export const useUpdateAas = () => {
-  const nitr0genApi = new Nitr0genApi();
-
   const trigger = async (
     signedTx: IBaseAcTransaction
     // eslint-disable-next-line sonarjs/no-identical-functions
   ): Promise<{ txHash: string }> => {
-    const response = await nitr0genApi.sendSignedTx(signedTx);
+    const nitr0genApi = await getNitr0genApi();
+    const { response, error, nodeErrors } = await nitr0genApi.post(signedTx);
+
+    if (error || !response) {
+      const err = new Error(error);
+      datadogRum.addError(err, { nodeErrors });
+      throw err;
+    }
 
     return {
       txHash: response.$umid,

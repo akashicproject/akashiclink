@@ -1,13 +1,19 @@
 import {
   type FeeDelegationStrategy,
-  type IBaseAcTransaction,
   type IWithdrawalProposal,
   L2Regex,
-  TransactionLayer,
 } from '@akashic/as-backend';
 import { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
+import {
+  type IBaseAcTransaction,
+  type L2TxDetail,
+  TransactionLayer,
+} from '@akashic/nitr0gen';
 
-import type { ValidatedAddressPair } from '../../components/send/send-form/types';
+import type {
+  ITransactionForSigning,
+  ValidatedAddressPair,
+} from '../../components/send/send-form/types';
 import { OwnersAPI } from '../api';
 import {
   convertFromSmallestUnit,
@@ -16,11 +22,7 @@ import {
 } from '../currency';
 import { AppError } from '../error-utils';
 import { calculateInternalWithdrawalFee } from '../internal-fee';
-import type {
-  ITransactionForSigning,
-  L2TxDetail,
-} from '../nitr0gen/nitr0gen.interface';
-import { Nitr0genApi, signTxBody } from '../nitr0gen/nitr0gen-api';
+import { getNitr0genApi } from '../nitr0gen/nitr0gen.utils';
 import { useAccountMe } from './useAccountMe';
 import { useExchangeRates } from './useExchangeRates';
 import { useAccountStorage } from './useLocalAccounts';
@@ -66,7 +68,7 @@ export const useVerifyTxnAndSign = () => {
     referenceId?: string
   ): Promise<UseVerifyAndSignResponse> => {
     const isL2 = L2Regex.exec(validatedAddressPair?.convertedToAddress);
-    const nitr0genApi = new Nitr0genApi();
+    const nitr0genApi = await getNitr0genApi();
 
     if (!cacheOtk || !activeAccount || !account) {
       throw new Error('cache not found');
@@ -87,13 +89,16 @@ export const useVerifyTxnAndSign = () => {
       if (activeAccount.identity === l2TransactionData.toAddress)
         throw new Error(AppError.NoSelfSend);
 
-      let txBody = await nitr0genApi.l2Transaction(
-        cacheOtk,
-        // AC needs smallest units, so we convert
-        convertObjectCurrencies(l2TransactionData, convertToSmallestUnit),
-        account.isFxBp,
-        approvedStream,
-        referenceId
+      let txBody = await nitr0genApi.signTx(
+        nitr0genApi.l2Transaction(
+          cacheOtk,
+          // AC needs smallest units, so we convert
+          convertObjectCurrencies(l2TransactionData, convertToSmallestUnit),
+          account.isFxBp,
+          approvedStream,
+          referenceId
+        ),
+        cacheOtk
       );
       // add check for FX Bp
       if (account.isFxBp) {
@@ -144,7 +149,7 @@ export const useVerifyTxnAndSign = () => {
       delegatedFee,
       isFirstTimeInteractionWithAddress,
     } = await OwnersAPI.prepareL1Txn(transactionData);
-    const signedTxn = await signTxBody(preparedTxn, cacheOtk);
+    const signedTxn = await nitr0genApi.signTx(preparedTxn, cacheOtk);
     const uiFeesEstimate = convertFromSmallestUnit(
       preparedTxn.$tx.metadata?.feesEstimate ?? '0',
       coinSymbol

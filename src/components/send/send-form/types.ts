@@ -1,10 +1,27 @@
 import type {
   FeeDelegationStrategy,
+  IInternalFee,
+  ITransactionBase,
+} from '@akashic/as-backend';
+import type {
   IBaseAcTransaction,
   ITerriAcTransaction,
-} from '@akashic/as-backend';
+  TransactionLayer,
+} from '@akashic/nitr0gen';
 
-import type { ITransactionForSigning } from '../../../utils/nitr0gen/nitr0gen.interface';
+/**
+ * Describes a transaction proposal with anticipated gas fee that still needs to:
+ * - Be signed
+ * - Be sent to AC
+ */
+export interface ITransactionForSigning extends ITransactionBase {
+  readonly internalFee?: IInternalFee;
+  readonly txToSign: IBaseAcTransaction | ITerriAcTransaction;
+  readonly layer: TransactionLayer;
+  // Presumably mandatory if layer-1... :/
+  readonly feesEstimate?: string;
+  readonly fromLedgerId?: string;
+}
 
 export type ValidatedAddressPair = {
   convertedToAddress: string;

@@ -1,17 +1,11 @@
-import type { IBaseAcTransaction } from '@akashic/as-backend';
+import type { IBaseAcTransaction } from '@akashic/nitr0gen';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { BRIDGE_MESSAGE } from '../types/bridge-types';
 import { responseErrorToSite, responseToSite } from '../utils/chrome';
 import { useSignMessage } from '../utils/hooks/useSignMessage';
-import {
-  isAfxOnboardContract,
-  isSecondaryOtkUpdate,
-  isTreasuryOtkAddition,
-  isTreasuryOtkRemoval,
-  isTreasuryThresholdUpdateOnly,
-} from '../utils/nitr0gen/nitr0gen-api';
+import { getNitr0genApi } from '../utils/nitr0gen/nitr0gen.utils';
 import { SignTransactionOrPersonalContent } from './sign-transaction-or-personal-content';
 
 export function SignTransaction() {
@@ -27,60 +21,57 @@ export function SignTransaction() {
   const [id, setId] = useState<number>();
 
   useEffect(() => {
-    const url = new URL(window.location.href);
-    const idParam = url.searchParams.get('id');
-    const data = url.searchParams.get('data');
-    if (!idParam || !data) {
-      responseErrorToSite(new Error('Missing parameters'), Number(idParam));
-      return;
-    }
-    if (idParam) setId(Number(idParam));
-
-    let transaction: IBaseAcTransaction;
-    try {
-      transaction = JSON.parse(decodeURIComponent(data));
-    } catch (e) {
-      responseErrorToSite(e, Number(idParam));
-      return;
-    }
-
-    setTransaction(transaction);
-    if (isSecondaryOtkUpdate(transaction)) {
-      // Secondary OTK addition
-      setMessage({
-        identity: transaction.$tx.$i.owner.$stream,
-        content: t('Popup.AgreeToGenerateSecondaryKey'),
-      });
-    } else if (isTreasuryOtkAddition(transaction)) {
-      // Treasury OTK addition
-      setMessage({
-        identity: transaction.$tx.$i.owner.$stream,
-        content: t('Popup.AgreeToGenerateTreasuryKey'),
-      });
-    } else if (isTreasuryThresholdUpdateOnly(transaction)) {
-      // Treasury Threshold update
-      setMessage({
-        identity: transaction.$tx.$i.owner.$stream,
-        content: t('Popup.AgreeToSetMultisigThresholds'),
-      });
-    } else if (isTreasuryOtkRemoval(transaction)) {
-      // Treasury OTK removal
-      setMessage({
-        identity: transaction.$tx.$i.owner.$stream,
-        content: t('Popup.ConfirmationToDisableMultisig'),
-      });
-    } else if (isAfxOnboardContract(transaction)) {
-      // AfxOnboard contract
-      setMessage({
-        identity: transaction.$tx.$i.owner.$stream,
-        content: t('Popup.AcceptTermsAndPrivacyPolicy'),
-      });
-    } else {
-      // Unknown transaction type
-      setMessage({
-        content: JSON.stringify(transaction, null, 2),
-      });
-    }
+    (async () => {
+      const url = new URL(window.location.href);
+      const idParam = url.searchParams.get('id');
+      const data = url.searchParams.get('data');
+      if (!idParam || !data) {
+        responseErrorToSite(new Error('Missing parameters'), Number(idParam));
+        return;
+      }
+      if (idParam) setId(Number(idParam));
+      const transaction: IBaseAcTransaction = JSON.parse(
+        decodeURIComponent(data)
+      );
+      setTransaction(transaction);
+      const nitr0genApi = await getNitr0genApi();
+      if (nitr0genApi.isSecondaryOtkUpdate(transaction)) {
+        // Secondary OTK addition
+        setMessage({
+          identity: transaction.$tx.$i.owner.$stream,
+          content: t('Popup.AgreeToGenerateSecondaryKey'),
+        });
+      } else if (nitr0genApi.isTreasuryOtkAddition(transaction)) {
+        // Treasury OTK addition
+        setMessage({
+          identity: transaction.$tx.$i.owner.$stream,
+          content: t('Popup.AgreeToGenerateTreasuryKey'),
+        });
+      } else if (nitr0genApi.isTreasuryThresholdUpdateOnly(transaction)) {
+        // Treasury Threshold update
+        setMessage({
+          identity: transaction.$tx.$i.owner.$stream,
+          content: t('Popup.AgreeToSetMultisigThresholds'),
+        });
+      } else if (nitr0genApi.isTreasuryOtkRemoval(transaction)) {
+        // Treasury OTK removal
+        setMessage({
+          identity: transaction.$tx.$i.owner.$stream,
+          content: t('Popup.ConfirmationToDisableMultisig'),
+        });
+      } else if (nitr0genApi.isAfxOnboardContract(transaction)) {
+        // AfxOnboard contract
+        setMessage({
+          identity: transaction.$tx.$i.owner.$stream,
+          content: t('Popup.AcceptTermsAndPrivacyPolicy'),
+        });
+      } else {
+        // Unknown transaction type
+        setMessage({
+          content: JSON.stringify(transaction, null, 2),
+        });
+      }
+    })();
   }, []);
 
   const onClickSign = async () => {

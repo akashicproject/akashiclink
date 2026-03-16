@@ -1,8 +1,5 @@
-import {
-  getCurrencyDisplayName,
-  TransactionLayer,
-  TransactionType,
-} from '@akashic/as-backend';
+import { getCurrencyDisplayName, TransactionType } from '@akashic/as-backend';
+import { TransactionLayer } from '@akashic/nitr0gen';
 import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
 

@@ -43,6 +43,7 @@ module.exports = {
         resolvePackagePath('../../packages/ui-lib/src'),
         resolvePackagePath('../../packages/api-mocks/src'),
         resolvePackagePath('../../packages/core-lib/src'),
+        resolvePackagePath('../../packages/nitr0gen/src'),
       ]);
     }
 

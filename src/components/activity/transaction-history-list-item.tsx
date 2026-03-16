@@ -1,10 +1,10 @@
 import {
   getCurrencyDisplayName,
   getCurrencyIcon,
-  TransactionLayer,
   TransactionStatus,
   TransactionType,
 } from '@akashic/as-backend';
+import { TransactionLayer } from '@akashic/nitr0gen';
 import styled from '@emotion/styled';
 import { IonImg, IonText } from '@ionic/react';
 import Big from 'big.js';

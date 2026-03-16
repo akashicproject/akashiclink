@@ -1,5 +1,5 @@
-import type { IBaseAcTransaction } from '@akashic/as-backend';
 import { OtherError } from '@akashic/as-backend';
+import type { IBaseAcTransaction } from '@akashic/nitr0gen';
 import { IonAlert, IonCol, IonRow } from '@ionic/react';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';

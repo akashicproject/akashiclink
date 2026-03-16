@@ -1,4 +1,4 @@
-import { type IBaseAcTransaction } from '@akashic/as-backend';
+import { type IBaseAcTransaction } from '@akashic/nitr0gen';
 
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectCacheOtk } from '../../redux/slices/accountSlice';

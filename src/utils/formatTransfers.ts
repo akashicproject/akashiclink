@@ -8,8 +8,8 @@ import type {
 import {
   formatNftTransactionForFrontend,
   formatTransactionForFrontend,
-  TransactionLayer,
 } from '@akashic/as-backend';
+import { TransactionLayer } from '@akashic/nitr0gen';
 
 const akashicScanAccountsUrl = `${process.env.REACT_APP_SCAN_BASE_URL}/accounts`;
 const akashicScanTransactionsUrl = `${process.env.REACT_APP_SCAN_BASE_URL}/transactions`;

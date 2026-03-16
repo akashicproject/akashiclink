@@ -7,7 +7,7 @@ import { AppError, getErrorMessageTKey } from '../../utils/error-utils';
 import { useUpdateAas } from '../../utils/hooks/nitr0gen';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { useNftMe } from '../../utils/hooks/useNftMe';
-import { Nitr0genApi, signTxBody } from '../../utils/nitr0gen/nitr0gen-api';
+import { getNitr0genApi } from '../../utils/nitr0gen/nitr0gen.utils';
 import type { FormAlertState } from '../common/alert/alert';
 import { errorAlertShell } from '../common/alert/alert';
 import { Toggle } from '../common/toggle/toggle';
@@ -101,7 +101,6 @@ export const AasListingSwitch = ({
   const [isLoading, setIsLoading] = useState(false);
   const { addAasToAccountByIdentity, removeAasFromAccountByIdentity } =
     useAccountStorage();
-  const nitr0genApi = new Nitr0genApi();
   const { trigger: triggerUpdateAas } = useUpdateAas();
 
   // We use these functions directly instead of `fetchAndRemap..` as
@@ -138,8 +137,8 @@ export const AasListingSwitch = ({
         const newValue = !isLinked ? activeAccount.identity : undefined;
         verifyUpdateAas(cacheOtk.identity, nft, nfts, newValue);
 
-        const txToSign = await nitr0genApi.aasSwitchTransaction(
-          cacheOtk,
+        const nitr0genApi = await getNitr0genApi();
+        const txToSign = nitr0genApi.aasSwitchTransaction(
           nft.aas.ledgerId,
           newValue
         );
@@ -150,7 +149,7 @@ export const AasListingSwitch = ({
           identity: nft.aas.ledgerId,
         };
 
-        const signedTx = await signTxBody(txToSign, signerOtk);
+        const signedTx = await nitr0genApi.signTx(txToSign, signerOtk);
 
         await triggerUpdateAas(signedTx);
 

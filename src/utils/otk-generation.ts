@@ -1,7 +1,8 @@
 import { ActiveCrypto } from '@activeledger/activecrypto';
 import type { IKeyExtended } from '@activeledger/sdk-bip39';
 import { KeyHandler, KeyType } from '@activeledger/sdk-bip39';
-import { type IBaseAcTransaction, KeyError } from '@akashic/as-backend';
+import { KeyError } from '@akashic/as-backend';
+import { type IBaseAcTransaction } from '@akashic/nitr0gen';
 import * as crypto from 'crypto';
 
 import { decodeECPrivateKey, encodeECPublicKey } from './otk-helpers';

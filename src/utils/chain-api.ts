@@ -1,7 +1,7 @@
 import { type OtkType } from '@akashic/as-backend';
 import axios from 'axios';
 
-import { chooseBestNodes, PortType } from './nitr0gen/nitr0gen.utils';
+import { chooseBestNodesFromCookies } from './nitr0gen/nitr0gen.utils';
 
 type IdentityAuthority = {
   public: string;
@@ -21,7 +21,7 @@ const apiCall = async <T>(
   method: 'GET' | 'POST' = 'GET',
   data?: unknown
 ): Promise<T> => {
-  const NITR0_URL = await chooseBestNodes(PortType.NFT);
+  const NITR0_URL = await chooseBestNodesFromCookies('minigate');
 
   const response = await axios
     .create({

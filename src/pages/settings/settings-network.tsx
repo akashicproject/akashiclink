@@ -5,7 +5,6 @@ import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { fetchNodesPing } from '../.. /../../utils/nitr0gen/nitr0gen.utils';
 import { SquareWhiteButton } from '../../components/common/buttons';
 import { DashboardLayout } from '../../components/page-layout/dashboard-layout';
 import {
@@ -17,6 +16,7 @@ import { useAppSelector } from '../../redux/app/hooks';
 import { selectTheme } from '../../redux/slices/preferenceSlice';
 import { themeType } from '../../theme/const';
 import { PREFERRED_NODE_KEY } from '../../utils/cookies-keys';
+import { fetchNodesPingFromCookies } from '../../utils/nitr0gen/nitr0gen.utils';
 
 type Node = {
   key: string;
@@ -48,7 +48,7 @@ export function SettingsNetwork() {
   }, [nodes]);
 
   const loadNodes = async () => {
-    const nodesList = await fetchNodesPing(true);
+    const nodesList = await fetchNodesPingFromCookies(true);
     setNodes(nodesList);
   };
 

@@ -1,8 +1,5 @@
-import {
-  type CryptoCurrency,
-  TransactionLayer,
-  TransactionType,
-} from '@akashic/as-backend';
+import { type CryptoCurrency, TransactionType } from '@akashic/as-backend';
+import { TransactionLayer } from '@akashic/nitr0gen';
 import styled from '@emotion/styled';
 import {
   IonButton,
