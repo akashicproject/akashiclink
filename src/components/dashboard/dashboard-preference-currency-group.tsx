@@ -19,6 +19,7 @@ const GroupContainer = styled.div({
   display: 'flex',
   padding: '0.5rem',
   cursor: 'pointer',
+  gap: '0.75rem',
 });
 
 const TokenHeader = styled.div({
@@ -134,11 +135,20 @@ export const DashboardPreferenceCurrencyGroup = ({
           </h5>
           {selectedCount > 0 && <CountBadge>{selectedCount}</CountBadge>}
         </TokenHeader>
+        <IonCheckbox
+          checked={isAllSelected}
+          onIonChange={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            onSelectAll(chain);
+            e.stopPropagation(); // Stop the click event from propagating to the GroupContainer onClick handler.
+          }}
+        />
         <IonIcon
           icon={caretDown}
           style={{
             transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
             transition: 'transform 0.3s ease',
+            alignSelf: 'center',
           }}
         />
       </GroupContainer>
