@@ -138,7 +138,7 @@
   "Transaction": "交易",
   "Units": "单位",
   "Balance": "可用余额",
-  "Bal": "结额",
+  "Bal": "余额",
   "AvailableGas": "可用矿工费",
   "EsTGasFee": "预估矿工费",
   "GasFee": "矿工费",
