@@ -1,8 +1,8 @@
-import { Clipboard } from '@capacitor/clipboard';
 import { IonContent, IonPopover, IonText } from '@ionic/react';
 import { type MouseEvent, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useCopyToClipboard } from '../../utils/hooks/useCopyToClipboard';
 import { CopyIcon } from './icons/copy-icon';
 
 export function CopyButton({
@@ -17,6 +17,7 @@ export function CopyButton({
   className?: string;
 }) {
   const { t } = useTranslation();
+  const copyToClipboard = useCopyToClipboard();
 
   const copyPopoverRef = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -24,9 +25,7 @@ export function CopyButton({
   const copyValue = async (e: MouseEvent<Element>) => {
     e.stopPropagation();
 
-    await Clipboard.write({
-      string: value ?? '',
-    });
+    await copyToClipboard(value ?? '');
 
     if (copyPopoverRef.current) {
       copyPopoverRef.current.event = e;

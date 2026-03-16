@@ -1,9 +1,9 @@
-import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import { IonContent, IonPopover } from '@ionic/react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useCopyToClipboard } from '../../../utils/hooks/useCopyToClipboard';
 import { displayLongText } from '../../../utils/long-text';
 import { SquareWhiteButton } from '../../common/buttons';
 import { CopyIcon } from '../../common/icons/copy-icon';
@@ -23,11 +23,10 @@ export function AddressCopyBlock(props: Props) {
   const copyAddressPopover = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const { t } = useTranslation();
+  const copyToClipboard = useCopyToClipboard();
 
   const copyAddress = async (e: never) => {
-    await Clipboard.write({
-      string: props.address,
-    });
+    await copyToClipboard(props.address);
 
     if (copyAddressPopover.current) {
       copyAddressPopover.current.event = e;

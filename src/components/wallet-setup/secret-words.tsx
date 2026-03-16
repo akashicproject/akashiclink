@@ -1,4 +1,3 @@
-import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import {
   IonCol,
@@ -13,6 +12,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useCopyToClipboard } from '../../utils/hooks/useCopyToClipboard';
 import { CopyIcon } from '../common/icons/copy-icon';
 import { VisibilityOnIcon } from '../common/icons/visibility-on-icon';
 
@@ -134,6 +134,7 @@ export function SecretWords({
   onHiddenChange?: (isSecretPhraseHidden: boolean) => void;
 }) {
   const { t } = useTranslation();
+  const copyToClipboard = useCopyToClipboard();
 
   const [words, setWords] = useState(initialWords);
   const [isHidden, setIsHidden] = useState(withAction ? true : false);
@@ -144,11 +145,9 @@ export function SecretWords({
   useEffect(() => {
     setWords(initialWords);
   }, [initialWords]);
-  const handleCopy = async (e: never) => {
-    await Clipboard.write({
-      string: words.join(' ') || '',
-    });
 
+  const handleCopy = async (e: never) => {
+    await copyToClipboard(words.join(' '));
     if (popover.current) popover.current.event = e;
     setPopoverOpen(true);
     setTimeout(() => {

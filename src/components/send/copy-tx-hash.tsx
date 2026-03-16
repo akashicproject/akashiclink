@@ -1,5 +1,4 @@
 import { Browser } from '@capacitor/browser';
-import { Clipboard } from '@capacitor/clipboard';
 import {
   IonContent,
   IonLabel,
@@ -10,6 +9,7 @@ import {
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useCopyToClipboard } from '../../utils/hooks/useCopyToClipboard';
 import { displayLongText } from '../../utils/long-text';
 import { CopyIcon } from '../common/icons/copy-icon';
 
@@ -25,12 +25,12 @@ export const ListCopyTxHashItem = ({
   color?: string;
 }) => {
   const { t } = useTranslation();
+  const copyToClipboard = useCopyToClipboard();
+
   const popover = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const copyData = async (data: string, e: never) => {
-    await Clipboard.write({
-      string: data ?? '',
-    });
+    await copyToClipboard(data);
 
     if (popover.current) {
       popover.current.event = e;

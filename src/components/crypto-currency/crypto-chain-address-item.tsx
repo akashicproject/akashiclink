@@ -1,4 +1,3 @@
-import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import { IonContent, IonIcon, IonPopover } from '@ionic/react';
 import { qrCodeOutline } from 'ionicons/icons';
@@ -9,6 +8,7 @@ import {
   type DepositChainOption,
   useAccountL1Address,
 } from '../../utils/hooks/useAccountL1Address';
+import { useCopyToClipboard } from '../../utils/hooks/useCopyToClipboard';
 import { displayLongText } from '../../utils/long-text';
 import { L2Icon } from '../common/chain-icon/l2-icon';
 import { NetworkIcon } from '../common/chain-icon/network-icon';
@@ -34,6 +34,8 @@ const CryptoChainAddressItem = ({
   onClick: (chain: DepositChainOption) => void;
 }) => {
   const { t } = useTranslation();
+  const copyToClipboard = useCopyToClipboard();
+
   const [popoverOpen, setPopoverOpen] = useState(false);
   const copyAddressPopover = useRef<HTMLIonPopoverElement>(null);
 
@@ -49,9 +51,7 @@ const CryptoChainAddressItem = ({
 
     copyAddressPopover.current!.event = e;
 
-    await Clipboard.write({
-      string: address,
-    });
+    await copyToClipboard(address);
 
     setPopoverOpen(true);
     setTimeout(() => {

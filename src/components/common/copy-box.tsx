@@ -1,8 +1,8 @@
-import { Clipboard } from '@capacitor/clipboard';
 import { IonContent, IonLabel, IonPopover } from '@ionic/react';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useCopyToClipboard } from '../../utils/hooks/useCopyToClipboard';
 import { BorderedBox } from './box/border-box';
 import { CopyIcon } from './icons/copy-icon';
 
@@ -18,10 +18,10 @@ export function CopyBox({
   copyText?: string;
 }) {
   const { t } = useTranslation();
+  const copyToClipboard = useCopyToClipboard();
+
   const handleCopy = async (e: never) => {
-    await Clipboard.write({
-      string: copyText ?? text ?? '',
-    });
+    await copyToClipboard(copyText ?? text ?? '');
 
     if (popover.current) popover.current.event = e;
     setPopoverOpen(true);

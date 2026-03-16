@@ -1,10 +1,10 @@
 import type { INftObject } from '@akashic/as-backend';
-import { Clipboard } from '@capacitor/clipboard';
 import styled from '@emotion/styled';
 import { IonContent, IonImg, IonPopover, IonRow } from '@ionic/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useCopyToClipboard } from '../../utils/hooks/useCopyToClipboard';
 import { displayLongText } from '../../utils/long-text';
 import { getNftImage } from '../../utils/nft-image-link';
 import { CopyIcon } from '../common/icons/copy-icon';
@@ -90,15 +90,15 @@ export function OneNft({
   screen,
 }: OneNftProps) {
   const { t } = useTranslation();
+  const copyToClipboard = useCopyToClipboard();
+
   const popover = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [nftUrl, setNftUrl] = useState('');
   const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleCopy = async (accountName: string) => {
-    await Clipboard.write({
-      string: accountName,
-    });
+    await copyToClipboard(accountName);
     setPopoverOpen(true);
     setTimeout(() => {
       setPopoverOpen(false);
