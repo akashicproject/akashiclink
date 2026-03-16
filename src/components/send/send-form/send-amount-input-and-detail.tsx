@@ -257,7 +257,6 @@ export const SendAmountInputAndDetail = ({
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  padding: '8px 0',
                   zIndex: 10,
                 }
               : { marginTop: 'auto', padding: '8px 0' }
@@ -272,10 +271,10 @@ export const SendAmountInputAndDetail = ({
               }}
               customStyle={{
                 container: {
-                  borderLeft: '8px solid var(--ion-color-primary-container)',
-                  borderTop: '1px solid var(--ion-color-primary-container)',
-                  borderRight: '1px solid var(--ion-color-primary-container)',
-                  borderBottom: '1px solid var(--ion-color-primary-container)',
+                  borderLeft: '8px solid var(--ion-color-primary)',
+                  borderTop: '1px solid var(--ion-color-primary)',
+                  borderRight: '1px solid var(--ion-color-primary)',
+                  borderBottom: '1px solid var(--ion-color-primary)',
                   padding: '12px',
                   justifyContent: 'flex-start',
                   gap: '12px',
@@ -287,7 +286,7 @@ export const SendAmountInputAndDetail = ({
                   margin: 0,
                 },
                 icon: {
-                  color: 'var(--ion-color-primary-container)',
+                  color: 'var(--ion-color-primary)',
                 },
               }}
               icon={warningOutline}
@@ -301,7 +300,7 @@ export const SendAmountInputAndDetail = ({
                 right: '8px',
                 cursor: 'pointer',
                 fontSize: '20px',
-                color: 'var(--ion-color-inverse-surface)',
+                color: 'var(--ion-color-primary)',
               }}
             />
           </div>

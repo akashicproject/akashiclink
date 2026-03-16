@@ -45,6 +45,7 @@ export function SendFormModal({
       }}
       style={{
         '--border-radius': '24px',
+        '--background': 'var(--ion-background-color)',
       }}
     >
       <IonContent>
