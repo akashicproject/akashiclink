@@ -14,7 +14,6 @@ import {
   NetworkDictionary,
   OtherError,
 } from '@akashic/as-backend';
-import { Capacitor } from '@capacitor/core';
 import { datadogRum } from '@datadog/browser-rum';
 import axios, { isAxiosError } from 'axios';
 
@@ -379,7 +378,7 @@ export class Nitr0genApi {
     version = manifestData.version;
     const headers = {
       'Ap-Version': version,
-      'Ap-Client': Capacitor.getPlatform(),
+      'Ap-Client': 'web',
     };
 
     const response = await requestFunction<T>(url, tx, {
