@@ -166,7 +166,14 @@ export const SendAmountInputAndDetail = ({
   };
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+    <div
+      style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+      }}
+    >
       <IonRow className={'ion-grid-row-gap-xs ion-center'}>
         <IonCol className={'ion-center'} size={'12'}>
           <CurrencyChip disabled>
@@ -242,52 +249,63 @@ export const SendAmountInputAndDetail = ({
         </IonRow>
       )}
       {isFirstTimeInteractionWithAddress && !isFirstTimeWarningDismissed && (
-        <IonRow style={{ marginTop: 'auto', padding: '8px 0' }}>
-          <IonCol size={'12'}>
-            <div style={{ position: 'relative' }}>
-              <AlertBox
-                state={{
-                  success: false,
-                  visible: true,
-                  message: 'FirstTimeAddressWarning',
-                }}
-                customStyle={{
-                  container: {
-                    borderLeft: '8px solid var(--ion-color-primary-container)',
-                    borderTop: '1px solid var(--ion-color-primary-container)',
-                    borderRight: '1px solid var(--ion-color-primary-container)',
-                    borderBottom:
-                      '1px solid var(--ion-color-primary-container)',
-                    padding: '12px',
-                    justifyContent: 'flex-start',
-                    gap: '12px',
-                  },
-                  text: {
-                    color: 'var(--ion-color-inverse-surface)',
-                    textAlign: 'left',
-                    margin: 0,
-                  },
-                  icon: {
-                    color: 'var(--ion-color-primary-container)',
-                  },
-                }}
-                icon={warningOutline}
-              />
-              <IonIcon
-                icon={closeOutline}
-                onClick={() => setIsFirstTimeWarningDismissed(true)}
-                style={{
+        <div
+          style={
+            !isL2 && isCurrencyTypeToken
+              ? {
                   position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  cursor: 'pointer',
-                  fontSize: '20px',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  padding: '8px 0',
+                  zIndex: 10,
+                }
+              : { marginTop: 'auto', padding: '8px 0' }
+          }
+        >
+          <div style={{ position: 'relative' }}>
+            <AlertBox
+              state={{
+                success: false,
+                visible: true,
+                message: 'FirstTimeAddressWarning',
+              }}
+              customStyle={{
+                container: {
+                  borderLeft: '8px solid var(--ion-color-primary-container)',
+                  borderTop: '1px solid var(--ion-color-primary-container)',
+                  borderRight: '1px solid var(--ion-color-primary-container)',
+                  borderBottom: '1px solid var(--ion-color-primary-container)',
+                  padding: '12px',
+                  justifyContent: 'flex-start',
+                  gap: '12px',
+                  backgroundColor: 'var(--ion-background-color)',
+                },
+                text: {
                   color: 'var(--ion-color-inverse-surface)',
-                }}
-              />
-            </div>
-          </IonCol>
-        </IonRow>
+                  textAlign: 'left',
+                  margin: 0,
+                },
+                icon: {
+                  color: 'var(--ion-color-primary-container)',
+                },
+              }}
+              icon={warningOutline}
+            />
+            <IonIcon
+              icon={closeOutline}
+              onClick={() => setIsFirstTimeWarningDismissed(true)}
+              style={{
+                position: 'absolute',
+                top: '8px',
+                right: '8px',
+                cursor: 'pointer',
+                fontSize: '20px',
+                color: 'var(--ion-color-inverse-surface)',
+              }}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
