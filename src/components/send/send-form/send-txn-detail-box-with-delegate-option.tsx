@@ -66,7 +66,7 @@ export const SendTxnDetailBoxWithDelegateOption = ({
   const [isLoading, setIsLoading] = useState(false);
   const verifyTxnAndSign = useVerifyTxnAndSign();
 
-  const estimatedNetworkFee = useEstimatedNetworkFee({
+  const { networkFee: estimatedNetworkFee } = useEstimatedNetworkFee({
     validatedAddressPair,
     amount: amount === '' ? '0' : amount,
   });

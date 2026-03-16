@@ -1,15 +1,24 @@
 import { L2Regex, truncateToMaxDecimals } from '@akashic/as-backend';
 import styled from '@emotion/styled';
 import type { InputChangeEventDetail, InputCustomEvent } from '@ionic/react';
-import { IonChip, IonCol, IonInput, IonRow, IonText } from '@ionic/react';
+import {
+  IonChip,
+  IonCol,
+  IonIcon,
+  IonInput,
+  IonRow,
+  IonText,
+} from '@ionic/react';
 import Big from 'big.js';
+import { closeOutline, warningOutline } from 'ionicons/icons';
 import { debounce } from 'lodash';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useCryptoCurrencySymbolsAndBalances } from '../../../utils/hooks/useCryptoCurrencySymbolsAndBalances';
 import { useEstimatedNetworkFee } from '../../../utils/hooks/useEstimatedNetworkFee';
 import { useCalculateCurrencyL2WithdrawalFee } from '../../../utils/hooks/useExchangeRates';
+import { useAccountStorage } from '../../../utils/hooks/useLocalAccounts';
 import {
   AlertBox,
   errorAlertShell,
@@ -57,6 +66,10 @@ export const SendAmountInputAndDetail = ({
   const handleFocus = () => setIsFocused(true);
 
   const { currency } = useContext(SendFormContext);
+  const { activeAccount } = useAccountStorage();
+
+  const [isFirstTimeWarningDismissed, setIsFirstTimeWarningDismissed] =
+    useState(false);
 
   const {
     isCurrencyTypeToken,
@@ -76,10 +89,16 @@ export const SendAmountInputAndDetail = ({
     currency.tokenSymbol
   );
 
-  const estimatedNetworkFee = useEstimatedNetworkFee({
-    validatedAddressPair,
-    amount: amount === '' ? currencyBalance : amount, // if user haven't input amount, prefetch max amount
-  });
+  const { networkFee: estimatedNetworkFee, isFirstTimeInteractionWithAddress } =
+    useEstimatedNetworkFee({
+      validatedAddressPair,
+      amount: amount === '' ? currencyBalance : amount, // if user haven't input amount, prefetch max amount
+      identity: activeAccount?.identity,
+    });
+
+  useEffect(() => {
+    setIsFirstTimeWarningDismissed(false);
+  }, [isFirstTimeInteractionWithAddress]);
 
   const isAmountLargerThanZero = amount !== '' && Big(amount).gt(0);
 
@@ -147,7 +166,7 @@ export const SendAmountInputAndDetail = ({
   };
 
   return (
-    <>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
       <IonRow className={'ion-grid-row-gap-xs ion-center'}>
         <IonCol className={'ion-center'} size={'12'}>
           <CurrencyChip disabled>
@@ -222,6 +241,54 @@ export const SendAmountInputAndDetail = ({
           </IonCol>
         </IonRow>
       )}
-    </>
+      {isFirstTimeInteractionWithAddress && !isFirstTimeWarningDismissed && (
+        <IonRow style={{ marginTop: 'auto', padding: '8px 0' }}>
+          <IonCol size={'12'}>
+            <div style={{ position: 'relative' }}>
+              <AlertBox
+                state={{
+                  success: false,
+                  visible: true,
+                  message: 'FirstTimeAddressWarning',
+                }}
+                customStyle={{
+                  container: {
+                    borderLeft: '8px solid var(--ion-color-primary-container)',
+                    borderTop: '1px solid var(--ion-color-primary-container)',
+                    borderRight: '1px solid var(--ion-color-primary-container)',
+                    borderBottom:
+                      '1px solid var(--ion-color-primary-container)',
+                    padding: '12px',
+                    justifyContent: 'flex-start',
+                    gap: '12px',
+                  },
+                  text: {
+                    color: 'var(--ion-color-inverse-surface)',
+                    textAlign: 'left',
+                    margin: 0,
+                  },
+                  icon: {
+                    color: 'var(--ion-color-primary-container)',
+                  },
+                }}
+                icon={warningOutline}
+              />
+              <IonIcon
+                icon={closeOutline}
+                onClick={() => setIsFirstTimeWarningDismissed(true)}
+                style={{
+                  position: 'absolute',
+                  top: '8px',
+                  right: '8px',
+                  cursor: 'pointer',
+                  fontSize: '20px',
+                  color: 'var(--ion-color-inverse-surface)',
+                }}
+              />
+            </div>
+          </IonCol>
+        </IonRow>
+      )}
+    </div>
   );
 };

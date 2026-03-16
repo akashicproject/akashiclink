@@ -9,11 +9,17 @@ import { useCryptoCurrencySymbolsAndBalances } from './useCryptoCurrencySymbolsA
 export const useEstimatedNetworkFee = ({
   validatedAddressPair,
   amount,
+  identity,
 }: {
   validatedAddressPair: ValidatedAddressPair;
   amount: string;
+  identity?: string;
 }) => {
   const [networkFee, setNetworkFee] = useState<string | null>(null);
+  const [
+    isFirstTimeInteractionWithAddress,
+    setIsFirstTimeInteractionWithAddress,
+  ] = useState<boolean | undefined>(undefined);
   const { currency } = useContext(SendFormContext);
 
   const { chain, token } = useCryptoCurrencySymbolsAndBalances(currency);
@@ -25,11 +31,15 @@ export const useEstimatedNetworkFee = ({
         amount,
         coinSymbol: chain,
         ...(token ? { tokenSymbol: token } : {}),
+        ...(identity ? { identity } : {}),
       });
 
       setNetworkFee(feeResponse.networkFee);
+      setIsFirstTimeInteractionWithAddress(
+        feeResponse.isFirstTimeInteractionWithAddress
+      );
     }, 500),
-    [validatedAddressPair, amount, chain]
+    [validatedAddressPair, amount, chain, identity]
   );
 
   useEffect(() => {
@@ -41,5 +51,5 @@ export const useEstimatedNetworkFee = ({
     };
   }, [fetchNetworkFee]);
 
-  return networkFee;
+  return { networkFee, isFirstTimeInteractionWithAddress };
 };

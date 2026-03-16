@@ -33,7 +33,7 @@ export const SendTxnDetailBox = ({
   const { t } = useTranslation();
   const { currency } = useContext(SendFormContext);
 
-  const estimatedNetworkFee = useEstimatedNetworkFee({
+  const { networkFee: estimatedNetworkFee } = useEstimatedNetworkFee({
     validatedAddressPair,
     amount,
   });
