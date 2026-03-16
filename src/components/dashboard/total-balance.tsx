@@ -63,9 +63,9 @@ export const TotalBalance = () => {
         }
       >
         <RelativeSign className="ion-text-size-md ion-text-bold">
-          {`${relativeSign}${fiatCurrencySign}${Big(balanceDiff.abs()).toFixed(
-            2,
-            Big.roundDown
+          {`${relativeSign}${fiatCurrencySign}${formatAmountWithCommas(
+            Big(balanceDiff.abs()).toFixed(2, Big.roundDown),
+            2
           )}`}
         </RelativeSign>
         <PercentageBadge className="ion-text-size-md">
