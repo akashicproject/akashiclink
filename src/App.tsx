@@ -16,8 +16,7 @@ import './theme/variables.css';
 import './theme/font.css';
 import './theme/common.scss';
 
-import { StatusBar, Style } from '@capacitor/status-bar';
-import { IonApp, isPlatform, setupIonicReact } from '@ionic/react';
+import { IonApp, setupIonicReact } from '@ionic/react';
 import { IonReactMemoryRouter } from '@ionic/react-router';
 import { useEffect } from 'react';
 
@@ -41,13 +40,10 @@ const InitializeApp = () => {
   // Initialize theme
   const storedTheme = useAppSelector(selectTheme);
   const toggleDarkTheme = (setDark: boolean) => {
-    const isMobile = isPlatform('ios') || isPlatform('android');
     if (document?.body) {
       document?.body?.classList.toggle('dark', setDark);
       document?.body?.classList.toggle('light', !setDark);
     }
-    isMobile &&
-      StatusBar.setStyle({ style: setDark ? Style.Dark : Style.Light });
   };
 
   useEffect(() => {

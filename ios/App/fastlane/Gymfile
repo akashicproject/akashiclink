@@ -1,3 +1,0 @@
-clean(true)
-
-output_directory("./output")

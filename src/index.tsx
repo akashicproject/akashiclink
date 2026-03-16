@@ -1,6 +1,5 @@
 import './i18n/i18n';
 
-import { App as CapacitorApp } from '@capacitor/app';
 import { datadogRum } from '@datadog/browser-rum';
 import { isPlatform } from '@ionic/react';
 import { ConnectedRouter } from 'connected-react-router';
@@ -25,16 +24,11 @@ const initDatadog = async () => {
   let version = '';
 
   try {
-    const appInfo = await CapacitorApp.getInfo();
-    if (appInfo) {
-      version = appInfo.version;
-    }
-  } catch (e) {
-    console.warn(e);
-
     // App.getInfo() does not work on web. Try manifest
     const manifestData = await getManifestJson();
     version = manifestData.version;
+  } catch (e) {
+    console.warn(e);
   }
 
   if (!isPlatform('android')) {
