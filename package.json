@@ -44,7 +44,7 @@
     "apexcharts": "4.4.0",
     "asn1.js": "^5.4.1",
     "assert": "2.1.0",
-    "axios": "1.6.8",
+    "axios": "1.13.5",
     "big.js": "^6.2.1",
     "buffer": "6.0.3",
     "compare-versions": "^6.1.0",
