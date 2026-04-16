@@ -1,7 +1,12 @@
 import { type CryptoCurrencyWithName } from '@akashic/as-backend';
 import { IonCol, IonGrid, IonIcon, IonRow, IonText } from '@ionic/react';
 import { arrowDownOutline, arrowForwardOutline } from 'ionicons/icons';
-import { type Dispatch, type SetStateAction, useContext } from 'react';
+import {
+  type Dispatch,
+  type SetStateAction,
+  useContext,
+  useEffect,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { urls } from '../../constants/urls';
@@ -67,6 +72,10 @@ export function DashboardCryptoCurrencyDetail({
   const onGeneratedNewAddress = () => {
     fetchAndRemapL1Address();
   };
+
+  useEffect(() => {
+    fetchAndRemapL1Address();
+  }, []);
 
   return (
     <IonGrid>
