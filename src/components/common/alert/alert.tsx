@@ -8,6 +8,7 @@ import {
   IonText,
   IonToolbar,
 } from '@ionic/react';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { closeOutline } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -144,9 +145,12 @@ export function CustomAlert({
         </IonButtons>
       </IonToolbar>
       <div className="warning">
-        <IonIcon
-          src={'/shared-assets/images/error-outline.svg'}
-          style={{ width: '48px', height: '48px' }}
+        <ErrorOutlineIcon
+          style={{
+            width: '48px',
+            height: '48px',
+            color: 'var(--ion-color-danger)',
+          }}
         />
         <IonText className="warning-text">
           <h2>{state.success ? `${t('Success')}` : `${t('Failure')}`}</h2>
@@ -162,8 +166,6 @@ export function CustomAlert({
   );
 }
 
-const DEFAULT_ALERT_ICON = '/shared-assets/images/error-outline.svg';
-
 /**
  * Boxed Alert featuring
  * - message
@@ -173,7 +175,6 @@ export function AlertBox({
   state,
   style,
   customStyle,
-  icon,
 }: {
   state: FormAlertState;
   style?: React.CSSProperties;
@@ -211,12 +212,12 @@ export function AlertBox({
 
   return (
     <IonNote className="alert-box" style={containerStyle}>
-      <IonIcon
-        src={icon ?? DEFAULT_ALERT_ICON}
+      <ErrorOutlineIcon
         style={{
           width: '24px',
           height: '24px',
           flexShrink: 0,
+          marginRight: '8px',
           ...iconStyle,
         }}
       />
