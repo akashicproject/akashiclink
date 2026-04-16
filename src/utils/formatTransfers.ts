@@ -8,11 +8,52 @@ import type {
 import {
   formatNftTransactionForFrontend,
   formatTransactionForFrontend,
+  TransactionStatus,
 } from '@akashic/as-backend';
 import { TransactionLayer } from '@akashic/nitr0gen';
 
 const akashicScanAccountsUrl = `${process.env.REACT_APP_SCAN_BASE_URL}/accounts`;
 const akashicScanTransactionsUrl = `${process.env.REACT_APP_SCAN_BASE_URL}/transactions`;
+
+const PENDING_OR_QUEUED_STATUSES = [
+  TransactionStatus.PENDING,
+  TransactionStatus.QUEUED,
+];
+
+export function isPendingOrQueued(txn: ITransactionRecordForFrontend): boolean {
+  return PENDING_OR_QUEUED_STATUSES.includes(txn.status);
+}
+
+/**
+ * Sorts transactions so that Queued/Pending appear first (by initiatedAt desc),
+ * followed by the rest sorted by confirmedAt desc (falling back to initiatedAt).
+ */
+function sortTransactions(
+  a: ITransactionRecordForFrontend,
+  b: ITransactionRecordForFrontend
+): number {
+  const aIsPendingOrQueued = isPendingOrQueued(a);
+  const bIsPendingOrQueued = isPendingOrQueued(b);
+
+  if (aIsPendingOrQueued !== bIsPendingOrQueued) {
+    return aIsPendingOrQueued ? -1 : 1;
+  }
+
+  if (aIsPendingOrQueued) {
+    // Both pending/queued: sort by initiatedAt descending
+    return b.initiatedAt.getTime() - a.initiatedAt.getTime();
+  }
+
+  // Both confirmed/failed/etc: sort by confirmedAt descending, fall back to initiatedAt
+  const aTime = a.confirmedAt
+    ? new Date(a.confirmedAt).getTime()
+    : a.timestamp.getTime();
+  const bTime = b.confirmedAt
+    ? new Date(b.confirmedAt).getTime()
+    : b.timestamp.getTime();
+  return bTime - aTime;
+}
+
 export interface ITransactionRecordForExtension
   extends ITransactionRecordForFrontend {
   l2TxnHashUrl: string;
@@ -48,25 +89,17 @@ export function formatTransfers(transfers: ITransactionRecord[]) {
     }
   );
 
-  formattedTransfers.sort(
-    (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
-  );
   return formattedTransfers;
 }
 
 export function formatNftTransfers(transfers: INftTransactionRecord[]) {
-  const formattedTransfers = transfers.map(
+  return transfers.map(
     (t, id): ITransactionRecordForExtension => ({
       ...formatNftTransactionForFrontend(t, id),
       internalSenderUrl: `${akashicScanAccountsUrl}/${t.fromAddress}`,
       internalRecipientUrl: `${akashicScanAccountsUrl}/${t.toAddress}`,
     })
   );
-
-  formattedTransfers.sort(
-    (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
-  );
-  return formattedTransfers;
 }
 
 export function formatMergeAndSortNftAndCryptoTransfers(
@@ -87,9 +120,7 @@ export function formatMergeAndSortNftAndCryptoTransfers(
     )
   );
 
-  allFormattedTransfers.sort(
-    (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
-  );
+  allFormattedTransfers.sort(sortTransactions);
 
   const filteredTransfers = allFormattedTransfers.filter(
     (txn) =>

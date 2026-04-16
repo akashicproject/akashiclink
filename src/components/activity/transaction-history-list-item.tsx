@@ -148,6 +148,9 @@ export function TransactionHistoryListItem({
 
   const isTxnDeposit = transfer.transferType === TransactionType.DEPOSIT;
   const isTxnConfirmed = transfer.status === TransactionStatus.CONFIRMED;
+  const isTxnPendingOrQueued =
+    transfer.status === TransactionStatus.PENDING ||
+    transfer.status === TransactionStatus.QUEUED;
 
   const currencyIcon = getCurrencyIcon(
     { coinSymbol: transfer.coinSymbol },
@@ -294,22 +297,23 @@ export function TransactionHistoryListItem({
                 true
               )}
             </Amount>
-            {viewMode === ViewMode.RemainingBalance && (
-              <IonText>
-                <p style={{ color: 'var(--ion-text-color-alt)' }}>
-                  {t('Bal')}:{' '}
-                  {formatAmountWithCommas(
-                    transfer.updatedBalance?.[
-                      `${activeAccount?.identity}-internal`
-                    ] ?? '0'
-                  )}{' '}
-                  {getCurrencyDisplayName({
-                    coinSymbol: transfer.coinSymbol,
-                    tokenSymbol: transfer.tokenSymbol,
-                  })}
-                </p>
-              </IonText>
-            )}
+            {viewMode === ViewMode.RemainingBalance &&
+              !isTxnPendingOrQueued && (
+                <IonText>
+                  <p style={{ color: 'var(--ion-text-color-alt)' }}>
+                    {t('Bal')}:{' '}
+                    {formatAmountWithCommas(
+                      transfer.updatedBalance?.[
+                        `${activeAccount?.identity}-internal`
+                      ] ?? '0'
+                    )}{' '}
+                    {getCurrencyDisplayName({
+                      coinSymbol: transfer.coinSymbol,
+                      tokenSymbol: transfer.tokenSymbol,
+                    })}
+                  </p>
+                </IonText>
+              )}
             {!isTxnDeposit && gasFee && viewMode === 'gasFee' && (
               <GasFee
                 style={{
