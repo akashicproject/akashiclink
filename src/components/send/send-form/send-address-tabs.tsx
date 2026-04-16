@@ -71,12 +71,14 @@ export const SendAddressTabs: FC<SendAddressTabsProps> = ({
         >
           {t('Recent')}
         </Tab>
-        <Tab
-          isActive={activeTab === 'addressBook'}
-          onClick={() => handleTabChange('addressBook')}
-        >
-          {t('AddressBook')}
-        </Tab>
+        {process.env.REACT_APP_ENABLE_ADDRESS_BOOK === 'true' && (
+          <Tab
+            isActive={activeTab === 'addressBook'}
+            onClick={() => handleTabChange('addressBook')}
+          >
+            {t('AddressBook')}
+          </Tab>
+        )}
         <Tab
           isActive={activeTab === 'myAccount'}
           onClick={() => handleTabChange('myAccount')}
@@ -90,9 +92,10 @@ export const SendAddressTabs: FC<SendAddressTabsProps> = ({
       {activeTab === 'myAccount' && (
         <MyAccountList onSelectAddress={onSelectAddress} />
       )}
-      {activeTab === 'addressBook' && (
-        <AddressBookList onSelectAddress={onSelectAddress} />
-      )}
+      {process.env.REACT_APP_ENABLE_ADDRESS_BOOK === 'true' &&
+        activeTab === 'addressBook' && (
+          <AddressBookList onSelectAddress={onSelectAddress} />
+        )}
     </TabsContainer>
   );
 };

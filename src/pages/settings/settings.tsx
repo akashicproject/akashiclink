@@ -38,13 +38,17 @@ export function Settings() {
         history.push(akashicPayPath(urls.settingsGeneral));
       },
     },
-    {
-      header: t('AddressBook'),
-      icon: getImageIconUrl('library_books.svg'),
-      onClick: () => {
-        history.push(akashicPayPath(urls.addressBook));
-      },
-    },
+    ...(process.env.REACT_APP_ENABLE_ADDRESS_BOOK === 'true'
+      ? [
+          {
+            header: t('AddressBook'),
+            icon: getImageIconUrl('library_books.svg'),
+            onClick: () => {
+              history.push(akashicPayPath(urls.addressBook));
+            },
+          },
+        ]
+      : []),
     {
       header: t('Security'),
       icon: getImageIconUrl('security.svg'),
