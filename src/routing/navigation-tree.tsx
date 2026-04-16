@@ -28,6 +28,8 @@ import { Nft } from '../pages/nft/nft';
 import { NftTransfer } from '../pages/nft/nft-transfer';
 import { NftTransferResult } from '../pages/nft/nft-transfer-result';
 import { Nfts } from '../pages/nft/nfts';
+import { AddressBook } from '../pages/settings/address-book/address-book';
+import { AddressBookNew } from '../pages/settings/address-book/address-book-new';
 import { ChangePasswordConfirm } from '../pages/settings/change-password/confirm';
 import { ChangePassword } from '../pages/settings/change-password/enter-passwords';
 import { Settings } from '../pages/settings/settings';
@@ -112,6 +114,8 @@ export function NavigationTree() {
       {AkashicTab.registerPage(NftTransferResult, urls.nftTransferResult)}
       {AkashicTab.registerPage(Activity, urls.activity)}
       {AkashicTab.registerPage(Settings, urls.settings)}
+      {AkashicTab.registerPage(AddressBook, urls.addressBook)}
+      {AkashicTab.registerPage(AddressBookNew, urls.addressBookNew)}
       {AkashicTab.registerPage(SettingsFiatCurrency, urls.settingsFiatCurrency)}
       {AkashicTab.registerPage(SettingsGeneral, urls.settingsGeneral)}
       {AkashicTab.registerPage(SettingsSecurity, urls.settingsSecurity)}

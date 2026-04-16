@@ -8,9 +8,10 @@ import {
   IonText,
   IonToolbar,
 } from '@ionic/react';
+import CloseIcon from '@mui/icons-material/Close';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { closeOutline } from 'ionicons/icons';
-import { useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { type I18nKeys } from '../../../i18n/I18nNamespaces';
@@ -26,6 +27,8 @@ export interface FormAlertState {
   visible: boolean;
   message: I18nKeys | null;
   messageProps?: Record<string, unknown>;
+  subtitle?: I18nKeys;
+  subtitleProps?: Record<string, unknown>;
 }
 
 export const errorAlertShell = (
@@ -175,6 +178,8 @@ export function AlertBox({
   state,
   style,
   customStyle,
+  iconOverride,
+  onDismiss,
 }: {
   state: FormAlertState;
   style?: React.CSSProperties;
@@ -184,6 +189,8 @@ export function AlertBox({
     icon?: React.CSSProperties;
   };
   icon?: string;
+  iconOverride?: ReactNode;
+  onDismiss?: () => void;
 }) {
   const { t } = useTranslation();
   const color = state.success
@@ -210,18 +217,46 @@ export function AlertBox({
     color,
   };
 
+  const defaultIcon = (
+    <ErrorOutlineIcon
+      style={{
+        width: '24px',
+        height: '24px',
+        flexShrink: 0,
+        marginRight: '8px',
+        ...iconStyle,
+      }}
+    />
+  );
+
   return (
     <IonNote className="alert-box" style={containerStyle}>
-      <ErrorOutlineIcon
-        style={{
-          width: '24px',
-          height: '24px',
-          flexShrink: 0,
-          marginRight: '8px',
-          ...iconStyle,
-        }}
-      />
-      <h4 style={textStyle}>{t(state.message ?? '', state.messageProps)}</h4>
+      {iconOverride ?? defaultIcon}
+      {state.subtitle ? (
+        <div>
+          <h4 style={{ ...textStyle, fontWeight: 700 }}>
+            {t(state.message ?? '', state.messageProps)}
+          </h4>
+          <h4 style={{ ...textStyle, fontWeight: 400 }}>
+            {t(state.subtitle, state.subtitleProps)}
+          </h4>
+        </div>
+      ) : (
+        <h4 style={textStyle}>{t(state.message ?? '', state.messageProps)}</h4>
+      )}
+      {onDismiss && (
+        <CloseIcon
+          onClick={onDismiss}
+          style={{
+            width: '20px',
+            height: '20px',
+            flexShrink: 0,
+            marginLeft: 'auto',
+            cursor: 'pointer',
+            color: 'var(--ion-color-step-400)',
+          }}
+        />
+      )}
     </IonNote>
   );
 }

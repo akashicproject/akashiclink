@@ -33,6 +33,8 @@ export const urls = {
   settingsAboutUs: 'settings/about-us',
   settingsBackup: 'settings/backup',
   settingsVersion: 'settings/version',
+  addressBook: 'settings/address-book',
+  addressBookNew: 'settings/address-book/new',
   addressScreening: 'address-screening',
   addressScreeningDetails: 'address-screening/details',
 } as const;

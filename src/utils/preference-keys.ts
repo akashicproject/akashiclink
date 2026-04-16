@@ -11,3 +11,4 @@ export const HIDDEN_CURRENCIES = 'hidden-currencies';
 export const CURRENCIES_SORT_MODE = 'currencies-sort-mode';
 export const APP_LANGUAGE = 'language';
 export const APP_AUTO_LOCK_BY = 'autoLockBy';
+export const ADDRESS_BOOK = 'address-book';

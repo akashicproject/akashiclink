@@ -39,6 +39,13 @@ export function Settings() {
       },
     },
     {
+      header: t('AddressBook'),
+      icon: getImageIconUrl('library_books.svg'),
+      onClick: () => {
+        history.push(akashicPayPath(urls.addressBook));
+      },
+    },
+    {
       header: t('Security'),
       icon: getImageIconUrl('security.svg'),
       onClick: () => {
