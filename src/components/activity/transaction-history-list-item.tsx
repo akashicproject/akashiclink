@@ -304,8 +304,12 @@ export function TransactionHistoryListItem({
                     {t('Bal')}:{' '}
                     {formatAmountWithCommas(
                       transfer.updatedBalance?.[
-                        `${activeAccount?.identity}-internal`
-                      ] ?? '0'
+                        `${activeAccount?.identity}-confirmed`
+                      ] ??
+                        transfer.updatedBalance?.[
+                          `${activeAccount?.identity}-internal`
+                        ] ??
+                        '0'
                     )}{' '}
                     {getCurrencyDisplayName({
                       coinSymbol: transfer.coinSymbol,
