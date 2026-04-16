@@ -1,5 +1,3 @@
-import '../../../components/common/input/styled-input.scss';
-
 import styled from '@emotion/styled';
 import { IonButton, IonIcon, IonModal } from '@ionic/react';
 import { chevronDown, chevronUp } from 'ionicons/icons';

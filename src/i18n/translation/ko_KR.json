@@ -406,7 +406,7 @@
   "AddressRemoved": "주소가 삭제되었습니다",
   "AddressModified": "주소가 수정되었습니다",
   "AddressBookEmptyTitle": "주소록이 비어 있습니다",
-  "AddressBookEmptySubtitle": "\u201c+\u201d 또는 \u201c주소 추가\u201d 버튼을 클릭하여 자주 사용하는 주소를 추가하세요.",
+  "AddressBookEmptySubtitle": "오른쪽 상단의 \u201c+\u201d 또는 아래의 \u201c주소 추가\u201d를 탭하여 시작하세요.",
   "AddAddress": "주소 추가",
   "EnterAName": "이름을 입력하세요",
   "SelectANetwork": "네트워크를 선택하세요",

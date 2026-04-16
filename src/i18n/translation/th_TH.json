@@ -406,7 +406,7 @@
   "AddressRemoved": "ลบที่อยู่แล้ว",
   "AddressModified": "แก้ไขที่อยู่แล้ว",
   "AddressBookEmptyTitle": "สมุดที่อยู่ของคุณว่างเปล่า",
-  "AddressBookEmptySubtitle": "คลิกปุ่ม \u201c+\u201d หรือ \u201cเพิ่มที่อยู่\u201d เพื่อเพิ่มที่อยู่ที่ใช้บ่อยของคุณ",
+  "AddressBookEmptySubtitle": "แตะ \u201c+\u201d ที่มุมขวาบนหรือ \u201cเพิ่มที่อยู่\u201d ด้านล่างเพื่อเริ่มต้น",
   "AddAddress": "เพิ่มที่อยู่",
   "EnterAName": "กรอกชื่อ",
   "SelectANetwork": "เลือกเครือข่าย",

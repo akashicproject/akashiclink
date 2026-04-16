@@ -2,10 +2,11 @@ import styled from '@emotion/styled';
 import { type FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { AddressBookList } from './address-book-list';
 import { MyAccountList } from './my-account-list';
 import { RecentAddressList } from './recent-address-list';
 
-type TabValue = 'recent' | 'myAccount';
+type TabValue = 'recent' | 'myAccount' | 'addressBook';
 
 const TabsContainer = styled.div({
   display: 'flex',
@@ -71,18 +72,26 @@ export const SendAddressTabs: FC<SendAddressTabsProps> = ({
           {t('Recent')}
         </Tab>
         <Tab
+          isActive={activeTab === 'addressBook'}
+          onClick={() => handleTabChange('addressBook')}
+        >
+          {t('AddressBook')}
+        </Tab>
+        <Tab
           isActive={activeTab === 'myAccount'}
           onClick={() => handleTabChange('myAccount')}
         >
           {t('MyAccount')}
         </Tab>
       </TabsHeader>
-
       {activeTab === 'recent' && (
         <RecentAddressList onSelectAddress={onSelectAddress} />
       )}
       {activeTab === 'myAccount' && (
         <MyAccountList onSelectAddress={onSelectAddress} />
+      )}
+      {activeTab === 'addressBook' && (
+        <AddressBookList onSelectAddress={onSelectAddress} />
       )}
     </TabsContainer>
   );

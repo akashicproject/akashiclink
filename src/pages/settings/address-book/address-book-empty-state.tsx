@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
 
 import { PrimaryButton } from '../../../components/common/buttons';
@@ -13,20 +12,6 @@ const Container = styled.div({
   height: '100%',
   padding: '24px 8px 24px',
   gap: '12px',
-});
-
-const IconCircle = styled.div({
-  width: 54,
-  minWidth: 54,
-  height: 54,
-  minHeight: 54,
-  borderRadius: '50%',
-  backgroundColor: 'var(--ion-color-primary-on-container)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '4px',
-  flexShrink: 0,
 });
 
 const Title = styled.h2({

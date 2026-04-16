@@ -137,35 +137,48 @@ export function AddressBook() {
     <DashboardLayout>
       <IonGrid style={{ padding: '0 16px' }}>
         <IonRow>
-          <IonCol size="12">
-            <PageHeader>{t('AddressBook')}</PageHeader>
-          </IonCol>
-        </IonRow>
-        <IonRow>
           <IonCol
             size="12"
-            style={{ display: 'flex', justifyContent: 'flex-end' }}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              position: 'relative',
+            }}
           >
-            <IconButton
-              shape="round"
+            <PageHeader
               style={{
-                width: 48,
-                height: 48,
-                '--background': `var(${PRIMARY_COLOR})`,
-                '--color': 'var(--ion-color-primary-contrast)',
+                margin: 0,
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                textAlign: 'center',
+                pointerEvents: 'none',
               }}
-              onClick={() => historyGo(urls.addressBookNew)}
             >
-              <IonIcon
-                slot="icon-only"
-                icon={add}
+              {t('AddressBook')}
+            </PageHeader>
+            <div style={{ marginLeft: 'auto' }}>
+              <IconButton
+                shape="round"
                 style={{
                   width: 40,
                   height: 40,
+                  '--background': `var(${PRIMARY_COLOR})`,
+                  '--color': 'var(--ion-color-primary-contrast)',
                 }}
                 onClick={() => historyGo(urls.addressBookNew)}
-              />
-            </IconButton>
+              >
+                <IonIcon
+                  slot="icon-only"
+                  icon={add}
+                  style={{
+                    width: 32,
+                    height: 32,
+                  }}
+                />
+              </IconButton>
+            </div>
           </IonCol>
         </IonRow>
         <IonRow>

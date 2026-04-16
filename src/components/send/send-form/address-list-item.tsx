@@ -6,7 +6,7 @@ import { type ReactNode } from 'react';
 export const AddressListContainer = styled.div({
   flex: 1,
   overflowY: 'auto',
-  maxHeight: '200px',
+  maxHeight: 'calc(92vh - 240px)',
 });
 
 export const AddressItem = styled(IonItem)({
