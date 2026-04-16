@@ -22,6 +22,7 @@ export const urls = {
   importWalletSecretPhrase: 'import-wallet-secret-phrase',
   importWalletSelectMethod: 'import-wallet-select-method',
   importWalletSuccessful: 'import-wallet-success',
+  importWalletBlocked: 'import-wallet-blocked',
   activity: 'activity',
   activityDetails: 'activity/details',
   settings: 'settings',

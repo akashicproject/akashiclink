@@ -44,12 +44,14 @@ export const accountSlice = createAppSlice({
           alias: string;
           identity: string;
           otkType: OtkType;
+          publicKey: string;
         }>
       ) => {
         const updatedAccounts = state.localAccounts.map((l) => {
           return isSameAccount(l, {
             identity: action.payload.identity,
             otkType: action.payload.otkType,
+            publicKey: action.payload.publicKey,
           })
             ? { ...l, alias: action.payload.alias }
             : l;
@@ -66,13 +68,18 @@ export const accountSlice = createAppSlice({
     removeAliasFromAccountByIdentity: create.reducer(
       (
         state,
-        action: PayloadAction<{ identity: string; otkType: OtkType }>
+        action: PayloadAction<{
+          identity: string;
+          otkType: OtkType;
+          publicKey: string;
+        }>
       ) => {
         const updatedAccounts = state.localAccounts.map((l) => {
           if (
             isSameAccount(l, {
               identity: action.payload.identity,
               otkType: action.payload.otkType,
+              publicKey: action.payload.publicKey,
             })
           ) {
             const { alias, ...rest } = l;

@@ -6,10 +6,12 @@ import { isAxiosError } from 'axios';
 
 import { urls } from '../../constants/urls';
 import { historyResetStackAndRedirect } from '../../routing/history';
+import { isSameAccount } from '../../utils/account';
 import { OwnersAPI } from '../../utils/api';
 import type { FullOtk } from '../../utils/otk-generation';
 import { restoreOtk, restoreOtkFromKeypair } from '../../utils/otk-generation';
 import { createAppSlice } from '../app/createAppSlice';
+import { type RootState } from '../app/store';
 
 export interface ImportWalletForm {
   password?: string;
@@ -22,6 +24,7 @@ export interface ImportWalletForm {
 export interface ImportWalletState {
   otk: FullOtk | null;
   otkType: OtkType | null;
+  publicKey: string | null;
   error: SerializedError | null;
   importWalletForm: ImportWalletForm;
 }
@@ -29,6 +32,7 @@ export interface ImportWalletState {
 const initialState: ImportWalletState = {
   otk: null,
   otkType: null,
+  publicKey: null,
   error: null,
   importWalletForm: {
     password: '',
@@ -67,7 +71,7 @@ export const importWalletSlice = createAppSlice({
     // code can then be executed and other actions can be dispatched. Thunks are
     // typically used to make async requests.
     reconstructOtkAsync: create.asyncThunk(
-      async (passPhrase: string[]) => {
+      async (passPhrase: string[], { getState }) => {
         // Reconstruct OTK
         const reconstructedOtk = await restoreOtk(passPhrase.join(' '));
 
@@ -76,14 +80,31 @@ export const importWalletSlice = createAppSlice({
         });
         const identity = response.identity;
         const otkType = response.otkType;
+        const publicKey = reconstructedOtk.key.pub.pkcs8pem;
+
+        // check whether an account with the same identity and oktType already exists in local storage
+        const state = getState() as RootState;
+        const localAccounts = state.accountSlice.localAccounts;
+
+        const doesPreMigratedAccountExist = localAccounts.some(
+          (localAccount) => {
+            return isSameAccount(localAccount, { identity, otkType });
+          }
+        );
+
+        if (doesPreMigratedAccountExist) {
+          historyResetStackAndRedirect(urls.importWalletBlocked);
+          return { otk: { ...reconstructedOtk, identity }, otkType, publicKey };
+        }
 
         historyResetStackAndRedirect(urls.importWalletPassword);
-        return { otk: { ...reconstructedOtk, identity }, otkType };
+        return { otk: { ...reconstructedOtk, identity }, otkType, publicKey };
       },
       {
         fulfilled: (state, action) => {
           state.otk = action.payload.otk;
           state.otkType = action.payload.otkType;
+          state.publicKey = action.payload.publicKey;
           state.error = initialState.error;
         },
         rejected: (state, action) => {
@@ -93,11 +114,12 @@ export const importWalletSlice = createAppSlice({
       }
     ),
     restoreOtkFromKeypairAsync: create.asyncThunk(
-      async (privateKey: string) => {
+      async (privateKey: string, { getState }) => {
         // Restore OTK from keypair
         let otk: IKeyExtended = restoreOtkFromKeypair(privateKey);
         let identity: string | undefined;
         let otkType: OtkType | undefined;
+        let publicKey: string | undefined;
 
         try {
           const response = await OwnersAPI.retrieveIdentity({
@@ -105,6 +127,7 @@ export const importWalletSlice = createAppSlice({
           });
           identity = response.identity;
           otkType = response.otkType;
+          publicKey = otk.key.pub.pkcs8pem;
         } catch (e) {
           // This error could be because of a bug where we have some otks stored "compressed" and some "uncompressed"
           // So if facing this error, we try again with "uncompressed"
@@ -118,14 +141,29 @@ export const importWalletSlice = createAppSlice({
             });
             identity = response.identity;
             otkType = response.otkType;
+            publicKey = otk.key.pub.pkcs8pem;
           } else {
             throw e;
           }
         }
-        // The value we return becomes the `fulfilled` action payload
         if (identity) {
+          // check whether an account with the same identity and oktType already exists in local storage
+          const state = getState() as RootState;
+          const localAccounts = state.accountSlice.localAccounts;
+
+          const doesPreMigratedAccountExist = localAccounts.some(
+            (localAccount) => {
+              return isSameAccount(localAccount, { identity, otkType });
+            }
+          );
+
+          if (doesPreMigratedAccountExist) {
+            historyResetStackAndRedirect(urls.importWalletBlocked);
+            return { otk: { ...otk, identity }, otkType, publicKey };
+          }
+
           historyResetStackAndRedirect(urls.importWalletPassword);
-          return { otk: { ...otk, identity }, otkType };
+          return { otk: { ...otk, identity }, otkType, publicKey };
         } else {
           // probably won't throw this as it will already been thrown above
           throw new Error('No identity found');
@@ -135,6 +173,7 @@ export const importWalletSlice = createAppSlice({
         fulfilled: (state, action) => {
           state.otk = action.payload.otk;
           state.otkType = action.payload.otkType;
+          state.publicKey = action.payload.publicKey;
           state.error = initialState.error;
         },
         rejected: (state, action) => {
@@ -150,6 +189,7 @@ export const importWalletSlice = createAppSlice({
     selectImportWalletForm: (importWallet) => importWallet.importWalletForm,
     selectOtk: (importWallet) => importWallet.otk,
     selectOtkType: (importWallet) => importWallet.otkType,
+    selectPublicKey: (importWallet) => importWallet.publicKey,
     selectError: (importWallet) => importWallet.error,
   },
 });
@@ -163,5 +203,10 @@ export const {
 } = importWalletSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectImportWalletForm, selectOtk, selectOtkType, selectError } =
-  importWalletSlice.selectors;
+export const {
+  selectImportWalletForm,
+  selectOtk,
+  selectOtkType,
+  selectPublicKey,
+  selectError,
+} = importWalletSlice.selectors;

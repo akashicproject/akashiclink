@@ -249,6 +249,7 @@
   "ConfirmSecretPhrase": "Confirm Secret Recovery Phrase",
   "PleaseChooseSecurityOptionToImportWallet": "Please choose a security option to import your Account",
   "ImportSuccessful": "Import Successful",
+  "PleaseSignInOtherAccountFirst": "Due to a recent security update, please sign in to the following account before importing wallets of the same type. This is only required once.",
   "12Words": "12 Words",
   "YouHaveOptionTo": "You now have the option to",
   "EmpoweringYourWealth": "Empowering Your Wealth",

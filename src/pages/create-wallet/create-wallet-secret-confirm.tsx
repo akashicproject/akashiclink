@@ -94,12 +94,14 @@ export function CreateWalletSecretConfirm({ isPopup = false }) {
       addLocalOtkAndCache({
         otk: fullOtk,
         otkType: OtkType.PRIMARY,
+        publicKey: fullOtk.key.pub.pkcs8pem,
         password: createWalletForm.password,
       });
 
       const newAccount = {
         identity: fullOtk.identity,
         otkType: OtkType.PRIMARY,
+        publicKey: fullOtk.key.pub.pkcs8pem,
       };
       addLocalAccount(newAccount);
       setActiveAccount(newAccount);

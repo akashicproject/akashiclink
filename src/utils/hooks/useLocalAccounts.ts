@@ -24,10 +24,11 @@ const secretIv = process.env.REACT_APP_SECRETIV ?? '6RxIESTJ1eJLpjpe';
 
 export interface LocalAccount {
   identity: string;
+  publicKey?: string;
   username?: string;
   alias?: string;
   accountName?: string;
-  ledgerId?: string; // aas nft ledferId to display the image
+  ledgerId?: string; // aas nft ledgerId to display the image
   otkType?: OtkType;
   localStoredL1Addresses?: LocalStoredL1AddressType[];
 }
@@ -81,23 +82,28 @@ export const useAccountStorage = () => {
   const addAasToAccountByIdentity = async ({
     identity,
     otkType,
+    publicKey,
     alias,
     ledgerId,
   }: {
     identity: string;
     otkType?: OtkType;
+    publicKey?: string;
     alias: string;
     ledgerId: string;
   }) => {
     const updatedAccounts = localAccounts.map((localAccount) => {
-      return isSameAccount(localAccount, { identity, otkType })
+      return isSameAccount(localAccount, { identity, otkType, publicKey })
         ? { ...localAccount, alias, ledgerId }
         : localAccount;
     });
     dispatch(setLocalAccounts(updatedAccounts));
 
     // also update the activeAccount if it is currently active
-    if (activeAccount && isSameAccount(activeAccount, { identity, otkType })) {
+    if (
+      activeAccount &&
+      isSameAccount(activeAccount, { identity, otkType, publicKey })
+    ) {
       dispatch(
         setActiveAccountState({
           ...activeAccount,
@@ -111,12 +117,14 @@ export const useAccountStorage = () => {
   const removeAasFromAccountByIdentity = async ({
     identity,
     otkType,
+    publicKey,
   }: {
     identity: string;
+    publicKey?: string;
     otkType?: OtkType;
   }) => {
     const updatedAccounts = localAccounts.map((l) => {
-      if (isSameAccount(l, { identity, otkType })) {
+      if (isSameAccount(l, { identity, otkType, publicKey })) {
         const { alias, ledgerId, ...rest } = l;
         return rest;
       }
@@ -124,7 +132,10 @@ export const useAccountStorage = () => {
     });
     dispatch(setLocalAccounts(updatedAccounts));
 
-    if (activeAccount && isSameAccount(activeAccount, { identity, otkType })) {
+    if (
+      activeAccount &&
+      isSameAccount(activeAccount, { identity, otkType, publicKey })
+    ) {
       dispatch(
         setActiveAccountState({
           ...activeAccount,
@@ -137,8 +148,8 @@ export const useAccountStorage = () => {
 
   const addLocalAccount = async (newAccount: LocalAccount) => {
     // Skip duplicate accounts if it already exists locally
-    for (const { identity, otkType } of localAccounts ?? []) {
-      if (isSameAccount(newAccount, { identity, otkType })) return;
+    for (const { identity, otkType, publicKey } of localAccounts ?? []) {
+      if (isSameAccount(newAccount, { identity, otkType, publicKey })) return;
     }
     dispatch(setLocalAccounts([...(localAccounts ?? []), newAccount]));
   };
@@ -173,14 +184,16 @@ export const useAccountStorage = () => {
   const getLocalOtk = async ({
     identity,
     otkType,
+    publicKey,
     password,
   }: {
     identity: string;
     otkType?: OtkType;
+    publicKey?: string;
     password: string;
   }): Promise<FullOtk | undefined> => {
     const encryptedOtk = await getItem(
-      getAccountUniqueId({ identity, otkType })
+      getAccountUniqueId({ identity, otkType, publicKey })
     );
 
     if (!encryptedOtk) {
@@ -199,22 +212,24 @@ export const useAccountStorage = () => {
   const getLocalOtkAndCache = async ({
     identity,
     otkType,
+    publicKey,
     password,
   }: {
     identity: string;
     otkType?: OtkType;
+    publicKey?: string;
     password: string;
   }): Promise<FullOtk | undefined> => {
-    const otk = await getLocalOtk({ identity, otkType, password });
+    const otk = await getLocalOtk({ identity, otkType, publicKey, password });
 
     if (otk) {
       dispatch(setCacheOtkState(otk));
 
-      if (!!otkType) {
+      if (!!otkType && !!publicKey) {
         return otk;
       }
 
-      // if the account is missing otkType
+      // if the account is missing otkType or publicKey
       // step 1: check chain for the otkType of this otk
       const { authorities } = await ChainAPI.findIdentityStream({
         identity,
@@ -231,18 +246,42 @@ export const useAccountStorage = () => {
       // step 2: if info is found, duplicate a new account using the otk & otkType
       if (!!authority) {
         const accountOtkType = authority.label ?? OtkType.PRIMARY; //its primary if chain return empty
+        const migratedOtkTypeAccount = {
+          identity,
+          otkType: accountOtkType,
+        };
+        const migratedPublicKeyAccount = {
+          identity,
+          otkType: accountOtkType,
+          publicKey: otk?.key.pub.pkcs8pem,
+        };
+
+        // add the encrypted otk to the soon migrated account
         await addLocalOtk({
           otk,
-          password,
           otkType: accountOtkType,
+          publicKey: otk?.key.pub.pkcs8pem,
+          password,
         });
+        // 1st stage migration: +otkType
         // add new account and remove old account in one single dispatch
         // !! using addLocalAccount + removeLocalAccount would NOT work
-        await updateLocalAccount(
-          { identity, otkType: undefined },
-          { identity, otkType: accountOtkType }
-        );
-        setActiveAccount({ identity, otkType: accountOtkType });
+        if (!otkType) {
+          await updateLocalAccount(
+            { identity, otkType: undefined },
+            migratedOtkTypeAccount
+          );
+        }
+        // 2nd stage migration: +publicKey
+        // user might already have an account that passed 1st stage migration
+        if (!publicKey) {
+          await updateLocalAccount(
+            migratedOtkTypeAccount,
+            migratedPublicKeyAccount
+          );
+        }
+
+        setActiveAccount(migratedPublicKeyAccount);
       }
       return otk;
     } else {
@@ -253,10 +292,12 @@ export const useAccountStorage = () => {
   const addLocalOtk = async ({
     otk,
     otkType,
+    publicKey,
     password,
   }: {
     otk: FullOtk;
     otkType?: OtkType;
+    publicKey?: string;
     password: string;
   }) => {
     const key = genKeyFromPassword(password);
@@ -267,38 +308,47 @@ export const useAccountStorage = () => {
     ).toString('base64');
 
     await setItem(
-      getAccountUniqueId({ identity: otk.identity, otkType }),
+      getAccountUniqueId({ identity: otk.identity, otkType, publicKey }),
       encryptedOtk
     );
   };
 
   const addLocalOtkAndCache = async ({
     otk,
+    publicKey,
     password,
     otkType,
   }: {
     otk: FullOtk;
     password: string;
+    publicKey?: string;
     otkType?: OtkType;
   }) => {
-    await addLocalOtk({ otk, otkType, password });
+    await addLocalOtk({ otk, otkType, password, publicKey });
     dispatch(setCacheOtkState(otk));
   };
 
   const changeOtkPassword = async ({
     identity,
     otkType,
+    publicKey,
     oldPassword,
     newPassword,
   }: {
     identity: string;
     otkType?: OtkType;
+    publicKey?: string;
     oldPassword: string;
     newPassword: string;
   }) => {
-    const otk = await getLocalOtk({ identity, otkType, password: oldPassword });
+    const otk = await getLocalOtk({
+      identity,
+      otkType,
+      publicKey,
+      password: oldPassword,
+    });
     if (otk) {
-      await addLocalOtk({ otk, otkType, password: newPassword });
+      await addLocalOtk({ otk, otkType, publicKey, password: newPassword });
     }
   };
 
@@ -340,16 +390,18 @@ export const useAccountStorage = () => {
   const setLocalStoredL1Addresses = ({
     identity,
     otkType,
+    publicKey,
     newL1Addresses,
   }: {
     identity: string;
+    publicKey?: string;
     otkType?: OtkType;
     newL1Addresses: LocalStoredL1AddressType[];
   }) => {
     if (newL1Addresses.length === 0) return;
 
     const updatedAccounts = localAccounts.map((l) => {
-      return isSameAccount(l, { identity, otkType })
+      return isSameAccount(l, { identity, otkType, publicKey })
         ? {
             ...l,
             localStoredL1Addresses: newL1Addresses,
@@ -360,7 +412,10 @@ export const useAccountStorage = () => {
     dispatch(setLocalAccounts(updatedAccounts));
 
     // also update active account copy
-    if (activeAccount && isSameAccount(activeAccount, { identity, otkType })) {
+    if (
+      activeAccount &&
+      isSameAccount(activeAccount, { identity, otkType, publicKey })
+    ) {
       dispatch(
         setActiveAccountState({
           ...activeAccount,

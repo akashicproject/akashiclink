@@ -116,6 +116,7 @@ export const AasListingSwitch = ({
       await addAasToAccountByIdentity({
         identity: activeAccount.identity,
         otkType: activeAccount.otkType,
+        publicKey: activeAccount.publicKey,
         alias: nft.alias,
         ledgerId: nft.ledgerId,
       });
@@ -123,6 +124,7 @@ export const AasListingSwitch = ({
       await removeAasFromAccountByIdentity({
         identity: activeAccount.identity,
         otkType: activeAccount.otkType,
+        publicKey: activeAccount.publicKey,
       });
     }
   };

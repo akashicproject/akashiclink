@@ -61,17 +61,18 @@ export function LoginForm({ isPopup = false }) {
       const localSelectedOtk = await getLocalOtkAndCache({
         identity: activeAccount.identity,
         otkType: activeAccount.otkType,
+        publicKey: activeAccount.publicKey,
         password,
       });
 
       if (!localSelectedOtk) {
         throw new Error(
-          `localSelectedOtk not found may due to old account not migrated, ${activeAccount.identity}`
+          `localSelectedOtk not found for account ${activeAccount.identity}. This may be due to an unmigrated legacy account.`
         );
       }
 
       datadogRum.setUser({
-        id: `${activeAccount.identity}-${activeAccount.otkType}`,
+        id: `${activeAccount.identity}-${activeAccount.otkType}-${activeAccount.publicKey?.slice(8) ?? ''}`,
       });
 
       setPassword('');

@@ -42,6 +42,7 @@ export const useFetchAndRemapL1Address = () => {
     setLocalStoredL1Addresses({
       identity: activeAccount.identity,
       otkType: activeAccount.otkType,
+      publicKey: activeAccount.publicKey,
       newL1Addresses: newAddresses,
     });
   };

@@ -110,8 +110,7 @@ export function ChangePassword() {
       try {
         if (!activeAccount) return;
         await changeOtkPassword({
-          identity: activeAccount.identity,
-          otkType: activeAccount.otkType,
+          ...activeAccount,
           oldPassword,
           newPassword,
         });

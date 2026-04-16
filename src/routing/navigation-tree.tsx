@@ -17,6 +17,7 @@ import { CreateWalletSecretConfirm } from '../pages/create-wallet/create-wallet-
 import { CreateWalletSuccessful } from '../pages/create-wallet/create-wallet-successful';
 import { Dashboard } from '../pages/dashboard/dashboard';
 import { ErrorPage } from '../pages/error';
+import { ImportWalletBlocked } from '../pages/import-wallet/import-wallet-blocked';
 import { ImportWalletKeypair } from '../pages/import-wallet/import-wallet-keypair';
 import { ImportWalletPassword } from '../pages/import-wallet/import-wallet-password';
 import { ImportWalletSecret } from '../pages/import-wallet/import-wallet-secret';
@@ -153,6 +154,7 @@ export function NavigationTree() {
         urls.importWalletSuccessful
       )}
       {AkashicTab.registerPage(ImportWalletKeypair, urls.importWalletKeypair)}
+      {AkashicTab.registerPage(ImportWalletBlocked, urls.importWalletBlocked)}
       {/* address scan flow */}
       {AkashicTab.registerPage(AddressScreeningHistory, urls.addressScreening)}
       {AkashicTab.registerPage(

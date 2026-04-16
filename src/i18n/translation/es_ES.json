@@ -251,6 +251,7 @@
   "ConfirmSecretPhrase": "Confirmar Frase Secreta de Recuperación",
   "PleaseChooseSecurityOptionToImportWallet": "Por favor, elige una opción de seguridad para importar tu cuenta",
   "ImportSuccessful": "Importación satisfactoria",
+  "PleaseSignInOtherAccountFirst": "Debido a una actualización de seguridad reciente, inicie sesión en la siguiente cuenta antes de importar cuentas del mismo tipo. Esto solo es necesario una vez.",
   "12Words": "12 palabras",
   "YouHaveOptionTo": "Ahora tienes la opción de",
   "EmpoweringYourWealth": "Empoderar tu patrimonio",

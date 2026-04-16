@@ -16,6 +16,7 @@ import {
   selectImportWalletForm,
   selectOtk,
   selectOtkType,
+  selectPublicKey,
 } from '../../redux/slices/importWalletSlice';
 import {
   historyGoBackOrReplace,
@@ -45,6 +46,7 @@ export function ImportWalletPassword({ isPopup = false }) {
   const importWalletForm = useAppSelector(selectImportWalletForm);
   const otk = useAppSelector(selectOtk);
   const otkType = useAppSelector(selectOtkType);
+  const publicKey = useAppSelector(selectPublicKey);
 
   const dispatch = useAppDispatch();
 
@@ -77,7 +79,7 @@ export function ImportWalletPassword({ isPopup = false }) {
       return;
     }
 
-    if (isPasswordValid && otk?.identity && otkType) {
+    if (isPasswordValid && otk?.identity && otkType && publicKey) {
       // If user is currently signed in, ensure the currently active account and connected webapps are signed out
       if (activeAccount) {
         await logout();
@@ -87,17 +89,20 @@ export function ImportWalletPassword({ isPopup = false }) {
       addLocalOtkAndCache({
         otk,
         otkType: otkType,
+        publicKey,
         password: importWalletForm.password,
       });
       // need to add local account
       addLocalAccount({
         identity: otk.identity,
         otkType: otkType,
+        publicKey,
       });
 
       setActiveAccount({
         identity: otk.identity,
         otkType: otkType,
+        publicKey,
       });
 
       if (isPopup) {

@@ -3,7 +3,7 @@ import { OtkType } from '@akashic/as-backend';
 import { type LocalAccount, useAccountStorage } from './hooks/useLocalAccounts';
 
 export const getAccountUniqueId = (account: LocalAccount) => {
-  return `${account.identity}${account.otkType ? `-${account.otkType}` : ''}`;
+  return `${account.identity}${account.otkType ? `-${account.otkType}` : ''}${account.publicKey ? `-${account.publicKey}` : ''}`;
 };
 
 export const isSameAccount = (

@@ -42,6 +42,7 @@ export function ConfirmLockPassword({
       const otk = await getLocalOtk({
         identity: activeAccount.identity,
         otkType: activeAccount.otkType,
+        publicKey: activeAccount.publicKey,
         password,
       });
       if (otk) {

@@ -253,6 +253,7 @@
   "ConfirmSecretPhrase": "確認恢復密語",
   "PleaseChooseSecurityOptionToImportWallet": "請選擇一個安全選項來匯入您的帳號",
   "ImportSuccessful": "導入成功",
+  "PleaseSignInOtherAccountFirst": "因最近的安全更新，請先登入以下帳號，然後再匯入相同類型的帳號。此操作僅需執行一次。",
   "12Words": "12 字密語",
   "YouHaveOptionTo": "現在您可以選擇",
   "EmpoweringYourWealth": "賦能財富",
