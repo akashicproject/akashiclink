@@ -28,14 +28,18 @@ export const CRYPTO_COLORS = {
   akashicChain: '#A3A2FF',
 } as const;
 
-export function getNetworkColor(network: DepositChainOption): string {
+export function getNetworkColor(
+  network: DepositChainOption,
+  isDarkMode = false
+): string {
   if (network === 'AkashicChain') return CRYPTO_COLORS.akashicChain;
   const coin = network as CoinSymbol;
   if (isCoinSymbol(coin, TronSymbol)) return CRYPTO_COLORS.tron;
   if (isCoinSymbol(coin, EthereumSymbol)) return CRYPTO_COLORS.ethereum;
   if (isCoinSymbol(coin, BinanceSymbol)) return CRYPTO_COLORS.binance;
   if (isCoinSymbol(coin, BitcoinSymbol)) return CRYPTO_COLORS.bitcoin;
-  if (isCoinSymbol(coin, SolanaSymbol)) return CRYPTO_COLORS.solana;
+  if (isCoinSymbol(coin, SolanaSymbol))
+    return isDarkMode ? '#ffffff' : CRYPTO_COLORS.solana;
   return CRYPTO_COLORS.ethereum;
 }
 

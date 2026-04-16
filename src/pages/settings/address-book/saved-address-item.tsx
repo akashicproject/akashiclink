@@ -1,6 +1,9 @@
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 
+import { useAppSelector } from '../../../redux/app/hooks';
+import { selectTheme } from '../../../redux/slices/preferenceSlice';
+import { themeType } from '../../../theme/const';
 import type { DepositChainOption } from '../../../utils/hooks/useAccountL1Address';
 import type { AddressBookContact } from '../../../utils/hooks/useAddressBook';
 import { displayLongText } from '../../../utils/long-text';
@@ -72,12 +75,13 @@ export function SavedAddressItem({
   onClick: () => void;
 }) {
   const { t } = useTranslation();
+  const isDarkMode = useAppSelector(selectTheme) === themeType.DARK;
 
   return (
     <ContactItem onClick={onClick}>
       <ContactInfo>
         <ContactNameRow>
-          <NetworkLabel color={getNetworkColor(contact.network)}>
+          <NetworkLabel color={getNetworkColor(contact.network, isDarkMode)}>
             {getNetworkLabel(contact.network, t)}
           </NetworkLabel>
           <Dot>&middot;</Dot>

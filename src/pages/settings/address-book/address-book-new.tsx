@@ -232,7 +232,7 @@ export function AddressBookNew() {
                 {network ? (
                   t(`Chain.${network}`)
                 ) : (
-                  <Placeholder>{t('SelectCurrency')}</Placeholder>
+                  <Placeholder>{t('SelectNetwork')}</Placeholder>
                 )}
                 <IonIcon
                   icon={dropdownOpen ? chevronUp : chevronDown}
