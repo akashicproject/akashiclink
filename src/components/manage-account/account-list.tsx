@@ -56,10 +56,11 @@ export const AccountList: React.FC<AccountListProps> = ({
   };
 
   const onSelectAccountClick = (account: LocalAccount) => async () => {
-    if (!activeAccount || isSameAccount(account, activeAccount)) return;
-
-    await logout({ isManualLogout: true });
-    setActiveAccount(account);
+    if (!activeAccount) return;
+    if (!isSameAccount(account, activeAccount)) {
+      await logout({ isManualLogout: true });
+      setActiveAccount(account);
+    }
     setManageAccountsModalOpen && setManageAccountsModalOpen(false);
   };
 
