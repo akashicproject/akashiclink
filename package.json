@@ -142,6 +142,7 @@
     "postcss-normalize": "13.0.1",
     "serve": "14.2.0",
     "storybook": "^8.3.6",
+    "turbo": "2.9.14",
     "watch": "1.0.2",
     "zip-folder": "1.0.0"
   },
