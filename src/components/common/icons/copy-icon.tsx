@@ -42,7 +42,7 @@ export const CopyIcon = ({
         ...style,
       }}
       className={`icon-button-icon ${className ?? ''}`}
-      src={`/shared-assets/images/${
+      src={`/assets/images/${
         isGrey
           ? 'copy-icon-grey.svg'
           : storedTheme === themeType.DARK

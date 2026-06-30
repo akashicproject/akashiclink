@@ -253,10 +253,7 @@ export function EditContactModal({
           <ModalContent>
             <ModalHeader>
               <ModalBackButton size="small" fill="clear" onClick={onClose}>
-                <IonIcon
-                  slot="icon-only"
-                  src="/shared-assets/images/arrow-back.svg"
-                />
+                <IonIcon slot="icon-only" src="/assets/images/arrow-back.svg" />
               </ModalBackButton>
               <ModalTitle>{t('EditContact')}</ModalTitle>
             </ModalHeader>

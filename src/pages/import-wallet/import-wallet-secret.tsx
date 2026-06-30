@@ -147,7 +147,7 @@ export const ImportWalletSecret = () => {
             <StyledDiv color="var(--ion-color-primary-10)">
               <IonIcon
                 className={'ion-text-size-xxl'}
-                src="shared-assets/images/alert.svg"
+                src="assets/images/alert.svg"
               />
               <IonText>
                 <h5

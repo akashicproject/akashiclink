@@ -44,7 +44,7 @@ export function AkashicPayMain({ isPopup = false }) {
       >
         <IonImg
           alt=""
-          src={`/shared-assets/images/akashic-logo.png`}
+          src={`/assets/images/akashic-logo.png`}
           style={{
             height: '84px',
             width: '120px',

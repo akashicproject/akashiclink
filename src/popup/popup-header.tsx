@@ -24,7 +24,7 @@ export function PopupHeader() {
       <div>
         <IonImg
           alt={''}
-          src={`/shared-assets/images/${logoName}`}
+          src={`/assets/images/${logoName}`}
           style={{ height: '100%' }}
         />
       </div>

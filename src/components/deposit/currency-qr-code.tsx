@@ -35,7 +35,7 @@ export const CurrencyQrCode = ({
       {!isLoading && !address && (
         <IonImg
           alt=""
-          src={`/shared-assets/images/${
+          src={`/assets/images/${
             isChainAllowed ? 'Pending' : 'Failed'
           }-white.svg`}
         />

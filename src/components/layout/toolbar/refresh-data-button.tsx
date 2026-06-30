@@ -18,7 +18,7 @@ export const RefreshDataButton = () => {
   return (
     <IconButton
       size={32}
-      src={`/shared-assets/images/refresh.svg`}
+      src={`/assets/images/refresh.svg`}
       disabled={refreshDisabled}
       onClick={async () => {
         try {

@@ -23,7 +23,7 @@ export const HistoryBackButton = ({
 
   return (
     <BackButton size="small" fill="clear" onClick={onClickBackButton}>
-      <IonIcon slot="icon-only" src={`/shared-assets/images/arrow-back.svg`} />
+      <IonIcon slot="icon-only" src={`/assets/images/arrow-back.svg`} />
     </BackButton>
   );
 };

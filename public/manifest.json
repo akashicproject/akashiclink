@@ -6,15 +6,15 @@
   "releaseDate": "2024-01-30",
   "default_locale": "en",
   "icons": {
-    "16": "shared-assets/icons/extension-icon/Icon16.png",
-    "32": "shared-assets/icons/extension-icon/Icon32.png",
-    "48": "shared-assets/icons/extension-icon/Icon48.png",
-    "128": "shared-assets/icons/extension-icon/Icon128.png"
+    "16": "assets/icons/extension-icon/Icon16.png",
+    "32": "assets/icons/extension-icon/Icon32.png",
+    "48": "assets/icons/extension-icon/Icon48.png",
+    "128": "assets/icons/extension-icon/Icon128.png"
   },
   "manifest_version": 3,
   "action": {
     "default_title": "__MSG_extensionName__",
-    "default_icon": "shared-assets/icons/extension-icon/Icon128.png",
+    "default_icon": "assets/icons/extension-icon/Icon128.png",
     "default_popup": "index.html"
   },
   "permissions": ["storage", "alarms", "tabs", "activeTab"],

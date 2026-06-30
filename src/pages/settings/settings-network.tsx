@@ -84,7 +84,7 @@ export function SettingsNetwork() {
             <IonIcon
               slot="icon-only"
               className="icon-button-icons"
-              src={`/shared-assets/images/${
+              src={`/assets/images/${
                 storedTheme === themeType.DARK
                   ? 'refresh-dark.svg'
                   : 'refresh-light.svg'

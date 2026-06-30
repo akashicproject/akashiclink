@@ -21,7 +21,7 @@ export const ErrorIconWithTitle = ({
     >
       <IonImg
         alt={''}
-        src={'/shared-assets/images/failed.png'}
+        src={'/assets/images/failed.png'}
         style={{ width: size, height: size }}
       />
       <h2

@@ -232,7 +232,7 @@ export function SecretWords({
                       />
                       {inputVisibility && (
                         <IonIcon
-                          src={`/shared-assets/images/visibility-${
+                          src={`/assets/images/visibility-${
                             visibility ? 'on' : 'off'
                           }-grey.svg`}
                           onClick={() => {

@@ -10,7 +10,7 @@ export const L2Icon = ({ size = 24 }: { size?: number }) => {
       }}
     >
       <IonIcon
-        src={'/shared-assets/icons/L2_icon.svg'}
+        src={'/assets/icons/L2_icon.svg'}
         style={{ width: size, height: size }}
       />
     </span>

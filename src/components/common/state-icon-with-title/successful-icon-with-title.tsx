@@ -21,7 +21,7 @@ export const SuccessfulIconWithTitle = ({
     >
       <IonImg
         alt={''}
-        src={'/shared-assets/images/right.png'}
+        src={'/assets/images/right.png'}
         style={{ width: size, height: size }}
       />
       <h2

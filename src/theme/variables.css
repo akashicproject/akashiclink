@@ -139,8 +139,8 @@ http://ionicframework.com/docs/theming/ */
   --settings-popup-background-focused: rgba(103, 80, 164, 0.12);
 
   /** images for swiper **/
-  --swiper-button-prev-background-image: url('/public/shared-assets/images/arrow-back.svg');
-  --swiper-button-next-background-image: url('/public/shared-assets/images/arrow-forward.svg');
+  --swiper-button-prev-background-image: url('/public/assets/images/arrow-back.svg');
+  --swiper-button-next-background-image: url('/public/assets/images/arrow-forward.svg');
 
   /** list item  **/
   --ion-item-border-color: #e8e0eb;
@@ -307,8 +307,8 @@ body.dark {
   --settings-popup-background-focused: #625b71;
 
   /** images for swiper **/
-  --swiper-button-prev-background-image: url('/public/shared-assets/images/arrow-back-dark.png');
-  --swiper-button-next-background-image: url('/public/shared-assets/images/arrow-forward-dark.png');
+  --swiper-button-prev-background-image: url('/public/assets/images/arrow-back-dark.png');
+  --swiper-button-next-background-image: url('/public/assets/images/arrow-forward-dark.png');
 
   /** list item  **/
   --ion-item-border-color: #2f2f2f;

@@ -40,7 +40,7 @@ export function Tooltip({
     >
       <IonIcon
         id="info-icon"
-        src={`/shared-assets/images/info-icon-${
+        src={`/assets/images/info-icon-${
           storedTheme === themeType.DARK ? 'white' : 'dark'
         }.svg`}
         style={{

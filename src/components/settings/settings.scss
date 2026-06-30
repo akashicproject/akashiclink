@@ -17,7 +17,7 @@
 }
 
 ion-select::part(placeholder) {
-  background: image('/shared-assets/theme.svg');
+  background: image('/assets/theme.svg');
 }
 .setting-modal {
   --ion-background-color: var(--settings-popup-background-color) !important;

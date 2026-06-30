@@ -56,7 +56,7 @@ export const NewAppAvailableModal = () => {
               }
             >
               <IonIcon
-                src={'/shared-assets/images/key-primary.svg'}
+                src={'/assets/images/key-primary.svg'}
                 style={{ width: '16px', height: '16px' }}
               />
               <h4
@@ -89,7 +89,7 @@ export const NewAppAvailableModal = () => {
               }
             >
               <IonIcon
-                src={'/shared-assets/images/danger-outline.svg'}
+                src={'/assets/images/danger-outline.svg'}
                 style={{ width: '16px', height: '16px' }}
               />
               <h4

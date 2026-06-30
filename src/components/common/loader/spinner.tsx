@@ -2,8 +2,10 @@ import './loader.scss';
 
 import styled from '@emotion/styled';
 import { IonIcon } from '@ionic/react';
-import Lottie from 'lottie-react';
+import React, { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
+
+const Lottie = React.lazy(() => import('lottie-react'));
 
 import { ContentText } from '../text/context-text';
 import akashicLoadingAnimation from './akashic_loading_animation.json';
@@ -61,7 +63,9 @@ export const Spinner = ({
           margin: 'auto',
         }}
       >
-        <Lottie animationData={akashicLoadingAnimation} loop autoplay />
+        <Suspense fallback={<div style={{ width: 220, height: 220 }} />}>
+          <Lottie animationData={akashicLoadingAnimation} loop autoplay />
+        </Suspense>
         {header && (
           <ContentText className="blink">{t(header) + '...'}</ContentText>
         )}
@@ -70,7 +74,7 @@ export const Spinner = ({
         <StyledDiv>
           <IonIcon
             className={'ion-text-size-xxl'}
-            src={'/shared-assets/images/alert.svg'}
+            src={'/assets/images/alert.svg'}
           />
           <span>{t(warning)}</span>
         </StyledDiv>

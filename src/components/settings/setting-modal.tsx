@@ -25,7 +25,7 @@ export function SettingModal({
   const settingsMenu: SettingItemProps[] = [
     {
       header: t('Theme'),
-      icon: '/shared-assets/images/theme.svg',
+      icon: '/assets/images/theme.svg',
       EndComponent: ThemeSelect,
     },
     {

@@ -64,7 +64,7 @@ export function BaseDetails({
             {statusString(currentTransfer.status)}
           </h4>
           <IonImg
-            src={`/shared-assets/images/${currentTransfer.status}-${
+            src={`/assets/images/${currentTransfer.status}-${
               storedTheme === themeType.DARK ? 'dark' : 'white'
             }.svg`}
             style={{ width: '20px', height: '20px' }}

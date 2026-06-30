@@ -27,7 +27,7 @@ export const AccountManagementList = ({
         <IonIcon
           style={{ fontSize: 18 }}
           color={'primary'}
-          icon={'/shared-assets/icons/trash.svg'}
+          icon={'/assets/icons/trash.svg'}
         />
         <IonText
           color={'primary'}

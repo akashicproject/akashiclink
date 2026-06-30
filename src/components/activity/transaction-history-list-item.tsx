@@ -230,7 +230,7 @@ export function TransactionHistoryListItem({
 
             <IonImg
               alt=""
-              src={`/shared-assets/images/${transfer.status}-${
+              src={`/assets/images/${transfer.status}-${
                 storedTheme === themeType.DARK ? 'dark' : 'white'
               }.svg`}
               style={{

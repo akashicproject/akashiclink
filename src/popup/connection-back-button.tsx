@@ -24,10 +24,7 @@ export const ConnectionBackButton = () => {
 
   return (
     <BackButton size="small" fill="clear" onClick={onClickBackButton}>
-      <IonIcon
-        slot="icon-only"
-        src={`/shared-assets/images/arrow_back_ios_new.svg`}
-      />
+      <IonIcon slot="icon-only" src={`/assets/images/arrow_back_ios_new.svg`} />
       <p className={'ion-text-bold ion-text-capitalize'}>
         {t('LockAndUnlockAnotherAccount')}
       </p>

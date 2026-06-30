@@ -75,7 +75,7 @@ export const NavigationTabs = () => {
                   width: iconSize,
                   height: iconSize,
                 }}
-                src={`/shared-assets/images/${tab.icon}${isActive ? '-inverse' : ''}.svg`}
+                src={`/assets/images/${tab.icon}${isActive ? '-inverse' : ''}.svg`}
               />
             </div>
           </TabButton>

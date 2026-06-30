@@ -19,7 +19,7 @@ export const VisibilityOnIcon = (props: {
   return (
     <IonIcon
       className="icon-button-icon"
-      src={`/shared-assets/images/${
+      src={`/assets/images/${
         props.isGrey
           ? 'visibility-on-grey.svg'
           : storedTheme === themeType.DARK

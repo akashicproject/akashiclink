@@ -155,7 +155,7 @@ export function OneNft({
               height: '20%',
             }}
             alt="image-loading"
-            src={`/shared-assets/images/img-placeholder-${isAASDarkStyle ? 'dark' : 'light'}.svg`}
+            src={`/assets/images/img-placeholder-${isAASDarkStyle ? 'dark' : 'light'}.svg`}
             className={`nft-image-${isBig ? 'big' : 'small'} nft-img-size`}
           />
         )}

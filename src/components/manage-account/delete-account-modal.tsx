@@ -75,7 +75,7 @@ export const DeleteAccountModal = ({
         }
       >
         <IonIcon
-          src={'/shared-assets/images/error-outline.svg'}
+          src={'/assets/images/error-outline.svg'}
           style={{ width: '48px', height: '48px' }}
         />
         <div

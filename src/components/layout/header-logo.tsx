@@ -14,7 +14,7 @@ export const HeaderLogo = () => {
   return (
     <IonImg
       alt={''}
-      src={`/shared-assets/images/${logoName}`}
+      src={`/assets/images/${logoName}`}
       style={{ width: 112 }}
     />
   );

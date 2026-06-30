@@ -183,9 +183,8 @@ Example below will apply the styles to any `<IonSelect>` and `<IonList>` that ar
 
 ## Images
 
-All UI images should be put in the global [shared assets folder](../../static/assets/).
-They will be automatically synced into the local [shared assets folders](./public//shared-assets/)
-making them available throughout the monorepo.
+All UI images used by the wallet-extension are stored in [public/assets](./public/assets/).
+Only include files that are actually referenced by the app to keep the extension package small.
 
 ## Craco
 

@@ -325,8 +325,8 @@ export function NftTransfer() {
                           alt={''}
                           src={
                             searched
-                              ? '/shared-assets/images/right.png'
-                              : '/shared-assets/images/wrong.png'
+                              ? '/assets/images/right.png'
+                              : '/assets/images/wrong.png'
                           }
                           style={{ width: '40px', height: '40px' }}
                         />

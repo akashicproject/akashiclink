@@ -5,7 +5,7 @@ export const AlertIcon = () => {
     <IonIcon
       style={{ fontSize: 48 }}
       color={'primary'}
-      icon={'/shared-assets/icons/alert-icon.svg'}
+      icon={'/assets/icons/alert-icon.svg'}
     />
   );
 };
