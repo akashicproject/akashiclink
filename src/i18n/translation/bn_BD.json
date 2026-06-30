@@ -205,7 +205,9 @@
   "OtkType": {
     "primary": "প্রাথমিক",
     "secondary": "API/SDK",
-    "treasury": "অর্থায়ন"
+    "treasury": "অর্থায়ন",
+    "customerService": "গ্রাহক সেবা",
+    "customerServiceManager": "গ্রাহক সেবা ব্যবস্থাপক"
   },
   "Security": "নিরাপত্তা",
   "Information": "তথ্য",

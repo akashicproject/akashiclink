@@ -185,8 +185,12 @@ http://ionicframework.com/docs/theming/ */
   --otk-type-tag-primary-text: #4d49d8;
   --otk-type-tag-secondary-background: #e8f1ff;
   --otk-type-tag-secondary-text: #0d97eb;
-  --otk-type-tag-treasury-background: #e2ffff;
-  --otk-type-tag-treasury-text: #00bec1;
+  --otk-type-tag-treasury-background: #fff1db;
+  --otk-type-tag-treasury-text: #db7c22;
+  --otk-type-tag-customerService-background: #f1fffe;
+  --otk-type-tag-customerService-text: #00bec1;
+  --otk-type-tag-customerServiceManager-background: #f2efff;
+  --otk-type-tag-customerServiceManager-text: #9049d8;
 }
 
 /** Dark Colors **/

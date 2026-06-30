@@ -204,7 +204,9 @@
   "OtkType": {
     "primary": "Owner",
     "secondary": "API/SDK",
-    "treasury": "Treasury"
+    "treasury": "Treasury",
+    "customerService": "Customer Service",
+    "customerServiceManager": "Customer Service Manager"
   },
   "Security": "Security",
   "Information": "Information",

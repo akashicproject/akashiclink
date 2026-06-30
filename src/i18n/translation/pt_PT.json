@@ -202,7 +202,9 @@
   "OtkType": {
     "primary": "Main",
     "secondary": "API/SDK",
-    "treasury": "Treasury"
+    "treasury": "Treasury",
+    "customerService": "Atendimento ao Cliente",
+    "customerServiceManager": "Gerente de Atendimento ao Cliente"
   },
   "Security": "Security",
   "Information": "Information",

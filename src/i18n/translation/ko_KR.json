@@ -202,7 +202,9 @@
   "OtkType": {
     "primary": "주요",
     "secondary": "API/SDK",
-    "treasury": "재무"
+    "treasury": "재무",
+    "customerService": "고객 서비스",
+    "customerServiceManager": "고객 서비스 관리자"
   },
   "Security": "보안",
   "Information": "정보",

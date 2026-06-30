@@ -202,7 +202,9 @@
   "OtkType": {
     "primary": "Main",
     "secondary": "API/SDK",
-    "treasury": "Treasury"
+    "treasury": "Treasury",
+    "customerService": "ฝ่ายบริการลูกค้า",
+    "customerServiceManager": "ผู้จัดการฝ่ายบริการลูกค้า"
   },
   "Security": "Security",
   "Information": "Information",

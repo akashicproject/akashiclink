@@ -206,7 +206,9 @@
   "OtkType": {
     "primary": "主",
     "secondary": "API/SDK",
-    "treasury": "財務"
+    "treasury": "財務",
+    "customerService": "客服",
+    "customerServiceManager": "客服經理"
   },
   "Security": "安全",
   "Information": "資訊",
