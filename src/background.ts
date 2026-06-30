@@ -34,8 +34,12 @@ import { APP_AUTO_LOCK_BY } from './utils/preference-keys';
 // Consider making this configurable or adjusting for better UX.
 // 60 seconds is a common default for user approvals.
 const POPUP_TIMEOUT_MS = 60_000;
+const POPUP_TIMEOUT_ALARM_PREFIX = 'popup_timeout_';
 
-const popupTimers: Record<number, number> = {};
+// Track recently closed window IDs to handle the race where onRemoved fires
+// before chrome.windows.create callback assigns popupWindowId
+const recentlyClosedWindowIds = new Set<number>();
+const RECENTLY_CLOSED_TTL_MS = 5_000;
 
 // -----------------------------
 // Core State
@@ -48,6 +52,7 @@ interface PendingRequest {
   siteTitle?: string;
   params?: any[];
   tabId: number;
+  popupRequested?: boolean;
   popupWindowId?: number;
 }
 interface SessionInfo {
@@ -243,7 +248,7 @@ function disconnectSession(
 
 function hasActivePopup(tabId: number, excludeRequestId?: number) {
   return !!Object.values(pendingRequest).find(
-    (p) => p.tabId === tabId && !!p.popupWindowId && p.id !== excludeRequestId
+    (p) => p.tabId === tabId && !!p.popupRequested && p.id !== excludeRequestId
   );
 }
 
@@ -265,21 +270,12 @@ function openPopup(
   w = 360,
   h = 720
 ) {
-  // Auto-timeout rejects after POPUP_TIMEOUT_MS if user takes no action
-  popupTimers[id] = setTimeout(() => {
-    const req = pendingRequest[id];
-    if (!req) return;
-    log('popup timeout', { id });
-    respond(req.tabId, {
-      id: req.id,
-      error: { code: ERR_REJECTED.code, message: 'Request timed out.' },
-    });
-    emitEvent(req.tabId, PROVIDER_EVENT.POPUP_CLOSED, [
-      { requestId: id, reason: 'timeout' },
-    ]);
-    closePopup(id);
-    finalize(id);
-  }, POPUP_TIMEOUT_MS) as unknown as number;
+  // Mark synchronously so hasActivePopup detects it before the async callback
+  pendingRequest[id].popupRequested = true;
+  // Auto-timeout via chrome.alarms — survives service worker suspension
+  chrome.alarms.create(`${POPUP_TIMEOUT_ALARM_PREFIX}${id}`, {
+    delayInMinutes: POPUP_TIMEOUT_MS / 60_000,
+  });
   const req = pendingRequest[id];
   const qp: Record<string, string> = {
     id: String(id),
@@ -291,12 +287,76 @@ function openPopup(
   const q = new URLSearchParams(qp).toString();
   const url = chrome.runtime.getURL('index.html') + `?${q}`;
   chrome.windows.create({ url, type: 'popup', width: w, height: h }, (win) => {
-    if (win?.id) {
+    if (!pendingRequest[id]) {
+      finalize(id);
+      return;
+    }
+    // Handle creation failure (permissions, resource pressure, kiosk mode, etc.)
+    if (chrome.runtime.lastError || !win?.id) {
+      log('popup creation failed', {
+        id,
+        error: chrome.runtime.lastError?.message,
+      });
+      respond(req.tabId, {
+        id: req.id,
+        error: {
+          code: ERR_REJECTED.code,
+          message: 'Failed to open wallet popup.',
+        },
+      });
+      finalize(id);
+      return;
+    }
+    // Check if the window was already closed before this callback ran (race condition)
+    if (recentlyClosedWindowIds.has(win.id)) {
+      log('popup closed before callback (race detected)', {
+        id,
+        windowId: win.id,
+      });
+      recentlyClosedWindowIds.delete(win.id);
+      respond(req.tabId, {
+        id: req.id,
+        error: {
+          code: ERR_REJECTED.code,
+          message: 'User closed the popup.',
+        },
+      });
+      emitEvent(req.tabId, PROVIDER_EVENT.POPUP_CLOSED, [
+        { requestId: id, reason: 'window_closed_race' },
+      ]);
+      finalize(id);
+      return;
+    }
+    // Verify the window still exists (covers edge case where onRemoved hasn't
+    // populated recentlyClosedWindowIds yet)
+    chrome.windows.get(win.id, () => {
+      if (!pendingRequest[id]) return;
+      if (chrome.runtime.lastError) {
+        // Window was already destroyed
+        log('popup gone before assignment', {
+          id,
+          windowId: win.id,
+          error: chrome.runtime.lastError.message,
+        });
+        respond(req.tabId, {
+          id: req.id,
+          error: {
+            code: ERR_REJECTED.code,
+            message: 'User closed the popup.',
+          },
+        });
+        emitEvent(req.tabId, PROVIDER_EVENT.POPUP_CLOSED, [
+          { requestId: id, reason: 'window_closed_race' },
+        ]);
+        finalize(id);
+        return;
+      }
+      // Window is confirmed alive — safe to assign
       pendingRequest[id].popupWindowId = win.id;
       emitEvent(req.tabId, PROVIDER_EVENT.POPUP_OPENED, [
         { requestId: id, windowId: win.id, method: req.method },
       ]);
-    }
+    });
   });
 }
 
@@ -313,10 +373,8 @@ function handleAkashicMethod(method: AKASHIC_METHOD, req: PendingRequest) {
 }
 
 function finalize(id: number) {
-  if (popupTimers[id]) {
-    clearTimeout(popupTimers[id]);
-    delete popupTimers[id];
-  }
+  // Clear the alarm-based popup timeout
+  chrome.alarms.clear(`${POPUP_TIMEOUT_ALARM_PREFIX}${id}`).catch(() => {});
   delete pendingRequest[id];
   schedulePersist();
 }
@@ -654,7 +712,21 @@ chrome.windows.onRemoved.addListener((windowId) => {
   const match = Object.values(pendingRequest).find(
     (p) => p.popupWindowId === windowId
   );
-  if (!match) return;
+  if (!match) {
+    // Only track this close if a pending request is mid-creation (no popupWindowId yet).
+    // This avoids polluting the set with every unrelated browser window close.
+    const hasPendingCreation = Object.values(pendingRequest).some(
+      (p) => p.popupRequested && !p.popupWindowId
+    );
+    if (hasPendingCreation) {
+      recentlyClosedWindowIds.add(windowId);
+      setTimeout(
+        () => recentlyClosedWindowIds.delete(windowId),
+        RECENTLY_CLOSED_TTL_MS
+      );
+    }
+    return;
+  }
   log('popup closed before decision', {
     id: match.id,
   });
@@ -702,6 +774,23 @@ async function clearAutoLockAlarm() {
 }
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
+  // Handle popup timeout alarms (survives service worker suspension)
+  if (alarm.name.startsWith(POPUP_TIMEOUT_ALARM_PREFIX)) {
+    const id = Number(alarm.name.slice(POPUP_TIMEOUT_ALARM_PREFIX.length));
+    const req = pendingRequest[id];
+    if (!req) return;
+    log('popup timeout (alarm)', { id });
+    respond(req.tabId, {
+      id: req.id,
+      error: { code: ERR_REJECTED.code, message: 'Request timed out.' },
+    });
+    emitEvent(req.tabId, PROVIDER_EVENT.POPUP_CLOSED, [
+      { requestId: id, reason: 'timeout' },
+    ]);
+    closePopup(id);
+    finalize(id);
+    return;
+  }
   if (alarm.name !== AUTOLOCK_ALARM) return;
   const { [APP_AUTO_LOCK_BY]: autoLockBy } =
     await chrome.storage.session.get(APP_AUTO_LOCK_BY);
