@@ -14,7 +14,9 @@ import type {
  * - Be signed
  * - Be sent to AC
  */
-export interface ITransactionForSigning extends ITransactionBase {
+export interface ITransactionForSigning
+  extends Omit<ITransactionBase, 'fromAddress'> {
+  readonly fromAddress?: string;
   readonly internalFee?: IInternalFee;
   readonly txToSign: IBaseAcTransaction | ITerriAcTransaction;
   readonly layer: TransactionLayer;

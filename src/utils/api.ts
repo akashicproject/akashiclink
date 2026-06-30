@@ -12,6 +12,7 @@ import {
   type IRetrieveIdentityResponse,
   type IWithdrawalProposal,
 } from '@akashic/as-backend';
+import { isAxiosError } from 'axios';
 
 import { axiosBase } from './axios-helper';
 
@@ -44,7 +45,14 @@ export const OwnersAPI = {
   ): Promise<ILookForL2AddressResponse> => {
     let requestUrl = `/v0/nft/look-for-l2-address?to=${l2Check.to}`;
     if (l2Check.coinSymbol) requestUrl += `&coinSymbol=${l2Check.coinSymbol}`;
-    return await apiCall<ILookForL2AddressResponse>(requestUrl);
+    try {
+      return await apiCall<ILookForL2AddressResponse>(requestUrl);
+    } catch (error) {
+      // If AS is unreachable, don't throw so that we can still send a
+      // direct-to-AC tx
+      if (isAxiosError(error) && !error.response) return {};
+      throw error;
+    }
   },
 
   prepareL1Txn: async (

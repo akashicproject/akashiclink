@@ -67,10 +67,12 @@ export const useSendL2Transaction = () => {
           fromAddress,
           toAddress,
           senderIdentity: fromAddress,
-          senderInfo: {
-            identity: prefixWithAS(fromAddress),
-            walletType: WalletType.AkashicLink, // Not necessarily accurate, but doesn't matter for temp local storage
-          },
+          ...(fromAddress && {
+            senderInfo: {
+              identity: prefixWithAS(fromAddress),
+              walletType: WalletType.AkashicLink, // Not necessarily accurate, but doesn't matter for temp local storage
+            },
+          }),
           receiverIdentity: toAddress,
           receiverInfo: {
             identity: prefixWithAS(toAddress),

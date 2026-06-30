@@ -1,5 +1,5 @@
 import {
-  type FeeDelegationStrategy,
+  FeeDelegationStrategy,
   type IWithdrawalProposal,
   L2Regex,
 } from '@akashic/as-backend';
@@ -9,6 +9,7 @@ import {
   type L2TxDetail,
   TransactionLayer,
 } from '@akashic/nitr0gen';
+import { isAxiosError } from 'axios';
 
 import type {
   ITransactionForSigning,
@@ -140,8 +141,31 @@ export const useVerifyTxnAndSign = () => {
       referenceId,
     };
 
-    const { preparedTxn, fromAddress, delegatedFee } =
-      await OwnersAPI.prepareL1Txn(transactionData);
+    let preparedTxn: IBaseAcTransaction;
+    let fromAddress;
+    let delegatedFee: string | undefined;
+    try {
+      const preparedL1 = await OwnersAPI.prepareL1Txn(transactionData);
+      preparedTxn = preparedL1.preparedTxn;
+      fromAddress = preparedL1.fromAddress;
+      delegatedFee = preparedL1.delegatedFee;
+    } catch (error) {
+      // If BE did not respond, AC can process a minimal transaction as backup
+      if (isAxiosError(error) && !error.response) {
+        preparedTxn = nitr0genApi.l1Transaction({
+          senderIdentity: transactionData.identity,
+          amount,
+          toAddress: validatedAddressPair.convertedToAddress,
+          network: coinSymbol,
+          tokenSymbol,
+          delegated: feeDelegationStrategy === FeeDelegationStrategy.Delegate,
+          referenceId,
+        });
+      } else {
+        throw error;
+      }
+    }
+
     const signedTxn = await nitr0genApi.signTx(preparedTxn, cacheOtk);
     const uiFeesEstimate = convertFromSmallestUnit(
       preparedTxn.$tx.metadata?.feesEstimate ?? '0',
