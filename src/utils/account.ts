@@ -51,6 +51,24 @@ export const ACCOUNT_OTK_TYPE_ALLOWED_ACCESS: Record<OtkType, ACCESS_SCOPE> = {
     accountManagement: false,
     addressScanning: false,
   },
+  [OtkType.CUSTOMER_SERVICE]: {
+    send: false,
+    deposit: false,
+    nftTransfer: false,
+    allTransactionsHistory: false,
+    individualAssetQuickAccess: false,
+    accountManagement: false,
+    addressScanning: false,
+  },
+  [OtkType.CUSTOMER_SERVICE_MANAGER]: {
+    send: false,
+    deposit: false,
+    nftTransfer: false,
+    allTransactionsHistory: false,
+    individualAssetQuickAccess: false,
+    accountManagement: false,
+    addressScanning: false,
+  },
 };
 
 export const isScopeAccessAllowed = (
