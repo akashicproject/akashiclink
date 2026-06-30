@@ -10,6 +10,7 @@ const StyledAccountOtkTypeTag = styled.div<{ otkType?: OtkType }>(
     background: `var(--otk-type-tag-${otkType ?? 'primary'}-background)`,
     borderRadius: '16px',
     padding: '2px 8px',
+    fontWeight: 700,
   })
 );
 

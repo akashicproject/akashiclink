@@ -205,8 +205,8 @@
     "primary": "Owner",
     "secondary": "API/SDK",
     "treasury": "Treasury",
-    "customerService": "Customer Service",
-    "customerServiceManager": "Customer Service Manager"
+    "customerService": "CS General",
+    "customerServiceManager": "CS Manager"
   },
   "Security": "Security",
   "Information": "Information",
