@@ -1,9 +1,6 @@
-import {
-  CoinSymbol,
-  CryptoCurrencySymbol,
-  TransactionLayer,
-  TransactionStatus,
-} from '@akashic/as-backend';
+import { TransactionStatus } from '@akashic/as-backend';
+import { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
+import { TransactionLayer } from '@akashic/nitr0gen';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { TransactionHistoryListItem } from '../../../src/components/activity/transaction-history-list-item';
@@ -31,12 +28,17 @@ const meta: Meta<typeof TransactionHistoryListItem> = {
 export default meta;
 type Story = StoryObj<typeof TransactionHistoryListItem>;
 
+const now = new Date();
+
 const baseTransaction = {
   fromAddress: 'TVBAa5Wr9XTuho66qY3vLS32kNnZyMw5md',
   toAddress: 'TG4BTSPRV3iANo8tgVfdtMVDjMLFEZUWYP',
   amount: '0.010000',
-  date: new Date(),
-  initiatedAt: new Date(),
+  usdtValue: 0.01,
+  date: now,
+  initiatedAt: now,
+  createdAt: now,
+  updatedAt: now,
   status: TransactionStatus.CONFIRMED,
   layer: TransactionLayer.L1,
   coinSymbol: CoinSymbol.Tron_Shasta,
