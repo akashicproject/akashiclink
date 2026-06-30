@@ -10,10 +10,8 @@ import { useAppSelector } from '../redux/app/hooks';
 import { selectTheme } from '../redux/slices/preferenceSlice';
 import { BRIDGE_MESSAGE } from '../types/bridge-types';
 import { responseErrorToSite, responseToSite } from '../utils/chrome';
-import { getCurrentTime } from '../utils/currentUTCTime';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useSetGlobalLanguage } from '../utils/hooks/useSetGlobalLanguage';
-import { useSignMessage } from '../utils/hooks/useSignMessage';
 import { ConnectionBackButton } from './connection-back-button';
 
 export function WalletConnection() {
@@ -32,8 +30,6 @@ export function WalletConnection() {
 
   const { activeAccount, cacheOtk } = useAccountStorage();
 
-  const signMessage = useSignMessage();
-
   const [isProcessing, setIsProcessing] = useState(false);
 
   const onClickApproveConnect = async () => {
@@ -43,16 +39,13 @@ export function WalletConnection() {
         throw new Error('No active account or cache OTK found');
       }
 
-      const serverTime = await getCurrentTime();
-      const payloadToSign = {
-        identity: activeAccount.identity,
+      const result = {
         accounts: [
           {
             identity: activeAccount.identity,
             publicKey: cacheOtk.key.pub.pkcs8pem,
           },
         ],
-        expires: serverTime + 60 * 1000,
         userData: {
           walletPreference: {
             theme: storedTheme,
@@ -61,11 +54,7 @@ export function WalletConnection() {
         },
       };
 
-      const signedMsg = signMessage(payloadToSign);
-      await responseToSite(BRIDGE_MESSAGE.APPROVAL_DECISION, id, true, {
-        ...payloadToSign,
-        signature: signedMsg,
-      });
+      await responseToSite(BRIDGE_MESSAGE.APPROVAL_DECISION, id, true, result);
     } catch (e) {
       await responseErrorToSite(
         e instanceof Error ? e.message : JSON.stringify(e),

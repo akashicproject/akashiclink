@@ -57,9 +57,9 @@ export type AkashicAccount = {
   publicKey: string;
 };
 
-// TODO: we don't need signature when the new Web3 auth flow implemented
 export type IRequestAccountsReturnType = {
-  identity: string;
+  // We return just 1 account for now since we only support 1 wallet connection at a time, but we can extend this in the future if needed
+  // So 0th index of accounts array is the connected wallet
   accounts: AkashicAccount[];
   userData: {
     walletPreference: {
@@ -67,8 +67,6 @@ export type IRequestAccountsReturnType = {
       language: string;
     };
   };
-  expires: number;
-  signature: string;
 };
 
 export type IAccountsReturnType = AkashicAccount[];
