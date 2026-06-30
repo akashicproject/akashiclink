@@ -39,11 +39,16 @@ export function SettingsNetwork() {
   );
 
   useEffect(() => {
+    const isPreferredNodeKeyValid = nodes.some(
+      (n) => n.key === preferredNodeKey
+    );
+
     if (nodes.length) {
       const minNode = nodes.reduce((min, node) =>
         node.ping < min.ping ? node : min
       );
-      if (!preferredNodeKey) setPreferredNodeKey(minNode.key);
+      if (!preferredNodeKey || !isPreferredNodeKeyValid)
+        setPreferredNodeKey(minNode.key);
     }
   }, [nodes]);
 
