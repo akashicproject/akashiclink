@@ -92,6 +92,7 @@ export function ManageAccountsModal({
                   isMobile ? '320px - var(--ion-safe-area-bottom)' : '240px'
                 })`}
                 showManagementButtons={!isPopup}
+                isPopup={isPopup}
               />
             </IonCol>
           </IonRow>

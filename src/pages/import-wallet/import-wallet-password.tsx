@@ -82,7 +82,7 @@ export function ImportWalletPassword({ isPopup = false }) {
     if (isPasswordValid && otk?.identity && otkType && publicKey) {
       // If user is currently signed in, ensure the currently active account and connected webapps are signed out
       if (activeAccount) {
-        await logout();
+        await logout({ isManualLogout: true });
       }
 
       // call import api and store the Identity. added local otk

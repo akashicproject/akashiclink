@@ -31,6 +31,31 @@ export const closePopup = async () => {
   current.id && (await window?.chrome?.windows?.remove(current.id));
 };
 
+export const sendInternalLogout = async (opts?: {
+  clearPermissions?: boolean;
+  preserveRequestId?: number;
+}) => {
+  if (!isExtensionContext()) {
+    console.log('[Dev Mode] Would send INTERNAL_LOGOUT:', opts);
+    return;
+  }
+  try {
+    const sendMessage = await getSendMessage();
+    if (!sendMessage) return;
+    await sendMessage(
+      BRIDGE_MESSAGE.INTERNAL_LOGOUT,
+      {
+        clearPermissions: !!opts?.clearPermissions,
+        preserveRequestId: opts?.preserveRequestId,
+      },
+      'background'
+    );
+  } catch (e) {
+    datadogRum.addError(e);
+    console.error('Failed to send INTERNAL_LOGOUT', e);
+  }
+};
+
 export const responseToSite = async (
   messageId: BRIDGE_MESSAGE,
   id?: number,

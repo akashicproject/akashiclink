@@ -45,7 +45,7 @@ export const DeleteAccountModal = ({
     ) {
       setManageAccountsModalOpen && setManageAccountsModalOpen(false);
       await clearActiveAccount();
-      await logout();
+      await logout({ isManualLogout: true });
     }
 
     onCancel();

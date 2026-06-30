@@ -29,8 +29,7 @@ import {
   historyReplace,
   historyResetStackAndRedirect,
 } from '../../routing/history';
-import { BRIDGE_MESSAGE } from '../../types/bridge-types';
-import { responseToSite } from '../../utils/chrome';
+import { sendInternalLogout } from '../../utils/chrome';
 import { AppError, getErrorMessageTKey } from '../../utils/error-utils';
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { createAccountWithAllL1Addresses } from '../../utils/wallet-creation';
@@ -111,7 +110,7 @@ export function CreateWalletSecretConfirm({ isPopup = false }) {
       if (isPopup) {
         dispatch(onClear());
       } else {
-        await responseToSite(BRIDGE_MESSAGE.INTERNAL_LOGOUT);
+        await sendInternalLogout({ clearPermissions: true });
       }
 
       historyResetStackAndRedirect(urls.createWalletSuccessful);

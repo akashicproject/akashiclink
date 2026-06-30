@@ -21,6 +21,7 @@ import {
   EXT_VERSION,
   type IAccountsReturnType,
   type IPersonalSignReturnType,
+  type IRequestAccountsParams,
   type IRequestAccountsReturnType,
   type ISendTransactionReturnType,
   type ISignTransactionReturnType,
@@ -361,7 +362,44 @@ function openPopup(
 }
 
 function handleRequestAccounts(req: PendingRequest) {
-  openPopup(req.id, { method: AKASHIC_METHOD.REQUEST_ACCOUNTS });
+  const requestParams = req.params?.[0] as IRequestAccountsParams | undefined;
+  const signInRequest = requestParams?.signInRequest;
+  const popupData = signInRequest ? { signInRequest } : undefined;
+  // Fast-path: if this origin already has a cached permission, resolve
+  // silently without showing the Permission popup. Mirrors EIP-1193
+  // `eth_requestAccounts` behavior — the user already granted this site
+  // access, so a follow-up sign request can go straight to its own popup.
+  const cached = req.origin ? originPermissions[req.origin] : undefined;
+  if (cached?.length) {
+    if (popupData) {
+      openPopup(req.id, {
+        method: AKASHIC_METHOD.REQUEST_ACCOUNTS,
+        data: encodeURIComponent(JSON.stringify(popupData)),
+      });
+      return;
+    }
+
+    sessions[req.tabId] = { origin: req.origin ?? '' };
+    respond(req.tabId, {
+      id: req.id,
+      result: {
+        accounts: cached,
+        // Preferences live in the popup's Redux state — unavailable here.
+        // The dApp's applyPreference is a no-op for empty values, so the
+        // user's existing site preference is preserved.
+        userData: { walletPreference: { theme: '', language: '' } },
+      } satisfies IRequestAccountsReturnType,
+    });
+    schedulePersist();
+    finalize(req.id);
+    return;
+  }
+  openPopup(req.id, {
+    method: AKASHIC_METHOD.REQUEST_ACCOUNTS,
+    ...(popupData
+      ? { data: encodeURIComponent(JSON.stringify(popupData)) }
+      : {}),
+  });
 }
 
 function handleAkashicMethod(method: AKASHIC_METHOD, req: PendingRequest) {
@@ -454,8 +492,10 @@ onMessage(BRIDGE_MESSAGE.APPROVAL_DECISION, ({ data }) => {
   );
 });
 
-onMessage(BRIDGE_MESSAGE.INTERNAL_LOGOUT, () => {
-  handleInternalLogout();
+onMessage(BRIDGE_MESSAGE.INTERNAL_LOGOUT, ({ data }) => {
+  handleInternalLogout(
+    data as BridgeMessageProtocolMap[BRIDGE_MESSAGE.INTERNAL_LOGOUT]
+  );
 });
 
 // Handler for INIT_REQUEST
@@ -681,10 +721,16 @@ function handleApprovalDecision(
 }
 
 // Handler for INTERNAL_LOGOUT
-function handleInternalLogout() {
+function handleInternalLogout(
+  data?: BridgeMessageProtocolMap[BRIDGE_MESSAGE.INTERNAL_LOGOUT]
+) {
   const tabIds = Object.keys(sessions).map((k) => Number(k));
+  const clearPermissions = !!data?.clearPermissions;
+  const preserveRequestId = data?.preserveRequestId;
   log('logout ALL sessions', {
     count: tabIds.length,
+    clearPermissions,
+    preserveRequestId,
   });
 
   // Disconnect all active sessions
@@ -693,13 +739,36 @@ function handleInternalLogout() {
     disconnectSession(tabId);
   }
 
-  // Clear the AKASHIC_STATE_V1 key from chrome storage
-  try {
-    chrome.storage.local.remove(ROOT_KEY);
-    log('cleared AKASHIC_STATE_V1 from chrome.storage.local');
-  } catch (e) {
-    log('failed to clear AKASHIC_STATE_V1', e);
+  if (clearPermissions) {
+    for (const idStr of Object.keys(pendingRequest)) {
+      const id = Number(idStr);
+      const req = pendingRequest[id];
+      if (id === preserveRequestId) continue;
+      respond(req.tabId, {
+        id: req.id,
+        error: {
+          code: ERR_REJECTED.code,
+          message: 'Wallet identity changed - request cancelled.',
+        },
+      });
+      emitEvent(req.tabId, PROVIDER_EVENT.POPUP_CLOSED, [
+        { requestId: id, reason: 'identity_changed' },
+      ]);
+      closePopup(id);
+      finalize(id);
+    }
   }
+
+  if (clearPermissions) {
+    // Manual sign-out / new wallet / account switch — wallet identity is
+    // changing, so revoke all granted origin permissions.
+    for (const origin of Object.keys(originPermissions)) {
+      delete originPermissions[origin];
+    }
+  }
+  // Otherwise (auto-lock / dApp-initiated lock), preserve `originPermissions`
+  // — grants are not sensitive (identity + publicKey) and should survive a
+  // lock so reconnects don't re-prompt for permission.
 
   // Clear auto-lock alarm
   clearAutoLockAlarm();

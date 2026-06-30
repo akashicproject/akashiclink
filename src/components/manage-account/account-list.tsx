@@ -26,12 +26,14 @@ interface AccountListProps {
   height?: string;
   setManageAccountsModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   showManagementButtons?: boolean;
+  isPopup?: boolean;
 }
 export const AccountList: React.FC<AccountListProps> = ({
   height,
   style,
   setManageAccountsModalOpen,
   showManagementButtons = true,
+  isPopup = false,
 }) => {
   const { localAccounts, activeAccount, setActiveAccount } =
     useAccountStorage();
@@ -58,7 +60,10 @@ export const AccountList: React.FC<AccountListProps> = ({
   const onSelectAccountClick = (account: LocalAccount) => async () => {
     if (!activeAccount) return;
     if (!isSameAccount(account, activeAccount)) {
-      await logout({ isManualLogout: true });
+      await logout({
+        isManualLogout: true,
+        preserveCurrentRequest: isPopup,
+      });
       setActiveAccount(account);
     }
     setManageAccountsModalOpen && setManageAccountsModalOpen(false);

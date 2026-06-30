@@ -1,3 +1,4 @@
+import { PersonalSignMessage } from '@akashic/as-backend';
 import { IonCol, IonRow } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,19 +10,37 @@ import { PopupLayout } from '../components/page-layout/popup-layout';
 import { useAppSelector } from '../redux/app/hooks';
 import { selectTheme } from '../redux/slices/preferenceSlice';
 import { BRIDGE_MESSAGE } from '../types/bridge-types';
+import type { IRequestAccountsReturnType } from '../types/provider-types';
 import { responseErrorToSite, responseToSite } from '../utils/chrome';
 import { useAccountStorage } from '../utils/hooks/useLocalAccounts';
 import { useSetGlobalLanguage } from '../utils/hooks/useSetGlobalLanguage';
+import { useSignMessage } from '../utils/hooks/useSignMessage';
 import { ConnectionBackButton } from './connection-back-button';
+
+type RequestAccountsPopupData = {
+  signInRequest?: {
+    message: string;
+    expires: number;
+  };
+};
 
 export function WalletConnection() {
   const { t } = useTranslation();
   const [id, setId] = useState<number>();
+  const [popupData, setPopupData] = useState<RequestAccountsPopupData>();
 
   useEffect(() => {
     const url = new URL(window.location.href);
     const idParam = url.searchParams.get('id');
+    const dataParam = url.searchParams.get('data');
     if (idParam) setId(Number(idParam));
+    if (dataParam) {
+      try {
+        setPopupData(JSON.parse(decodeURIComponent(dataParam)));
+      } catch {
+        setPopupData(undefined);
+      }
+    }
   }, []);
 
   // retrieve user AL setting
@@ -29,6 +48,8 @@ export function WalletConnection() {
   const [globalLanguage] = useSetGlobalLanguage();
 
   const { activeAccount, cacheOtk } = useAccountStorage();
+  const signMessage = useSignMessage();
+  const signInMessage = popupData?.signInRequest?.message;
 
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -39,7 +60,7 @@ export function WalletConnection() {
         throw new Error('No active account or cache OTK found');
       }
 
-      const result = {
+      const result: IRequestAccountsReturnType = {
         accounts: [
           {
             identity: activeAccount.identity,
@@ -53,6 +74,14 @@ export function WalletConnection() {
           },
         },
       };
+      const signInRequest = popupData?.signInRequest;
+      if (signInRequest?.message === PersonalSignMessage.SIGN_IN_AKASHIC_PAY) {
+        result.signInSignature = signMessage({
+          message: signInRequest.message,
+          identity: activeAccount.identity,
+          expires: signInRequest.expires,
+        });
+      }
 
       await responseToSite(BRIDGE_MESSAGE.APPROVAL_DECISION, id, true, result);
     } catch (e) {
@@ -96,6 +125,11 @@ export function WalletConnection() {
               </p>
               {activeAccount && (
                 <AccountListItem lines={'none'} account={activeAccount} />
+              )}
+              {signInMessage && (
+                <p className="ion-justify-content-center ion-margin-top-md ion-margin-bottom-0">
+                  {signInMessage}
+                </p>
               )}
             </div>
           </BorderedBox>

@@ -50,5 +50,14 @@ export interface BridgeMessageProtocolMap {
     result?: any;
     reason?: string;
   };
-  [BRIDGE_MESSAGE.INTERNAL_LOGOUT]: void;
+  [BRIDGE_MESSAGE.INTERNAL_LOGOUT]: {
+    // When true, also clear granted origin permissions (the wallet identity
+    // is changing — e.g. account switch, manual sign-out, new wallet). When
+    // false/omitted, treat as a lock: keep origin grants so reconnects
+    // don't re-prompt for permission.
+    clearPermissions?: boolean;
+    // Keep this popup request alive while clearing old grants. Used when the
+    // user switches account from an active dApp connection popup.
+    preserveRequestId?: number;
+  };
 }

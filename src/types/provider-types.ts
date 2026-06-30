@@ -61,11 +61,19 @@ export type IRequestAccountsReturnType = {
   // We return just 1 account for now since we only support 1 wallet connection at a time, but we can extend this in the future if needed
   // So 0th index of accounts array is the connected wallet
   accounts: AkashicAccount[];
+  signInSignature?: string;
   userData: {
     walletPreference: {
       theme: string;
       language: string;
     };
+  };
+};
+
+export type IRequestAccountsParams = {
+  signInRequest?: {
+    message: string;
+    expires: number;
   };
 };
 
