@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 import Big from 'big.js';
 import { closeOutline, warningOutline } from 'ionicons/icons';
-import { debounce } from 'lodash';
+import debounce from 'lodash.debounce';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

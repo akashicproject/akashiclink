@@ -1,6 +1,6 @@
 import { OtkType } from '@akashic/as-backend';
 import { IonCol, IonRow, IonText } from '@ionic/react';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash.isequal';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

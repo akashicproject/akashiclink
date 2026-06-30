@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import debounce from 'lodash.debounce';
 import { useCallback, useContext, useEffect, useState } from 'react';
 
 import type { ValidatedAddressPair } from '../../components/send/send-form/types';

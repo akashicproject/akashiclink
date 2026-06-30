@@ -11,7 +11,7 @@ import {
   IonText,
 } from '@ionic/react';
 import { closeOutline } from 'ionicons/icons';
-import { debounce } from 'lodash';
+import debounce from 'lodash.debounce';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

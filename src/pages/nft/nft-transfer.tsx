@@ -3,7 +3,7 @@ import { L2Regex, NftError } from '@akashic/as-backend';
 import { type IBaseAcTransaction } from '@akashic/nitr0gen';
 import styled from '@emotion/styled';
 import { IonCol, IonImg, IonRow, IonSpinner } from '@ionic/react';
-import { debounce } from 'lodash';
+import debounce from 'lodash.debounce';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
