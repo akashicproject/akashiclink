@@ -354,6 +354,7 @@
     "AgreeToGenerateCustomerServiceKey": "আমি CS কীপেয়ার তৈরি করতে সম্মত",
     "AgreeToRemoveCustomerServiceKey": "আমি CS কীপেয়ার মুছে ফেলতে সম্মত",
     "AgreeToGenerateTreasuryKey": "আমি তহবিল কীপেয়ার তৈরি করতে সম্মত",
+    "AgreeToRemoveTreasuryKey": "আমি তহবিল কীপেয়ার মুছে ফেলতে সম্মত",
     "AgreeToSetMultisigThresholds": "আমি মাল্টিসিগ থ্রেশহোল্ড সেট করতে সম্মত।",
     "ConfirmationToDisableMultisig": "আমি মাল্টিসিগ নিষ্ক্রিয় করতে সম্মত।",
     "AcceptTermsAndPrivacyPolicy": "AkashicPay-এ স্বাগতম! সাইন ইন করতে এবং AkashicPay-এর সেবার শর্তাবলী এবং গোপনীয়তা নীতি গ্রহণ করতে ক্লিক করুন।"

@@ -1,4 +1,4 @@
-import type { IBaseAcTransaction } from '@akashic/nitr0gen';
+import type { IBaseAcTransaction, Nitr0genApi } from '@akashic/nitr0gen';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -7,6 +7,110 @@ import { responseErrorToSite, responseToSite } from '../utils/chrome';
 import { useSignMessage } from '../utils/hooks/useSignMessage';
 import { getNitr0genApi } from '../utils/nitr0gen/nitr0gen.utils';
 import { SignTransactionContent } from './sign-transaction-content';
+
+type OwnerInput = {
+  $stream: string;
+  add?: unknown;
+  remove?: unknown;
+  treasury?: unknown;
+};
+
+type PopupMessage = Record<string, string>;
+
+const getOwnerInput = (transaction: IBaseAcTransaction) =>
+  (transaction.$tx.$i as { owner?: OwnerInput }).owner;
+
+const getOwnerMessage = (
+  ownerInput: OwnerInput,
+  content: string
+): PopupMessage => ({
+  identity: ownerInput.$stream,
+  content,
+});
+
+const getTreasuryMessage = (
+  transaction: IBaseAcTransaction,
+  nitr0genApi: Nitr0genApi,
+  t: (key: string) => string
+): PopupMessage | undefined => {
+  const ownerInput = getOwnerInput(transaction);
+  const isTreasuryOtkContract =
+    !!ownerInput &&
+    nitr0genApi.isSecondaryOtkContract(transaction) &&
+    ownerInput.treasury !== undefined &&
+    ownerInput.treasury !== null;
+
+  if (!isTreasuryOtkContract || !ownerInput) return undefined;
+
+  const hasDefaultTreasuryThreshold = String(ownerInput.treasury) === '0';
+
+  if (hasDefaultTreasuryThreshold && ownerInput.add) {
+    return getOwnerMessage(ownerInput, t('Popup.AgreeToGenerateTreasuryKey'));
+  }
+
+  if (!ownerInput.add && !ownerInput.remove) {
+    return getOwnerMessage(ownerInput, t('Popup.AgreeToSetMultisigThresholds'));
+  }
+
+  if (hasDefaultTreasuryThreshold && ownerInput.remove) {
+    return getOwnerMessage(ownerInput, t('Popup.AgreeToRemoveTreasuryKey'));
+  }
+
+  return undefined;
+};
+
+const getOtkMessage = (
+  transaction: IBaseAcTransaction,
+  nitr0genApi: Nitr0genApi,
+  t: (key: string) => string
+): PopupMessage | undefined => {
+  const treasuryMessage = getTreasuryMessage(transaction, nitr0genApi, t);
+  if (treasuryMessage) return treasuryMessage;
+
+  const ownerInput = getOwnerInput(transaction);
+  if (!ownerInput) return undefined;
+
+  const isRemoval = ownerInput.remove && !ownerInput.add;
+
+  if (nitr0genApi.isCustomerServiceOtkUpdate(transaction)) {
+    return getOwnerMessage(
+      ownerInput,
+      isRemoval
+        ? t('Popup.AgreeToRemoveCustomerServiceKey')
+        : t('Popup.AgreeToGenerateCustomerServiceKey')
+    );
+  }
+
+  if (nitr0genApi.isSecondaryOtkUpdate(transaction)) {
+    return getOwnerMessage(
+      ownerInput,
+      isRemoval
+        ? t('Popup.AgreeToRemoveSecondaryKey')
+        : t('Popup.AgreeToGenerateSecondaryKey')
+    );
+  }
+
+  return undefined;
+};
+
+const getPopupMessage = (
+  transaction: IBaseAcTransaction,
+  nitr0genApi: Nitr0genApi,
+  t: (key: string) => string
+): PopupMessage => {
+  const otkMessage = getOtkMessage(transaction, nitr0genApi, t);
+  if (otkMessage) return otkMessage;
+
+  const ownerInput = getOwnerInput(transaction);
+
+  if (nitr0genApi.isAfxOnboardContract(transaction) && ownerInput) {
+    return getOwnerMessage(ownerInput, t('Popup.AcceptTermsAndPrivacyPolicy'));
+  }
+
+  return {
+    content: JSON.stringify(transaction, null, 2),
+  };
+};
 
 export function SignTransaction() {
   const { t } = useTranslation();
@@ -30,62 +134,16 @@ export function SignTransaction() {
         return;
       }
       if (idParam) setId(Number(idParam));
-      const transaction: IBaseAcTransaction = JSON.parse(
+      const transaction = JSON.parse(
         decodeURIComponent(data)
-      );
+      ) as IBaseAcTransaction;
       setTransaction(transaction);
       const nitr0genApi = await getNitr0genApi();
-      if (nitr0genApi.isCustomerServiceOtkUpdate(transaction)) {
-        // Customer Service OTK addition/removal
-        const isRemoval =
-          transaction.$tx.$i.owner.remove && !transaction.$tx.$i.owner.add;
-        setMessage({
-          identity: transaction.$tx.$i.owner.$stream,
-          content: isRemoval
-            ? t('Popup.AgreeToRemoveCustomerServiceKey')
-            : t('Popup.AgreeToGenerateCustomerServiceKey'),
-        });
-      } else if (nitr0genApi.isSecondaryOtkUpdate(transaction)) {
-        // Secondary OTK addition/removal
-        const isRemoval =
-          transaction.$tx.$i.owner.remove && !transaction.$tx.$i.owner.add;
-        setMessage({
-          identity: transaction.$tx.$i.owner.$stream,
-          content: isRemoval
-            ? t('Popup.AgreeToRemoveSecondaryKey')
-            : t('Popup.AgreeToGenerateSecondaryKey'),
-        });
-      } else if (nitr0genApi.isTreasuryOtkAddition(transaction)) {
-        // Treasury OTK addition
-        setMessage({
-          identity: transaction.$tx.$i.owner.$stream,
-          content: t('Popup.AgreeToGenerateTreasuryKey'),
-        });
-      } else if (nitr0genApi.isTreasuryThresholdUpdateOnly(transaction)) {
-        // Treasury Threshold update
-        setMessage({
-          identity: transaction.$tx.$i.owner.$stream,
-          content: t('Popup.AgreeToSetMultisigThresholds'),
-        });
-      } else if (nitr0genApi.isTreasuryOtkRemoval(transaction)) {
-        // Treasury OTK removal
-        setMessage({
-          identity: transaction.$tx.$i.owner.$stream,
-          content: t('Popup.ConfirmationToDisableMultisig'),
-        });
-      } else if (nitr0genApi.isAfxOnboardContract(transaction)) {
-        // AfxOnboard contract
-        setMessage({
-          identity: transaction.$tx.$i.owner.$stream,
-          content: t('Popup.AcceptTermsAndPrivacyPolicy'),
-        });
-      } else {
-        // Unknown transaction type
-        setMessage({
-          content: JSON.stringify(transaction, null, 2),
-        });
-      }
+      setMessage(getPopupMessage(transaction, nitr0genApi, t));
     })();
+    // The popup request is immutable for the lifetime of the popup window.
+    // Re-running this effect can reopen the same signing flow while focus is trapped.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onClickSign = async () => {

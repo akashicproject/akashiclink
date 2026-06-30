@@ -347,6 +347,7 @@
     "AgreeToGenerateCustomerServiceKey": "Acepto generar el KeyPair de CS",
     "AgreeToRemoveCustomerServiceKey": "Acepto eliminar el KeyPair de CS",
     "AgreeToGenerateTreasuryKey": "Acepto generar el KeyPair de Tesorería",
+    "AgreeToRemoveTreasuryKey": "Acepto eliminar el KeyPair de Tesorería",
     "AgreeToSetMultisigThresholds": "Acepto configurar los umbrales de Multisig",
     "ConfirmationToDisableMultisig": "Confirmación para desactivar Multisig",
     "AcceptTermsAndPrivacyPolicy": "¡Bienvenido a AkashicPay! Haga clic para iniciar sesión y aceptar los Términos de servicio y la Política de privacidad de AkashicPay."

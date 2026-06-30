@@ -348,6 +348,7 @@
     "AgreeToGenerateCustomerServiceKey": "我同意生成 CS 密钥对",
     "AgreeToRemoveCustomerServiceKey": "我同意移除 CS 密钥对",
     "AgreeToGenerateTreasuryKey": "我同意生成财务密钥对",
+    "AgreeToRemoveTreasuryKey": "我同意移除财务密钥对",
     "AgreeToSetMultisigThresholds": "我同意设置多签阈值",
     "ConfirmationToDisableMultisig": "确认禁用多签",
     "AcceptTermsAndPrivacyPolicy": "欢迎访问 AkashicPay！点击登录并接受 AkashicPay 服务条款和隐私政策。"

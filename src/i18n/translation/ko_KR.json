@@ -344,6 +344,7 @@
     "AgreeToGenerateCustomerServiceKey": "CS 키페어 생성에 동의합니다.",
     "AgreeToRemoveCustomerServiceKey": "CS 키페어 삭제에 동의합니다.",
     "AgreeToGenerateTreasuryKey": "트레저 키 생성에 동의합니다.",
+    "AgreeToRemoveTreasuryKey": "트레저 키페어 삭제에 동의합니다.",
     "AgreeToSetMultisigThresholds": "다중 서명 임계값 설정에 동의합니다.",
     "ConfirmationToDisableMultisig": "다중 서명 비활성화 확인",
     "AcceptTermsAndPrivacyPolicy": "AkashicPay 에 오신 것을 환영합니다! 클릭하여 로그인하고 AkashicPay 서비스 약관 및 개인정보 보호정책에 동의합니다."

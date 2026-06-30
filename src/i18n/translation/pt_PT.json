@@ -342,7 +342,8 @@
     "AgreeToRemoveSecondaryKey": "I agree to remove the API/SDK key",
     "AgreeToGenerateCustomerServiceKey": "I agree to generate the CS KeyPair",
     "AgreeToRemoveCustomerServiceKey": "I agree to remove the CS KeyPair",
-    "AgreeToGenerateTreasuryKey": "I agree to generate the Treasury KeyPair",
+    "AgreeToGenerateTreasuryKey": "I agree to generate the treasury key",
+    "AgreeToRemoveTreasuryKey": "I agree to remove treasury keypair",
     "AgreeToSetMultisigThresholds": "I agree to set the Multisig thresholds",
     "ConfirmationToDisableMultisig": "Confirmation to disable Multisig",
     "AcceptTermsAndPrivacyPolicy": "Welcome to AkashicPay! Click to sign in and accept the AkashicPay Terms of Service and Privacy Policy."

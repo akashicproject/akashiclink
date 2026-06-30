@@ -349,6 +349,7 @@
     "AgreeToGenerateCustomerServiceKey": "我同意產生 CS 密鑰對",
     "AgreeToRemoveCustomerServiceKey": "我同意移除 CS 密鑰對",
     "AgreeToGenerateTreasuryKey": "我同意產生財務密鑰對",
+    "AgreeToRemoveTreasuryKey": "我同意移除財務密鑰對",
     "AgreeToSetMultisigThresholds": "我同意設定多簽門檻",
     "ConfirmationToDisableMultisig": "確認停用多簽功能",
     "AcceptTermsAndPrivacyPolicy": "歡迎來到 AkashicPay！點擊登入並接受 AkashicPay 服務條款和隱私權政策。"
