@@ -53,7 +53,7 @@ function UpdateModal({
           src={getImageIconUrl('akashic-link-logo.svg')}
           style={{
             height: '56px',
-            width: '100%',
+            width: '72px',
             position: 'relative',
             margin: '0 auto',
           }}
@@ -179,7 +179,7 @@ export function AboutUs({
         src={getImageIconUrl('akashic-link-logo.svg')}
         style={{
           height: '56px',
-          width: '100%',
+          width: '72px',
           position: 'relative',
           margin: '0 auto',
         }}

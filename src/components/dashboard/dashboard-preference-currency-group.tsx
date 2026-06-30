@@ -18,6 +18,7 @@ const TokenGroup = styled.div<{ selected: boolean }>((props) => ({
 
 const GroupContainer = styled.div({
   display: 'flex',
+  alignItems: 'center',
   padding: '0.5rem',
   cursor: 'pointer',
   gap: '0.75rem',
@@ -36,6 +37,7 @@ const CountBadge = styled.div({
   borderRadius: '50%',
   width: '1.5rem',
   height: '1.5rem',
+  flexShrink: 0,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',

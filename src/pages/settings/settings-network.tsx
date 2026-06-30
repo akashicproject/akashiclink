@@ -12,9 +12,6 @@ import {
   SettingsWrapper,
 } from '../../components/settings/base-components';
 import { SettingItem } from '../../components/settings/setting-item';
-import { useAppSelector } from '../../redux/app/hooks';
-import { selectTheme } from '../../redux/slices/preferenceSlice';
-import { themeType } from '../../theme/const';
 import { PREFERRED_NODE_KEY } from '../../utils/cookies-keys';
 import { fetchNodesPingFromCookies } from '../../utils/nitr0gen/nitr0gen.utils';
 
@@ -30,7 +27,6 @@ const PingStatus = styled.span`
 export function SettingsNetwork() {
   const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
-  const storedTheme = useAppSelector(selectTheme);
 
   const [nodes, setNodes] = useState<Node[]>([]);
   const [unreachableNode, setUnreachableNode] = useState<Node | null>(null);
@@ -80,20 +76,17 @@ export function SettingsNetwork() {
       <SettingsWrapper>
         <div style={{ position: 'relative' }}>
           <SquareWhiteButton
-            className="icon-button ion-padding-top-sm"
+            className="icon-button"
             id="refresh-button"
             onClick={loadNodes}
             style={{ position: 'absolute', bottom: 0, right: 0 }}
             borderRadius="8px"
           >
-            <IonIcon
-              slot="icon-only"
-              className="icon-button-icons"
-              src={`/assets/images/${
-                storedTheme === themeType.DARK
-                  ? 'refresh-dark.svg'
-                  : 'refresh-light.svg'
-              }`}
+              <IonIcon
+                slot="icon-only"
+                className="icon-button"
+              src={`/assets/images/refresh.svg`}
+              style={{ width: '24px', height: '24px' }}
             />
           </SquareWhiteButton>
           <PageHeader className="ion-margin-top-xs ion-text-align-center">

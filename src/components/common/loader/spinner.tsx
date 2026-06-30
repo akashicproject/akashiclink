@@ -1,7 +1,6 @@
 import './loader.scss';
 
 import styled from '@emotion/styled';
-import { IonIcon } from '@ionic/react';
 import React, { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -72,10 +71,7 @@ export const Spinner = ({
       </div>
       {warning && (
         <StyledDiv>
-          <IonIcon
-            className={'ion-text-size-xxl'}
-            src={'/assets/images/alert.svg'}
-          />
+          <img src={'/assets/images/alert.svg'} />
           <span>{t(warning)}</span>
         </StyledDiv>
       )}

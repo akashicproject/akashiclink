@@ -37,8 +37,8 @@ export const CopyIcon = ({
       style={{
         fontSize: size,
         cursor: 'pointer',
-        width: size,
-        height: size,
+        width: "20px",
+        height: "20px",
         ...style,
       }}
       className={`icon-button-icon ${className ?? ''}`}

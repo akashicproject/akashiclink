@@ -6,8 +6,8 @@ import { historyGoBackOrReplace } from '../../../routing/history';
 
 const BackButton = styled(IonButton)({
   marginLeft: -8,
-  width: 32,
-  height: 32,
+  width: '32px',
+  height: '32px',
   '--padding-start': 0,
   '--padding-end': 0,
 });

@@ -1,8 +1,25 @@
-import { getCurrencyIcon } from '@akashic/as-backend';
-import type { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
+import { CoinSymbol, CryptoCurrencySymbol } from '@akashic/core-lib';
 import { IonImg } from '@ionic/react';
 
 import { SUPPORTED_CURRENCIES_WITH_NAMES } from '../../../constants/currencies';
+
+const COIN_ICONS: Partial<Record<CoinSymbol, string>> = {
+  [CoinSymbol.Ethereum_Mainnet]: '/assets/images/eth.svg',
+  [CoinSymbol.Ethereum_Sepolia]: '/assets/images/eth.svg',
+  [CoinSymbol.Tron]: '/assets/images/trx.svg',
+  [CoinSymbol.Tron_Shasta]: '/assets/images/trx.svg',
+  [CoinSymbol.Binance_Smart_Chain_Mainnet]: '/assets/images/bsc.svg',
+  [CoinSymbol.Binance_Smart_Chain_Testnet]: '/assets/images/bsc.svg',
+  [CoinSymbol.Bitcoin]: '/assets/images/btc.svg',
+  [CoinSymbol.Bitcoin_Testnet]: '/assets/images/btc.svg',
+  [CoinSymbol.Solana]: '/assets/images/sol.svg',
+  [CoinSymbol.Solana_Devnet]: '/assets/images/sol.svg',
+};
+
+const TOKEN_ICONS: Partial<Record<CryptoCurrencySymbol, string>> = {
+  [CryptoCurrencySymbol.USDT]: '/assets/images/usdt.svg',
+  [CryptoCurrencySymbol.USDC]: '/assets/images/usdc.svg',
+};
 
 export const CryptoCurrencyIcon = ({
   coinSymbol,
@@ -13,8 +30,8 @@ export const CryptoCurrencyIcon = ({
   tokenSymbol?: CryptoCurrencySymbol;
   size?: number;
 }) => {
-  const networkIcon = getCurrencyIcon({ coinSymbol });
-  const currencyIcon = getCurrencyIcon({ coinSymbol, tokenSymbol });
+  const networkIcon = COIN_ICONS[coinSymbol];
+  const currencyIcon = tokenSymbol ? TOKEN_ICONS[tokenSymbol] : networkIcon;
 
   const currency = SUPPORTED_CURRENCIES_WITH_NAMES.find(
     (c) => c.coinSymbol === coinSymbol && c.tokenSymbol === tokenSymbol
