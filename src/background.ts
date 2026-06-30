@@ -42,6 +42,11 @@ const POPUP_TIMEOUT_ALARM_PREFIX = 'popup_timeout_';
 const recentlyClosedWindowIds = new Set<number>();
 const RECENTLY_CLOSED_TTL_MS = 5_000;
 
+// chrome.storage.session is cleared on browser restart.
+// This flag is set when the user explicitly approves a REQUEST_ACCOUNTS, confirming
+// the wallet is unlocked. Without it, auto-restore is suppressed after browser restart.
+const SESSION_UNLOCKED_KEY = 'session_wallet_unlocked';
+
 // -----------------------------
 // Core State
 // -----------------------------
@@ -499,7 +504,7 @@ onMessage(BRIDGE_MESSAGE.INTERNAL_LOGOUT, ({ data }) => {
 });
 
 // Handler for INIT_REQUEST
-function handleInitRequest(
+async function handleInitRequest(
   data: BridgeMessageProtocolMap[BRIDGE_MESSAGE.INIT_REQUEST],
   sender: any
 ) {
@@ -507,11 +512,15 @@ function handleInitRequest(
   const tId = sender.tabId;
   const origin = data.origin || extractOrigin(sender.tab?.url);
   if (origin && originPermissions[origin] && !sessions[tId]) {
-    sessions[tId] = { origin };
-    const accounts = originPermissions[origin];
-    if (accounts.length)
-      emitEvent(tId, PROVIDER_EVENT.ACCOUNTS_CHANGED, [accounts]);
-    schedulePersist();
+    const { [SESSION_UNLOCKED_KEY]: sessionUnlocked } =
+      await chrome.storage.session.get(SESSION_UNLOCKED_KEY);
+    if (sessionUnlocked) {
+      sessions[tId] = { origin };
+      const accounts = originPermissions[origin];
+      if (accounts.length)
+        emitEvent(tId, PROVIDER_EVENT.ACCOUNTS_CHANGED, [accounts]);
+      schedulePersist();
+    }
   }
   sendMessage(
     BRIDGE_MESSAGE.INIT_RESPONSE,
@@ -521,6 +530,31 @@ function handleInitRequest(
     },
     `content-script@${tId}`
   );
+}
+
+// Handler for AKASHIC_METHOD.ACCOUNTS
+async function handleAccounts(pr: PendingRequest) {
+  const origin = pr.origin;
+  const tId = pr.tabId;
+  let result: AkashicAccount[] = [];
+  if (!!tId && sessions[tId]) {
+    result = originPermissions[sessions[tId].origin] || [];
+  } else if (origin && originPermissions[origin]) {
+    const { [SESSION_UNLOCKED_KEY]: sessionUnlocked } =
+      await chrome.storage.session.get(SESSION_UNLOCKED_KEY);
+    if (sessionUnlocked) {
+      if (!!tId) {
+        sessions[tId] = { origin };
+        const accounts = originPermissions[origin];
+        if (accounts.length)
+          emitEvent(tId, PROVIDER_EVENT.ACCOUNTS_CHANGED, [accounts]);
+        schedulePersist();
+      }
+      result = originPermissions[origin];
+    }
+  }
+  respond(tId, { id: pr.id, result });
+  finalize(pr.id);
 }
 
 // Handler for RPC_REQUEST
@@ -547,24 +581,7 @@ function handleRpcRequest(
         handleRequestAccounts(pendingRequest[id]);
       break;
     case AKASHIC_METHOD.ACCOUNTS: {
-      const pr = pendingRequest[id];
-      const origin = pr.origin;
-      const tId = pr.tabId;
-      let result: AkashicAccount[] = [];
-      if (!!tId && sessions[tId]) {
-        result = originPermissions[sessions[tId].origin] || [];
-      } else if (origin && originPermissions[origin]) {
-        if (!!tId) {
-          sessions[tId] = { origin };
-          const accounts = originPermissions[origin];
-          if (accounts.length)
-            emitEvent(tId, PROVIDER_EVENT.ACCOUNTS_CHANGED, [accounts]);
-          schedulePersist();
-        }
-        result = originPermissions[origin];
-      }
-      respond(tId, { id, result });
-      finalize(id);
+      handleAccounts(pendingRequest[id]);
       break;
     }
     case AKASHIC_METHOD.SIGN_TYPED_DATA:
@@ -674,6 +691,9 @@ function handleApprovalDecision(
           origin: req.origin ?? '',
         };
         if (req.origin) originPermissions[req.origin] = response.accounts;
+        chrome.storage.session
+          .set({ [SESSION_UNLOCKED_KEY]: true })
+          .catch(() => {});
         respond(req.tabId, { id: req.id, result: response });
         schedulePersist();
         break;
