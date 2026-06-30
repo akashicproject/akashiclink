@@ -16,7 +16,6 @@ const path = require('path');
 const webpackConfigExtender = require('./webpack-config-extender');
 
 module.exports = {
-  productionSourceMap: false,
   eslint: {
     enable: false,
   },
