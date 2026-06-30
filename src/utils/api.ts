@@ -1,5 +1,4 @@
 import {
-  type ICreateSecondaryOtk,
   type IEstimateNetworkFee,
   type IGetOwnerDepositKeyDto,
   type IGetOwnerDepositKeyResponse,
@@ -81,14 +80,6 @@ export const OwnersAPI = {
     return await apiCall<INetworkFeeValuesReturn>(
       `/v0/l1-txn-orchestrator/network-fees?${queryParams}`,
       'GET'
-    );
-  },
-
-  becomeFxBp: async (signedReq: ICreateSecondaryOtk): Promise<void> => {
-    await apiCall<void>(
-      `/v0/owner/become-fx-bp`,
-      'POST',
-      JSON.stringify(signedReq)
     );
   },
 };
