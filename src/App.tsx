@@ -13,7 +13,6 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
-import './theme/font.css';
 import './theme/common.scss';
 
 import { IonApp, setupIonicReact } from '@ionic/react';
