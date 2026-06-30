@@ -1,3 +1,1 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M23.78 5.16078L21.42 2.80078L8.22 16.0008L21.42 29.2008L23.78 26.8408L12.94 16.0008L23.78 5.16078Z" fill="var(--ion-color-inverse-surface)"/>
-</svg>
+<svg width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23.78 5.16L21.42 2.8 8.22 16l13.2 13.2 2.36-2.36L12.94 16 23.78 5.16z" fill="var(--ion-color-inverse-surface)"/></svg>
