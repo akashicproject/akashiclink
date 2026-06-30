@@ -35,11 +35,25 @@ export function SignTransaction() {
       );
       setTransaction(transaction);
       const nitr0genApi = await getNitr0genApi();
-      if (nitr0genApi.isSecondaryOtkUpdate(transaction)) {
-        // Secondary OTK addition
+      if (nitr0genApi.isCustomerServiceOtkUpdate(transaction)) {
+        // Customer Service OTK addition/removal
+        const isRemoval =
+          transaction.$tx.$i.owner.remove && !transaction.$tx.$i.owner.add;
         setMessage({
           identity: transaction.$tx.$i.owner.$stream,
-          content: t('Popup.AgreeToGenerateSecondaryKey'),
+          content: isRemoval
+            ? t('Popup.AgreeToRemoveCustomerServiceKey')
+            : t('Popup.AgreeToGenerateCustomerServiceKey'),
+        });
+      } else if (nitr0genApi.isSecondaryOtkUpdate(transaction)) {
+        // Secondary OTK addition/removal
+        const isRemoval =
+          transaction.$tx.$i.owner.remove && !transaction.$tx.$i.owner.add;
+        setMessage({
+          identity: transaction.$tx.$i.owner.$stream,
+          content: isRemoval
+            ? t('Popup.AgreeToRemoveSecondaryKey')
+            : t('Popup.AgreeToGenerateSecondaryKey'),
         });
       } else if (nitr0genApi.isTreasuryOtkAddition(transaction)) {
         // Treasury OTK addition
