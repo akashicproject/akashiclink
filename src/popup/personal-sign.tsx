@@ -3,14 +3,14 @@ import { useEffect, useState } from 'react';
 import { BRIDGE_MESSAGE } from '../types/bridge-types';
 import { responseErrorToSite, responseToSite } from '../utils/chrome';
 import { useSignMessage } from '../utils/hooks/useSignMessage';
-import { SignTransactionOrPersonalContent } from './sign-transaction-or-personal-content';
+import { PersonalSignContent } from './personal-sign-content';
 
 export function PersonalSign() {
   const [isProcessingRequest, setIsProcessingRequest] = useState(false);
 
   const [data, setData] = useState<Record<string, unknown>>();
 
-  const [message, setMessage] = useState<Record<string, string>>();
+  const [message, setMessage] = useState<string>('');
   const signMessage = useSignMessage();
 
   const [id, setId] = useState<number>();
@@ -33,9 +33,7 @@ export function PersonalSign() {
       return;
     }
     setData(parsedData);
-    setMessage({
-      content: JSON.stringify(parsedData, null, 2),
-    });
+    setMessage(parsedData.message as string);
   }, []);
 
   const onClickSign = async () => {
@@ -62,7 +60,7 @@ export function PersonalSign() {
   };
 
   return (
-    <SignTransactionOrPersonalContent
+    <PersonalSignContent
       message={message}
       isProcessingRequest={isProcessingRequest}
       onClickSign={onClickSign}

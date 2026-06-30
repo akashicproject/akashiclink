@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import { BRIDGE_MESSAGE } from '../types/bridge-types';
 import { responseErrorToSite, responseToSite } from '../utils/chrome';
@@ -15,8 +14,6 @@ export interface ITypedData {
 }
 
 export function SignTypedData() {
-  const { t } = useTranslation();
-
   const [isProcessingRequest, setIsProcessingRequest] = useState(false);
 
   const [typedData, setTypedData] = useState<ITypedData>();
@@ -72,24 +69,7 @@ export function SignTypedData() {
 
   return (
     <SignTypedDataContent
-      // special case for BecomeBP to show friendlier message
-      typedData={
-        typedData?.primaryType === 'BecomeBP'
-          ? {
-              types: {
-                BecomeBP: [
-                  { name: 'identity', type: 'string' },
-                  { name: 'content', type: 'string' },
-                ],
-              },
-              primaryType: 'BecomeBP',
-              message: {
-                identity: typedData.message.identity,
-                content: t('Popup.AcceptTermsAndPrivacyPolicy'),
-              },
-            }
-          : typedData
-      }
+      typedData={typedData}
       isProcessingRequest={isProcessingRequest}
       onClickSign={onClickSign}
       onClickReject={onClickReject}

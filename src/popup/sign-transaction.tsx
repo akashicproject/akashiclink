@@ -6,7 +6,7 @@ import { BRIDGE_MESSAGE } from '../types/bridge-types';
 import { responseErrorToSite, responseToSite } from '../utils/chrome';
 import { useSignMessage } from '../utils/hooks/useSignMessage';
 import { getNitr0genApi } from '../utils/nitr0gen/nitr0gen.utils';
-import { SignTransactionOrPersonalContent } from './sign-transaction-or-personal-content';
+import { SignTransactionContent } from './sign-transaction-content';
 
 export function SignTransaction() {
   const { t } = useTranslation();
@@ -98,7 +98,7 @@ export function SignTransaction() {
   };
 
   return (
-    <SignTransactionOrPersonalContent
+    <SignTransactionContent
       message={message}
       isProcessingRequest={isProcessingRequest}
       onClickSign={onClickSign}
