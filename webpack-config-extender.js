@@ -84,7 +84,11 @@ module.exports = {
       // Update the existing plugin options
       ForkTsCheckerWebpackPlugin.options = {
         ...ForkTsCheckerWebpackPlugin.options,
-        memoryLimit: 8192, // Increased from 4096 to 8192 MB
+        memoryLimit: 12288, // Increased from 8192 to 12288 MB
+        typescript: {
+          ...ForkTsCheckerWebpackPlugin.options?.typescript,
+          memoryLimit: 12288,
+        },
       };
     }
 
