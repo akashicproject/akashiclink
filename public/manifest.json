@@ -17,7 +17,7 @@
     "default_icon": "assets/icons/extension-icon/Icon128.png",
     "default_popup": "index.html"
   },
-  "permissions": ["storage", "alarms", "tabs", "activeTab"],
+  "permissions": ["storage", "alarms", "tabs"],
   "background": {
     "service_worker": "background.js",
     "type": "module"
