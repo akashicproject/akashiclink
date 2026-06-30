@@ -1,6 +1,5 @@
 import {
   getCurrencyDisplayName,
-  getCurrencyIcon,
   TransactionStatus,
   TransactionType,
 } from '@akashic/as-backend';
@@ -21,6 +20,7 @@ import type { ITransactionRecordForExtension } from '../../utils/formatTransfers
 import { useAccountStorage } from '../../utils/hooks/useLocalAccounts';
 import { displayLongText } from '../../utils/long-text';
 import { getNftImage } from '../../utils/nft-image-link';
+import { CryptoCurrencyIcon } from '../common/chain-icon/crypto-currency-icon';
 import { L2Icon } from '../common/chain-icon/l2-icon';
 import { Divider } from '../common/divider';
 import { ViewMode } from './view-mode';
@@ -152,11 +152,6 @@ export function TransactionHistoryListItem({
     transfer.status === TransactionStatus.PENDING ||
     transfer.status === TransactionStatus.QUEUED;
 
-  const currencyIcon = getCurrencyIcon(
-    { coinSymbol: transfer.coinSymbol },
-    isTxnConfirmed ? 'normal' : 'grey'
-  );
-
   const gasFee = transfer.feesPaid ?? transfer.feesEstimate;
   const isDelegated = !!transfer.feeIsDelegated;
 
@@ -218,13 +213,10 @@ export function TransactionHistoryListItem({
             {isL2 || isNft ? (
               <L2Icon size={32} />
             ) : (
-              <IonImg
-                alt=""
-                src={currencyIcon}
-                style={{
-                  height: '32px',
-                  width: '32px',
-                }}
+              <CryptoCurrencyIcon
+                coinSymbol={transfer.coinSymbol}
+                size={32}
+                color={isTxnConfirmed ? 'normal' : 'grey'}
               />
             )}
 
